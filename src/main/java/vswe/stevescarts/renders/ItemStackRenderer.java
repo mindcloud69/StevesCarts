@@ -22,7 +22,7 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 	@Override
 	public void renderByItem(ItemStack itemStack) {
 		if(itemStack.getItem() != ModItems.carts){
-			super.renderByItem(itemStack);
+			renderer.renderByItem(itemStack);
 			return;
 		}
 		GL11.glPushMatrix();
