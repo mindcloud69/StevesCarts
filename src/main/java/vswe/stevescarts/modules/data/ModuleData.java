@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.Constants;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.CartVersion;
@@ -353,7 +354,7 @@ public class ModuleData {
 			{ ComponentTypes.EMPTY_DISK.getItemStack() } });
 		final ModuleData bats = new ModuleData(48, "Entity Detector: Bat", ModuleBat.class, 1).addParent(advshooter).addRecipe(new Object[][] { { Blocks.PUMPKIN },
 			{ ComponentTypes.EMPTY_DISK.getItemStack() } });
-		if (!StevesCarts.isHalloween) {
+		if (!Constants.isHalloween) {
 			bats.lock();
 		}
 		detectorGroup.add(animal);
@@ -389,7 +390,7 @@ public class ModuleData {
 			{ ComponentTypes.REINFORCED_WHEELS.getItemStack(), null, ComponentTypes.REINFORCED_WHEELS.getItemStack() } });
 		final ModuleData pumpkinhull = new ModuleDataHull(47, "Pumpkin chariot", ModulePumpkin.class).setCapacity(40).setEngineMax(1).setAddonMax(0).setComplexityMax(15).addRecipe(new Object[][] {
 			{ planks, null, planks }, { planks, Blocks.PUMPKIN, planks }, { ComponentTypes.WOODEN_WHEELS.getItemStack(), null, ComponentTypes.WOODEN_WHEELS.getItemStack() } });
-		if (!StevesCarts.isHalloween) {
+		if (!Constants.isHalloween) {
 			pumpkinhull.lock();
 		}
 		new ModuleDataHull(62, "Mechanical Pig", ModulePig.class).setCapacity(150).setEngineMax(2).setAddonMax(4).setComplexityMax(50).addSide(SIDE.FRONT).addRecipe(new Object[][] {
@@ -433,7 +434,7 @@ public class ModuleData {
 			{ ComponentTypes.YELLOW_GIFT_RIBBON.getItemStack(), null, ComponentTypes.RED_GIFT_RIBBON.getItemStack() },
 			{ ComponentTypes.RED_WRAPPING_PAPER.getItemStack(), ComponentTypes.CHEST_LOCK.getItemStack(), ComponentTypes.GREEN_WRAPPING_PAPER.getItemStack() },
 			{ ComponentTypes.RED_WRAPPING_PAPER.getItemStack(), ComponentTypes.STUFFED_SOCK.getItemStack(), ComponentTypes.GREEN_WRAPPING_PAPER.getItemStack() } });
-		if (!StevesCarts.isChristmas) {
+		if (!Constants.isChristmas) {
 			gift.lock();
 		}
 		new ModuleData(51, "Projectile: Potion", ModulePotion.class, 10).addRequirement(shooterGroup).addRecipe(new Object[][] { { Items.GLASS_BOTTLE },
@@ -443,14 +444,14 @@ public class ModuleData {
 		new ModuleData(53, "Projectile: Egg", ModuleEgg.class, 10).addRequirement(shooterGroup).addRecipe(new Object[][] { { Items.EGG }, { ComponentTypes.EMPTY_DISK.getItemStack() } });
 		final ModuleData snowballshooter = new ModuleData(54, "Projectile: Snowball", ModuleSnowball.class, 10).addRequirement(shooterGroup).addRecipe(new Object[][] { { Items.SNOWBALL },
 			{ ComponentTypes.EMPTY_DISK.getItemStack() } });
-		if (!StevesCarts.isChristmas) {
+		if (!Constants.isChristmas) {
 			snowballshooter.lock();
 		}
 		final ModuleData cake = new ModuleData(90, "Projectile: Cake", ModuleCake.class, 10).addRequirement(shooterGroup).lock().addRecipe(new Object[][] { { Items.CAKE },
 			{ ComponentTypes.EMPTY_DISK.getItemStack() } });
 		final ModuleData snowgenerator = new ModuleData(55, "Freezer", ModuleSnowCannon.class, 24).addRecipe(new Object[][] { { Blocks.SNOW, Items.WATER_BUCKET, Blocks.SNOW },
 			{ Items.WATER_BUCKET, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.WATER_BUCKET }, { Blocks.SNOW, Items.WATER_BUCKET, Blocks.SNOW } });
-		if (!StevesCarts.isChristmas) {
+		if (!Constants.isChristmas) {
 			snowgenerator.lock();
 		}
 		addNemesis(snowgenerator, melter);
@@ -525,7 +526,7 @@ public class ModuleData {
 		}.addSide(SIDE.TOP).useExtraData((byte) 1).addRecipe(new Object[][] { { yellowWool, yellowWool, yellowWool },
 			{ ComponentTypes.EXPLOSIVE_EASTER_EGG.getItemStack(), ComponentTypes.CHEST_LOCK.getItemStack(), ComponentTypes.BURNING_EASTER_EGG.getItemStack() },
 			{ ComponentTypes.GLISTERING_EASTER_EGG.getItemStack(), ComponentTypes.BASKET.getItemStack(), ComponentTypes.CHOCOLATE_EASTER_EGG.getItemStack() } });
-		if (!StevesCarts.isEaster) {
+		if (!Constants.isEaster) {
 			eggBasket.lock();
 		}
 		final ModuleData intelligence = new ModuleData(75, "Drill Intelligence", ModuleDrillIntelligence.class, 21).addRequirement(drillGroup).addRecipe(new Object[][] {
@@ -579,7 +580,7 @@ public class ModuleData {
 			{ "slabWood", "slabWood", "slabWood" }, { null, ComponentTypes.SIMPLE_PCB.getItemStack(), null } });
 		final ModuleData trickOrTreat = new ModuleData(100, "Trick-or-Treat Cake Server", ModuleCakeServerDynamite.class, 15).addSide(SIDE.TOP).addRecipe(new Object[][] { { null, Items.CAKE, null },
 			{ "slabWood", "slabWood", "slabWood" }, { ComponentTypes.DYNAMITE.getItemStack(), ComponentTypes.SIMPLE_PCB.getItemStack(), ComponentTypes.DYNAMITE.getItemStack() } });
-		if (!StevesCarts.isHalloween) {
+		if (!Constants.isHalloween) {
 			trickOrTreat.lock();
 		}
 	}

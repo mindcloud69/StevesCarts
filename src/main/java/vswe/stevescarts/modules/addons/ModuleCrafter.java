@@ -8,7 +8,6 @@ import vswe.stevescarts.containers.slots.SlotCartCrafter;
 import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
-import vswe.stevescarts.helpers.crafting.CraftingDummy;
 
 public class ModuleCrafter extends ModuleRecipe {
 	private CraftingDummy dummy;

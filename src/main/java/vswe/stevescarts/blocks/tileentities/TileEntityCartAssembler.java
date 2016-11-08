@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.Constants;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.BlockCartAssembler;
 import vswe.stevescarts.blocks.ModBlocks;
@@ -859,7 +860,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 			if (this.placeholder == null) {
 				return;
 			}
-			if (!StevesCarts.freezeCartSimulation) {
+			if (!Constants.freezeCartSimulation) {
 				final int minRoll = -5;
 				final int maxRoll = 25;
 				if (this.shouldSpin) {

@@ -2,6 +2,7 @@ package vswe.stevescarts.helpers;
 
 import java.util.ArrayList;
 
+import vswe.stevescarts.Constants;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.modules.addons.ModuleBrake;
 import vswe.stevescarts.modules.addons.ModuleInvisible;
@@ -147,9 +148,9 @@ public class SimulationInfo {
 		(this.itemMULTIBOOLPipes1 = new DropDownMenuItem("Pipes", 16, DropDownMenuItem.VALUETYPE.MULTIBOOL, ModuleShooter.class, ModuleShooterAdv.class)).setMULTIBOOLCount(4);
 		(this.itemMULTIBOOLPipes2 = new DropDownMenuItem("Pipes", 16, DropDownMenuItem.VALUETYPE.MULTIBOOL, ModuleShooter.class, ModuleShooterAdv.class)).setMULTIBOOLCount(4);
 		this.itemBOOLPipe = new DropDownMenuItem("Pipe", 17, DropDownMenuItem.VALUETYPE.BOOL, ModuleShooterAdv.class);
-		(this.itemINTBackground = new DropDownMenuItem("Background", 18, DropDownMenuItem.VALUETYPE.INT, null)).setINTLimit(StevesCarts.hasGreenScreen ? 0 : 1, 3);
+		(this.itemINTBackground = new DropDownMenuItem("Background", 18, DropDownMenuItem.VALUETYPE.INT, null)).setINTLimit(Constants.hasGreenScreen ? 0 : 1, 3);
 		this.itemINTBackground.setINT(1);
-		if (StevesCarts.hasGreenScreen) {
+		if (Constants.hasGreenScreen) {
 			this.items.add(this.itemINTBackground);
 		}
 		this.items.add(this.itemBOOLChest);

@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.Constants;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
@@ -282,7 +283,7 @@ public class GuiCartAssembler extends GuiBase {
 		final float n = left + 256;
 		final int n2 = top;
 		final StevesCarts instance = StevesCarts.instance;
-		GL11.glTranslatef(n, n2 + (StevesCarts.renderSteve ? 50 : 100), 100.0f);
+		GL11.glTranslatef(n, n2 + (Constants.renderSteve ? 50 : 100), 100.0f);
 		final float scale = 50.0f;
 		GL11.glScalef(-scale, scale, scale);
 		GL11.glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
@@ -292,7 +293,7 @@ public class GuiCartAssembler extends GuiBase {
 		GL11.glRotatef(this.assembler.getRoll(), 1.0f, 0.0f, 0.0f);
 		GL11.glRotatef(this.assembler.getYaw(), 0.0f, 1.0f, 0.0f);
 		Minecraft.getMinecraft().getRenderManager().playerViewY = 180.0f;
-		if (StevesCarts.renderSteve) {
+		if (Constants.renderSteve) {
 			final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 			final ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));

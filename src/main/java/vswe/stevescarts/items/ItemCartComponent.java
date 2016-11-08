@@ -18,6 +18,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.Constants;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.entitys.EntityEasterEgg;
 import vswe.stevescarts.helpers.ComponentTypes;
@@ -117,10 +118,10 @@ public class ItemCartComponent extends Item {
 			return false;
 		}
 		if (item.getItemDamage() >= 50 && item.getItemDamage() < 58) {
-			return StevesCarts.isChristmas;
+			return Constants.isChristmas;
 		}
 		if (item.getItemDamage() >= 66 && item.getItemDamage() < 72) {
-			return StevesCarts.isEaster;
+			return Constants.isEaster;
 		}
 		return item.getItemDamage() < 72 || item.getItemDamage() >= 80;
 	}

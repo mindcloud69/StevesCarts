@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.Constants;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.arcade.ArcadeGame;
 import vswe.stevescarts.guis.GuiMinecart;
@@ -138,7 +139,7 @@ public class ArcadeTracks extends ArcadeGame {
 	private void loadUserMaps() {
 		this.userList.clearList();
 		this.userMaps = TrackLevel.loadMapsFromFolder();
-		if (StevesCarts.arcadeDevOperator) {
+		if (Constants.arcadeDevOperator) {
 			for (int i = 0; i < TrackStory.stories.size(); ++i) {
 				for (int j = 0; j < TrackStory.stories.get(i).getLevels().size(); ++j) {
 					this.userMaps.add(TrackStory.stories.get(i).getLevels().get(j));
@@ -913,7 +914,7 @@ public class ArcadeTracks extends ArcadeGame {
 
 	@SideOnly(Side.CLIENT)
 	private boolean save(String name) {
-		if (StevesCarts.arcadeDevOperator) {
+		if (Constants.arcadeDevOperator) {
 			if (!name.startsWith(" ")) {
 				final String result = TrackLevel.saveMapToString(name, this.playerStartX, this.playerStartY, this.playerStartDirection, this.itemX, this.itemY, this.tracks);
 				System.out.println(result);
