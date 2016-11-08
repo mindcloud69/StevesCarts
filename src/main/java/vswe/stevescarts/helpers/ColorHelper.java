@@ -26,6 +26,6 @@ public enum ColorHelper {
 
 	@Override
 	public String toString() {
-		return "ï¿½" + Integer.toHexString(this.number);
+		return "§" + Integer.toHexString(this.number);
 	}
 }
