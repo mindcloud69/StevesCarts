@@ -3,11 +3,11 @@ package vswe.stevescarts.modules.addons.mobdetectors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleAnimal extends ModuleMobdetector {
-	public ModuleAnimal(final MinecartModular cart) {
+	public ModuleAnimal(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

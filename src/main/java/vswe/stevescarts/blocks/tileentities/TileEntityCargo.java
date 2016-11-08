@@ -35,8 +35,8 @@ import vswe.stevescarts.guis.GuiCargo;
 import vswe.stevescarts.helpers.CargoItemSelection;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.helpers.ManagerTransfer;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.items.ModItems;
 
 public class TileEntityCargo extends TileEntityManager {
@@ -44,7 +44,7 @@ public class TileEntityCargo extends TileEntityManager {
 	public int[] target;
 	public ArrayList<SlotCargo> cargoSlots;
 	public int lastLayout;
-	private ManagerTransfer latestTransferToBeUsed;
+	private TransferManager latestTransferToBeUsed;
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -101,7 +101,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	@Override
-	protected boolean isTargetValid(final ManagerTransfer transfer) {
+	protected boolean isTargetValid(final TransferManager transfer) {
 		return this.target[transfer.getSetting()] >= 0 && this.target[transfer.getSetting()] < TileEntityCargo.itemSelections.size();
 	}
 
@@ -224,7 +224,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	@Override
-	protected boolean doTransfer(final ManagerTransfer transfer) {
+	protected boolean doTransfer(final TransferManager transfer) {
 		final Class slotCart = TileEntityCargo.itemSelections.get(this.target[transfer.getSetting()]).getValidSlot();
 		if (slotCart == null) {
 			transfer.setLowestSetting(transfer.getSetting() + 1);
@@ -290,7 +290,7 @@ public class TileEntityCargo extends TileEntityManager {
 		return true;
 	}
 
-	public ManagerTransfer getCurrentTransferForSlots() {
+	public TransferManager getCurrentTransferForSlots() {
 		return this.latestTransferToBeUsed;
 	}
 }

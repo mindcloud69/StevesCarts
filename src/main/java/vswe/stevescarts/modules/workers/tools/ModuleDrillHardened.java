@@ -1,12 +1,12 @@
 package vswe.stevescarts.modules.workers.tools;
 
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.items.ModItems;
 
 public class ModuleDrillHardened extends ModuleDrill {
-	public ModuleDrillHardened(final MinecartModular cart) {
+	public ModuleDrillHardened(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

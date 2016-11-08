@@ -4,7 +4,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotChest;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.modules.storages.ModuleStorage;
 
@@ -12,7 +12,7 @@ public abstract class ModuleChest extends ModuleStorage {
 	private float chestAngle;
 	private static DataParameter<Boolean> IS_OPEN = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleChest(final MinecartModular cart) {
+	public ModuleChest(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

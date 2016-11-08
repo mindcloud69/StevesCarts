@@ -1,10 +1,10 @@
 package vswe.stevescarts.modules.hull;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 
 public abstract class ModuleHull extends ModuleBase {
-	public ModuleHull(final MinecartModular cart) {
+	public ModuleHull(final EntityMinecartModular cart) {
 		super(cart);
 	}
 }

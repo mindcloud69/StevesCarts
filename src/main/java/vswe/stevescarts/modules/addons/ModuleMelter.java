@@ -3,12 +3,12 @@ package vswe.stevescarts.modules.addons;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleMelter extends ModuleAddon {
 	private int tick;
 
-	public ModuleMelter(final MinecartModular cart) {
+	public ModuleMelter(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

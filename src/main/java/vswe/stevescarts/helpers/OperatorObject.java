@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class OperatorObject {
 	private static HashMap<Byte, OperatorObject> allOperators;
@@ -51,7 +51,7 @@ public class OperatorObject {
 		return true;
 	}
 
-	public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+	public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 		return false;
 	}
 
@@ -65,19 +65,19 @@ public class OperatorObject {
 			}
 
 			@Override
-			public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+			public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 				return A.evaluateLogicTree(detector, cart, depth);
 			}
 		};
 		new OperatorObject(operators, 1, Localization.GUI.DETECTOR.AND, 2) {
 			@Override
-			public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+			public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 				return A.evaluateLogicTree(detector, cart, depth) && B.evaluateLogicTree(detector, cart, depth);
 			}
 		};
 		new OperatorObject(operators, 2, Localization.GUI.DETECTOR.OR, 2) {
 			@Override
-			public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+			public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 				return A.evaluateLogicTree(detector, cart, depth) || B.evaluateLogicTree(detector, cart, depth);
 			}
 		};
@@ -88,13 +88,13 @@ public class OperatorObject {
 			}
 
 			@Override
-			public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+			public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 				return !A.evaluateLogicTree(detector, cart, depth);
 			}
 		};
 		new OperatorObject(operators, 4, Localization.GUI.DETECTOR.XOR, 2) {
 			@Override
-			public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+			public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 				return A.evaluateLogicTree(detector, cart, depth) != B.evaluateLogicTree(detector, cart, depth);
 			}
 		};
@@ -122,7 +122,7 @@ public class OperatorObject {
 		}
 
 		@Override
-		public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+		public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 			final int x = this.x + detector.getPos().getX();
 			final int y = this.y + detector.getPos().getY();
 			final int z = this.z + detector.getPos().getZ();
@@ -144,7 +144,7 @@ public class OperatorObject {
 		}
 
 		@Override
-		public boolean evaluate(final TileEntityDetector detector, final MinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
+		public boolean evaluate(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth, final LogicObject A, final LogicObject B) {
 			final int x = this.x + detector.getPos().getX();
 			final int y = this.y + detector.getPos().getY();
 			final int z = this.z + detector.getPos().getZ();

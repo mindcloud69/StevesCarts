@@ -1,9 +1,9 @@
 package vswe.stevescarts.modules.storages.chests;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleInternalStorage extends ModuleChest {
-	public ModuleInternalStorage(final MinecartModular cart) {
+	public ModuleInternalStorage(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

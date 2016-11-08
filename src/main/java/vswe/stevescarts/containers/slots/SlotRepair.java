@@ -2,7 +2,7 @@ package vswe.stevescarts.containers.slots;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
 
 public class SlotRepair extends SlotBase implements ISpecialItemTransferValidator {

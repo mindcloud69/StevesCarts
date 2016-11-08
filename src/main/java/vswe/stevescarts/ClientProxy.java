@@ -7,9 +7,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
+import vswe.stevescarts.handlers.SoundHandler;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
-import vswe.stevescarts.helpers.SoundHandler;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.renders.RendererMinecart;
 import vswe.stevescarts.renders.model.ItemModelManager;
@@ -18,8 +18,8 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void renderInit() {
+		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartModular.class, new RenderManagerCart());
 
-		RenderingRegistry.registerEntityRenderingHandler(MinecartModular.class, new RenderManagerCart());
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
 		//	StevesCarts.instance.blockRenderer = (ISimpleBlockRenderingHandler) new RendererUpgrade();
 
@@ -27,10 +27,10 @@ public class ClientProxy extends CommonProxy {
 		ModuleData.initModels();
 	}
 
-	public class RenderManagerCart implements IRenderFactory<MinecartModular> {
+	public class RenderManagerCart implements IRenderFactory<EntityMinecartModular> {
 
 		@Override
-		public Render<? super MinecartModular> createRenderFor(RenderManager manager) {
+		public Render<? super EntityMinecartModular> createRenderFor(RenderManager manager) {
 			return new RendererMinecart(manager);
 		}
 	}

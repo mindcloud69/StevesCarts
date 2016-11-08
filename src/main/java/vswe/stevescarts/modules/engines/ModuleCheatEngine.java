@@ -1,11 +1,11 @@
 package vswe.stevescarts.modules.engines;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleCheatEngine extends ModuleEngine {
-	public ModuleCheatEngine(final MinecartModular cart) {
+	public ModuleCheatEngine(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

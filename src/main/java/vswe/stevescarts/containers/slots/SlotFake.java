@@ -3,7 +3,7 @@ package vswe.stevescarts.containers.slots;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferHandler;
 
 public abstract class SlotFake extends SlotBase implements ISpecialItemTransferValidator {
 	public SlotFake(final IInventory iinventory, final int i, final int j, final int k) {

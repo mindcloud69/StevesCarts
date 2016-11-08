@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiDetector;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.data.ModuleData;
@@ -190,7 +190,7 @@ public class LogicObject {
 		return null;
 	}
 
-	public boolean evaluateLogicTree(final TileEntityDetector detector, final MinecartModular cart, final int depth) {
+	public boolean evaluateLogicTree(final TileEntityDetector detector, final EntityMinecartModular cart, final int depth) {
 		if (depth >= 1000) {
 			return false;
 		}

@@ -10,7 +10,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class BlockRailJunction extends BlockRail {
 	//	private IIcon normalIcon;
@@ -66,8 +66,8 @@ public class BlockRailJunction extends BlockRail {
 
 	@Override
 	public EnumRailDirection getRailDirection(IBlockAccess world, BlockPos pos, IBlockState state, EntityMinecart cart) {
-		if (cart instanceof MinecartModular) {
-			final MinecartModular modularCart = (MinecartModular) cart;
+		if (cart instanceof EntityMinecartModular) {
+			final EntityMinecartModular modularCart = (EntityMinecartModular) cart;
 			EnumRailDirection direction = modularCart.getRailDirection(pos);
 			if (direction != null) {
 				return direction;

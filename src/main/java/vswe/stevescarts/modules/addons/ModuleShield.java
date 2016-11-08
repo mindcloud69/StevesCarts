@@ -7,7 +7,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -20,7 +20,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	private int[] buttonRect;
 	private static DataParameter<Boolean> STATUS = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleShield(final MinecartModular cart) {
+	public ModuleShield(final EntityMinecartModular cart) {
 		super(cart);
 		this.shield = true;
 		this.shieldDistance = 18.0f;

@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFertilizer;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -25,7 +25,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	private final int fertPerBonemeal = 4;
 	private final int maxStacksOfBones = 1;
 
-	public ModuleFertilizer(final MinecartModular cart) {
+	public ModuleFertilizer(final EntityMinecartModular cart) {
 		super(cart);
 		this.tankPosX = this.guiWidth() - 21;
 		this.tankPosY = 20;

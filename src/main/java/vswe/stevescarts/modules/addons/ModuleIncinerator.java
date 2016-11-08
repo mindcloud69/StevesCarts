@@ -4,11 +4,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotIncinerator;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 
 public class ModuleIncinerator extends ModuleAddon {
-	public ModuleIncinerator(final MinecartModular cart) {
+	public ModuleIncinerator(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

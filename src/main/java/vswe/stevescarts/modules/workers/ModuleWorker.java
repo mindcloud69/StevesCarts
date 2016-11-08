@@ -7,14 +7,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.IFluidBlock;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 
 public abstract class ModuleWorker extends ModuleBase {
 	private boolean preWork;
 	private boolean shouldDie;
 
-	public ModuleWorker(final MinecartModular cart) {
+	public ModuleWorker(final EntityMinecartModular cart) {
 		super(cart);
 		this.preWork = true;
 	}
@@ -75,7 +75,7 @@ public abstract class ModuleWorker extends ModuleBase {
 			if (meta >= 2 && meta <= 5) {
 				pos = pos.up();
 			}
-			final int[][] logic = MinecartModular.railDirectionCoordinates[meta];
+			final int[][] logic = EntityMinecartModular.railDirectionCoordinates[meta];
 			final double pX = this.getCart().pushX;
 			final double pZ = this.getCart().pushZ;
 			final boolean xDir = (pX > 0.0 && logic[0][0] > 0) || pX == 0.0 || logic[0][0] == 0 || (pX < 0.0 && logic[0][0] < 0);

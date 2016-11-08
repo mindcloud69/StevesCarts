@@ -12,7 +12,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -61,7 +61,7 @@ public class ModuleNote extends ModuleBase {
 
 	private static DataParameter<Boolean> PLAYING = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleNote(final MinecartModular cart) {
+	public ModuleNote(final EntityMinecartModular cart) {
 		super(cart);
 		this.veryLongTrackLimit = 1024;
 		this.notesInView = 13;

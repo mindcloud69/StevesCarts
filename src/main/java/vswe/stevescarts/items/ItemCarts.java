@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.CartVersion;
 import vswe.stevescarts.helpers.ColorHelper;
 import vswe.stevescarts.helpers.ModuleCountPair;
@@ -50,7 +50,7 @@ public class ItemCarts extends ItemMinecart {
 				try {
 					final NBTTagCompound info = stack.getTagCompound();
 					if (info != null && !info.hasKey("maxTime")) {
-						final MinecartModular cart = new MinecartModular(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, info, stack.getDisplayName());
+						final EntityMinecartModular cart = new EntityMinecartModular(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, info, stack.getDisplayName());
 						world.spawnEntityInWorld(cart);
 					}
 				} catch (Exception e) {

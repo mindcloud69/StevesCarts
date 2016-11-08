@@ -13,7 +13,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotBuilder;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ISuppliesModule;
@@ -23,7 +23,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	private float[] railAngles;
 	private static DataParameter<Byte> RAILS = createDw(DataSerializers.BYTE);
 
-	public ModuleRailer(final MinecartModular cart) {
+	public ModuleRailer(final EntityMinecartModular cart) {
 		super(cart);
 		this.hasGeneratedAngles = false;
 	}

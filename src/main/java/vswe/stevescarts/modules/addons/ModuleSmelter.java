@@ -8,14 +8,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
 import vswe.stevescarts.containers.slots.SlotFurnaceInput;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 
 public class ModuleSmelter extends ModuleRecipe {
 	private int energyBuffer;
 	private int cooldown;
 
-	public ModuleSmelter(final MinecartModular cart) {
+	public ModuleSmelter(final EntityMinecartModular cart) {
 		super(cart);
 		this.cooldown = 0;
 	}

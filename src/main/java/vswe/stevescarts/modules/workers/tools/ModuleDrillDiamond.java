@@ -2,11 +2,11 @@ package vswe.stevescarts.modules.workers.tools;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleDrillDiamond extends ModuleDrill {
-	public ModuleDrillDiamond(final MinecartModular cart) {
+	public ModuleDrillDiamond(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

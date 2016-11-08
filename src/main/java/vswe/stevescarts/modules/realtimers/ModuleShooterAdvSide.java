@@ -1,6 +1,6 @@
 package vswe.stevescarts.modules.realtimers;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.AnimationRig;
 import vswe.stevescarts.helpers.AnimationRigVal;
 
@@ -27,7 +27,7 @@ public class ModuleShooterAdvSide extends ModuleShooterAdv {
 	private AnimationRigVal armPos2;
 	private AnimationRigVal armRot2;
 
-	public ModuleShooterAdvSide(final MinecartModular cart) {
+	public ModuleShooterAdvSide(final EntityMinecartModular cart) {
 		super(cart);
 		this.rig = new AnimationRig();
 		this.handlePos = new AnimationRigVal(this.rig, 8.55f, 9.4f, 0.0f);

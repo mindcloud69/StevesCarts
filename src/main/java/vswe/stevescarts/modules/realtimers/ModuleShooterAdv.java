@@ -15,7 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -29,7 +29,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 	private static DataParameter<Byte> OPTION = createDw(DataSerializers.BYTE);
 	private static DataParameter<Byte> RIFLE_DIRECTION = createDw(DataSerializers.BYTE);
 
-	public ModuleShooterAdv(final MinecartModular cart) {
+	public ModuleShooterAdv(final EntityMinecartModular cart) {
 		super(cart);
 		this.sorter = new EntityNearestTarget(this.getCart());
 	}

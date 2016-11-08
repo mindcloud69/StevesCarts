@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.FluidStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 
@@ -25,7 +25,7 @@ public class RendererMinecart extends Render {
 		this.shadowSize = 0.5f;
 	}
 
-	public void renderCart(final MinecartModular cart, double x, double y, double z, float yaw, final float partialTickTime) {
+	public void renderCart(final EntityMinecartModular cart, double x, double y, double z, float yaw, final float partialTickTime) {
 		if (cart.getModules() != null) {
 			for (final ModuleBase module : cart.getModules()) {
 				if (!module.shouldCartRender()) {
@@ -89,7 +89,7 @@ public class RendererMinecart extends Render {
 		this.renderLabel(cart, x, y, z);
 	}
 
-	public void renderModels(final MinecartModular cart, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
+	public void renderModels(final EntityMinecartModular cart, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
 		if (cart.getModules() != null) {
 			for (final ModuleBase module : cart.getModules()) {
 				if (module.haveModels()) {
@@ -162,7 +162,7 @@ public class RendererMinecart extends Render {
 	//		GL11.glPopMatrix();
 	//	}
 
-	protected void renderLabel(final MinecartModular cart, final double x, final double y, final double z) {
+	protected void renderLabel(final EntityMinecartModular cart, final double x, final double y, final double z) {
 		final ArrayList<String> labels = cart.getLabel();
 		if (labels != null && labels.size() > 0) {
 			final float distance = cart.getDistanceToEntity(this.renderManager.renderViewEntity);
@@ -226,6 +226,6 @@ public class RendererMinecart extends Render {
 
 	@Override
 	public void doRender(final Entity par1Entity, final double x, final double y, final double z, final float yaw, final float partialTickTime) {
-		this.renderCart((MinecartModular) par1Entity, x, y, z, yaw, partialTickTime);
+		this.renderCart((EntityMinecartModular) par1Entity, x, y, z, yaw, partialTickTime);
 	}
 }

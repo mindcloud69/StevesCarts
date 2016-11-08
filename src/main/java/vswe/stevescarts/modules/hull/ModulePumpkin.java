@@ -1,9 +1,9 @@
 package vswe.stevescarts.modules.hull;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModulePumpkin extends ModuleHull {
-	public ModulePumpkin(final MinecartModular cart) {
+	public ModulePumpkin(final EntityMinecartModular cart) {
 		super(cart);
 	}
 }

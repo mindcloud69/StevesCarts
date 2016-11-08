@@ -1,10 +1,10 @@
 package vswe.stevescarts.modules.addons;
 
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleCreativeIncinerator extends ModuleIncinerator {
-	public ModuleCreativeIncinerator(final MinecartModular cart) {
+	public ModuleCreativeIncinerator(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -16,7 +16,7 @@ public class ModulePowerObserver extends ModuleAddon {
 	private short[] powerLevel;
 	private int currentEngine;
 
-	public ModulePowerObserver(final MinecartModular cart) {
+	public ModulePowerObserver(final EntityMinecartModular cart) {
 		super(cart);
 		this.areaData = new short[4];
 		this.powerLevel = new short[4];

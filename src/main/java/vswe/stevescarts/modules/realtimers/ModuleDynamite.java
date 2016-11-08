@@ -6,7 +6,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotExplosion;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.Localization;
@@ -23,7 +23,7 @@ public class ModuleDynamite extends ModuleBase {
 	private static DataParameter<Byte> FUSE_LENGTH = createDw(DataSerializers.BYTE);
 	private static DataParameter<Byte> EXPLOSION = createDw(DataSerializers.BYTE);
 
-	public ModuleDynamite(final MinecartModular cart) {
+	public ModuleDynamite(final EntityMinecartModular cart) {
 		super(cart);
 		this.fuseStartX = super.guiWidth() + 5;
 		this.fuseStartY = 27;

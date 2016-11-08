@@ -11,15 +11,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.tileentities.TileEntityBase;
 import vswe.stevescarts.containers.slots.SlotBase;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 
 public class ContainerMinecart extends ContainerBase {
 	private IInventory player;
 	public HashMap<Short, Short> cache;
-	public MinecartModular cart;
+	public EntityMinecartModular cart;
 
-	public ContainerMinecart(final IInventory player, final MinecartModular cart) {
+	public ContainerMinecart(final IInventory player, final EntityMinecartModular cart) {
 		this.cartInv(cart);
 		this.playerInv(player);
 	}
@@ -34,7 +34,7 @@ public class ContainerMinecart extends ContainerBase {
 		return null;
 	}
 
-	protected void cartInv(final MinecartModular cart) {
+	protected void cartInv(final EntityMinecartModular cart) {
 		this.cart = cart;
 		if (cart.getModules() != null) {
 			for (final ModuleBase module : cart.getModules()) {

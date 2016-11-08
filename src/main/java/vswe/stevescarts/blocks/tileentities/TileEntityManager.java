@@ -12,12 +12,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerManager;
-import vswe.stevescarts.entitys.MinecartModular;
-import vswe.stevescarts.helpers.ManagerTransfer;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.NBTHelper;
+import vswe.stevescarts.helpers.storages.TransferManager;
 
 public abstract class TileEntityManager extends TileEntityBase implements IInventory {
-	private ManagerTransfer standardTransferHandler;
+	private TransferManager standardTransferHandler;
 	private ItemStack[] cargoItemStacks;
 	public int layoutType;
 	public int moveTime;
@@ -33,7 +33,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		this.color = new int[] { 1, 2, 3, 4 };
 		this.cargoItemStacks = new ItemStack[this.getSizeInventory()];
 		this.moveTime = 0;
-		this.standardTransferHandler = new ManagerTransfer();
+		this.standardTransferHandler = new TransferManager();
 	}
 
 	@Override
@@ -135,11 +135,11 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		return 64;
 	}
 
-	public MinecartModular getCart() {
+	public EntityMinecartModular getCart() {
 		return this.standardTransferHandler.getCart();
 	}
 
-	public void setCart(final MinecartModular cart) {
+	public void setCart(final EntityMinecartModular cart) {
 		this.standardTransferHandler.setCart(cart);
 	}
 
@@ -205,7 +205,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		}
 	}
 
-	public boolean exchangeItems(final ManagerTransfer transfer) {
+	public boolean exchangeItems(final TransferManager transfer) {
 		transfer.setSetting(transfer.getLowestSetting());
 		while (transfer.getSetting() < 4) {
 			Label_0130:
@@ -426,9 +426,9 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	protected void receiveClickData(final int packetid, final int id, final int dif) {
 	}
 
-	protected abstract boolean isTargetValid(final ManagerTransfer p0);
+	protected abstract boolean isTargetValid(final TransferManager p0);
 
-	protected abstract boolean doTransfer(final ManagerTransfer p0);
+	protected abstract boolean doTransfer(final TransferManager p0);
 
 	public abstract int getAmountCount();
 

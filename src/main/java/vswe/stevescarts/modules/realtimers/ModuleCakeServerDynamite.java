@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotCakeDynamite;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.items.ModItems;
 
 public class ModuleCakeServerDynamite extends ModuleCakeServer {
@@ -15,7 +15,7 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 		return Math.min(StevesCarts.instance.maxDynamites, 25);
 	}
 
-	public ModuleCakeServerDynamite(final MinecartModular cart) {
+	public ModuleCakeServerDynamite(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

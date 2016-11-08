@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotSeed;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ICropModule;
@@ -30,7 +30,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	private float rigAngle;
 	private static DataParameter<Boolean> IS_FARMING = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleFarmer(final MinecartModular cart) {
+	public ModuleFarmer(final EntityMinecartModular cart) {
 		super(cart);
 		this.rigAngle = -3.926991f;
 	}

@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -15,7 +15,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	protected int[] priorityButton;
 	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
 
-	public ModuleEngine(final MinecartModular cart) {
+	public ModuleEngine(final EntityMinecartModular cart) {
 		super(cart);
 		this.initPriorityButton();
 	}

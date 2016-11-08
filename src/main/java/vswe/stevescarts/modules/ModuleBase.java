@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerMinecart;
 import vswe.stevescarts.containers.slots.SlotBase;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.guis.buttons.ButtonBase;
@@ -44,7 +44,7 @@ import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.data.ModuleData;
 
 public abstract class ModuleBase {
-	private MinecartModular cart;
+	private EntityMinecartModular cart;
 	private ItemStack[] cargo;
 	private int offSetX;
 	private int offSetY;
@@ -59,7 +59,7 @@ public abstract class ModuleBase {
 	protected ArrayList<SlotBase> slotList;
 	private int moduleButtonId;
 
-	public ModuleBase(final MinecartModular cart) {
+	public ModuleBase(final EntityMinecartModular cart) {
 		this.moduleButtonId = 0;
 		this.cart = cart;
 		this.cargo = new ItemStack[this.getInventorySize()];
@@ -77,7 +77,7 @@ public abstract class ModuleBase {
 	public void preInit() {
 	}
 
-	public MinecartModular getCart() {
+	public EntityMinecartModular getCart() {
 		return this.cart;
 	}
 
@@ -628,7 +628,7 @@ public abstract class ModuleBase {
 	}
 
 	protected static <T> DataParameter<T> createDw(DataSerializer<T> serializer){
-		return EntityDataManager.createKey(MinecartModular.class, serializer);
+		return EntityDataManager.createKey(EntityMinecartModular.class, serializer);
 	}
 
 	public int numberOfGuiData() {

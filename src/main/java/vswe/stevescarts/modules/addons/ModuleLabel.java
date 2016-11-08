@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotChest;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.LabelInformation;
 import vswe.stevescarts.helpers.Localization;
@@ -29,7 +29,7 @@ public class ModuleLabel extends ModuleAddon {
 	private static DataParameter<Integer> DATA = createDw(DataSerializers.VARINT);
 	private static DataParameter<Byte> ACTIVE = createDw(DataSerializers.BYTE);
 
-	public ModuleLabel(final MinecartModular cart) {
+	public ModuleLabel(final EntityMinecartModular cart) {
 		super(cart);
 		this.delay = 0;
 		(this.labels = new ArrayList<LabelInformation>()).add(new LabelInformation(Localization.MODULES.ADDONS.NAME) {

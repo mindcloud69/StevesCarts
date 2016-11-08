@@ -28,7 +28,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.IActivatorModule;
 import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
@@ -72,7 +72,7 @@ public class ModuleState {
 		ModuleState.states.put(this.id, this);
 	}
 
-	public boolean evaluate(final MinecartModular cart) {
+	public boolean evaluate(final EntityMinecartModular cart) {
 		switch (this.type) {
 			case SUPPLY: {
 				for (final ModuleBase module : cart.getModules()) {

@@ -19,10 +19,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
+import vswe.stevescarts.entitys.EntityEasterEgg;
 import vswe.stevescarts.helpers.ComponentTypes;
-import vswe.stevescarts.helpers.EntityEasterEgg;
 import vswe.stevescarts.renders.model.ItemModelManager;
 import vswe.stevescarts.renders.model.TexturedItem;
+
 
 public class ItemCartComponent extends Item  implements TexturedItem {
 	//	private IIcon[] icons;

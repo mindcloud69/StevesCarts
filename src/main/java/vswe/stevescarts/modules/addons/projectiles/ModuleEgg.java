@@ -4,10 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleEgg extends ModuleProjectile {
-	public ModuleEgg(final MinecartModular cart) {
+	public ModuleEgg(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

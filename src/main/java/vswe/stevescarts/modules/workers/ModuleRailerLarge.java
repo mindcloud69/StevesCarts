@@ -1,9 +1,9 @@
 package vswe.stevescarts.modules.workers;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleRailerLarge extends ModuleRailer {
-	public ModuleRailerLarge(final MinecartModular cart) {
+	public ModuleRailerLarge(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

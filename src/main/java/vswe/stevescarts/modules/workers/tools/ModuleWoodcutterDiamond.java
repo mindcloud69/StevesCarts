@@ -2,11 +2,11 @@ package vswe.stevescarts.modules.workers.tools;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleWoodcutterDiamond extends ModuleWoodcutter {
-	public ModuleWoodcutterDiamond(final MinecartModular cart) {
+	public ModuleWoodcutterDiamond(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

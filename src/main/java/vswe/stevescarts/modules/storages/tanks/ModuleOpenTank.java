@@ -3,12 +3,12 @@ package vswe.stevescarts.modules.storages.tanks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleOpenTank extends ModuleTank {
 	int cooldown;
 
-	public ModuleOpenTank(final MinecartModular cart) {
+	public ModuleOpenTank(final EntityMinecartModular cart) {
 		super(cart);
 		this.cooldown = 0;
 	}

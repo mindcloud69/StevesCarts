@@ -4,10 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleSnowball extends ModuleProjectile {
-	public ModuleSnowball(final MinecartModular cart) {
+	public ModuleSnowball(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

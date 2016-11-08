@@ -7,12 +7,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ICropModule;
 import vswe.stevescarts.modules.addons.ModuleAddon;
 
 public class ModuleNetherwart extends ModuleAddon implements ICropModule {
-	public ModuleNetherwart(final MinecartModular cart) {
+	public ModuleNetherwart(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

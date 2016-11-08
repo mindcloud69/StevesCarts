@@ -6,7 +6,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
@@ -15,7 +15,7 @@ public abstract class ModuleCommand extends ModuleBase implements ICommandSender
 	private String command;
 	private int[] textbox;
 
-	public ModuleCommand(final MinecartModular cart) {
+	public ModuleCommand(final EntityMinecartModular cart) {
 		super(cart);
 		this.command = "say HI";
 		this.textbox = new int[] { 10, 10, 145, 90 };

@@ -3,10 +3,10 @@ package vswe.stevescarts.modules.addons;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleMelterExtreme extends ModuleMelter {
-	public ModuleMelterExtreme(final MinecartModular cart) {
+	public ModuleMelterExtreme(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

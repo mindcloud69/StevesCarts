@@ -24,7 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -38,7 +38,7 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 	private int cooldown;
 	private boolean disablePickup;
 
-	public ModuleCage(final MinecartModular cart) {
+	public ModuleCage(final EntityMinecartModular cart) {
 		super(cart);
 		this.autoRect = new int[] { 15, 20, 24, 12 };
 		this.manualRect = new int[] { this.autoRect[0] + this.autoRect[2] + 5, this.autoRect[1], this.autoRect[2], this.autoRect[3] };

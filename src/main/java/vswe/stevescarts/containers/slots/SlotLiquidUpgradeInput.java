@@ -2,7 +2,7 @@ package vswe.stevescarts.containers.slots;
 
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
-import vswe.stevescarts.helpers.Tank;
+import vswe.stevescarts.helpers.storages.Tank;
 
 public class SlotLiquidUpgradeInput extends SlotLiquidInput {
 	private TileEntityUpgrade upgrade;

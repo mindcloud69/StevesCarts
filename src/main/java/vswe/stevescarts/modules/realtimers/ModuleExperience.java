@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -17,7 +17,7 @@ public class ModuleExperience extends ModuleBase {
 	private static final int MAX_EXPERIENCE_AMOUNT = 1500;
 	private int experienceAmount;
 
-	public ModuleExperience(final MinecartModular cart) {
+	public ModuleExperience(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

@@ -30,16 +30,16 @@ import vswe.stevescarts.containers.slots.SlotAssembler;
 import vswe.stevescarts.containers.slots.SlotAssemblerFuel;
 import vswe.stevescarts.containers.slots.SlotHull;
 import vswe.stevescarts.containers.slots.SlotOutput;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiCartAssembler;
 import vswe.stevescarts.helpers.DropDownMenuItem;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.helpers.ManagerTransfer;
 import vswe.stevescarts.helpers.NBTHelper;
 import vswe.stevescarts.helpers.SimulationInfo;
 import vswe.stevescarts.helpers.TitleBox;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.items.ItemCarts;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
@@ -68,7 +68,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	private ArrayList<DropDownMenuItem> dropDownItems;
 	private SimulationInfo info;
 	private boolean shouldSpin;
-	private MinecartModular placeholder;
+	private EntityMinecartModular placeholder;
 	private float yaw;
 	private float roll;
 	private boolean rolldown;
@@ -648,7 +648,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 					try {
 						final NBTTagCompound info = this.outputItem.getTagCompound();
 						if (info != null) {
-							final MinecartModular cart = new MinecartModular(this.worldObj, xPos + 0.5f, yPos + 0.5f, zPos + 0.5f, info, this.outputItem.getDisplayName());
+							final EntityMinecartModular cart = new EntityMinecartModular(this.worldObj, xPos + 0.5f, yPos + 0.5f, zPos + 0.5f, info, this.outputItem.getDisplayName());
 							this.worldObj.spawnEntityInWorld(cart);
 							cart.temppushX = tilePos.getX() - pos.getX();
 							cart.temppushZ = tilePos.getZ() - pos.getZ();
@@ -665,7 +665,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		this.outputSlot.putStack(this.outputItem);
 	}
 
-	public void managerInteract(final MinecartModular cart, final boolean toCart) {
+	public void managerInteract(final EntityMinecartModular cart, final boolean toCart) {
 		for (final TileEntityUpgrade tile : this.getUpgradeTiles()) {
 			for (final BaseEffect effect : tile.getUpgrade().getEffects()) {
 				if (effect instanceof Manager) {
@@ -680,7 +680,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 					if (managerentity == null || !(managerentity instanceof TileEntityManager)) {
 						continue;
 					}
-					final ManagerTransfer transfer = new ManagerTransfer();
+					final TransferManager transfer = new TransferManager();
 					transfer.setCart(cart);
 					if (tilePos.getY() != pos.getY()) {
 						transfer.setSide(-1);
@@ -826,7 +826,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		this.placeholder = null;
 	}
 
-	public MinecartModular getPlaceholder() {
+	public EntityMinecartModular getPlaceholder() {
 		return this.placeholder;
 	}
 
@@ -896,7 +896,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 
 	public void createPlaceholder() {
 		if (this.placeholder == null) {
-			this.placeholder = new MinecartModular(this.worldObj, this, this.getModularInfoBytes());
+			this.placeholder = new EntityMinecartModular(this.worldObj, this, this.getModularInfoBytes());
 			this.updateRenderMenu();
 			this.isErrorListOutdated = true;
 		}
