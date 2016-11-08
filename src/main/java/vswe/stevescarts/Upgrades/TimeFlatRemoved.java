@@ -1,6 +1,6 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
-import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.helpers.Localization;
 
 public class TimeFlatRemoved extends TimeFlat {
 	public TimeFlatRemoved(final int ticks) {

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityCow;
@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotMilker;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotMilker;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleMilker extends ModuleBase {
 	int cooldown;

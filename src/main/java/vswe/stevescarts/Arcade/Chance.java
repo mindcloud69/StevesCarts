@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 public class Chance extends CardPlace {
 	public Chance(final ArcadeMonopoly game) {

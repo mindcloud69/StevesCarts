@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.MovingSoundMinecart;
@@ -8,7 +8,7 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class MinecartSoundMuter {
 	public MinecartSoundMuter() {

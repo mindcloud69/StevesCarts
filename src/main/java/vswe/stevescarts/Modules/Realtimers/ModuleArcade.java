@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
 import java.util.ArrayList;
 
@@ -6,16 +6,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Arcade.ArcadeGame;
-import vswe.stevescarts.Arcade.ArcadeInvaders;
-import vswe.stevescarts.Arcade.ArcadeSweeper;
-import vswe.stevescarts.Arcade.ArcadeTetris;
-import vswe.stevescarts.Arcade.ArcadeTracks;
-import vswe.stevescarts.Arcade.TrackStory;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.arcade.ArcadeGame;
+import vswe.stevescarts.arcade.ArcadeInvaders;
+import vswe.stevescarts.arcade.ArcadeSweeper;
+import vswe.stevescarts.arcade.ArcadeTetris;
+import vswe.stevescarts.arcade.ArcadeTracks;
+import vswe.stevescarts.arcade.TrackStory;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleArcade extends ModuleBase {
 	private ArrayList<ArcadeGame> games;

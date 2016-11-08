@@ -1,4 +1,4 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Helpers.DetectorType;
-import vswe.stevescarts.TileEntities.TileEntityDetector;
+import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
+import vswe.stevescarts.helpers.DetectorType;
 
 public class BlockDetector extends BlockContainerBase {
 	public BlockDetector() {

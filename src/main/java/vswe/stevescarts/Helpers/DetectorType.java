@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.HashMap;
 
@@ -8,10 +8,10 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Blocks.BlockRailAdvDetector;
-import vswe.stevescarts.Blocks.ModBlocks;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.TileEntities.TileEntityDetector;
+import vswe.stevescarts.blocks.BlockRailAdvDetector;
+import vswe.stevescarts.blocks.ModBlocks;
+import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public enum DetectorType implements IStringSerializable {
 	NORMAL(0, true, false, true, new String[] { "detector_manager_bot", "detector_manager_top", "detector_manager_yellow", "detector_manager_blue", "detector_manager_green", "detector_manager_red" }),

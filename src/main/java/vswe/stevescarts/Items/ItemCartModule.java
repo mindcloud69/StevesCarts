@@ -1,4 +1,4 @@
-package vswe.stevescarts.Items;
+package vswe.stevescarts.items;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
+import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.data.ModuleData;
 
 public class ItemCartModule extends Item {
 	//	IIcon unknownIcon;

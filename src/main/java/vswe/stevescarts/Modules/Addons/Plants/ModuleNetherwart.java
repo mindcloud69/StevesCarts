@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Addons.Plants;
+package vswe.stevescarts.modules.addons.plants;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNetherWart;
@@ -7,9 +7,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ICropModule;
-import vswe.stevescarts.Modules.Addons.ModuleAddon;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.ICropModule;
+import vswe.stevescarts.modules.addons.ModuleAddon;
 
 public class ModuleNetherwart extends ModuleAddon implements ICropModule {
 	public ModuleNetherwart(final MinecartModular cart) {

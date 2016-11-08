@@ -1,4 +1,4 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,11 +11,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
-import vswe.stevescarts.Blocks.ModBlocks;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.RecipeHelper;
-import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.ModBlocks;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.helpers.ComponentTypes;
+import vswe.stevescarts.helpers.RecipeHelper;
+import vswe.stevescarts.items.ModItems;
 
 public class AssemblerUpgrade {
 	private static HashMap<Byte, AssemblerUpgrade> upgrades;

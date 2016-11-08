@@ -1,10 +1,10 @@
-package vswe.stevescarts.Containers;
+package vswe.stevescarts.containers;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import vswe.stevescarts.Upgrades.InventoryEffect;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.upgrades.InventoryEffect;
 
 public class ContainerUpgrade extends ContainerBase {
 	private TileEntityUpgrade upgrade;

@@ -1,6 +1,6 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
-import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.helpers.Localization;
 
 public class LevelMessage {
 	private int x;

@@ -1,20 +1,20 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import java.util.ArrayList;
 
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.Containers.ContainerCartAssembler;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.TransferHandler;
-import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.ModuleData.ModuleDataHull;
-import vswe.stevescarts.Slots.SlotAssemblerFuel;
-import vswe.stevescarts.Slots.SlotModule;
-import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.containers.ContainerCartAssembler;
+import vswe.stevescarts.containers.slots.SlotAssemblerFuel;
+import vswe.stevescarts.containers.slots.SlotModule;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.items.ModItems;
+import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.modules.data.ModuleDataHull;
 
 public class InputChest extends SimpleInventoryEffect {
 	public InputChest(final int inventoryWidth, final int inventoryHeight) {

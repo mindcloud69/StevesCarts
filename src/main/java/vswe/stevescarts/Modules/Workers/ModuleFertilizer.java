@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers;
+package vswe.stevescarts.modules.workers;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -7,15 +7,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ISuppliesModule;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleFarmer;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotFertilizer;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotFertilizer;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ISuppliesModule;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.workers.tools.ModuleFarmer;
 
 public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	private int tankPosX;

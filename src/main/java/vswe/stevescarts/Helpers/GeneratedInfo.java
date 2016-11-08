@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 public class GeneratedInfo {
 	public static final String version = "2.0.0.b18";

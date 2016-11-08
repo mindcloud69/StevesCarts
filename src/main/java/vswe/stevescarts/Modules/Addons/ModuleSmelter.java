@@ -1,15 +1,15 @@
-package vswe.stevescarts.Modules.Addons;
+package vswe.stevescarts.modules.addons;
 
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotCartCrafterResult;
-import vswe.stevescarts.Slots.SlotFurnaceInput;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
+import vswe.stevescarts.containers.slots.SlotFurnaceInput;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
 
 public class ModuleSmelter extends ModuleRecipe {
 	private int energyBuffer;

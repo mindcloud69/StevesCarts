@@ -1,4 +1,4 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

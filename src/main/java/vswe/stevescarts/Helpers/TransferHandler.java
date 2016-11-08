@@ -1,11 +1,11 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.Slots.ISpecialItemTransferValidator;
-import vswe.stevescarts.Slots.ISpecialSlotValidator;
+import vswe.stevescarts.containers.slots.ISpecialItemTransferValidator;
+import vswe.stevescarts.containers.slots.ISpecialSlotValidator;
 
 public class TransferHandler {
 	public static boolean isSlotOfType(final Slot slot, final Class slotType) {

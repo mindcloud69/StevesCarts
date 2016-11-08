@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers;
+package vswe.stevescarts.modules.workers;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
@@ -7,8 +7,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.IFluidBlock;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.ModuleBase;
 
 public abstract class ModuleWorker extends ModuleBase {
 	private boolean preWork;

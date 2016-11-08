@@ -1,22 +1,17 @@
+# everything
+/*
 
-/bin
-/out
-/classes
-/build
-/eclipse
-/.gradle
-*.iml
-/.metadata
-/.settings
-./classpath
-/dep
-/run
+# folders
+!/src
+!/gradle/
 
-Thumbs.db
-changelog.txt
-*.log
-*.launch
-*.project
-*.classpath
-.idea/*
-java_pid2412.hprof
+# files
+!/.gitignore
+!/README.md
+!/build.gradle
+!/gradle.properties
+!/gradlew
+!/gradlew.bat
+!/export.py
+!/export.lnk
+!/build.lnk

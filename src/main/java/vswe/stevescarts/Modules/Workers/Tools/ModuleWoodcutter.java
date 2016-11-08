@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers.Tools;
+package vswe.stevescarts.modules.workers.tools;
 
 import java.util.ArrayList;
 
@@ -17,17 +17,17 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.BlockPosHelpers;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ISuppliesModule;
-import vswe.stevescarts.Modules.ITreeModule;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Addons.Plants.ModulePlantSize;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotFuel;
-import vswe.stevescarts.Slots.SlotSapling;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotFuel;
+import vswe.stevescarts.containers.slots.SlotSapling;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.BlockPosHelpers;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.modules.ISuppliesModule;
+import vswe.stevescarts.modules.ITreeModule;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
 
 public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule, ITreeModule {
 	private ArrayList<ITreeModule> treeModules;

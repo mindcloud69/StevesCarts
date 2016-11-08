@@ -1,4 +1,4 @@
-package vswe.stevescarts.Containers;
+package vswe.stevescarts.containers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -8,8 +8,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Helpers.TransferHandler;
-import vswe.stevescarts.TileEntities.TileEntityBase;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.helpers.TransferHandler;
 
 public abstract class ContainerBase extends Container {
 	public abstract IInventory getMyInventory();

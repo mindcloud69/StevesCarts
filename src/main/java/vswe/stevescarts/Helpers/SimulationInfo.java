@@ -1,25 +1,25 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.ArrayList;
 
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Modules.Addons.ModuleBrake;
-import vswe.stevescarts.Modules.Addons.ModuleInvisible;
-import vswe.stevescarts.Modules.Addons.ModuleLiquidSensors;
-import vswe.stevescarts.Modules.Addons.ModuleShield;
-import vswe.stevescarts.Modules.Engines.ModuleSolarBase;
-import vswe.stevescarts.Modules.Realtimers.ModuleDynamite;
-import vswe.stevescarts.Modules.Realtimers.ModuleShooter;
-import vswe.stevescarts.Modules.Realtimers.ModuleShooterAdv;
-import vswe.stevescarts.Modules.Storages.Chests.ModuleChest;
-import vswe.stevescarts.Modules.Storages.Chests.ModuleInternalStorage;
-import vswe.stevescarts.Modules.Workers.ModuleBridge;
-import vswe.stevescarts.Modules.Workers.ModuleHydrater;
-import vswe.stevescarts.Modules.Workers.ModuleRailer;
-import vswe.stevescarts.Modules.Workers.ModuleTorch;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleFarmer;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleWoodcutter;
+import vswe.stevescarts.modules.addons.ModuleBrake;
+import vswe.stevescarts.modules.addons.ModuleInvisible;
+import vswe.stevescarts.modules.addons.ModuleLiquidSensors;
+import vswe.stevescarts.modules.addons.ModuleShield;
+import vswe.stevescarts.modules.engines.ModuleSolarBase;
+import vswe.stevescarts.modules.realtimers.ModuleDynamite;
+import vswe.stevescarts.modules.realtimers.ModuleShooter;
+import vswe.stevescarts.modules.realtimers.ModuleShooterAdv;
+import vswe.stevescarts.modules.storages.chests.ModuleChest;
+import vswe.stevescarts.modules.storages.chests.ModuleInternalStorage;
+import vswe.stevescarts.modules.workers.ModuleBridge;
+import vswe.stevescarts.modules.workers.ModuleHydrater;
+import vswe.stevescarts.modules.workers.ModuleRailer;
+import vswe.stevescarts.modules.workers.ModuleTorch;
+import vswe.stevescarts.modules.workers.tools.ModuleDrill;
+import vswe.stevescarts.modules.workers.tools.ModuleFarmer;
+import vswe.stevescarts.modules.workers.tools.ModuleWoodcutter;
 
 public class SimulationInfo {
 	private ArrayList<DropDownMenuItem> items;

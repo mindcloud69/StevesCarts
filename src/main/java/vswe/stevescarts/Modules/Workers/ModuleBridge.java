@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers;
+package vswe.stevescarts.modules.workers;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ISuppliesModule;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotBridge;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotBridge;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.modules.ISuppliesModule;
 
 public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	private static DataParameter<Boolean> BRIDGE = createDw(DataSerializers.BOOLEAN);

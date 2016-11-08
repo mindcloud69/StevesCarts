@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Hull;
+package vswe.stevescarts.modules.hull;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ModulePig extends ModuleHull {
 	private int oinkTimer;

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Renders;
+package vswe.stevescarts.renders;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.FluidStack;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Models.Cart.ModelCartbase;
-import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.models.ModelCartbase;
+import vswe.stevescarts.modules.ModuleBase;
 
 public class RendererMinecart extends Render {
 	public RendererMinecart(RenderManager renderManager) {

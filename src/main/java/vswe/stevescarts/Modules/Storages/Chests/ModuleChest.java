@@ -1,12 +1,12 @@
-package vswe.stevescarts.Modules.Storages.Chests;
+package vswe.stevescarts.modules.storages.chests;
 
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Storages.ModuleStorage;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotChest;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotChest;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.modules.storages.ModuleStorage;
 
 public abstract class ModuleChest extends ModuleStorage {
 	private float chestAngle;

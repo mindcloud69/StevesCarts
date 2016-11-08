@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 public abstract class Button {
 	public String getName() {

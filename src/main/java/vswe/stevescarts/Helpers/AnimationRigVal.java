@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 public class AnimationRigVal {
 	private float val;

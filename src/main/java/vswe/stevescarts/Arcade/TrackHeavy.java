@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 public class TrackHeavy extends Track {
 	public TrackHeavy(final int x, final int y, final TrackOrientation orientation) {

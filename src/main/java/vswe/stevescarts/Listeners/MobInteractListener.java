@@ -1,4 +1,4 @@
-package vswe.stevescarts.Listeners;
+package vswe.stevescarts.listeners;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
@@ -10,9 +10,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.TradeHandler;
-import vswe.stevescarts.Items.ModItems;
+import vswe.stevescarts.helpers.ComponentTypes;
+import vswe.stevescarts.helpers.TradeHandler;
+import vswe.stevescarts.items.ModItems;
 
 public class MobInteractListener {
 	public MobInteractListener() {

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Addons;
+package vswe.stevescarts.modules.addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,11 +7,11 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.IActivatorModule;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.IActivatorModule;
 
 public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	private boolean shield;

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Items;
+package vswe.stevescarts.items;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import vswe.stevescarts.Upgrades.AssemblerUpgrade;
-import vswe.stevescarts.Upgrades.BaseEffect;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.upgrades.AssemblerUpgrade;
+import vswe.stevescarts.upgrades.BaseEffect;
 
 public class ItemUpgrade extends ItemBlock {
 	public ItemUpgrade(final Block block) {

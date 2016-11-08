@@ -1,9 +1,9 @@
-package vswe.stevescarts.Modules.Workers.Tools;
+package vswe.stevescarts.modules.workers.tools;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.helpers.Localization;
 
 public class ModuleDrillIron extends ModuleDrill {
 	public ModuleDrillIron(final MinecartModular cart) {

@@ -1,8 +1,8 @@
-package vswe.stevescarts.Modules.Engines;
+package vswe.stevescarts.modules.engines;
 
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.AnimationRig;
-import vswe.stevescarts.Helpers.AnimationRigVal;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.helpers.AnimationRig;
+import vswe.stevescarts.helpers.AnimationRigVal;
 
 public class ModuleSolarCompact extends ModuleSolarBase {
 	private AnimationRig rig;

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleExperience extends ModuleBase {
 	private static final int MAX_EXPERIENCE_AMOUNT = 1500;

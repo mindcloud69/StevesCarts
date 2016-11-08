@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules;
+package vswe.stevescarts.modules;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,17 +31,17 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.PacketHandler;
-import vswe.stevescarts.Buttons.ButtonBase;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Containers.ContainerMinecart;
-import vswe.stevescarts.Helpers.CompButtons;
-import vswe.stevescarts.Helpers.NBTHelper;
-import vswe.stevescarts.Helpers.SimulationInfo;
-import vswe.stevescarts.Interfaces.GuiBase;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Models.Cart.ModelCartbase;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.Slots.SlotBase;
+import vswe.stevescarts.containers.ContainerMinecart;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiBase;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.guis.buttons.ButtonBase;
+import vswe.stevescarts.helpers.CompButtons;
+import vswe.stevescarts.helpers.NBTHelper;
+import vswe.stevescarts.helpers.SimulationInfo;
+import vswe.stevescarts.models.ModelCartbase;
+import vswe.stevescarts.modules.data.ModuleData;
 
 public abstract class ModuleBase {
 	private MinecartModular cart;

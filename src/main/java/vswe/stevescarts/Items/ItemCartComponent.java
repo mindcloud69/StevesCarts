@@ -1,4 +1,4 @@
-package vswe.stevescarts.Items;
+package vswe.stevescarts.items;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.EntityEasterEgg;
+import vswe.stevescarts.helpers.ComponentTypes;
+import vswe.stevescarts.helpers.EntityEasterEgg;
 
 public class ItemCartComponent extends Item {
 	//	private IIcon[] icons;

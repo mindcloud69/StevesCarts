@@ -1,9 +1,9 @@
-package vswe.stevescarts.Listeners;
+package vswe.stevescarts.listeners;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ChunkListener {
 	public ChunkListener() {

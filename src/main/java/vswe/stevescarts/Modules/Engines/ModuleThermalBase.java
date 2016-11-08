@@ -1,10 +1,10 @@
-package vswe.stevescarts.Modules.Engines;
+package vswe.stevescarts.modules.engines;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
 
 public abstract class ModuleThermalBase extends ModuleEngine {
 	private short coolantLevel;

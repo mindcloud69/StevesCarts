@@ -1,10 +1,10 @@
-package vswe.stevescarts.Modules.Storages.Tanks;
+package vswe.stevescarts.modules.storages.tanks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.ColorHelper;
-import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.helpers.ColorHelper;
+import vswe.stevescarts.helpers.Localization;
 
 public class ModuleCheatTank extends ModuleTank {
 	private static final ColorHelper[] colors;

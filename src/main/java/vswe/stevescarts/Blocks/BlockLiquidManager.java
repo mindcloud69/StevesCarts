@@ -1,4 +1,4 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.TileEntities.TileEntityLiquid;
+import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
 
 public class BlockLiquidManager extends BlockContainerBase {
 	//	private IIcon topIcon;

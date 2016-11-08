@@ -1,13 +1,13 @@
-package vswe.stevescarts.Modules.Engines;
+package vswe.stevescarts.modules.engines;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotFuel;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotFuel;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
 
 public abstract class ModuleCoalBase extends ModuleEngine {
 	private int fireCoolDown;

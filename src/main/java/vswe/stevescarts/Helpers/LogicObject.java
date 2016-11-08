@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.ArrayList;
 
@@ -8,11 +8,11 @@ import net.minecraft.client.gui.Gui;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.PacketHandler;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Interfaces.GuiDetector;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.TileEntities.TileEntityDetector;
+import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiDetector;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.data.ModuleData;
 
 public class LogicObject {
 	private byte id;

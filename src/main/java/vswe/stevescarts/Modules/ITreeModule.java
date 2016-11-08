@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules;
+package vswe.stevescarts.modules;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

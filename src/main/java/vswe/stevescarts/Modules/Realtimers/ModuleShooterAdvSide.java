@@ -1,8 +1,8 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.AnimationRig;
-import vswe.stevescarts.Helpers.AnimationRigVal;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.helpers.AnimationRig;
+import vswe.stevescarts.helpers.AnimationRigVal;
 
 public class ModuleShooterAdvSide extends ModuleShooterAdv {
 	private AnimationRig rig;

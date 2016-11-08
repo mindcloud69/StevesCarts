@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers.Tools;
+package vswe.stevescarts.modules.workers.tools;
 
 import java.util.ArrayList;
 
@@ -14,14 +14,14 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ICropModule;
-import vswe.stevescarts.Modules.ISuppliesModule;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotSeed;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotSeed;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.modules.ICropModule;
+import vswe.stevescarts.modules.ISuppliesModule;
+import vswe.stevescarts.modules.ModuleBase;
 
 public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule, ICropModule {
 	private ArrayList<ICropModule> plantModules;

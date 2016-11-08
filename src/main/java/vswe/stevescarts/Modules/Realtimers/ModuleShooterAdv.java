@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,12 +15,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Addons.Mobdetectors.ModuleMobdetector;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.addons.mobdetectors.ModuleMobdetector;
 
 public class ModuleShooterAdv extends ModuleShooter {
 	private ArrayList<ModuleMobdetector> detectors;

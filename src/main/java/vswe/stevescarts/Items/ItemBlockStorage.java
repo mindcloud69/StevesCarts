@@ -1,4 +1,4 @@
-package vswe.stevescarts.Items;
+package vswe.stevescarts.items;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.StorageBlock;
+import vswe.stevescarts.helpers.ComponentTypes;
+import vswe.stevescarts.helpers.StorageBlock;
 
 public class ItemBlockStorage extends ItemBlock {
 	public static StorageBlock[] blocks;

@@ -1,6 +1,6 @@
-package vswe.stevescarts.Modules.Engines;
+package vswe.stevescarts.modules.engines;
 
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ModuleCoalTiny extends ModuleCoalBase {
 	public ModuleCoalTiny(final MinecartModular cart) {

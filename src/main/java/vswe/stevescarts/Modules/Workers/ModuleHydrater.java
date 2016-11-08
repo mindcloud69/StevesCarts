@@ -1,13 +1,13 @@
-package vswe.stevescarts.Modules.Workers;
+package vswe.stevescarts.modules.workers;
 
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidRegistry;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleFarmer;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.workers.tools.ModuleFarmer;
 
 public class ModuleHydrater extends ModuleWorker {
 	private int range;

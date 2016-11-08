@@ -1,4 +1,4 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
@@ -7,13 +7,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Containers.ContainerUpgrade;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Helpers.Tank;
-import vswe.stevescarts.Interfaces.GuiUpgrade;
-import vswe.stevescarts.Slots.SlotLiquidOutput;
-import vswe.stevescarts.Slots.SlotLiquidUpgradeInput;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.containers.ContainerUpgrade;
+import vswe.stevescarts.containers.slots.SlotLiquidOutput;
+import vswe.stevescarts.containers.slots.SlotLiquidUpgradeInput;
+import vswe.stevescarts.guis.GuiUpgrade;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.helpers.Tank;
 
 public abstract class TankEffect extends InventoryEffect {
 	private static final int tankInterfaceX = 35;

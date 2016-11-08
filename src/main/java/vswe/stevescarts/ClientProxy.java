@@ -6,11 +6,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.MinecartSoundMuter;
-import vswe.stevescarts.Helpers.SoundHandler;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.Renders.RendererMinecart;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.helpers.MinecartSoundMuter;
+import vswe.stevescarts.helpers.SoundHandler;
+import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.renders.RendererMinecart;
 
 
 public class ClientProxy extends CommonProxy {

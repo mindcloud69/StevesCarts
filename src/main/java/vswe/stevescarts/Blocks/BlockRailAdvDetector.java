@@ -1,4 +1,4 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
@@ -14,16 +14,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.DetectorType;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.TileEntities.TileEntityActivator;
-import vswe.stevescarts.TileEntities.TileEntityDetector;
-import vswe.stevescarts.TileEntities.TileEntityManager;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import vswe.stevescarts.Upgrades.BaseEffect;
-import vswe.stevescarts.Upgrades.Disassemble;
-import vswe.stevescarts.Upgrades.Transposer;
+import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
+import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
+import vswe.stevescarts.blocks.tileentities.TileEntityManager;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.helpers.DetectorType;
+import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.upgrades.BaseEffect;
+import vswe.stevescarts.upgrades.Disassemble;
+import vswe.stevescarts.upgrades.Transposer;
 
 public class BlockRailAdvDetector extends BlockRailDetector {
 	//	private IIcon normalIcon;

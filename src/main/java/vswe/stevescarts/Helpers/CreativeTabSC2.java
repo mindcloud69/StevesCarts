@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

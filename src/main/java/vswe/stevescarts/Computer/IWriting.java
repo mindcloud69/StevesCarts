@@ -1,4 +1,4 @@
-package vswe.stevescarts.Computer;
+package vswe.stevescarts.computer;
 
 public interface IWriting {
 	String getText();

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 public abstract class CardPlace extends Place {
 	public CardPlace(final ArcadeMonopoly game) {

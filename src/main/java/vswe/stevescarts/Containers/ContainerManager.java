@@ -1,9 +1,9 @@
-package vswe.stevescarts.Containers;
+package vswe.stevescarts.containers;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import vswe.stevescarts.TileEntities.TileEntityManager;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.blocks.tileentities.TileEntityManager;
 
 public abstract class ContainerManager extends ContainerBase {
 	private TileEntityManager manager;

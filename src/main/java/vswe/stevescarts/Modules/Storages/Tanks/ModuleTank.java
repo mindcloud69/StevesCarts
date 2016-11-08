@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Storages.Tanks;
+package vswe.stevescarts.modules.storages.tanks;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,18 +12,18 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.ColorHelper;
-import vswe.stevescarts.Helpers.ITankHolder;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Helpers.Tank;
-import vswe.stevescarts.Interfaces.GuiBase;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Storages.ModuleStorage;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotLiquidInput;
-import vswe.stevescarts.Slots.SlotLiquidOutput;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotLiquidInput;
+import vswe.stevescarts.containers.slots.SlotLiquidOutput;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiBase;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.ColorHelper;
+import vswe.stevescarts.helpers.ITankHolder;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.helpers.Tank;
+import vswe.stevescarts.modules.storages.ModuleStorage;
 
 public abstract class ModuleTank extends ModuleStorage implements IFluidTank, ITankHolder {
 	protected Tank tank;

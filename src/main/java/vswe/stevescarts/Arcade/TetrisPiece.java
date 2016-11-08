@@ -1,7 +1,7 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.guis.GuiMinecart;
 
 public class TetrisPiece {
 	private TetrisPiecePart[] parts;

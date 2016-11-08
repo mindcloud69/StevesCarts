@@ -1,4 +1,4 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import java.lang.reflect.Constructor;
 
@@ -9,19 +9,19 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.RecipeHelper;
-import vswe.stevescarts.Items.ItemBlockDetector;
-import vswe.stevescarts.Items.ItemBlockStorage;
-import vswe.stevescarts.Items.ItemUpgrade;
-import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.TileEntities.TileEntityActivator;
-import vswe.stevescarts.TileEntities.TileEntityCargo;
-import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
-import vswe.stevescarts.TileEntities.TileEntityDetector;
-import vswe.stevescarts.TileEntities.TileEntityDistributor;
-import vswe.stevescarts.TileEntities.TileEntityLiquid;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
+import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
+import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
+import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
+import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
+import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.helpers.ComponentTypes;
+import vswe.stevescarts.helpers.RecipeHelper;
+import vswe.stevescarts.items.ItemBlockDetector;
+import vswe.stevescarts.items.ItemBlockStorage;
+import vswe.stevescarts.items.ItemUpgrade;
+import vswe.stevescarts.items.ModItems;
 
 public enum ModBlocks {
 	CARGO_MANAGER("BlockCargoManager", BlockCargoManager.class, TileEntityCargo.class, "cargo"),

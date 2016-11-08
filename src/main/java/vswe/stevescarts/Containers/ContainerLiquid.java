@@ -1,11 +1,11 @@
-package vswe.stevescarts.Containers;
+package vswe.stevescarts.containers;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraftforge.fluids.FluidStack;
-import vswe.stevescarts.Slots.SlotLiquidFilter;
-import vswe.stevescarts.Slots.SlotLiquidManagerInput;
-import vswe.stevescarts.Slots.SlotLiquidOutput;
-import vswe.stevescarts.TileEntities.TileEntityLiquid;
+import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
+import vswe.stevescarts.containers.slots.SlotLiquidFilter;
+import vswe.stevescarts.containers.slots.SlotLiquidManagerInput;
+import vswe.stevescarts.containers.slots.SlotLiquidOutput;
 
 public class ContainerLiquid extends ContainerManager {
 	public FluidStack[] oldLiquids;

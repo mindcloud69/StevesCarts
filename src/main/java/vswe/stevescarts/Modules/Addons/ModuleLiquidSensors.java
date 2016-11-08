@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Addons;
+package vswe.stevescarts.modules.addons;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -9,10 +9,10 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.IFluidBlock;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleLiquidDrainer;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.workers.ModuleLiquidDrainer;
+import vswe.stevescarts.modules.workers.tools.ModuleDrill;
 
 public class ModuleLiquidSensors extends ModuleAddon {
 	private float sensorRotation;

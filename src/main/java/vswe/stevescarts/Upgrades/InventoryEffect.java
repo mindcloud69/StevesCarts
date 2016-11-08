@@ -1,4 +1,4 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 
 public abstract class InventoryEffect extends InterfaceEffect {
 	protected ArrayList<Slot> slots;

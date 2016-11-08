@@ -1,20 +1,22 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 
 public class BlockCartAssembler extends BlockContainerBase {
 	//	private IIcon topIcon;
@@ -55,14 +57,15 @@ public class BlockCartAssembler extends BlockContainerBase {
 	//		}
 	//	}
 
-	public boolean onBlockActivated(final World world, final BlockPos pos, final EntityPlayer entityplayer, final int par6, final float par7, final float par8, final float par9) {
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityplayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (entityplayer.isSneaking()) {
 			return false;
 		}
 		final TileEntityCartAssembler assembler = (TileEntityCartAssembler) world.getTileEntity(pos);
 		if (assembler != null) {
 			if (!world.isRemote) {
-				FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 3, world, pos.getX(), pos.getY(), pos.getZ());
+				entityplayer.openGui(StevesCarts.instance, 3, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return true;
 		}

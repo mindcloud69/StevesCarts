@@ -1,14 +1,14 @@
-package vswe.stevescarts.Modules.Addons;
+package vswe.stevescarts.modules.addons;
 
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.CraftingDummy;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotCartCrafter;
-import vswe.stevescarts.Slots.SlotCartCrafterResult;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotCartCrafter;
+import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.CraftingDummy;
 
 public class ModuleCrafter extends ModuleRecipe {
 	private CraftingDummy dummy;

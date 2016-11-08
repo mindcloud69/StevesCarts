@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleCleaner extends ModuleBase {
 	public ModuleCleaner(final MinecartModular cart) {

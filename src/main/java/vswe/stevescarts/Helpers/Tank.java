@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import org.lwjgl.opengl.GL11;
 
@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Interfaces.GuiBase;
+import vswe.stevescarts.guis.GuiBase;
 
 public class Tank implements IFluidTank {
 	private FluidStack fluid;
@@ -210,7 +210,7 @@ public class Tank implements IFluidTank {
 	@SideOnly(Side.CLIENT)
 	public void drawFluid(final GuiBase gui, final int startX, final int startY) {
 		//		if (this.fluid != null) {
-		//			final int fluidLevel = (int) (48.0f * (this.fluid.amount / this.tankSize));
+		//			final int fluidLevel = (int) (48.0f * (this.fluid.amount / this.tanksize));
 		//			final IconData data = getIconAndTexture(this.fluid);
 		//			if (data.getIcon() == null) {
 		//				return;

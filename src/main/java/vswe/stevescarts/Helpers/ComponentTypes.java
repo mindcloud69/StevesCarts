@@ -1,8 +1,8 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
-import vswe.stevescarts.Items.ModItems;
+import vswe.stevescarts.items.ModItems;
 
 public enum ComponentTypes {
 	WOODEN_WHEELS(0, "Wooden Wheels"),

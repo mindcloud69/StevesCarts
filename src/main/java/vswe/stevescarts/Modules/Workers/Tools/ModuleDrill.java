@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers.Tools;
+package vswe.stevescarts.modules.workers.tools;
 
 import java.util.ArrayList;
 
@@ -19,18 +19,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Blocks.ModBlocks;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.IActivatorModule;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Addons.ModuleDrillIntelligence;
-import vswe.stevescarts.Modules.Addons.ModuleIncinerator;
-import vswe.stevescarts.Modules.Addons.ModuleLiquidSensors;
-import vswe.stevescarts.Modules.Addons.ModuleOreTracker;
-import vswe.stevescarts.Modules.Storages.Chests.ModuleChest;
+import vswe.stevescarts.blocks.ModBlocks;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.IActivatorModule;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.addons.ModuleDrillIntelligence;
+import vswe.stevescarts.modules.addons.ModuleIncinerator;
+import vswe.stevescarts.modules.addons.ModuleLiquidSensors;
+import vswe.stevescarts.modules.addons.ModuleOreTracker;
+import vswe.stevescarts.modules.storages.chests.ModuleChest;
 
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
 	private ModuleDrillIntelligence intelligence;

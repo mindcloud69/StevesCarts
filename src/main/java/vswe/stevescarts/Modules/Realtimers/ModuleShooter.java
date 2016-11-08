@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
 import java.util.ArrayList;
 
@@ -13,17 +13,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.MathHelper;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.EnchantmentInfo;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ISuppliesModule;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Addons.ModuleEnchants;
-import vswe.stevescarts.Modules.Addons.Projectiles.ModuleProjectile;
-import vswe.stevescarts.Slots.SlotArrow;
-import vswe.stevescarts.Slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotArrow;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.EnchantmentInfo;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ISuppliesModule;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.addons.ModuleEnchants;
+import vswe.stevescarts.modules.addons.projectiles.ModuleProjectile;
 
 public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	private ArrayList<ModuleProjectile> projectiles;

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;

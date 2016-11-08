@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers;
+package vswe.stevescarts.modules.workers;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,12 +8,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ISuppliesModule;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotTorch;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotTorch;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ISuppliesModule;
 
 public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	private int light;

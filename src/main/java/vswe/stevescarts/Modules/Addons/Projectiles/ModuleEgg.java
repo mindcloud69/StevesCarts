@@ -1,10 +1,10 @@
-package vswe.stevescarts.Modules.Addons.Projectiles;
+package vswe.stevescarts.modules.addons.projectiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ModuleEgg extends ModuleProjectile {
 	public ModuleEgg(final MinecartModular cart) {

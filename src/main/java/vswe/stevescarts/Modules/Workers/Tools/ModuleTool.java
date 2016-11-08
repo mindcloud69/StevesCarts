@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Workers.Tools;
+package vswe.stevescarts.modules.workers.tools;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -7,16 +7,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.EnchantmentInfo;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Addons.ModuleEnchants;
-import vswe.stevescarts.Modules.Workers.ModuleWorker;
-import vswe.stevescarts.Slots.SlotBase;
-import vswe.stevescarts.Slots.SlotRepair;
+import vswe.stevescarts.containers.slots.SlotBase;
+import vswe.stevescarts.containers.slots.SlotRepair;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.EnchantmentInfo;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.addons.ModuleEnchants;
+import vswe.stevescarts.modules.workers.ModuleWorker;
 
 public abstract class ModuleTool extends ModuleWorker {
 	private int currentDurability;

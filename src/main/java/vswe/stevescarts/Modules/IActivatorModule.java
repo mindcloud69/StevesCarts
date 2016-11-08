@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules;
+package vswe.stevescarts.modules;
 
 public interface IActivatorModule {
 	boolean isActive(final int p0);

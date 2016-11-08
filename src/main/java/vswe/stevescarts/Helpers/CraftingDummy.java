@@ -1,10 +1,10 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import vswe.stevescarts.Modules.Addons.ModuleCrafter;
+import vswe.stevescarts.modules.addons.ModuleCrafter;
 
 public class CraftingDummy extends InventoryCrafting {
 	private int inventoryWidth;

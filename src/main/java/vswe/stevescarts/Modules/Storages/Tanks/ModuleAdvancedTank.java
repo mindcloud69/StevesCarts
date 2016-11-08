@@ -1,6 +1,6 @@
-package vswe.stevescarts.Modules.Storages.Tanks;
+package vswe.stevescarts.modules.storages.tanks;
 
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ModuleAdvancedTank extends ModuleTank {
 	public ModuleAdvancedTank(final MinecartModular cart) {

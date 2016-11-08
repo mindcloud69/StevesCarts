@@ -1,9 +1,9 @@
-package vswe.stevescarts.Containers;
+package vswe.stevescarts.containers;
 
 import net.minecraft.inventory.IInventory;
-import vswe.stevescarts.Helpers.LogicObject;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import vswe.stevescarts.TileEntities.TileEntityDetector;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
+import vswe.stevescarts.helpers.LogicObject;
 
 public class ContainerDetector extends ContainerBase {
 	private TileEntityDetector detector;

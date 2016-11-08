@@ -1,6 +1,6 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
-import vswe.stevescarts.Interfaces.GuiDetector;
+import vswe.stevescarts.guis.GuiDetector;
 
 public class DropDownMenuPages extends DropDownMenu {
 	private int page;

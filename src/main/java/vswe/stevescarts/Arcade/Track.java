@@ -1,10 +1,10 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 import java.util.ArrayList;
 
-import vswe.stevescarts.Interfaces.GuiBase;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Realtimers.ModuleArcade;
+import vswe.stevescarts.guis.GuiBase;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.modules.realtimers.ModuleArcade;
 
 public class Track {
 	private int x;

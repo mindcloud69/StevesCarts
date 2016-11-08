@@ -1,11 +1,11 @@
-package vswe.stevescarts.Containers;
+package vswe.stevescarts.containers;
 
 import java.util.ArrayList;
 
 import net.minecraft.inventory.IInventory;
-import vswe.stevescarts.Helpers.ActivatorOption;
-import vswe.stevescarts.TileEntities.TileEntityActivator;
-import vswe.stevescarts.TileEntities.TileEntityBase;
+import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.helpers.ActivatorOption;
 
 public class ContainerActivator extends ContainerBase {
 	private TileEntityActivator activator;

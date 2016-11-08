@@ -25,13 +25,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Blocks.BlockCartAssembler;
-import vswe.stevescarts.Blocks.ModBlocks;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Containers.ContainerBase;
-import vswe.stevescarts.Containers.ContainerMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.TileEntities.TileEntityBase;
+import vswe.stevescarts.blocks.BlockCartAssembler;
+import vswe.stevescarts.blocks.ModBlocks;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.containers.ContainerBase;
+import vswe.stevescarts.containers.ContainerMinecart;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.ModuleBase;
 
 public class PacketHandler {
 	@SideOnly(Side.CLIENT)

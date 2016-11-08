@@ -1,58 +1,43 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import vswe.stevescarts.Upgrades.AssemblerUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.items.ModItems;
 
 public class BlockUpgrade extends BlockContainerBase {
-	
+
 	public BlockUpgrade() {
 		super(Material.ROCK);
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIcon(final int side, final int meta) {
-//		return AssemblerUpgrade.getStandardIcon();
-//	}
-//
-//	public void registerBlockIcons(final IIconRegister register) {
-//	}
-	
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIcon(final int side, final int meta) {
+	//		return AssemblerUpgrade.getStandardIcon();
+	//	}
+	//
+	//	public void registerBlockIcons(final IIconRegister register) {
+	//	}
+
 	@Override
 	public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
 	}
-	
+
 	@Override
 	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		TileEntity tile = world.getTileEntity(pos);
@@ -62,7 +47,7 @@ public class BlockUpgrade extends BlockContainerBase {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		TileEntity tile = worldIn.getTileEntity(pos);
@@ -71,13 +56,13 @@ public class BlockUpgrade extends BlockContainerBase {
 			upgrade.setType(stack.getItemDamage());
 		}
 	}
-	
+
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		super.onBlockAdded(world, pos, state);
 		((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).addUpgrade(world, pos);
 	}
-	
+
 	@Override
 	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
 		if (player.capabilities.isCreativeMode) {
@@ -89,7 +74,7 @@ public class BlockUpgrade extends BlockContainerBase {
 		}
 		super.onBlockHarvested(worldIn, pos, state, player);
 	}
-	
+
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		final TileEntity tile = world.getTileEntity(pos);
@@ -115,7 +100,7 @@ public class BlockUpgrade extends BlockContainerBase {
 							}
 							final ItemStack itemStack = var9;
 							itemStack.stackSize -= var13;
-							final EntityItem var14 = new EntityItem(world, (double) (pos.getX() + var10), (double) (pos.getY() + var11), (double) (pos.getZ() + var12), new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
+							final EntityItem var14 = new EntityItem(world, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 							final float var15 = 0.05f;
 							var14.motionX = (float) world.rand.nextGaussian() * var15;
 							var14.motionY = (float) world.rand.nextGaussian() * var15 + 0.2f;
@@ -132,17 +117,17 @@ public class BlockUpgrade extends BlockContainerBase {
 		super.breakBlock(world, pos, state);
 		((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).removeUpgrade(world, pos);
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
-	
+
 	//TODO
 	/*public int getRenderType() {
 		return (this.renderAsNormalBlock() || StevesCarts.instance.blockRenderer == null) ? 0 : StevesCarts.instance.blockRenderer.getRenderId();
@@ -151,12 +136,12 @@ public class BlockUpgrade extends BlockContainerBase {
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return super.getRenderType(state);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return getUpgradeBounds(source, pos);
 	}
-	
+
 	public final EnumFacing getUpgradeFace(IBlockAccess world, BlockPos pos){
 		final TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileEntityUpgrade) {
@@ -224,7 +209,7 @@ public class BlockUpgrade extends BlockContainerBase {
 		final float width = 0.125f;
 		return new AxisAlignedBB(margin, width, margin, 1.0f - margin, 1.0f - width, 1.0f - margin);
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (player.isSneaking()) {
@@ -241,7 +226,7 @@ public class BlockUpgrade extends BlockContainerBase {
 			}
 			if (upgrade.getUpgrade().useStandardInterface()) {
 				BlockPos masterPos = upgrade.getMaster().getPos();
-				FMLNetworkHandler.openGui(player, (Object) StevesCarts.instance, 3, world, masterPos.getX(), masterPos.getY(), masterPos.getZ());
+				FMLNetworkHandler.openGui(player, StevesCarts.instance, 3, world, masterPos.getX(), masterPos.getY(), masterPos.getZ());
 				return true;
 			}
 			FMLNetworkHandler.openGui(player, StevesCarts.instance, 7, world, pos.getX(), pos.getY(), pos.getZ());
@@ -249,6 +234,7 @@ public class BlockUpgrade extends BlockContainerBase {
 		return true;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(final World world, final int var2) {
 		return new TileEntityUpgrade();
 	}

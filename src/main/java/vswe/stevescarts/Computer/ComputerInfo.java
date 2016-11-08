@@ -1,23 +1,23 @@
-package vswe.stevescarts.Computer;
+package vswe.stevescarts.computer;
 
 import java.util.Collection;
 import java.util.HashMap;
 
-import vswe.stevescarts.Buttons.ButtonBase;
-import vswe.stevescarts.Buttons.ButtonInfoType;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Addons.ModuleChunkLoader;
-import vswe.stevescarts.Modules.Addons.ModuleColorizer;
-import vswe.stevescarts.Modules.Addons.ModuleHeightControl;
-import vswe.stevescarts.Modules.Addons.ModuleInvisible;
-import vswe.stevescarts.Modules.Addons.ModuleShield;
-import vswe.stevescarts.Modules.Realtimers.ModuleDynamite;
-import vswe.stevescarts.Modules.Realtimers.ModuleShooter;
-import vswe.stevescarts.Modules.Realtimers.ModuleShooterAdv;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-import vswe.stevescarts.Modules.Workers.ModuleTorch;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.buttons.ButtonBase;
+import vswe.stevescarts.guis.buttons.ButtonInfoType;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.addons.ModuleChunkLoader;
+import vswe.stevescarts.modules.addons.ModuleColorizer;
+import vswe.stevescarts.modules.addons.ModuleHeightControl;
+import vswe.stevescarts.modules.addons.ModuleInvisible;
+import vswe.stevescarts.modules.addons.ModuleShield;
+import vswe.stevescarts.modules.realtimers.ModuleDynamite;
+import vswe.stevescarts.modules.realtimers.ModuleShooter;
+import vswe.stevescarts.modules.realtimers.ModuleShooterAdv;
+import vswe.stevescarts.modules.workers.ModuleComputer;
+import vswe.stevescarts.modules.workers.ModuleTorch;
+import vswe.stevescarts.modules.workers.tools.ModuleDrill;
 
 public class ComputerInfo {
 	private static HashMap<Byte, ComputerInfo> infos;

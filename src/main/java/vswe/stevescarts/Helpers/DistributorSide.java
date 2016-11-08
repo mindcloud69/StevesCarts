@@ -1,7 +1,7 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.util.EnumFacing;
-import vswe.stevescarts.TileEntities.TileEntityDistributor;
+import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
 
 public class DistributorSide {
 	private int id;

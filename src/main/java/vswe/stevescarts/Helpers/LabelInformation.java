@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 public abstract class LabelInformation {
 	private Localization.MODULES.ADDONS name;

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.TileEntities.TileEntityDistributor;
+import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
 
 public class BlockDistributor extends BlockContainerBase {
 	//	private IIcon purpleIcon;

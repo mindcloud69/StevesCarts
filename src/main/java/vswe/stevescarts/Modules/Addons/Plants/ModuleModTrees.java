@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Addons.Plants;
+package vswe.stevescarts.modules.addons.plants;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
@@ -7,9 +7,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ITreeModule;
-import vswe.stevescarts.Modules.Addons.ModuleAddon;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.ITreeModule;
+import vswe.stevescarts.modules.addons.ModuleAddon;
 
 public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 	public ModuleModTrees(final MinecartModular cart) {

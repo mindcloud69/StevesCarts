@@ -1,14 +1,14 @@
-package vswe.stevescarts.Modules.Addons;
+package vswe.stevescarts.modules.addons;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.HeightControlOre;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.HeightControlOre;
+import vswe.stevescarts.helpers.ResourceHelper;
 
 public class ModuleHeightControl extends ModuleAddon {
 	private int levelNumberBoxX;

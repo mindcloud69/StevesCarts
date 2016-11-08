@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 import java.util.ArrayList;
 
@@ -8,10 +8,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Realtimers.ModuleArcade;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.realtimers.ModuleArcade;
 
 public class ArcadeInvaders extends ArcadeGame {
 	protected ArrayList<Unit> invaders;

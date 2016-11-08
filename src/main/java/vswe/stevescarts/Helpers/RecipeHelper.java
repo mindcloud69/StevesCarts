@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import vswe.stevescarts.Items.ModItems;
+import vswe.stevescarts.items.ModItems;
 
 public final class RecipeHelper {
 	public static void addRecipe(final ItemStack item, final Object[][] recipe) {

@@ -1,8 +1,8 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 import java.util.ArrayList;
 
-import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.helpers.Localization;
 
 public class TrackStory {
 	public static ArrayList<TrackStory> stories;

@@ -1,4 +1,4 @@
-package vswe.stevescarts.Modules.Realtimers;
+package vswe.stevescarts.modules.realtimers;
 
 import org.lwjgl.opengl.GL11;
 
@@ -11,13 +11,13 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.PacketHandler;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ILeverModule;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Engines.ModuleEngine;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.modules.ILeverModule;
+import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.engines.ModuleEngine;
 
 public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	private byte[] engineInformation;

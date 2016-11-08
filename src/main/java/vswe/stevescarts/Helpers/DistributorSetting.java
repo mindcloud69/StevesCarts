@@ -1,9 +1,9 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.ArrayList;
 
-import vswe.stevescarts.TileEntities.TileEntityDistributor;
-import vswe.stevescarts.TileEntities.TileEntityManager;
+import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
+import vswe.stevescarts.blocks.tileentities.TileEntityManager;
 
 public class DistributorSetting {
 	public static ArrayList<DistributorSetting> settings;

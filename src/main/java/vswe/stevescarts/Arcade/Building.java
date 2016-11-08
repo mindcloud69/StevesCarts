@@ -1,6 +1,6 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
-import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.guis.GuiMinecart;
 
 public class Building extends Unit {
 	public Building(final ArcadeInvaders game, final int x, final int y) {

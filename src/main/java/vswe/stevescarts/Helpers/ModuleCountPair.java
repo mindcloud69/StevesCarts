@@ -1,7 +1,7 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.util.text.translation.I18n;
-import vswe.stevescarts.ModuleData.ModuleData;
+import vswe.stevescarts.modules.data.ModuleData;
 
 public class ModuleCountPair {
 	private ModuleData data;

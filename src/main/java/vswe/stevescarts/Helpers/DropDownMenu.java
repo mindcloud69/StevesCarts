@@ -1,11 +1,11 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.ArrayList;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Interfaces.GuiDetector;
-import vswe.stevescarts.ModuleData.ModuleData;
+import vswe.stevescarts.guis.GuiDetector;
+import vswe.stevescarts.modules.data.ModuleData;
 
 @SideOnly(Side.CLIENT)
 public class DropDownMenu {

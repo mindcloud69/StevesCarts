@@ -1,6 +1,6 @@
-package vswe.stevescarts.Modules.Storages.Chests;
+package vswe.stevescarts.modules.storages.chests;
 
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ModuleTopChest extends ModuleChest {
 	public ModuleTopChest(final MinecartModular cart) {

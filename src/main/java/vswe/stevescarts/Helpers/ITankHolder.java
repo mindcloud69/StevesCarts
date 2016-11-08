@@ -1,9 +1,9 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Interfaces.GuiBase;
+import vswe.stevescarts.guis.GuiBase;
 
 public interface ITankHolder {
 	ItemStack getInputContainer(final int p0);

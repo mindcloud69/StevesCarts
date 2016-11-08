@@ -1,4 +1,4 @@
-package vswe.stevescarts.Items;
+package vswe.stevescarts.items;
 
 import java.util.HashMap;
 
@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import vswe.stevescarts.Blocks.ModBlocks;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.DetectorType;
-import vswe.stevescarts.Helpers.RecipeHelper;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.Upgrades.AssemblerUpgrade;
+import vswe.stevescarts.blocks.ModBlocks;
+import vswe.stevescarts.helpers.ComponentTypes;
+import vswe.stevescarts.helpers.DetectorType;
+import vswe.stevescarts.helpers.RecipeHelper;
+import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
 public final class ModItems {
 	public static ItemCarts carts;

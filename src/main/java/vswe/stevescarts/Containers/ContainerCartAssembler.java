@@ -1,4 +1,4 @@
-package vswe.stevescarts.Containers;
+package vswe.stevescarts.containers;
 
 import java.util.ArrayList;
 
@@ -11,10 +11,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Slots.SlotAssembler;
-import vswe.stevescarts.Slots.SlotHull;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
+import vswe.stevescarts.containers.slots.SlotAssembler;
+import vswe.stevescarts.containers.slots.SlotHull;
 
 public class ContainerCartAssembler extends ContainerBase {
 	private TileEntityCartAssembler assembler;

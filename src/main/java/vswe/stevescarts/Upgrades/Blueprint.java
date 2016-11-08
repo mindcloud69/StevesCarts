@@ -1,4 +1,4 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import java.util.ArrayList;
 
@@ -6,10 +6,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.Slots.SlotCart;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.containers.slots.SlotCart;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.modules.data.ModuleData;
 
 public class Blueprint extends SimpleInventoryEffect {
 	public Blueprint() {

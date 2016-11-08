@@ -1,8 +1,8 @@
-package vswe.stevescarts.Computer;
+package vswe.stevescarts.computer;
 
 import java.util.Random;
 
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
+import vswe.stevescarts.modules.workers.ModuleComputer;
 
 public class ComputerTask {
 	private static Random rand;

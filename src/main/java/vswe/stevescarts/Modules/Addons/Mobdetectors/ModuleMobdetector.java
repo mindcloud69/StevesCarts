@@ -1,8 +1,8 @@
-package vswe.stevescarts.Modules.Addons.Mobdetectors;
+package vswe.stevescarts.modules.addons.mobdetectors;
 
 import net.minecraft.entity.Entity;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.Addons.ModuleAddon;
+import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.modules.addons.ModuleAddon;
 
 public abstract class ModuleMobdetector extends ModuleAddon {
 	public ModuleMobdetector(final MinecartModular cart) {

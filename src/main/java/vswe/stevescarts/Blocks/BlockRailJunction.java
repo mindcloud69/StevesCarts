@@ -1,4 +1,4 @@
-package vswe.stevescarts.Blocks;
+package vswe.stevescarts.blocks;
 
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
@@ -10,7 +10,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class BlockRailJunction extends BlockRail {
 	//	private IIcon normalIcon;

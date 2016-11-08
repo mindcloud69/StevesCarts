@@ -1,8 +1,8 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.Comparator;
 
-import vswe.stevescarts.Buttons.ButtonBase;
+import vswe.stevescarts.guis.buttons.ButtonBase;
 
 public class CompButtons implements Comparator {
 	@Override

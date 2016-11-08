@@ -6,8 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.TileEntities.TileEntityBase;
+import vswe.stevescarts.blocks.tileentities.TileEntityBase;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class CommonProxy implements IGuiHandler {
 	public void renderInit() {

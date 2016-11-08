@@ -1,6 +1,6 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
-import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.modules.ModuleBase;
 
 public class ActivatorOption {
 	private Class<? extends ModuleBase> module;

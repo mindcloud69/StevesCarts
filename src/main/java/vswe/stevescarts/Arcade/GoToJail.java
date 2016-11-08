@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 public class GoToJail extends CornerPlace {
 	public GoToJail(final ArcadeMonopoly game) {

@@ -1,6 +1,6 @@
-package vswe.stevescarts.Modules.Addons;
+package vswe.stevescarts.modules.addons;
 
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ModuleSmelterAdv extends ModuleSmelter {
 	public ModuleSmelterAdv(final MinecartModular cart) {

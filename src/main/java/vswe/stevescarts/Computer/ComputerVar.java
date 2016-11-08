@@ -1,6 +1,6 @@
-package vswe.stevescarts.Computer;
+package vswe.stevescarts.computer;
 
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
+import vswe.stevescarts.modules.workers.ModuleComputer;
 
 public class ComputerVar implements IWriting {
 	private ModuleComputer module;

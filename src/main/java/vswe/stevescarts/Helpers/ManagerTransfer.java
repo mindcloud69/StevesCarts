@@ -1,6 +1,6 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
-import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.entitys.MinecartModular;
 
 public class ManagerTransfer {
 	private int side;

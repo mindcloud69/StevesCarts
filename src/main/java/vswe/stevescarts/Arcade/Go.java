@@ -1,8 +1,8 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 import java.util.EnumSet;
 
-import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.guis.GuiMinecart;
 
 public class Go extends CornerPlace {
 	public Go(final ArcadeMonopoly game) {

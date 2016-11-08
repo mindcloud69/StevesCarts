@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 public class Villager extends CardPlace {
 	public Villager(final ArcadeMonopoly game) {

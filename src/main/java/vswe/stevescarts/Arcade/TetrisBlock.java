@@ -1,7 +1,7 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
-import vswe.stevescarts.Interfaces.GuiBase;
-import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.guis.GuiBase;
+import vswe.stevescarts.guis.GuiMinecart;
 
 public class TetrisBlock {
 	private int u;

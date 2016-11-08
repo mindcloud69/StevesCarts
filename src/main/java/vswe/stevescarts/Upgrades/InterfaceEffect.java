@@ -1,11 +1,11 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Containers.ContainerUpgrade;
-import vswe.stevescarts.Interfaces.GuiUpgrade;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.containers.ContainerUpgrade;
+import vswe.stevescarts.guis.GuiUpgrade;
 
 public abstract class InterfaceEffect extends BaseEffect {
 	@SideOnly(Side.CLIENT)

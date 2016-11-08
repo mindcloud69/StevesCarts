@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;

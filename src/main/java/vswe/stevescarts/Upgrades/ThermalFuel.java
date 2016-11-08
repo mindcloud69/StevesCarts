@@ -1,9 +1,9 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.helpers.Localization;
 
 public class ThermalFuel extends TankEffect {
 	public static final int LAVA_EFFICIENCY = 3;

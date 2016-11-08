@@ -1,4 +1,4 @@
-package vswe.stevescarts.Arcade;
+package vswe.stevescarts.arcade;
 
 public class StreetGroup extends PropertyGroup {
 	private float[] color;

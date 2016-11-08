@@ -1,7 +1,7 @@
-package vswe.stevescarts.Upgrades;
+package vswe.stevescarts.upgrades;
 
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 
 public abstract class RechargerBase extends BaseEffect {
 	@Override

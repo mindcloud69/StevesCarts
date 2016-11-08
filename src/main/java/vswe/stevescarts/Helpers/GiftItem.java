@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -8,8 +8,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.ModuleData.ModuleData;
+import vswe.stevescarts.items.ModItems;
+import vswe.stevescarts.modules.data.ModuleData;
 
 public class GiftItem {
 	private int chanceWeight;

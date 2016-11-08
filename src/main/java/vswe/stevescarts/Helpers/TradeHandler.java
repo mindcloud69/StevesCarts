@@ -1,4 +1,4 @@
-package vswe.stevescarts.Helpers;
+package vswe.stevescarts.helpers;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
-import vswe.stevescarts.Items.ModItems;
+import vswe.stevescarts.items.ModItems;
 
 public class TradeHandler implements ITradeList {
 
