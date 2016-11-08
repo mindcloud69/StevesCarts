@@ -1,7 +1,5 @@
 package vswe.stevescarts.arcade.monopoly;
 
-import vswe.stevescarts.arcade.monopoly.Piece.CONTROLLED_BY;
-
 public abstract class Button {
 	public String getName() {
 		return "Undefined";

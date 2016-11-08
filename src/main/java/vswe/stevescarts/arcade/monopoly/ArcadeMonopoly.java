@@ -8,8 +8,6 @@ import org.lwjgl.opengl.GL11;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.arcade.ArcadeGame;
-import vswe.stevescarts.arcade.monopoly.Piece.CONTROLLED_BY;
-import vswe.stevescarts.arcade.monopoly.Place.PLACE_STATE;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;

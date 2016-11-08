@@ -1,6 +1,5 @@
 package vswe.stevescarts.arcade.invaders;
 
-import vswe.stevescarts.arcade.invaders.Unit.UPDATE_RESULT;
 import vswe.stevescarts.guis.GuiMinecart;
 
 public class Player extends Unit {

@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.arcade.ArcadeGame;
-import vswe.stevescarts.arcade.invaders.Unit.UPDATE_RESULT;
 import vswe.stevescarts.arcade.tracks.TrackStory;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
