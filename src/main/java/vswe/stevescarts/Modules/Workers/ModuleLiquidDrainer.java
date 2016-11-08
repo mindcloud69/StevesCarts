@@ -1,122 +1,112 @@
 package vswe.stevescarts.Modules.Workers;
-import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.BlockCoord;
+import vswe.stevescarts.Helpers.BlockPosHelpers;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
+
+import java.util.ArrayList;
+
 public class ModuleLiquidDrainer extends ModuleWorker {
-	public ModuleLiquidDrainer(MinecartModular cart) {
+	public ModuleLiquidDrainer(final MinecartModular cart) {
 		super(cart);
 	}
 
-	//lower numbers are prioritized
+	@Override
 	public byte getWorkPriority() {
-		return (byte)0;
+		return 0;
 	}
 
-	//return true when the work is done, false allow other modules to continue the work
+	@Override
 	public boolean work() {
 		return false;
 	}
-	
-	public void handleLiquid(ModuleDrill drill, int x, int y, int z) {
-		
-		BlockCoord here = new BlockCoord(x,y,z);
-		ArrayList<BlockCoord> checked = new ArrayList<BlockCoord>();
-		int result = drainAt(drill, checked, here, 0);
-		if (result > 0 && doPreWork()) {
+
+	public void handleLiquid(final ModuleDrill drill, BlockPos pos) {
+		final ArrayList<BlockPos> checked = new ArrayList<BlockPos>();
+		final int result = this.drainAt(drill, checked, pos, 0);
+		if (result > 0 && this.doPreWork()) {
 			drill.kill();
-			startWorking((int)(2.5F * result));
-		}else{
-			stopWorking();
+			this.startWorking((int) (2.5f * result));
+		} else {
+			this.stopWorking();
 		}
-	}	
-	
+	}
 
 	@Override
 	public boolean preventAutoShutdown() {
 		return true;
 	}
-	
-	private int drainAt(ModuleDrill drill, ArrayList<BlockCoord> checked, BlockCoord here, int buckets) {		
+
+	private int drainAt(final ModuleDrill drill, final ArrayList<BlockPos> checked, final BlockPos pos, int buckets) {
 		int drained = 0;
-		Block b = getCart().worldObj.getBlock(here.getX(), here.getY(), here.getZ());
-		if (!isLiquid(b)) {
+		IBlockState blockState = this.getCart().worldObj.getBlockState(pos);
+		final Block b = blockState.getBlock();
+		if (!this.isLiquid(b)) {
 			return 0;
 		}
-		int meta = getCart().worldObj.getBlockMetadata(here.getX(), here.getY(), here.getZ());
-		
-		FluidStack liquid = getFluidStack(b, here.getX(), here.getY(), here.getZ(), !doPreWork());
+		final int meta = b.getMetaFromState(blockState);
+		final FluidStack liquid = this.getFluidStack(b, pos, !this.doPreWork());
 		if (liquid != null) {
-			if (doPreWork()) {
-				liquid.amount += buckets * FluidContainerRegistry.BUCKET_VOLUME;
+			if (this.doPreWork()) {
+				final FluidStack fluidStack = liquid;
+				fluidStack.amount += buckets * 1000;
 			}
-			int amount = getCart().fill(liquid, false);
+			final int amount = this.getCart().fill(liquid, false);
 			if (amount == liquid.amount) {
-				boolean isDrainable = meta == 0;
-				if (!doPreWork()) {
+				final boolean isDrainable = meta == 0;
+				if (!this.doPreWork()) {
 					if (isDrainable) {
-						getCart().fill(liquid, true);
+						this.getCart().fill(liquid, true);
 					}
-					getCart().worldObj.setBlockToAir(here.getX(), here.getY(), here.getZ());
+					this.getCart().worldObj.setBlockToAir(pos);
 				}
-				drained += isDrainable ? 40 : 3;
-				buckets += isDrainable ? 1 : 0;
+				drained += (isDrainable ? 40 : 3);
+				buckets += (isDrainable ? 1 : 0);
 			}
 		}
-		
-		checked.add(here);
-
-
-		if (checked.size() < 100 && here.getHorizontalDistToCartSquared(getCart()) < 200) {
-			for (int y = 1; y >= 0; y--) {
-				for (int x = -1; x <= 1; x++) {
-					for (int z = -1; z <= 1; z++) {	
+		checked.add(pos);
+		if (checked.size() < 100 && BlockPosHelpers.getHorizontalDistToCartSquared(pos, this.getCart()) < 200.0) {
+			for (int y = 1; y >= 0; --y) {
+				for (int x = -1; x <= 1; ++x) {
+					for (int z = -1; z <= 1; ++z) {
 						if (Math.abs(x) + Math.abs(y) + Math.abs(z) == 1) {
-	
-							BlockCoord next = new BlockCoord(here.getX()+x,here.getY()+y,here.getZ()+z);
+							BlockPos next = pos.add(x, y, z);
 							if (!checked.contains(next)) {
-								drained += drainAt(drill, checked, next, buckets);
+								drained += this.drainAt(drill, checked, next, buckets);
 							}
-							
 						}
 					}
 				}
 			}
 		}
-		
 		return drained;
-	}		
-	
-	private boolean isLiquid(Block b) {
+	}
 
-		boolean isWater = b == Blocks.water || b == Blocks.flowing_water || b == Blocks.ice;
-		boolean isLava = b == Blocks.lava || b == Blocks.flowing_lava;
-		boolean isOther = b != null && b instanceof IFluidBlock;
+	private boolean isLiquid(final Block b) {
+		final boolean isWater = b == Blocks.WATER || b == Blocks.FLOWING_WATER || b == Blocks.ICE;
+		final boolean isLava = b == Blocks.LAVA || b == Blocks.FLOWING_LAVA;
+		final boolean isOther = b != null && b instanceof IFluidBlock;
 		return isWater || isLava || isOther;
 	}
-	
-	private FluidStack getFluidStack(Block b, int x, int y, int z, boolean doDrain) {
-		if (b == Blocks.water || b == Blocks.flowing_water) {
-			return new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
-			
-		}else if (b == Blocks.lava || b == Blocks.flowing_lava) {
-			return new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-			
-		}else if (b instanceof IFluidBlock) {
-			IFluidBlock liquid = (IFluidBlock)b;
 
-			return liquid.drain(getCart().worldObj, x, y, z, doDrain);
-		}else {
-			return null;
+	private FluidStack getFluidStack(final Block b, BlockPos pos, final boolean doDrain) {
+		if (b == Blocks.WATER || b == Blocks.FLOWING_WATER) {
+			return new FluidStack(FluidRegistry.WATER, 1000);
 		}
-	}	
-	
-
+		if (b == Blocks.LAVA || b == Blocks.FLOWING_LAVA) {
+			return new FluidStack(FluidRegistry.LAVA, 1000);
+		}
+		if (b instanceof IFluidBlock) {
+			final IFluidBlock liquid = (IFluidBlock) b;
+			return liquid.drain(this.getCart().worldObj, pos, doDrain);
+		}
+		return null;
+	}
 }

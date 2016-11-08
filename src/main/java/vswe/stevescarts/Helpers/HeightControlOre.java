@@ -1,4 +1,5 @@
 package vswe.stevescarts.Helpers;
+
 import java.util.ArrayList;
 
 public class HeightControlOre {
@@ -11,20 +12,9 @@ public class HeightControlOre {
 	public final int spanLowest;
 	public final int bestHighest;
 	public final int bestLowest;
+	public static final ArrayList<HeightControlOre> ores;
 
-	public static final ArrayList<HeightControlOre> ores = new ArrayList<HeightControlOre>();
-
-	static {
-		new HeightControlOre("Diamond", 0,15,12,5);
-		new HeightControlOre("Redstone",1,16,13,5);
-		new HeightControlOre("Gold",2,33,30,5);
-		new HeightControlOre("Lapis Lazuli",3,32,18,11);
-		new HeightControlOre("Iron",4,67,41,5);
-		new HeightControlOre("Coal",5,131,40,5);
-		new HeightControlOre("Emerald",6,32,29,5);
-	}
-
-	public HeightControlOre(String name, int textureid, int spanHighest, int bestHighest, int bestLowest) {
+	public HeightControlOre(final String name, final int textureid, final int spanHighest, final int bestHighest, final int bestLowest) {
 		this.name = name;
 		this.useDefaultTexture = true;
 		this.specialTexture = "";
@@ -34,11 +24,10 @@ public class HeightControlOre {
 		this.bestLowest = bestLowest;
 		this.srcX = 0;
 		this.srcY = (textureid * 2 + 1) * 4;
-
-		ores.add(this);
+		HeightControlOre.ores.add(this);
 	}
 
-	public HeightControlOre(String name, String texture, int srcX, int srcY, int spanHighest, int spanLowest, int bestHighest, int bestLowest) {
+	public HeightControlOre(final String name, final String texture, final int srcX, final int srcY, final int spanHighest, final int spanLowest, final int bestHighest, final int bestLowest) {
 		this.name = name;
 		this.useDefaultTexture = false;
 		this.specialTexture = texture;
@@ -48,7 +37,17 @@ public class HeightControlOre {
 		this.bestLowest = bestLowest;
 		this.srcX = srcX;
 		this.srcY = srcY;
+		HeightControlOre.ores.add(this);
+	}
 
-		ores.add(this);
+	static {
+		ores = new ArrayList<HeightControlOre>();
+		new HeightControlOre("Diamond", 0, 15, 12, 5);
+		new HeightControlOre("Redstone", 1, 16, 13, 5);
+		new HeightControlOre("Gold", 2, 33, 30, 5);
+		new HeightControlOre("Lapis Lazuli", 3, 32, 18, 11);
+		new HeightControlOre("Iron", 4, 67, 41, 5);
+		new HeightControlOre("Coal", 5, 131, 40, 5);
+		new HeightControlOre("Emerald", 6, 32, 29, 5);
 	}
 }

@@ -3,8 +3,9 @@ package vswe.stevescarts.Arcade;
 import java.util.ArrayList;
 
 public abstract class CardVillager extends Card {
+	public static ArrayList<CardVillager> cards;
 
-	public CardVillager(String message) {
+	public CardVillager(final String message) {
 		super(message);
 	}
 
@@ -13,17 +14,11 @@ public abstract class CardVillager extends Card {
 		return 2;
 	}
 
-	public static ArrayList<CardVillager> cards;
 	static {
-		cards = new ArrayList<CardVillager>();
-		
-		cards.add(new CardVillager("No, I'm a helicopter.") {		
+		(CardVillager.cards = new ArrayList<CardVillager>()).add(new CardVillager("No, I'm a helicopter.") {
 			@Override
-			public void doStuff(ArcadeMonopoly game, Piece piece) {
-				
-			}			
+			public void doStuff(final ArcadeMonopoly game, final Piece piece) {
+			}
 		});
-			
-	}	
-	
+	}
 }

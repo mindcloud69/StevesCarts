@@ -1,146 +1,111 @@
 package vswe.stevescarts.Blocks;
-import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import vswe.stevescarts.StevesCarts;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.Helpers.DetectorType;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityDetector;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockDetector extends BlockContainerBase
-{
+import java.util.List;
 
-    public BlockDetector()
-    {
-        super(Material.circuits);
-        setCreativeTab(StevesCarts.tabsSC2Blocks);		
-    }
+public class BlockDetector extends BlockContainerBase {
+	public BlockDetector() {
+		super(Material.CIRCUITS);
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		this.setDefaultState(this.getStateFromMeta(0));
+	}
 
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIcon(final int side, final int meta) {
+//		return DetectorType.getTypeFromSate(meta).getIcon(side);
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerBlockIcons(final IIconRegister register) {
+//		for (final DetectorType type : DetectorType.values()) {
+//			type.registerIcons(register);
+//		}
+//	}
 
+	public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
+		for (final DetectorType type : DetectorType.values()) {
+			list.add(new ItemStack(item, 1, type.getMeta()));
+		}
+	}
 
+	public boolean isSideSolid(final IBlockAccess world, final int x, final int y, final int z, final EnumFacing side) {
+		return true;
+	}
 
-    @SideOnly(Side.CLIENT)
-	@Override
-    public IIcon getIcon(int side, int meta)
-    {        
-        return DetectorType.getTypeFromMeta(meta).getIcon(side);
-    }
-	
-	
-    @SideOnly(Side.CLIENT)
-	@Override
-    public void registerBlockIcons(IIconRegister register)
-    {
-    	for (DetectorType type : DetectorType.values()) {
-    		type.registerIcons(register);
-    	}
-    	
-    }
+	public boolean isBlockNormalCube() {
+		return true;
+	}
 
-    
-    @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-    	for (DetectorType type : DetectorType.values()) {
-    		list.add(new ItemStack(item, 1, type.getMeta()));
-    	}
-    }
+	public boolean isBlockSolid(final IBlockAccess world, final int x, final int y, final int z, final int side) {
+		return true;
+	}
 
-
-
-    @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-        return true;
-    }
-
-    @Override
-    public boolean isBlockNormalCube() {
-        return true;
-    }
-
-    @Override
-    public boolean isBlockSolid(IBlockAccess world, int x, int y, int z, int side) {
-        return true;
-    }
-
-	@Override
-    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
-    {
+	public boolean onBlockActivated(final World world, final int i, final int j, final int k, final EntityPlayer entityplayer, final int par6, final float par7, final float par8, final float par9) {
 		if (entityplayer.isSneaking()) {
 			return false;
 		}
-
-
-        if (world.isRemote)
-        {
-            return true;
-        }
-
-
+		if (world.isRemote) {
+			return true;
+		}
 		FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 6, world, i, j, k);
+		return true;
+	}
 
-        return true;
-    }
-	
-    /**
-     * Is this block powering the block on the specified side
-     */
-	 @Override
-    public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side)
-    {
-		int meta = world.getBlockMetadata(x, y, z);
-		return ((meta & 8) != 0 && DetectorType.getTypeFromMeta(meta).shouldEmitRedstone()) ? 15 : 0;
-    }
+	public int isProvidingWeakPower(final IBlockAccess world, final BlockPos pos, final int side) {
+		IBlockState blockState = world.getBlockState(pos);
+		return ((getMetaFromState(blockState) & 0x8) != 0x0 && DetectorType.getTypeFromSate(blockState).shouldEmitRedstone()) ? 15 : 0;
+	}
 
-    /**
-     * Is this block indirectly powering the block on the specified side
-     */
-	 @Override
-    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side)
-    {
-        return 0;
-    }
+	public int isProvidingStrongPower(final IBlockAccess world, final int x, final int y, final int z, final int side) {
+		return 0;
+	}
 
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-	 @Override
-    public boolean canProvidePower()
-    {
-        return true;
-    }
+	public boolean canProvidePower() {
+		return true;
+	}
 
-    @Override
-    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
-        if (side == -1) {
-            return false;
-        }else{
-            DetectorType type = DetectorType.getTypeFromMeta(world.getBlockMetadata(x, y, z));
+	public boolean canConnectRedstone(final IBlockAccess world, final BlockPos pos, final int side) {
+		if (side == -1) {
+			return false;
+		}
+		final DetectorType type = DetectorType.getTypeFromSate(world.getBlockState(pos));
+		return type.shouldEmitRedstone() || type == DetectorType.REDSTONE;
+	}
 
-            return type.shouldEmitRedstone() || type == DetectorType.REDSTONE;
-        }
-    }
+	public TileEntity createNewTileEntity(final World world, final int var2) {
+		return new TileEntityDetector();
+	}
 
-    @Override
-    public TileEntity createNewTileEntity(World world, int var2)
-    {
-        return new TileEntityDetector();
-    }
-	
-	@Override
-    public int damageDropped(int meta) {
-        return meta;
-    }   
-	
+	public int damageDropped(final int meta) {
+		return meta;
+	}
+
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.NORMAL);
+	}
+
+	public int getMetaFromState(IBlockState state) {
+		return (state.getValue(DetectorType.SATE)).getMeta();
+	}
+
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, DetectorType.SATE);
+	}
 }

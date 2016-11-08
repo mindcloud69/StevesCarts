@@ -1,9 +1,13 @@
 package vswe.stevescarts.Modules;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 
 public interface ICropModule {
-	public boolean isSeedValid(ItemStack seed);
-	public Block getCropFromSeed(ItemStack seed);
-	public boolean isReadyToHarvest(int x, int y, int z);		
+	boolean isSeedValid(final ItemStack p0);
+
+	Block getCropFromSeed(final ItemStack p0);
+
+	boolean isReadyToHarvest(BlockPos pos);
 }

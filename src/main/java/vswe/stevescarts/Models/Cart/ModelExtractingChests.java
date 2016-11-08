@@ -1,127 +1,81 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Storages.Chests.ModuleExtractingChests;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-@SideOnly(Side.CLIENT)
-public class ModelExtractingChests extends ModelCartbase
-{
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/codeSideChestsModel.png");
-	
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
-	
-	
 
+@SideOnly(Side.CLIENT)
+public class ModelExtractingChests extends ModelCartbase {
+	private static ResourceLocation texture;
 	ModelRenderer lid1;
 	ModelRenderer lid2;
 	ModelRenderer base1;
 	ModelRenderer base2;
 
-    public ModelExtractingChests()
-    {
-
-		ModelRenderer[] temp = AddChest(false);
-		base1 = temp[0];
-		lid1 = temp[1];
-		temp = AddChest(true);
-		base2 = temp[0];
-		lid2 = temp[1];
-    }
-
-	private ModelRenderer[] AddChest(boolean opposite) {
-		ModelRenderer chestAnchor = new ModelRenderer(this);
-		AddRenderer(chestAnchor);
-
-		if (opposite) {
-			chestAnchor.rotateAngleY = (float)Math.PI;
-		}
-
-		ModelRenderer base = new ModelRenderer(this, 0, 17);
-		fixSize(base);
-		chestAnchor.addChild(base);
-
-		base.addBox(
-			8, 	//X
-			3, 	//Y
-			2F,	 	//Z
-			16,					//Size X
-			6,					//Size Y
-			14,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		base.setRotationPoint(
-			-16.0F, 		//X
-			-5.5F,			//Y
-			-14.0F			//Z
-		);
-
-		ModelRenderer lid = new ModelRenderer(this, 0, 0);
-		fixSize(lid);
-		chestAnchor.addChild(lid);
-
-		lid.addBox(
-			8, 	//X
-			-3, 	//Y
-			-14F,	 	//Z
-			16,					//Size X
-			3,					//Size Y
-			14,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		lid.setRotationPoint(
-			-16.0F, 		//X
-			-1.5F,			//Y
-			2F			//Z
-		);
-
-		ModelRenderer lock = new ModelRenderer(this, 0, 37);
-		fixSize(lock);
-		lid.addChild(lock);
-
-		lock.addBox(
-			1F, 	//X
-			1.5F, 	//Y
-			0.5F,	 	//Z
-			2,					//Size X
-			3,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		lock.setRotationPoint(
-			14.0F, 		//X
-			-3F,			//Y
-			-15.5F			//Z
-		);
-
-		return new ModelRenderer[] {base,lid};
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelExtractingChests.texture;
 	}
 
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-		if (module == null) {
-			lid1.rotateAngleX = 0;
-			lid2.rotateAngleX = 0;
-			lid1.rotationPointZ = 2;
-			lid2.rotationPointZ = 2;
-			base1.rotationPointZ = -14;
-			base2.rotationPointZ = -14;			
-		}else{
-		
-			ModuleExtractingChests chest = (ModuleExtractingChests)module;
+	public ModelExtractingChests() {
+		ModelRenderer[] temp = this.AddChest(false);
+		this.base1 = temp[0];
+		this.lid1 = temp[1];
+		temp = this.AddChest(true);
+		this.base2 = temp[0];
+		this.lid2 = temp[1];
+	}
 
-			lid1.rotateAngleX = -chest.getChestAngle();
-			lid2.rotateAngleX = -chest.getChestAngle();
-
-			lid1.rotationPointZ = chest.getChestOffset() + 16;
-			lid2.rotationPointZ = chest.getChestOffset() + 16;
-			base1.rotationPointZ = chest.getChestOffset();
-			base2.rotationPointZ = chest.getChestOffset();
+	private ModelRenderer[] AddChest(final boolean opposite) {
+		final ModelRenderer chestAnchor = new ModelRenderer(this);
+		this.AddRenderer(chestAnchor);
+		if (opposite) {
+			chestAnchor.rotateAngleY = 3.1415927f;
 		}
+		final ModelRenderer base = new ModelRenderer(this, 0, 17);
+		this.fixSize(base);
+		chestAnchor.addChild(base);
+		base.addBox(8.0f, 3.0f, 2.0f, 16, 6, 14, 0.0f);
+		base.setRotationPoint(-16.0f, -5.5f, -14.0f);
+		final ModelRenderer lid = new ModelRenderer(this, 0, 0);
+		this.fixSize(lid);
+		chestAnchor.addChild(lid);
+		lid.addBox(8.0f, -3.0f, -14.0f, 16, 3, 14, 0.0f);
+		lid.setRotationPoint(-16.0f, -1.5f, 2.0f);
+		final ModelRenderer lock = new ModelRenderer(this, 0, 37);
+		this.fixSize(lock);
+		lid.addChild(lock);
+		lock.addBox(1.0f, 1.5f, 0.5f, 2, 3, 1, 0.0f);
+		lock.setRotationPoint(14.0f, -3.0f, -15.5f);
+		return new ModelRenderer[] { base, lid };
+	}
+
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		if (module == null) {
+			this.lid1.rotateAngleX = 0.0f;
+			this.lid2.rotateAngleX = 0.0f;
+			this.lid1.rotationPointZ = 2.0f;
+			this.lid2.rotationPointZ = 2.0f;
+			this.base1.rotationPointZ = -14.0f;
+			this.base2.rotationPointZ = -14.0f;
+		} else {
+			final ModuleExtractingChests chest = (ModuleExtractingChests) module;
+			this.lid1.rotateAngleX = -chest.getChestAngle();
+			this.lid2.rotateAngleX = -chest.getChestAngle();
+			this.lid1.rotationPointZ = chest.getChestOffset() + 16.0f;
+			this.lid2.rotationPointZ = chest.getChestOffset() + 16.0f;
+			this.base1.rotationPointZ = chest.getChestOffset();
+			this.base2.rotationPointZ = chest.getChestOffset();
+		}
+	}
+
+	static {
+		ModelExtractingChests.texture = ResourceHelper.getResource("/models/codeSideChestsModel.png");
 	}
 }

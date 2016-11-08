@@ -1,36 +1,27 @@
 package vswe.stevescarts.Slots;
-import net.minecraft.init.Blocks;
-import vswe.stevescarts.Helpers.TransferHandler.TRANSFER_TYPE;
+
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import vswe.stevescarts.Helpers.TransferHandler;
 
-public class SlotBridge extends SlotBase  implements ISpecialItemTransferValidator
-{
-    public SlotBridge(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
-
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return isBridgeMaterial(itemstack);
-    }
-
-    public static boolean isBridgeMaterial(ItemStack itemstack)
-    {
-        Block b = Block.getBlockFromItem(itemstack.getItem());
-        return  b == Blocks.planks ||
-                b == Blocks.brick_block ||
-                b == Blocks.stone ||
-                (b == Blocks.stonebrick && itemstack.getItemDamage() == 0);
-    }
-    
-    
-    //don't allow the bridge builder to use picked up materials
-	@Override
-	public boolean isItemValidForTransfer(ItemStack item, TRANSFER_TYPE type) {
-		return isItemValid(item) && type != TRANSFER_TYPE.OTHER;
+public class SlotBridge extends SlotBase implements ISpecialItemTransferValidator {
+	public SlotBridge(final IInventory iinventory, final int i, final int j, final int k) {
+		super(iinventory, i, j, k);
 	}
-	
+
+	public boolean isItemValid(final ItemStack itemstack) {
+		return isBridgeMaterial(itemstack);
+	}
+
+	public static boolean isBridgeMaterial(final ItemStack itemstack) {
+		final Block b = Block.getBlockFromItem(itemstack.getItem());
+		return b == Blocks.PLANKS || b == Blocks.BRICK_BLOCK || b == Blocks.STONE || (b == Blocks.STONEBRICK && itemstack.getItemDamage() == 0);
+	}
+
+	@Override
+	public boolean isItemValidForTransfer(final ItemStack item, final TransferHandler.TRANSFER_TYPE type) {
+		return this.isItemValid(item) && type != TransferHandler.TRANSFER_TYPE.OTHER;
+	}
 }

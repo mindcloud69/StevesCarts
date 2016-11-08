@@ -1,106 +1,85 @@
 package vswe.stevescarts.Items;
-import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.StorageBlock;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.Helpers.ComponentTypes;
+import vswe.stevescarts.Helpers.StorageBlock;
 import vswe.stevescarts.StevesCarts;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-public class ItemBlockStorage extends ItemBlock
-{
 
+import java.util.List;
+
+public class ItemBlockStorage extends ItemBlock {
 	public static StorageBlock[] blocks;
-	
+	//public IIcon[] icons;
+
 	public static void init() {
-		blocks = new StorageBlock[] {
-			new StorageBlock("Reinforced Metal Block", ComponentTypes.REINFORCED_METAL.getItemStack()),
+		ItemBlockStorage.blocks = new StorageBlock[] { new StorageBlock("Reinforced Metal Block", ComponentTypes.REINFORCED_METAL.getItemStack()),
 			new StorageBlock("Galgadorian Block", ComponentTypes.GALGADORIAN_METAL.getItemStack()),
-			new StorageBlock("Enhanced Galgadorian Block", ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack()),
-		};		
+			new StorageBlock("Enhanced Galgadorian Block", ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack()) };
 	}
-	
+
 	public static void loadRecipes() {
-		for (int i = 0; i < blocks.length; i++) {
-			blocks[i].loadRecipe(i);
+		for (int i = 0; i < ItemBlockStorage.blocks.length; ++i) {
+			ItemBlockStorage.blocks[i].loadRecipe(i);
 		}
 	}
-	
-    public IIcon[] icons;
-    
-    public ItemBlockStorage(Block block)
-    {
-        super(block);
-        setHasSubtypes(true);
-        setMaxDamage(0);
-        setCreativeTab(StevesCarts.tabsSC2Blocks);		
-    }
 
-	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int dmg)
-    {
-    	dmg %= icons.length;
-    	
-    	return icons[dmg];
-    }	
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-    	icons = new IIcon[blocks.length];
-    	for (int i = 0; i < icons.length; i++) {
-    		icons[i] = register.registerIcon(StevesCarts.instance.textureHeader + ":" + blocks[i].getName().replace(":","").replace(" ","_").toLowerCase());	
-    	}
-    }	
+	public ItemBlockStorage(final Block block) {
+		super(block);
+		this.setHasSubtypes(true);
+		this.setMaxDamage(0);
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+	}
 
-	public String getName(ItemStack item)
-    {
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIconFromDamage(int dmg) {
+//		dmg %= this.icons.length;
+//		return this.icons[dmg];
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerIcons(final IIconRegister register) {
+//		this.icons = new IIcon[ItemBlockStorage.blocks.length];
+//		for (int i = 0; i < this.icons.length; ++i) {
+//			final IIcon[] icons = this.icons;
+//			final int n = i;
+//			final StringBuilder sb = new StringBuilder();
+//			StevesCarts.instance.getClass();
+//			icons[n] = register.registerIcon(sb.append("stevescarts").append(":").append(ItemBlockStorage.blocks[i].getName().replace(":", "").replace(" ", "_").toLowerCase()).toString());
+//		}
+//	}
+
+	public String getName(final ItemStack item) {
 		if (item == null) {
 			return "Unknown";
-		}else{
-			int dmg = item.getItemDamage();
-			dmg %= blocks.length;
-			return blocks[dmg].getName();
 		}
-    }
+		int dmg = item.getItemDamage();
+		dmg %= ItemBlockStorage.blocks.length;
+		return ItemBlockStorage.blocks[dmg].getName();
+	}
 
- 	@Override
-    public String getUnlocalizedName(ItemStack item)
-    {
-
+	public String getUnlocalizedName(final ItemStack item) {
 		if (item != null) {
-			return "item." + StevesCarts.instance.localStart + "BlockStorage" + item.getItemDamage();
-		}	
-	
-        return "item.unknown";
-    }	
-	
- 	 @Override
-    @SideOnly(Side.CLIENT)
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    public void getSubItems(Item item, CreativeTabs tab, List items)
-    {
-        for (int i = 0; i < blocks.length; i++)
-        {
-            items.add(new ItemStack(item, 1, i));
-        }
-    }
-    
-    @Override
-    public int getMetadata(int dmg)
-    {
-        return dmg;
-    }   
-	
+			final StringBuilder append = new StringBuilder().append("item.");
+			final StevesCarts instance = StevesCarts.instance;
+			return append.append("SC2:").append("BlockStorage").append(item.getItemDamage()).toString();
+		}
+		return "item.unknown";
+	}
 
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(final Item item, final CreativeTabs tab, final List items) {
+		for (int i = 0; i < ItemBlockStorage.blocks.length; ++i) {
+			items.add(new ItemStack(item, 1, i));
+		}
+	}
+
+	public int getMetadata(final int dmg) {
+		return dmg;
+	}
 }

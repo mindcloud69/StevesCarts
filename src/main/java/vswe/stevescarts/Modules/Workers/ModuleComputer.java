@@ -1,60 +1,34 @@
 package vswe.stevescarts.Modules.Workers;
-import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Buttons.ButtonBase;
-import vswe.stevescarts.Buttons.ButtonTask;
-import vswe.stevescarts.Buttons.ButtonProgramStart;
-import vswe.stevescarts.Buttons.ButtonTaskType;
-import vswe.stevescarts.Buttons.ButtonProgramAdd;
-import vswe.stevescarts.Buttons.ButtonFlowType;
-import vswe.stevescarts.Buttons.ButtonLabelId;
-import vswe.stevescarts.Buttons.ButtonKeyboard;
-import vswe.stevescarts.Buttons.ButtonVarAdd;
-import vswe.stevescarts.Buttons.ButtonFlowConditionVar;
-import vswe.stevescarts.Buttons.ButtonFlowConditionOperator;
-import vswe.stevescarts.Buttons.ButtonFlowConditionUseSecondVar;
-import vswe.stevescarts.Buttons.ButtonFlowConditionInteger;
-import vswe.stevescarts.Buttons.ButtonFlowConditionSecondVar;
-import vswe.stevescarts.Buttons.ButtonFlowEndType;
-import vswe.stevescarts.Buttons.ButtonFlowForVar;
-import vswe.stevescarts.Buttons.ButtonFlowForUseStartVar;
-import vswe.stevescarts.Buttons.ButtonFlowForStartInteger;
-import vswe.stevescarts.Buttons.ButtonFlowForStartVar;
-import vswe.stevescarts.Buttons.ButtonFlowForUseEndVar;
-import vswe.stevescarts.Buttons.ButtonFlowForEndInteger;
-import vswe.stevescarts.Buttons.ButtonFlowForEndVar;
-import vswe.stevescarts.Buttons.ButtonFlowForStep;
-import vswe.stevescarts.Buttons.ButtonVarType;
-import vswe.stevescarts.Buttons.ButtonVarVar;
-import vswe.stevescarts.Buttons.ButtonVarUseFirstVar;
-import vswe.stevescarts.Buttons.ButtonVarFirstInteger;
-import vswe.stevescarts.Buttons.ButtonVarFirstVar;
-import vswe.stevescarts.Buttons.ButtonVarUseSecondVar;
-import vswe.stevescarts.Buttons.ButtonVarSecondInteger;
-import vswe.stevescarts.Buttons.ButtonVarSecondVar;
-import vswe.stevescarts.Buttons.ButtonControlUseVar;
-import vswe.stevescarts.Buttons.ButtonControlInteger;
-import vswe.stevescarts.Buttons.ButtonControlVar;
-import vswe.stevescarts.Buttons.ButtonControlType;
-import vswe.stevescarts.Buttons.ButtonInfoType;
-import vswe.stevescarts.Buttons.ButtonInfoVar;
+import vswe.stevescarts.Buttons.*;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Computer.ComputerControl;
-import vswe.stevescarts.Computer.ComputerInfo;
-import vswe.stevescarts.Computer.ComputerProg;
-import vswe.stevescarts.Computer.ComputerTask;
-import vswe.stevescarts.Computer.ComputerVar;
-import vswe.stevescarts.Computer.IWriting;
+import vswe.stevescarts.Computer.*;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
+import java.util.ArrayList;
 
 public class ModuleComputer extends ModuleWorker {
-	public ModuleComputer(MinecartModular cart) {
+	private IWriting writing;
+	private short info;
+	private ArrayList<ComputerProg> programs;
+	private ComputerProg editProg;
+	private ArrayList<ComputerTask> editTasks;
+	private ComputerProg activeProg;
+	private static final int headerSize = 1;
+	private static final int programHeaderSize = 3;
+	private static final int taskMaxCount = 256;
+	private static final int varMaxCount = 63;
+	private static final int taskSize = 2;
+	private static final int varSize = 5;
+
+	public ModuleComputer(final MinecartModular cart) {
 		super(cart);
+		this.programs = new ArrayList<ComputerProg>();
+		this.editTasks = new ArrayList<ComputerTask>();
 	}
 
-	//lower numbers are prioritized
+	@Override
 	public byte getWorkPriority() {
 		return 5;
 	}
@@ -63,28 +37,27 @@ public class ModuleComputer extends ModuleWorker {
 	public boolean hasGui() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean hasSlots() {
 		return false;
 	}
-		
+
 	@Override
 	public int guiWidth() {
 		return 443;
 	}
+
 	@Override
 	public int guiHeight() {
 		return 250;
-	}	
+	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    //drawString(gui,"Assembly", 8, 6, 0x404040);
-		
-		if (isWriting()) {
-			drawString(gui, getWriting().getText(), 100, 6, 0x404040);
-			drawString(gui, "Max Length: " + getWriting().getMaxLength(), 100, 18, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		if (this.isWriting()) {
+			this.drawString(gui, this.getWriting().getText(), 100, 6, 4210752);
+			this.drawString(gui, "Max Length: " + this.getWriting().getMaxLength(), 100, 18, 4210752);
 		}
 	}
 
@@ -92,383 +65,274 @@ public class ModuleComputer extends ModuleWorker {
 	protected void loadButtons() {
 		new ButtonProgramAdd(this, ButtonBase.LOCATION.OVERVIEW);
 		new ButtonProgramStart(this, ButtonBase.LOCATION.OVERVIEW);
-		for (int i = 0; i < 7; i++) {
-			new ButtonTaskType(this, ButtonBase.LOCATION.PROGRAM, i);		
+		for (int i = 0; i < 7; ++i) {
+			new ButtonTaskType(this, ButtonBase.LOCATION.PROGRAM, i);
 		}
-		
-		new ButtonVarAdd(this, ButtonBase.LOCATION.PROGRAM);	
-		
-		for (int i = 0; i < 11; i++) {
+		new ButtonVarAdd(this, ButtonBase.LOCATION.PROGRAM);
+		for (int i = 0; i < 11; ++i) {
 			new ButtonFlowType(this, ButtonBase.LOCATION.TASK, i);
-		}		
-		
+		}
 		new ButtonLabelId(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonLabelId(this, ButtonBase.LOCATION.TASK, false);
-		
-		// =======  CONDITION ========= //
 		new ButtonFlowConditionVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonFlowConditionVar(this, ButtonBase.LOCATION.TASK, true);	
-		for (int i = 0; i < 6; i++) {
+		new ButtonFlowConditionVar(this, ButtonBase.LOCATION.TASK, true);
+		for (int i = 0; i < 6; ++i) {
 			new ButtonFlowConditionOperator(this, ButtonBase.LOCATION.TASK, i);
-		}	
+		}
 		new ButtonFlowConditionUseSecondVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonFlowConditionUseSecondVar(this, ButtonBase.LOCATION.TASK, true);			
-		
+		new ButtonFlowConditionUseSecondVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonFlowConditionInteger(this, ButtonBase.LOCATION.TASK, 1);
 		new ButtonFlowConditionInteger(this, ButtonBase.LOCATION.TASK, -1);
 		new ButtonFlowConditionInteger(this, ButtonBase.LOCATION.TASK, 10);
 		new ButtonFlowConditionInteger(this, ButtonBase.LOCATION.TASK, -10);
-		
 		new ButtonFlowConditionSecondVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonFlowConditionSecondVar(this, ButtonBase.LOCATION.TASK, true);	
-		
-		// =======  FOR ========= //
+		new ButtonFlowConditionSecondVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonFlowForVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonFlowForVar(this, ButtonBase.LOCATION.TASK, true);	
-
+		new ButtonFlowForVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonFlowForUseStartVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonFlowForUseStartVar(this, ButtonBase.LOCATION.TASK, true);			
-		
+		new ButtonFlowForUseStartVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonFlowForStartInteger(this, ButtonBase.LOCATION.TASK, 1);
 		new ButtonFlowForStartInteger(this, ButtonBase.LOCATION.TASK, -1);
 		new ButtonFlowForStartInteger(this, ButtonBase.LOCATION.TASK, 10);
 		new ButtonFlowForStartInteger(this, ButtonBase.LOCATION.TASK, -10);
-		
 		new ButtonFlowForStartVar(this, ButtonBase.LOCATION.TASK, false);
 		new ButtonFlowForStartVar(this, ButtonBase.LOCATION.TASK, true);
-		
-	
 		new ButtonFlowForUseEndVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonFlowForUseEndVar(this, ButtonBase.LOCATION.TASK, true);			
-		
+		new ButtonFlowForUseEndVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonFlowForEndInteger(this, ButtonBase.LOCATION.TASK, 1);
 		new ButtonFlowForEndInteger(this, ButtonBase.LOCATION.TASK, -1);
 		new ButtonFlowForEndInteger(this, ButtonBase.LOCATION.TASK, 10);
 		new ButtonFlowForEndInteger(this, ButtonBase.LOCATION.TASK, -10);
-		
 		new ButtonFlowForEndVar(this, ButtonBase.LOCATION.TASK, false);
 		new ButtonFlowForEndVar(this, ButtonBase.LOCATION.TASK, true);
-
 		new ButtonFlowForStep(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonFlowForStep(this, ButtonBase.LOCATION.TASK, true);			
-		
-		// =======  END ========= //
-		for (int i = 0; i < 4; i++) {
+		new ButtonFlowForStep(this, ButtonBase.LOCATION.TASK, true);
+		for (int i = 0; i < 4; ++i) {
 			new ButtonFlowEndType(this, ButtonBase.LOCATION.TASK, i);
-		}			
-			
-		// =======  VAR ========= //
-		for (int i = 0; i < 18; i++) {
+		}
+		for (int i = 0; i < 18; ++i) {
 			new ButtonVarType(this, ButtonBase.LOCATION.TASK, i);
 		}
-
 		new ButtonVarVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonVarVar(this, ButtonBase.LOCATION.TASK, true);		
-		
+		new ButtonVarVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonVarUseFirstVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonVarUseFirstVar(this, ButtonBase.LOCATION.TASK, true);			
-		
+		new ButtonVarUseFirstVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonVarFirstInteger(this, ButtonBase.LOCATION.TASK, 1);
 		new ButtonVarFirstInteger(this, ButtonBase.LOCATION.TASK, -1);
 		new ButtonVarFirstInteger(this, ButtonBase.LOCATION.TASK, 10);
 		new ButtonVarFirstInteger(this, ButtonBase.LOCATION.TASK, -10);
-		
 		new ButtonVarFirstVar(this, ButtonBase.LOCATION.TASK, false);
 		new ButtonVarFirstVar(this, ButtonBase.LOCATION.TASK, true);
-		
-	
 		new ButtonVarUseSecondVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonVarUseSecondVar(this, ButtonBase.LOCATION.TASK, true);			
-		
+		new ButtonVarUseSecondVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonVarSecondInteger(this, ButtonBase.LOCATION.TASK, 1);
 		new ButtonVarSecondInteger(this, ButtonBase.LOCATION.TASK, -1);
 		new ButtonVarSecondInteger(this, ButtonBase.LOCATION.TASK, 10);
 		new ButtonVarSecondInteger(this, ButtonBase.LOCATION.TASK, -10);
-		
 		new ButtonVarSecondVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonVarSecondVar(this, ButtonBase.LOCATION.TASK, true);		
-			
-			
-		// =======  CONTROL ========= //	
-		new ButtonControlType(this, ButtonBase.LOCATION.TASK, (byte)0);
-		ComputerControl.createButtons(getCart(), this);
-		
+		new ButtonVarSecondVar(this, ButtonBase.LOCATION.TASK, true);
+		new ButtonControlType(this, ButtonBase.LOCATION.TASK, 0);
+		ComputerControl.createButtons(this.getCart(), this);
 		new ButtonControlUseVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonControlUseVar(this, ButtonBase.LOCATION.TASK, true);			
-		
+		new ButtonControlUseVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonControlInteger(this, ButtonBase.LOCATION.TASK, 1);
 		new ButtonControlInteger(this, ButtonBase.LOCATION.TASK, -1);
 		new ButtonControlInteger(this, ButtonBase.LOCATION.TASK, 10);
 		new ButtonControlInteger(this, ButtonBase.LOCATION.TASK, -10);
-		
 		new ButtonControlVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonControlVar(this, ButtonBase.LOCATION.TASK, true);			
-			
-		// =======  INFO ========= //	
-		new ButtonInfoType(this, ButtonBase.LOCATION.TASK, (byte)0);
-		ComputerInfo.createButtons(getCart(), this);
-				
+		new ButtonControlVar(this, ButtonBase.LOCATION.TASK, true);
+		new ButtonInfoType(this, ButtonBase.LOCATION.TASK, 0);
+		ComputerInfo.createButtons(this.getCart(), this);
 		new ButtonInfoVar(this, ButtonBase.LOCATION.TASK, false);
-		new ButtonInfoVar(this, ButtonBase.LOCATION.TASK, true);					
-			
-		// =======  TASKS ========= //	
-		for (int i = 0; i < 21; i++) {
+		new ButtonInfoVar(this, ButtonBase.LOCATION.TASK, true);
+		for (int i = 0; i < 21; ++i) {
 			new ButtonTask(this, ButtonBase.LOCATION.FLOATING, i);
 		}
-		
-		// =======  KEYBOARD ========= //	
 		ButtonKeyboard.generateKeyboard(this);
-		
 	}
-		
+
 	@Override
 	public boolean useButtons() {
 		return true;
 	}
-		
-		
-	private IWriting writing;
+
 	public boolean isWriting() {
-		return writing != null;
+		return this.writing != null;
 	}
+
 	public IWriting getWriting() {
-		return writing;
-	}	
-	public void setWriting(IWriting val) {
-		writing = val;
+		return this.writing;
 	}
-	
-	
-	private short info;
-	/**
-		b0 - shift
-		b1 - caps
-		
-		b2-b15 - *unused*
-	**/
-	
-	
+
+	public void setWriting(final IWriting val) {
+		this.writing = val;
+	}
+
 	public void flipShift() {
-		info ^= 1;
+		this.info ^= 0x1;
 	}
+
 	public void flipCaps() {
-		info ^= 2;
+		this.info ^= 0x2;
 	}
-	
+
 	public boolean getShift() {
-		return (info & 1) != 0;
+		return (this.info & 0x1) != 0x0;
 	}
-	
+
 	public boolean getCaps() {
-		return (info & 2) != 0;
+		return (this.info & 0x2) != 0x0;
 	}
-	
+
 	public boolean isLower() {
-		return getShift() == getCaps();
+		return this.getShift() == this.getCaps();
 	}
-	
+
 	public void disableShift() {
-		info &= ~1;
+		this.info &= 0xFFFFFFFE;
 	}
 
-	
-	private ArrayList<ComputerProg> programs = new ArrayList<ComputerProg>();
-	private ComputerProg editProg;
-	private ArrayList<ComputerTask> editTasks = new ArrayList<ComputerTask>();
-	
 	public ComputerProg getCurrentProg() {
-		return editProg;
+		return this.editProg;
 	}
-	
+
 	public ArrayList<ComputerTask> getSelectedTasks() {
-		return editTasks;
+		return this.editTasks;
 	}
-	
-	public void setCurrentProg(ComputerProg prog) {
-		editProg = prog;
+
+	public void setCurrentProg(final ComputerProg prog) {
+		this.editProg = prog;
 	}
-	
-	private ComputerProg activeProg;
-	
-	public void setActiveProgram(ComputerProg prog) {
-		activeProg = prog;
+
+	public void setActiveProgram(final ComputerProg prog) {
+		this.activeProg = prog;
 	}
-	
+
 	public ComputerProg getActiveProgram() {
-		return activeProg;
-	}	
-	
-	//return true when the work is done, false allow other modules to continue the work
-	public boolean work() {
-   
-        if (activeProg != null)
-        {
-			if (doPreWork()) {
-				startWorking(activeProg.getRunTime());
-			}else{
-				if (!activeProg.run()) {
-					activeProg = null;
-				}
-				stopWorking();
-			}
-        }
-
-		return true;
-    }
-
- 
-
-
-    /**
-     Called every tick, here the necessary actions should be taken
-     **/
-    public void update()
-    {
-        //call the method from the super class, this will do all ordinary things first
-        super.update();
-
-
-    }
-
-
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
-	
+		return this.activeProg;
 	}
-	
+
+	@Override
+	public boolean work() {
+		if (this.activeProg != null) {
+			if (this.doPreWork()) {
+				this.startWorking(this.activeProg.getRunTime());
+			} else {
+				if (!this.activeProg.run()) {
+					this.activeProg = null;
+				}
+				this.stopWorking();
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void update() {
+		super.update();
+	}
+
+	@Override
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
+	}
+
 	public int numberOfPackets() {
 		return 0;
 	}
 
+	@Override
 	public int numberOfGuiData() {
-		return headerSize + programHeaderSize + taskMaxCount * taskSize + varMaxCount * varSize;
-	}	
-	
+		return 831;
+	}
+
 	public void activationChanged() {
-		editTasks.clear();
-	
-		if (editProg != null) {
-			for (ComputerTask task : editProg.getTasks()) {
+		this.editTasks.clear();
+		if (this.editProg != null) {
+			for (final ComputerTask task : this.editProg.getTasks()) {
 				if (task.getIsActivated()) {
-					editTasks.add(task);
+					this.editTasks.add(task);
 				}
 			}
-		}
-	}	
-	
-	private static final int headerSize = 1;
-	private static final int programHeaderSize = 3;
-	private static final int taskMaxCount = 256;
-	private static final int varMaxCount = 63;
-	private static final int taskSize = 2;
-	private static final int varSize = 5	;
-	
-	/**
-		0 - global info
-		
-		Program
-			0 - program data (its info short)
-			1 - number of tasks << 8, number of variables
-			2 - active task
-		
-			For every task (0-255):
-				0-1 - task data (its info int)
-				
-			For every variable(0-30):
-				0 - variable data (its info short)
-				1 - its short val
-				2-4 - its 6 char name
-				
-	
-	**/
-	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0 , this.info);
-	
-		if (editProg != null) {
-			updateGuiData(info, headerSize + 0 , editProg.getInfo());
-			
-			int tasks = editProg.getTasks().size();
-			int vars = editProg.getVars().size();
-			
-			updateGuiData(info, headerSize + 1 , (short)(tasks << 8 | vars));	
-			
-			if (editProg == activeProg) {
-				updateGuiData(info, headerSize + 2 , (short)activeProg.getActiveId());	
-			}else{
-				updateGuiData(info, headerSize + 2 , (short)256);
-			}
-			
-			for (int taskId = 0; taskId < tasks; taskId++) {
-				ComputerTask theTask = editProg.getTasks().get(taskId);
-				for (int internalId = 0; internalId < taskSize; internalId++) {
-					updateGuiData(info, headerSize + programHeaderSize + taskId * taskSize + internalId, theTask.getInfo(internalId));	
-				}
-			}
-			
-			for (int varId = 0; varId < vars; varId++) {
-				ComputerVar theVar = editProg.getVars().get(varId);
-				for (int internalId = 0; internalId < varSize; internalId++) {
-					updateGuiData(info, headerSize + programHeaderSize + taskMaxCount * taskSize + varId * varSize + internalId, theVar.getInfo(internalId));	
-				}
-			}			
-		}else{
-			updateGuiData(info, headerSize + 0 , (short)0);	
 		}
 	}
-	public void receiveGuiData(int id, short data) {
+
+	@Override
+	protected void checkGuiData(final Object[] info) {
+		this.updateGuiData(info, 0, this.info);
+		if (this.editProg != null) {
+			this.updateGuiData(info, 1, this.editProg.getInfo());
+			final int tasks = this.editProg.getTasks().size();
+			final int vars = this.editProg.getVars().size();
+			this.updateGuiData(info, 2, (short) (tasks << 8 | vars));
+			if (this.editProg == this.activeProg) {
+				this.updateGuiData(info, 3, (short) this.activeProg.getActiveId());
+			} else {
+				this.updateGuiData(info, 3, (short) 256);
+			}
+			for (int taskId = 0; taskId < tasks; ++taskId) {
+				final ComputerTask theTask = this.editProg.getTasks().get(taskId);
+				for (int internalId = 0; internalId < 2; ++internalId) {
+					this.updateGuiData(info, 4 + taskId * 2 + internalId, theTask.getInfo(internalId));
+				}
+			}
+			for (int varId = 0; varId < vars; ++varId) {
+				final ComputerVar theVar = this.editProg.getVars().get(varId);
+				for (int internalId = 0; internalId < 5; ++internalId) {
+					this.updateGuiData(info, 516 + varId * 5 + internalId, theVar.getInfo(internalId));
+				}
+			}
+		} else {
+			this.updateGuiData(info, 1, (short) 0);
+		}
+	}
+
+	@Override
+	public void receiveGuiData(final int id, final short data) {
 		System.out.println("ID " + id + " Data " + data);
 		if (id == 0) {
-			info = data;
-		}else if (id == headerSize + 0) {
+			this.info = data;
+		} else if (id == 1) {
 			if (data == 0) {
-				editProg = null;
-			}else{
-				if (editProg == null) {
-					editProg = new ComputerProg(this);					
+				this.editProg = null;
+			} else {
+				if (this.editProg == null) {
+					this.editProg = new ComputerProg(this);
 				}
-				
-				editProg.setInfo(data);
+				this.editProg.setInfo(data);
 			}
-		}else if (editProg != null) {
-
-			if(id == headerSize + 1) {
-				int tasks = (data >> 8) & 255;
-				int vars = data & 255;
-
-				editProg.setTaskCount(tasks);
-				editProg.setVarCount(vars);	
-			}else if(id == headerSize + 2) {
+		} else if (this.editProg != null) {
+			if (id == 2) {
+				final int tasks = data >> 8 & 0xFF;
+				final int vars = data & 0xFF;
+				this.editProg.setTaskCount(tasks);
+				this.editProg.setVarCount(vars);
+			} else if (id == 3) {
 				if (data >= 0 && data < 256) {
-					activeProg = editProg;
-					editProg.setActiveId(data);
-				}else{
-					activeProg = null;
-					editProg.setActiveId(0);
-				}							
-			}else{
-				int taskId = id - headerSize - programHeaderSize;
-				if (taskId < taskMaxCount * taskSize) {
-					int task = taskId / taskSize;
-					int taskInternalPos = taskId % taskSize;
-				
-					if (task >= 0 && task < editProg.getTasks().size()) {
-						ComputerTask theTask = editProg.getTasks().get(task);
+					this.activeProg = this.editProg;
+					this.editProg.setActiveId(data);
+				} else {
+					this.activeProg = null;
+					this.editProg.setActiveId(0);
+				}
+			} else {
+				final int taskId = id - 1 - 3;
+				if (taskId < 512) {
+					final int task = taskId / 2;
+					final int taskInternalPos = taskId % 2;
+					if (task >= 0 && task < this.editProg.getTasks().size()) {
+						final ComputerTask theTask = this.editProg.getTasks().get(task);
 						theTask.setInfo(taskInternalPos, data);
 					}
-				
-				}else{
-					int varId = taskId - taskMaxCount * taskSize;
-					
-					int var = varId / varSize;
-					int varInternalPos = varId % varSize;
-				
-					if (var >= 0 && var < editProg.getVars().size()) {
-						ComputerVar theVar = editProg.getVars().get(var);
+				} else {
+					final int varId = taskId - 512;
+					final int var = varId / 5;
+					final int varInternalPos = varId % 5;
+					if (var >= 0 && var < this.editProg.getVars().size()) {
+						final ComputerVar theVar = this.editProg.getVars().get(var);
 						theVar.setInfo(varInternalPos, data);
-					}				
+					}
 				}
-				
 			}
 		}
-	}	
-	
+	}
 }

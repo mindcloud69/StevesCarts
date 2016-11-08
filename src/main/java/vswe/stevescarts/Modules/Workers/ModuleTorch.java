@@ -1,10 +1,13 @@
 package vswe.stevescarts.Modules.Workers;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
@@ -12,15 +15,23 @@ import vswe.stevescarts.Modules.ISuppliesModule;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotTorch;
 
-public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
-	public ModuleTorch(MinecartModular cart) {
+public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
+	private int light;
+	private int lightLimit;
+	private int[] boxRect;
+	boolean markerMoving;
+
+	public ModuleTorch(final MinecartModular cart) {
 		super(cart);
+		this.lightLimit = 8;
+		this.boxRect = new int[] { 12, this.guiHeight() - 10, 46, 9 };
+		this.markerMoving = false;
 	}
 
 	@Override
-	public boolean hasGui(){
-        return true;
-    }
+	public boolean hasGui() {
+		return true;
+	}
 
 	@Override
 	public int guiWidth() {
@@ -28,16 +39,15 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 	}
 
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotTorch(getCart(),slotId,8+x*18,23+y*18);
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotTorch(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
 	}
 
-	//lower numbers are prioritized
 	@Override
 	public byte getWorkPriority() {
 		return 95;
@@ -45,261 +55,212 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 
 	@Override
 	public boolean work() {
-        //get the next block
-        Vec3 next = getLastblock();
-        //save the next block's coordinates for easy access
-        int x = (int) next.xCoord;
-        int y = (int) next.yCoord;
-        int z = (int) next.zCoord;
-
-        //if it's too dark, try to place torches
-        if (light <= lightLimit)
-        {
-            //try to place it at both sides
-            for (int side = -1; side <= 1; side += 2)
-            {
-                //calculate the x and z coordinates, this depends on which direction the cart is going
-                int xTorch = x + (getCart().z() != z ? side : 0);
-                int zTorch = z + (getCart().x() != x ? side : 0);
-
-                //now it's time to find a proper y value
-                for (int level = 2; level >= -2; level--)
-                {
-                    //check if this coordinate is a valid place to place a torch
-                    if (getCart().worldObj.isAirBlock(xTorch, y + level, zTorch)  && Blocks.torch.canPlaceBlockAt(getCart().worldObj, xTorch, y + level, zTorch))
-                    {
-                        //check if there's any torches to place
-                        for (int i = 0; i < getInventorySize(); i++)
-                        {
-                            //check if the slot contains torches
-                            if (getStack(i) != null)
-                            {
-                                if (Block.getBlockFromItem(getStack(i).getItem()) == Blocks.torch)
-                                {
-                                    if (doPreWork()) {
-										startWorking(3);
-										return true;
-									}else{
+		BlockPos next = this.getLastblock();
+		final int x = (int) next.getX();
+		final int y = (int) next.getY();
+		final int z = (int) next.getZ();
+		if (this.light <= this.lightLimit) {
+			for (int side = -1; side <= 1; side += 2) {
+				final int xTorch = x + ((this.getCart().z() != z) ? side : 0);
+				final int zTorch = z + ((this.getCart().x() != x) ? side : 0);
+				for (int level = 2; level >= -2; --level) {
+					if (this.getCart().worldObj.isAirBlock(new BlockPos(xTorch, y + level, zTorch)) && Blocks.TORCH.canPlaceBlockAt(this.getCart().worldObj, new BlockPos(xTorch, y + level, zTorch))) {
+						int i = 0;
+						while (i < this.getInventorySize()) {
+							if (this.getStack(i) != null && Block.getBlockFromItem(this.getStack(i).getItem()) == Blocks.TORCH) {
+								if (this.doPreWork()) {
+									this.startWorking(3);
+									return true;
+								}
+								this.getCart().worldObj.setBlockState(new BlockPos(xTorch, y + level, zTorch), Blocks.TORCH.getDefaultState());
+								if (!this.getCart().hasCreativeSupplies()) {
+									final ItemStack stack = this.getStack(i);
+									--stack.stackSize;
+									if (this.getStack(i).stackSize == 0) {
+										this.setStack(i, null);
 									}
-
-									//if so place it and remove one torch from the cart's inventory
-                                    getCart().worldObj.setBlock(xTorch, y + level, zTorch, Blocks.torch);
-        							if (!getCart().hasCreativeSupplies()) {
-	                                    getStack(i).stackSize--;
-	
-	                                    if (getStack(i).stackSize == 0)
-	                                    {
-	                                        setStack(i,null);
-	                                    }
-	
-										this.onInventoryChanged();
-        							}
-                                    break;
-                                }
-                            }
-                        }
-
-                        break;
-
-                    //if it isn't valid but there's already a torch there this side is already done. This shouldn't really happen since then it wouldn't be dark enough in the first place.
-                    }
-                    else if (getCart().worldObj.getBlock(xTorch, y + level, zTorch) == Blocks.torch)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-		stopWorking();
+									this.onInventoryChanged();
+									break;
+								}
+								break;
+							} else {
+								++i;
+							}
+						}
+						break;
+					}
+					if (this.getCart().worldObj.getBlockState(new BlockPos(xTorch, y + level, zTorch)).getBlock() == Blocks.TORCH) {
+						break;
+					}
+				}
+			}
+		}
+		this.stopWorking();
 		return false;
 	}
 
-	private int light;
-	private int lightLimit = 8;
-
 	@Override
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/torch.png");
-
-		int barLength = 3 * light;
-		if (light == 15) {
-			barLength--;
+		int barLength = 3 * this.light;
+		if (this.light == 15) {
+			--barLength;
 		}
-		
-		
-		
 		int srcX = 0;
-		if (inRect(x,y, boxRect)) {
-			srcX += boxRect[2];
-		}		
-
-		drawImage(gui, boxRect, srcX, 0);
-		drawImage(gui, 12+1, guiHeight()-10 + 1, 0, 9, barLength, 7);
-		drawImage(gui, 12 + 3 * lightLimit,guiHeight()-10,0, 16 , 1, 9);
+		if (this.inRect(x, y, this.boxRect)) {
+			srcX += this.boxRect[2];
+		}
+		this.drawImage(gui, this.boxRect, srcX, 0);
+		this.drawImage(gui, 13, this.guiHeight() - 10 + 1, 0, 9, barLength, 7);
+		this.drawImage(gui, 12 + 3 * this.lightLimit, this.guiHeight() - 10, 0, 16, 1, 9);
 	}
-	
-	private int[] boxRect = new int[] {12, guiHeight()-10, 46, 9};
 
 	@Override
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, "Threshold: " + lightLimit + " Current: " + light, x,y, boxRect);
-	}	
-	
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui, "Threshold: " + this.lightLimit + " Current: " + this.light, x, y, this.boxRect);
+	}
+
 	@Override
 	public int guiHeight() {
 		return super.guiHeight() + 10;
 	}
+
 	@Override
 	public int numberOfGuiData() {
 		return 2;
 	}
 
 	@Override
-	protected void checkGuiData(Object[] info) {
-		short data = (short)(light & 15);
-		data |= (short)((lightLimit & 15) << 4);
-		
-		
-		updateGuiData(info, 0, data);
+	protected void checkGuiData(final Object[] info) {
+		short data = (short) (this.light & 0xF);
+		data |= (short) ((this.lightLimit & 0xF) << 4);
+		this.updateGuiData(info, 0, data);
 	}
+
 	@Override
-	public void receiveGuiData(int id, short data) {
+	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			light = data & 15;
-			lightLimit = (data & 240) >> 4;
+			this.light = (data & 0xF);
+			this.lightLimit = (data & 0xF0) >> 4;
 		}
 	}
-	
-	@Override
+
 	public int numberOfPackets() {
 		return 1;
 	}
 
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			lightLimit = data[0];
-			if (lightLimit < 0) {
-				lightLimit = 0;
-			}else if (lightLimit > 15) {
-				lightLimit = 15;
-			}			
-		}
-	}
-	
-	boolean markerMoving = false;
-	
-	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
-		if (button == 0) {
-			if (inRect(x,y, boxRect)) {
-				generatePacket(x,y);
-				markerMoving = true;
+			this.lightLimit = data[0];
+			if (this.lightLimit < 0) {
+				this.lightLimit = 0;
+			} else if (this.lightLimit > 15) {
+				this.lightLimit = 15;
 			}
 		}
-	}	
-	
-	@Override
-	public void mouseMovedOrUp(GuiMinecart gui,int x, int y, int button) {
-		if(markerMoving){
-			generatePacket(x,y);
-		}
+	}
 
-        if (button != -1)
-        {
-            markerMoving = false;
-        }
-	}	
-	
-	private void generatePacket(int x, int y) {
-		int xInBox = x - boxRect[0];
+	@Override
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (button == 0 && this.inRect(x, y, this.boxRect)) {
+			this.generatePacket(x, y);
+			this.markerMoving = true;
+		}
+	}
+
+	@Override
+	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (this.markerMoving) {
+			this.generatePacket(x, y);
+		}
+		if (button != -1) {
+			this.markerMoving = false;
+		}
+	}
+
+	private void generatePacket(final int x, final int y) {
+		final int xInBox = x - this.boxRect[0];
 		int val = xInBox / 3;
 		if (val < 0) {
 			val = 0;
-		}else if (val > 15) {
+		} else if (val > 15) {
 			val = 15;
 		}
-		sendPacket(0, (byte)val);	
+		this.sendPacket(0, (byte) val);
 	}
-	
-	public void setThreshold(byte val) {
-		lightLimit = val;
+
+	public void setThreshold(final byte val) {
+		this.lightLimit = val;
 	}
-	
+
 	public int getThreshold() {
-		return lightLimit;
-	}	
-	
-	public int getLightLevel() {
-		return light;
+		return this.lightLimit;
 	}
-	
+
+	public int getLightLevel() {
+		return this.light;
+	}
+
 	@Override
 	public void update() {
 		super.update();
-
-		light = getCart().worldObj.getBlockLightValue(getCart().x(), getCart().y()+1, getCart().z());
+		this.light = this.getCart().worldObj.getLight(new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z()));
 	}
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
+		this.addDw(0, 0);
 	}
+
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
 	}
+
 	@Override
 	public void onInventoryChanged() {
 		super.onInventoryChanged();
-
-		calculateTorches();
+		this.calculateTorches();
 	}
 
 	private void calculateTorches() {
-		if (getCart().worldObj.isRemote) {
+		if (this.getCart().worldObj.isRemote) {
 			return;
 		}
-	
 		int val = 0;
-
-		for (int i = 0; i < 3; i++) {
-			val |= ((getStack(i) != null ? 1 : 0) << i);
+		for (int i = 0; i < 3; ++i) {
+			val |= ((this.getStack(i) != null) ? 1 : 0) << i;
 		}
-
-		updateDw(0,val);
+		this.updateDw(0, val);
 	}
 
 	public int getTorches() {
-		if (isPlaceholder()) {
-			return getSimInfo().getTorchInfo();
-		}else{
-			return getDw(0);
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getTorchInfo();
 		}
+		return this.getDw(0);
 	}
 
-	
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setByte(generateNBTName("lightLimit",id), (byte)lightLimit);
-	}	
-	
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setByte(this.generateNBTName("lightLimit", id), (byte) this.lightLimit);
+	}
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		lightLimit = tagCompound.getByte(generateNBTName("lightLimit",id));
-	
-		calculateTorches();
-	}	
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.lightLimit = tagCompound.getByte(this.generateNBTName("lightLimit", id));
+		this.calculateTorches();
+	}
 
 	@Override
 	public boolean haveSupplies() {
-		for (int i = 0; i < getInventorySize(); i++) {
-			ItemStack item = getStack(i);
-			if (item != null && Block.getBlockFromItem(item.getItem()) == Blocks.torch) {
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			final ItemStack item = this.getStack(i);
+			if (item != null && Block.getBlockFromItem(item.getItem()) == Blocks.TORCH) {
 				return true;
 			}
 		}
 		return false;
-	}	
-
+	}
 }

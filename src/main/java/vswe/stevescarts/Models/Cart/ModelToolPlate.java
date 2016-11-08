@@ -1,51 +1,41 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelToolPlate extends ModelCartbase
-{
+public class ModelToolPlate extends ModelCartbase {
+	private static ResourceLocation texture;
 
-
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/toolPlateModel.png");
-	
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
-	
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelToolPlate.texture;
+	}
+
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 8;
 	}
 
-    public ModelToolPlate()
-    {
-		super();
+	public ModelToolPlate() {
+		final ModelRenderer drillBase = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(drillBase);
+		drillBase.addBox(-5.0f, -7.0f, -2.0f, 10, 6, 1, 0.0f);
+		drillBase.setRotationPoint(-9.0f, 4.0f, 0.0f);
+		drillBase.rotateAngleY = 1.5707964f;
+	}
 
-		ModelRenderer drillBase = new ModelRenderer(this, 0, 0);
-		AddRenderer(drillBase);
-
-        drillBase.addBox(
-			-cartWidth / 2 + 3,		//X
-			-cartHeight + 1, 		//Y
-			-2.0F, 					//Z
-			10, 					//Size X
-			6,						//Size Y
-			1,						//Size Z
-			0.0F					//Size Increasement
-		);
-        drillBase.setRotationPoint(
-			-cartLength / 2 + 1,	//X
-			cartOnGround,			//Y
-			0.0F					//Z
-		);
-
-		drillBase.rotateAngleY = ((float)Math.PI / 2F);
-    }
+	static {
+		ModelToolPlate.texture = ResourceHelper.getResource("/models/toolPlateModel.png");
+	}
 }

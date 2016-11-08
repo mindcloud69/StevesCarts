@@ -1,321 +1,268 @@
 package vswe.stevescarts.TileEntities;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Containers.ContainerDetector;
 import vswe.stevescarts.Helpers.DetectorType;
 import vswe.stevescarts.Helpers.LogicObject;
-import vswe.stevescarts.Helpers.OperatorObject;
 import vswe.stevescarts.Interfaces.GuiBase;
 import vswe.stevescarts.Interfaces.GuiDetector;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityDetector extends TileEntityBase
-{
+public class TileEntityDetector extends TileEntityBase {
+	public LogicObject mainObj;
+	private int activeTimer;
+	private short oldData;
+	private boolean hasOldData;
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public GuiBase getGui(InventoryPlayer inv) {
+	public GuiBase getGui(final InventoryPlayer inv) {
 		return new GuiDetector(inv, this);
 	}
-	
+
 	@Override
-	public ContainerBase getContainer(InventoryPlayer inv) {
-		return new ContainerDetector(inv, this);		
+	public ContainerBase getContainer(final InventoryPlayer inv) {
+		return new ContainerDetector(inv, this);
 	}
-	
-	public LogicObject mainObj;
 
-    public TileEntityDetector()
-    {
-		mainObj = new LogicObject((byte)1, (byte)0);
-    }
+	public TileEntityDetector() {
+		this.activeTimer = 20;
+		this.mainObj = new LogicObject((byte) 1, (byte) 0);
+	}
 
-
-	@Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readFromNBT(nbttagcompound);
-		byte count = nbttagcompound.getByte("LogicObjectCount");
-		for (int i = 0; i < count; i++) {
-			loadLogicObjectFromInteger(nbttagcompound.getInteger("LogicObject" + i));
+	public void readFromNBT(final NBTTagCompound nbttagcompound) {
+		super.readFromNBT(nbttagcompound);
+		final byte count = nbttagcompound.getByte("LogicObjectCount");
+		for (int i = 0; i < count; ++i) {
+			this.loadLogicObjectFromInteger(nbttagcompound.getInteger("LogicObject" + i));
 		}
-    }
+	}
 
-	@Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeToNBT(nbttagcompound);
-		int count = saveLogicObject(nbttagcompound, mainObj, 0, false);
-		nbttagcompound.setByte("LogicObjectCount", (byte)count);
-    }
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
+		super.writeToNBT(nbttagcompound);
+		final int count = this.saveLogicObject(nbttagcompound, this.mainObj, 0, false);
+		nbttagcompound.setByte("LogicObjectCount", (byte) count);
+		return nbttagcompound;
+	}
 
-	private int saveLogicObject(NBTTagCompound nbttagcompound, LogicObject obj, int id, boolean saveMe) {
+	private int saveLogicObject(final NBTTagCompound nbttagcompound, final LogicObject obj, int id, final boolean saveMe) {
 		if (saveMe) {
-			nbttagcompound.setInteger("LogicObject" + id++, saveLogicObjectToInteger(obj));
+			nbttagcompound.setInteger("LogicObject" + id++, this.saveLogicObjectToInteger(obj));
 		}
-		
-		for (LogicObject child : obj.getChilds()) {
-			id = saveLogicObject(nbttagcompound, child, id, true);
+		for (final LogicObject child : obj.getChilds()) {
+			id = this.saveLogicObject(nbttagcompound, child, id, true);
 		}
-		
-		
 		return id;
 	}
-	
-	private int saveLogicObjectToInteger(LogicObject obj) {
+
+	private int saveLogicObjectToInteger(final LogicObject obj) {
 		int returnVal = 0;
-		returnVal |= obj.getId() << (8 * 3);
-		returnVal |= obj.getParent().getId() << (8 * 2);
-		returnVal |= obj.getExtra() << (8 * 1);	
-		returnVal |= obj.getData() << (8 * 0);
+		returnVal |= obj.getId() << 24;
+		returnVal |= obj.getParent().getId() << 16;
+		returnVal |= obj.getExtra() << 8;
+		returnVal |= obj.getData() << 0;
 		return returnVal;
 	}
-	
-	private void loadLogicObjectFromInteger(int val) {	
-		byte id = (byte)((val >> (8*3)) & 255);
-		byte parent = (byte)((val >> (8*2)) & 255);
-		byte extra = (byte)((val >> (8*1)) & 255);
-		byte data = (byte)((val >> (8*0)) & 255);
-		
-		createObject(id, parent, extra, data);		
+
+	private void loadLogicObjectFromInteger(final int val) {
+		final byte id = (byte) (val >> 24 & 0xFF);
+		final byte parent = (byte) (val >> 16 & 0xFF);
+		final byte extra = (byte) (val >> 8 & 0xFF);
+		final byte data = (byte) (val >> 0 & 0xFF);
+		this.createObject(id, parent, extra, data);
 	}
 
-
-	private int activeTimer = 20;
-	
-	@Override
-    public void updateEntity()
-    {	
-		if (activeTimer > 0) {
-			if (--activeTimer == 0) {
-				DetectorType.getTypeFromMeta(worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).deactivate(this);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & ~8, 3);
-			}	
-		}	
-    }
-
-
+	public void updateEntity() {
+		if (this.activeTimer > 0 && --this.activeTimer == 0) {
+			IBlockState blockState = worldObj.getBlockState(pos);
+			Block block = blockState.getBlock();
+			DetectorType.getTypeFromSate(blockState).deactivate(this);
+			this.worldObj.setBlockState(pos, block.getStateFromMeta(block.getMetaFromState(blockState) & 0xFFFFFFF7), 3);
+		}
+	}
 
 	@Override
-	public void receivePacket(int id, byte[] data, EntityPlayer player) {
-		//add object
+	public void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			byte lowestId = (byte)-1;
-			for (int i = 0; i < 128; i++) {
-				if (!isIdOccupied(mainObj, i)) {
-					lowestId = (byte)i;
+			byte lowestId = -1;
+			for (int i = 0; i < 128; ++i) {
+				if (!this.isIdOccupied(this.mainObj, i)) {
+					lowestId = (byte) i;
 					break;
 				}
 			}
-			
 			if (lowestId == -1) {
 				return;
 			}
-			
-
-			createObject(lowestId, data[0], data[1], data[2]);
-		//remove object
-		}else if(id == 1) {
-			removeObject(mainObj, data[0]);
+			this.createObject(lowestId, data[0], data[1], data[2]);
+		} else if (id == 1) {
+			this.removeObject(this.mainObj, data[0]);
 		}
 	}
-	
-	private void createObject(byte id, byte parentId, byte extra, byte data) {
-		LogicObject newObject = new LogicObject(id, extra, data);
-		
-		LogicObject parent = getObjectFromId(mainObj,parentId);
+
+	private void createObject(final byte id, final byte parentId, final byte extra, final byte data) {
+		final LogicObject newObject = new LogicObject(id, extra, data);
+		final LogicObject parent = this.getObjectFromId(this.mainObj, parentId);
 		if (parent != null) {
 			newObject.setParent(parent);
-		}	
+		}
 	}
-	
-	private LogicObject getObjectFromId(LogicObject object, int id) {
-		if(object.getId() == id) {	
+
+	private LogicObject getObjectFromId(final LogicObject object, final int id) {
+		if (object.getId() == id) {
 			return object;
 		}
-		
-		for (LogicObject child : object.getChilds()) {
-			LogicObject result = getObjectFromId(child, id);
+		for (final LogicObject child : object.getChilds()) {
+			final LogicObject result = this.getObjectFromId(child, id);
 			if (result != null) {
 				return result;
 			}
 		}
-		
 		return null;
-	}	
-	
-	private boolean removeObject(LogicObject object, int idToRemove) {
-		if(object.getId() == idToRemove) {
-			object.setParent(null);		
+	}
+
+	private boolean removeObject(final LogicObject object, final int idToRemove) {
+		if (object.getId() == idToRemove) {
+			object.setParent(null);
 			return true;
 		}
-		
-		for (LogicObject child : object.getChilds()) {
-			if (removeObject(child, idToRemove)) {
+		for (final LogicObject child : object.getChilds()) {
+			if (this.removeObject(child, idToRemove)) {
 				return true;
 			}
 		}
-		
 		return false;
 	}
-	
-	private boolean isIdOccupied(LogicObject object, int id) {
-		if(object.getId() == id) {
+
+	private boolean isIdOccupied(final LogicObject object, final int id) {
+		if (object.getId() == id) {
 			return true;
 		}
-		
-		for (LogicObject child : object.getChilds()) {
-			if (isIdOccupied(child, id)) {
+		for (final LogicObject child : object.getChilds()) {
+			if (this.isIdOccupied(child, id)) {
 				return true;
 			}
 		}
-		
 		return false;
 	}
-	
+
 	@Override
-	public void initGuiData(Container con, ICrafting crafting) {
-		//sendAllLogicObjects(con, crafting, mainObj);
+	public void initGuiData(final Container con, final IContainerListener crafting) {
 	}
 
 	@Override
-	public void checkGuiData(Container con, ICrafting crafting) {
-		sendUpdatedLogicObjects(con, crafting, mainObj, ((ContainerDetector)con).mainObj);	
+	public void checkGuiData(final Container con, final IContainerListener crafting) {
+		this.sendUpdatedLogicObjects(con, crafting, this.mainObj, ((ContainerDetector) con).mainObj);
 	}
-	
-	private void sendUpdatedLogicObjects(Container con, ICrafting crafting, LogicObject real, LogicObject cache) {
 
+	private void sendUpdatedLogicObjects(final Container con, final IContainerListener crafting, final LogicObject real, LogicObject cache) {
 		if (!real.equals(cache)) {
-			LogicObject parent = cache.getParent();
+			final LogicObject parent = cache.getParent();
 			cache.setParent(null);
-			LogicObject clone = real.copy(parent);
-			removeLogicObject(con, crafting, cache);
-			sendLogicObject(con, crafting, clone);	
-			cache = clone;			
+			final LogicObject clone = real.copy(parent);
+			this.removeLogicObject(con, crafting, cache);
+			this.sendLogicObject(con, crafting, clone);
+			cache = clone;
 		}
-
-			
 		while (real.getChilds().size() > cache.getChilds().size()) {
-			int i = cache.getChilds().size();
-			LogicObject clone = real.getChilds().get(i).copy(cache);
-			sendLogicObject(con, crafting, clone);		
+			final int i = cache.getChilds().size();
+			final LogicObject clone = real.getChilds().get(i).copy(cache);
+			this.sendLogicObject(con, crafting, clone);
 		}
-		
 		while (real.getChilds().size() < cache.getChilds().size()) {
-			int i = real.getChilds().size();
-			LogicObject toBeRemoved = cache.getChilds().get(i);
+			final int i = real.getChilds().size();
+			final LogicObject toBeRemoved = cache.getChilds().get(i);
 			toBeRemoved.setParent(null);
-			removeLogicObject(con, crafting, toBeRemoved);				
-		}		
-		
-		for (int i = 0; i < real.getChilds().size(); i++) {
-			sendUpdatedLogicObjects(con, crafting, real.getChilds().get(i), cache.getChilds().get(i));
+			this.removeLogicObject(con, crafting, toBeRemoved);
+		}
+		for (int i = 0; i < real.getChilds().size(); ++i) {
+			this.sendUpdatedLogicObjects(con, crafting, real.getChilds().get(i), cache.getChilds().get(i));
 		}
 	}
-	
-	private void sendAllLogicObjects(Container con, ICrafting crafting, LogicObject obj) {
-		sendLogicObject(con, crafting, obj);
-		
-		for (LogicObject child : obj.getChilds()) {
-			sendAllLogicObjects(con, crafting, child);
+
+	private void sendAllLogicObjects(final Container con, final IContainerListener crafting, final LogicObject obj) {
+		this.sendLogicObject(con, crafting, obj);
+		for (final LogicObject child : obj.getChilds()) {
+			this.sendAllLogicObjects(con, crafting, child);
 		}
 	}
-	
-	private void sendLogicObject(Container con, ICrafting crafting, LogicObject obj) {
+
+	private void sendLogicObject(final Container con, final IContainerListener crafting, final LogicObject obj) {
 		if (obj.getParent() == null) {
 			return;
 		}
-		short data = (short)((obj.getId() << 8) | obj.getParent().getId());
-		short data2 = (short)((obj.getExtra() << 8) | obj.getData());
-	
-	
-		updateGuiData(con, crafting, 0, data);
-		updateGuiData(con, crafting, 1, data2);				
+		final short data = (short) (obj.getId() << 8 | obj.getParent().getId());
+		final short data2 = (short) (obj.getExtra() << 8 | obj.getData());
+		this.updateGuiData(con, crafting, 0, data);
+		this.updateGuiData(con, crafting, 1, data2);
 	}
-	
-	private void removeLogicObject(Container con, ICrafting crafting, LogicObject obj) {
-		updateGuiData(con, crafting, 2, obj.getId());
+
+	private void removeLogicObject(final Container con, final IContainerListener crafting, final LogicObject obj) {
+		this.updateGuiData(con, crafting, 2, obj.getId());
 	}
-	
-	private short oldData;
-	private boolean hasOldData;
+
 	@Override
-	public void receiveGuiData(int id, short data) {	
+	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			oldData = data;
-			hasOldData = true;
-		}else if(id == 1) {
-			if (!hasOldData) {
+			this.oldData = data;
+			this.hasOldData = true;
+		} else if (id == 1) {
+			if (!this.hasOldData) {
 				System.out.println("Doesn't have the other part of the data");
 				return;
 			}
-			byte logicid = (byte)((oldData & (255 << 8)) >> 8);
-			byte parent = (byte)(oldData & 255);
-			byte extra = (byte)((data & (255 << 8)) >> 8);
-			byte logicdata = (byte)(data & 255);
-				
-			createObject(logicid, parent, extra, logicdata);	
-			recalculateTree();	
-			hasOldData = false;
-		}else if(id == 2) {
-			removeObject(mainObj, data);
-			recalculateTree();	
+			final byte logicid = (byte) ((this.oldData & 0xFF00) >> 8);
+			final byte parent = (byte) (this.oldData & 0xFF);
+			final byte extra = (byte) ((data & 0xFF00) >> 8);
+			final byte logicdata = (byte) (data & 0xFF);
+			this.createObject(logicid, parent, extra, logicdata);
+			this.recalculateTree();
+			this.hasOldData = false;
+		} else if (id == 2) {
+			this.removeObject(this.mainObj, data);
+			this.recalculateTree();
 		}
 	}
-	
-	public void recalculateTree() {
-		mainObj.generatePosition(5,60,245,0);
-	}
-	
-	public boolean evaluate(MinecartModular cart , int depth) {
-		return mainObj.evaluateLogicTree(this, cart, depth);
-	}
-	
-	public void handleCart(MinecartModular cart) {	
-		boolean truthValue = evaluate(cart, 0);
 
-		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		boolean isOn = (meta & 8) != 0;
-		
+	public void recalculateTree() {
+		this.mainObj.generatePosition(5, 60, 245, 0);
+	}
+
+	public boolean evaluate(final MinecartModular cart, final int depth) {
+		return this.mainObj.evaluateLogicTree(this, cart, depth);
+	}
+
+	public void handleCart(final MinecartModular cart) {
+		final boolean truthValue = this.evaluate(cart, 0);
+		IBlockState blockState = worldObj.getBlockState(pos);
+		int meta = blockState.getBlock().getMetaFromState(blockState);
+		final boolean isOn = (meta & 0x8) != 0x0;
 		if (truthValue != isOn) {
 			if (truthValue) {
-				DetectorType.getTypeFromMeta(meta).activate(this, cart);
-				meta |= 8;				
-			}else{
-				DetectorType.getTypeFromMeta(meta).deactivate(this);
-				meta &= ~8;
+				DetectorType.getTypeFromSate(blockState).activate(this, cart);
+				meta |= 0x8;
+			} else {
+				DetectorType.getTypeFromSate(blockState).deactivate(this);
+				meta &= 0xFFFFFFF7;
 			}
-			
-			worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, 3);
-			//worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, StevesCarts.instance.detectorUnit.blockID);
-			
-
+			this.worldObj.setBlockState(pos, blockState.getBlock().getStateFromMeta(meta), 3);
 		}
-		
 		if (truthValue) {
-			activeTimer = 20;
-		}		
-
+			this.activeTimer = 20;
+		}
 	}
 
-
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
-    {
-        if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
-        {
-            return false;
-        }
-
-        return entityplayer.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64D;
-    }
-
- 
-	
-	
+	@Override
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
+		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+	}
 }

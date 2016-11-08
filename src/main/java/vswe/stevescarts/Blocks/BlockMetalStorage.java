@@ -1,53 +1,31 @@
 package vswe.stevescarts.Blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.StevesCarts;
 
-public class BlockMetalStorage extends Block implements IBlockBase {
+public class BlockMetalStorage extends Block  {
 
-    public BlockMetalStorage()
-    {
-        super(Material.iron);
-        this.setCreativeTab(StevesCarts.tabsSC2Blocks);
-    }
+	public BlockMetalStorage() {
+		super(Material.IRON);
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+	}
 
-    
-    @SideOnly(Side.CLIENT)
-	@Override
-    public IIcon getIcon(int side, int meta) {
-    	meta %= ModItems.storages.icons.length;
-    	
-    	return ModItems.storages.icons[meta];
-    }
-    
-    public int damageDropped(int meta) {
-        return meta;
-    }    
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIcon(final int side, int meta) {
+//		meta %= ModItems.storages.icons.length;
+//		return ModItems.storages.icons[meta];
+//	}
 
-    @SideOnly(Side.CLIENT)
-	@Override
-    public void registerBlockIcons(IIconRegister register)
-    {
-    	//do nothing here
-    }
+	public int damageDropped(final int meta) {
+		return meta;
+	}
 
-
-    private String unlocalizedName;
-
-    @Override
-    public String getUnlocalizedName() {
-        return unlocalizedName;
-    }
-
-    @Override
-    public void setUnlocalizedName(String name) {
-        this.unlocalizedName = name;
-    }
+//	@SideOnly(Side.CLIENT)
+//	public void registerBlockIcons(final IIconRegister register) {
+//	}
 }
-

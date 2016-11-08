@@ -1,177 +1,153 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ModuleExperience extends ModuleBase {
-
-	public ModuleExperience(MinecartModular cart) {
-		super(cart);
-		
-		
-	}
-	
 	private static final int MAX_EXPERIENCE_AMOUNT = 1500;
 	private int experienceAmount;
-	
-	
+
+	public ModuleExperience(final MinecartModular cart) {
+		super(cart);
+	}
+
 	@Override
 	public void update() {
-		if (!getCart().worldObj.isRemote) {
-		
-			List list = getCart().worldObj.getEntitiesWithinAABBExcludingEntity(getCart(), getCart().boundingBox.expand(3D, 1D, 3D));
-	
-			for (int e = 0; e < list.size(); e++)
-	        {
-	            if (list.get(e) instanceof EntityXPOrb)
-	            {
-	            	experienceAmount += ((EntityXPOrb)list.get(e)).getXpValue();
-	            	if (experienceAmount > MAX_EXPERIENCE_AMOUNT) {
-	            		experienceAmount = MAX_EXPERIENCE_AMOUNT;
-	            	}else{
-	            		((Entity)list.get(e)).setDead();
-	            	}
+		if (!this.getCart().worldObj.isRemote) {
+			final List list = this.getCart().worldObj.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
+			for (int e = 0; e < list.size(); ++e) {
+				if (list.get(e) instanceof EntityXPOrb) {
+					this.experienceAmount += ((EntityXPOrb) list.get(e)).getXpValue();
+					if (this.experienceAmount > 1500) {
+						this.experienceAmount = 1500;
+					} else {
+						((EntityXPOrb) list.get(e)).setDead();
+					}
 				}
 			}
-		
 		}
-		
 	}
-	
-	@Override
+
 	@SideOnly(Side.CLIENT)
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.EXPERIENCE_LEVEL.translate(String.valueOf(experienceAmount), String.valueOf(MAX_EXPERIENCE_AMOUNT))  + "\n" + Localization.MODULES.ATTACHMENTS.EXPERIENCE_EXTRACT.translate() + "\n" + Localization.MODULES.ATTACHMENTS.EXPERIENCE_PLAYER_LEVEL.translate(String.valueOf(getClientPlayer().experienceLevel)), x, y, getContainerRect());
+	@Override
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.EXPERIENCE_LEVEL.translate(String.valueOf(this.experienceAmount), String.valueOf(1500)) + "\n" + Localization.MODULES.ATTACHMENTS.EXPERIENCE_EXTRACT.translate() + "\n" + Localization.MODULES.ATTACHMENTS.EXPERIENCE_PLAYER_LEVEL.translate(String.valueOf(this.getClientPlayer().experienceLevel)), x, y, this.getContainerRect());
 	}
-	
+
 	@Override
 	public int numberOfGuiData() {
 		return 1;
 	}
-	
-	@Override
-	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0, (short)experienceAmount);
-	}
-	
-	@Override
-	public void receiveGuiData(int id, short data) {
-		if (id == 0) {
-			experienceAmount = data;
-		}
-	}
-	
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void drawForeground(GuiMinecart gui) {
-		drawString(gui, Localization.MODULES.ATTACHMENTS.EXPERIENCE.translate(), 8, 6, 0x404040);
-	}
-	
-	private int[] getContainerRect() {
-		return new int[] {10, 15, 26, 65};
-	}
-	
-	private int[] getContentRect(float part) {
-		int[] cont = getContainerRect();
-		
-		int normalHeight = cont[3] - 4;
-		int currentHeight = (int)(normalHeight * part);
-			
-		return new int[] {cont[0] + 2, cont[1] + 2 + normalHeight - currentHeight, cont[2] - 4, currentHeight, normalHeight};
-	}	
-	
-	private void drawContent(GuiMinecart gui, int x, int y, int id) {
-		int lowerLevel = id * MAX_EXPERIENCE_AMOUNT / 3;
-		
-		int currentLevel = experienceAmount - lowerLevel;
-		float part = 3F * currentLevel / (MAX_EXPERIENCE_AMOUNT);
-		if (part > 1) {
-			part = 1;
-		}
-		
-		int [] content = getContentRect(part);
-		drawImage(gui, content, 4 + content[2] * (id + 1), content[4] - content[3]);
-	}
-	
-		
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiMinecart gui, int x, int y) {
-		ResourceHelper.bindResource("/gui/experience.png");
-		
-		for (int i = 0; i < 3; i++) {
-			drawContent(gui, x, y, i);
-		}
-		
-		drawImage(gui, getContainerRect(), 0, inRect(x, y, getContainerRect()) ? 65 : 0);
+	protected void checkGuiData(final Object[] info) {
+		this.updateGuiData(info, 0, (short) this.experienceAmount);
 	}
-	
+
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
-		if (inRect(x, y, getContainerRect())) {
-			sendPacket(0);
+	public void receiveGuiData(final int id, final short data) {
+		if (id == 0) {
+			this.experienceAmount = data;
 		}
 	}
-	
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.ATTACHMENTS.EXPERIENCE.translate(), 8, 6, 4210752);
+	}
+
+	private int[] getContainerRect() {
+		return new int[] { 10, 15, 26, 65 };
+	}
+
+	private int[] getContentRect(final float part) {
+		final int[] cont = this.getContainerRect();
+		final int normalHeight = cont[3] - 4;
+		final int currentHeight = (int) (normalHeight * part);
+		return new int[] { cont[0] + 2, cont[1] + 2 + normalHeight - currentHeight, cont[2] - 4, currentHeight, normalHeight };
+	}
+
+	private void drawContent(final GuiMinecart gui, final int x, final int y, final int id) {
+		final int lowerLevel = id * 1500 / 3;
+		final int currentLevel = this.experienceAmount - lowerLevel;
+		float part = 3.0f * currentLevel / 1500.0f;
+		if (part > 1.0f) {
+			part = 1.0f;
+		}
+		final int[] content = this.getContentRect(part);
+		this.drawImage(gui, content, 4 + content[2] * (id + 1), content[4] - content[3]);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
+		ResourceHelper.bindResource("/gui/experience.png");
+		for (int i = 0; i < 3; ++i) {
+			this.drawContent(gui, x, y, i);
+		}
+		this.drawImage(gui, this.getContainerRect(), 0, this.inRect(x, y, this.getContainerRect()) ? 65 : 0);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (this.inRect(x, y, this.getContainerRect())) {
+			this.sendPacket(0);
+		}
+	}
+
 	@Override
 	public boolean hasGui() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean hasSlots() {
 		return false;
 	}
-	
+
 	@Override
 	public int guiWidth() {
 		return 70;
 	}
-	
+
 	@Override
 	public int guiHeight() {
 		return 84;
 	}
-	
 
 	@Override
 	protected int numberOfPackets() {
 		return 1;
 	}
-	
+
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			player.addExperience(Math.min(experienceAmount, 50));
-			experienceAmount -= Math.min(experienceAmount, 50);
+			player.addExperience(Math.min(this.experienceAmount, 50));
+			this.experienceAmount -= Math.min(this.experienceAmount, 50);
 		}
 	}
-	
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		experienceAmount = tagCompound.getShort(generateNBTName("Experience",id));
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.experienceAmount = tagCompound.getShort(this.generateNBTName("Experience", id));
 	}
 
-	
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setShort(generateNBTName("Experience",id), (short)experienceAmount);
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setShort(this.generateNBTName("Experience", id), (short) this.experienceAmount);
 	}
-		
-	
 }

@@ -1,260 +1,206 @@
 package vswe.stevescarts.Items;
-import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.StevesCarts;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.world.World;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.Helpers.ComponentTypes;
 import vswe.stevescarts.Helpers.EntityEasterEgg;
-public class ItemCartComponent extends Item
-{
+import vswe.stevescarts.StevesCarts;
 
+import java.util.List;
 
-	private IIcon icons[];
-	private IIcon unknownIcon;
-	public static int size () {
+public class ItemCartComponent extends Item {
+//	private IIcon[] icons;
+//	private IIcon unknownIcon;
+
+	public static int size() {
 		return ComponentTypes.values().length;
 	}
 
-    public ItemCartComponent() {
-        super();
-        setHasSubtypes(true);
-        setMaxDamage(0);
-        setCreativeTab(StevesCarts.tabsSC2Components);	
-    }
+	public ItemCartComponent() {
+		this.setHasSubtypes(true);
+		this.setMaxDamage(0);
+		this.setCreativeTab(StevesCarts.tabsSC2Components);
+	}
 
-	private String getName(int dmg) {
+	private String getName(final int dmg) {
 		return ComponentTypes.values()[dmg].getName();
 	}
-	
-	public String getName(ItemStack par1ItemStack)
-    {
-		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || getName(par1ItemStack.getItemDamage()) == null) {
+
+	public String getName(final ItemStack par1ItemStack) {
+		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
 			return "Unknown SC2 Component";
-		}else{
-			return getName(par1ItemStack.getItemDamage());
 		}
-    }
-
-	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int dmg)
-    {
-		if (dmg < 0 || dmg >= icons.length || icons[dmg] == null) {
-			return unknownIcon;
-		}else{
-			return icons[dmg];
-		}
-    }	
-	
-	private String getRawName(int i) {
-		return getName(i).replace(":","").replace(" ","_").toLowerCase();
+		return this.getName(par1ItemStack.getItemDamage());
 	}
 
-	@Override
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIconFromDamage(final int dmg) {
+//		if (dmg < 0 || dmg >= this.icons.length || this.icons[dmg] == null) {
+//			return this.unknownIcon;
+//		}
+//		return this.icons[dmg];
+//	}
+//
+//	private String getRawName(final int i) {
+//		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerIcons(final IIconRegister register) {
+//		this.icons = new IIcon[size()];
+//		for (int i = 0; i < this.icons.length; ++i) {
+//			if (this.getName(i) != null) {
+//				final IIcon[] icons = this.icons;
+//				final int n = i;
+//				final StringBuilder sb = new StringBuilder();
+//				StevesCarts.instance.getClass();
+//				icons[n] = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName(i)).append("_icon").toString());
+//			}
+//		}
+//		final StringBuilder sb2 = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.unknownIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("unknown_icon").toString());
+//	}
+
+	public String getUnlocalizedName(final ItemStack item) {
+		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || this.getName(item.getItemDamage()) == null) {
+			return this.getUnlocalizedName();
+		}
+		return "item.SC2:" + this.getName(item.getItemDamage());
+	}
+
+	public String getUnlocalizedName() {
+		return "item.SC2:unknowncomponent";
+	}
+
 	@SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-		icons = new IIcon[size()];
-		for (int i = 0; i < icons.length; i++) {
-			if (getName(i) != null) {
-				icons[i] = register.registerIcon(StevesCarts.instance.textureHeader + ":" + getRawName(i) + "_icon");
-			}
-		}
-		unknownIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "unknown_icon");	
-    }
-	
-	@Override
-    public String getUnlocalizedName(ItemStack item)
-    {
-		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || getName(item.getItemDamage()) == null) {
-			return getUnlocalizedName();
-		}else{
-			return "item." + StevesCarts.localStart + getRawName(item.getItemDamage());
-		}
-    }
-	
-	@Override
-    public String getUnlocalizedName() {
-	
-		return "item." + StevesCarts.localStart + "unknowncomponent";
-	}
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-	
-		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || getName(par1ItemStack.getItemDamage()) == null) {
-			if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartComponent){
+	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
+			if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartComponent) {
 				par3List.add("Component id " + par1ItemStack.getItemDamage());
-			}else{
+			} else {
 				par3List.add("Unknown component id");
 			}
 		}
-	}		
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-		for (int i = 0; i < size(); i++) {
-			ItemStack iStack = new ItemStack(par1, 1, i);
-			if (isValid(iStack)) {
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
+		for (int i = 0; i < size(); ++i) {
+			final ItemStack iStack = new ItemStack(par1, 1, i);
+			if (this.isValid(iStack)) {
 				par3List.add(iStack);
 			}
-        }
-    }
+		}
+	}
 
-
-	public boolean isValid(ItemStack item) {
-		if (item == null || !(item.getItem() instanceof ItemCartComponent) || getName(item.getItemDamage()) == null) {
+	public boolean isValid(final ItemStack item) {
+		if (item == null || !(item.getItem() instanceof ItemCartComponent) || this.getName(item.getItemDamage()) == null) {
 			return false;
 		}
-	
 		if (item.getItemDamage() >= 50 && item.getItemDamage() < 58) {
 			return StevesCarts.isChristmas;
 		}
 		if (item.getItemDamage() >= 66 && item.getItemDamage() < 72) {
 			return StevesCarts.isEaster;
-		}		
-		
-		if (item.getItemDamage() >= 72 && item.getItemDamage() < 80) {
-			return false;
 		}
-		
-		return true;
+		return item.getItemDamage() < 72 || item.getItemDamage() >= 80;
 	}
-		
-		
-	//WOOD STUFF
-	public static ItemStack getWood(int type, boolean isLog) {
+
+	public static ItemStack getWood(final int type, final boolean isLog) {
 		return getWood(type, isLog, 1);
 	}
-	
-	public static ItemStack getWood(int type, boolean isLog, int count) {
+
+	public static ItemStack getWood(final int type, final boolean isLog, final int count) {
 		return new ItemStack(ModItems.component, count, 72 + type * 2 + (isLog ? 0 : 1));
 	}
-	
-	public static boolean isWoodLog(ItemStack item) {
-		if (item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80) {
-			return (item.getItemDamage() - 72) % 2 == 0;
-		}else{
-			return false;
-		}		
+
+	public static boolean isWoodLog(final ItemStack item) {
+		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 0;
 	}
-	
-	public static boolean isWoodTwig(ItemStack item) {
-		if (item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80) {
-			return (item.getItemDamage() - 72) % 2 == 1;
-		}else{
-			return false;
-		}		
-	}		
-		
-	//EASTER STUFF
-	private boolean isEdibleEgg(ItemStack item) {
+
+	public static boolean isWoodTwig(final ItemStack item) {
+		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 1;
+	}
+
+	private boolean isEdibleEgg(final ItemStack item) {
 		return item != null && item.getItemDamage() >= 66 && item.getItemDamage() < 70;
-	}	
-	
-	private boolean isThrowableEgg(ItemStack item) {
+	}
+
+	private boolean isThrowableEgg(final ItemStack item) {
 		return item != null && item.getItemDamage() == 70;
 	}
 	
 	@Override
-    public ItemStack onEaten(ItemStack item, World world, EntityPlayer player)
-    {
-		if (isEdibleEgg(item)) {
+	public ItemStack onItemUseFinish(ItemStack item, World world, EntityLivingBase entity) {
+		if (entity instanceof EntityPlayer && this.isEdibleEgg(item)) {
+			EntityPlayer player = (EntityPlayer) entity;
 			if (item.getItemDamage() == 66) {
-				//Explosive Easter Egg
-				
-				world.createExplosion(null, player.posX, player.posY, player.posZ, 0.1F, false);		
-			}else if (item.getItemDamage() == 67) {
-				//Burning Easter Egg
-				
-				player.setFire(5);
-				
-				if (!world.isRemote)
-				{
-					player.addPotionEffect(new PotionEffect(Potion.waterBreathing.id, 600, 0));
-				}					
-			}else if (item.getItemDamage() == 68) {
-				//Glistering Easter Egg
-			
-				if (!world.isRemote)
-				{
-					player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 50, 2));
-				}	
-			}else if (item.getItemDamage() == 69) {
-				//Chocolate Easter Egg
-
-				if (!world.isRemote)
-				{
-					player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 300, 4));
-				}								
-			}else if (item.getItemDamage() == 70) {
-				//Colorful Easter Egg
-				
-			
-			}
-			
-
-		
+				world.createExplosion(null, entity.posX, entity.posY, entity.posZ, 0.1f, false);
+			} else if (item.getItemDamage() == 67) {
+				entity.setFire(5);
+				if (!world.isRemote) {
+					entity.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 600, 0));
+				}
+			} else if (item.getItemDamage() == 68) {
+				if (!world.isRemote) {
+					entity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 50, 2));
+				}
+			} else if (item.getItemDamage() == 69) {
+				if (!world.isRemote) {
+					entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, 300, 4));
+				}
+			} else if (item.getItemDamage() == 70) {}
 			if (!player.capabilities.isCreativeMode) {
 				--item.stackSize;
 			}
-			world.playSoundAtEntity(player, "random.burp", 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
-			player.getFoodStats().addStats(2, 0);
+			world.playSound((EntityPlayer)entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+			player.getFoodStats().addStats(2, 0.0f);
 			return item;
-		}else{
-			return super.onEaten(item, world, player);
 		}
-		
-    }	
-	
-	@Override
-    public int getMaxItemUseDuration(ItemStack item)
-    {
-        return isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
-    }
+		return  super.onItemUseFinish(item, world, entity);
+	}
+
+	public int getMaxItemUseDuration(final ItemStack item) {
+		return this.isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
+	}
+
+	public EnumAction getItemUseAction(final ItemStack item) {
+		return this.isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
+	}
 
 	@Override
-    public EnumAction getItemUseAction(ItemStack item)
-    {
-		return isEdibleEgg(item) ? EnumAction.eat : super.getItemUseAction(item);
-    }		
-	
-	@Override
-    public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
-    {
-        if (isEdibleEgg(item)) {
-            player.setItemInUse(item, this.getMaxItemUseDuration(item));
-			return item;
-		}else if(isThrowableEgg(item)) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack item, World world, EntityPlayer player, EnumHand hand) {
+		if (this.isEdibleEgg(item)) {
+			player.setActiveHand(hand);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, item);
+		}
+		if (this.isThrowableEgg(item)) {
 			if (!player.capabilities.isCreativeMode) {
 				--item.stackSize;
 			}
-			world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
 				world.spawnEntityInWorld(new EntityEasterEgg(world, player));
 			}
-			return item;
-        }else{
-			return super.onItemRightClick(item, world, player);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 		}
-       
-    }	
-		
+		return super.onItemRightClick(item, world, player, hand);
+	}
 }

@@ -4,34 +4,27 @@ import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Modules.ModuleBase;
 
 public class ModuleDataTool extends ModuleData {
+	private boolean unbreakable;
 
-	public ModuleDataTool(int id, String name, Class<? extends ModuleBase> moduleClass, int modularCost, boolean unbreakable) {
+	public ModuleDataTool(final int id, final String name, final Class<? extends ModuleBase> moduleClass, final int modularCost, final boolean unbreakable) {
 		super(id, name, moduleClass, modularCost);
-
-		useExtraData((byte)100);
+		this.useExtraData((byte) 100);
 		this.unbreakable = unbreakable;
 	}
 
-	private boolean unbreakable;
-	
-	
 	@Override
-	public String getModuleInfoText(byte b) {
-		if (unbreakable) {
+	public String getModuleInfoText(final byte b) {
+		if (this.unbreakable) {
 			return Localization.MODULE_INFO.TOOL_UNBREAKABLE.translate();
-		}else{
-			return Localization.MODULE_INFO.TOOL_DURABILITY.translate(String.valueOf(b));
 		}
+		return Localization.MODULE_INFO.TOOL_DURABILITY.translate(String.valueOf(b));
 	}
-	
+
 	@Override
-	public String getCartInfoText(String name, byte b) {
-		if (unbreakable) {
+	public String getCartInfoText(final String name, final byte b) {
+		if (this.unbreakable) {
 			return super.getCartInfoText(name, b);
-		}else{
-			return name + " [" + b + "%]";
 		}
+		return name + " [" + b + "%]";
 	}
-	
-	
 }

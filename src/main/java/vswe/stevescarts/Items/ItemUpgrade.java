@@ -1,120 +1,94 @@
 package vswe.stevescarts.Items;
-import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-
-import vswe.stevescarts.Upgrades.AssemblerUpgrade;
-import vswe.stevescarts.Upgrades.BaseEffect;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.World;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-public class ItemUpgrade extends ItemBlock
-{
+import vswe.stevescarts.Upgrades.AssemblerUpgrade;
+import vswe.stevescarts.Upgrades.BaseEffect;
 
+import java.util.List;
 
-    public ItemUpgrade(Block block)
-    {
-        super(block);
-        setHasSubtypes(true);
-        setMaxDamage(0);
-        setCreativeTab(StevesCarts.tabsSC2Blocks);		
-    }
+public class ItemUpgrade extends ItemBlock {
+	public ItemUpgrade(final Block block) {
+		super(block);
+		this.setHasSubtypes(true);
+		this.setMaxDamage(0);
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+	}
 
-	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int dmg)
-    {
-		AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(dmg);
-		if (upgrade != null) {
-			return upgrade.getIcon();
-		}
-		return null;
-    }	
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-		for (AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-			upgrade.createIcon(register);
-		}
-      
-		AssemblerUpgrade.initSides(register);
-    }	
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIconFromDamage(final int dmg) {
+//		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(dmg);
+//		if (upgrade != null) {
+//			return upgrade.getIcon();
+//		}
+//		return null;
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerIcons(final IIconRegister register) {
+//		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
+//			upgrade.createIcon(register);
+//		}
+//		AssemblerUpgrade.initSides(register);
+//	}
 
-	public String getName(ItemStack item)
-    {
-		AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
+	public String getName(final ItemStack item) {
+		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
 		if (upgrade != null) {
 			return upgrade.getName();
-		}	
-	
-        return "Unknown";
-    }
+		}
+		return "Unknown";
+	}
 
- 	@Override
-    public String getUnlocalizedName(ItemStack item)
-    {
-		AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
+	public String getUnlocalizedName(final ItemStack item) {
+		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
 		if (upgrade != null) {
-			return "item." + StevesCarts.localStart + upgrade.getRawName();
-		}	
-	
-        return "item.unknown";
-    }	
-	
-    @SideOnly(Side.CLIENT)
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-		for (AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-			ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());
+			return "item.SC2:" + upgrade.getRawName();
+		}
+		return "item.unknown";
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
+		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
+			final ItemStack iStack = new ItemStack(par1, 1, (int) upgrade.getId());
 			par3List.add(iStack);
-        }
-    }
+		}
+	}
 
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
-    {
-		
-	
-		if (super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)) {
-			TileEntity tile = world.getTileEntity(x,y,z);
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+		if(super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)){
+			final TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof TileEntityUpgrade) {
-				TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
+				final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 				upgrade.setType(stack.getItemDamage());
 			}
-			
 			return true;
 		}
-       return false;
-    }	
-	
-   @SideOnly(Side.CLIENT)
+		return false;
+	}
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(par1ItemStack.getItemDamage());
+	@SideOnly(Side.CLIENT)
+	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(par1ItemStack.getItemDamage());
 		if (upgrade != null) {
-			for (BaseEffect effect : upgrade.getEffects()) {
+			for (final BaseEffect effect : upgrade.getEffects()) {
 				par3List.add(effect.getName());
 			}
 		}
-	}		
-
+	}
 }

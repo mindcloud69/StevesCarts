@@ -1,49 +1,41 @@
 package vswe.stevescarts.Buttons;
-import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-import vswe.stevescarts.Computer.ComputerProg;
-import vswe.stevescarts.Computer.ComputerTask;
 
-import java.util.ArrayList;
+import net.minecraft.entity.player.EntityPlayer;
+import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
+
 public class ButtonFlowConditionOperator extends ButtonFlowCondition {
-	
 	private int typeId;
-	
-    public ButtonFlowConditionOperator(ModuleComputer module, LOCATION loc, int typeId)
-    {
-		super(module, loc);	
+
+	public ButtonFlowConditionOperator(final ModuleComputer module, final LOCATION loc, final int typeId) {
+		super(module, loc);
 		this.typeId = typeId;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Change to " + ComputerTask.getFlowOperatorName(typeId, true);
+		return "Change to " + ComputerTask.getFlowOperatorName(this.typeId, true);
 	}
-	
+
 	@Override
 	public int texture() {
-		return 32 + typeId;
+		return 32 + this.typeId;
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
-		for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-			if (typeId != task.getFlowConditionOperator()) {
+		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+			if (this.typeId != task.getFlowConditionOperator()) {
 				return true;
 			}
-		}	
+		}
 		return false;
 	}
-	
 
 	@Override
-	public void onServerClick(EntityPlayer player, int mousebutton, boolean ctrlKey, boolean shiftKey) {
-		for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-			task.setFlowConditionOperator(typeId);
+	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
+		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+			task.setFlowConditionOperator(this.typeId);
 		}
-	}	
-	
-
+	}
 }

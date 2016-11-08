@@ -3,40 +3,36 @@ package vswe.stevescarts.Arcade;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public class NoteAnimation {
-
 	private Note note;
 	private int animation;
 	private boolean isNew;
-	
-	
-	public NoteAnimation(Note note, int start, boolean isNew) {
+
+	public NoteAnimation(final Note note, final int start, final boolean isNew) {
 		this.note = note;
 		this.animation = start;
 		this.isNew = isNew;
 	}
 
-	public boolean draw(ArcadeMonopoly game, GuiMinecart gui, int x, int y) {
-		if (animation >= 0) {
-			if (isNew) {
-				note.draw(game, gui, x, y - 10 + animation / 2);
-			}else{
-				note.draw(game, gui, x, y + animation);
+	public boolean draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y) {
+		if (this.animation >= 0) {
+			if (this.isNew) {
+				this.note.draw(game, gui, x, y - 10 + this.animation / 2);
+			} else {
+				this.note.draw(game, gui, x, y + this.animation);
 			}
-			
 		}
-		return ++animation > 20;
+		return ++this.animation > 20;
 	}
-	
+
 	public Note getNote() {
-		return note;
-	}	
-	
+		return this.note;
+	}
+
 	public int getAnimation() {
-		return animation;
+		return this.animation;
 	}
-	
+
 	public boolean isNew() {
-		return isNew;
+		return this.isNew;
 	}
-	
 }

@@ -1,152 +1,116 @@
 package vswe.stevescarts.Modules.Realtimers;
-import java.util.HashMap;
-import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Models.Cart.ModelCartbase;
-import vswe.stevescarts.Models.Cart.ModelCleaner;
-import vswe.stevescarts.Models.Cart.ModelHullTop;
 import vswe.stevescarts.Modules.ModuleBase;
 
+import java.util.List;
+
 public class ModuleCleaner extends ModuleBase {
-	public ModuleCleaner(MinecartModular cart) {
+	public ModuleCleaner(final MinecartModular cart) {
 		super(cart);
 	}
 
-	//called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
 		super.update();
-
-		if (getCart().worldObj.isRemote) {
+		if (this.getCart().worldObj.isRemote) {
 			return;
 		}
-
-		if (getCart().hasFuel()) {
-			suck();
+		if (this.getCart().hasFuel()) {
+			this.suck();
 		}
-		clean();
+		this.clean();
 	}
 
-	private double  calculatemotion(double dif) {
-		if (dif > -0.5D && dif < 0.5D) {
-			return 0;
+	private double calculatemotion(final double dif) {
+		if (dif > -0.5 && dif < 0.5) {
+			return 0.0;
 		}
-
-		return 1 / (dif * 15);
+		return 1.0 / (dif * 15.0);
 	}
 
 	private void suck() {
-		List list = getCart().worldObj.getEntitiesWithinAABBExcludingEntity(getCart(), getCart().boundingBox.expand(3D, 1D, 3D));
-
-		for (int e = 0; e < list.size(); e++)
-        {
-            if (list.get(e) instanceof EntityItem)
-            {
-				EntityItem eItem = (EntityItem)list.get(e);
-				if (eItem.delayBeforeCanPickup <= 10)
-				{
-					double difX = getCart().posX - eItem.posX;
-					double difY = getCart().posY - eItem.posY;
-					double difZ = getCart().posZ - eItem.posZ;
-
-					eItem.motionX += calculatemotion(difX);
-					eItem.motionY += calculatemotion(difY);
-					eItem.motionZ += calculatemotion(difZ);
+		final List<Entity> list = this.getCart().worldObj.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
+		for (Entity e : list) {
+			if (e instanceof EntityItem) {
+				final EntityItem eItem = (EntityItem) e;
+				if (eItem.delayBeforeCanPickup <= 10) {
+					final double difX = this.getCart().posX - eItem.posX;
+					final double difY = this.getCart().posY - eItem.posY;
+					final double difZ = this.getCart().posZ - eItem.posZ;
+					final EntityItem entityItem = eItem;
+					entityItem.motionX += this.calculatemotion(difX);
+					final EntityItem entityItem2 = eItem;
+					entityItem2.motionY += this.calculatemotion(difY);
+					final EntityItem entityItem3 = eItem;
+					entityItem3.motionZ += this.calculatemotion(difZ);
 				}
 			}
 		}
 	}
 
 	private void clean() {
-		List list = getCart().worldObj.getEntitiesWithinAABBExcludingEntity(getCart(), getCart().boundingBox.expand(1D, 0.5D, 1D));
-
-        for (int e = 0; e < list.size(); e++)
-        {
-            if (list.get(e) instanceof EntityItem)
-            {
-                EntityItem eItem = (EntityItem)list.get(e);
-
-                if (eItem.delayBeforeCanPickup <= 10 && !eItem.isDead)
-				{
-                    int stackSize = eItem.getEntityItem().stackSize;
-                    getCart().addItemToChest(eItem.getEntityItem());
-
-                    if (stackSize != eItem.getEntityItem().stackSize)
-                    {
-                        getCart().worldObj.playSoundAtEntity(getCart(), "random.pop", 0.2F, ((getCart().rand.nextFloat() - getCart().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-
-                        if (eItem.getEntityItem().stackSize <= 0)
-                        {
-                            eItem.setDead();
-                        }
-                    }
-                    else
-                    {
-					   if (failPickup(eItem.getEntityItem())) {
-							eItem.setDead();
-					   }
-                    }
-                }
-            }
-            else if (list.get(e) instanceof EntityArrow)
-            {
-                EntityArrow eItem = (EntityArrow)list.get(e);
-
-                if (Math.pow(eItem.motionX,2) + Math.pow(eItem.motionY,2) + Math.pow(eItem.motionZ,2) < 0.2D && eItem.arrowShake <= 0 && !eItem.isDead)
-                {
-                    eItem.arrowShake = 3;
-                    ItemStack iItem = new ItemStack(Items.arrow, 1);
-                    getCart().addItemToChest(iItem);
-
-                    if (iItem.stackSize <= 0)
-                    {
-                        getCart().worldObj.playSoundAtEntity(getCart(), "random.pop", 0.2F, ((getCart().rand.nextFloat() - getCart().rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-						eItem.setDead();
-				   }else{
-						if (failPickup(iItem)) {
+		final List<Entity> list = this.getCart().worldObj.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(1.0, 0.5, 1.0));
+		for (int e = 0; e < list.size(); ++e) {
+			if (list.get(e) instanceof EntityItem) {
+				final EntityItem eItem = (EntityItem) list.get(e);
+				if (eItem.delayBeforeCanPickup <= 10 && !eItem.isDead) {
+					final int stackSize = eItem.getEntityItem().stackSize;
+					this.getCart().addItemToChest(eItem.getEntityItem());
+					if (stackSize != eItem.getEntityItem().stackSize) {
+						this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
+						if (eItem.getEntityItem().stackSize <= 0) {
 							eItem.setDead();
 						}
+					} else if (this.failPickup(eItem.getEntityItem())) {
+						eItem.setDead();
 					}
-                }
-            }
-        }
+				}
+			} else if (list.get(e) instanceof EntityArrow) {
+				final EntityArrow eItem2 = (EntityArrow) list.get(e);
+				if (Math.pow(eItem2.motionX, 2.0) + Math.pow(eItem2.motionY, 2.0) + Math.pow(eItem2.motionZ, 2.0) < 0.2 && eItem2.arrowShake <= 0 && !eItem2.isDead) {
+					eItem2.arrowShake = 3;
+					final ItemStack iItem = new ItemStack(Items.ARROW, 1);
+					this.getCart().addItemToChest(iItem);
+					if (iItem.stackSize <= 0) {
+						this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
+						eItem2.setDead();
+					} else if (this.failPickup(iItem)) {
+						eItem2.setDead();
+					}
+				}
+			}
+		}
 	}
 
-	private boolean failPickup(ItemStack item) {
-		int x = normalize(getCart().pushZ);
-		int z = normalize(getCart().pushX);
-
+	private boolean failPickup(final ItemStack item) {
+		final int x = this.normalize(this.getCart().pushZ);
+		final int z = this.normalize(this.getCart().pushX);
 		if (x == 0 && z == 0) {
 			return false;
-		}else if (getCart().worldObj.isRemote) {
-			//return true;
 		}
-
-		EntityItem entityitem = new EntityItem(getCart().worldObj, getCart().posX, getCart().posY, getCart().posZ , item.copy());
-		entityitem.delayBeforeCanPickup = 35;
-
-		entityitem.motionX = x / 3F;
-		entityitem.motionY = 0.15F;
-		entityitem.motionZ = z / 3F;
-		getCart().worldObj.spawnEntityInWorld(entityitem);
-
+		if (this.getCart().worldObj.isRemote) {}
+		final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, item.copy());
+		entityitem.setPickupDelay(35);
+		entityitem.motionX = x / 3.0f;
+		entityitem.motionY = 0.15000000596046448;
+		entityitem.motionZ = z / 3.0f;
+		this.getCart().worldObj.spawnEntityInWorld(entityitem);
 		return true;
 	}
 
-	private int normalize(double val) {
-		if (val == 0) {
+	private int normalize(final double val) {
+		if (val == 0.0) {
 			return 0;
-		}else if (val > 0) {
-			return 1;
-		}else{
-			return -1;
 		}
+		if (val > 0.0) {
+			return 1;
+		}
+		return -1;
 	}
-
 }

@@ -1,44 +1,49 @@
 package vswe.stevescarts.Modules.Realtimers;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Addons.Mobdetectors.ModuleMobdetector;
+import vswe.stevescarts.Modules.ModuleBase;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ModuleShooterAdv extends ModuleShooter {
-	public ModuleShooterAdv(MinecartModular cart) {
+	private ArrayList<ModuleMobdetector> detectors;
+	private EntityNearestTarget sorter;
+	private float detectorAngle;
+
+	public ModuleShooterAdv(final MinecartModular cart) {
 		super(cart);
+		this.sorter = new EntityNearestTarget(this.getCart());
 	}
 
-	
-	private ArrayList<ModuleMobdetector> detectors;
 	@Override
 	public void preInit() {
 		super.preInit();
-		detectors = new ArrayList<ModuleMobdetector>();
-		
-		for (ModuleBase module : getCart().getModules()) {
+		this.detectors = new ArrayList<ModuleMobdetector>();
+		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ModuleMobdetector) {
-				detectors.add((ModuleMobdetector)module);
+				this.detectors.add((ModuleMobdetector) module);
 			}
 		}
-	}		
-	
-	
+	}
+
 	@Override
-	protected void generatePipes(ArrayList<Integer> list) {
+	protected void generatePipes(final ArrayList<Integer> list) {
 		list.add(1);
 	}
 
@@ -49,44 +54,42 @@ public class ModuleShooterAdv extends ModuleShooter {
 
 	@Override
 	protected int guiRequiredHeight() {
-		return 10 + 10 * detectors.size();
+		return 10 + 10 * this.detectors.size();
 	}
 
-	private int[] getSelectionBox(int id) {
-		return new int[] {90, id * 10 +  (guiHeight() - 10 * detectors.size()) / 2,8,8};
+	private int[] getSelectionBox(final int id) {
+		return new int[] { 90, id * 10 + (this.guiHeight() - 10 * this.detectors.size()) / 2, 8, 8 };
 	}
 
 	@Override
-	protected void generateInterfaceRegions() {}
-	
-	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, Localization.MODULES.ATTACHMENTS.SHOOTER.translate(), 8, 6, 0x404040);
+	protected void generateInterfaceRegions() {
+	}
 
-		for (int i = 0; i < detectors.size(); i++) {
-			int[] box = getSelectionBox(i);
-			drawString(gui,detectors.get(i).getName(), box[0] + 12, box[1], 0x404040);
+	@Override
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.ATTACHMENTS.SHOOTER.translate(), 8, 6, 4210752);
+		for (int i = 0; i < this.detectors.size(); ++i) {
+			final int[] box = this.getSelectionBox(i);
+			this.drawString(gui, this.detectors.get(i).getName(), box[0] + 12, box[1], 4210752);
 		}
 	}
 
-
 	@Override
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/mobdetector.png");
-		
-		for (int i = 0; i < detectors.size(); i++) {
-			int srcX = isOptionActive(i) ? 0 : 8;
-			int srcY = inRect(x,y,getSelectionBox(i)) ? 8 : 0;
-			drawImage(gui, getSelectionBox(i), srcX, srcY);
+		for (int i = 0; i < this.detectors.size(); ++i) {
+			final int srcX = this.isOptionActive(i) ? 0 : 8;
+			final int srcY = this.inRect(x, y, this.getSelectionBox(i)) ? 8 : 0;
+			this.drawImage(gui, this.getSelectionBox(i), srcX, srcY);
 		}
 	}
 
 	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (button == 0) {
-			for (int i = 0; i < detectors.size(); i++) {
-				if (inRect(x,y,getSelectionBox(i))) {
-					sendPacket(0, (byte)i);
+			for (int i = 0; i < this.detectors.size(); ++i) {
+				if (this.inRect(x, y, this.getSelectionBox(i))) {
+					this.sendPacket(0, (byte) i);
 					break;
 				}
 			}
@@ -94,102 +97,76 @@ public class ModuleShooterAdv extends ModuleShooter {
 	}
 
 	@Override
-	public void mouseMovedOrUp(GuiMinecart gui,int x, int y, int button) {
+	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
 	}
 
-	
 	@Override
 	public int numberOfGuiData() {
 		return 0;
 	}
-	@Override
-	protected void checkGuiData(Object[] info) {
-
-	}	
 
 	@Override
-	protected void Shoot()
-    {
-		setTimeToNext(15);
-		if (!getCart().hasFuel())
-		{
+	protected void checkGuiData(final Object[] info) {
+	}
+
+	@Override
+	protected void Shoot() {
+		this.setTimeToNext(15);
+		if (!this.getCart().hasFuel()) {
 			return;
 		}
-		Entity target = getTarget();
-
+		final Entity target = this.getTarget();
 		if (target != null) {
-			if (hasProjectileItem()) {
-				shootAtTarget(target);
-			}else{
-				getCart().worldObj.playAuxSFX(1001, (int)getCart().posX, (int)getCart().posY, (int)getCart().posZ, 0);
+			if (this.hasProjectileItem()) {
+				this.shootAtTarget(target);
+			} else {
+				this.getCart().worldObj.playEvent(1001, getCart().getPosition(), 0);
 			}
 		}
-    }
+	}
 
-	private void shootAtTarget(Entity target) {
+	private void shootAtTarget(final Entity target) {
 		if (target == null) {
 			return;
 		}
-
-
-		Entity projectile = getProjectile(target, getProjectileItem(true));
-		
-
-		//re-add if the EntityMob file behaves again
-		//arrow.shootingEntity = getCart();
-		projectile.posY = getCart().posY + (double)getCart().getEyeHeight() - 0.10000000149011612D;
-
-		double disX = target.posX - getCart().posX;
-		double disY = target.posY + (double)target.getEyeHeight() - 0.699999988079071D - projectile.posY;
-		double disZ = target.posZ - getCart().posZ;
-
-		double dis = (double)MathHelper.sqrt_double(disX * disX + disZ * disZ);
-
-		if (dis >= 1.0E-7D)
-        {
-			float theta = (float)(Math.atan2(disZ, disX) * 180.0D / Math.PI) - 90.0F;
-			float phi = (float)(-(Math.atan2(disY, dis) * 180.0D / Math.PI));
-
-			setRifleDirection((float)Math.atan2(disZ, disX));
-
-			double disPX = disX / dis;
-            double disPZ = disZ / dis;
-
-			projectile.setLocationAndAngles(getCart().posX + disPX * 1.5F, projectile.posY, getCart().posZ + disPZ * 1.5, theta, phi);
-
-			projectile.yOffset = 0.0F;
-            float disD5 = (float)dis * 0.2F;
-			setHeading(projectile, disX, disY + (double)disD5, disZ, 1.6F, 0/*12.0F*/);
+		final Entity projectile = this.getProjectile(target, this.getProjectileItem(true));
+		projectile.posY = this.getCart().posY + this.getCart().getEyeHeight() - 0.10000000149011612;
+		final double disX = target.posX - this.getCart().posX;
+		final double disY = target.posY + target.getEyeHeight() - 0.699999988079071 - projectile.posY;
+		final double disZ = target.posZ - this.getCart().posZ;
+		final double dis = MathHelper.sqrt_double(disX * disX + disZ * disZ);
+		if (dis >= 1.0E-7) {
+			final float theta = (float) (Math.atan2(disZ, disX) * 180.0 / 3.141592653589793) - 90.0f;
+			final float phi = (float) (-(Math.atan2(disY, dis) * 180.0 / 3.141592653589793));
+			this.setRifleDirection((float) Math.atan2(disZ, disX));
+			final double disPX = disX / dis;
+			final double disPZ = disZ / dis;
+			projectile.setLocationAndAngles(this.getCart().posX + disPX * 1.5, projectile.posY, this.getCart().posZ + disPZ * 1.5, theta, phi);
+			projectile.setRenderYawOffset(0.0f);
+			final float disD5 = (float) dis * 0.2f;
+			this.setHeading(projectile, disX, disY + disD5, disZ, 1.6f, 0.0f);
 		}
-
-		getCart().worldObj.playSoundAtEntity(getCart(), "random.bow", 1.0F, 1.0F / (getCart().rand.nextFloat() * 0.4F + 0.8F));
-		
-		setProjectileDamage(projectile);
-		setProjectileOnFire(projectile);	
-		setProjectileKnockback(projectile);
-        getCart().worldObj.spawnEntityInWorld(projectile);
-		damageEnchant();
+		BlockPos pos = getCart().getPosition();
+		this.getCart().worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0f, 1.0f / (this.getCart().rand.nextFloat() * 0.4f + 0.8f), false);
+		this.setProjectileDamage(projectile);
+		this.setProjectileOnFire(projectile);
+		this.setProjectileKnockback(projectile);
+		this.getCart().worldObj.spawnEntityInWorld(projectile);
+		this.damageEnchant();
 	}
 
 	protected int getTargetDistance() {
 		return 16;
 	}
 
-	private EntityNearestTarget sorter = new EntityNearestTarget(getCart());
 	private Entity getTarget() {
-		List entities = getCart().worldObj.getEntitiesWithinAABB(Entity.class, getCart().boundingBox.expand((double)getTargetDistance(), 4.0D, (double)getTargetDistance()));
-		Collections.sort(entities, sorter);
-		Iterator itt = entities.iterator();
-
-		while (itt.hasNext())
-		{
-			Entity target = (Entity)itt.next();
-
-			if (target != getCart() && canSee(target))
-			{
-				for (int i = 0; i < detectors.size(); i++) {
-					if (isOptionActive(i)) {
-						ModuleMobdetector detector = detectors.get(i);
+		final List<Entity> entities = this.getCart().worldObj.getEntitiesWithinAABB((Class) Entity.class, this.getCart().getEntityBoundingBox().expand((double) this.getTargetDistance(), 4.0, (double) this.getTargetDistance()));
+		Collections.sort(entities, this.sorter);
+		for (final Entity target : entities) {
+			if (target != this.getCart() && this.canSee(target)) {
+				for (int i = 0; i < this.detectors.size(); ++i) {
+					if (this.isOptionActive(i)) {
+						final ModuleMobdetector detector = this.detectors.get(i);
 						if (detector.isValidTarget(target)) {
 							return target;
 						}
@@ -197,23 +174,17 @@ public class ModuleShooterAdv extends ModuleShooter {
 				}
 			}
 		}
-
 		return null;
 	}
 
-	private boolean canSee(Entity target) {
-		if (target == null) {
-			return false;
-		}
-
-
-        return getCart().worldObj.rayTraceBlocks(Vec3.createVectorHelper(getCart().posX, getCart().posY + (double)getCart().getEyeHeight(), getCart().posZ), Vec3.createVectorHelper(target.posX, target.posY + (double)target.getEyeHeight(), target.posZ)) == null;
-    }
+	private boolean canSee(final Entity target) {
+		return target != null && this.getCart().worldObj.rayTraceBlocks(new Vec3d(this.getCart().posX, this.getCart().posY + this.getCart().getEyeHeight(), this.getCart().posZ), new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ)) == null;
+	}
 
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			switchOption(data[0]);
+			this.switchOption(data[0]);
 		}
 	}
 
@@ -229,98 +200,98 @@ public class ModuleShooterAdv extends ModuleShooter {
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
-		addDw(1,0);
+		this.addDw(0, 0);
+		this.addDw(1, 0);
 	}
 
-	private void switchOption(int id) {
-		byte val = getDw(0);
-		val ^= 1 << id;
-		updateDw(0,val);
+	private void switchOption(final int id) {
+		byte val = this.getDw(0);
+		val ^= (byte) (1 << id);
+		this.updateDw(0, val);
 	}
 
-	public void setOptions(byte val) {
-		updateDw(0,val);
-	}	
-	
+	public void setOptions(final byte val) {
+		this.updateDw(0, val);
+	}
+
 	public byte selectedOptions() {
-		return getDw(0);
+		return this.getDw(0);
 	}
 
-	private boolean isOptionActive(int id) {
-		return (selectedOptions() & (1 << id)) != 0;
+	private boolean isOptionActive(final int id) {
+		return (this.selectedOptions() & 1 << id) != 0x0;
 	}
 
 	@Override
-	protected boolean isPipeActive(int id) {
-		if (isPlaceholder()) {
-			return getSimInfo().getIsPipeActive();
-		}else{
-			return selectedOptions() != 0;
+	protected boolean isPipeActive(final int id) {
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getIsPipeActive();
 		}
+		return this.selectedOptions() != 0;
 	}
 
-	private float detectorAngle;
 	public float getDetectorAngle() {
-		return detectorAngle;
+		return this.detectorAngle;
 	}
 
+	@Override
 	public void update() {
 		super.update();
-
-		if (isPipeActive(0)) {
-			detectorAngle = (float)((detectorAngle + 0.1F) % (Math.PI * 2));
+		if (this.isPipeActive(0)) {
+			this.detectorAngle = (float) ((this.detectorAngle + 0.1f) % 6.283185307179586);
 		}
 	}
 
-	private	void setRifleDirection(float val) {
-		val /= 2 * (float)Math.PI;
-		val *= 256;
-		val %= 256;
-		if (val < 0) {
-			val += 256;
+	private void setRifleDirection(float val) {
+		val /= 6.2831855f;
+		val *= 256.0f;
+		val %= 256.0f;
+		if (val < 0.0f) {
+			val += 256.0f;
 		}
-		updateDw(1,(byte)val);
+		this.updateDw(1, (byte) val);
 	}
+
 	public float getRifleDirection() {
 		float val;
-		if (isPlaceholder()) {
-			val = 0F;
-		}else{
-			val = getDw(1);
+		if (this.isPlaceholder()) {
+			val = 0.0f;
+		} else {
+			val = this.getDw(1);
 		}
-		val /= 256F;
-		val *= (float)Math.PI * 2;
+		val /= 256.0f;
+		val *= 6.2831855f;
 		return val;
 	}
-	
+
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setByte(generateNBTName("Options",id), selectedOptions());	
-		saveTick(tagCompound,id);
-	}
-	
-	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-        setOptions(tagCompound.getByte(generateNBTName("Options",id)));	
-        loadTick(tagCompound, id);		
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setByte(this.generateNBTName("Options", id), this.selectedOptions());
+		this.saveTick(tagCompound, id);
 	}
 
-    private static class EntityNearestTarget implements Comparator {
-        private Entity entity;
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.setOptions(tagCompound.getByte(this.generateNBTName("Options", id)));
+		this.loadTick(tagCompound, id);
+	}
 
-        public EntityNearestTarget(Entity entity) {
-            this.entity = entity;
-        }
+	private static class EntityNearestTarget implements Comparator {
+		private Entity entity;
 
-        public int compareDistanceSq(Entity entity1, Entity entity2) {
-            double distance1 = this.entity.getDistanceSqToEntity(entity1);
-            double distance2 = this.entity.getDistanceSqToEntity(entity2);
-            return distance1 < distance2 ? -1 : distance1 > distance2 ? 1 : 0;
-        }
+		public EntityNearestTarget(final Entity entity) {
+			this.entity = entity;
+		}
 
-        public int compare(Object obj1, Object obj2) {
-            return this.compareDistanceSq((Entity)obj1, (Entity)obj2);
-        }
-    }
+		public int compareDistanceSq(final Entity entity1, final Entity entity2) {
+			final double distance1 = this.entity.getDistanceSqToEntity(entity1);
+			final double distance2 = this.entity.getDistanceSqToEntity(entity2);
+			return (distance1 < distance2) ? -1 : ((distance1 > distance2) ? 1 : 0);
+		}
+
+		@Override
+		public int compare(final Object obj1, final Object obj2) {
+			return this.compareDistanceSq((Entity) obj1, (Entity) obj2);
+		}
+	}
 }

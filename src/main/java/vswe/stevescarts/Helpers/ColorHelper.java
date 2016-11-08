@@ -17,15 +17,15 @@ public enum ColorHelper {
 	MAGENTA(13),
 	YELLOW(14),
 	WHITE(15);
-	
+
 	private int number;
-	ColorHelper(int number) {
+
+	ColorHelper(final int number) {
 		this.number = number;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "\u00a7" + Integer.toHexString(number);
+		return "�" + Integer.toHexString(this.number);
 	}
-	
 }

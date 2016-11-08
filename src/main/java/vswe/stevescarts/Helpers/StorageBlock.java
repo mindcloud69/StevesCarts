@@ -4,34 +4,22 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.Blocks.ModBlocks;
 
 public class StorageBlock {
-
 	private String name;
 	private ItemStack item;
-	public StorageBlock(String name, ItemStack item) {
+
+	public StorageBlock(final String name, final ItemStack item) {
 		this.name = name;
 		this.item = item.copy();
 		this.item.stackSize = 9;
 	}
-	
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public void loadRecipe(int i) {
-		ItemStack block = new ItemStack(ModBlocks.STORAGE.getBlock(), 1, i);
-		
-		//compress
-		RecipeHelper.addRecipe(block, new Object[][] {
-			{item, item, item},
-			{item, item, item},
-			{item, item, item}
-		});	
-		
-		//restore
-        RecipeHelper.addRecipe(item, new Object[][] {
-				{block}
-		});
+	public void loadRecipe(final int i) {
+		final ItemStack block = new ItemStack(ModBlocks.STORAGE.getBlock(), 1, i);
+		RecipeHelper.addRecipe(block, new Object[][] { { this.item, this.item, this.item }, { this.item, this.item, this.item }, { this.item, this.item, this.item } });
+		RecipeHelper.addRecipe(this.item, new Object[][] { { block } });
 	}
-	
-	
 }

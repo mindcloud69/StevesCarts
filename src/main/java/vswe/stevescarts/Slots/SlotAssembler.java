@@ -1,152 +1,118 @@
 package vswe.stevescarts.Slots;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
-import net.minecraft.entity.player.EntityPlayer;
-public class SlotAssembler extends Slot
-{
-	
-	private int  groupID;
+
+public class SlotAssembler extends Slot {
+	private int groupID;
 	private int x;
 	private int y;
 	private TileEntityCartAssembler assembler;
 	private int openingAnimation;
 	private int id;
-    public SlotAssembler(TileEntityCartAssembler assembler, int i, int j, int k, int groupID, boolean useLarge, int id)
-    {
-        super(assembler, i, j, k);
-		this.assembler = assembler;
-		this.useLarge = useLarge;
-		this. groupID =  groupID;
-		x = j;
-		y = k;
-		isValid = true;
-		this.id = id;
-    }
-	
-	
 	private boolean isValid;
 	private boolean useLarge;
 	private boolean reloadOnUpdate;
-	
+
+	public SlotAssembler(final TileEntityCartAssembler assembler, final int i, final int j, final int k, final int groupID, final boolean useLarge, final int id) {
+		super(assembler, i, j, k);
+		this.assembler = assembler;
+		this.useLarge = useLarge;
+		this.groupID = groupID;
+		this.x = j;
+		this.y = k;
+		this.isValid = true;
+		this.id = id;
+	}
+
 	public boolean useLargeInterface() {
-		return useLarge;
+		return this.useLarge;
 	}
 
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return itemstack != null && isValid && ModuleData.isValidModuleItem( groupID, itemstack) && (!getHasStack() || (getStack().stackSize > 0 && itemstack.stackSize > 0));
-    }
-	
-	//boolean fullInvalidation = false;
+	public boolean isItemValid(final ItemStack itemstack) {
+		return itemstack != null && this.isValid && ModuleData.isValidModuleItem(this.groupID, itemstack) && (!this.getHasStack() || (this.getStack().stackSize > 0 && itemstack.stackSize > 0));
+	}
+
 	public void invalidate() {
-		isValid = false;
-		//fullInvalidation = false;
-		invalidationCheck();
+		this.isValid = false;
+		this.invalidationCheck();
 	}
-	
-	public void validate() {
-		isValid = true;	
-	}
-	
 
-	
+	public void validate() {
+		this.isValid = true;
+	}
+
 	public boolean isValid() {
-		return isValid;
+		return this.isValid;
 	}
-	
+
 	private void invalidationCheck() {
-		//if (!fullInvalidation && !isValid() && !this.getHasStack()) {
-			xDisplayPosition = -3000;
-			yDisplayPosition = -3000;
-			if (openingAnimation > 8) {
-				openingAnimation = 8;
-			}			
-			//fullInvalidation = true;
-		//}	
-	}
-	
-	
-	
-	/*public boolean isPartlyInvalid() {
-		return !fullInvalidation && !isValid();
-	}*/
-	
-	public void update()
-    {
-		if (!assembler.getWorldObj().isRemote) {
-	
-			if (!isValid() && getHasStack()) {
-				
-				assembler.puke(getStack());								
-				putStack(null);
-				
-			}
-			
-		
-		}else{
-			if (isValid()/*!fullInvalidation*/) {
-				if (openingAnimation == 8) {
-					xDisplayPosition = x;
-					yDisplayPosition = y;
-					openingAnimation++;
-				}else if (openingAnimation < 8){
-					openingAnimation++;
-				}
-				
-			}else if (openingAnimation > 0){
-				openingAnimation--;
-			}else {
-				openingAnimation = id * -3;
-			}
+		this.xDisplayPosition = -3000;
+		this.yDisplayPosition = -3000;
+		if (this.openingAnimation > 8) {
+			this.openingAnimation = 8;
 		}
 	}
-	
+
+	public void update() {
+		if (!this.assembler.getWorld().isRemote) {
+			if (!this.isValid() && this.getHasStack()) {
+				this.assembler.puke(this.getStack());
+				this.putStack(null);
+			}
+		} else if (this.isValid()) {
+			if (this.openingAnimation == 8) {
+				this.xDisplayPosition = this.x;
+				this.yDisplayPosition = this.y;
+				++this.openingAnimation;
+			} else if (this.openingAnimation < 8) {
+				++this.openingAnimation;
+			}
+		} else if (this.openingAnimation > 0) {
+			--this.openingAnimation;
+		} else {
+			this.openingAnimation = this.id * -3;
+		}
+	}
+
 	public int getAnimationTick() {
-		return openingAnimation;
+		return this.openingAnimation;
 	}
-	
+
 	public int getX() {
-		return x;
+		return this.x;
 	}
-	
+
 	public int getY() {
-		return y;
-	}	
-	
-	public TileEntityCartAssembler getAssembler() {
-		return assembler;
+		return this.y;
 	}
-	
+
+	public TileEntityCartAssembler getAssembler() {
+		return this.assembler;
+	}
+
 	public boolean shouldUpdatePlaceholder() {
 		return true;
 	}
-	
-	@Override
+
 	public void onSlotChanged() {
 		super.onSlotChanged();
-		
-
-		if (shouldUpdatePlaceholder()) {
-			assembler.updatePlaceholder();
-		}else{
-			assembler.isErrorListOutdated = true;
+		if (this.shouldUpdatePlaceholder()) {
+			this.assembler.updatePlaceholder();
+		} else {
+			this.assembler.isErrorListOutdated = true;
 		}
-
 	}
-	
-	@Override
-	public int getSlotStackLimit()
-    {
-        return 1;
-    }
-	@Override
-    public boolean canTakeStack(EntityPlayer player)
-    {
-        return this.getStack() != null && this.getStack().stackSize > 0;
-    }
-	
 
+	public int getSlotStackLimit() {
+		return 1;
+	}
+
+	public boolean canTakeStack(final EntityPlayer player) {
+		return this.getStack() != null && this.getStack().stackSize > 0;
+	}
 }

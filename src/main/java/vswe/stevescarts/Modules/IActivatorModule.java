@@ -1,9 +1,9 @@
 package vswe.stevescarts.Modules;
 
 public interface IActivatorModule {
+	boolean isActive(final int p0);
 
-	public boolean isActive(int id);
-	public void doActivate(int id);
-	public void doDeActivate(int id);
-	
+	void doActivate(final int p0);
+
+	void doDeActivate(final int p0);
 }

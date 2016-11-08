@@ -8,300 +8,255 @@ import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
+
 public class ModuleDrillIntelligence extends ModuleAddon {
-
-	public ModuleDrillIntelligence(MinecartModular cart) {
-		super(cart);
-	}
-
-	
 	private ModuleDrill drill;
-	private boolean hasHeightController;	
-	
-	@Override
-	public void preInit() {
-		super.preInit();
-		for (ModuleBase module : getCart().getModules()) {
-			if (module instanceof ModuleDrill) {
-				drill = (ModuleDrill)module;
-			}else if (module instanceof ModuleHeightControl) {
-				hasHeightController = true;
-			}			
-		}		
-	}
-	
-
-
-	
-	
-	@Override 
-	public boolean hasGui() {
-		return true;
-	}
-	
-	@Override 
-	public boolean hasSlots() {
-		return false;
-	}	
-	
-	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
-	}
-	
-	private int getDrillWidth() {
-		if (drill == null) {
-			return 0;
-		}else{
-			return drill.getAreaWidth();
-		}
-	}	
-	
-	private int getDrillHeight() {
-		if (drill == null) {
-			return 0;
-		}else{
-			return drill.getAreaHeight() + (hasHeightController ? 2 : 0);
-		}
-	}	
-	
-	private int guiW = -1;
-	private int guiH = -1;
-	
-	@Override
-	public int guiWidth() {
-		if (guiW == -1) {
-			guiW = Math.max(15 + getDrillWidth() * 10 + 5, 93);
-		}	
-	
-		return guiW;
-	}
-	
-	@Override
-	public int guiHeight() {
-		if (guiH == -1) {
-			guiH = 20 + getDrillHeight() * 10 + 5;
-		}
-	
-		return guiH;
-	}		
-	
-
-	
-	
-	@Override
-	public void drawBackground(GuiMinecart gui, int x, int y) {
-		ResourceHelper.bindResource("/gui/intelligence.png");
-
-		int w = getDrillWidth();
-		int h = getDrillHeight();
-		
-		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
-				int[] rect = getSettingRect(i, j);
-				
-				int srcX = (hasHeightController ? j != 0 && j != h - 1 : true) ? 0 : 8;				
-				int srcY = 0;
-				
-				drawImage(gui, rect, srcX, srcY);
-				
-				if (isActive(j * w + i)) {
-					srcX = isLocked(j * w + i) ? 8 : 0;
-					srcY = 8;
-					
-					drawImage(gui, rect, srcX, srcY);				
-				}				
-				
-				srcX = inRect(x, y, rect) ? 8 : 0;
-				srcY = 16;	
-				drawImage(gui, rect, srcX, srcY);
-				
-
-			}
-		}
-	}
-	
+	private boolean hasHeightController;
+	private int guiW;
+	private int guiH;
 	private short[] isDisabled;
-	private void initDisabledData() {
-		if (isDisabled == null) {
-			isDisabled = new short[(int)Math.ceil((getDrillWidth() * getDrillHeight()) / 16F)];
-		}	
-	}
-	
-	public boolean isActive(int x, int y, int offset, boolean direction) {
-		y = getDrillHeight() - 1 - y;
-	
-		if (hasHeightController) {
-			y -= offset;
-		}
-		
-		if (!direction) {
-			x = getDrillWidth() - 1 - x;
-		}
-	
-		return isActive(y * getDrillWidth() + x);
-	}
-	
-	private boolean isActive(int id) {	
-		initDisabledData();
-	
-		if (isLocked(id)) {
-			return true;
-		}
-	
-		return (isDisabled[id / 16] & (1 << (id % 16))) == 0;
-	}
-	
-	private boolean isLocked(int id) {
-		int x = id % getDrillWidth();
-		int y = id / getDrillWidth();
-		
-		if (y == getDrillHeight() - 1 || (hasHeightController && y == getDrillHeight() - 2)) {
-			return x == (getDrillWidth() - 1) / 2;
-		}
-		
-		return false;
-	}
-	
-	private void swapActiveness(int id) {	
-		initDisabledData();
-	
-		if (!isLocked(id)) {
-			isDisabled[id / 16] ^= 1 << (id % 16);
-		}
-	}	
-	
-	
-	private int[] getSettingRect(int x, int y) {
-		return new int[] {15 + x * 10, 20 + y * 10, 8, 8};
-	}
-	
-	@Override
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-
-		int w = getDrillWidth();
-		int h = getDrillHeight();
-		
-		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
-				int[] rect = getSettingRect(i, j);
-				
-				String str = isLocked(j*w+i) ? Localization.MODULES.ADDONS.LOCKED.translate() : Localization.MODULES.ADDONS.CHANGE_INTELLIGENCE.translate() + "\n" + Localization.MODULES.ADDONS.CURRENT_INTELLIGENCE.translate((isActive(j*w+i) ? "0" : "1"));
-				
-				drawStringOnMouseOver(gui, str, x, y, rect);
-			}
-		}
-	
-
-	}
-	
-	@Override
-	public int numberOfGuiData() {
-		int maxDrillWidth = 9;
-		int maxDrillHeight = 9;
-		return (int)Math.ceil((maxDrillWidth*(maxDrillHeight+2)) / 16F);
-	}	
-	
-	@Override
-	protected void checkGuiData(Object[] info) {
-		if (isDisabled != null) {
-			for (int i = 0; i < isDisabled.length; i++) {
-				updateGuiData(info, i, isDisabled[i]);
-			}
-		}			
-	}
-	
-	@Override
-	public void receiveGuiData(int id, short data) {
-		initDisabledData();
-		
-		if (id >= 0 && id < isDisabled.length) {
-			isDisabled[id] = data;
-		}
-	}	
-	
-	@Override
-	public int numberOfPackets() {
-		return 1;
-	}	
-	
-	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
-		if (id == 0) {
-			swapActiveness(data[0]);
-		}
-	}	
-	
-	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		initDisabledData();
-	
-		for (int i = 0; i < isDisabled.length; i++) {
-			tagCompound.setShort(generateNBTName("isDisabled" + i,id), isDisabled[i]);
-		}
-	}	
-	
-	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		initDisabledData();
-	
-		for (int i = 0; i < isDisabled.length; i++) {
-			isDisabled[i] = tagCompound.getShort(generateNBTName("isDisabled" + i,id));
-		}
-	}		
-	
 	private boolean clickedState;
 	private boolean clicked;
 	private int lastId;
-	@Override
-	public void mouseMovedOrUp(GuiMinecart gui,  int x, int y, int button) {
-		if (button == -1 && clicked) {
-			int w = getDrillWidth();
-			int h = getDrillHeight();
-			
-			for (int i = 0; i < w; i++) {
-				for (int j = 0; j < h; j++) {
-					if (lastId == j * w + i || isActive(j * w + i) != clickedState) {
-						continue;
-					}
-				
-				
-					int[] rect = getSettingRect(i, j);
-					
-					if (inRect(x, y, rect)) {
-						lastId = j * w + i;
-						sendPacket(0, (byte)(j * w + i));
-						return;
-					}
-				}
-			}		
-		}
-		
-		if (button == 0) {
-			clicked = false;
-		}		
+
+	public ModuleDrillIntelligence(final MinecartModular cart) {
+		super(cart);
+		this.guiW = -1;
+		this.guiH = -1;
 	}
-	
-	
+
 	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
+	public void preInit() {
+		super.preInit();
+		for (final ModuleBase module : this.getCart().getModules()) {
+			if (module instanceof ModuleDrill) {
+				this.drill = (ModuleDrill) module;
+			} else {
+				if (!(module instanceof ModuleHeightControl)) {
+					continue;
+				}
+				this.hasHeightController = true;
+			}
+		}
+	}
+
+	@Override
+	public boolean hasGui() {
+		return true;
+	}
+
+	@Override
+	public boolean hasSlots() {
+		return false;
+	}
+
+	@Override
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+	}
+
+	private int getDrillWidth() {
+		if (this.drill == null) {
+			return 0;
+		}
+		return this.drill.getAreaWidth();
+	}
+
+	private int getDrillHeight() {
+		if (this.drill == null) {
+			return 0;
+		}
+		return this.drill.getAreaHeight() + (this.hasHeightController ? 2 : 0);
+	}
+
+	@Override
+	public int guiWidth() {
+		if (this.guiW == -1) {
+			this.guiW = Math.max(15 + this.getDrillWidth() * 10 + 5, 93);
+		}
+		return this.guiW;
+	}
+
+	@Override
+	public int guiHeight() {
+		if (this.guiH == -1) {
+			this.guiH = 20 + this.getDrillHeight() * 10 + 5;
+		}
+		return this.guiH;
+	}
+
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
+		ResourceHelper.bindResource("/gui/intelligence.png");
+		final int w = this.getDrillWidth();
+		final int h = this.getDrillHeight();
+		for (int i = 0; i < w; ++i) {
+			for (int j = 0; j < h; ++j) {
+				final int[] rect = this.getSettingRect(i, j);
+				int srcX = (!this.hasHeightController || (j != 0 && j != h - 1)) ? 0 : 8;
+				int srcY = 0;
+				this.drawImage(gui, rect, srcX, srcY);
+				if (this.isActive(j * w + i)) {
+					srcX = (this.isLocked(j * w + i) ? 8 : 0);
+					srcY = 8;
+					this.drawImage(gui, rect, srcX, srcY);
+				}
+				srcX = (this.inRect(x, y, rect) ? 8 : 0);
+				srcY = 16;
+				this.drawImage(gui, rect, srcX, srcY);
+			}
+		}
+	}
+
+	private void initDisabledData() {
+		if (this.isDisabled == null) {
+			this.isDisabled = new short[(int) Math.ceil(this.getDrillWidth() * this.getDrillHeight() / 16.0f)];
+		}
+	}
+
+	public boolean isActive(int x, int y, final int offset, final boolean direction) {
+		y = this.getDrillHeight() - 1 - y;
+		if (this.hasHeightController) {
+			y -= offset;
+		}
+		if (!direction) {
+			x = this.getDrillWidth() - 1 - x;
+		}
+		return this.isActive(y * this.getDrillWidth() + x);
+	}
+
+	private boolean isActive(final int id) {
+		this.initDisabledData();
+		return this.isLocked(id) || (this.isDisabled[id / 16] & 1 << id % 16) == 0x0;
+	}
+
+	private boolean isLocked(final int id) {
+		final int x = id % this.getDrillWidth();
+		final int y = id / this.getDrillWidth();
+		return (y == this.getDrillHeight() - 1 || (this.hasHeightController && y == this.getDrillHeight() - 2)) && x == (this.getDrillWidth() - 1) / 2;
+	}
+
+	private void swapActiveness(final int id) {
+		this.initDisabledData();
+		if (!this.isLocked(id)) {
+			final short[] isDisabled = this.isDisabled;
+			final int n = id / 16;
+			isDisabled[n] ^= (short) (1 << id % 16);
+		}
+	}
+
+	private int[] getSettingRect(final int x, final int y) {
+		return new int[] { 15 + x * 10, 20 + y * 10, 8, 8 };
+	}
+
+	@Override
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		final int w = this.getDrillWidth();
+		final int h = this.getDrillHeight();
+		for (int i = 0; i < w; ++i) {
+			for (int j = 0; j < h; ++j) {
+				final int[] rect = this.getSettingRect(i, j);
+				final String str = this.isLocked(j * w + i) ? Localization.MODULES.ADDONS.LOCKED.translate()
+				                                            : (Localization.MODULES.ADDONS.CHANGE_INTELLIGENCE.translate() + "\n" + Localization.MODULES.ADDONS.CURRENT_INTELLIGENCE.translate(
+					                                            this.isActive(j * w + i) ? "0" : "1"));
+				this.drawStringOnMouseOver(gui, str, x, y, rect);
+			}
+		}
+	}
+
+	@Override
+	public int numberOfGuiData() {
+		final int maxDrillWidth = 9;
+		final int maxDrillHeight = 9;
+		return (int) Math.ceil(maxDrillWidth * (maxDrillHeight + 2) / 16.0f);
+	}
+
+	@Override
+	protected void checkGuiData(final Object[] info) {
+		if (this.isDisabled != null) {
+			for (int i = 0; i < this.isDisabled.length; ++i) {
+				this.updateGuiData(info, i, this.isDisabled[i]);
+			}
+		}
+	}
+
+	@Override
+	public void receiveGuiData(final int id, final short data) {
+		this.initDisabledData();
+		if (id >= 0 && id < this.isDisabled.length) {
+			this.isDisabled[id] = data;
+		}
+	}
+
+	public int numberOfPackets() {
+		return 1;
+	}
+
+	@Override
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
+		if (id == 0) {
+			this.swapActiveness(data[0]);
+		}
+	}
+
+	@Override
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		this.initDisabledData();
+		for (int i = 0; i < this.isDisabled.length; ++i) {
+			tagCompound.setShort(this.generateNBTName("isDisabled" + i, id), this.isDisabled[i]);
+		}
+	}
+
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.initDisabledData();
+		for (int i = 0; i < this.isDisabled.length; ++i) {
+			this.isDisabled[i] = tagCompound.getShort(this.generateNBTName("isDisabled" + i, id));
+		}
+	}
+
+	@Override
+	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (button == -1 && this.clicked) {
+			final int w = this.getDrillWidth();
+			final int h = this.getDrillHeight();
+			for (int i = 0; i < w; ++i) {
+				for (int j = 0; j < h; ++j) {
+					if (this.lastId != j * w + i) {
+						if (this.isActive(j * w + i) == this.clickedState) {
+							final int[] rect = this.getSettingRect(i, j);
+							if (this.inRect(x, y, rect)) {
+								this.lastId = j * w + i;
+								this.sendPacket(0, (byte) (j * w + i));
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
 		if (button == 0) {
-			int w = getDrillWidth();
-			int h = getDrillHeight();
-			
-			for (int i = 0; i < w; i++) {
-				for (int j = 0; j < h; j++) {
-					int[] rect = getSettingRect(i, j);
-					
-					if (inRect(x, y, rect)) {
-						clicked = true;
-						clickedState = isActive(j * w + i);
-						lastId = j * w + i;
-						sendPacket(0, (byte)(j * w + i));
+			this.clicked = false;
+		}
+	}
+
+	@Override
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (button == 0) {
+			final int w = this.getDrillWidth();
+			final int h = this.getDrillHeight();
+			for (int i = 0; i < w; ++i) {
+				for (int j = 0; j < h; ++j) {
+					final int[] rect = this.getSettingRect(i, j);
+					if (this.inRect(x, y, rect)) {
+						this.clicked = true;
+						this.clickedState = this.isActive(j * w + i);
+						this.lastId = j * w + i;
+						this.sendPacket(0, (byte) (j * w + i));
 						return;
 					}
 				}
-			}			
+			}
 		}
-	}	
-} 
+	}
+}

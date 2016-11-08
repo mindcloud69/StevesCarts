@@ -1,148 +1,116 @@
 package vswe.stevescarts.Modules.Workers;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockRailBase.EnumRailDirection;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
+
 public abstract class ModuleWorker extends ModuleBase {
 	private boolean preWork;
 	private boolean shouldDie;
-	
-	public ModuleWorker(MinecartModular cart) {
+
+	public ModuleWorker(final MinecartModular cart) {
 		super(cart);
-		preWork = true;
+		this.preWork = true;
 	}
 
-	//lower numbers are prioritized
 	public abstract byte getWorkPriority();
 
-	//return true when the work is done, false allow other modules to continue the work
 	public abstract boolean work();
 
-	protected void startWorking(int time) {
-		getCart().setWorkingTime(time);
-		preWork = false;
-		getCart().setWorker(this);
+	protected void startWorking(final int time) {
+		this.getCart().setWorkingTime(time);
+		this.preWork = false;
+		this.getCart().setWorker(this);
 	}
 
 	public void stopWorking() {
-		if (getCart().getWorker() == this) {
-			preWork = true;
-			getCart().setWorker(null);
+		if (this.getCart().getWorker() == this) {
+			this.preWork = true;
+			this.getCart().setWorker(null);
 		}
 	}
-	
+
 	public boolean preventAutoShutdown() {
 		return false;
 	}
-	
+
 	public void kill() {
-		shouldDie = true;
+		this.shouldDie = true;
 	}
-	
+
 	public boolean isDead() {
-		return shouldDie;
+		return this.shouldDie;
 	}
-	
+
 	public void revive() {
-		shouldDie = false;
+		this.shouldDie = false;
 	}
 
 	protected boolean doPreWork() {
-		return preWork;
+		return this.preWork;
 	}
 
-    public Vec3 getLastblock()
-    {
-        return getNextblock(false);
-    }
-    public Vec3 getNextblock()
-    {
-        return getNextblock(true);
-    }
-    private Vec3 getNextblock(boolean flag)
-    {
-        //load the integer position of the cart
-        int i = getCart().x();
-        int j = getCart().y();
-        int k = getCart().z();
+	public BlockPos getLastblock() {
+		return this.getNextblock(false);
+	}
 
-        //if there's a rail block below the cart, decrease the j value since the cart should therefore be counted as being on that rail
-        if (BlockRailBase.func_150049_b_(getCart().worldObj, i, j - 1, k))
-        {
-            j--;
-        }
+	public BlockPos getNextblock() {
+		return this.getNextblock(true);
+	}
 
-        //check if the cart actually is on a piece of rail
-        Block b = getCart().worldObj.getBlock(i, j, k);
-        if (BlockRailBase.func_150051_a(b))
-        {
-            //int meta = worldObj.getBlockMetadata(i, j, k);
-            int meta = ((BlockRailBase)b).getBasicRailMetadata(getCart().worldObj, getCart(), i, j, k);
-
-            //if the rail block is a slope we need to go up one level.
-            if (meta >= 2 && meta <= 5)
-            {
-                j++;
-            }
-
-            //load the rail logic for the rail
-            int logic[][] = MinecartModular.railDirectionCoordinates[meta];
-
-            double pX = getCart().pushX;
-            double pZ = getCart().pushZ;
-
-            //check if the cart is moving in the same direction as the first direction as the rail goes
-            boolean xDir = (pX > 0 && logic[0][0] > 0) || (pX == 0 || logic[0][0] == 0) || (pX < 0 && logic[0][0] < 0);
-            boolean zDir = (pZ > 0 && logic[0][2] > 0) || (pZ == 0 || logic[0][2] == 0) || (pZ < 0 && logic[0][2] < 0);
-            //if it is for both x and z value then the cart is moving along the first direction(index 0) otherwise it's moving along the second direction(index 1).
-            int dir = ((xDir && zDir) == flag) ? 0 : 1;
-
-            //return a vector with the coordinates of where the cart is heading
-            return Vec3.createVectorHelper(
-                    i + logic[dir][0],
-                    j + logic[dir][1],
-                    k + logic[dir][2]
-                    );
-        }
-        else
-        {
-            //if the cart is not on a rail block its next block should be where it already is.
-            return Vec3.createVectorHelper(i, j, k);
-        }
-    }
+	private BlockPos getNextblock(final boolean flag) {
+		BlockPos pos = getCart().getPosition();
+		if (BlockRailBase.isRailBlock(getCart().worldObj, pos.down())) {
+			pos = pos.down();
+		}
+		IBlockState blockState = getCart().worldObj.getBlockState(pos);
+		if (BlockRailBase.isRailBlock(blockState)) {
+			int meta = ((BlockRailBase) blockState.getBlock()).getRailDirection(getCart().worldObj, pos, blockState, getCart()).getMetadata();
+			if (meta >= 2 && meta <= 5) {
+				pos = pos.up();
+			}
+			final int[][] logic = MinecartModular.railDirectionCoordinates[meta];
+			final double pX = this.getCart().pushX;
+			final double pZ = this.getCart().pushZ;
+			final boolean xDir = (pX > 0.0 && logic[0][0] > 0) || pX == 0.0 || logic[0][0] == 0 || (pX < 0.0 && logic[0][0] < 0);
+			final boolean zDir = (pZ > 0.0 && logic[0][2] > 0) || pZ == 0.0 || logic[0][2] == 0 || (pZ < 0.0 && logic[0][2] < 0);
+			final int dir = ((xDir && zDir) != flag) ? 1 : 0;
+			return pos.add(logic[dir][0], logic[dir][1], logic[dir][2]);
+		}
+		return pos;
+	}
 
 	@Override
 	public float getMaxSpeed() {
-		if (!doPreWork()) {
-			return 0F;
-		}else{
-			return super.getMaxSpeed();
+		if (!this.doPreWork()) {
+			return 0.0f;
 		}
+		return super.getMaxSpeed();
 	}
 
-
-
-	//flag is false if it don't need a valid block to be built on(i.e assumes a bridge block will be there later)
-    protected boolean isValidForTrack(int i, int j, int k, boolean flag)
-    {
-        boolean result = countsAsAir(i, j, k) && (!flag || World.doesBlockHaveSolidTopSurface(getCart().worldObj, i, j - 1, k));
-
+	protected boolean isValidForTrack(BlockPos pos, final boolean flag) {
+		boolean result = this.countsAsAir(pos) && (!flag || getCart().worldObj.isSideSolid(pos.down(), EnumFacing.UP));
 		if (result) {
-			int coordX = i - (getCart().x() - i);
-			int coordY = j;
-			int coordZ = k - (getCart().z() - k);
-            Block block = getCart().worldObj.getBlock(coordX, coordY, coordZ);
-			boolean isWater = block == Blocks.water || block == Blocks.flowing_water || block == Blocks.ice;
-			boolean isLava = block == Blocks.lava || block == Blocks.flowing_lava;
-			boolean isOther = block != null && block instanceof IFluidBlock;			
-			boolean isLiquid = isWater || isLava || isOther;
+			final int coordX = pos.getX() - (this.getCart().x() - pos.getX());
+			final int coordZ = pos.getY() - (this.getCart().z() - pos.getY());
+			final Block block = this.getCart().worldObj.getBlockState(new BlockPos(coordX, pos.getY(), coordZ)).getBlock();
+			final boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE;
+			final boolean isLava = block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
+			final boolean isOther = block != null && block instanceof IFluidBlock;
+			final boolean isLiquid = isWater || isLava || isOther;
 			result = !isLiquid;
 		}
-
-        return result;
-    }
+		return result;
+	}
 }

@@ -1,13 +1,12 @@
 package vswe.stevescarts.Modules.Storages.Tanks;
+
 import vswe.stevescarts.Carts.MinecartModular;
 
-
-public class ModuleInternalTank extends ModuleTank{
-	public ModuleInternalTank(MinecartModular cart) {
+public class ModuleInternalTank extends ModuleTank {
+	public ModuleInternalTank(final MinecartModular cart) {
 		super(cart);
 	}
 
-	
 	@Override
 	protected int getTankSize() {
 		return 4000;
@@ -17,5 +16,4 @@ public class ModuleInternalTank extends ModuleTank{
 	public boolean hasVisualTank() {
 		return false;
 	}
-
 }

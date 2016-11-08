@@ -1,79 +1,47 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-@SideOnly(Side.CLIENT)
-public class ModelSolarPanelBase extends ModelSolarPanel
-{
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/panelModelBase.png");
-	
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
 
+@SideOnly(Side.CLIENT)
+public class ModelSolarPanelBase extends ModelSolarPanel {
+	private static ResourceLocation texture;
+
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelSolarPanelBase.texture;
+	}
+
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
 
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-    public ModelSolarPanelBase()
-    {
-		ModelRenderer base = new ModelRenderer(this, 0, 0);
-		AddRenderer(base);
-
-		base.addBox(
-			-1, 	//X
-			-5, 	//Y
-			-1,	 	//Z
-			2,					//Size X
-			10,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-
-		base.setRotationPoint(
-			0, 		//X
-			-4.5F,			//Y
-			0			//Z
-		);
-
-		ModelRenderer moving = createMovingHolder(8,0);
-		moving.addBox(
-			-2, 	//X
-			-3.5F, 	//Y
-			-2,	 	//Z
-			4,					//Size X
-			7,					//Size Y
-			4,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-
-		ModelRenderer top = new ModelRenderer(this, 0, 12);
-		fixSize(top);
+	public ModelSolarPanelBase() {
+		final ModelRenderer base = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(base);
+		base.addBox(-1.0f, -5.0f, -1.0f, 2, 10, 2, 0.0f);
+		base.setRotationPoint(0.0f, -4.5f, 0.0f);
+		final ModelRenderer moving = this.createMovingHolder(8, 0);
+		moving.addBox(-2.0f, -3.5f, -2.0f, 4, 7, 4, 0.0f);
+		final ModelRenderer top = new ModelRenderer(this, 0, 12);
+		this.fixSize(top);
 		moving.addChild(top);
+		top.addBox(-6.0f, -1.5f, -2.0f, 12, 3, 4, 0.0f);
+		top.setRotationPoint(0.0f, -5.0f, 0.0f);
+	}
 
-		top.addBox(
-			-6, 	//X
-			-1.5F, 	//Y
-			-2,	 	//Z
-			12,					//Size X
-			3,					//Size Y
-			4,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-
-		top.setRotationPoint(
-			0, 		//X
-			-5F,			//Y
-			0			//Z
-		);
-    }
+	static {
+		ModelSolarPanelBase.texture = ResourceHelper.getResource("/models/panelModelBase.png");
+	}
 }

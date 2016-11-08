@@ -1,83 +1,75 @@
 package vswe.stevescarts.Buttons;
-import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-import vswe.stevescarts.Computer.ComputerProg;
-import vswe.stevescarts.Computer.ComputerTask;
 
-import java.util.ArrayList;
+import net.minecraft.entity.player.EntityPlayer;
+import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
+
 public class ButtonVarVar extends ButtonVar {
-	
 	protected boolean increase;
-	
-    public ButtonVarVar(ModuleComputer module, LOCATION loc, boolean increase)
-    {
-		super(module, loc);	
+
+	public ButtonVarVar(final ModuleComputer module, final LOCATION loc, final boolean increase) {
+		super(module, loc);
 		this.increase = increase;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		if (increase) {
-			return "Next " + getName() + " variable";
-		}else{
-			return "Previous " + getName() + " variable";
+		if (this.increase) {
+			return "Next " + this.getName() + " variable";
 		}
+		return "Previous " + this.getName() + " variable";
 	}
-	
+
 	@Override
 	public boolean isVisible() {
-		if (((ModuleComputer)module).getSelectedTasks() != null) {
-			for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-				if (!isVarVisible(task)) {
+		if (((ModuleComputer) this.module).getSelectedTasks() != null) {
+			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+				if (!this.isVarVisible(task)) {
 					return false;
 				}
 			}
 		}
-		
 		return super.isVisible();
-	}	
-	
-	@Override
-	public int texture() {
-		return increase ? 30 : 31;
 	}
-	
-	@Override
-	public boolean isEnabled() {
-		for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-			if (increase && getIndex(task) < task.getProgram().getVars().size() - 1) {
-				return true;
-			}else if(!increase && getIndex(task) > -1) {
-				return true;
-			}
-		}	
-		return false;
-	}
-	
 
 	@Override
-	public void onServerClick(EntityPlayer player, int mousebutton, boolean ctrlKey, boolean shiftKey) {
-		for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-			setIndex(task, getIndex(task) + (increase ? 1 : -1));
+	public int texture() {
+		return this.increase ? 30 : 31;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+			if (this.increase && this.getIndex(task) < task.getProgram().getVars().size() - 1) {
+				return true;
+			}
+			if (!this.increase && this.getIndex(task) > -1) {
+				return true;
+			}
 		}
-	}	
-	
-	protected int getIndex(ComputerTask task) {
+		return false;
+	}
+
+	@Override
+	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
+		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+			this.setIndex(task, this.getIndex(task) + (this.increase ? 1 : -1));
+		}
+	}
+
+	protected int getIndex(final ComputerTask task) {
 		return task.getVarVarIndex();
 	}
-	
-	protected void setIndex(ComputerTask task, int val) {
+
+	protected void setIndex(final ComputerTask task, final int val) {
 		task.setVarVar(val);
 	}
-	
+
 	protected String getName() {
 		return "main";
 	}
-	
-	protected boolean isVarVisible(ComputerTask task) {
+
+	protected boolean isVarVisible(final ComputerTask task) {
 		return true;
 	}
-
 }

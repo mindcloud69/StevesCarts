@@ -3,20 +3,17 @@ package vswe.stevescarts.Arcade;
 import java.util.ArrayList;
 
 public class PropertyGroup {
-
 	private ArrayList<Property> properties;
-	
+
 	public PropertyGroup() {
-		properties = new ArrayList<Property>();
+		this.properties = new ArrayList<Property>();
 	}
-	
+
 	public ArrayList<Property> getProperties() {
-		return properties;
+		return this.properties;
 	}
 
-	public void add(Property property) {
-		properties.add(property);
+	public void add(final Property property) {
+		this.properties.add(property);
 	}
-					
-
 }

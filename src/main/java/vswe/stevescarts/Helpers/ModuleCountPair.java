@@ -1,49 +1,49 @@
 package vswe.stevescarts.Helpers;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import vswe.stevescarts.ModuleData.ModuleData;
 
 public class ModuleCountPair {
-	
 	private ModuleData data;
 	private int count;
 	private String name;
-    private byte extraData;
-	
-	public ModuleCountPair(ModuleData data) {
+	private byte extraData;
+
+	public ModuleCountPair(final ModuleData data) {
 		this.data = data;
-		count = 1;
-		name = data.getUnlocalizedName();
-	}
-	
-	public int getCount() {
-		return count;
+		this.count = 1;
+		this.name = data.getUnlocalizedName();
 	}
 
-	public void setName(String name) {
+	public int getCount() {
+		return this.count;
+	}
+
+	public void setName(final String name) {
 		this.name = name;
 	}
-	
+
 	public void increase() {
-		count++;
-	}
-	
-	public boolean isContainingData(ModuleData data) {
-		return this.data.equals(data);
-	}
-	
-	public ModuleData getData() {
-		return data;
+		++this.count;
 	}
 
-    public void setExtraData(byte b) {
-        extraData = b;
-    }
-	
+	public boolean isContainingData(final ModuleData data) {
+		return this.data.equals(data);
+	}
+
+	public ModuleData getData() {
+		return this.data;
+	}
+
+	public void setExtraData(final byte b) {
+		this.extraData = b;
+	}
+
+	@Override
 	public String toString() {
-		String ret = data.getCartInfoText(StatCollector.translateToLocal(name), extraData);
-		if (count != 1) {
-			ret += " x" + count;
+		String ret = this.data.getCartInfoText(I18n.translateToLocal(this.name), this.extraData);
+		if (this.count != 1) {
+			ret = ret + " x" + this.count;
 		}
 		return ret;
 	}

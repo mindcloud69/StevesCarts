@@ -1,38 +1,35 @@
 package vswe.stevescarts.Buttons;
-import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-import vswe.stevescarts.Computer.ComputerProg;
+
 import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
 
-import java.util.ArrayList;
 public class ButtonVarSecondVar extends ButtonVarVar {
-	
-
-    public ButtonVarSecondVar(ModuleComputer module, LOCATION loc, boolean increase)
-    {
-		super(module, loc, increase);	
+	public ButtonVarSecondVar(final ModuleComputer module, final LOCATION loc, final boolean increase) {
+		super(module, loc, increase);
 	}
-	
 
-	protected int getIndex(ComputerTask task) {
+	@Override
+	protected int getIndex(final ComputerTask task) {
 		return task.getVarSecondVarIndex();
 	}
-	
-	protected void setIndex(ComputerTask task, int val) {
+
+	@Override
+	protected void setIndex(final ComputerTask task, final int val) {
 		task.setVarSecondVar(val);
 	}
-	
+
+	@Override
 	protected String getName() {
 		return "second";
 	}
-	
-	protected boolean isVarVisible(ComputerTask task) {
+
+	@Override
+	protected boolean isVarVisible(final ComputerTask task) {
 		return task.getVarUseSecondVar();
 	}
 
 	@Override
 	protected boolean isSecondValue() {
 		return true;
-	}	
+	}
 }

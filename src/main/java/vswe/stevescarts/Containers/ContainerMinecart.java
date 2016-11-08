@@ -1,151 +1,119 @@
 package vswe.stevescarts.Containers;
-import java.util.ArrayList;
-import java.util.HashMap;
-import vswe.stevescarts.TileEntities.TileEntityBase;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import vswe.stevescarts.TileEntities.TileEntityBase;
 
-public class ContainerMinecart extends ContainerBase
-{
-    public ContainerMinecart(IInventory player, MinecartModular cart)
-    {
-        cartInv(cart);
-        playerInv(player);
-    }
+import java.util.ArrayList;
+import java.util.HashMap;
 
-	public IInventory getMyInventory() {
-		return cart;
+public class ContainerMinecart extends ContainerBase {
+	private IInventory player;
+	public HashMap<Short, Short> cache;
+	public MinecartModular cart;
+
+	public ContainerMinecart(final IInventory player, final MinecartModular cart) {
+		this.cartInv(cart);
+		this.playerInv(player);
 	}
-	
+
+	@Override
+	public IInventory getMyInventory() {
+		return this.cart;
+	}
+
+	@Override
 	public TileEntityBase getTileEntity() {
 		return null;
-	}	
+	}
 
-    protected void cartInv(MinecartModular cart)
-    {
-        this.cart = cart;
-
+	protected void cartInv(final MinecartModular cart) {
+		this.cart = cart;
 		if (cart.getModules() != null) {
-			for (ModuleBase module : cart.getModules())
-			{
+			for (final ModuleBase module : cart.getModules()) {
 				if (module.hasSlots()) {
-					ArrayList<SlotBase> slotsList = module.getSlots();
-
-					for (SlotBase slot : slotsList) {
+					final ArrayList<SlotBase> slotsList = module.getSlots();
+					for (final SlotBase slot : slotsList) {
 						slot.xDisplayPosition = slot.getX() + module.getX() + 1;
 						slot.yDisplayPosition = slot.getY() + module.getY() + 1;
-
-						addSlotToContainer(slot);
+						this.addSlotToContainer(slot);
 					}
 				}
-
 			}
-		}else{
-			for (int i = 0; i < 100; i++) {
-				addSlotToContainer(new Slot(cart,i,-1000,-1000));
+		} else {
+			for (int i = 0; i < 100; ++i) {
+				this.addSlotToContainer(new Slot(cart, i, -1000, -1000));
 			}
 		}
-    }
+	}
 
-	private IInventory player;
-    protected void playerInv(IInventory player)
-    {
+	protected void playerInv(final IInventory player) {
 		this.player = player;
-
-        for (int i = 0; i < 3; i++)
-        {
-            for (int k = 0; k < 9; k++)
-            {
-                addSlotToContainer(new Slot(player, k + i * 9 + 9, offsetX() + k * 18, i * 18 + offsetY()));
-            }
-        }
-
-        for (int j = 0; j < 9; j++)
-        {
-            addSlotToContainer(new Slot(player, j, offsetX() + j * 18, 58 + offsetY()));
-        }
-    }
-
-    protected int offsetX()
-    {
-        return 159;
-    }
-
-    protected int offsetY()
-    {
-		return 174;
-    }
-	
-	@Override
-   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer)
-   {	
-		//System.out.println("Clicked" + (cart == null ? "" : cart.worldObj.isRemote ? "Client" : "Server"));
-		return super.slotClick(par1,par2,par3,par4EntityPlayer);
-   }
-	
-	@Override
-    public boolean canInteractWith(EntityPlayer entityplayer)
-    {
-        return cart.isUseableByPlayer(entityplayer);
-    }
-
-	@Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
-    {
-        super.onContainerClosed(par1EntityPlayer);
-        cart.closeInventory();
-    }
-
-	@Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting)
-    {
-        super.addCraftingToCrafters(par1ICrafting);
-		if (cart.getModules() != null) {
-			for (ModuleBase module : cart.getModules()) {
-				//module.initGuiData(this,par1ICrafting);
+		for (int i = 0; i < 3; ++i) {
+			for (int k = 0; k < 9; ++k) {
+				this.addSlotToContainer(new Slot(player, k + i * 9 + 9, this.offsetX() + k * 18, i * 18 + this.offsetY()));
 			}
 		}
-    }
+		for (int j = 0; j < 9; ++j) {
+			this.addSlotToContainer(new Slot(player, j, this.offsetX() + j * 18, 58 + this.offsetY()));
+		}
+	}
+
+	protected int offsetX() {
+		return 159;
+	}
+
+	protected int offsetY() {
+		return 174;
+	}
+
+	@Override
+	public boolean canInteractWith(final EntityPlayer entityplayer) {
+		return this.cart.isUseableByPlayer(entityplayer);
+	}
+
+	public void onContainerClosed(final EntityPlayer par1EntityPlayer) {
+		super.onContainerClosed(par1EntityPlayer);
+		this.cart.closeInventory(par1EntityPlayer);
+	}
+
+	@Override
+	public void addListener(final IContainerListener par1ICrafting) {
+		super.addListener(par1ICrafting);
+		if (this.cart.getModules() != null) {
+			for (ModuleBase module : this.cart.getModules()) {}
+		}
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-    public void updateProgressBar(int par1, int par2)
-    {
-		par2 &= 65535;
-
-		if (cart.getModules() != null) {
-			for (ModuleBase module : cart.getModules()) {
+	public void updateProgressBar(final int par1, int par2) {
+		par2 &= 0xFFFF;
+		if (this.cart.getModules() != null) {
+			for (final ModuleBase module : this.cart.getModules()) {
 				if (par1 >= module.getGuiDataStart() && par1 < module.getGuiDataStart() + module.numberOfGuiData()) {
-					module.receiveGuiData(par1-module.getGuiDataStart(),(short)par2);
+					module.receiveGuiData(par1 - module.getGuiDataStart(), (short) par2);
 					break;
 				}
 			}
 		}
-    }
+	}
 
-	public HashMap<Short,Short> cache;
 	@Override
-	public void detectAndSendChanges()
-    {
-        super.detectAndSendChanges();
-		if (cart.getModules() != null) {
-			if (crafters.size() > 0)
-			{		
-				for (ModuleBase module : cart.getModules()) {
-					module.checkGuiData(this,crafters, false);
-				}
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+		if (this.cart.getModules() != null && this.listeners.size() > 0) {
+			for (final ModuleBase module : this.cart.getModules()) {
+				module.checkGuiData(this, this.listeners, false);
 			}
 		}
-
-    }
-
-    public MinecartModular cart;
+	}
 }

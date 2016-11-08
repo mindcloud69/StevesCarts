@@ -1,25 +1,27 @@
 package vswe.stevescarts.Modules.Addons;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.Carts.MinecartModular;
 
 public class ModuleMelterExtreme extends ModuleMelter {
-	public ModuleMelterExtreme(MinecartModular cart) {
+	public ModuleMelterExtreme(final MinecartModular cart) {
 		super(cart);
 	}
 
 	@Override
-	protected boolean melt(Block b, int x, int y, int z) {
-		if (!super.melt(b,x,y,z)) {
-			if (b == Blocks.snow) {
-				getCart().worldObj.setBlockToAir(x, y, z);
+	protected boolean melt(final Block b, BlockPos pos) {
+		if (!super.melt(b, pos)) {
+			if (b == Blocks.SNOW) {
+				this.getCart().worldObj.setBlockToAir(pos);
 				return true;
-			}else if (b == Blocks.ice) {
-				getCart().worldObj.setBlock(x, y, z, Blocks.water);
+			}
+			if (b == Blocks.ICE) {
+				this.getCart().worldObj.setBlockState(pos, Blocks.WATER.getDefaultState());
 				return true;
 			}
 		}
-
 		return false;
 	}
 }

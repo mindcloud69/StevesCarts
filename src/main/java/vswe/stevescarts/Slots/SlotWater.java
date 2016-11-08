@@ -1,23 +1,19 @@
 package vswe.stevescarts.Slots;
+
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class SlotWater extends SlotBase
-{
-    public SlotWater(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
+public class SlotWater extends SlotBase {
+	public SlotWater(final IInventory iinventory, final int i, final int j, final int k) {
+		super(iinventory, i, j, k);
+	}
 
-    public int getSlotStackLimit()
-    {
-        return 1;
-    }
+	public int getSlotStackLimit() {
+		return 1;
+	}
 
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return itemstack.getItem() == Items.water_bucket;
-    }
+	public boolean isItemValid(final ItemStack itemstack) {
+		return itemstack.getItem() == Items.WATER_BUCKET;
+	}
 }

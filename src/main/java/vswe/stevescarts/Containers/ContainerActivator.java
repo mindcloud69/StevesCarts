@@ -1,41 +1,31 @@
 package vswe.stevescarts.Containers;
-import java.util.ArrayList;
-import java.util.Iterator;
 
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import vswe.stevescarts.Helpers.ActivatorOption;
 import vswe.stevescarts.TileEntities.TileEntityActivator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import vswe.stevescarts.TileEntities.TileEntityBase;
 
-public class ContainerActivator extends ContainerBase
-{
+import java.util.ArrayList;
 
-	
+public class ContainerActivator extends ContainerBase {
+	private TileEntityActivator activator;
+	public ArrayList<Integer> lastOptions;
+
+	@Override
 	public IInventory getMyInventory() {
 		return null;
 	}
-	
+
+	@Override
 	public TileEntityBase getTileEntity() {
-		return activator;
+		return this.activator;
 	}
 
-    private TileEntityActivator activator;
-    public ContainerActivator(IInventory invPlayer, TileEntityActivator activator)
-    {
-        this.activator = activator;
-
-		lastOptions = new ArrayList<Integer>();
-		for (ActivatorOption option : activator.getOptions()) {
-			lastOptions.add(option.getOption());
+	public ContainerActivator(final IInventory invPlayer, final TileEntityActivator activator) {
+		this.activator = activator;
+		this.lastOptions = new ArrayList<Integer>();
+		for (final ActivatorOption option : activator.getOptions()) {
+			this.lastOptions.add(option.getOption());
 		}
-    }
-
-
-	public ArrayList<Integer> lastOptions;
-	
+	}
 }

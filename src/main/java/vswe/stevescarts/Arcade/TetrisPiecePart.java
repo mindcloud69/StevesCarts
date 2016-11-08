@@ -3,59 +3,44 @@ package vswe.stevescarts.Arcade;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public class TetrisPiecePart {
-
 	private TetrisBlock block;
 	private int offX;
 	private int offY;
-	
-	public TetrisPiecePart(TetrisBlock block, int offX, int offY) {
+
+	public TetrisPiecePart(final TetrisBlock block, final int offX, final int offY) {
 		this.block = block;
 		this.offX = offX;
 		this.offY = offY;
 	}
 
-	public void render(ArcadeTetris game, GuiMinecart gui, int x, int y) {
-		block.render(game, gui, x + offX, y + offY);
+	public void render(final ArcadeTetris game, final GuiMinecart gui, final int x, final int y) {
+		this.block.render(game, gui, x + this.offX, y + this.offY);
 	}
 
-	public void rotate(int offSet) {
-		block.rotate();
-		
-		int temp = offX;
-		offX = -offY + offSet;
-		offY = temp;
-		
-	}
-	
-	
-	public void placeInBoard(TetrisBlock[][] board, int x, int y) {
-		board[x+offX][y+offY] = block;
+	public void rotate(final int offSet) {
+		this.block.rotate();
+		final int temp = this.offX;
+		this.offX = -this.offY + offSet;
+		this.offY = temp;
 	}
 
-	public boolean canMoveTo(TetrisBlock[][] board, int x, int y) {
-		return isValidAt(board, x + offX, y + offY);
-	}
-	
-	public boolean isValidAt(TetrisBlock[][] board, int x, int y) {
-		if (x < 0 || x  >= board.length || y  >= board[0].length) {
-			return false;
-		}else if (y < 0){
-			return true;
-		}
-		
-		
-		
-			
-		return board[x][y] == null;
+	public void placeInBoard(final TetrisBlock[][] board, final int x, final int y) {
+		board[x + this.offX][y + this.offY] = this.block;
 	}
 
-	public boolean canRotate(TetrisBlock[][] board, int x, int y, int offSet) {
-		return isValidAt(board, x - offY + offSet, y + offX);
+	public boolean canMoveTo(final TetrisBlock[][] board, final int x, final int y) {
+		return this.isValidAt(board, x + this.offX, y + this.offY);
 	}
 
-	public boolean canPlaceInBoard(int y) {
-		return y + offY >= 0;
+	public boolean isValidAt(final TetrisBlock[][] board, final int x, final int y) {
+		return x >= 0 && x < board.length && y < board[0].length && (y < 0 || board[x][y] == null);
 	}
-	
-	
+
+	public boolean canRotate(final TetrisBlock[][] board, final int x, final int y, final int offSet) {
+		return this.isValidAt(board, x - this.offY + offSet, y + this.offX);
+	}
+
+	public boolean canPlaceInBoard(final int y) {
+		return y + this.offY >= 0;
+	}
 }

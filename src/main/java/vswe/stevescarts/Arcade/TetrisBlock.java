@@ -1,32 +1,26 @@
 package vswe.stevescarts.Arcade;
 
-import vswe.stevescarts.Interfaces.GuiBase.RENDER_ROTATION;
+import vswe.stevescarts.Interfaces.GuiBase;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public class TetrisBlock {
-
 	private int u;
 	private int v;
-	private RENDER_ROTATION r;
-	
-	
-	public TetrisBlock(int u, int v) {
+	private GuiBase.RENDER_ROTATION r;
+
+	public TetrisBlock(final int u, final int v) {
 		this.u = u;
 		this.v = v;
-		this.r = RENDER_ROTATION.NORMAL;
+		this.r = GuiBase.RENDER_ROTATION.NORMAL;
 	}
-	
-	
-	public void render(ArcadeTetris game, GuiMinecart gui, int x, int y) {
+
+	public void render(final ArcadeTetris game, final GuiMinecart gui, final int x, final int y) {
 		if (y >= 0) {
-			game.getModule().drawImage(gui, ArcadeTetris.BOARD_START_X + x * 10,  ArcadeTetris.BOARD_START_Y + y * 10, u, v, 10, 10, r);
+			game.getModule().drawImage(gui, 189 + x * 10, 9 + y * 10, this.u, this.v, 10, 10, this.r);
 		}
 	}
 
-
 	public void rotate() {
-		r = r.getNextRotation();
+		this.r = this.r.getNextRotation();
 	}
-	
-	
 }

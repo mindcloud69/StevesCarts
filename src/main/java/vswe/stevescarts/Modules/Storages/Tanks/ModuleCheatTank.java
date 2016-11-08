@@ -1,33 +1,29 @@
 package vswe.stevescarts.Modules.Storages.Tanks;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.ColorHelper;
 import vswe.stevescarts.Helpers.Localization;
-import vswe.stevescarts.Interfaces.GuiMinecart;
 
+public class ModuleCheatTank extends ModuleTank {
+	private static final ColorHelper[] colors;
+	private int mode;
 
-public class ModuleCheatTank extends ModuleTank{
-	public ModuleCheatTank(MinecartModular cart) {
+	public ModuleCheatTank(final MinecartModular cart) {
 		super(cart);
 	}
 
-	private static final ColorHelper[] colors = {ColorHelper.YELLOW, ColorHelper.GREEN, ColorHelper.RED, ColorHelper.ORANGE};
-	
-	private int mode;
-	
 	@Override
 	protected String getTankInfo() {
 		String str = super.getTankInfo();
-		str += "\n\n" + Localization.MODULES.TANKS.CREATIVE_MODE.translate(colors[mode].toString(), String.valueOf(mode)) + "\n" + Localization.MODULES.TANKS.CHANGE_MODE.translate();
-		if (mode != 0) {
-			str += "\n" + Localization.MODULES.TANKS.RESET_MODE.translate();
+		str = str + "\n\n" + Localization.MODULES.TANKS.CREATIVE_MODE.translate(ModuleCheatTank.colors[this.mode].toString(), String.valueOf(this.mode)) + "\n" + Localization.MODULES.TANKS.CHANGE_MODE.translate();
+		if (this.mode != 0) {
+			str = str + "\n" + Localization.MODULES.TANKS.RESET_MODE.translate();
 		}
 		return str;
 	}
 
-	
 	@Override
 	protected int getTankSize() {
 		return 2000000000;
@@ -37,76 +33,76 @@ public class ModuleCheatTank extends ModuleTank{
 	public boolean hasVisualTank() {
 		return false;
 	}
-	
 
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
-		if (id == 0 && (data[0] & 1) != 0) {
-			if (mode != 0 && (data[0] & 2) != 0) {
-				mode = 0;
-			}else if (++mode == colors.length) {
-				mode = 1;
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
+		if (id == 0 && (data[0] & 0x1) != 0x0) {
+			if (this.mode != 0 && (data[0] & 0x2) != 0x0) {
+				this.mode = 0;
+			} else if (++this.mode == ModuleCheatTank.colors.length) {
+				this.mode = 1;
 			}
-			
-			updateAmount();
-			updateDw();
-		}else{
+			this.updateAmount();
+			this.updateDw();
+		} else {
 			super.receivePacket(id, data, player);
 		}
-	}	
+	}
 
 	@Override
 	public int numberOfGuiData() {
 		return super.numberOfGuiData() + 1;
 	}
-	
+
 	@Override
-	protected void checkGuiData(Object[] info) {
+	protected void checkGuiData(final Object[] info) {
 		super.checkGuiData(info);
-		
-		updateGuiData(info, super.numberOfGuiData(), (short)mode);
+		this.updateGuiData(info, super.numberOfGuiData(), (short) this.mode);
 	}
-	
+
 	@Override
-	public void receiveGuiData(int id, short data) {
+	public void receiveGuiData(final int id, final short data) {
 		if (id == super.numberOfGuiData()) {
-			mode = data;
-		}else{
+			this.mode = data;
+		} else {
 			super.receiveGuiData(id, data);
 		}
-	}	
-	
-	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		super.Save(tagCompound, id);
-		tagCompound.setByte(generateNBTName("mode",id), (byte)mode);
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		super.Save(tagCompound, id);
+		tagCompound.setByte(this.generateNBTName("mode", id), (byte) this.mode);
+	}
+
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		mode = tagCompound.getByte(generateNBTName("mode",id));	
-	}	
-		
+		this.mode = tagCompound.getByte(this.generateNBTName("mode", id));
+	}
+
 	private void updateAmount() {
-		if (tank.getFluid() != null) {
-			if (mode == 1) {
-				tank.getFluid().amount = getTankSize();
-			}else if(mode == 2) {
-				tank.getFluid().amount = 0;
-				if (!tank.isLocked()) {
-					tank.setFluid(null);
+		if (this.tank.getFluid() != null) {
+			if (this.mode == 1) {
+				this.tank.getFluid().amount = this.getTankSize();
+			} else if (this.mode == 2) {
+				this.tank.getFluid().amount = 0;
+				if (!this.tank.isLocked()) {
+					this.tank.setFluid(null);
 				}
-			}else if(mode == 3) {
-				tank.getFluid().amount = getTankSize() / 2;
+			} else if (this.mode == 3) {
+				this.tank.getFluid().amount = this.getTankSize() / 2;
 			}
 		}
 	}
-	
+
 	@Override
-	public void onFluidUpdated(int tankid) {		
-		updateAmount();		
+	public void onFluidUpdated(final int tankid) {
+		this.updateAmount();
 		super.onFluidUpdated(tankid);
 	}
-	
+
+	static {
+		colors = new ColorHelper[] { ColorHelper.YELLOW, ColorHelper.GREEN, ColorHelper.RED, ColorHelper.ORANGE };
+	}
 }

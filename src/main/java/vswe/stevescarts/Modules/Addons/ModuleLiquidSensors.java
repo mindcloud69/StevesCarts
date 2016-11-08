@@ -1,47 +1,56 @@
 package vswe.stevescarts.Modules.Addons;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.IFluidBlock;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Workers.ModuleLiquidDrainer;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
+
 public class ModuleLiquidSensors extends ModuleAddon {
-	public ModuleLiquidSensors(MinecartModular cart) {
+	private float sensorRotation;
+	private int activetime;
+	private int mult;
+
+	public ModuleLiquidSensors(final MinecartModular cart) {
 		super(cart);
+		this.activetime = -1;
+		this.mult = 1;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-
-		if (isDrillSpinning()) {
-			sensorRotation += 0.05F * mult;
-
-			if ((mult == 1 && sensorRotation > Math.PI / 4) || (mult == -1 && sensorRotation < -Math.PI / 4)) {
-				mult*=-1;
+		if (this.isDrillSpinning()) {
+			this.sensorRotation += 0.05f * this.mult;
+			if ((this.mult == 1 && this.sensorRotation > 0.7853981633974483) || (this.mult == -1 && this.sensorRotation < -0.7853981633974483)) {
+				this.mult *= -1;
 			}
-		}else{
-			if (sensorRotation != 0) {
-				if (sensorRotation > 0) {
-					sensorRotation -= 0.05F;
-					if (sensorRotation < 0) {
-						sensorRotation = 0;
+		} else {
+			if (this.sensorRotation != 0.0f) {
+				if (this.sensorRotation > 0.0f) {
+					this.sensorRotation -= 0.05f;
+					if (this.sensorRotation < 0.0f) {
+						this.sensorRotation = 0.0f;
 					}
-				}else{
-					sensorRotation += 0.05F;
-					if (sensorRotation > 0) {
-						sensorRotation = 0;
+				} else {
+					this.sensorRotation += 0.05f;
+					if (this.sensorRotation > 0.0f) {
+						this.sensorRotation = 0.0f;
 					}
 				}
 			}
-
-			if(activetime >= 0) {
-				activetime++;
-				if (activetime >= 10) {
-					setLight(1);
-					activetime = -1;
+			if (this.activetime >= 0) {
+				++this.activetime;
+				if (this.activetime >= 10) {
+					this.setLight(1);
+					this.activetime = -1;
 				}
 			}
 		}
@@ -54,202 +63,126 @@ public class ModuleLiquidSensors extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0,1);
+		this.addDw(0, 1);
 	}
 
-	private void activateLight(int light) {
-		if (getLight() == 3 && light == 2) {
+	private void activateLight(final int light) {
+		if (this.getLight() == 3 && light == 2) {
 			return;
 		}
-		setLight(light);
-		activetime = 0;
+		this.setLight(light);
+		this.activetime = 0;
 	}
 
-	//called from any drill, byte data will contain which light number and if the drill is spinning or not
 	public void getInfoFromDrill(byte data) {
-		byte light = (byte)(data & 3);
+		final byte light = (byte) (data & 0x3);
 		if (light != 1) {
-			activateLight(light);
+			this.activateLight(light);
 		}
-
-		data &= ~3;
-		data |= getLight();
-		setSensorInfo(data);
+		data &= 0xFFFFFFFC;
+		data |= (byte) this.getLight();
+		this.setSensorInfo(data);
 	}
 
-	private void setLight(int val) {
-		if (isPlaceholder()) {
+	private void setLight(final int val) {
+		if (this.isPlaceholder()) {
 			return;
 		}
-		byte data = getDw(0);
-		data &= ~3;
-		data |= val;
-		setSensorInfo(data);
+		byte data = this.getDw(0);
+		data &= 0xFFFFFFFC;
+		data |= (byte) val;
+		this.setSensorInfo(data);
 	}
 
-	private void setSensorInfo(int val) {
-		if (isPlaceholder()) {
+	private void setSensorInfo(final int val) {
+		if (this.isPlaceholder()) {
 			return;
-		}	
-		updateDw(0,val);
+		}
+		this.updateDw(0, val);
 	}
-
-	private float sensorRotation;
-	private int activetime = -1;
-	private int mult = 1;
 
 	public int getLight() {
-		if (isPlaceholder()) {
-			return getSimInfo().getLiquidLight();
-		}else{
-			return getDw(0) & 3;
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getLiquidLight();
 		}
+		return this.getDw(0) & 0x3;
 	}
 
 	protected boolean isDrillSpinning() {
-		if (isPlaceholder()) {
-			return getSimInfo().getDrillSpinning();
-		}else{
-			return (getDw(0) & 4) != 0;
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getDrillSpinning();
 		}
+		return (this.getDw(0) & 0x4) != 0x0;
 	}
 
 	public float getSensorRotation() {
-		return sensorRotation;
+		return this.sensorRotation;
 	}
 
-	
-	//check if it's dangerous to remove a certain block(only used if a addon allows teh cart to use it)
-	public boolean isDangerous(ModuleDrill drill, int x, int y, int z, int p, int q, int r)
-    {
-        int x1 = x + p;
-        int y1 = y + q;
-        int z1 = z + r;
-
-		Block block = getCart().worldObj.getBlock(x1, y1, z1);
-		
-        if (block == Blocks.lava)   //stat lava
-        {
-			handleLiquid(drill, x1, y1, z1);
+	public boolean isDangerous(final ModuleDrill drill, BlockPos pos, boolean isUp) {
+		final Block block = this.getCart().worldObj.getBlockState(pos).getBlock();
+		if (block == Blocks.LAVA) {
+			this.handleLiquid(drill, pos);
 			return true;
-        }
-        else if (block == Blocks.water)   //stat water
-        {
-			handleLiquid(drill, x1, y1, z1);
-			return true;
-        }
-		else if (block != null && block instanceof IFluidBlock) //stat other
-		{
-			handleLiquid(drill, x1, y1, z1);
-			return true;		
 		}
+		if (block == Blocks.WATER) {
+			this.handleLiquid(drill, pos);
+			return true;
+		}
+		if (block != null && block instanceof IFluidBlock) {
+			this.handleLiquid(drill, pos);
+			return true;
+		}
+		final boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE;
+		final boolean isLava = block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
+		final boolean isOther = block != null && block instanceof IFluidBlock;
+		final boolean isLiquid = isWater || isLava || isOther;
+		if (!isLiquid) {
+			if (isUp) {
+				final boolean isFalling = block instanceof BlockFalling;
+				if (isFalling) {
+					return this.isDangerous(drill, pos.add(0, 1, 0), true) || this.isDangerous(drill, pos.add(1, 0, 0), false) || this.isDangerous(drill, pos.add(-1, 0, 0), false) || this.isDangerous(drill, pos.add(0, 0, 1), false) || this.isDangerous(drill, pos.add(0, 0, -1), false);
+				}
+			}
+			return false;
+		}
+		if (isUp) {
+			this.handleLiquid(drill, pos);
+			return true;
+		}
+		IBlockState state = getCart().worldObj.getBlockState(pos);
+		int m = state.getBlock().getMetaFromState(state);
+		if ((m & 0x8) == 0x8) {
+			if (block.isBlockSolid(this.getCart().worldObj, pos.down(), EnumFacing.UP)) {
+				this.handleLiquid(drill, pos);
+				return true;
+			}
+			return false;
+		} else {
+			if (isWater && (m & 0x7) == 0x7) {
+				return false;
+			}
+			if (isLava && (m & 0x7) == 0x7 && !this.getCart().worldObj.provider.isSkyColored()) {
+				return false;
+			}
+			if (isLava && (m & 0x7) == 0x6) {
+				return false;
+			}
+			this.handleLiquid(drill, pos);
+			return true;
+		}
+	}
 
-        //for moving there's different cases:
-        //1. the liquid is above, -> it will fall down -> not good
-        //2. the liquid is at the side -> might be alright(see below)
-        //2.1. the liquid is at the side but has flown so far that it can't spread further -> nothing will happen -> it's alright
-        //2.2. the liquid is already falling and will therefore not spread -> nothing will happen -> it's alright
-        //2.2.E exception: if there's a block below it will spread anyways -> not good
-        //Ignore the 2.3 ones, no liquid in the tunnel, it's easier to code and more convinient for the user
-        //2.3. the liquid is at the side but has flown so far that it can only spread ONE block more -> might be alright(see below)
-        //2.3.1. the liquid is at the bottom of the tunnel -> it will spread one block -> the cart is too far away -> it's alright
-        //2.3.2. the liquid is not at the bottom -> it will spread one block and then fall -> it will flow to the bottom and start to spread -> the cart will be in the way -> not good
-        //2.4.  none of the above -> the liquid will flow and destroy the cart -> not good
-        //3. when the block is removed sand or gravel will fall down -> liquid on top of this will fall down -> the liquid will hit the cart -> not good (this is very difficult to detect(maybe not :P))
-        boolean isWater = block == Blocks.water || block == Blocks.flowing_water || block == Blocks.ice /* ice */;
-        boolean isLava = block == Blocks.lava || block == Blocks.flowing_lava;
-		
-
-		boolean isOther = block != null && block instanceof IFluidBlock;
-
-		
-        boolean isLiquid = isWater || isLava || isOther;
-
-		
-        if (isLiquid)
-        {
-            //check for cases 1. and 2.
-            if (q == 1)
-            {
-				handleLiquid(drill, x1, y1, z1);
-				return true; //case 1.
-            }
-            else
-            {
-                int m = getCart().worldObj.getBlockMetadata(x1, y1, z1);
-
-                if ((m & 8) == 8)
-                {
-					
-					
-                    if (block.isBlockSolid(getCart().worldObj,x1, y1 - 1, z1,1))
-                    {
-						handleLiquid(drill, x1, y1, z1);
-						return true; //case 2.2.E.
-                    }
-                    else
-                    {
-                        return false; //case 2.2.
-                    }
-                }
-                else if (isWater && ((m & 7) == 7))
-                {
-                    return false; //case 2.1.
-                }
-                else if (isLava && ((m & 7) == 7) && getCart().worldObj.provider.isHellWorld)
-                {
-                    return false; //case 2.1.
-                }				
-                else if (isLava && ((m & 7) == 6))
-                {
-                    return false; //case 2.1.
-				}	
-                //TODO make a more advanced verion of this, fluids are so more advanced than liquids
-                /*else if (isOther &&	((m & 7) == ((IFluidBlock)block).getFlowDistance()))
-                {
-                    return false; //case 2.1.
-                }*/               				
-                else
-                {
-					handleLiquid(drill, x1, y1, z1);
-                    return true; //case 2.4
-                }
-            }
-        }
-        else
-        {
-            //check for case 3
-            if (q == 1)
-            {
-				//sand or gravel
-                boolean isFalling = block instanceof BlockFalling;
-
-                if (isFalling)
-                {
-                    return  isDangerous(drill, x1, y1, z1, 0, +1, 0) ||
-                            isDangerous(drill, x1, y1, z1, +1, 0, 0) ||
-                            isDangerous(drill, x1, y1, z1, -1, 0, 0) ||
-                            isDangerous(drill, x1, y1, z1, 0, 0, +1) ||
-                            isDangerous(drill, x1, y1, z1, 0, 0, -1);
-                }
-            }
-        }
-
-        return false;
-    }	
-	
-	private void handleLiquid(ModuleDrill drill, int x, int y, int z) {
+	private void handleLiquid(final ModuleDrill drill, BlockPos pos) {
 		ModuleLiquidDrainer liquiddrainer = null;
-		for (ModuleBase module : getCart().getModules()) {
+		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ModuleLiquidDrainer) {
-				liquiddrainer = (ModuleLiquidDrainer)module;
+				liquiddrainer = (ModuleLiquidDrainer) module;
 				break;
 			}
-		}	
-		
-		if (liquiddrainer != null) {
-			liquiddrainer.handleLiquid(drill, x, y, z);
 		}
-		
-	}	
+		if (liquiddrainer != null) {
+			liquiddrainer.handleLiquid(drill, pos);
+		}
+	}
 }

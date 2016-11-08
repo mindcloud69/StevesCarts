@@ -1,67 +1,51 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelDrill extends ModelCartbase
-{
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return resource;
-	}
-
+public class ModelDrill extends ModelCartbase {
 	private ModelRenderer drillAnchor;
 	private ResourceLocation resource;
-	
+
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return this.resource;
+	}
+
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-    public ModelDrill(ResourceLocation resource)
-    {
+	public ModelDrill(final ResourceLocation resource) {
 		this.resource = resource;
-
-		drillAnchor = new ModelRenderer(this);
-
-		AddRenderer(drillAnchor);
-		drillAnchor.rotateAngleY = ((float)Math.PI * 3F / 2F);
+		this.AddRenderer(this.drillAnchor = new ModelRenderer(this));
+		this.drillAnchor.rotateAngleY = 4.712389f;
 		int srcY = 0;
-		for (int i = 0; i < 6; i++) {
-			ModelRenderer drill = fixSize(new ModelRenderer(this, 0, srcY));;
-
-			drillAnchor.addChild(drill);
-
-			drill.addBox(
-				-3 + i*0.5F,			//X
-				-3 + i*0.5F, 			//Y
-				i, 						//Z
-				6-i, 					//Size X
-				6-i,					//Size Y
-				1,						//Size Z
-				0.0F					//Size Increasement
-			);
-			drill.setRotationPoint(
-				0,					//X
-				0,					//Y
-				cartLength / 2 + 1	//Z
-			);
-
-			srcY += 7-i;
+		for (int i = 0; i < 6; ++i) {
+			final ModelRenderer drill = this.fixSize(new ModelRenderer(this, 0, srcY));
+			this.drillAnchor.addChild(drill);
+			drill.addBox(-3.0f + i * 0.5f, -3.0f + i * 0.5f, (float) i, 6 - i, 6 - i, 1, 0.0f);
+			drill.setRotationPoint(0.0f, 0.0f, 11.0f);
+			srcY += 7 - i;
 		}
-    }
+	}
 
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-
-		for (Object drill : drillAnchor.childModels) {
-			((ModelRenderer)drill).rotateAngleZ =  module == null ? 0 : ((ModuleDrill)module).getDrillRotation();
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		for (final Object drill : this.drillAnchor.childModels) {
+			((ModelRenderer) drill).rotateAngleZ = ((module == null) ? 0.0f : ((ModuleDrill) module).getDrillRotation());
 		}
-		
 	}
 }

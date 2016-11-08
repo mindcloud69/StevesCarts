@@ -1,83 +1,44 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-@SideOnly(Side.CLIENT)
-public class ModelShootingRig extends ModelCartbase
-{
 
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/rigModel.png");
-	
+@SideOnly(Side.CLIENT)
+public class ModelShootingRig extends ModelCartbase {
+	private static ResourceLocation texture;
+
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
-	
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelShootingRig.texture;
+	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 16;
 	}
 
-    public ModelShootingRig()
-    {
-		super();
+	public ModelShootingRig() {
+		final ModelRenderer base = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(base);
+		base.addBox(-7.0f, -0.5f, -3.0f, 14, 1, 6, 0.0f);
+		base.setRotationPoint(0.0f, -5.5f, -0.0f);
+		base.rotateAngleY = 1.5707964f;
+		final ModelRenderer pillar = new ModelRenderer(this, 0, 7);
+		this.AddRenderer(pillar);
+		pillar.addBox(-2.0f, -2.5f, -2.0f, 4, 5, 4, 0.0f);
+		pillar.setRotationPoint(0.0f, -8.0f, -0.0f);
+		final ModelRenderer top = new ModelRenderer(this, 16, 7);
+		this.AddRenderer(top);
+		top.addBox(-3.0f, -1.0f, -3.0f, 6, 2, 6, 0.0f);
+		top.setRotationPoint(0.0f, -11.0f, -0.0f);
+	}
 
-		ModelRenderer base = new ModelRenderer(this, 0, 0);
-		AddRenderer(base);
-
-		base.addBox(
-			-7, 	//X
-			-0.5F, 	//Y
-			-3,	 	//Z
-			14,					//Size X
-			1,					//Size Y
-			6,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		base.setRotationPoint(
-			0.0F, 		//X
-			-5.5F,			//Y
-			-0.0F			//Z
-		);
-
-		base.rotateAngleY = (float)Math.PI / 2;
-
-		ModelRenderer pillar = new ModelRenderer(this, 0, 7);
-		AddRenderer(pillar);
-
-		pillar.addBox(
-			-2, 	//X
-			-2.5F, 	//Y
-			-2,	 	//Z
-			4,					//Size X
-			5,					//Size Y
-			4,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		pillar.setRotationPoint(
-			0.0F, 		//X
-			-8F,			//Y
-			-0.0F			//Z
-		);
-
-		ModelRenderer top = new ModelRenderer(this, 16, 7);
-		AddRenderer(top);
-
-		top.addBox(
-			-3, 	//X
-			-1F, 	//Y
-			-3,	 	//Z
-			6,					//Size X
-			2,					//Size Y
-			6,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		top.setRotationPoint(
-			0.0F, 		//X
-			-11F,			//Y
-			-0.0F			//Z
-		);
-    }
+	static {
+		ModelShootingRig.texture = ResourceHelper.getResource("/models/rigModel.png");
+	}
 }

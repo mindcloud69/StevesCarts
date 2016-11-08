@@ -1,77 +1,68 @@
 package vswe.stevescarts.Buttons;
-import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-import vswe.stevescarts.Computer.ComputerProg;
-import vswe.stevescarts.Computer.ComputerTask;
 
-import java.util.ArrayList;
+import net.minecraft.entity.player.EntityPlayer;
+import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
+
 public class ButtonFlowConditionInteger extends ButtonFlowCondition {
-	
 	private int dif;
-	
-    public ButtonFlowConditionInteger(ModuleComputer module, LOCATION loc, int dif)
-    {
-		super(module, loc);	
+
+	public ButtonFlowConditionInteger(final ModuleComputer module, final LOCATION loc, final int dif) {
+		super(module, loc);
 		this.dif = dif;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		if (dif < 0) {
-			return "Decrease by " + (-1 * dif);
-		}else{
-			return "Increase by " + dif;
+		if (this.dif < 0) {
+			return "Decrease by " + -1 * this.dif;
 		}
+		return "Increase by " + this.dif;
 	}
-	
+
 	@Override
 	public int texture() {
-		if (dif == 1) {
+		if (this.dif == 1) {
 			return 40;
-		}else if(dif == -1) {
+		}
+		if (this.dif == -1) {
 			return 41;
-		}else if(dif == 10) {
+		}
+		if (this.dif == 10) {
 			return 42;
-		}else if(dif == -10) {
+		}
+		if (this.dif == -10) {
 			return 43;
 		}
-	
 		return super.texture();
 	}
-	
-	
+
 	@Override
 	public boolean isVisible() {
-		if (((ModuleComputer)module).getSelectedTasks() != null) {
-			for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
+		if (((ModuleComputer) this.module).getSelectedTasks() != null) {
+			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
 				if (task.getFlowConditionUseSecondVar()) {
 					return false;
 				}
 			}
 		}
-		
 		return super.isVisible();
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
-		for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-			if (-128 <= task.getFlowConditionInteger() + dif && task.getFlowConditionInteger() + dif <= 127) {
+		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+			if (-128 <= task.getFlowConditionInteger() + this.dif && task.getFlowConditionInteger() + this.dif <= 127) {
 				return true;
 			}
-		}	
+		}
 		return false;
 	}
-	
 
 	@Override
-	public void onServerClick(EntityPlayer player, int mousebutton, boolean ctrlKey, boolean shiftKey) {
-		for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-			task.setFlowConditionInteger(task.getFlowConditionInteger() + dif);
+	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
+		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+			task.setFlowConditionInteger(task.getFlowConditionInteger() + this.dif);
 		}
-	}	
-	
-
+	}
 }

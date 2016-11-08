@@ -1,38 +1,32 @@
 package vswe.stevescarts.Listeners;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class OverlayRenderer
-{
+public class OverlayRenderer {
+	public OverlayRenderer() {
+		FMLCommonHandler.instance().bus().register(this);
+	}
 
-    public OverlayRenderer() {
-        FMLCommonHandler.instance().bus().register(this);
-    }
-
-    @SubscribeEvent
-    public void onRenderTick(TickEvent.RenderTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            renderOverlay();
-        }
-    }
-	
+	@SubscribeEvent
+	public void onRenderTick(final TickEvent.RenderTickEvent event) {
+		if (event.phase == TickEvent.Phase.END) {
+			this.renderOverlay();
+		}
+	}
 
 	@SideOnly(Side.CLIENT)
 	private void renderOverlay() {
-		net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getMinecraft();		
-	    EntityPlayer player = minecraft.thePlayer;
-
-        if (minecraft.currentScreen == null && player.ridingEntity != null && player.ridingEntity instanceof MinecartModular)
-        {
-            ((MinecartModular)player.ridingEntity).renderOverlay(minecraft);
-        }
+		final Minecraft minecraft = Minecraft.getMinecraft();
+		final EntityPlayer player = minecraft.thePlayer;
+		if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof MinecartModular) {
+			((MinecartModular) player.getRidingEntity()).renderOverlay(minecraft);
+		}
 	}
-
-	
 }

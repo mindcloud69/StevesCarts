@@ -3,8 +3,9 @@ package vswe.stevescarts.Arcade;
 import java.util.ArrayList;
 
 public abstract class CardCommunity extends Card {
+	public static ArrayList<CardCommunity> cards;
 
-	public CardCommunity(String message) {
+	public CardCommunity(final String message) {
 		super(message);
 	}
 
@@ -12,46 +13,38 @@ public abstract class CardCommunity extends Card {
 	public int getBackgroundV() {
 		return 1;
 	}
-	
-	public static ArrayList<CardCommunity> cards;
+
 	static {
-		cards = new ArrayList<CardCommunity>();
-		
-		cards.add(new CardCommunity("You just found a ton of buckets in the dungeon.") {		
+		(CardCommunity.cards = new ArrayList<CardCommunity>()).add(new CardCommunity("You just found a ton of buckets in the dungeon.") {
 			@Override
-			public void doStuff(ArcadeMonopoly game, Piece piece) {
+			public void doStuff(final ArcadeMonopoly game, final Piece piece) {
 				piece.addMoney(Note.IRON, 9, true);
-			}	
-			
+			}
+
 			@Override
-			public int getNoteCount() {			
+			public int getNoteCount() {
 				return 9;
 			}
-			
+
 			@Override
 			public Note getNote() {
 				return Note.IRON;
 			}
-			
+
 			@Override
 			public String getMoneyPrefix() {
 				return "Collect";
 			}
 		});
-		
-		cards.add(new CardCommunity("D2") {		
+		CardCommunity.cards.add(new CardCommunity("D2") {
 			@Override
-			public void doStuff(ArcadeMonopoly game, Piece piece) {
-				
-			}			
-		});		
-		
-		cards.add(new CardCommunity("D3") {		
+			public void doStuff(final ArcadeMonopoly game, final Piece piece) {
+			}
+		});
+		CardCommunity.cards.add(new CardCommunity("D3") {
 			@Override
-			public void doStuff(ArcadeMonopoly game, Piece piece) {
-				
-			}			
-		});	
+			public void doStuff(final ArcadeMonopoly game, final Piece piece) {
+			}
+		});
 	}
-
 }

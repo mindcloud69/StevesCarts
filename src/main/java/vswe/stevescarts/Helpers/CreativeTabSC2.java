@@ -3,31 +3,27 @@ package vswe.stevescarts.Helpers;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CreativeTabSC2 extends CreativeTabs {
+	private ItemStack item;
 
-	public CreativeTabSC2(String label) {
+	public CreativeTabSC2(final String label) {
 		super(label);
 	}
 
 	@SideOnly(Side.CLIENT)
-	@Override
-    /**
-     * the item to be displayed on the tab
-     */
-    public ItemStack getIconItemStack()
-    {
-        return item;
-    }
-	
-	private ItemStack item;
-	public void setIcon(ItemStack item) {
+	public ItemStack getIconItemStack() {
+		return this.item;
+	}
+
+	public void setIcon(final ItemStack item) {
 		this.item = item;
 	}
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Item getTabIconItem() {return null;}
+
+	@SideOnly(Side.CLIENT)
+	public Item getTabIconItem() {
+		return null;
+	}
 }

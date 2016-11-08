@@ -1,29 +1,25 @@
 package vswe.stevescarts.Slots;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import vswe.stevescarts.Helpers.TransferHandler.TRANSFER_TYPE;
-public class SlotLiquidOutput extends SlotBase implements ISpecialItemTransferValidator
-{
+import vswe.stevescarts.Helpers.TransferHandler;
 
-    public SlotLiquidOutput(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
+public class SlotLiquidOutput extends SlotBase implements ISpecialItemTransferValidator {
+	public SlotLiquidOutput(final IInventory iinventory, final int i, final int j, final int k) {
+		super(iinventory, i, j, k);
+	}
 
+	public boolean isItemValid(final ItemStack itemstack) {
+		return isItemStackValid(itemstack);
+	}
 
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return isItemStackValid(itemstack);
-    }
-    
 	@Override
-	public boolean isItemValidForTransfer(ItemStack item, TRANSFER_TYPE type) {		
-		return type == TRANSFER_TYPE.OTHER && FluidContainerRegistry.isContainer(item);
-	}    
-    
-    public static boolean isItemStackValid(ItemStack itemstack)
-    {
-        return false;
-    }   
+	public boolean isItemValidForTransfer(final ItemStack item, final TransferHandler.TRANSFER_TYPE type) {
+		return type == TransferHandler.TRANSFER_TYPE.OTHER && FluidContainerRegistry.isContainer(item);
+	}
+
+	public static boolean isItemStackValid(final ItemStack itemstack) {
+		return false;
+	}
 }

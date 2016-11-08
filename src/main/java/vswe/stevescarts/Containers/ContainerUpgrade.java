@@ -1,74 +1,52 @@
 package vswe.stevescarts.Containers;
-import java.util.ArrayList;
-import java.util.Iterator;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import net.minecraft.inventory.Slot;
-import java.lang.reflect.Constructor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ICrafting;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import vswe.stevescarts.TileEntities.TileEntityBase;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.inventory.Container;
 import vswe.stevescarts.Upgrades.InventoryEffect;
-public class ContainerUpgrade extends ContainerBase
-{
 
+public class ContainerUpgrade extends ContainerBase {
+	private TileEntityUpgrade upgrade;
+	public Object olddata;
+
+	@Override
 	public IInventory getMyInventory() {
-		return upgrade;
+		return this.upgrade;
 	}
-	
-	public TileEntityBase getTileEntity() {
-		return upgrade;
-	}	
 
-    private TileEntityUpgrade upgrade;
-    public ContainerUpgrade(IInventory invPlayer, TileEntityUpgrade upgrade)
-    {
-        this.upgrade = upgrade;
-		
+	@Override
+	public TileEntityBase getTileEntity() {
+		return this.upgrade;
+	}
+
+	public ContainerUpgrade(final IInventory invPlayer, final TileEntityUpgrade upgrade) {
+		this.upgrade = upgrade;
 		if (upgrade.getUpgrade() == null || upgrade.getUpgrade().getInventoryEffect() == null) {
 			return;
 		}
-
-		InventoryEffect inventory = upgrade.getUpgrade().getInventoryEffect();
+		final InventoryEffect inventory = upgrade.getUpgrade().getInventoryEffect();
 		inventory.clear();
-	
-        for (int id = 0; id < inventory.getInventorySize(); id++)
-         {	
-			Slot slot = inventory.createSlot(upgrade, id);
-			addSlotToContainer(slot);
+		for (int id = 0; id < inventory.getInventorySize(); ++id) {
+			final Slot slot = inventory.createSlot(upgrade, id);
+			this.addSlotToContainer(slot);
 			inventory.addSlot(slot);
-        }
-		
-		
-		for (int i = 0; i < 3; i++)
-        {
-            for (int k = 0; k < 9; k++)
-            {
-                addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, offsetX() + k * 18, i * 18 + offsetY()));
-            }
-        }
+		}
+		for (int i = 0; i < 3; ++i) {
+			for (int k = 0; k < 9; ++k) {
+				this.addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, this.offsetX() + k * 18, i * 18 + this.offsetY()));
+			}
+		}
+		for (int j = 0; j < 9; ++j) {
+			this.addSlotToContainer(new Slot(invPlayer, j, this.offsetX() + j * 18, 58 + this.offsetY()));
+		}
+	}
 
-        for (int j = 0; j < 9; j++)
-        {
-            addSlotToContainer(new Slot(invPlayer, j, offsetX() + j * 18, 58 + offsetY()));
-        }		
-    }
+	protected int offsetX() {
+		return 48;
+	}
 
-
-    protected int offsetX()
-    {
-        return 48;
-    }
-
-    protected int offsetY()
-    {
-        return 108;
-    }	
-	
-	//temporary solution, make a proper one later
-    public Object olddata;
+	protected int offsetY() {
+		return 108;
+	}
 }

@@ -2,9 +2,11 @@ package vswe.stevescarts.Modules.Realtimers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
@@ -13,60 +15,52 @@ import vswe.stevescarts.Modules.ISuppliesModule;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotCake;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
-
-	public ModuleCakeServer(MinecartModular cart) {
-		super(cart);
-	}
-
-	
-	
-	private int cooldown = 0;
+	private int cooldown;
 	private static final int MAX_CAKES = 10;
 	private static final int SLICES_PER_CAKE = 6;
-	private static final int MAX_TOTAL_SLICES = ((MAX_CAKES + 1) * SLICES_PER_CAKE);
-	
+	private static final int MAX_TOTAL_SLICES = 66;
+	private int[] rect;
+
+	public ModuleCakeServer(final MinecartModular cart) {
+		super(cart);
+		this.cooldown = 0;
+		this.rect = new int[] { 40, 20, 13, 36 };
+	}
+
 	@Override
 	public void update() {
 		super.update();
-		
-		if (!getCart().worldObj.isRemote) {
-			if (getCart().hasCreativeSupplies()) {
-				if (cooldown >= 20) {
-					if (getCakeBuffer() < MAX_TOTAL_SLICES) {
-						setCakeBuffer(getCakeBuffer() + 1);
+		if (!this.getCart().worldObj.isRemote) {
+			if (this.getCart().hasCreativeSupplies()) {
+				if (this.cooldown >= 20) {
+					if (this.getCakeBuffer() < 66) {
+						this.setCakeBuffer(this.getCakeBuffer() + 1);
 					}
-					
-					cooldown = 0;
-				}else{
-					++cooldown;
+					this.cooldown = 0;
+				} else {
+					++this.cooldown;
 				}
 			}
-			
-			ItemStack item = getStack(0);
-			if (item != null && item.getItem().equals(Items.cake) && getCakeBuffer() + SLICES_PER_CAKE <= MAX_TOTAL_SLICES) {
-				setCakeBuffer(getCakeBuffer() + SLICES_PER_CAKE);
-				setStack(0, null);
+			final ItemStack item = this.getStack(0);
+			if (item != null && item.getItem().equals(Items.CAKE) && this.getCakeBuffer() + 6 <= 66) {
+				this.setCakeBuffer(this.getCakeBuffer() + 6);
+				this.setStack(0, null);
 			}
 		}
 	}
 
-
-	private void setCakeBuffer(int i) {
-		updateShortDw(0, i);
+	private void setCakeBuffer(final int i) {
+		this.updateShortDw(0, i);
 	}
-
 
 	private int getCakeBuffer() {
-		if (isPlaceholder()) {
+		if (this.isPlaceholder()) {
 			return 6;
 		}
-		return getShortDw(0);
+		return this.getShortDw(0);
 	}
-
 
 	@Override
 	public int numberOfDataWatchers() {
@@ -75,113 +69,107 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		addShortDw(0,0);	
+		this.addShortDw(0, 0);
 	}
-	
-	
+
 	@Override
 	public boolean hasGui() {
 		return true;
 	}
-	
+
 	@Override
 	protected int getInventoryWidth() {
 		return 1;
 	}
-	
+
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotCake(getCart(),slotId,8+x*18,38+y*18);
-	}	
-	
-	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, Localization.MODULES.ATTACHMENTS.CAKE_SERVER.translate(), 8, 6, 0x404040);
-	}	
-	
-	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setShort(generateNBTName("Cake",id), (short)getCakeBuffer());	
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotCake(this.getCart(), slotId, 8 + x * 18, 38 + y * 18);
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		setCakeBuffer(tagCompound.getShort(generateNBTName("Cake",id)));
-	}	
-	
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.ATTACHMENTS.CAKE_SERVER.translate(), 8, 6, 4210752);
+	}
+
 	@Override
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setShort(this.generateNBTName("Cake", id), (short) this.getCakeBuffer());
+	}
+
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.setCakeBuffer(tagCompound.getShort(this.generateNBTName("Cake", id)));
+	}
+
 	@SideOnly(Side.CLIENT)
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CAKES.translate(String.valueOf(getCakes()), String.valueOf(MAX_CAKES)) + "\n" + Localization.MODULES.ATTACHMENTS.SLICES.translate(String.valueOf(getSlices()), String.valueOf(SLICES_PER_CAKE)), x, y, rect);
+	@Override
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CAKES.translate(String.valueOf(this.getCakes()), String.valueOf(10)) + "\n" + Localization.MODULES.ATTACHMENTS.SLICES.translate(String.valueOf(this.getSlices()), String.valueOf(6)), x, y, this.rect);
 	}
-	
+
 	private int getCakes() {
-		if (getCakeBuffer() == MAX_TOTAL_SLICES) return MAX_CAKES;
-		
-		return getCakeBuffer() / SLICES_PER_CAKE;
+		if (this.getCakeBuffer() == 66) {
+			return 10;
+		}
+		return this.getCakeBuffer() / 6;
 	}
 
 	private int getSlices() {
-		if (getCakeBuffer() == MAX_TOTAL_SLICES) return SLICES_PER_CAKE;
-		
-		return getCakeBuffer() % SLICES_PER_CAKE;
+		if (this.getCakeBuffer() == 66) {
+			return 6;
+		}
+		return this.getCakeBuffer() % 6;
 	}
 
-	private int[] rect = {40, 20, 13, 36};
-	
-	@Override
 	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/cake.png");
-				
-		drawImage(gui, rect, 0, inRect(x, y, rect) ? rect[3] : 0);
-		int maxHeight = rect[3] - 2;
-		int height = (int)((getCakes() / (float)MAX_CAKES) * maxHeight);
+		this.drawImage(gui, this.rect, 0, this.inRect(x, y, this.rect) ? this.rect[3] : 0);
+		final int maxHeight = this.rect[3] - 2;
+		int height = (int) (this.getCakes() / 10.0f * maxHeight);
 		if (height > 0) {
-			drawImage(gui, rect[0] + 1, rect[1] + 1 + maxHeight - height, rect[2], maxHeight - height, 7, height);
+			this.drawImage(gui, this.rect[0] + 1, this.rect[1] + 1 + maxHeight - height, this.rect[2], maxHeight - height, 7, height);
 		}
-		height = (int)((getSlices() / (float)SLICES_PER_CAKE) * maxHeight);
+		height = (int) (this.getSlices() / 6.0f * maxHeight);
 		if (height > 0) {
-			drawImage(gui, rect[0] + 9, rect[1] + 1 + maxHeight - height, rect[2] + 7, maxHeight - height, 3, height);
-		}		
+			this.drawImage(gui, this.rect[0] + 9, this.rect[1] + 1 + maxHeight - height, this.rect[2] + 7, maxHeight - height, 3, height);
+		}
 	}
-	
+
 	@Override
 	public int guiWidth() {
 		return 75;
 	}
-	
+
 	@Override
 	public int guiHeight() {
 		return 60;
 	}
-	
+
 	@Override
-	public boolean onInteractFirst(EntityPlayer entityplayer) {
-		if (getCakeBuffer() > 0) {
-			if (!getCart().worldObj.isRemote && entityplayer.canEat(false)) {
-				setCakeBuffer(getCakeBuffer() - 1);
-				entityplayer.getFoodStats().addStats(2, 0.1F);
+	public boolean onInteractFirst(final EntityPlayer entityplayer) {
+		if (this.getCakeBuffer() > 0) {
+			if (!this.getCart().worldObj.isRemote && entityplayer.canEat(false)) {
+				this.setCakeBuffer(this.getCakeBuffer() - 1);
+				entityplayer.getFoodStats().addStats(2, 0.1f);
 			}
-		
 			return true;
-		}else{
-			return false;
 		}
+		return false;
 	}
 
-
 	public int getRenderSliceCount() {
-		int count = getSlices();
-		if (count == 0 && getCakes() > 0) {
+		int count = this.getSlices();
+		if (count == 0 && this.getCakes() > 0) {
 			count = 6;
 		}
 		return count;
 	}
 
-    @Override
-    public boolean haveSupplies() {
-        return getCakeBuffer() > 0;
-    }
+	@Override
+	public boolean haveSupplies() {
+		return this.getCakeBuffer() > 0;
+	}
 }
-

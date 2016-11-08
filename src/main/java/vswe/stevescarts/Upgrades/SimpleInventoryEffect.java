@@ -1,30 +1,26 @@
 package vswe.stevescarts.Upgrades;
 
-import net.minecraft.inventory.Slot;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
 public abstract class SimpleInventoryEffect extends InventoryEffect {
-
 	private int inventoryWidth;
 	private int inventoryHeight;
-	public SimpleInventoryEffect(int inventoryWidth, int inventoryHeight) {
-		super();
+
+	public SimpleInventoryEffect(final int inventoryWidth, final int inventoryHeight) {
 		this.inventoryWidth = inventoryWidth;
 		this.inventoryHeight = inventoryHeight;
 	}
-	
+
 	@Override
 	public int getInventorySize() {
-		return inventoryWidth * inventoryHeight;
+		return this.inventoryWidth * this.inventoryHeight;
 	}
-	
+
 	@Override
-	public int getSlotX(int id) {
-		return (256 - 18 * inventoryWidth) / 2 + (id % inventoryWidth)* 18;
+	public int getSlotX(final int id) {
+		return (256 - 18 * this.inventoryWidth) / 2 + id % this.inventoryWidth * 18;
 	}
-	
-	@Override	
-	public int getSlotY(int id) {
-		return (107 - 18 * inventoryHeight) / 2 + (id / inventoryWidth) * 18;
+
+	@Override
+	public int getSlotY(final int id) {
+		return (107 - 18 * this.inventoryHeight) / 2 + id / this.inventoryWidth * 18;
 	}
-	
 }

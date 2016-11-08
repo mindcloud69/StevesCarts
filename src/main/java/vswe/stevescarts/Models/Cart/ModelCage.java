@@ -1,119 +1,76 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelCage extends ModelCartbase
-{
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/cageModel.png");
-	
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}
-	
+public class ModelCage extends ModelCartbase {
+	private static ResourceLocation texture;
+	private int cageHeight;
 
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelCage.texture;
+	}
+
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-	private int cageHeight = 26;
-    public ModelCage(boolean isPlaceholder)
-    {
-
+	public ModelCage(final boolean isPlaceholder) {
+		this.cageHeight = 26;
 		if (isPlaceholder) {
-			cageHeight = 14;
+			this.cageHeight = 14;
 		}
-		
-		for (float x = -9; x <= 9; x+=9*2 / 3F) {			
-			if (Math.abs(x) != 9) {
-				createBar(x,7);
-				createBar(x,-7);				
+		for (float x = -9.0f; x <= 9.0f; x += 6.0f) {
+			if (Math.abs(x) != 9.0f) {
+				this.createBar(x, 7.0f);
+				this.createBar(x, -7.0f);
 			}
-			createTopBarShort(x);
+			this.createTopBarShort(x);
 		}
-		for (float z = -7; z <= 7; z+=7*2/ 3F) {
-			createBar(9,z);
-			createBar(-9,z);
-			createTopBarLong(z);
+		for (float z = -7.0f; z <= 7.0f; z += 4.6666665f) {
+			this.createBar(9.0f, z);
+			this.createBar(-9.0f, z);
+			this.createTopBarLong(z);
 		}
-		
-    }
-
-	private void createBar(float offsetX, float offsetZ) {
-
-		ModelRenderer bar = new ModelRenderer(this, 0, 0);
-		AddRenderer(bar);
-
-		bar.addBox(
-			-0.5F, 	//X
-			-cageHeight / 2F, 	//Y
-			-0.5F,	 	//Z
-			1,					//Size X
-			cageHeight,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bar.setRotationPoint(
-			offsetX, 		//X
-			-cageHeight / 2F - 4,	//Y
-			offsetZ			//Z
-		);
-		
 	}
-	
-	private void createTopBarLong(float offsetZ) {
 
-		ModelRenderer bar = new ModelRenderer(this, 0, 0);
-		AddRenderer(bar);
+	private void createBar(final float offsetX, final float offsetZ) {
+		final ModelRenderer bar = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(bar);
+		bar.addBox(-0.5f, -this.cageHeight / 2.0f, -0.5f, 1, this.cageHeight, 1, 0.0f);
+		bar.setRotationPoint(offsetX, -this.cageHeight / 2.0f - 4.0f, offsetZ);
+	}
 
-		bar.addBox(
-			-0.5F, 	//X
-			-9.5F, 	//Y
-			-0.5F,	 	//Z
-			1,					//Size X
-			19,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bar.setRotationPoint(
-			0.005F, 		//X
-			-cageHeight -4.005F,			//Y
-			offsetZ + 0.005F			//Z
-		);
-		
-		bar.rotateAngleZ = (float)(Math.PI / 2);
-	}	
-	
-	private void createTopBarShort(float offsetX) {
+	private void createTopBarLong(final float offsetZ) {
+		final ModelRenderer bar = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(bar);
+		bar.addBox(-0.5f, -9.5f, -0.5f, 1, 19, 1, 0.0f);
+		bar.setRotationPoint(0.005f, -this.cageHeight - 4.005f, offsetZ + 0.005f);
+		bar.rotateAngleZ = 1.5707964f;
+	}
 
-		ModelRenderer bar = new ModelRenderer(this, 0, 0);
-		AddRenderer(bar);
+	private void createTopBarShort(final float offsetX) {
+		final ModelRenderer bar = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(bar);
+		bar.addBox(-0.5f, -7.5f, -0.5f, 1, 15, 1, 0.0f);
+		bar.setRotationPoint(offsetX - 0.005f, -this.cageHeight - 4 + 0.005f, -0.005f);
+		bar.rotateAngleX = 1.5707964f;
+	}
 
-		bar.addBox(
-			-0.5F, 	//X
-			-7.5F, 	//Y
-			-0.5F,	 	//Z
-			1,					//Size X
-			15,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bar.setRotationPoint(
-			offsetX - 0.005F, 		//X
-			-cageHeight - 4 + 0.005F,			//Y
-			-0.005F			//Z
-		);
-		
-		bar.rotateAngleX = (float)(Math.PI / 2);
-	}	
-
+	static {
+		ModelCage.texture = ResourceHelper.getResource("/models/cageModel.png");
+	}
 }

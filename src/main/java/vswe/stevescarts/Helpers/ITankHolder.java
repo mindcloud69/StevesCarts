@@ -1,18 +1,19 @@
 package vswe.stevescarts.Helpers;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Interfaces.GuiBase;
 
 public interface ITankHolder {
+	ItemStack getInputContainer(final int p0);
 
+	void clearInputContainer(final int p0);
 
-	public ItemStack getInputContainer(int tankid);
-	public void clearInputContainer(int tankid);
-	public void addToOutputContainer(int tankid, ItemStack item);
-	public void onFluidUpdated(int tankid);
+	void addToOutputContainer(final int p0, final ItemStack p1);
+
+	void onFluidUpdated(final int p0);
+
 	@SideOnly(Side.CLIENT)
-	public void drawImage(int tankid, GuiBase gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY);
+	void drawImage(final int p0, final GuiBase p1, final int p3, final int p4, final int p5, final int p6, final int p7, final int p8);
 }

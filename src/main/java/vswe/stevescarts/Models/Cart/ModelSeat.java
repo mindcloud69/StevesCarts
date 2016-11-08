@@ -1,72 +1,51 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Realtimers.ModuleSeat;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelSeat extends ModelCartbase
-{
+public class ModelSeat extends ModelCartbase {
+	private static ResourceLocation texture;
+	ModelRenderer sit;
 
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/chairModel.png");
-	
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelSeat.texture;
+	}
 
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-	ModelRenderer sit ;
-    public ModelSeat()
-    {
+	public ModelSeat() {
+		this.AddRenderer(this.sit = new ModelRenderer(this, 0, 0));
+		this.sit.addBox(-4.0f, -2.0f, -2.0f, 8, 4, 4, 0.0f);
+		this.sit.setRotationPoint(0.0f, 1.0f, 0.0f);
+		final ModelRenderer back = new ModelRenderer(this, 0, 8);
+		this.sit.addChild(back);
+		this.fixSize(back);
+		back.addBox(-4.0f, -2.0f, -1.0f, 8, 12, 2, 0.0f);
+		back.setRotationPoint(0.0f, -8.0f, 3.0f);
+	}
 
-		sit = new ModelRenderer(this, 0, 0);
-		AddRenderer(sit);
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		this.sit.rotateAngleY = ((module == null) ? 1.5707964f : (((ModuleSeat) module).getChairAngle() + (((ModuleSeat) module).useRelativeRender() ? 0.0f : yaw)));
+	}
 
-		sit.addBox(
-			-4, 	//X
-			-2F, 	//Y
-			-2,	 	//Z
-			8,					//Size X
-			4,					//Size Y
-			4,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		sit.setRotationPoint(
-			0, 		//X
-			1F,			//Y
-			0F			//Z
-		);
-
-		ModelRenderer back = new ModelRenderer(this, 0, 8);
-		sit.addChild(back);
-		fixSize(back);
-
-		back.addBox(
-			-4, 	//X
-			-2F, 	//Y
-			-1,	 	//Z
-			8,					//Size X
-			12,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		back.setRotationPoint(
-			0, 		//X
-			-8F,			//Y
-			3F			//Z
-		);
-    }
-
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-		sit.rotateAngleY = module == null ? (float)Math.PI / 2 : ((ModuleSeat)module).getChairAngle() + ( ((ModuleSeat)module).useRelativeRender() ? 0 : yaw);
+	static {
+		ModelSeat.texture = ResourceHelper.getResource("/models/chairModel.png");
 	}
 }

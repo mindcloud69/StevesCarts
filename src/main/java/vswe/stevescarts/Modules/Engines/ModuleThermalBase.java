@@ -1,4 +1,5 @@
 package vswe.stevescarts.Modules.Engines;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -6,192 +7,150 @@ import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public abstract class ModuleThermalBase extends ModuleEngine {
-	public ModuleThermalBase(MinecartModular cart) {
+	private short coolantLevel;
+	private static final int RELOAD_LIQUID_SIZE = 1;
+
+	public ModuleThermalBase(final MinecartModular cart) {
 		super(cart);
 	}
 
-	private short coolantLevel;
-	
 	private int getCoolantLevel() {
-		return coolantLevel;
+		return this.coolantLevel;
 	}
-	
-	private void setCoolantLevel(int val) {
-		 coolantLevel = (short)val;
+
+	private void setCoolantLevel(final int val) {
+		this.coolantLevel = (short) val;
 	}
-	
+
 	@Override
 	protected void initPriorityButton() {
-		priorityButton = new int[] {72,17,16,16};	
+		this.priorityButton = new int[] { 72, 17, 16, 16 };
 	}
-	
-	private static final int RELOAD_LIQUID_SIZE = 1;
-	
+
 	protected abstract int getEfficiency();
+
 	protected abstract int getCoolantEfficiency();
-	
+
 	private boolean requiresCoolant() {
-		return getCoolantEfficiency() > 0;
+		return this.getCoolantEfficiency() > 0;
 	}
 
 	@Override
 	public int guiHeight() {
 		return 40;
-	}	
-	
+	}
+
 	@Override
-	public boolean hasFuel(int consumption) {
-		if (super.hasFuel(consumption)) {
-			return !requiresCoolant() || getCoolantLevel() >= consumption;
-		}else{
-			return false;
+	public boolean hasFuel(final int consumption) {
+		return super.hasFuel(consumption) && (!this.requiresCoolant() || this.getCoolantLevel() >= consumption);
+	}
+
+	@Override
+	public void consumeFuel(final int consumption) {
+		super.consumeFuel(consumption);
+		this.setCoolantLevel(this.getCoolantLevel() - consumption);
+	}
+
+	@Override
+	protected void loadFuel() {
+		final int consumption = this.getCart().getConsumption(true) * 2;
+		while (this.getFuelLevel() <= consumption) {
+			final int amount = this.getCart().drain(FluidRegistry.LAVA, 1, false);
+			if (amount <= 0) {
+				break;
+			}
+			this.getCart().drain(FluidRegistry.LAVA, amount, true);
+			this.setFuelLevel(this.getFuelLevel() + amount * this.getEfficiency());
+		}
+		while (this.requiresCoolant() && this.getCoolantLevel() <= consumption) {
+			final int amount = this.getCart().drain(FluidRegistry.WATER, 1, false);
+			if (amount <= 0) {
+				break;
+			}
+			this.getCart().drain(FluidRegistry.WATER, amount, true);
+			this.setCoolantLevel(this.getCoolantLevel() + amount * this.getCoolantEfficiency());
 		}
 	}
-	
-	@Override
-	public void consumeFuel(int consumption) {
-		super.consumeFuel(consumption);
-		setCoolantLevel(getCoolantLevel() - consumption);
-	}
-	
-    /**
-    Load new fuel, this is called all the time but has an if statement checking if it's necessary to re-fill fuel.
-    **/
-	@Override
-    protected void loadFuel()
-    {
-		int consumption =  getCart().getConsumption(true) * 2;
-	
-        //if there's no fuel left it's time to re-fill
-        while (getFuelLevel() <= consumption) {
-			int amount = getCart().drain(FluidRegistry.LAVA, RELOAD_LIQUID_SIZE, false);
-			if (amount > 0) {
-				getCart().drain(FluidRegistry.LAVA, amount, true);
-				setFuelLevel(getFuelLevel() + amount * getEfficiency());
-			}else{
-				break;
-			}
-        }
-		
-		//if there's no coolant left it's time to re-fill
-        while (requiresCoolant() && getCoolantLevel() <= consumption) {
-			int amount = getCart().drain(FluidRegistry.WATER, RELOAD_LIQUID_SIZE, false);
-			if (amount > 0) {
-				getCart().drain(FluidRegistry.WATER, amount, true);
-				setCoolantLevel(getCoolantLevel() + amount * getCoolantEfficiency());
-			}else{
-				break;
-			}
-        }		
-    }
 
 	@Override
 	public int getTotalFuel() {
-		int totalfuel = getFuelLevel() + getCart().drain(FluidRegistry.LAVA, Integer.MAX_VALUE, false) * getEfficiency();
-				
-		if (requiresCoolant()) {
-			int totalcoolant = getCoolantLevel() + getCart().drain(FluidRegistry.WATER, Integer.MAX_VALUE, false) * getCoolantEfficiency();
+		final int totalfuel = this.getFuelLevel() + this.getCart().drain(FluidRegistry.LAVA, Integer.MAX_VALUE, false) * this.getEfficiency();
+		if (this.requiresCoolant()) {
+			final int totalcoolant = this.getCoolantLevel() + this.getCart().drain(FluidRegistry.WATER, Integer.MAX_VALUE, false) * this.getCoolantEfficiency();
 			return Math.min(totalcoolant, totalfuel);
-		}else{
-			return totalfuel;
 		}
+		return totalfuel;
 	}
-	
+
 	@Override
 	public float[] getGuiBarColor() {
-		return new float[] {1F,0F,0F};
-	}	
-	
-	
-	
-	@Override
-	public void smoke()
-    {
-        /*double oX = 0.0;
-        double oZ = 0.0;
-
-		if (getCart().motionX != 0)
-		{
-			oX =  (getCart().motionX > 0 ? -1 : 1);
-		}
-
-		if (getCart().motionZ != 0)
-		{
-			oZ =  (getCart().motionZ > 0 ? -1 : 1);
-		}
-
-        if (getCart().rand.nextInt(2) == 0) {
-			getCart().worldObj.spawnParticle("largesmoke", getCart().posX + oX * 0.85, getCart().posY + 0.12D, getCart().posZ + oZ * 0.85, 0.0D, 0.0D, 0.0D);
-		}*/
-    }
-
+		return new float[] { 1.0f, 0.0f, 0.0f };
+	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, Localization.MODULES.ENGINES.THERMAL.translate(), 8, 6, 0x404040);
-		String str;
-		int consumption = getCart().getConsumption();
+	public void smoke() {
+	}
+
+	@Override
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.ENGINES.THERMAL.translate(), 8, 6, 4210752);
+		int consumption = this.getCart().getConsumption();
 		if (consumption == 0) {
 			consumption = 1;
 		}
-
-        if (getFuelLevel() >= consumption && (!requiresCoolant() || getCoolantLevel() >= consumption)) {
+		String str;
+		if (this.getFuelLevel() >= consumption && (!this.requiresCoolant() || this.getCoolantLevel() >= consumption)) {
 			str = Localization.MODULES.ENGINES.POWERED.translate();
-		}else if (getFuelLevel() >= consumption){
+		} else if (this.getFuelLevel() >= consumption) {
 			str = Localization.MODULES.ENGINES.NO_WATER.translate();
-		}else{
+		} else {
 			str = Localization.MODULES.ENGINES.NO_LAVA.translate();
 		}
-		
-		drawString(gui, str, 8, 22, 0x404040);
+		this.drawString(gui, str, 8, 22, 4210752);
 	}
 
 	@Override
 	public boolean hasSlots() {
 		return false;
 	}
-	
+
 	@Override
 	public int numberOfGuiData() {
 		return 2;
 	}
 
 	@Override
-	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0, (short)getFuelLevel());
-		if (requiresCoolant()) {
-			updateGuiData(info, 1, (short)getCoolantLevel());
+	protected void checkGuiData(final Object[] info) {
+		this.updateGuiData(info, 0, (short) this.getFuelLevel());
+		if (this.requiresCoolant()) {
+			this.updateGuiData(info, 1, (short) this.getCoolantLevel());
 		}
 	}
-	
+
 	@Override
-	public void receiveGuiData(int id, short data) {
+	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			setFuelLevel(data);
-		}else if(id == 1) {
-			setCoolantLevel(data);
+			this.setFuelLevel(data);
+		} else if (id == 1) {
+			this.setCoolantLevel(data);
 		}
 	}
 
-	
-	
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		super.Save(tagCompound, id);
-		tagCompound.setShort(generateNBTName("Fuel",id), (short)getFuelLevel());
-		if (requiresCoolant()) {
-			tagCompound.setShort(generateNBTName("Coolant",id), (short)getCoolantLevel());
-		}	
-	}
-	
-	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		super.Load(tagCompound, id);
-		setFuelLevel(tagCompound.getShort(generateNBTName("Fuel",id)));
-		if (requiresCoolant()) {
-			setCoolantLevel(tagCompound.getShort(generateNBTName("Coolant",id)));
+		tagCompound.setShort(this.generateNBTName("Fuel", id), (short) this.getFuelLevel());
+		if (this.requiresCoolant()) {
+			tagCompound.setShort(this.generateNBTName("Coolant", id), (short) this.getCoolantLevel());
 		}
-	}	
-	
+	}
 
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		super.Load(tagCompound, id);
+		this.setFuelLevel(tagCompound.getShort(this.generateNBTName("Fuel", id)));
+		if (this.requiresCoolant()) {
+			this.setCoolantLevel(tagCompound.getShort(this.generateNBTName("Coolant", id)));
+		}
+	}
 }

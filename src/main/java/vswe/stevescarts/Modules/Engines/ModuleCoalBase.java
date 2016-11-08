@@ -1,142 +1,99 @@
 package vswe.stevescarts.Modules.Engines;
-import java.util.HashMap;
 
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Models.Cart.ModelCartbase;
-import vswe.stevescarts.Models.Cart.ModelEngineFrame;
-import vswe.stevescarts.Models.Cart.ModelEngineInside;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotFuel;
 
 public abstract class ModuleCoalBase extends ModuleEngine {
-	public ModuleCoalBase(MinecartModular cart) {
+	private int fireCoolDown;
+	private int fireIndex;
+
+	public ModuleCoalBase(final MinecartModular cart) {
 		super(cart);
 	}
 
-    /**
-    Load new fuel, this is called all the time but has an if statement checking if it's necessary to re-fill fuel.
-    **/
 	@Override
-    protected void loadFuel()
-    {
-		int consumption =  getCart().getConsumption(true) * 2;
-	
-        //if there's no fuel left it's time to re-fill
-        if (getFuelLevel() <= consumption)
-        {
-            //loop through the slots of fuel
-            for (int i = 0; i < getInventorySize(); i++)
-            {
-                //get the burn time of the fuel
-                setFuelLevel(getFuelLevel() + SlotFuel.getItemBurnTime(this, getStack(i)));
-
-                //if the new fuel did a difference that fuel should be remove from its inventory
-                if (getFuelLevel() > consumption)
-                {
-                    //just to make sure
-                    if (getStack(i) != null)
-                    {
-                        //code for emptying buckets and the like
-                        if (getStack(i).getItem().hasContainerItem(getStack(i)))
-                        {
-                            setStack(i,new ItemStack(getStack(i).getItem().getContainerItem()));
-                        }
-                        else
-                        {
-                            //if this isn't a bucket of lava or something similar decrease the number of items.
-                            getStack(i).stackSize--;
-                        }
-
-                        //an empty stack is not worth anything, remove the stack if so.
-                        if (getStack(i).stackSize == 0)
-                        {
-                           setStack(i,null);
-                        }
-                    }
-
-                    //start the cart if it isn't moving
-                    /*if (getCart().pushX == 0.0D && getCart().pushZ == 0.0D && getCart().StartOnActivate())
-                    {
-                        getCart().pushX = getCart().temppushX;
-                        getCart().pushZ = getCart().temppushZ;
-                    }*/
-
-                    //after filling the cart with fuel we're done here
-                    break;
-                }
-            }
-        }
-    }
+	protected void loadFuel() {
+		final int consumption = this.getCart().getConsumption(true) * 2;
+		if (this.getFuelLevel() <= consumption) {
+			int i = 0;
+			while (i < this.getInventorySize()) {
+				this.setFuelLevel(this.getFuelLevel() + SlotFuel.getItemBurnTime(this, this.getStack(i)));
+				if (this.getFuelLevel() > consumption) {
+					if (this.getStack(i) == null) {
+						break;
+					}
+					if (this.getStack(i).getItem().hasContainerItem(this.getStack(i))) {
+						this.setStack(i, new ItemStack(this.getStack(i).getItem().getContainerItem()));
+					} else {
+						final ItemStack stack = this.getStack(i);
+						--stack.stackSize;
+					}
+					if (this.getStack(i).stackSize == 0) {
+						this.setStack(i, null);
+						break;
+					}
+					break;
+				} else {
+					++i;
+				}
+			}
+		}
+	}
 
 	@Override
 	public int getTotalFuel() {
-		int totalfuel = getFuelLevel();
-				
-		for (int i = 0; i < getInventorySize(); i++) {
-			if (getStack(i) != null) {
-				totalfuel += SlotFuel.getItemBurnTime(this, getStack(i)) * getStack(i).stackSize;
-			}			
+		int totalfuel = this.getFuelLevel();
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			if (this.getStack(i) != null) {
+				totalfuel += SlotFuel.getItemBurnTime(this, this.getStack(i)) * this.getStack(i).stackSize;
+			}
 		}
-				
 		return totalfuel;
 	}
+
 	@Override
 	public float[] getGuiBarColor() {
-		return new float[] {0F,0F,0F};
-	}	
-	
-	
-	
-	@Override
-	public void smoke()
-    {
-        double oX = 0.0;
-        double oZ = 0.0;
-
-		if (getCart().motionX != 0)
-		{
-			oX =  (getCart().motionX > 0 ? -1 : 1);
-		}
-
-		if (getCart().motionZ != 0)
-		{
-			oZ =  (getCart().motionZ > 0 ? -1 : 1);
-		}
-
-        if (getCart().rand.nextInt(2) == 0) {
-			getCart().worldObj.spawnParticle("largesmoke", getCart().posX + oX * 0.85, getCart().posY + 0.12D, getCart().posZ + oZ * 0.85, 0.0D, 0.0D, 0.0D);
-		}
-
-		if (getCart().rand.nextInt(30) == 0) {
-			//if (getCart().getMaxSpeedRail() == 0) {
-				//getCart().worldObj.spawnParticle("flame",getCart().posX + oX* 0.75, getCart().posY + 0.15D, getCart().posZ + oZ*0.75, 0, 0,0);
-			//}else{
-				getCart().worldObj.spawnParticle("flame",getCart().posX + oX* 0.75, getCart().posY + 0.15D, getCart().posZ + oZ*0.75, getCart().motionX, getCart().motionY, getCart().motionZ);
-			//}
-		}
-    }
-
-	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotFuel(getCart(),slotId,8+x*18,23+18*y);
+		return new float[] { 0.0f, 0.0f, 0.0f };
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, Localization.MODULES.ENGINES.COAL.translate(), 8, 6, 0x404040);
-        String strfuel = Localization.MODULES.ENGINES.NO_FUEL.translate();
+	public void smoke() {
+		double oX = 0.0;
+		double oZ = 0.0;
+		if (this.getCart().motionX != 0.0) {
+			oX = ((this.getCart().motionX > 0.0) ? -1 : 1);
+		}
+		if (this.getCart().motionZ != 0.0) {
+			oZ = ((this.getCart().motionZ > 0.0) ? -1 : 1);
+		}
+		if (this.getCart().rand.nextInt(2) == 0) {
+			this.getCart().worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.getCart().posX + oX * 0.85, this.getCart().posY + 0.12, this.getCart().posZ + oZ * 0.85, 0.0, 0.0, 0.0);
+		}
+		if (this.getCart().rand.nextInt(30) == 0) {
+			this.getCart().worldObj.spawnParticle(EnumParticleTypes.FLAME, this.getCart().posX + oX * 0.75, this.getCart().posY + 0.15, this.getCart().posZ + oZ * 0.75, this.getCart().motionX, this.getCart().motionY, this.getCart().motionZ);
+		}
+	}
 
-        if (getFuelLevel() > 0)
-        {
-            strfuel = Localization.MODULES.ENGINES.FUEL.translate(String.valueOf(getFuelLevel()));
-        }
+	@Override
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotFuel(this.getCart(), slotId, 8 + x * 18, 23 + 18 * y);
+	}
 
-        drawString(gui,strfuel, 8, 42, 0x404040);
-		//drawString(gui,"Consumption: " + getCart().getConsumption(), 8, 50, 0x404040);
+	@Override
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.ENGINES.COAL.translate(), 8, 6, 4210752);
+		String strfuel = Localization.MODULES.ENGINES.NO_FUEL.translate();
+		if (this.getFuelLevel() > 0) {
+			strfuel = Localization.MODULES.ENGINES.FUEL.translate(String.valueOf(this.getFuelLevel()));
+		}
+		this.drawString(gui, strfuel, 8, 42, 4210752);
 	}
 
 	@Override
@@ -145,56 +102,52 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	}
 
 	@Override
-	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0, (short)getFuelLevel());
+	protected void checkGuiData(final Object[] info) {
+		this.updateGuiData(info, 0, (short) this.getFuelLevel());
 	}
+
 	@Override
-	public void receiveGuiData(int id, short data) {
+	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			setFuelLevel(data);
-			if (getFuelLevel() < 0) {
-				setFuelLevel(getFuelLevel() + 65536);
+			this.setFuelLevel(data);
+			if (this.getFuelLevel() < 0) {
+				this.setFuelLevel(this.getFuelLevel() + 65536);
 			}
 		}
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		
-		if (fireCoolDown <= 0) {
-			fireIndex = getCart().rand.nextInt(4) + 1;
-			fireCoolDown = 2;
-		}else{
-			fireCoolDown--;
+		if (this.fireCoolDown <= 0) {
+			this.fireIndex = this.getCart().rand.nextInt(4) + 1;
+			this.fireCoolDown = 2;
+		} else {
+			--this.fireCoolDown;
 		}
-	}	
-	
-	private int fireCoolDown;
-	private int fireIndex;
+	}
+
 	public int getFireIndex() {
-		if (getCart().isEngineBurning()) {
-			return fireIndex;
-		}else{
-			return 0;
+		if (this.getCart().isEngineBurning()) {
+			return this.fireIndex;
 		}
+		return 0;
 	}
-	
+
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		super.Save(tagCompound, id);
-		tagCompound.setShort(generateNBTName("Fuel",id), (short)getFuelLevel());
+		tagCompound.setShort(this.generateNBTName("Fuel", id), (short) this.getFuelLevel());
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		setFuelLevel(tagCompound.getShort(generateNBTName("Fuel",id)));
-		if (getFuelLevel() < 0) {
-			setFuelLevel(getFuelLevel() + 65536);
+		this.setFuelLevel(tagCompound.getShort(this.generateNBTName("Fuel", id)));
+		if (this.getFuelLevel() < 0) {
+			this.setFuelLevel(this.getFuelLevel() + 65536);
 		}
-	}	
-	
+	}
+
 	public abstract double getFuelMultiplier();
-	
 }

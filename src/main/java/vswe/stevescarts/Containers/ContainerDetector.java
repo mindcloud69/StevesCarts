@@ -1,36 +1,26 @@
 package vswe.stevescarts.Containers;
-import java.util.Iterator;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+
 import net.minecraft.inventory.IInventory;
 import vswe.stevescarts.Helpers.LogicObject;
+import vswe.stevescarts.TileEntities.TileEntityBase;
 import vswe.stevescarts.TileEntities.TileEntityDetector;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerDetector extends ContainerBase
-{
+public class ContainerDetector extends ContainerBase {
+	private TileEntityDetector detector;
+	public LogicObject mainObj;
 
-
+	@Override
 	public IInventory getMyInventory() {
 		return null;
 	}
-	
+
+	@Override
 	public TileEntityBase getTileEntity() {
-		return detector;
-	}	
-	
-    private TileEntityDetector detector;
-	public LogicObject mainObj;
-    public ContainerDetector(IInventory invPlayer, TileEntityDetector detector)
-    {
-        this.detector = detector;
+		return this.detector;
+	}
 
-		
-		mainObj = new LogicObject((byte)1, (byte)0);
-    }
-
-
+	public ContainerDetector(final IInventory invPlayer, final TileEntityDetector detector) {
+		this.detector = detector;
+		this.mainObj = new LogicObject((byte) 1, (byte) 0);
+	}
 }

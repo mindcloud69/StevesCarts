@@ -1,88 +1,74 @@
 package vswe.stevescarts.Helpers;
 
 public class EnchantmentData {
-
 	private EnchantmentInfo type;
 	private int value;
-	public EnchantmentData(EnchantmentInfo type) {
+
+	public EnchantmentData(final EnchantmentInfo type) {
 		this.type = type;
-		value = 0;
-	}
-	
-	public int getValue() {
-		return value;
-	}
-	
-	public void setValue(int val) {
-		this.value = val;
-	}
-	
-	public EnchantmentInfo getEnchantment() {
-		return type;
+		this.value = 0;
 	}
 
-	public void setEnchantment(EnchantmentInfo info) {
-		type = info;
-	}	
-	
-	public void damageEnchant(int dmg) {
-		damageEnchantLevel(dmg, getValue(), 1);	
+	public int getValue() {
+		return this.value;
 	}
-	
-	private boolean damageEnchantLevel(int dmg, int value,  int level) {
-		if (level > type.getEnchantment().getMaxLevel() || value <= 0) {
+
+	public void setValue(final int val) {
+		this.value = val;
+	}
+
+	public EnchantmentInfo getEnchantment() {
+		return this.type;
+	}
+
+	public void setEnchantment(final EnchantmentInfo info) {
+		this.type = info;
+	}
+
+	public void damageEnchant(final int dmg) {
+		this.damageEnchantLevel(dmg, this.getValue(), 1);
+	}
+
+	private boolean damageEnchantLevel(final int dmg, final int value, final int level) {
+		if (level > this.type.getEnchantment().getMaxLevel() || value <= 0) {
 			return false;
 		}
-		
-		int levelvalue = getEnchantment().getValue(level);
-		
-		if (!damageEnchantLevel(dmg, value - levelvalue, level + 1)) {
-			int dmgdealt = dmg * (int)Math.pow(2, level - 1);
+		final int levelvalue = this.getEnchantment().getValue(level);
+		if (!this.damageEnchantLevel(dmg, value - levelvalue, level + 1)) {
+			int dmgdealt = dmg * (int) Math.pow(2.0, level - 1);
 			if (dmgdealt > value) {
 				dmgdealt = value;
 			}
-			
-			setValue(getValue() - dmgdealt);
+			this.setValue(this.getValue() - dmgdealt);
 		}
-		
 		return true;
 	}
 
 	public int getLevel() {
-		int value = getValue();
-		for (int i = 0; i < type.getEnchantment().getMaxLevel(); i++) {
-			if (value > 0) {
-				value -= getEnchantment().getValue(i+1);
-			}else{
+		int value = this.getValue();
+		for (int i = 0; i < this.type.getEnchantment().getMaxLevel(); ++i) {
+			if (value <= 0) {
 				return i;
-			}		
+			}
+			value -= this.getEnchantment().getValue(i + 1);
 		}
-		return type.getEnchantment().getMaxLevel();
+		return this.type.getEnchantment().getMaxLevel();
 	}
 
 	public String getInfoText() {
-		int value = getValue();
+		int value = this.getValue();
 		int level = 0;
 		int percentage = 0;
-		for (level = 1; level <= type.getEnchantment().getMaxLevel(); level++) {
-			
+		for (level = 1; level <= this.type.getEnchantment().getMaxLevel(); ++level) {
 			if (value > 0) {
-				int levelvalue = getEnchantment().getValue(level);
-				percentage = (100 * value) / levelvalue;
+				final int levelvalue = this.getEnchantment().getValue(level);
+				percentage = 100 * value / levelvalue;
 				value -= levelvalue;
 				if (value < 0) {
 					break;
 				}
-			}	
+			}
 		}
-		
-		
-
-		return "\u00a7E" + getEnchantment().getEnchantment().getTranslatedName(getLevel()) + "\n" + percentage + "% left of this tier";
+		return "�E" + this.getEnchantment().getEnchantment().getTranslatedName(this.getLevel()) + "\n" + percentage + "% left of this tier";
 	}
-
-
-	
-	
 }
-

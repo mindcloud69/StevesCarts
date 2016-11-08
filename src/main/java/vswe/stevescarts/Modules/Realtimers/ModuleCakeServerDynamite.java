@@ -1,72 +1,71 @@
 package vswe.stevescarts.Modules.Realtimers;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotCakeDynamite;
+import vswe.stevescarts.StevesCarts;
 
 public class ModuleCakeServerDynamite extends ModuleCakeServer {
-
 	private int dynamiteCount;
-	
+
 	private int getMaxDynamiteCount() {
 		return Math.min(StevesCarts.instance.maxDynamites, 25);
 	}
-	
-	public ModuleCakeServerDynamite(MinecartModular cart) {
+
+	public ModuleCakeServerDynamite(final MinecartModular cart) {
 		super(cart);
 	}
 
-	
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotCakeDynamite(getCart(),slotId,8+x*18,38+y*18);
-	}	
-	
-	@Override
-	public boolean dropOnDeath() {
-		return dynamiteCount == 0;
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotCakeDynamite(this.getCart(), slotId, 8 + x * 18, 38 + y * 18);
 	}
 
 	@Override
-    public void onDeath() {
-		if (dynamiteCount > 0) {
-			explode();
+	public boolean dropOnDeath() {
+		return this.dynamiteCount == 0;
+	}
+
+	@Override
+	public void onDeath() {
+		if (this.dynamiteCount > 0) {
+			this.explode();
 		}
-    }
-	
-	private void explode() {		
-		getCart().worldObj.createExplosion(null, getCart().posX, getCart().posY, getCart().posZ, dynamiteCount * 0.8F, true);
+	}
+
+	private void explode() {
+		this.getCart().worldObj.createExplosion(null, this.getCart().posX, this.getCart().posY, this.getCart().posZ, this.dynamiteCount * 0.8f, true);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		
-		if (!getCart().worldObj.isRemote) {
-			ItemStack item = getStack(0);
-			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && dynamiteCount < getMaxDynamiteCount()) {
-				int count = Math.min(getMaxDynamiteCount() - dynamiteCount, item.stackSize);
-				dynamiteCount += count;
-				item.stackSize -= count;
+		if (!this.getCart().worldObj.isRemote) {
+			final ItemStack item = this.getStack(0);
+			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && this.dynamiteCount < this.getMaxDynamiteCount()) {
+				final int count = Math.min(this.getMaxDynamiteCount() - this.dynamiteCount, item.stackSize);
+				this.dynamiteCount += count;
+				final ItemStack itemStack = item;
+				itemStack.stackSize -= count;
 				if (item.stackSize == 0) {
-					setStack(0, null);
+					this.setStack(0, null);
 				}
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean onInteractFirst(EntityPlayer entityplayer) {
-		if (dynamiteCount > 0) {
-			explode();
-			getCart().setDead();
+	public boolean onInteractFirst(final EntityPlayer entityplayer) {
+		if (this.dynamiteCount > 0) {
+			this.explode();
+			this.getCart().setDead();
 			return true;
-		}else{
-			return super.onInteractFirst(entityplayer);
 		}
+		return super.onInteractFirst(entityplayer);
 	}
 }

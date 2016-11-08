@@ -1,66 +1,55 @@
 package vswe.stevescarts.Listeners;
 
-import java.util.Random;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.EntityInteractEvent;
-import vswe.stevescarts.Items.ModItems;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import vswe.stevescarts.Helpers.ComponentTypes;
 import vswe.stevescarts.Helpers.TradeHandler;
-import cpw.mods.fml.common.registry.VillagerRegistry;
+import vswe.stevescarts.Items.ModItems;
+
+import java.util.Random;
 
 public class MobInteractListener {
-
-    public MobInteractListener()
-    {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	public MobInteractListener() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
 	@SubscribeEvent
-	public void onEntityInteract(EntityInteractEvent event) {
-		EntityPlayer player = event.entityPlayer;
-		Entity target = event.target;
-		
+	public void onEntityInteract(final PlayerInteractEvent.EntityInteract event) {
+		final EntityPlayer player = event.getEntityPlayer();
+		final Entity target = event.getTarget();
 		if (target instanceof EntityVillager) {
-			EntityVillager villager = (EntityVillager)target;
-			
-			if (villager.getProfession() != TradeHandler.santaId) {
-				ItemStack item = player.getCurrentEquippedItem();
-
-				//if it's the santa hat :)
-				if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == 53)
-				{				
-					if (!player.capabilities.isCreativeMode)
-					{
-						--item.stackSize;
+			final EntityVillager villager = (EntityVillager) target;
+			if (villager.getProfessionForge() != TradeHandler.santaProfession) {
+				final ItemStack item = player.getHeldItem(EnumHand.MAIN_HAND);
+				if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == ComponentTypes.WARM_HAT.getId()) {
+					if (!player.capabilities.isCreativeMode) {
+						final ItemStack itemStack = item;
+						--itemStack.stackSize;
 					}
-				
 					if (!player.worldObj.isRemote) {
-						villager.setProfession(TradeHandler.santaId);
-						MerchantRecipeList list = villager.getRecipes(player);
-						list.clear();
-						VillagerRegistry.manageVillagerTrades(list, villager, villager.getProfession(), new Random());
+						villager.setProfession(TradeHandler.santaProfession);
+						try {
+							ReflectionHelper.findMethod(EntityVillager.class, villager, new String[] { "populateBuyingList" }).invoke(null);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
-
-					if (item.stackSize <= 0 && !player.capabilities.isCreativeMode)
-					{
-						player.destroyCurrentEquippedItem();
+					if (item.stackSize <= 0 && !player.capabilities.isCreativeMode) {
+						player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 					}
-
-					event.setCanceled(true);           
-				}	
-			
+					event.setCanceled(true);
+				}
 			}
-
 		}
-			
 	}
-	
-
-
 }

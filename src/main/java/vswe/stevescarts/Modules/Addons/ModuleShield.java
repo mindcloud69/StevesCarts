@@ -1,81 +1,79 @@
 package vswe.stevescarts.Modules.Addons;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.IActivatorModule;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModuleShield extends ModuleAddon implements IActivatorModule {
-	public ModuleShield(MinecartModular cart) {
+	private boolean shield;
+	private float shieldDistance;
+	private float shieldAngle;
+	private int[] buttonRect;
+
+	public ModuleShield(final MinecartModular cart) {
 		super(cart);
+		this.shield = true;
+		this.shieldDistance = 18.0f;
+		this.buttonRect = new int[] { 20, 20, 24, 12 };
 	}
 
 	protected boolean shieldSetting() {
-		return getShieldStatus();
+		return this.getShieldStatus();
 	}
 
 	public float getShieldDistance() {
-		return shieldDistance;
+		return this.shieldDistance;
 	}
 
 	public float getShieldAngle() {
-		return shieldAngle;
+		return this.shieldAngle;
 	}
 
 	public boolean hasShield() {
-		return shield;
+		return this.shield;
 	}
 
-
-	private boolean shield = true;
-	private float shieldDistance = 18;
-	private float shieldAngle;
-
-
-    public void update()
-    {
-        super.update();
-
-		if (hasShield() &&  !getCart().hasFuelForModule() && !getCart().worldObj.isRemote) {
-			setShieldStatus(false);
+	@Override
+	public void update() {
+		super.update();
+		if (this.hasShield() && !this.getCart().hasFuelForModule() && !this.getCart().worldObj.isRemote) {
+			this.setShieldStatus(false);
 		}
-		
-		if (shield) {
-			getCart().extinguish();
+		if (this.shield) {
+			this.getCart().extinguish();
 		}
-
-		if (!getShieldStatus() && shieldDistance > 0) {
-			shieldDistance -= 0.25F;
-			if (shieldDistance <= 0) {
-				shield = false;
+		if (!this.getShieldStatus() && this.shieldDistance > 0.0f) {
+			this.shieldDistance -= 0.25f;
+			if (this.shieldDistance <= 0.0f) {
+				this.shield = false;
 			}
-		}else if (getShieldStatus()  && shieldDistance < 18) {
-			shieldDistance += 0.25F;
-			shield = true;
+		} else if (this.getShieldStatus() && this.shieldDistance < 18.0f) {
+			this.shieldDistance += 0.25f;
+			this.shield = true;
 		}
-
-		if (shield) {
-			shieldAngle = (float)((shieldAngle + 0.125F) % (Math.PI * 100));
+		if (this.shield) {
+			this.shieldAngle = (float) ((this.shieldAngle + 0.125f) % 314.1592653589793);
 		}
-    }
-
-	public boolean receiveDamage(DamageSource source, int val) {
-		return !hasShield();
 	}
 
-	
+	public boolean receiveDamage(final DamageSource source, final int val) {
+		return !this.hasShield();
+	}
+
 	@Override
 	public boolean hasSlots() {
 		return false;
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -90,110 +88,101 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
 	}
 
-	public void setShieldStatus(boolean val) {
-		if (!isPlaceholder()) {
-			updateDw(0, (byte)(val ? 1 : 0));
+	public void setShieldStatus(final boolean val) {
+		if (!this.isPlaceholder()) {
+			this.updateDw(0, (byte) (val ? 1 : 0));
 		}
 	}
-	
-	
+
 	private boolean getShieldStatus() {
-		if (isPlaceholder()) {
-			return getSimInfo().getShieldActive();
-		}else{		
-			return getDw(0) != 0;
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getShieldActive();
 		}
+		return this.getDw(0) != 0;
 	}
-	
 
-	
-	@Override
 	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/shield.png");
-
-		int imageID = getShieldStatus() ? 1 : 0;
+		final int imageID = this.getShieldStatus() ? 1 : 0;
 		int borderID = 0;
-		if (inRect(x,y, buttonRect)) {
-			borderID = 1;			
+		if (this.inRect(x, y, this.buttonRect)) {
+			borderID = 1;
 		}
-
-		drawImage(gui,buttonRect, 0, buttonRect[3] * borderID);
-
-		int srcY = buttonRect[3] * 2 + imageID * (buttonRect[3] - 2);
-		drawImage(gui, buttonRect[0] + 1, buttonRect[1] + 1, 0, srcY, buttonRect[2] - 2, buttonRect[3] - 2);
+		this.drawImage(gui, this.buttonRect, 0, this.buttonRect[3] * borderID);
+		final int srcY = this.buttonRect[3] * 2 + imageID * (this.buttonRect[3] - 2);
+		this.drawImage(gui, this.buttonRect[0] + 1, this.buttonRect[1] + 1, 0, srcY, this.buttonRect[2] - 2, this.buttonRect[3] - 2);
 	}
-
-	private int[] buttonRect = new int[] {20,20, 24, 12};
 
 	@Override
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, getStateName(), x,y,buttonRect);
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui, this.getStateName(), x, y, this.buttonRect);
 	}
-
 
 	private String getStateName() {
-        return Localization.MODULES.ADDONS.SHIELD.translate(getShieldStatus() ? "1" : "0");
+		return Localization.MODULES.ADDONS.SHIELD.translate(this.getShieldStatus() ? "1" : "0");
 	}
 
 	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
-		if (button == 0) {
-			if (inRect(x,y, buttonRect)) {
-				sendPacket(0);
-			}
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (button == 0 && this.inRect(x, y, this.buttonRect)) {
+			this.sendPacket(0);
 		}
 	}
 
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			updateDw(0, getShieldStatus() ? 0 : 1);
+			this.updateDw(0, this.getShieldStatus() ? 0 : 1);
 		}
 	}
 
-	@Override
 	public int numberOfPackets() {
 		return 1;
 	}
-
 
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
 	}
-	
+
 	@Override
 	public void initDw() {
-		addDw(0,(byte)0);
-	}	
-	
-	public int getConsumption(boolean isMoving) {
-		return hasShield() ? 20 : super.getConsumption(isMoving);
-	}	
-	
+		this.addDw(0, 0);
+	}
+
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setBoolean(generateNBTName("Shield",id), getShieldStatus());
+	public int getConsumption(final boolean isMoving) {
+		return this.hasShield() ? 20 : super.getConsumption(isMoving);
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		setShieldStatus(tagCompound.getBoolean(generateNBTName("Shield",id)));		
-	}		
-	
-	public void doActivate(int id) {
-		setShieldStatus(true);
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setBoolean(this.generateNBTName("Shield", id), this.getShieldStatus());
 	}
-	public void doDeActivate(int id) {
-		setShieldStatus(false);
+
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.setShieldStatus(tagCompound.getBoolean(this.generateNBTName("Shield", id)));
 	}
-	public boolean isActive(int id) {
-		return getShieldStatus();
-	}		
-	
+
+	@Override
+	public void doActivate(final int id) {
+		this.setShieldStatus(true);
+	}
+
+	@Override
+	public void doDeActivate(final int id) {
+		this.setShieldStatus(false);
+	}
+
+	@Override
+	public boolean isActive(final int id) {
+		return this.getShieldStatus();
+	}
 }

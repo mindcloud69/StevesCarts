@@ -1,266 +1,101 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Storages.Chests.ModuleEggBasket;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-@SideOnly(Side.CLIENT)
-public class ModelEggBasket extends ModelCartbase
-{
-	
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/chestModelEaster.png");
-	
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}	
-	
 
+@SideOnly(Side.CLIENT)
+public class ModelEggBasket extends ModelCartbase {
+	private static ResourceLocation texture;
+	ModelRenderer chesttop;
+
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelEggBasket.texture;
+	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 128;
 	}
-	
-	ModelRenderer chesttop;
-    public ModelEggBasket()
-    {
 
-		for (int i = 0; i < 2; i++) {
-			ModelRenderer chestside = new ModelRenderer(this, 0, 13);
-			AddRenderer(chestside);
-
-			chestside.addBox(
-				-8, 	//X
-				-2.5F, 	//Y
-				-0.5F,	 	//Z
-				16,					//Size X
-				5,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			chestside.setRotationPoint(
-				0F, 		//X
-				-8.5F,			//Y
-				-5.5F + i*11			//Z
-			);
-
-
-		
-			ModelRenderer chestfrontback = new ModelRenderer(this, 0, 19);
-			AddRenderer(chestfrontback);
-
-			chestfrontback.addBox(
-				-5, 	//X
-				-2.5F, 	//Y
-				-0.5F,	 	//Z
-				10,					//Size X
-				5,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			chestfrontback.setRotationPoint(
-				-7.5F + i*15, 		//X
-				-8.5F,		//Y
-				0 			//Z
-			);
-
-			chestfrontback.rotateAngleY = (float)Math.PI / 2;
-
-
-			ModelRenderer chesthandle = new ModelRenderer(this, 0, 36);
-			AddRenderer(chesthandle);
-
-			chesthandle.addBox(
-				-1, 	//X
-				-1.5F, 	//Y
-				-0.5F,	 	//Z
-				2,					//Size X
-				3,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			chesthandle.setRotationPoint(
-				0F, 		//X
-				-12.5F,			//Y
-				-5.5F + i*11			//Z
-			);		
-
-			ModelRenderer chesthandlesmall = new ModelRenderer(this, 0, 40);
-			AddRenderer(chesthandlesmall);
-
-			chesthandlesmall.addBox(
-				-1, 	//X
-				-0.5F, 	//Y
-				-0.5F,	 	//Z
-				2,					//Size X
-				1,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			chesthandlesmall.setRotationPoint(
-				0F, 		//X
-				-14.5F,			//Y
-				-4.5F + i*9			//Z
-			);				
+	public ModelEggBasket() {
+		for (int i = 0; i < 2; ++i) {
+			final ModelRenderer chestside = new ModelRenderer(this, 0, 13);
+			this.AddRenderer(chestside);
+			chestside.addBox(-8.0f, -2.5f, -0.5f, 16, 5, 1, 0.0f);
+			chestside.setRotationPoint(0.0f, -8.5f, -5.5f + i * 11);
+			final ModelRenderer chestfrontback = new ModelRenderer(this, 0, 19);
+			this.AddRenderer(chestfrontback);
+			chestfrontback.addBox(-5.0f, -2.5f, -0.5f, 10, 5, 1, 0.0f);
+			chestfrontback.setRotationPoint(-7.5f + i * 15, -8.5f, 0.0f);
+			chestfrontback.rotateAngleY = 1.5707964f;
+			final ModelRenderer chesthandle = new ModelRenderer(this, 0, 36);
+			this.AddRenderer(chesthandle);
+			chesthandle.addBox(-1.0f, -1.5f, -0.5f, 2, 3, 1, 0.0f);
+			chesthandle.setRotationPoint(0.0f, -12.5f, -5.5f + i * 11);
+			final ModelRenderer chesthandlesmall = new ModelRenderer(this, 0, 40);
+			this.AddRenderer(chesthandlesmall);
+			chesthandlesmall.addBox(-1.0f, -0.5f, -0.5f, 2, 1, 1, 0.0f);
+			chesthandlesmall.setRotationPoint(0.0f, -14.5f, -4.5f + i * 9);
 		}
-
-			
-		chesttop = new ModelRenderer(this, 0, 0);
-		AddRenderer(chesttop);
-
-		chesttop.addBox(
-			-7, 	//X
-			-5, 	//Y
-			-0.5F,	 	//Z
-			14,					//Size X
-			10,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		chesttop.setRotationPoint(
-			0, 		//X
-			- 11.5F,		//Y
-			0			//Z
-		);
-		
-		chesttop.rotateAngleX = (float)Math.PI / 2;
-		chesttop.rotateAngleY = 0.1F;
-		
-		ModelRenderer chestbot = new ModelRenderer(this, 0, 25);
-		AddRenderer(chestbot);
-
-		chestbot.addBox(
-			-7, 	//X
-			-5, 	//Y
-			-0.5F,	 	//Z
-			14,					//Size X
-			10,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		chestbot.setRotationPoint(
-			0, 		//X
-			- 5.5F,		//Y
-			0			//Z
-		);
-		
-		chestbot.rotateAngleX = (float)Math.PI / 2;		
-		
-		
-		ModelRenderer chesthandletop = new ModelRenderer(this, 0, 42);
-		AddRenderer(chesthandletop);
-
-		chesthandletop.addBox(
-			-1, 	//X
-			-4F, 	//Y
-			-0.5F,	 	//Z
-			2,					//Size X
-			8,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		chesthandletop.setRotationPoint(
-			0F, 		//X
-			-15.5F,			//Y
-			0			//Z
-		);		
-		
-		chesthandletop.rotateAngleX = (float)Math.PI / 2;	
-
-		for (int i = 0; i < 12; i++) {
-			addEgg(i);
+		this.AddRenderer(this.chesttop = new ModelRenderer(this, 0, 0));
+		this.chesttop.addBox(-7.0f, -5.0f, -0.5f, 14, 10, 1, 0.0f);
+		this.chesttop.setRotationPoint(0.0f, -11.5f, 0.0f);
+		this.chesttop.rotateAngleX = 1.5707964f;
+		this.chesttop.rotateAngleY = 0.1f;
+		final ModelRenderer chestbot = new ModelRenderer(this, 0, 25);
+		this.AddRenderer(chestbot);
+		chestbot.addBox(-7.0f, -5.0f, -0.5f, 14, 10, 1, 0.0f);
+		chestbot.setRotationPoint(0.0f, -5.5f, 0.0f);
+		chestbot.rotateAngleX = 1.5707964f;
+		final ModelRenderer chesthandletop = new ModelRenderer(this, 0, 42);
+		this.AddRenderer(chesthandletop);
+		chesthandletop.addBox(-1.0f, -4.0f, -0.5f, 2, 8, 1, 0.0f);
+		chesthandletop.setRotationPoint(0.0f, -15.5f, 0.0f);
+		chesthandletop.rotateAngleX = 1.5707964f;
+		for (int j = 0; j < 12; ++j) {
+			this.addEgg(j);
 		}
-    }
-
-	
-	private void addEgg(int id) {
-		int x = id % 3; 
-		int y = id / 3;
-	
-		float xCoord = -3 + x * (10F / 3);
-		float yCoord = -5 + y * (14F / 4);
-		
-		int textureY = 19 + id * 5;
-		
-		ModelRenderer eggbot = new ModelRenderer(this, 30, textureY);
-		AddRenderer(eggbot);
-
-		eggbot.addBox(
-			-1F, 	//X
-			-0.5F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			1,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		eggbot.setRotationPoint(
-			yCoord, 		//X
-			-6.5F,			//Y
-			xCoord			//Z
-		);		
-	
-		ModelRenderer eggbase = new ModelRenderer(this, 38, textureY);
-		AddRenderer(eggbase);
-
-		eggbase.addBox(
-			-1.5F, 	//X
-			-1F, 	//Y
-			-1.5F,	 	//Z
-			3,					//Size X
-			2,					//Size Y
-			3,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		eggbase.setRotationPoint(
-			yCoord, 		//X
-			-7.5F,			//Y
-			xCoord			//Z
-		);			
-
-		ModelRenderer eggmiddle = new ModelRenderer(this, 50, textureY);
-		AddRenderer(eggmiddle);
-
-		eggmiddle.addBox(
-			-1F, 	//X
-			-0.5F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			1,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		eggmiddle.setRotationPoint(
-			yCoord, 		//X
-			-8.75F,			//Y
-			xCoord			//Z
-		);		
-		
-		ModelRenderer eggtip = new ModelRenderer(this, 58, textureY);
-		AddRenderer(eggtip);
-
-		eggtip.addBox(
-			-0.5F, 	//X
-			-0.5F, 	//Y
-			-0.5F,	 	//Z
-			1,					//Size X
-			1,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		eggtip.setRotationPoint(
-			yCoord, 		//X
-			-9.25F,			//Y
-			xCoord			//Z
-		);			
 	}
 
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-		if (module != null) {
-			chesttop.rotateAngleY =  0.1F + ((ModuleEggBasket)module).getChestAngle();
-		}
-	}	
+	private void addEgg(final int id) {
+		final int x = id % 3;
+		final int y = id / 3;
+		final float xCoord = -3.0f + x * 3.3333333f;
+		final float yCoord = -5.0f + y * 3.5f;
+		final int textureY = 19 + id * 5;
+		final ModelRenderer eggbot = new ModelRenderer(this, 30, textureY);
+		this.AddRenderer(eggbot);
+		eggbot.addBox(-1.0f, -0.5f, -1.0f, 2, 1, 2, 0.0f);
+		eggbot.setRotationPoint(yCoord, -6.5f, xCoord);
+		final ModelRenderer eggbase = new ModelRenderer(this, 38, textureY);
+		this.AddRenderer(eggbase);
+		eggbase.addBox(-1.5f, -1.0f, -1.5f, 3, 2, 3, 0.0f);
+		eggbase.setRotationPoint(yCoord, -7.5f, xCoord);
+		final ModelRenderer eggmiddle = new ModelRenderer(this, 50, textureY);
+		this.AddRenderer(eggmiddle);
+		eggmiddle.addBox(-1.0f, -0.5f, -1.0f, 2, 1, 2, 0.0f);
+		eggmiddle.setRotationPoint(yCoord, -8.75f, xCoord);
+		final ModelRenderer eggtip = new ModelRenderer(this, 58, textureY);
+		this.AddRenderer(eggtip);
+		eggtip.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 1, 0.0f);
+		eggtip.setRotationPoint(yCoord, -9.25f, xCoord);
+	}
 
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		if (module != null) {
+			this.chesttop.rotateAngleY = 0.1f + ((ModuleEggBasket) module).getChestAngle();
+		}
+	}
+
+	static {
+		ModelEggBasket.texture = ResourceHelper.getResource("/models/chestModelEaster.png");
+	}
 }

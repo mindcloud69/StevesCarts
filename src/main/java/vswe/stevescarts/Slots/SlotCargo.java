@@ -1,86 +1,63 @@
 package vswe.stevescarts.Slots;
+
+import net.minecraft.inventory.IInventory;
 import vswe.stevescarts.TileEntities.TileEntityCargo;
 
-public class SlotCargo extends SlotBase implements ISpecialSlotValidator
-{
-	
-
+public class SlotCargo extends SlotBase implements ISpecialSlotValidator {
 	private TileEntityCargo cargo;
 	private int id;
-    public SlotCargo(TileEntityCargo cargo, int id)
-    {
-        super(cargo, id, -3000, -3000);
+
+	public SlotCargo(final TileEntityCargo cargo, final int id) {
+		super(cargo, id, -3000, -3000);
 		this.id = id;
 		this.cargo = cargo;
-    }
-	
-	
-	public boolean isSlotValid() {
-		if (cargo.layoutType == 0) {
-			return true;
-		}else {
-			int type;
-			if (cargo.layoutType == 1) {
-				type = cargo.getCurrentTransferForSlots().getSetting();
-			}else{
-				type = cargo.getCurrentTransferForSlots().getSide();
-			}
-			
-			int slotType = id / 15;
-			if (cargo.layoutType == 2) {
-				 slotType = cargo.color[slotType] - 1;
-			}
-			           
-			
-			return slotType == type;
-			
-		}
 	}
-	
 
-	
-	
+	@Override
+	public boolean isSlotValid() {
+		if (this.cargo.layoutType == 0) {
+			return true;
+		}
+		int type;
+		if (this.cargo.layoutType == 1) {
+			type = this.cargo.getCurrentTransferForSlots().getSetting();
+		} else {
+			type = this.cargo.getCurrentTransferForSlots().getSide();
+		}
+		int slotType = this.id / 15;
+		if (this.cargo.layoutType == 2) {
+			slotType = this.cargo.color[slotType] - 1;
+		}
+		return slotType == type;
+	}
+
 	public void updatePosition() {
 		int offset;
-		if (cargo.layoutType == 0)
-        {
+		if (this.cargo.layoutType == 0) {
 			offset = 0;
-		}else{
+		} else {
 			offset = 5;
 		}
-		
-		if (id < 15) {
-			int x = (id) % 5;
-			int y = (id) / 5;			
-			
-			xDisplayPosition = 8+x*18;
-			yDisplayPosition = 16+y*18 - offset;	
-		}else if(id < 30) {
-			int x = (id-15) % 5 + 11;
-			int y = (id-15) / 5;			
-			
-			xDisplayPosition = 8+x*18;
-			yDisplayPosition = 16+y*18 - offset;						
-		}else if (id < 45) {
-			int x = (id-30) % 5;
-			int y = (id-30) / 5 + 3;			
-			
-			xDisplayPosition = 8+x*18;
-			yDisplayPosition = 16+y*18 + offset;						
-		}else{
-			int x = (id-45) % 5 + 11;
-			int y = (id-45) / 5 + 3;			
-			
-			xDisplayPosition = 8+x*18;
-			yDisplayPosition = 16+y*18 + offset;				
+		if (this.id < 15) {
+			final int x = this.id % 5;
+			final int y = this.id / 5;
+			this.xDisplayPosition = 8 + x * 18;
+			this.yDisplayPosition = 16 + y * 18 - offset;
+		} else if (this.id < 30) {
+			final int x = (this.id - 15) % 5 + 11;
+			final int y = (this.id - 15) / 5;
+			this.xDisplayPosition = 8 + x * 18;
+			this.yDisplayPosition = 16 + y * 18 - offset;
+		} else if (this.id < 45) {
+			final int x = (this.id - 30) % 5;
+			final int y = (this.id - 30) / 5 + 3;
+			this.xDisplayPosition = 8 + x * 18;
+			this.yDisplayPosition = 16 + y * 18 + offset;
+		} else {
+			final int x = (this.id - 45) % 5 + 11;
+			final int y = (this.id - 45) / 5 + 3;
+			this.xDisplayPosition = 8 + x * 18;
+			this.yDisplayPosition = 16 + y * 18 + offset;
 		}
-		
-		
-
 	}
-	
-
-
-
-	
 }

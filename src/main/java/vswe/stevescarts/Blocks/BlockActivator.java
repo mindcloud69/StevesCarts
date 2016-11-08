@@ -1,78 +1,62 @@
 package vswe.stevescarts.Blocks;
-import net.minecraft.block.BlockContainer;
+
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityActivator;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
+public class BlockActivator extends BlockContainerBase {
+//	private IIcon topIcon;
+//	private IIcon botIcon;
+//	private IIcon sideIcon;
 
+	public BlockActivator() {
+		super(Material.ROCK);
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+	}
 
-public class BlockActivator extends BlockContainerBase
-{
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIcon(final int side, final int meta) {
+//		if (side == 0) {
+//			return this.botIcon;
+//		}
+//		if (side == 1) {
+//			return this.topIcon;
+//		}
+//		return this.sideIcon;
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerBlockIcons(final IIconRegister register) {
+//		final StringBuilder sb = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.topIcon = register.registerIcon(sb.append("stevescarts").append(":").append("module_toggler").append("_top").toString());
+//		final StringBuilder sb2 = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.botIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("module_toggler").append("_bot").toString());
+//		final StringBuilder sb3 = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.sideIcon = register.registerIcon(sb3.append("stevescarts").append(":").append("module_toggler").append("_side").toString());
+//	}
 
-
-    public BlockActivator()
-    {
-        super(Material.rock);
-        setCreativeTab(StevesCarts.tabsSC2Blocks);		
-    }
-
-
-	private IIcon topIcon;
-	private IIcon botIcon;
-	private IIcon sideIcon;
-	
-    @SideOnly(Side.CLIENT)
-	@Override
-    public IIcon getIcon(int side, int meta)
-    {
-        if (side == 0) {
-			return botIcon;
-		}else if(side == 1) {
-			return topIcon;
-		}else {
-			return sideIcon;
-		}
-    }
-	
-    @SideOnly(Side.CLIENT)
-	@Override
-    public void registerBlockIcons(IIconRegister register)
-    {
-        topIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "module_toggler" + "_top");
-		botIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "module_toggler" + "_bot");
-		sideIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "module_toggler" + "_side");
-    }	
-	
-	@Override
-    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
-    {
+	public boolean onBlockActivated(final World world, final int i, final int j, final int k, final EntityPlayer entityplayer, final int par6, final float par7, final float par8, final float par9) {
 		if (entityplayer.isSneaking()) {
 			return false;
 		}
-
-
-        if (world.isRemote)
-        {
-            return true;
-        }
-
-
+		if (world.isRemote) {
+			return true;
+		}
 		FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 4, world, i, j, k);
+		return true;
+	}
 
-        return true;
-    }
-
-	@Override
-    public TileEntity createNewTileEntity(World world, int var2)
-    {
-        return new TileEntityActivator();
-    }
+	public TileEntity createNewTileEntity(final World world, final int var2) {
+		return new TileEntityActivator();
+	}
 }

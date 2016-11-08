@@ -1,24 +1,19 @@
 package vswe.stevescarts.TileEntities;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Containers.ContainerUpgrade;
 import vswe.stevescarts.Helpers.ITankHolder;
@@ -30,585 +25,477 @@ import vswe.stevescarts.Interfaces.GuiUpgrade;
 import vswe.stevescarts.Upgrades.AssemblerUpgrade;
 import vswe.stevescarts.Upgrades.InterfaceEffect;
 import vswe.stevescarts.Upgrades.InventoryEffect;
-import vswe.stevescarts.Upgrades.TankEffect;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-public class TileEntityUpgrade extends TileEntityBase 
-	implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder
-{
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiBase getGui(InventoryPlayer inv) {
-		return new GuiUpgrade(inv, this);
-	}
-	
-	@Override
-	public ContainerBase getContainer(InventoryPlayer inv) {
-		return new ContainerUpgrade(inv, this);		
-	}
-	
+import javax.annotation.Nullable;
+
+public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder {
 	public Tank tank;
 	private TileEntityCartAssembler master;
 	private int type;
-	public void setMaster(TileEntityCartAssembler master) {
-		if (worldObj.isRemote && this.master != master) {
-			worldObj.markBlockForUpdate(this.xCoord,this.yCoord,this.zCoord);
+	private boolean initialized;
+	private NBTTagCompound comp;
+	ItemStack[] inventoryStacks;
+	private int[] slotsForSide;
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public GuiBase getGui(final InventoryPlayer inv) {
+		return new GuiUpgrade(inv, this);
+	}
+
+	@Override
+	public ContainerBase getContainer(final InventoryPlayer inv) {
+		return new ContainerUpgrade(inv, this);
+	}
+
+	public void setMaster(final TileEntityCartAssembler master) {
+		if (this.worldObj.isRemote && this.master != master) {
+//			this.worldObj.markBlockForUpdate(this.getPos());
 		}
 		this.master = master;
-		
 	}
-	
+
 	public TileEntityCartAssembler getMaster() {
-		return master;
+		return this.master;
 	}
-	
-	private boolean initialized;
-	public void setType(int type) {
+
+	public void setType(final int type) {
 		this.type = type;
-		
-		if (!initialized) {
-			initialized = true;
-			AssemblerUpgrade upgrade = getUpgrade();
+		if (!this.initialized) {
+			this.initialized = true;
+			final AssemblerUpgrade upgrade = this.getUpgrade();
 			if (upgrade != null) {
-				comp = new NBTTagCompound();
-				slotsForSide = new int[upgrade.getInventorySize()];
+				this.comp = new NBTTagCompound();
+				this.slotsForSide = new int[upgrade.getInventorySize()];
 				upgrade.init(this);
 				if (upgrade.getInventorySize() > 0) {
-					inventoryStacks = new ItemStack[upgrade.getInventorySize()];
-					for (int i = 0; i < slotsForSide.length; i++) {
-						slotsForSide[i] = i;
+					this.inventoryStacks = new ItemStack[upgrade.getInventorySize()];
+					for (int i = 0; i < this.slotsForSide.length; ++i) {
+						this.slotsForSide[i] = i;
 					}
 				}
-			}else{
-				inventoryStacks = null;
+			} else {
+				this.inventoryStacks = null;
 			}
 		}
 	}
-	
+
 	public int getType() {
-		return type;
+		return this.type;
 	}
-	
-	private NBTTagCompound comp;
+
 	public NBTTagCompound getCompound() {
-		return comp;
+		return this.comp;
 	}
-	
 
-	@Override
-    public Packet getDescriptionPacket()
-    {
-        NBTTagCompound var1 = new NBTTagCompound();
-        this.writeToNBT(var1);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, var1);
-    }	
-	
-	@Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g());
-    }
-	
+	public Packet getDescriptionPacket() {
+		final NBTTagCompound var1 = new NBTTagCompound();
+		this.writeToNBT(var1);
+		return (Packet) new SPacketUpdateTileEntity(this.pos, 1, var1);
+	}
+
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+	}
+
 	public AssemblerUpgrade getUpgrade() {
-		return AssemblerUpgrade.getUpgrade(type);
+		return AssemblerUpgrade.getUpgrade(this.type);
 	}
 
-	public TileEntityUpgrade() {
-	
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public IIcon getTexture(boolean outside) {
-		if (getUpgrade() == null) {
-			return null;
-		}
-	
-		return outside ? getUpgrade().getMainTexture() : getUpgrade().getSideTexture();
-	}
-	
-		
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getTexture(final boolean outside) {
+//		if (this.getUpgrade() == null) {
+//			return null;
+//		}
+//		return outside ? this.getUpgrade().getMainTexture() : this.getUpgrade().getSideTexture();
+//	}
+
 	public boolean hasInventory() {
-		return inventoryStacks != null;
+		return this.inventoryStacks != null;
 	}
-	
-	
-   /**
-     * Reads a tile entity from NBT.
-     */
-    public void readFromNBT(NBTTagCompound tagCompound)
-    {
+
+	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		
-		setType(tagCompound.getByte("Type"));
-		
-		NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-
-		for (int i = 0; i < items.tagCount(); ++i)
-		{
-			NBTTagCompound item = (NBTTagCompound)items.getCompoundTagAt(i);
-			int slot = item.getByte("Slot") & 255;
-
-			ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
-			
-			if (slot >= 0 && slot < getSizeInventory())
-			{
-				setInventorySlotContents(slot, iStack);
+		this.setType(tagCompound.getByte("Type"));
+		final NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
+		for (int i = 0; i < items.tagCount(); ++i) {
+			final NBTTagCompound item = items.getCompoundTagAt(i);
+			final int slot = item.getByte("Slot") & 0xFF;
+			final ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
+			if (slot >= 0 && slot < this.getSizeInventory()) {
+				this.setInventorySlotContents(slot, iStack);
 			}
-		}		
-		
-		AssemblerUpgrade upgrade = getUpgrade();
+		}
+		final AssemblerUpgrade upgrade = this.getUpgrade();
 		if (upgrade != null) {
 			upgrade.load(this, tagCompound);
 		}
-    }
+	}
 
-
-    /**
-     * Writes a tile entity to NBT.
-     */
-    public void writeToNBT(NBTTagCompound tagCompound)
-    {
+	public NBTTagCompound writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		
-		NBTTagList items = new NBTTagList();
-		
-		if (inventoryStacks != null) {
-			for (int i = 0; i < inventoryStacks.length; ++i)
-			{
-				ItemStack iStack = inventoryStacks[i];
-			
-				if (iStack != null)
-				{
-					NBTTagCompound item = new NBTTagCompound();
-					item.setByte("Slot", (byte)i);
+		final NBTTagList items = new NBTTagList();
+		if (this.inventoryStacks != null) {
+			for (int i = 0; i < this.inventoryStacks.length; ++i) {
+				final ItemStack iStack = this.inventoryStacks[i];
+				if (iStack != null) {
+					final NBTTagCompound item = new NBTTagCompound();
+					item.setByte("Slot", (byte) i);
 					iStack.writeToNBT(item);
 					items.appendTag(item);
 				}
 			}
 		}
-		
 		tagCompound.setTag("Items", items);
-		
-		tagCompound.setByte("Type", (byte)type);
-		
-		AssemblerUpgrade upgrade = getUpgrade();
+		tagCompound.setByte("Type", (byte) this.type);
+		final AssemblerUpgrade upgrade = this.getUpgrade();
 		if (upgrade != null) {
 			upgrade.save(this, tagCompound);
-		}		
-    }	
-	
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
-    {
-        if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
-        {
-            return false;
-        }
+		}
+		return tagCompound;
+	}
 
-        return entityplayer.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64D;
-    }	
-	
 	@Override
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
+		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+	}
+
+	@Override
+	public void openInventory(EntityPlayer player)
+	{
+
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player)
+	{
+
+	}
+
 	public void updateEntity() {
-		if (getUpgrade() != null && getMaster() != null) {
-			getUpgrade().update(this);
+		if (this.getUpgrade() != null && this.getMaster() != null) {
+			this.getUpgrade().update(this);
 		}
-	}	
-	
+	}
+
 	@Override
-	public void initGuiData(Container con, ICrafting crafting) {
-		if (getUpgrade() != null) {
-			InterfaceEffect gui = getUpgrade().getInterfaceEffect();
+	public void initGuiData(final Container con, final IContainerListener crafting) {
+		if (this.getUpgrade() != null) {
+			final InterfaceEffect gui = this.getUpgrade().getInterfaceEffect();
 			if (gui != null) {
-				gui.checkGuiData(this, (ContainerUpgrade)con, crafting, true);
+				gui.checkGuiData(this, (ContainerUpgrade) con, crafting, true);
 			}
 		}
 	}
-	
+
 	@Override
-	public void checkGuiData(Container con, ICrafting crafting) {
-		if (getUpgrade() != null) {
-			InterfaceEffect gui = getUpgrade().getInterfaceEffect();
+	public void checkGuiData(final Container con, final IContainerListener crafting) {
+		if (this.getUpgrade() != null) {
+			final InterfaceEffect gui = this.getUpgrade().getInterfaceEffect();
 			if (gui != null) {
-				gui.checkGuiData(this, (ContainerUpgrade)con, crafting, false);
+				gui.checkGuiData(this, (ContainerUpgrade) con, crafting, false);
 			}
 		}
 	}
-	
+
 	@Override
-	public void receiveGuiData(int id, short data) {
-		if (getUpgrade() != null) {
-			InterfaceEffect gui = getUpgrade().getInterfaceEffect();
+	public void receiveGuiData(final int id, final short data) {
+		if (this.getUpgrade() != null) {
+			final InterfaceEffect gui = this.getUpgrade().getInterfaceEffect();
 			if (gui != null) {
 				gui.receiveGuiData(this, id, data);
 			}
-		}		
+		}
 	}
-	
-	//INVENTORY STUFF BELOW
-	
-	ItemStack[] inventoryStacks;
-	private int[] slotsForSide;
-	
-	@Override
-    public int getSizeInventory()
-    {
-		if (inventoryStacks == null) {
-			if (master == null) {
-				return 0;
-			}else{
-				return master.getSizeInventory();
-			}
-		}else{
-			return inventoryStacks.length;
+
+	public int getSizeInventory() {
+		if (this.inventoryStacks != null) {
+			return this.inventoryStacks.length;
 		}
-    }
-
-	@Override
-    public ItemStack getStackInSlot(int i)
-    {
-		if (inventoryStacks == null) {
-			if (master == null) {
-				return null;
-			}else{
-				return master.getStackInSlot(i);
-			}
-		}else if (i < 0 || i >= getSizeInventory()) {
-			return null;		
-		}else{
-			return inventoryStacks[i];
+		if (this.master == null) {
+			return 0;
 		}
-    }	
-	
-	@Override
-    public ItemStack decrStackSize(int i, int j)
-    {
-		if (inventoryStacks == null) {
-			if (master == null) {
-				return null;
-			}else{
-				return master.decrStackSize( i, j);
-			}
-		}else if (i < 0 || i >= getSizeInventory()) {
-			return null;				
-		}else{	
-			if (inventoryStacks[i] != null)
-			{
-				if (inventoryStacks[i].stackSize <= j)
-				{
-					ItemStack itemstack = inventoryStacks[i];
-					inventoryStacks[i] = null;
-					markDirty();
-					return itemstack;
-				}
+		return this.master.getSizeInventory();
+	}
 
-				ItemStack itemstack1 = inventoryStacks[i].splitStack(j);
-
-				if (inventoryStacks[i].stackSize == 0)
-				{
-					inventoryStacks[i] = null;
-				}
-
-				markDirty();
-				return itemstack1;
-			}
-			else
-			{
+	public ItemStack getStackInSlot(final int i) {
+		if (this.inventoryStacks == null) {
+			if (this.master == null) {
 				return null;
 			}
-		}
-    }	
-	
-	@Override
-    public void setInventorySlotContents(int i, ItemStack itemstack)
-    {
-		if (inventoryStacks == null) {
-			if (master != null) {
-				master.setInventorySlotContents(i, itemstack);
-			}
-		}else if (i < 0 || i >= getSizeInventory()) {
-			return;				
-		}else{
-			inventoryStacks[i] = itemstack;
-
-			if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-			{
-				itemstack.stackSize = getInventoryStackLimit();
-			}
-
-			markDirty();
-		}
-    }
-
-
-	@Override
-    public String getInventoryName()
-    {
-        return "container.assemblerupgrade";
-    }
-	
-	@Override
-    public boolean hasCustomInventoryName()
-    {
-        return false;
-    }	
-	
-	@Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }	
-	
-	@Override
-    public void closeInventory()
-    {
-    }
-	@Override
-    public void openInventory()
-    {
-    }
-		
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i)
-    {
-		if (inventoryStacks == null) {
-			if (master == null) {
+			return this.master.getStackInSlot(i);
+		} else {
+			if (i < 0 || i >= this.getSizeInventory()) {
 				return null;
-			}else{
-				return master.getStackInSlotOnClosing(i);
 			}
-		}else{
-			ItemStack item = getStackInSlot(i);
-		
-			if (item != null)
-			{
-				setInventorySlotContents(i, null);
+			return this.inventoryStacks[i];
+		}
+	}
+
+	public ItemStack decrStackSize(final int i, final int j) {
+		if (this.inventoryStacks == null) {
+			if (this.master == null) {
+				return null;
+			}
+			return this.master.decrStackSize(i, j);
+		} else {
+			if (i < 0 || i >= this.getSizeInventory()) {
+				return null;
+			}
+			if (this.inventoryStacks[i] == null) {
+				return null;
+			}
+			if (this.inventoryStacks[i].stackSize <= j) {
+				final ItemStack itemstack = this.inventoryStacks[i];
+				this.inventoryStacks[i] = null;
+				this.markDirty();
+				return itemstack;
+			}
+			final ItemStack itemstack2 = this.inventoryStacks[i].splitStack(j);
+			if (this.inventoryStacks[i].stackSize == 0) {
+				this.inventoryStacks[i] = null;
+			}
+			this.markDirty();
+			return itemstack2;
+		}
+	}
+
+	@Nullable
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return null;
+	}
+
+	public void setInventorySlotContents(final int i, final ItemStack itemstack) {
+		if (this.inventoryStacks == null) {
+			if (this.master != null) {
+				this.master.setInventorySlotContents(i, itemstack);
+			}
+		} else {
+			if (i < 0 || i >= this.getSizeInventory()) {
+				return;
+			}
+			this.inventoryStacks[i] = itemstack;
+			if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
+				itemstack.stackSize = this.getInventoryStackLimit();
+			}
+			this.markDirty();
+		}
+	}
+
+	public String getInventoryName() {
+		return "container.assemblerupgrade";
+	}
+
+	public boolean hasCustomInventoryName() {
+		return false;
+	}
+
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	public void closeInventory() {
+	}
+
+	public void openInventory() {
+	}
+
+	public ItemStack getStackInSlotOnClosing(final int i) {
+		if (this.inventoryStacks == null) {
+			if (this.master == null) {
+				return null;
+			}
+			return this.master.getStackInSlot(i);
+		} else {
+			final ItemStack item = this.getStackInSlot(i);
+			if (item != null) {
+				this.setInventorySlotContents(i, null);
 				return item;
 			}
-			else
-			{
-				return null;
-			}
-		}	
-    }		
-	
+			return null;
+		}
+	}
 
-	@Override
 	public void markDirty() {
-		if (getUpgrade() != null) {
-			InventoryEffect inv = getUpgrade().getInventoryEffect();
+		if (this.getUpgrade() != null) {
+			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
 			if (inv != null) {
 				inv.onInventoryChanged(this);
 			}
 		}
 	}
-	
-	@Override
-    public boolean isItemValidForSlot(int slot, ItemStack item)
-    {	
-		if (getUpgrade() != null) {
-			InventoryEffect inv = getUpgrade().getInventoryEffect();
+
+	public boolean isItemValidForSlot(final int slot, final ItemStack item) {
+		if (this.getUpgrade() != null) {
+			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
 			if (inv != null) {
 				return inv.isItemValid(slot, item);
 			}
 		}
-		
-		if (getMaster() != null) {
-			return getMaster().isItemValidForSlot(slot, item);
-		}		
-		
-		return false;
+		return this.getMaster() != null && this.getMaster().isItemValidForSlot(slot, item);
 	}
-	
-	
-    //slots
-	@Override
-    public int[] getAccessibleSlotsFromSide(int side)
-    {
-		
-		if (getUpgrade() != null) {
-			InventoryEffect inv = getUpgrade().getInventoryEffect();
-			if (inv != null) {
-				return slotsForSide;
-			}
-		}	
-		
-		if (getMaster() != null) {
-			return getMaster().getAccessibleSlotsFromSide(side);
-		}
-		return new int[] {};
-    }
 
-    //in
 	@Override
-    public boolean canInsertItem(int slot, ItemStack item, int side)
-    {
-		if (getUpgrade() != null) {
-			InventoryEffect inv = getUpgrade().getInventoryEffect();
-			if (inv != null) {
-				return isItemValidForSlot(slot, item);
-			}
-		}	
-		
-		if (getMaster() != null) {
-			return getMaster().canInsertItem(slot, item, side);
-		}
-		
-		return false;
-    }
+	public int getField(int id)
+	{
+		return 0;
+	}
 
-    //out
 	@Override
-    public boolean canExtractItem(int slot, ItemStack item, int side)
-    {
-		if (getUpgrade() != null) {
-			InventoryEffect inv = getUpgrade().getInventoryEffect();
+	public void setField(int id, int value)
+	{
+
+	}
+
+	@Override
+	public int getFieldCount()
+	{
+		return 0;
+	}
+
+	@Override
+	public void clear()
+	{
+
+	}
+
+	public boolean canInsertItem(final int slot, final ItemStack item, EnumFacing side) {
+		if (this.getUpgrade() != null) {
+			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
+			if (inv != null) {
+				return this.isItemValidForSlot(slot, item);
+			}
+		}
+		return this.getMaster() != null && this.getMaster().canInsertItem(slot, item, side);
+	}
+
+	public boolean canExtractItem(final int slot, final ItemStack item, EnumFacing side) {
+		if (this.getUpgrade() != null) {
+			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
 			if (inv != null) {
 				return true;
 			}
-		}	
-		
-		if (getMaster() != null) {
-			return getMaster().canExtractItem(slot, item, side);
 		}
-		
-		return false;
-    }    	
-	
-	
-	//tank stuff
-	
-    /**
-     * Fills fluid into internal tanks, distribution is left to the ITankContainer.
-     * @param from Orientation the fluid is pumped in from.
-     * @param resource FluidStack representing the maximum amount of fluid filled into the ITankContainer
-     * @param doFill If false filling will only be simulated.
-     * @return Amount of resource that was filled into internal tanks.
-     */
-	@Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		return this.fill(resource, doFill);		
+		return this.getMaster() != null && this.getMaster().canExtractItem(slot, item, side);
 	}
- 
 
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		if (resource != null && resource.isFluidEqual(getFluid())) {
-			return drain(from, resource.amount, doDrain);			
-		}else{
-			return null;
+
+	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
+		return this.fill(resource, doFill);
+	}
+
+	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
+		if (resource != null && resource.isFluidEqual(this.getFluid())) {
+			return this.drain(from, resource.amount, doDrain);
 		}
-	}		
-	
-    /**
-     * Drains fluid out of internal tanks, distribution is left to the ITankContainer.
-     * @param from Orientation the fluid is drained to.
-     * @param maxDrain Maximum amount of fluid to drain.
-     * @param doDrain If false draining will only be simulated.
-     * @return FluidStack representing the fluid and amount actually drained from the ITankContainer
-     */
-	@Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return null;
+	}
+
+	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
 		return this.drain(maxDrain, doDrain);
 	}
 
-
-
-
-	@Override
 	public FluidStack getFluid() {
-		if (tank == null) {
+		if (this.tank == null) {
 			return null;
-		}else{
-			return tank.getFluid();
 		}
+		return this.tank.getFluid();
 	}
 
-	@Override
 	public int getCapacity() {
-		if (tank == null) {
+		if (this.tank == null) {
 			return 0;
-		}else{
-			return tank.getCapacity();
 		}
+		return this.tank.getCapacity();
 	}
 
-	@Override
-	public int fill(FluidStack resource, boolean doFill) {
-		if (tank == null) {
+	public int fill(final FluidStack resource, final boolean doFill) {
+		if (this.tank == null) {
 			return 0;
-		}else{
-			int result = tank.fill(resource, doFill);
-			return result;
-		}		
+		}
+		final int result = this.tank.fill(resource, doFill);
+		return result;
 	}
 
-	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		if (tank == null) {
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+		if (this.tank == null) {
 			return null;
-		}else{
-			FluidStack result = tank.drain(maxDrain, doDrain);
-			return result;
-		}	
+		}
+		final FluidStack result = this.tank.drain(maxDrain, doDrain);
+		return result;
 	}
 
-
-	
-	@Override
-	public ItemStack getInputContainer(int tankid) {
-		return getStackInSlot(0);
-	}	
-	
-	@Override
-	public void clearInputContainer(int tankid) {
-		setInventorySlotContents(0, null);
+	public ItemStack getInputContainer(final int tankid) {
+		return this.getStackInSlot(0);
 	}
-	
-	@Override
-	public void addToOutputContainer(int tankid, ItemStack item) {
+
+	public void clearInputContainer(final int tankid) {
+		this.setInventorySlotContents(0, null);
+	}
+
+	public void addToOutputContainer(final int tankid, final ItemStack item) {
 		TransferHandler.TransferItem(item, this, 1, 1, new ContainerUpgrade(null, this), Slot.class, null, -1);
 	}
-	
-	@Override
-	public void onFluidUpdated(int tankid) {
 
-	}
-	
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void drawImage(int tankid, GuiBase gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
-		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F);
+	public void onFluidUpdated(final int tankid) {
 	}
 
 	@Override
+	public void drawImage(int p0, GuiBase p1, int p3, int p4, int p5, int p6, int p7, int p8)
+	{
+
+	}
+
+//	@SideOnly(Side.CLIENT)
+//	public void drawImage(final int tankid, final GuiBase gui, final IIcon icon, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
+//		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16.0f, sizeY / 16.0f, srcX / 16.0f, srcY / 16.0f);
+//	}
+
 	public int getFluidAmount() {
-		return tank == null ? 0 : tank.getFluidAmount();
+		return (this.tank == null) ? 0 : this.tank.getFluidAmount();
 	}
 
-	@Override
 	public FluidTankInfo getInfo() {
-		return tank == null ? null : tank.getInfo();
+		return (this.tank == null) ? null : this.tank.getInfo();
 	}
 
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		return new FluidTankInfo[] {getInfo()};
+	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
+		return new FluidTankInfo[] { this.getInfo() };
 	}
 
+	@Override
+	public int[] getSlotsForFace(EnumFacing side){
+		if (this.getUpgrade() != null) {
+			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
+			if (inv != null) {
+				return this.slotsForSide;
+			}
+		}
+		if (this.getMaster() != null) {
+			return this.getMaster().getSlotsForFace(side);
+		}
+		return new int[0];
+	}
 
-	
-	
-    
+	@Override
+	public String getName()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return false;
+	}
 }

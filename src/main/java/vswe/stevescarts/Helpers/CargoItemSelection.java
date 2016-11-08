@@ -1,32 +1,30 @@
 package vswe.stevescarts.Helpers;
-import net.minecraft.item.ItemStack;
-	
-public class CargoItemSelection {
 
+import net.minecraft.item.ItemStack;
+
+public class CargoItemSelection {
 	private Class validSlot;
 	private ItemStack icon;
 	private Localization.GUI.CARGO name;
-	
-	public CargoItemSelection(Localization.GUI.CARGO name, Class validSlot, ItemStack icon) {
+
+	public CargoItemSelection(final Localization.GUI.CARGO name, final Class validSlot, final ItemStack icon) {
 		this.name = name;
 		this.validSlot = validSlot;
 		this.icon = icon;
 	}
-	
+
 	public Class getValidSlot() {
-		return validSlot;
+		return this.validSlot;
 	}
-	
+
 	public ItemStack getIcon() {
-		return icon;
+		return this.icon;
 	}
-	
+
 	public String getName() {
-        if (name == null) {
-            return null;
-        }else{
-		    return	name.translate();
-        }
+		if (this.name == null) {
+			return null;
+		}
+		return this.name.translate();
 	}
-	
 }

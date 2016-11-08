@@ -1,18 +1,23 @@
 package vswe.stevescarts.Modules.Realtimers;
-import net.minecraft.client.Minecraft;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModuleSeat extends ModuleBase {
-	public ModuleSeat(MinecartModular cart) {
+	private int[] buttonRect;
+	private boolean relative;
+	private float chairAngle;
+
+	public ModuleSeat(final MinecartModular cart) {
 		super(cart);
+		this.buttonRect = new int[] { 20, 20, 24, 12 };
 	}
 
 	@Override
@@ -21,7 +26,7 @@ public class ModuleSeat extends ModuleBase {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -36,77 +41,65 @@ public class ModuleSeat extends ModuleBase {
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
 	}
 
-	
-	
-	@Override
 	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/chair.png");
-
-		int imageID = getState();
+		final int imageID = this.getState();
 		int borderID = 0;
-		if (inRect(x,y, buttonRect)) {
+		if (this.inRect(x, y, this.buttonRect)) {
 			if (imageID == 0) {
 				borderID = 2;
-			}else{
+			} else {
 				borderID = 1;
 			}
 		}
-
-		drawImage(gui,buttonRect, 0, buttonRect[3] * borderID);
-
-		int srcY = buttonRect[3] * 3 + imageID * (buttonRect[3] - 2);
-		drawImage(gui, buttonRect[0] + 1, buttonRect[1] + 1, 0, srcY, buttonRect[2] - 2, buttonRect[3] - 2);
+		this.drawImage(gui, this.buttonRect, 0, this.buttonRect[3] * borderID);
+		final int srcY = this.buttonRect[3] * 3 + imageID * (this.buttonRect[3] - 2);
+		this.drawImage(gui, this.buttonRect[0] + 1, this.buttonRect[1] + 1, 0, srcY, this.buttonRect[2] - 2, this.buttonRect[3] - 2);
 	}
 
-	private int[] buttonRect = new int[] {20,20, 24, 12};
-
 	@Override
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, getStateName(), x,y,buttonRect);
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui, this.getStateName(), x, y, this.buttonRect);
 	}
 
 	private int getState() {
-		if (getCart().riddenByEntity == null) {
+		if (this.getCart().getRidingEntity() == null) {
 			return 1;
-		}else if(getCart().riddenByEntity == getClientPlayer()) {
-			return 2;
-		}else {
-			return 0;
 		}
+		if (this.getCart().getRidingEntity() == this.getClientPlayer()) {
+			return 2;
+		}
+		return 0;
 	}
 
 	private String getStateName() {
-        return Localization.MODULES.ATTACHMENTS.SEAT_MESSAGE.translate(String.valueOf(getState()));
+		return Localization.MODULES.ATTACHMENTS.SEAT_MESSAGE.translate(String.valueOf(this.getState()));
 	}
 
 	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
-		if (button == 0) {
-			if (inRect(x,y, buttonRect)) {
-				sendPacket(0);
-			}
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (button == 0 && this.inRect(x, y, this.buttonRect)) {
+			this.sendPacket(0);
 		}
 	}
 
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
-		if (id == 0) {
-			if (player != null) { 
-				if (getCart().riddenByEntity == null) {
-					player.mountEntity(getCart());
-				}else if (getCart().riddenByEntity == player){
-					player.mountEntity(null);
-				}
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
+		if (id == 0 && player != null) {
+			if (this.getCart().getRidingEntity() == null) {
+				player.mountEntity((Entity) this.getCart());
+			} else if (this.getCart().getRidingEntity() == player) {
+				player.mountEntity((Entity) null);
 			}
 		}
 	}
 
-	@Override
 	public int numberOfPackets() {
 		return 1;
 	}
@@ -114,49 +107,25 @@ public class ModuleSeat extends ModuleBase {
 	@Override
 	public void update() {
 		super.update();
-
-		if (getCart().riddenByEntity != null) {
-			relative = false;
-			chairAngle = (float)(Math.PI + Math.PI * getCart().riddenByEntity.rotationYaw / 180F);
-		}else{
-			relative = true;
-			chairAngle = (float)Math.PI / 2;
+		if (this.getCart().getRidingEntity() != null) {
+			this.relative = false;
+			this.chairAngle = (float) (3.141592653589793 + 3.141592653589793 * this.getCart().getRidingEntity().rotationYaw / 180.0);
+		} else {
+			this.relative = true;
+			this.chairAngle = 1.5707964f;
 		}
 	}
 
-	private boolean relative;
-	private float chairAngle;
-
 	public float getChairAngle() {
-		return chairAngle;
+		return this.chairAngle;
 	}
 
 	public boolean useRelativeRender() {
-		return relative;
+		return this.relative;
 	}
 
 	@Override
-	public float mountedOffset(Entity rider) {
-		return -0.1F;
+	public float mountedOffset(final Entity rider) {
+		return -0.1f;
 	}
-	
-	/*
-	@Override
-	public boolean onInteractFirst(EntityPlayer entityplayer) {
-		if (getCart().riddenByEntity == null) {
-			if (!getCart().worldObj.isRemote) {
-				entityplayer.mountEntity(getCart());
-			}
-			return true;
-		}else if (getCart().riddenByEntity == entityplayer){
-			if (!getCart().worldObj.isRemote) {
-				entityplayer.mountEntity(null);
-			}
-			return true;
-		}
-		return false;
-	}*/
-	
-
-	
 }

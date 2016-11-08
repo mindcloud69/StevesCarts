@@ -1,29 +1,20 @@
 package vswe.stevescarts.Slots;
-import java.util.ArrayList;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.Helpers.EnchantmentInfo;
-import vswe.stevescarts.Helpers.EnchantmentInfo.ENCHANTMENT_TYPE;
-import vswe.stevescarts.Helpers.TransferHandler.TRANSFER_TYPE;
-import vswe.stevescarts.Modules.Workers.Tools.ModuleTool;
-public class SlotEnchantment extends SlotBase
-{
 
-	private ArrayList<ENCHANTMENT_TYPE> enabledTypes;
-    public SlotEnchantment(IInventory iinventory, ArrayList<ENCHANTMENT_TYPE> enabledTypes, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-        this.enabledTypes = enabledTypes;
-    }
+import java.util.ArrayList;
 
+public class SlotEnchantment extends SlotBase {
+	private ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE> enabledTypes;
 
+	public SlotEnchantment(final IInventory iinventory, final ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE> enabledTypes, final int i, final int j, final int k) {
+		super(iinventory, i, j, k);
+		this.enabledTypes = enabledTypes;
+	}
 
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return EnchantmentInfo.isItemValid(enabledTypes, itemstack);
-    }
-    
-
+	public boolean isItemValid(final ItemStack itemstack) {
+		return EnchantmentInfo.isItemValid(this.enabledTypes, itemstack);
+	}
 }

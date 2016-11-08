@@ -1,148 +1,120 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockNetherWart;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.BlockStem;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.IShearable;
-public class ModuleFlowerRemover extends ModuleBase {
+import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.Modules.ModuleBase;
 
-	public ModuleFlowerRemover(MinecartModular cart) {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ModuleFlowerRemover extends ModuleBase {
+	private int tick;
+	private float bladeangle;
+	private float bladespeed;
+
+	public ModuleFlowerRemover(final MinecartModular cart) {
 		super(cart);
+		this.bladespeed = 0.0f;
 	}
 
-
-	//called to update the module's actions. Called by the cart's update code.
-		@Override
-		public void update() {
-			super.update();
-
-			
-			
-			if (getCart().worldObj.isRemote) {
-				bladeangle += getBladeSpindSpeed();
-				if (getCart().hasFuel()) {
-					bladespeed = Math.min(1F, bladespeed + 0.005F);
-				}else{
-					bladespeed = Math.max(0F, bladespeed - 0.005F);
-				}
-				return;
+	@Override
+	public void update() {
+		super.update();
+		if (this.getCart().worldObj.isRemote) {
+			this.bladeangle += this.getBladeSpindSpeed();
+			if (this.getCart().hasFuel()) {
+				this.bladespeed = Math.min(1.0f, this.bladespeed + 0.005f);
+			} else {
+				this.bladespeed = Math.max(0.0f, this.bladespeed - 0.005f);
 			}
-
-			if (getCart().hasFuel()) {
-				if (tick >= getInterval()) {
-					tick = 0;
-					mownTheLawn();
-					shearEntities();
-				}else{
-					tick++;
-				}
+			return;
+		}
+		if (this.getCart().hasFuel()) {
+			if (this.tick >= this.getInterval()) {
+				this.tick = 0;
+				this.mownTheLawn();
+				this.shearEntities();
+			} else {
+				++this.tick;
 			}
 		}
+	}
 
-		private int tick;
-		protected int getInterval() {
-			return 70;
-		}
+	protected int getInterval() {
+		return 70;
+	}
 
-		protected int getBlocksOnSide() {
-			return 7;
-		}
+	protected int getBlocksOnSide() {
+		return 7;
+	}
 
-		protected int getBlocksFromLevel() {
-			return 1;
-		}
-
+	protected int getBlocksFromLevel() {
+		return 1;
+	}
 
 	private void mownTheLawn() {
-		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); x++) {
-			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); z++) {
-				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); y++) {
-					int x1 = x + getCart().x();
-					int y1 = y + getCart().y();
-					int z1 = z + getCart().z();
-					
-					if (isFlower(x1, y1, z1)) {
-						Block block = getCart().worldObj.getBlock(x1, y1, z1);
-						int m = getCart().worldObj.getBlockMetadata(x1, y1, z1);
-						
+		for (int x = -this.getBlocksOnSide(); x <= this.getBlocksOnSide(); ++x) {
+			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
+				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
+					final int x2 = x + this.getCart().x();
+					final int y2 = y + this.getCart().y();
+					final int z2 = z + this.getCart().z();
+					if (this.isFlower(x2, y2, z2)) {
+						final Block block = this.getCart().worldObj.getBlock(x2, y2, z2);
+						final int m = this.getCart().worldObj.getBlockMetadata(x2, y2, z2);
 						if (block != null) {
-							addStuff(block.getDrops(getCart().worldObj, x1, y1, z1, m, 0));
-
-			                getCart().worldObj.setBlockToAir(x1, y1, z1);	
+							this.addStuff(block.getDrops(this.getCart().worldObj, x2, y2, z2, m, 0));
+							this.getCart().worldObj.setBlockToAir(x2, y2, z2);
 						}
 					}
-					
-				}
-			}
-		}		
-	}
-	
-	private void shearEntities() {
-		List entities = getCart().worldObj.getEntitiesWithinAABB(EntityLiving.class, getCart().boundingBox.expand((double)getBlocksOnSide(),getBlocksFromLevel() + 2F, (double)getBlocksOnSide()));
-		Iterator itt = entities.iterator();
-
-		while (itt.hasNext())
-		{
-			EntityLiving target = (EntityLiving)itt.next();
-
-			
-			
-			if (target instanceof IShearable)  {
-				IShearable shearable = (IShearable)target;
-			
-				if (shearable.isShearable(null, getCart().worldObj, (int)target.posX, (int)target.posY, (int)target.posZ)) {
-					addStuff(shearable.onSheared(null, getCart().worldObj, (int)target.posX, (int)target.posY, (int)target.posZ, 0));
 				}
 			}
 		}
-		
-	}
-		
-	private boolean isFlower(int x, int y, int z) {
-		Block block = getCart().worldObj.getBlock(x, y, z);
-
-        return block != null && block instanceof BlockFlower;
-	}
-	
-	
-	private void addStuff(ArrayList<ItemStack> stuff) {
-        for (ItemStack iStack : stuff)
-        {
-            getCart().addItemToChest(iStack);
-
-            if (iStack.stackSize != 0)
-            {
-                EntityItem entityitem = new EntityItem(getCart().worldObj, getCart().posX, getCart().posY, getCart().posZ , iStack);
-                entityitem.motionX = 0;
-                entityitem.motionY = 0.15F;
-                entityitem.motionZ = 0;
-                getCart().worldObj.spawnEntityInWorld(entityitem);
-            }
-        }		
 	}
 
+	private void shearEntities() {
+		final List entities = this.getCart().worldObj.getEntitiesWithinAABB((Class) EntityLiving.class, this.getCart().boundingBox.expand((double) this.getBlocksOnSide(), (double) (this.getBlocksFromLevel() + 2.0f), (double) this.getBlocksOnSide()));
+		for (final EntityLiving target : entities) {
+			if (target instanceof IShearable) {
+				final IShearable shearable = (IShearable) target;
+				if (!shearable.isShearable((ItemStack) null, (IBlockAccess) this.getCart().worldObj, (int) target.posX, (int) target.posY, (int) target.posZ)) {
+					continue;
+				}
+				this.addStuff(shearable.onSheared((ItemStack) null, (IBlockAccess) this.getCart().worldObj, (int) target.posX, (int) target.posY, (int) target.posZ, 0));
+			}
+		}
+	}
 
-	private float bladeangle;
-	private float bladespeed = 0;
+	private boolean isFlower(final int x, final int y, final int z) {
+		final Block block = this.getCart().worldObj.getBlock(x, y, z);
+		return block != null && block instanceof BlockFlower;
+	}
+
+	private void addStuff(final ArrayList<ItemStack> stuff) {
+		for (final ItemStack iStack : stuff) {
+			this.getCart().addItemToChest(iStack);
+			if (iStack.stackSize != 0) {
+				final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+				entityitem.motionX = 0.0;
+				entityitem.motionY = 0.15000000596046448;
+				entityitem.motionZ = 0.0;
+				this.getCart().worldObj.spawnEntityInWorld(entityitem);
+			}
+		}
+	}
+
 	public float getBladeAngle() {
-		return bladeangle;
+		return this.bladeangle;
 	}
 
 	public float getBladeSpindSpeed() {
-		return bladespeed;
+		return this.bladespeed;
 	}
 }

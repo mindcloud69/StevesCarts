@@ -1,91 +1,52 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Modules.ILeverModule;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelLever extends ModelCartbase
-{
+public class ModelLever extends ModelCartbase {
+	ModelRenderer lever;
+	ResourceLocation resource;
 
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return resource;
+	public ResourceLocation getResource(final ModuleBase module) {
+		return this.resource;
 	}
 
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-	
-	ModelRenderer lever ;
-	ResourceLocation resource;
-    public ModelLever(ResourceLocation resource)
-    {
+	public ModelLever(final ResourceLocation resource) {
 		this.resource = resource;
+		final ModelRenderer base = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(base);
+		base.addBox(-2.5f, -1.5f, -0.5f, 5, 3, 1, 0.0f);
+		base.setRotationPoint(0.0f, 2.0f, 8.5f);
+		base.addChild(this.lever = new ModelRenderer(this, 0, 4));
+		this.fixSize(this.lever);
+		this.lever.addBox(-0.5f, -12.0f, -0.5f, 1, 11, 1, 0.0f);
+		this.lever.setRotationPoint(0.0f, 0.0f, 0.0f);
+		final ModelRenderer handle = new ModelRenderer(this, 4, 4);
+		this.lever.addChild(handle);
+		this.fixSize(handle);
+		handle.addBox(-1.0f, -13.0f, -1.0f, 2, 2, 2, 0.0f);
+		handle.setRotationPoint(0.0f, 0.0f, 0.0f);
+	}
 
-		ModelRenderer base = new ModelRenderer(this, 0, 0);
-		AddRenderer(base);
-
-		base.addBox(
-			-2.5F, 	//X
-			-1.5F, 	//Y
-			-0.5F,	 	//Z
-			5,					//Size X
-			3,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		base.setRotationPoint(
-			0, 		//X
-			2F,			//Y
-			8.5F			//Z
-		);
-
-		lever = new ModelRenderer(this, 0, 4);
-		base.addChild(lever);
-		fixSize(lever);
-
-		lever.addBox(
-			-0.5F, 	//X
-			-12F, 	//Y
-			-0.5F,	 	//Z
-			1,					//Size X
-			11,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		lever.setRotationPoint(
-			0, 		//X
-			0F,			//Y
-			0F			//Z
-		);
-
-		ModelRenderer handle = new ModelRenderer(this, 4, 4);
-		lever.addChild(handle);
-		fixSize(handle);
-
-		handle.addBox(
-			-1F, 	//X
-			-13F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		handle.setRotationPoint(
-			0, 		//X
-			0F,			//Y
-			0F			//Z
-		);
-    }
-
-	public void applyEffects(ModuleBase module, float yaw, float pitch, float roll) {
-		lever.rotateAngleZ = module == null ? 0 : (float)Math.PI / 8 - ((ILeverModule)module).getLeverState() * (float)Math.PI / 4;
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		this.lever.rotateAngleZ = ((module == null) ? 0.0f : (0.3926991f - ((ILeverModule) module).getLeverState() * 3.1415927f / 4.0f));
 	}
 }

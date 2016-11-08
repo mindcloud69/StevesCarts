@@ -1,72 +1,18 @@
 package vswe.stevescarts.Arcade;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
-
-import vswe.stevescarts.Arcade.Unit.UPDATE_RESULT;
-import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.Realtimers.ModuleArcade;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
 
 public class ArcadeInvaders extends ArcadeGame {
-
-	public ArcadeInvaders(ModuleArcade module) {
-		super(module, Localization.ARCADE.GHAST);
-		
-		invaders = new ArrayList<Unit>();		
-		buildings = new ArrayList<Unit>();
-		lives = new ArrayList<Player>();	
-		projectiles = new ArrayList<Projectile>();	
-		start();
-	}
-	
-	
-	private void start() {		
-		buildings.clear();
-		lives.clear();
-		projectiles.clear();
-		
-		
-		player = new Player(this);
-		for (int i = 0; i < 3; i++) {
-			lives.add(new Player(this, 10 + i * 20, 190));
-		}
-		
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 3; j++) {
-				buildings.add(new Building(this, 48 + i * 96 + j * 16, 120));
-			}
-		}		
-		
-		moveSpeed = 0;
-		fireDelay = 0;
-		score = 0;
-		canSpawnPahighast = false;
-		newHighscore = false;
-		spawnInvaders();
-	}
-	
-	private void spawnInvaders() {
-		invaders.clear();
-		hasPahighast = false;
-		for (int j = 0; j < 3; j++) {
-			for (int i = 0; i < 14; i++) {
-				invaders.add(new InvaderGhast(this, 20 + i * 20, 10 + 25 * j));
-			}
-		}	
-		moveSpeed++;
-		moveDirection = 1;
-		moveDown = 0;
-	}
-	
 	protected ArrayList<Unit> invaders;
 	private ArrayList<Player> lives;
 	private ArrayList<Unit> buildings;
@@ -82,377 +28,283 @@ public class ArcadeInvaders extends ArcadeGame {
 	protected boolean canSpawnPahighast;
 	private boolean newHighscore;
 	private int gameoverCounter;
-	
-	
-	@Override
+	private static String texture;
+	private static final String[][] numbers;
+
+	public ArcadeInvaders(final ModuleArcade module) {
+		super(module, Localization.ARCADE.GHAST);
+		this.invaders = new ArrayList<Unit>();
+		this.buildings = new ArrayList<Unit>();
+		this.lives = new ArrayList<Player>();
+		this.projectiles = new ArrayList<Projectile>();
+		this.start();
+	}
+
+	private void start() {
+		this.buildings.clear();
+		this.lives.clear();
+		this.projectiles.clear();
+		this.player = new Player(this);
+		for (int i = 0; i < 3; ++i) {
+			this.lives.add(new Player(this, 10 + i * 20, 190));
+		}
+		for (int i = 0; i < 4; ++i) {
+			for (int j = 0; j < 3; ++j) {
+				this.buildings.add(new Building(this, 48 + i * 96 + j * 16, 120));
+			}
+		}
+		this.moveSpeed = 0;
+		this.fireDelay = 0;
+		this.score = 0;
+		this.canSpawnPahighast = false;
+		this.newHighscore = false;
+		this.spawnInvaders();
+	}
+
+	private void spawnInvaders() {
+		this.invaders.clear();
+		this.hasPahighast = false;
+		for (int j = 0; j < 3; ++j) {
+			for (int i = 0; i < 14; ++i) {
+				this.invaders.add(new InvaderGhast(this, 20 + i * 20, 10 + 25 * j));
+			}
+		}
+		++this.moveSpeed;
+		this.moveDirection = 1;
+		this.moveDown = 0;
+	}
+
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void update() {
 		super.update();
-		
-		if (player != null ) {
-			if (player.ready) {
+		if (this.player != null) {
+			if (this.player.ready) {
 				boolean flag = false;
 				boolean flag2 = false;
-				for (int i = invaders.size() - 1; i >= 0; i--) {
-					Unit invader = invaders.get(i);
-					
-					Unit.UPDATE_RESULT result = invader.update();
+				for (int i = this.invaders.size() - 1; i >= 0; --i) {
+					final Unit invader = this.invaders.get(i);
+					final Unit.UPDATE_RESULT result = invader.update();
 					if (result == Unit.UPDATE_RESULT.DEAD) {
-						if (((InvaderGhast)invader).isPahighast) {
-							hasPahighast = false;
+						if (((InvaderGhast) invader).isPahighast) {
+							this.hasPahighast = false;
 						}
-						playDefaultSound("mob.ghast.scream", 0.03F, 1);
-						invaders.remove(i);
-						score += 1;
-					}else if(result == Unit.UPDATE_RESULT.TURN_BACK) {
+						ArcadeGame.playDefaultSound("mob.ghast.scream", 0.03f, 1.0f);
+						this.invaders.remove(i);
+						++this.score;
+					} else if (result == Unit.UPDATE_RESULT.TURN_BACK) {
 						flag = true;
-					}else if(result == UPDATE_RESULT.GAME_OVER) {
+					} else if (result == Unit.UPDATE_RESULT.GAME_OVER) {
 						flag2 = true;
 					}
 				}
-				
-				if (moveDown > 0) {
-					--moveDown;
+				if (this.moveDown > 0) {
+					--this.moveDown;
 				}
-				
 				if (flag) {
-					moveDirection *= -1;
-					moveDown = 5;
+					this.moveDirection *= -1;
+					this.moveDown = 5;
 				}
-
-				
-				if (invaders.size() == 0 || (hasPahighast && invaders.size() == 1)) {
-					score += hasPahighast ? 200 : 50;
-					canSpawnPahighast = true;
-					spawnInvaders();
+				if (this.invaders.size() == 0 || (this.hasPahighast && this.invaders.size() == 1)) {
+					this.score += (this.hasPahighast ? 200 : 50);
+					this.canSpawnPahighast = true;
+					this.spawnInvaders();
 				}
-				
 				if (flag2) {
-					lives.clear();
-					projectiles.clear();
-					player = null;
-					newHighScore();
+					this.lives.clear();
+					this.projectiles.clear();
+					this.player = null;
+					this.newHighScore();
 					return;
 				}
-				
-				for (int i = buildings.size() - 1; i >= 0; i--) {
-					if (buildings.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
-						buildings.remove(i);
+				for (int i = this.buildings.size() - 1; i >= 0; --i) {
+					if (this.buildings.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
+						this.buildings.remove(i);
 					}
-				}	
-				
-				
-				for (int i = projectiles.size() - 1; i >= 0; i--) {
-					if (projectiles.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
-						projectiles.remove(i);
-					}
-				}		
-		
-			
-			
-			
-				if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-					player.move(-1);
-				}else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-					player.move(1);
 				}
-				
-				if(fireDelay == 0 && Keyboard.isKeyDown(Keyboard.KEY_W)) {
-					projectiles.add(new Projectile(this, player.x + 8 - 2, player.y - 15, true));	
-					playDefaultSound("random.bow", 0.8F, 1.0F / (getModule().getCart().rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-					fireDelay = 10;
-				}else if(fireDelay > 0) {
-					fireDelay--;
+				for (int i = this.projectiles.size() - 1; i >= 0; --i) {
+					if (this.projectiles.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
+						this.projectiles.remove(i);
+					}
+				}
+				if (Keyboard.isKeyDown(30)) {
+					this.player.move(-1);
+				} else if (Keyboard.isKeyDown(32)) {
+					this.player.move(1);
+				}
+				if (this.fireDelay == 0 && Keyboard.isKeyDown(17)) {
+					this.projectiles.add(new Projectile(this, this.player.x + 8 - 2, this.player.y - 15, true));
+					ArcadeGame.playDefaultSound("random.bow", 0.8f, 1.0f / (this.getModule().getCart().rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
+					this.fireDelay = 10;
+				} else if (this.fireDelay > 0) {
+					--this.fireDelay;
 				}
 			}
-			
-			if (player.update() == UPDATE_RESULT.DEAD) {
-				projectiles.clear();
-				playSound("hit", 1, 1);
-					
-				if (lives.size() != 0) {
-					lives.get(0).setTarget(player.x, player.y);
-					player = lives.get(0);	
-					lives.remove(0);
-				}else{
-					player = null;
-					newHighScore();
+			if (this.player.update() == Unit.UPDATE_RESULT.DEAD) {
+				this.projectiles.clear();
+				ArcadeGame.playSound("hit", 1.0f, 1.0f);
+				if (this.lives.size() != 0) {
+					this.lives.get(0).setTarget(this.player.x, this.player.y);
+					this.player = this.lives.get(0);
+					this.lives.remove(0);
+				} else {
+					this.player = null;
+					this.newHighScore();
 				}
-				
-				
 			}
-			
-		}else if (gameoverCounter == 0) {
+		} else if (this.gameoverCounter == 0) {
 			boolean flag = false;
-			for (int i = invaders.size() - 1; i >= 0; i--) {
-				Unit invader = invaders.get(i);
-				if (invader.update() == UPDATE_RESULT.TARGET) {
+			for (int j = this.invaders.size() - 1; j >= 0; --j) {
+				final Unit invader2 = this.invaders.get(j);
+				if (invader2.update() == Unit.UPDATE_RESULT.TARGET) {
 					flag = true;
 				}
 			}
-			
 			if (!flag) {
-				gameoverCounter = 1;
+				this.gameoverCounter = 1;
 			}
-		}else if (newHighscore && gameoverCounter < 5) {
-			gameoverCounter++;
-			if (gameoverCounter == 5) {
-				playSound("highscore", 1, 1);
+		} else if (this.newHighscore && this.gameoverCounter < 5) {
+			++this.gameoverCounter;
+			if (this.gameoverCounter == 5) {
+				ArcadeGame.playSound("highscore", 1.0f, 1.0f);
 			}
 		}
-		
 	}
-	
-	private static String texture = "/gui/invaders.png";
-	
-	@Override
+
 	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiMinecart gui, int x, int y) {
-		ResourceHelper.bindResource(texture);
-		
-		
-		for (int i = 0; i < 27; i++) {
-			getModule().drawImage(gui, 5 + i * 16, 150, 16, 32, 16, 16);
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
+		ResourceHelper.bindResource(ArcadeInvaders.texture);
+		for (int i = 0; i < 27; ++i) {
+			this.getModule().drawImage(gui, 5 + i * 16, 150, 16, 32, 16, 16);
 		}
-		
-		for (int i = 0; i < 5; i++) {
-			getModule().drawImage(gui, 3 + i * 16, 190, 16, 32, 16, 16);
-		}		
-			
-		for (Unit invader : invaders) {
+		for (int i = 0; i < 5; ++i) {
+			this.getModule().drawImage(gui, 3 + i * 16, 190, 16, 32, 16, 16);
+		}
+		for (final Unit invader : this.invaders) {
 			invader.draw(gui);
 		}
-	
-		if (player != null) {
+		if (this.player != null) {
+			this.player.draw(gui);
+		}
+		for (final Unit player : this.lives) {
 			player.draw(gui);
 		}
-		for (Unit player: lives) {
-			player.draw(gui);
-		}
-				
-		for (Unit projectile : projectiles) {
+		for (final Unit projectile : this.projectiles) {
 			projectile.draw(gui);
-		}	
-		
-		
-		for (Unit building : buildings) {
+		}
+		for (final Unit building : this.buildings) {
 			building.draw(gui);
 		}
 	}
 
-	
-
-	@Override
 	@SideOnly(Side.CLIENT)
-	public void drawForeground(GuiMinecart gui) {
-		getModule().drawString(gui, Localization.ARCADE.EXTRA_LIVES.translate() + ":", 10, 180, 0x404040);
-		getModule().drawString(gui, Localization.ARCADE.HIGH_SCORE.translate(String.valueOf(highscore)), 10, 210, 0x404040);
-		getModule().drawString(gui, Localization.ARCADE.SCORE.translate(String.valueOf(score)), 10, 220, 0x404040);
-		
-		getModule().drawString(gui, "W - " + Localization.ARCADE.INSTRUCTION_SHOOT.translate(), 330, 180, 0x404040);
-		getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_LEFT.translate(), 330, 190, 0x404040);
-		getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_RIGHT.translate(), 330, 200, 0x404040);
-		getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_RESTART.translate(), 330, 220, 0x404040);
+	@Override
+	public void drawForeground(final GuiMinecart gui) {
+		this.getModule().drawString(gui, Localization.ARCADE.EXTRA_LIVES.translate() + ":", 10, 180, 4210752);
+		this.getModule().drawString(gui, Localization.ARCADE.HIGH_SCORE.translate(String.valueOf(this.highscore)), 10, 210, 4210752);
+		this.getModule().drawString(gui, Localization.ARCADE.SCORE.translate(String.valueOf(this.score)), 10, 220, 4210752);
+		this.getModule().drawString(gui, "W - " + Localization.ARCADE.INSTRUCTION_SHOOT.translate(), 330, 180, 4210752);
+		this.getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_LEFT.translate(), 330, 190, 4210752);
+		this.getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_RIGHT.translate(), 330, 200, 4210752);
+		this.getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_RESTART.translate(), 330, 220, 4210752);
 	}
-	
-	@Override
+
 	@SideOnly(Side.CLIENT)
-	public void keyPress(GuiMinecart gui, char character, int extraInformation) {
+	@Override
+	public void keyPress(final GuiMinecart gui, final char character, final int extraInformation) {
 		if (Character.toLowerCase(character) == 'r') {
-			start();
+			this.start();
 		}
 	}
-	
-	
-	
-	private final static String[][] numbers = new String[][] 
-	{
-		{
-			"XXXX",
-			"X  X",
-			"X  X",
-			"X  X",
-			"X  X",
-			"X  X",
-			"XXXX"		
-		},{
-			"   X",
-			"   X",
-			"   X",
-			"   X",
-			"   X",
-			"   X",
-			"   X"				
-		},{
-			"XXXX",
-			"   X",
-			"   X",
-			"XXXX",
-			"X   ",
-			"X   ",
-			"XXXX"			
-		},{
-			"XXXX",
-			"   X",
-			"   X",
-			"XXXX",
-			"   X",
-			"   X",
-			"XXXX"			
-		},{
-			"X  X",
-			"X  X",
-			"X  X",
-			"XXXX",
-			"   X",
-			"   X",
-			"   X"	
-		},{
-			"XXXX",
-			"X   ",
-			"X   ",
-			"XXXX",
-			"   X",
-			"   X",
-			"XXXX"	
-		},{
-			"XXXX",
-			"X   ",
-			"X   ",
-			"XXXX",
-			"X  X",
-			"X  X",
-			"XXXX"	
-		},{
-			"XXXX",
-			"   X",
-			"   X",
-			"   X",
-			"   X",
-			"   X",
-			"   X"				
-		},{
-			"XXXX",
-			"X  X",
-			"X  X",
-			"XXXX",
-			"X  X",
-			"X  X",
-			"XXXX"					
-		},{
-			"XXXX",
-			"X  X",
-			"X  X",
-			"XXXX",
-			"   X",
-			"   X",
-			"XXXX"		
-		}
-	};
-	
+
 	private void newHighScore() {
-		buildings.clear();
-		
-		int digits; 
-		if (score == 0) {
+		this.buildings.clear();
+		int digits;
+		if (this.score == 0) {
 			digits = 1;
-		}else{
-			digits = (int)Math.floor(Math.log10(score)) + 1;
+		} else {
+			digits = (int) Math.floor(Math.log10(this.score)) + 1;
 		}
-
-
-		canSpawnPahighast = false;
+		this.canSpawnPahighast = false;
 		int currentGhast = 0;
-		for (int i = 0; i < digits; i++) {
-			int digit = (score / (int)Math.pow(10, (digits - i - 1))) % 10;		
-			String[] number = numbers[digit];
-			
-			for (int j = 0; j < number.length; j++) {
-				String line = number[j];
-				
-				for (int k = 0; k < line.length(); k++) {
+		for (int i = 0; i < digits; ++i) {
+			final int digit = this.score / (int) Math.pow(10.0, digits - i - 1) % 10;
+			final String[] number = ArcadeInvaders.numbers[digit];
+			for (int j = 0; j < number.length; ++j) {
+				final String line = number[j];
+				for (int k = 0; k < line.length(); ++k) {
 					if (line.charAt(k) == 'X') {
-						
-						
-						int x = (MinecartModular.MODULAR_SPACE_WIDTH - (digits * 90 - 10)) / 2 + i * 90 + k * 20;
-						int y = 5 + j * 20;
-						
+						final int x = (443 - (digits * 90 - 10)) / 2 + i * 90 + k * 20;
+						final int y = 5 + j * 20;
 						InvaderGhast ghast;
-						if (currentGhast >= invaders.size()) {
-							invaders.add(ghast = new InvaderGhast(this, x, -20));
-							currentGhast++;
-						}else{
-							ghast = (InvaderGhast)invaders.get(currentGhast++);
+						if (currentGhast >= this.invaders.size()) {
+							this.invaders.add(ghast = new InvaderGhast(this, x, -20));
+							++currentGhast;
+						} else {
+							ghast = (InvaderGhast) this.invaders.get(currentGhast++);
 						}
-						
-						 
-						
 						ghast.setTarget(x, y);
 					}
 				}
-			}			
-		}
-		
-		for (int i = currentGhast; i < invaders.size(); i++) {
-			InvaderGhast ghast = (InvaderGhast)invaders.get(i);
-			ghast.setTarget(ghast.x, -25);
-		}
-
-		
-		gameoverCounter = 0;		
-		if (score > highscore) {
-			newHighscore = true;			
-			int val = score;
-			
-			byte byte1 = (byte)(val & 255);
-			byte byte2 = (byte)((val & (255 << 8)) >> 8);
-			
-			getModule().sendPacket(2, new byte[] {byte1, byte2});
-		}
-		
-	}
-	
-	@Override
-	public void receivePacket(int id, byte[] data, EntityPlayer player) {
-		if (id == 2) {
-			short data1 = data[0];
-			short data2 = data[1];
-			if (data1 < 0) {
-				data1 += 256;
 			}
+		}
+		for (int i = currentGhast; i < this.invaders.size(); ++i) {
+			final InvaderGhast ghast2 = (InvaderGhast) this.invaders.get(i);
+			ghast2.setTarget(ghast2.x, -25);
+		}
+		this.gameoverCounter = 0;
+		if (this.score > this.highscore) {
+			this.newHighscore = true;
+			final int val = this.score;
+			final byte byte1 = (byte) (val & 0xFF);
+			final byte byte2 = (byte) ((val & 0xFF00) >> 8);
+			this.getModule().sendPacket(2, new byte[] { byte1, byte2 });
+		}
+	}
+
+	@Override
+	public void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
+		if (id == 2) {
+			short data2 = data[0];
+			short data3 = data[1];
 			if (data2 < 0) {
 				data2 += 256;
 			}
-			
-			highscore = (data1 | (data2 << 8));
+			if (data3 < 0) {
+				data3 += 256;
+			}
+			this.highscore = (data2 | data3 << 8);
 		}
-	}	
-	
-	
-	@Override
-	public void checkGuiData(Object[] info) {
-		getModule().updateGuiData(info, TrackStory.stories.size() + 1, (short)(highscore));
 	}
-	
-	
-	
-	
+
 	@Override
-	public void receiveGuiData(int id, short data) {
+	public void checkGuiData(final Object[] info) {
+		this.getModule().updateGuiData(info, TrackStory.stories.size() + 1, (short) this.highscore);
+	}
+
+	@Override
+	public void receiveGuiData(final int id, final short data) {
 		if (id == TrackStory.stories.size() + 1) {
-			highscore = data;
+			this.highscore = data;
 		}
-	}	
-	
-	@Override
-	public void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setShort(getModule().generateNBTName("HighscoreGhast",id), (short)highscore);	
 	}
-	
+
 	@Override
-	public void Load(NBTTagCompound tagCompound, int id) {
-		highscore = tagCompound.getShort(getModule().generateNBTName("HighscoreGhast",id));	
-	}	
-	
-	
+	public void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setShort(this.getModule().generateNBTName("HighscoreGhast", id), (short) this.highscore);
+	}
+
+	@Override
+	public void Load(final NBTTagCompound tagCompound, final int id) {
+		this.highscore = tagCompound.getShort(this.getModule().generateNBTName("HighscoreGhast", id));
+	}
+
+	static {
+		ArcadeInvaders.texture = "/gui/invaders.png";
+		numbers = new String[][] { { "XXXX", "X  X", "X  X", "X  X", "X  X", "X  X", "XXXX" }, { "   X", "   X", "   X", "   X", "   X", "   X", "   X" },
+			{ "XXXX", "   X", "   X", "XXXX", "X   ", "X   ", "XXXX" }, { "XXXX", "   X", "   X", "XXXX", "   X", "   X", "XXXX" }, { "X  X", "X  X", "X  X", "XXXX", "   X", "   X", "   X" },
+			{ "XXXX", "X   ", "X   ", "XXXX", "   X", "   X", "XXXX" }, { "XXXX", "X   ", "X   ", "XXXX", "X  X", "X  X", "XXXX" }, { "XXXX", "   X", "   X", "   X", "   X", "   X", "   X" },
+			{ "XXXX", "X  X", "X  X", "XXXX", "X  X", "X  X", "XXXX" }, { "XXXX", "X  X", "X  X", "XXXX", "   X", "   X", "XXXX" } };
+	}
 }

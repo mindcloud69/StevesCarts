@@ -1,184 +1,83 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Storages.Tanks.ModuleTank;
 import vswe.stevescarts.Renders.RendererMinecart;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelSideTanks extends ModelCartbase
-{
+public class ModelSideTanks extends ModelCartbase {
+	private static ResourceLocation texture;
 
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/tanksModel.png");
-	
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}	
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelSideTanks.texture;
+	}
 
+	@Override
 	protected int getTextureHeight() {
 		return 16;
 	}
-	
-    public ModelSideTanks()
-    {
 
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 2; j++) {
-				ModelRenderer tankside = new ModelRenderer(this, 0, 0);
-				AddRenderer(tankside);
-
-				tankside.addBox(
-					-6, 	//X
-					-3, 	//Y
-					-0.5F,	 	//Z
-					12,					//Size X
-					6,					//Size Y
-					1,			     	//Size Z
-					0.0F			 	//Size Increasement
-				);
-				tankside.setRotationPoint(
-					-2.0F, 		//X
-					-0.5F,			//Y
-					-10.5F + i*22 + -3F + j*5			//Z
-				);
-
-				ModelRenderer tanktopbot = new ModelRenderer(this, 0, 7);
-				AddRenderer(tanktopbot);
-
-				tanktopbot.addBox(
-					-6, 	//X
-					-2, 	//Y
-					-0.5F,	 	//Z
-					12,					//Size X
-					4,					//Size Y
-					1,			     	//Size Z
-					0.0F			 	//Size Increasement
-				);
-				tanktopbot.setRotationPoint(
-					-2.0F, 		//X
-					-0.5F + -2.5F + j*5,		//Y
-					-11F + i*22 			//Z
-				);
-
-				tanktopbot.rotateAngleX = (float)Math.PI / 2;
+	public ModelSideTanks() {
+		for (int i = 0; i < 2; ++i) {
+			for (int j = 0; j < 2; ++j) {
+				final ModelRenderer tankside = new ModelRenderer(this, 0, 0);
+				this.AddRenderer(tankside);
+				tankside.addBox(-6.0f, -3.0f, -0.5f, 12, 6, 1, 0.0f);
+				tankside.setRotationPoint(-2.0f, -0.5f, -10.5f + i * 22 - 3.0f + j * 5);
+				final ModelRenderer tanktopbot = new ModelRenderer(this, 0, 7);
+				this.AddRenderer(tanktopbot);
+				tanktopbot.addBox(-6.0f, -2.0f, -0.5f, 12, 4, 1, 0.0f);
+				tanktopbot.setRotationPoint(-2.0f, -3.0f + j * 5, -11.0f + i * 22);
+				tanktopbot.rotateAngleX = 1.5707964f;
 			}
-
-			ModelRenderer tankfront = new ModelRenderer(this, 26, 0);
-			AddRenderer(tankfront);
-
-			tankfront.addBox(
-				-2, 	//X
-				-2, 	//Y
-				-0.5F,	 	//Z
-				4,					//Size X
-				4,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			tankfront.setRotationPoint(
-				-2.0F - 5.5F, 		//X
-				-0.5F,		//Y
-				-11F + i*22 			//Z
-			);
-
-			tankfront.rotateAngleY = (float)Math.PI / 2;
-
-			ModelRenderer tankback = new ModelRenderer(this, 36, 0);
-			AddRenderer(tankback);
-
-			tankback.addBox(
-				-2, 	//X
-				-2, 	//Y
-				-0.5F,	 	//Z
-				4,					//Size X
-				4,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			tankback.setRotationPoint(
-				-2.0F + 6.5F, 		//X
-				-0.5F,		//Y
-				-11F + i*22 			//Z
-			);
-
-			tankback.rotateAngleY = (float)Math.PI / 2;
-
-			ModelRenderer tube1 = new ModelRenderer(this, 26, 5);
-			AddRenderer(tube1);
-
-			tube1.addBox(
-				-1, 	//X
-				-1, 	//Y
-				-1F,	 	//Z
-				2,					//Size X
-				2,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			tube1.setRotationPoint(
-				-2.0F + 7.5F, 		//X
-				-0.5F,		//Y
-				-11F + i*22 			//Z
-			);
-
-			ModelRenderer tube2 = new ModelRenderer(this, 26, 5);
-			AddRenderer(tube2);
-
-			tube2.addBox(
-				-2, 	//X
-				-1, 	//Y
-				-1F,	 	//Z
-				4,					//Size X
-				2,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			tube2.setRotationPoint(
-				-2.0F + 9.5F, 		//X
-				-0.5F,		//Y
-				-10F + i*20 			//Z
-			);
-
-			tube2.rotateAngleY = (float)Math.PI / 2;
-
-			ModelRenderer connection = new ModelRenderer(this, 36, 0);
-			AddRenderer(connection);
-
-			connection.addBox(
-				-2, 	//X
-				-2, 	//Y
-				-0.5F,	 	//Z
-				4,					//Size X
-				4,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			connection.setRotationPoint(
-				-2.0F + 9.5F, 		//X
-				-0.5F,		//Y
-				-8.5F + i*17 			//Z
-			);
+			final ModelRenderer tankfront = new ModelRenderer(this, 26, 0);
+			this.AddRenderer(tankfront);
+			tankfront.addBox(-2.0f, -2.0f, -0.5f, 4, 4, 1, 0.0f);
+			tankfront.setRotationPoint(-7.5f, -0.5f, -11.0f + i * 22);
+			tankfront.rotateAngleY = 1.5707964f;
+			final ModelRenderer tankback = new ModelRenderer(this, 36, 0);
+			this.AddRenderer(tankback);
+			tankback.addBox(-2.0f, -2.0f, -0.5f, 4, 4, 1, 0.0f);
+			tankback.setRotationPoint(4.5f, -0.5f, -11.0f + i * 22);
+			tankback.rotateAngleY = 1.5707964f;
+			final ModelRenderer tube1 = new ModelRenderer(this, 26, 5);
+			this.AddRenderer(tube1);
+			tube1.addBox(-1.0f, -1.0f, -1.0f, 2, 2, 2, 0.0f);
+			tube1.setRotationPoint(5.5f, -0.5f, -11.0f + i * 22);
+			final ModelRenderer tube2 = new ModelRenderer(this, 26, 5);
+			this.AddRenderer(tube2);
+			tube2.addBox(-2.0f, -1.0f, -1.0f, 4, 2, 2, 0.0f);
+			tube2.setRotationPoint(7.5f, -0.5f, -10.0f + i * 20);
+			tube2.rotateAngleY = 1.5707964f;
+			final ModelRenderer connection = new ModelRenderer(this, 36, 0);
+			this.AddRenderer(connection);
+			connection.addBox(-2.0f, -2.0f, -0.5f, 4, 4, 1, 0.0f);
+			connection.setRotationPoint(7.5f, -0.5f, -8.5f + i * 17);
 		}
-    }
-
+	}
 
 	@Override
-	public void render(Render render,ModuleBase module, float yaw, float pitch, float roll, float mult, float partialtime)
-    {
-
-
-		super.render(render,module,yaw,pitch,roll, mult, partialtime);
+	public void render(final Render render, final ModuleBase module, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
+		super.render(render, module, yaw, pitch, roll, mult, partialtime);
 		if (render != null && module != null) {
-			FluidStack liquid = ((ModuleTank)module).getFluid();
+			final FluidStack liquid = ((ModuleTank) module).getFluid();
 			if (liquid != null) {
-				((RendererMinecart)render).renderLiquidCuboid(liquid,  ((ModuleTank)module).getCapacity(), -2, -0.5F, -11, 10, 4, 4, mult);
-				((RendererMinecart)render).renderLiquidCuboid(liquid,  ((ModuleTank)module).getCapacity(), -2, -0.5F, 11, 10, 4, 4, mult);
+				((RendererMinecart) render).renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -2.0f, -0.5f, -11.0f, 10.0f, 4.0f, 4.0f, mult);
+				((RendererMinecart) render).renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -2.0f, -0.5f, 11.0f, 10.0f, 4.0f, 4.0f, mult);
 			}
 		}
-    }
+	}
+
+	static {
+		ModelSideTanks.texture = ResourceHelper.getResource("/models/tanksModel.png");
+	}
 }

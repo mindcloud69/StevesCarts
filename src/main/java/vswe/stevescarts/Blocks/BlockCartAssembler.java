@@ -1,280 +1,236 @@
 package vswe.stevescarts.Blocks;
-import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import vswe.stevescarts.PacketHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 
+public class BlockCartAssembler extends BlockContainerBase {
+//	private IIcon topIcon;
+//	private IIcon botIcon;
+//	private IIcon[] sideIcons;
 
-public class BlockCartAssembler extends BlockContainerBase
-{
+	public BlockCartAssembler() {
+		super(Material.ROCK);
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+	}
 
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIcon(final int side, final int meta) {
+//		if (side == 0) {
+//			return this.botIcon;
+//		}
+//		if (side == 1) {
+//			return this.topIcon;
+//		}
+//		return this.sideIcons[side - 2];
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerBlockIcons(final IIconRegister register) {
+//		final StringBuilder sb = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.topIcon = register.registerIcon(sb.append("stevescarts").append(":").append("cart_assembler").append("_top").toString());
+//		final StringBuilder sb2 = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.botIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("cart_assembler").append("_bot").toString());
+//		this.sideIcons = new IIcon[4];
+//		for (int i = 1; i <= 4; ++i) {
+//			final IIcon[] sideIcons = this.sideIcons;
+//			final int n = i - 1;
+//			final StringBuilder sb3 = new StringBuilder();
+//			StevesCarts.instance.getClass();
+//			sideIcons[n] = register.registerIcon(sb3.append("stevescarts").append(":").append("cart_assembler").append("_side_").append(i).toString());
+//		}
+//	}
 
-    public BlockCartAssembler()
-    {
-        super(Material.rock);
-        setCreativeTab(StevesCarts.tabsSC2Blocks);		
-    }
-
-
-
-	private IIcon topIcon;
-	private IIcon botIcon;
-	private IIcon sideIcons [];
-	
-    @SideOnly(Side.CLIENT)
-	@Override
-    public IIcon getIcon(int side, int meta)
-    {
-        if (side == 0) {
-			return botIcon;
-		}else if(side == 1) {
-			return topIcon;
-		}else {
-			return sideIcons[side - 2];
-		}
-    }
-	
-    @SideOnly(Side.CLIENT)
-	@Override
-    public void registerBlockIcons(IIconRegister register)
-    {
-        topIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "cart_assembler" + "_top");
-		botIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "cart_assembler" + "_bot");
-		sideIcons = new IIcon[4];
-		for (int i = 1; i <= 4; i++) {
-			sideIcons[i-1] = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "cart_assembler" + "_side_" + i);
-		}
-    }
-	
-	@Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
-    {
+	public boolean onBlockActivated(final World world, final BlockPos pos, final EntityPlayer entityplayer, final int par6, final float par7, final float par8, final float par9) {
 		if (entityplayer.isSneaking()) {
 			return false;
 		}
-	
-		TileEntityCartAssembler assembler = (TileEntityCartAssembler)world.getTileEntity(x, y, z);
+		final TileEntityCartAssembler assembler = (TileEntityCartAssembler) world.getTileEntity(pos);
 		if (assembler != null) {
-		    if (!world.isRemote)
-			{
-				FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 3, world, x, y, z);								 
+			if (!world.isRemote) {
+				FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 3, world, pos.getX(), pos.getY(), pos.getZ());
 			}
-			
-			
-		}else{
-			return false;
+			return true;
 		}
-        return true;
-    }
-	
+		return false;
+	}
 
-	public void updateMultiBlock(World world, int x, int y, int z) {
-
-		TileEntityCartAssembler master = (TileEntityCartAssembler)world.getTileEntity(x, y, z);
+	public void updateMultiBlock(final World world, final BlockPos pos) {
+		final TileEntityCartAssembler master = (TileEntityCartAssembler) world.getTileEntity(pos);
 		if (master != null) {
 			master.clearUpgrades();
 		}
-		checkForUpgrades(world, x, y, z);
+		this.checkForUpgrades(world, pos);
 		if (!world.isRemote) {
-			PacketHandler.sendBlockInfoToClients(world, new byte[] {}, x, y, z);
+			PacketHandler.sendBlockInfoToClients(world, new byte[0], pos);
 		}
 		if (master != null) {
 			master.onUpgradeUpdate();
 		}
 	}
 
-	
-	private void checkForUpgrades(World world, int x, int y, int z) {
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				for (int k = -1; k <= 1; k++) {
+	private void checkForUpgrades(final World world, final BlockPos pos) {
+		for (int i = -1; i <= 1; ++i) {
+			for (int j = -1; j <= 1; ++j) {
+				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						checkForUpgrade(world, x+i, y+j, z+k);
-					}					
-				}		
-			}		
+						this.checkForUpgrade(world, pos);
+					}
+				}
+			}
 		}
 	}
-	
-	private TileEntityCartAssembler checkForUpgrade(World world, int x, int y, int z) {
-		TileEntity tile = world.getTileEntity(x, y, z);
+
+	private TileEntityCartAssembler checkForUpgrade(final World world, final BlockPos pos) {
+		final TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityUpgrade) {
-			TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
-			ArrayList<TileEntityCartAssembler> masters = getMasters(world, x, y, z);
+			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
+			final ArrayList<TileEntityCartAssembler> masters = this.getMasters(world, pos);
 			if (masters.size() == 1) {
-				TileEntityCartAssembler master = masters.get(0);
+				final TileEntityCartAssembler master = masters.get(0);
 				master.addUpgrade(upgrade);
 				upgrade.setMaster(master);
 				return master;
-			}else{
-				for (TileEntityCartAssembler master : masters) {
-					master.removeUpgrade(upgrade);
-				}
-				upgrade.setMaster(null);
-			}						
+			}
+			for (final TileEntityCartAssembler master2 : masters) {
+				master2.removeUpgrade(upgrade);
+			}
+			upgrade.setMaster(null);
 		}
 		return null;
 	}
-	
-	private ArrayList<TileEntityCartAssembler> getMasters(World world, int x, int y, int z) {
-		ArrayList<TileEntityCartAssembler> masters = new ArrayList<TileEntityCartAssembler>();
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				for (int k = -1; k <= 1; k++) {
+
+	private ArrayList<TileEntityCartAssembler> getMasters(final World world, final BlockPos pos) {
+		final ArrayList<TileEntityCartAssembler> masters = new ArrayList<TileEntityCartAssembler>();
+		for (int i = -1; i <= 1; ++i) {
+			for (int j = -1; j <= 1; ++j) {
+				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						TileEntityCartAssembler temp = getMaster(world, x+i, y+j, z+k);
+						final TileEntityCartAssembler temp = this.getMaster(world, pos);
 						if (temp != null) {
 							masters.add(temp);
 						}
-					}					
-				}		
-			}		
+					}
+				}
+			}
 		}
 		return masters;
 	}
-	
-	private TileEntityCartAssembler getValidMaster(World world, int x, int y, int z) {
+
+	private TileEntityCartAssembler getValidMaster(final World world, final BlockPos pos) {
 		TileEntityCartAssembler master = null;
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				for (int k = -1; k <= 1; k++) {
+		for (int i = -1; i <= 1; ++i) {
+			for (int j = -1; j <= 1; ++j) {
+				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						TileEntityCartAssembler temp = getMaster(world, x+i, y+j, z+k);
+						final TileEntityCartAssembler temp = this.getMaster(world, pos);
 						if (temp != null) {
 							if (master != null) {
 								return null;
-							}else{
-								master = temp;
 							}
+							master = temp;
 						}
-					}					
-				}		
-			}		
+					}
+				}
+			}
 		}
 		return master;
-	}	
-	
-	private TileEntityCartAssembler getMaster(World world, int x, int y, int z) {
-		TileEntity tile = world.getTileEntity(x, y, z);
+	}
+
+	private TileEntityCartAssembler getMaster(final World world, final BlockPos pos) {
+		final TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityCartAssembler) {
-			TileEntityCartAssembler master = (TileEntityCartAssembler)tile;
-			
+			final TileEntityCartAssembler master = (TileEntityCartAssembler) tile;
 			if (!master.isDead) {
 				return master;
 			}
 		}
 		return null;
 	}
-	
-	public void addUpgrade(World world, int x, int y, int z) {
 
-		TileEntityCartAssembler master = getValidMaster(world, x, y, z);
+	public void addUpgrade(final World world, final BlockPos pos) {
+		final TileEntityCartAssembler master = this.getValidMaster(world, pos);
 		if (master != null) {
-			updateMultiBlock(world, master.xCoord, master.yCoord, master.zCoord);
+			this.updateMultiBlock(world, master.getPos());
 		}
 	}
-	
-	public void removeUpgrade(World world, int x, int y, int z) {
-		
-		TileEntityCartAssembler master = getValidMaster(world, x, y, z);
+
+	public void removeUpgrade(final World world, final BlockPos pos) {
+		final TileEntityCartAssembler master = this.getValidMaster(world, pos);
 		if (master != null) {
-			updateMultiBlock(world, master.xCoord, master.yCoord, master.zCoord);
+			this.updateMultiBlock(world, pos);
 		}
-	}	
-	
-
-	@Override
-    public TileEntity createNewTileEntity(World world, int var2)
-    {
-        return new TileEntityCartAssembler();
-    }
-	
-
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-		updateMultiBlock(world, x, y, z);
 	}
-	
-	@Override
-	public void breakBlock(World world, int x, int y, int z, Block unknown1, int unknown2)
-    {
-		
-	
-        TileEntityCartAssembler var7 = (TileEntityCartAssembler)world.getTileEntity(x, y, z);
+
+	public TileEntity createNewTileEntity(final World world, final int var2) {
+		return new TileEntityCartAssembler();
+	}
+
+	public void onBlockAdded(final World world, final BlockPos pos) {
+		this.updateMultiBlock(world, pos);
+	}
+
+	public void breakBlock(final World world, final BlockPos pos, final Block unknown1, final int unknown2) {
+		final TileEntityCartAssembler var7 = (TileEntityCartAssembler) world.getTileEntity(pos);
 		var7.isDead = true;
-		updateMultiBlock(world, x, y, z);
-        if (var7 != null)
-        {
-            for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8)
-            {
-                ItemStack var9 = var7.getStackInSlotOnClosing(var8);
-
-                if (var9 != null)
-                {
-                    float var10 = world.rand.nextFloat() * 0.8F + 0.1F;
-                    float var11 = world.rand.nextFloat() * 0.8F + 0.1F;
-                    EntityItem var14;
-
-                    for (float var12 = world.rand.nextFloat() * 0.8F + 0.1F; var9.stackSize > 0; world.spawnEntityInWorld(var14))
-                    {
-                        int var13 = world.rand.nextInt(21) + 10;
-
-                        if (var13 > var9.stackSize)
-                        {
-                            var13 = var9.stackSize;
-                        }
-
-                        var9.stackSize -= var13;
-                        var14 = new EntityItem(world, (double)((float)x + var10), (double)((float)y + var11), (double)((float)z + var12), new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
-                        float var15 = 0.05F;
-                        var14.motionX = (double)((float)world.rand.nextGaussian() * var15);
-                        var14.motionY = (double)((float)world.rand.nextGaussian() * var15 + 0.2F);
-                        var14.motionZ = (double)((float)world.rand.nextGaussian() * var15);
-
-                        if (var9.hasTagCompound())
-                        {
-                            var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
-                        }
-                    }
-                }
-            }
-       
-
-			ItemStack outputItem = var7.getOutputOnInterupt();
+		this.updateMultiBlock(world, pos);
+		if (var7 != null) {
+			for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
+				final ItemStack var9 = var7.removeStackFromSlot(var8);
+				if (var9 != null) {
+					final float var10 = world.rand.nextFloat() * 0.8f + 0.1f;
+					final float var11 = world.rand.nextFloat() * 0.8f + 0.1f;
+					final float var12 = world.rand.nextFloat() * 0.8f + 0.1f;
+					while (var9.stackSize > 0) {
+						int var13 = world.rand.nextInt(21) + 10;
+						if (var13 > var9.stackSize) {
+							var13 = var9.stackSize;
+						}
+						final ItemStack itemStack = var9;
+						itemStack.stackSize -= var13;
+						final EntityItem var14 = new EntityItem(world, (double) (pos.getX() + var10), (double) (pos.getY() + var11), (double) (pos.getZ() + var12), new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
+						final float var15 = 0.05f;
+						var14.motionX = (float) world.rand.nextGaussian() * var15;
+						var14.motionY = (float) world.rand.nextGaussian() * var15 + 0.2f;
+						var14.motionZ = (float) world.rand.nextGaussian() * var15;
+						if (var9.hasTagCompound()) {
+							var14.getEntityItem().setTagCompound(var9.getTagCompound().copy());
+						}
+						world.spawnEntityInWorld(var14);
+					}
+				}
+			}
+			final ItemStack outputItem = var7.getOutputOnInterupt();
 			if (outputItem != null) {
-				EntityItem eItem = new EntityItem(world, (double)x + 0.2F, (double)y + 0.2F, (float)z + 0.2F, outputItem);
-				eItem.motionX = (double)((float)world.rand.nextGaussian() *  0.05F);
-				eItem.motionY = (double)((float)world.rand.nextGaussian() *  0.25F);
-				eItem.motionZ = (double)((float)world.rand.nextGaussian() *  0.05F);
-
-				if (outputItem.hasTagCompound())
-				{
-					eItem.getEntityItem().setTagCompound((NBTTagCompound)outputItem.getTagCompound().copy());
-				}		
+				final EntityItem eItem = new EntityItem(world, pos.getX() + 0.20000000298023224, pos.getY() + 0.20000000298023224, (double) (pos.getZ() + 0.2f), outputItem);
+				eItem.motionX = (float) world.rand.nextGaussian() * 0.05f;
+				eItem.motionY = (float) world.rand.nextGaussian() * 0.25f;
+				eItem.motionZ = (float) world.rand.nextGaussian() * 0.05f;
+				if (outputItem.hasTagCompound()) {
+					eItem.getEntityItem().setTagCompound(outputItem.getTagCompound().copy());
+				}
 				world.spawnEntityInWorld(eItem);
 			}
-			
 		}
-        super.breakBlock(world, x, y, z, unknown1, unknown2);
-    }	
-	
-
-		
-	
+		super.breakBlock(world, pos, this.getDefaultState());
+	}
 }

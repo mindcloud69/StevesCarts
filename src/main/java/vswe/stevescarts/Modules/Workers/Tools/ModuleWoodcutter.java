@@ -1,31 +1,47 @@
 package vswe.stevescarts.Modules.Workers.Tools;
-import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockPlanks.EnumType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.BlockCoord;
+import vswe.stevescarts.Helpers.BlockPosHelpers;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.Modules.Addons.Plants.ModulePlantSize;
 import vswe.stevescarts.Modules.ISuppliesModule;
 import vswe.stevescarts.Modules.ITreeModule;
 import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Addons.Plants.ModulePlantSize;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotFuel;
 import vswe.stevescarts.Slots.SlotSapling;
+
+import java.util.ArrayList;
+
 public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule, ITreeModule {
-	public ModuleWoodcutter(MinecartModular cart) {
+	private ArrayList<ITreeModule> treeModules;
+	private ModulePlantSize plantSize;
+	private boolean isPlanting;
+	private float cutterAngle;
+
+	public ModuleWoodcutter(final MinecartModular cart) {
 		super(cart);
+		this.cutterAngle = 0.7853982f;
 	}
 
-	//lower numbers are prioritized
+	@Override
 	public byte getWorkPriority() {
 		return 80;
 	}
@@ -36,315 +52,182 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, Localization.MODULES.TOOLS.CUTTER.translate(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.TOOLS.CUTTER.translate(), 8, 6, 4210752);
 	}
 
 	@Override
 	protected int getInventoryWidth() {
 		return super.getInventoryWidth() + 3;
 	}
-	
+
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
+	protected SlotBase getSlot(final int slotId, int x, final int y) {
 		if (x == 0) {
 			return super.getSlot(slotId, x, y);
-		}else{
-			x--;
-			return new SlotSapling(getCart(), this, slotId,8+x*18,28+y*18);
 		}
-	}	
-	
-	
+		--x;
+		return new SlotSapling(this.getCart(), this, slotId, 8 + x * 18, 28 + y * 18);
+	}
 
+	@Override
 	public boolean useDurability() {
 		return true;
 	}
-	
-	private ArrayList<ITreeModule> treeModules;
-	private ModulePlantSize plantSize;
+
 	@Override
 	public void init() {
 		super.init();
-		treeModules = new ArrayList<ITreeModule>();
-		
-		for (ModuleBase module : getCart().getModules()) {
+		this.treeModules = new ArrayList<ITreeModule>();
+		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ITreeModule) {
-				treeModules.add((ITreeModule)module);
-			}else if(module instanceof ModulePlantSize) {
-				plantSize = (ModulePlantSize)module;
+				this.treeModules.add((ITreeModule) module);
+			} else {
+				if (!(module instanceof ModulePlantSize)) {
+					continue;
+				}
+				this.plantSize = (ModulePlantSize) module;
 			}
 		}
-		
-	}	
-	
-	
-	/*public abstract int getApplePercentageDropChance();
-	public abstract int getSaplingPercentageDropChance();
-	public abstract int getWoodPercentageDropChance();
-	public abstract int getLogPercentageDropChance();
-	public abstract int getTwigPercentageDropChance();*/
-	
+	}
+
 	public abstract int getPercentageDropChance();
-	
-	public ArrayList<ItemStack> getTierDrop(ArrayList<ItemStack> baseItems) {
-		ArrayList<ItemStack> nerfedItems = new ArrayList<ItemStack>();
-		
-		for (ItemStack item : baseItems) {
+
+	public ArrayList<ItemStack> getTierDrop(final ArrayList<ItemStack> baseItems) {
+		final ArrayList<ItemStack> nerfedItems = new ArrayList<ItemStack>();
+		for (final ItemStack item : baseItems) {
 			if (item != null) {
-				/*if (item.getItem() == Item.appleRed) {
-					dropItemByMultiplierChance(nerfedItems, item, getApplePercentageDropChance());
-				}else if(item.itemID == Block.sapling.blockID || item.itemID == Block.leaves.blockID) {					
-					dropItemByMultiplierChance(nerfedItems, item, getSaplingPercentageDropChance());
-				}else if(item.itemID == Block.wood.blockID) {
-					int r = getCart().rand.nextInt(100);
-					if (r < getWoodPercentageDropChance()) {
-						nerfedItems.add(item);
-					}else if((enchanter == null || !enchanter.useSilkTouch()) && r < getWoodPercentageDropChance() + getLogPercentageDropChance() + getTwigPercentageDropChance()) {
-						nerfedItems.add(ItemCartComponent.getWood(item.getItemDamage(), r < getWoodPercentageDropChance() + getLogPercentageDropChance(), item.stackSize));
-					}
-				}else{
-					nerfedItems.add(item);
-				}*/
-				dropItemByMultiplierChance(nerfedItems, item, getPercentageDropChance());
+				this.dropItemByMultiplierChance(nerfedItems, item, this.getPercentageDropChance());
 			}
 		}
-		
-		
 		return nerfedItems;
-	}	
-	
-	private void dropItemByMultiplierChance(ArrayList<ItemStack> items, ItemStack item, int percentage) {
+	}
+
+	private void dropItemByMultiplierChance(final ArrayList<ItemStack> items, final ItemStack item, int percentage) {
 		int drop = 0;
-		
-		while(percentage > 0) {
-			if (getCart().rand.nextInt(100) < percentage) {
+		while (percentage > 0) {
+			if (this.getCart().rand.nextInt(100) < percentage) {
 				items.add(item.copy());
-				drop++;
+				++drop;
 			}
 			percentage -= 100;
 		}
 	}
-	
-	
-	private boolean isPlanting;
-	
-	//return true when the work is done, false allow other modules to continue the work
+
+	@Override
 	public boolean work() {
-        //get the next block so the cart knows where to mine
-        Vec3 next = getNextblock();
-        //save the coordinates for easy access
-        int x = (int) next.xCoord;
-        int y = (int) next.yCoord;
-        int z = (int) next.zCoord;
-
-        //loop through the blocks in the "hole" in front of the cart
-
-        int size = getPlantSize();
-        
-        destroyLeaveBlockOnTrack(x, y, z);
-        destroyLeaveBlockOnTrack(x, y + 1, z);
-        
-        for (int i = -size; i <= size; i++)
-        {
-        	if (i == 0) {
-        		continue;
-        	}
-        	
-        	//plant big trees in the correct order
-        	int i2 = i;
-        	if (i2 < 0) {
-        		i2 = -size - i2 - 1;
-        	}
-        	
-        	
-            int plantX = x + (getCart().z() != z ? i2 : 0);
-            int plantY = y - 1;
-            int plantZ = z + (getCart().x() != x ? i2 : 0);               
-            
-			if (plant(size, plantX, plantY, plantZ, x, z))
-            {
-				setCutting(false);
-                return true;
-            }
-                
-        }
-        
-        if (!isPlanting) {
-	        for (int i = -1; i <= 1; i++)
-	        {
-	            for (int j = -1; j <= 1; j++)
-	            {
-	                int farmX = x + i;
-	                int farmY = y - 1;
-	                int farmZ = z + j;
-	                
-	                if (farm(farmX, farmY, farmZ))
-	                {
-						setCutting(true);
-	                    return true;
-	                }	                
-	            }	            
-	        }
-        }
-        
-		isPlanting = false;
-		setCutting(false);
-		return false;
-    }
-
-
-private boolean plant(int size, int x, int y, int z, int cx, int cz)
-    {
-	   //backwards compat
-	   if (size == 1) {
-		   if ((x+z) % 2 == 0) {
-			   return false;
-		   }
-	   }else if ((x == cx && ((x / size) % 2 == 0)) || (z == cz && (z / size) % 2 == 0 )) {
-		   return false;
-	   }
-	   
-
-        /*if ((id == Block.grass.blockID || id == Block.dirt.blockID || id == Block.tilledField.blockID) && idOfBlockAbove == 0)
-        {
-            int hasSapling = -1;
-
-
-            for (int i = 0; i <	getInventorySize(); i++)
-            {
-                SlotBase slot = getSlots().get(i);
-                if (slot.containsValidItem()) {
-                    hasSapling = i;                     
-                    break;
-                }             
-            }
-
-            if (hasSapling != -1)
-            {
-                if (doPreWork())
-                {
-					startWorking(25);
-					isPlanting = true;
-                    return true;
-                }
-                else
-                {
-                    stopWorking();
-					isPlanting = false;
-					
-                    getCart().worldObj.setBlock(x, y + 1, z, Block.sapling.blockID, getStack(hasSapling).getItem().getMetadata(getStack(hasSapling).getItemDamage()), 3);
-
-                    getStack(hasSapling).stackSize--;
-
-                    if (getStack(hasSapling).stackSize == 0)
-                    {
-                        setStack(hasSapling,null);
-                    }
-                }
-            }
-        }*/
-        
-        int saplingSlotId = -1;
-        ItemStack sapling = null;
-
-        for (int i = 0; i <	getInventorySize(); i++)
-        {
-            SlotBase slot = getSlots().get(i);
-            if (slot.containsValidItem()) {
-            	saplingSlotId = i;  
-            	sapling = getStack(i);
-                break;
-            }             
-        }
-
-
-        if (sapling != null /*&& ((ItemBlock)sapling.getItem()).canPlaceItemBlockOnSide(getCart().worldObj, x, y, z, 1, getFakePlayer(), sapling)*/)
-        {
-            if (doPreWork())
-            {
-            	
-            	
-				if (sapling.getItem().onItemUse(sapling, getFakePlayer(), getCart().worldObj, x, y, z, 1, 0, 0, 0)) {
-	                if (sapling.stackSize == 0)
-	                {
-	                    setStack(saplingSlotId,null);
-	                }
-					startWorking(25);
-					isPlanting = true;
-	                return true;	                
+		BlockPos next = this.getNextblock();
+		final int size = this.getPlantSize();
+		this.destroyLeaveBlockOnTrack(next);
+		this.destroyLeaveBlockOnTrack(next.up());
+		for (int i = -size; i <= size; ++i) {
+			if (i != 0) {
+				int i2 = i;
+				if (i2 < 0) {
+					i2 = -size - i2 - 1;
 				}
-
-            }
-            else
-            {
-                stopWorking();
-				isPlanting = false;
-				
-				
-				 
-                //getCart().worldObj.setBlock(x, y + 1, z, Block.sapling.blockID, getStack(hasSapling).getItem().getMetadata(getStack(hasSapling).getItemDamage()), 3);
-
-				
-
-            }        	
-        }
-        
-
-        return false;
-    }
-
-   private boolean farm(int x, int y, int z)
-    {
-	   	if (!isBroken()) {
-	        Block b = getCart().worldObj.getBlock(x, y + 1, z);
-	        int m = getCart().worldObj.getBlockMetadata(x, y + 1, z);
-	
-	        if (b != null && isWoodHandler(b, x, y + 1, z))
-	        {
-				ArrayList<BlockCoord> checked = new ArrayList<BlockCoord>();
-	
-				if (removeAt(x,y+1,z,checked)) {
+				BlockPos plant = next.add(((this.getCart().z() != next.getZ()) ? i2 : 0), -1, ((this.getCart().x() != next.getX()) ? i2 : 0));
+				if (this.plant(size, plant, next.getX(), next.getZ())) {
+					this.setCutting(false);
 					return true;
-				}else{
-					stopWorking();
 				}
-	        }
-	   	}
+			}
+		}
+		if (!this.isPlanting) {
+			for (int i = -1; i <= 1; ++i) {
+				for (int j = -1; j <= 1; ++j) {
+					BlockPos farm = next.add(i, -1, j);
+					if (this.farm(farm)) {
+						this.setCutting(true);
+						return true;
+					}
+				}
+			}
+		}
+		this.setCutting(this.isPlanting = false);
+		return false;
+	}
 
-        return false;
-    }
-
-
-
-	private boolean removeAt(int i, int j, int k, ArrayList<BlockCoord> checked) {
-		BlockCoord here = new BlockCoord(i,j,k);
-		checked.add(here);
-
-		Block b = getCart().worldObj.getBlock(i, j, k);
-		int m = getCart().worldObj.getBlockMetadata(i, j, k);
-
-		if (b == null) {
+	private boolean plant(final int size, BlockPos pos, final int cx, final int cz) {
+		if (size == 1) {
+			if ((pos.getX() + pos.getZ()) % 2 == 0) {
+				return false;
+			}
+		} else if ((pos.getX() == cx && pos.getX() / size % 2 == 0) || (pos.getZ() == cz && pos.getZ() / size % 2 == 0)) {
 			return false;
 		}
-		
+		int saplingSlotId = -1;
+		ItemStack sapling = null;
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			final SlotBase slot = this.getSlots().get(i);
+			if (slot.containsValidItem()) {
+				saplingSlotId = i;
+				sapling = this.getStack(i);
+				break;
+			}
+		}
+		if (sapling != null) {
+			if (this.doPreWork()) {
+				if (sapling.getItem().onItemUse(sapling, (EntityPlayer) this.getFakePlayer(), getCart().worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS) {
+					if (sapling.stackSize == 0) {
+						this.setStack(saplingSlotId, null);
+					}
+					this.startWorking(25);
+					return this.isPlanting = true;
+				}
+			} else {
+				this.stopWorking();
+				this.isPlanting = false;
+			}
+		}
+		return false;
+	}
 
-		if (checked.size() < 125 && here.getHorizontalDistToCartSquared(getCart()) < 175) {
-			for (int type = 0; type < 2; type++) {
+	private boolean farm(BlockPos pos) {
+		if (!this.isBroken()) {
+			pos = pos.up();
+			IBlockState state = getCart().worldObj.getBlockState(pos);
+			if (state != null && this.isWoodHandler(state, pos)) {
+				final ArrayList<BlockPos> checked = new ArrayList<BlockPos>();
+				if (this.removeAt(pos, checked)) {
+					return true;
+				}
+				this.stopWorking();
+			}
+		}
+		return false;
+	}
+
+	private boolean removeAt(BlockPos here, final ArrayList<BlockPos> checked) {
+		checked.add(here);
+		IBlockState blockState = getCart().worldObj.getBlockState(here);
+		final Block block = blockState.getBlock();
+		if (block == null) {
+			return false;
+		}
+		if (checked.size() < 125 && BlockPosHelpers.getHorizontalDistToCartSquared(here, this.getCart()) < 175.0) {
+			for (int type = 0; type < 2; ++type) {
 				boolean hitWood = false;
-				if (isLeavesHandler(b, i, j, k)) {
+				if (this.isLeavesHandler(blockState, here)) {
 					type = 1;
-				}else if(type == 1) {
+				} else if (type == 1) {
 					hitWood = true;
 				}
-
-				for (int x = -1; x <= 1; x++) {
-					for (int y = 1; y >= 0; y--) {
-						for (int z = -1; z <= 1; z++) {
-							Block currentBlock = getCart().worldObj.getBlock(i + x, j + y, k + z);
-							if (currentBlock != null && (hitWood ? isWoodHandler(currentBlock, i+x, j+y, k+z) : isLeavesHandler(currentBlock, i+x, j+y, k+z))) {
-								if (!checked.contains(new BlockCoord(i+x,j+y,k+z))) {
-									return removeAt(i+x,j+y,k+z,checked);
+				for (int x = -1; x <= 1; ++x) {
+					for (int y = 1; y >= 0; --y) {
+						for (int z = -1; z <= 1; ++z) {
+							BlockPos pos = here.add(x, y, z);
+							IBlockState currentState = this.getCart().worldObj.getBlockState(pos);
+							if (currentState != null) {
+								if (hitWood) {
+									if (!this.isWoodHandler(currentState, pos)) {
+										continue;
+									}
+								} else if (!this.isLeavesHandler(currentState, pos)) {
+									continue;
+								}
+								if (!checked.contains(pos)) {
+									return this.removeAt(pos, checked);
 								}
 							}
 						}
@@ -352,200 +235,161 @@ private boolean plant(int size, int x, int y, int z, int cx, int cz)
 				}
 			}
 		}
-		
-		
 		ArrayList<ItemStack> stuff;
-		
-		if (shouldSilkTouch(b, i, j, k, m)) {
+		if (shouldSilkTouch(blockState, here)) {
 			stuff = new ArrayList<ItemStack>();
-			ItemStack stack = getSilkTouchedItem(b, m);
+			final ItemStack stack = this.getSilkTouchedItem(blockState);
 			if (stack != null) {
 				stuff.add(stack);
 			}
-		}else{
-			int fortune = enchanter != null ? enchanter.getFortuneLevel() : 0;
-			stuff = b.getDrops(getCart().worldObj, i, j, k, m, fortune);
-
-	        int applerand = 200;
-	
-	        if (fortune > 0) {
-	        	applerand -= 10 << fortune;
-	
-	            if (applerand < 40) {
-	            	applerand = 40;
-	            }
-	        }		
-			
-			if ((m & 3) == 0 && b == Blocks.leaves && getCart().rand.nextInt(applerand) == 0) {
-				stuff.add(new ItemStack(Items.apple, 1, 0));
+		} else {
+			final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
+			stuff = (ArrayList<ItemStack>) block.getDrops(getCart().worldObj, here, blockState, fortune);
+			int applerand = 200;
+			if (fortune > 0) {
+				applerand -= 10 << fortune;
+				if (applerand < 40) {
+					applerand = 40;
+				}
+			}
+			if (/*(m & 0x3) == 0x0 &&*/ block == Blocks.LEAVES && blockState.getValue(BlockOldLeaf.VARIANT) == EnumType.OAK && this.getCart().rand.nextInt(applerand) == 0) {
+				stuff.add(new ItemStack(Items.APPLE, 1, 0));
 			}
 		}
-
-		ArrayList<ItemStack> nerfedstuff = getTierDrop(stuff);
-		
-		
+		final ArrayList<ItemStack> nerfedstuff = this.getTierDrop(stuff);
 		boolean first = true;
-		for (ItemStack iStack : nerfedstuff)
-		{
-			getCart().addItemToChest(iStack, Slot.class,SlotFuel.class);
-
-			if (iStack.stackSize != 0)
-			{
+		for (final ItemStack iStack : nerfedstuff) {
+			this.getCart().addItemToChest(iStack, Slot.class, SlotFuel.class);
+			if (iStack.stackSize != 0) {
 				if (first) {
 					return false;
 				}
-
-				EntityItem entityitem = new EntityItem(getCart().worldObj, getCart().posX, getCart().posY, getCart().posZ , iStack);
-				entityitem.motionX = (float)(i - getCart().x()) / 10;
-				entityitem.motionY = 0.15F;
-				entityitem.motionZ = (float)(k - getCart().z()) / 10;
-				getCart().worldObj.spawnEntityInWorld(entityitem);
+				final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+				entityitem.motionX = (here.getX() - this.getCart().x()) / 10.0f;
+				entityitem.motionY = 0.15000000596046448;
+				entityitem.motionZ = (here.getZ() - this.getCart().z()) / 10.0f;
+				this.getCart().worldObj.spawnEntityInWorld(entityitem);
 			}
 			first = false;
 		}
-
-		try{
-			//worldObj.playAuxSFX(2001, i, j, k, id + m * 256);
-		}catch(Exception e) {
-		}
-
-		getCart().worldObj.setBlockToAir(i, j, k);
-
+		this.getCart().worldObj.setBlockToAir(here);
 		int basetime;
-		
-		if (isLeavesHandler(b, i, j, k)) {
+		if (this.isLeavesHandler(blockState, here)) {
 			basetime = 2;
-			damageTool(1);
-		}else{
+			this.damageTool(1);
+		} else {
 			basetime = 25;
-			damageTool(5);
+			this.damageTool(5);
 		}
-
-		
-    	int efficiency = enchanter != null ? enchanter.getEfficiencyLevel() : 0;	
-		startWorking((int)(basetime / Math.pow(1.3F, efficiency)));
-		
+		final int efficiency = (this.enchanter != null) ? this.enchanter.getEfficiencyLevel() : 0;
+		this.startWorking((int) (basetime / Math.pow(1.2999999523162842, efficiency)));
 		return true;
-    }
+	}
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
+		this.addDw(0, 0);
 	}
+
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
 	}
 
-	private void setCutting(boolean val) {
-		updateDw(0, (byte)(val  ? 1 : 0));
+	private void setCutting(final boolean val) {
+		this.updateDw(0, (byte) (val ? 1 : 0));
 	}
 
 	protected boolean isCutting() {
-		if (isPlaceholder()) {
-			return getSimInfo().getIsCutting();
-		}else{
-			return getDw(0) != 0;
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getIsCutting();
 		}
+		return this.getDw(0) != 0;
 	}
 
-	private float cutterAngle = (float)(Math.PI / 4);
 	public float getCutterAngle() {
-		return cutterAngle;
+		return this.cutterAngle;
 	}
-    /**
-     Called every tick, here the necessary actions should be taken
-     **/
-    public void update()
-    {
-        //call the method from the super class, this will do all ordinary things first
-        super.update();
 
-		boolean cuttingflag = isCutting();
-		if (cuttingflag || cutterAngle != (float)(Math.PI / 4)) {
+	@Override
+	public void update() {
+		super.update();
+		final boolean cuttingflag = this.isCutting();
+		if (cuttingflag || this.cutterAngle != 0.7853982f) {
 			boolean flag = false;
-			if (!cuttingflag && cutterAngle < (float)(Math.PI / 4)) {
+			if (!cuttingflag && this.cutterAngle < 0.7853982f) {
 				flag = true;
 			}
-
-			cutterAngle = (float)((cutterAngle + 0.9F) % (Math.PI * 2));
-
-			if (!cuttingflag && cutterAngle > (float)(Math.PI / 4) && flag) {
-				cutterAngle = (float)(Math.PI / 4);
+			this.cutterAngle = (float) ((this.cutterAngle + 0.9f) % 6.283185307179586);
+			if (!cuttingflag && this.cutterAngle > 0.7853982f && flag) {
+				this.cutterAngle = 0.7853982f;
 			}
 		}
-    }
+	}
 
-
-	
 	@Override
 	public boolean haveSupplies() {
-		for (int i = 0; i < getInventorySize(); i++) {
-			if (getSlots().get(i).containsValidItem()) {
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			if (this.getSlots().get(i).containsValidItem()) {
 				return true;
 			}
 		}
-		return false;
-	}	
-	
-	public boolean isLeavesHandler(Block b, int x, int y, int z) {
-		for (ITreeModule module : treeModules) {
-			if (module.isLeaves(b, x, y, z)) {
-				return true;
-			}
-		}
-		
 		return false;
 	}
-	
-	public boolean isWoodHandler(Block b, int x, int y, int z) {
-		for (ITreeModule module : treeModules) {
-			if (module.isWood(b, x, y, z)) {
+
+	public boolean isLeavesHandler(IBlockState blockState, BlockPos pos) {
+		for (final ITreeModule module : this.treeModules) {
+			if (module.isLeaves(blockState, pos)) {
 				return true;
 			}
-		}		
-		
+		}
 		return false;
-	}	
-	
-	public boolean isSaplingHandler(ItemStack sapling) {
-		for (ITreeModule module : treeModules) {
+	}
+
+	public boolean isWoodHandler(IBlockState blockState, BlockPos pos) {
+		for (final ITreeModule module : this.treeModules) {
+			if (module.isWood(blockState, pos)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isSaplingHandler(final ItemStack sapling) {
+		for (final ITreeModule module : this.treeModules) {
 			if (module.isSapling(sapling)) {
 				return true;
 			}
 		}
-		
 		return false;
 	}
-
-    @Override
-	public boolean isLeaves(Block b, int x, int y, int z) {
-		return b == Blocks.leaves;
-	}
-    @Override
-	public boolean isWood(Block b, int x, int y, int z) {
-		return b == Blocks.log || b == Blocks.log2;
-	}
-    @Override
-	public boolean isSapling(ItemStack sapling) {
-		return sapling != null && Block.getBlockFromItem(sapling.getItem()) == Blocks.sapling;
+	
+	@Override
+	public boolean isLeaves(IBlockState blockState, BlockPos pos) {
+		return blockState.getBlock() == Blocks.LEAVES || blockState.getBlock() == Blocks.LEAVES2;
 	}
 	
+	@Override
+	public boolean isWood(IBlockState blockState, BlockPos pos) {
+		return blockState.getBlock() == Blocks.LOG || blockState.getBlock() == Blocks.LOG2;
+	}
+
+	@Override
+	public boolean isSapling(final ItemStack sapling) {
+		return sapling != null && Block.getBlockFromItem(sapling.getItem()) == Blocks.SAPLING;
+	}
 
 	private int getPlantSize() {
-		if (plantSize != null) {
-			return plantSize.getSize();
-		}else{
-			return 1;
+		if (this.plantSize != null) {
+			return this.plantSize.getSize();
 		}
+		return 1;
 	}
-	
-	
-	private void destroyLeaveBlockOnTrack(int x, int y, int z) {
-        Block b = getCart().worldObj.getBlock(x, y, z);
 
-        if (b != null && isLeavesHandler(b, x, y, z)) {
-        	getCart().worldObj.setBlockToAir(x, y, z);
-        }		
+	private void destroyLeaveBlockOnTrack(BlockPos pos) {
+		IBlockState state = getCart().worldObj.getBlockState(pos);
+		if (state != null && this.isLeavesHandler(state, pos)) {
+			getCart().worldObj.setBlockToAir(pos);
+		}
 	}
 }

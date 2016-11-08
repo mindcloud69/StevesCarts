@@ -1,20 +1,19 @@
 package vswe.stevescarts.Arcade;
 
 public class StreetGroup extends PropertyGroup {
-
-	private float [] color;
+	private float[] color;
 	private int houseCost;
-	public StreetGroup(int houseCost, int[] color) {
+
+	public StreetGroup(final int houseCost, final int[] color) {
 		this.houseCost = houseCost;
-		this.color = new float[] {(float)color[0] / 256, (float)color[1] / 256, (float)color[2] / 256};
+		this.color = new float[] { color[0] / 256.0f, color[1] / 256.0f, color[2] / 256.0f };
 	}
 
 	public float[] getColor() {
-		return color;
+		return this.color;
 	}
-	
+
 	public int getStructureCost() {
-		return houseCost;
+		return this.houseCost;
 	}
-	
 }

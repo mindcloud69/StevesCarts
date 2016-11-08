@@ -1,404 +1,146 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Realtimers.ModuleAdvControl;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelWheel extends ModelCartbase
-{
+public class ModelWheel extends ModelCartbase {
+	private static ResourceLocation texture;
+	private ModelRenderer anchor;
 
-
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/wheelModel.png");
-	
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
-	
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelWheel.texture;
+	}
+
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
+	@Override
 	public float extraMult() {
-		return 0.65F;
+		return 0.65f;
 	}
-	
-	private ModelRenderer anchor;
-    public ModelWheel()
-    {
 
-
-		anchor = new ModelRenderer(this);
-		AddRenderer(anchor);
-		
-		anchor.setRotationPoint(
-			-10, 		//X	
-			-5,			//Y
-			0			//Z
-		);	
-
-
-		
-		
-		ModelRenderer top = new ModelRenderer(this, 0, 0);
-		anchor.addChild(top);
-		fixSize(top);
-
-		
-		top.addBox(
-			-4.5F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			9,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		top.setRotationPoint(
-			0, 		//X	
-			-6,			//Y
-			0			//Z
-		);	
-		top.rotateAngleY = (float)-Math.PI / 2;
-		
-		
-		ModelRenderer topleft = new ModelRenderer(this, 0, 4);
-		anchor.addChild(topleft);
-		fixSize(topleft);
-
-		
-		topleft.addBox(
-			-1F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		topleft.setRotationPoint(
-			0, 		//X	
-			-4F,			//Y
-			-5.5F			//Z
-		);	
-		topleft.rotateAngleY = (float)-Math.PI / 2;
-
-
-		
-		ModelRenderer topright = new ModelRenderer(this, 0, 4);
-		anchor.addChild(topright);
-		fixSize(topright);
-
-		
-		topright.addBox(
-			-1F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		topright.setRotationPoint(
-			0, 		//X	
-			-4F,			//Y
-			5.5F			//Z
-		);	
-		topright.rotateAngleY = (float)-Math.PI / 2;
-		
-
-		ModelRenderer left = new ModelRenderer(this, 0, 12);
-		anchor.addChild(left);
-		fixSize(left);
-
-		
-		left.addBox(
-			-1F, 	//X
-			-2.5F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			5,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		left.setRotationPoint(
-			0, 		//X	
-			-0.5F,			//Y
-			-7.5F			//Z
-		);		
-		left.rotateAngleY = (float)-Math.PI / 2;
-
-		
-		ModelRenderer right = new ModelRenderer(this, 0, 12);
-		anchor.addChild(right);
-		fixSize(right);
-
-		
-		right.addBox(
-			-1F, 	//X
-			-2.5F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			5,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		right.setRotationPoint(
-			0, 		//X	
-			-0.5F,			//Y
-			7.5F			//Z
-		);
-		right.rotateAngleY = (float)-Math.PI / 2;
-
-		
-		ModelRenderer bottomleft = new ModelRenderer(this, 0, 4);
-		anchor.addChild(bottomleft);
-		fixSize(bottomleft);
-
-		
-		bottomleft.addBox(
-			-1F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bottomleft.setRotationPoint(
-			0, 		//X	
-			3,			//Y
-			-5.5F			//Z
-		);
-		bottomleft.rotateAngleY = (float)-Math.PI / 2;
-
-		
-		ModelRenderer bottomright = new ModelRenderer(this, 0, 4);
-		anchor.addChild(bottomright);
-		fixSize(bottomright);
-
-		
-		bottomright.addBox(
-			-1F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bottomright.setRotationPoint(
-			0, 		//X	
-			3,			//Y
-			5.5F			//Z
-		);
-		bottomright.rotateAngleY = (float)-Math.PI / 2;
-		
-		
-		ModelRenderer bottominnerleft = new ModelRenderer(this, 0, 4);
-		anchor.addChild(bottominnerleft);
-		fixSize(bottominnerleft);
-
-		
-		bottominnerleft.addBox(
-			-1F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bottominnerleft.setRotationPoint(
-			0, 		//X	
-			5,			//Y
-			-3.5F			//Z
-		);		
-		bottominnerleft.rotateAngleY = (float)-Math.PI / 2;
-		
-		ModelRenderer bottominnerright = new ModelRenderer(this, 0, 4);
-		anchor.addChild(bottominnerright);
-		fixSize(bottominnerright);
-
-		
-		bottominnerright.addBox(
-			-1F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			2,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bottominnerright.setRotationPoint(
-			0, 		//X	
-			5,			//Y
-			3.5F			//Z
-		);	
-		bottominnerright.rotateAngleY = (float)-Math.PI / 2;
-		
-		ModelRenderer bottom = new ModelRenderer(this, 0, 8);
-		anchor.addChild(bottom);
-		fixSize(bottom);
-
-		
-		bottom.addBox(
-			-2.5F, 	//X
-			-1F, 	//Y
-			-1F,	 	//Z
-			5,					//Size X
-			2,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		bottom.setRotationPoint(
-			0, 		//X	
-			7,			//Y
-			0			//Z
-		);	
-		bottom.rotateAngleY = (float)-Math.PI / 2;
-		
-
-
-		ModelRenderer middlebottom = new ModelRenderer(this, 0, 19);
-		anchor.addChild(middlebottom);
-		fixSize(middlebottom);
-
-		
-		middlebottom.addBox(
-			-0.5F, 	//X
-			-2.5F, 	//Y
-			-0.5F,	 	//Z
-			1,					//Size X
-			5,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		middlebottom.setRotationPoint(
-			0.5F, 		//X	
-			3.5F,			//Y
-			0F			//Z
-		);	
-		middlebottom.rotateAngleY = (float)-Math.PI / 2;	
-
-		ModelRenderer middle = new ModelRenderer(this, 0, 25);
-		anchor.addChild(middle);
-		fixSize(middle);
-
-		
-		middle.addBox(
-			-1.5F, 	//X
-			-1F, 	//Y
-			-0.5F,	 	//Z
-			3,					//Size X
-			2,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		middle.setRotationPoint(
-			0.5F, 		//X	
-			0F,			//Y
-			0F			//Z
-		);	
-		middle.rotateAngleY = (float)-Math.PI / 2;		
-		
-		ModelRenderer middleleft = new ModelRenderer(this, 0, 25);
-		anchor.addChild(middleleft);
-		fixSize(middleleft);
-
-		
-		middleleft.addBox(
-			-1.5F, 	//X
-			-1F, 	//Y
-			-0.5F,	 	//Z
-			3,					//Size X
-			2,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		middleleft.setRotationPoint(
-			0.5F, 		//X	
-			-1F,			//Y
-			-3F			//Z
-		);	
-		middleleft.rotateAngleY = (float)-Math.PI / 2;	
-		
-		ModelRenderer middleright = new ModelRenderer(this, 0, 25);
-		anchor.addChild(middleright);
-		fixSize(middleright);
-
-		
-		middleright.addBox(
-			-1.5F, 	//X
-			-1F, 	//Y
-			-0.5F,	 	//Z
-			3,					//Size X
-			2,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		middleright.setRotationPoint(
-			0.5F, 		//X	
-			-1F,			//Y
-			3F			//Z
-		);	
-		middleright.rotateAngleY = (float)-Math.PI / 2;		
-		
-		
-		ModelRenderer innerleft = new ModelRenderer(this, 0, 28);
-		anchor.addChild(innerleft);
-		fixSize(innerleft);
-
-		
-		innerleft.addBox(
-			-1.5F, 	//X
-			-0.5F, 	//Y
-			-0.5F,	 	//Z
-			2,					//Size X
-			1,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		innerleft.setRotationPoint(
-			0.5F, 		//X	
-			-1.5F,			//Y
-			-5F			//Z
-		);	
-		innerleft.rotateAngleY = (float)-Math.PI / 2;	
-
-		ModelRenderer innerright = new ModelRenderer(this, 0, 28);
-		anchor.addChild(innerright);
-		fixSize(innerright);
-
-		
-		innerright.addBox(
-			-1.5F, 	//X
-			-0.5F, 	//Y
-			-0.5F,	 	//Z
-			2,					//Size X
-			1,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		innerright.setRotationPoint(
-			0.5F, 		//X	
-			-1.5F,			//Y
-			6F			//Z
-		);	
-		innerright.rotateAngleY = (float)-Math.PI / 2;			
-    }
-	
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-		anchor.rotateAngleX = module == null ? 0 : ((ModuleAdvControl)module).getWheelAngle();	
+	public ModelWheel() {
+		this.AddRenderer(this.anchor = new ModelRenderer(this));
+		this.anchor.setRotationPoint(-10.0f, -5.0f, 0.0f);
+		final ModelRenderer top = new ModelRenderer(this, 0, 0);
+		this.anchor.addChild(top);
+		this.fixSize(top);
+		top.addBox(-4.5f, -1.0f, -1.0f, 9, 2, 2, 0.0f);
+		top.setRotationPoint(0.0f, -6.0f, 0.0f);
+		top.rotateAngleY = -1.5707964f;
+		final ModelRenderer topleft = new ModelRenderer(this, 0, 4);
+		this.anchor.addChild(topleft);
+		this.fixSize(topleft);
+		topleft.addBox(-1.0f, -1.0f, -1.0f, 2, 2, 2, 0.0f);
+		topleft.setRotationPoint(0.0f, -4.0f, -5.5f);
+		topleft.rotateAngleY = -1.5707964f;
+		final ModelRenderer topright = new ModelRenderer(this, 0, 4);
+		this.anchor.addChild(topright);
+		this.fixSize(topright);
+		topright.addBox(-1.0f, -1.0f, -1.0f, 2, 2, 2, 0.0f);
+		topright.setRotationPoint(0.0f, -4.0f, 5.5f);
+		topright.rotateAngleY = -1.5707964f;
+		final ModelRenderer left = new ModelRenderer(this, 0, 12);
+		this.anchor.addChild(left);
+		this.fixSize(left);
+		left.addBox(-1.0f, -2.5f, -1.0f, 2, 5, 2, 0.0f);
+		left.setRotationPoint(0.0f, -0.5f, -7.5f);
+		left.rotateAngleY = -1.5707964f;
+		final ModelRenderer right = new ModelRenderer(this, 0, 12);
+		this.anchor.addChild(right);
+		this.fixSize(right);
+		right.addBox(-1.0f, -2.5f, -1.0f, 2, 5, 2, 0.0f);
+		right.setRotationPoint(0.0f, -0.5f, 7.5f);
+		right.rotateAngleY = -1.5707964f;
+		final ModelRenderer bottomleft = new ModelRenderer(this, 0, 4);
+		this.anchor.addChild(bottomleft);
+		this.fixSize(bottomleft);
+		bottomleft.addBox(-1.0f, -1.0f, -1.0f, 2, 2, 2, 0.0f);
+		bottomleft.setRotationPoint(0.0f, 3.0f, -5.5f);
+		bottomleft.rotateAngleY = -1.5707964f;
+		final ModelRenderer bottomright = new ModelRenderer(this, 0, 4);
+		this.anchor.addChild(bottomright);
+		this.fixSize(bottomright);
+		bottomright.addBox(-1.0f, -1.0f, -1.0f, 2, 2, 2, 0.0f);
+		bottomright.setRotationPoint(0.0f, 3.0f, 5.5f);
+		bottomright.rotateAngleY = -1.5707964f;
+		final ModelRenderer bottominnerleft = new ModelRenderer(this, 0, 4);
+		this.anchor.addChild(bottominnerleft);
+		this.fixSize(bottominnerleft);
+		bottominnerleft.addBox(-1.0f, -1.0f, -1.0f, 2, 2, 2, 0.0f);
+		bottominnerleft.setRotationPoint(0.0f, 5.0f, -3.5f);
+		bottominnerleft.rotateAngleY = -1.5707964f;
+		final ModelRenderer bottominnerright = new ModelRenderer(this, 0, 4);
+		this.anchor.addChild(bottominnerright);
+		this.fixSize(bottominnerright);
+		bottominnerright.addBox(-1.0f, -1.0f, -1.0f, 2, 2, 2, 0.0f);
+		bottominnerright.setRotationPoint(0.0f, 5.0f, 3.5f);
+		bottominnerright.rotateAngleY = -1.5707964f;
+		final ModelRenderer bottom = new ModelRenderer(this, 0, 8);
+		this.anchor.addChild(bottom);
+		this.fixSize(bottom);
+		bottom.addBox(-2.5f, -1.0f, -1.0f, 5, 2, 2, 0.0f);
+		bottom.setRotationPoint(0.0f, 7.0f, 0.0f);
+		bottom.rotateAngleY = -1.5707964f;
+		final ModelRenderer middlebottom = new ModelRenderer(this, 0, 19);
+		this.anchor.addChild(middlebottom);
+		this.fixSize(middlebottom);
+		middlebottom.addBox(-0.5f, -2.5f, -0.5f, 1, 5, 1, 0.0f);
+		middlebottom.setRotationPoint(0.5f, 3.5f, 0.0f);
+		middlebottom.rotateAngleY = -1.5707964f;
+		final ModelRenderer middle = new ModelRenderer(this, 0, 25);
+		this.anchor.addChild(middle);
+		this.fixSize(middle);
+		middle.addBox(-1.5f, -1.0f, -0.5f, 3, 2, 1, 0.0f);
+		middle.setRotationPoint(0.5f, 0.0f, 0.0f);
+		middle.rotateAngleY = -1.5707964f;
+		final ModelRenderer middleleft = new ModelRenderer(this, 0, 25);
+		this.anchor.addChild(middleleft);
+		this.fixSize(middleleft);
+		middleleft.addBox(-1.5f, -1.0f, -0.5f, 3, 2, 1, 0.0f);
+		middleleft.setRotationPoint(0.5f, -1.0f, -3.0f);
+		middleleft.rotateAngleY = -1.5707964f;
+		final ModelRenderer middleright = new ModelRenderer(this, 0, 25);
+		this.anchor.addChild(middleright);
+		this.fixSize(middleright);
+		middleright.addBox(-1.5f, -1.0f, -0.5f, 3, 2, 1, 0.0f);
+		middleright.setRotationPoint(0.5f, -1.0f, 3.0f);
+		middleright.rotateAngleY = -1.5707964f;
+		final ModelRenderer innerleft = new ModelRenderer(this, 0, 28);
+		this.anchor.addChild(innerleft);
+		this.fixSize(innerleft);
+		innerleft.addBox(-1.5f, -0.5f, -0.5f, 2, 1, 1, 0.0f);
+		innerleft.setRotationPoint(0.5f, -1.5f, -5.0f);
+		innerleft.rotateAngleY = -1.5707964f;
+		final ModelRenderer innerright = new ModelRenderer(this, 0, 28);
+		this.anchor.addChild(innerright);
+		this.fixSize(innerright);
+		innerright.addBox(-1.5f, -0.5f, -0.5f, 2, 1, 1, 0.0f);
+		innerright.setRotationPoint(0.5f, -1.5f, 6.0f);
+		innerright.rotateAngleY = -1.5707964f;
 	}
-	
-	
+
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		this.anchor.rotateAngleX = ((module == null) ? 0.0f : ((ModuleAdvControl) module).getWheelAngle());
+	}
+
+	static {
+		ModelWheel.texture = ResourceHelper.getResource("/models/wheelModel.png");
+	}
 }
-				

@@ -2,10 +2,7 @@ package vswe.stevescarts.Arcade;
 
 import java.util.ArrayList;
 
-import vswe.stevescarts.Carts.MinecartModular;
-
 public class Piece {
-
 	private ArcadeMonopoly game;
 	private int pos;
 	private int u;
@@ -16,320 +13,300 @@ public class Piece {
 	private ArrayList<NoteAnimation> oldnotes;
 	private boolean bankrupt;
 	private int turnsInJail;
-	
-	public Piece(ArcadeMonopoly game, int u, CONTROLLED_BY control) {
+
+	public Piece(final ArcadeMonopoly game, final int u, final CONTROLLED_BY control) {
 		this.game = game;
 		this.pos = 0;
 		this.u = u;
-		this.money = new int[] {30, 30, 30, 30, 30, 30, 30};
+		this.money = new int[] { 30, 30, 30, 30, 30, 30, 30 };
 		this.control = control;
-		animationNotes = new ArrayList<NoteAnimation>();
-		oldnotes = new ArrayList<NoteAnimation>();
-		turnsInJail = -1;
+		this.animationNotes = new ArrayList<NoteAnimation>();
+		this.oldnotes = new ArrayList<NoteAnimation>();
+		this.turnsInJail = -1;
 	}
-	
-	public void move(int dif) {
-		pos = (pos + dif) % (ArcadeMonopoly.BOARD_WIDTH * 2 + ArcadeMonopoly.BOARD_HEIGHT * 2);
+
+	public void move(final int dif) {
+		this.pos = (this.pos + dif) % 48;
 	}
 
 	public int getPosition() {
-		return pos;
+		return this.pos;
 	}
 
-	
 	public int getV() {
-		return u;
+		return this.u;
 	}
-	
-	public int[] getNoteCount() {
-		return money;
-	}
-	
 
-	
-	public int getNoteCount(Note note) {
+	public int[] getNoteCount() {
+		return this.money;
+	}
+
+	public int getNoteCount(final Note note) {
 		int money = this.money[note.getId()];
-				
-		for (int i = 0; i < oldnotes.size(); i++) {
-			if (note == oldnotes.get(i).getNote()) {
-				money -= 1;
+		for (int i = 0; i < this.oldnotes.size(); ++i) {
+			if (note == this.oldnotes.get(i).getNote()) {
+				--money;
 			}
 		}
-
 		return money;
-	}	
-	
+	}
+
 	public int getTotalMoney() {
 		int money = 0;
-		
-		for (int i = 0; i < Note.notes.size(); i++){
+		for (int i = 0; i < Note.notes.size(); ++i) {
 			money += Note.notes.get(i).getUnits() * this.money[i];
 		}
-		
-		for (int i = 0; i < oldnotes.size(); i++) {
-			money -= oldnotes.get(i).getNote().getUnits();
+		for (int i = 0; i < this.oldnotes.size(); ++i) {
+			money -= this.oldnotes.get(i).getNote().getUnits();
 		}
-		
 		return money;
 	}
-	
-	public void addMoney(int money, boolean useAnimation) {
-		for (int i = Note.notes.size() - 1; i >= 0; i--) {
-			Note note = Note.notes.get(i);
-			
-			int notesToAdd = money / note.getUnits();
+
+	public void addMoney(int money, final boolean useAnimation) {
+		for (int i = Note.notes.size() - 1; i >= 0; --i) {
+			final Note note = Note.notes.get(i);
+			final int notesToAdd = money / note.getUnits();
 			if (notesToAdd > 0) {
-				addMoney(note, notesToAdd, true);
+				this.addMoney(note, notesToAdd, true);
 				money -= notesToAdd * note.getUnits();
 			}
-			
 			if (money == 0) {
 				return;
 			}
-		}		
+		}
 	}
-	
-	public void addMoney(Note note, int amount, boolean useAnimation) {
+
+	public void addMoney(final Note note, final int amount, final boolean useAnimation) {
 		if (useAnimation) {
 			int min = 10;
-			for (NoteAnimation animation : animationNotes) {
+			for (final NoteAnimation animation : this.animationNotes) {
 				if (animation.getAnimation() < min) {
 					min = animation.getAnimation();
 				}
 			}
-			
-			for (int i = 0; i < amount; i++) {
-				animationNotes.add(0, new NoteAnimation(note, min - 10, true));
-				min -=10;
+			for (int i = 0; i < amount; ++i) {
+				this.animationNotes.add(0, new NoteAnimation(note, min - 10, true));
+				min -= 10;
 			}
-			
-		}else{
-			money[note.getId()] += amount;
+		} else {
+			final int[] money = this.money;
+			final int id = note.getId();
+			money[id] += amount;
 		}
 	}
-	
-	public void removeNewNoteAnimation(int i) {
-		if (animationNotes.get(i).isNew()) {
-			addMoney(animationNotes.get(i).getNote(), 1, false);
-		}else{
-			Note note = animationNotes.get(i).getNote();
-			for (int j = oldnotes.size() - 1; j >= 0; j--) {
-				if (note == oldnotes.get(j).getNote()) {
-					oldnotes.remove(j);
+
+	public void removeNewNoteAnimation(final int i) {
+		if (this.animationNotes.get(i).isNew()) {
+			this.addMoney(this.animationNotes.get(i).getNote(), 1, false);
+		} else {
+			final Note note = this.animationNotes.get(i).getNote();
+			for (int j = this.oldnotes.size() - 1; j >= 0; --j) {
+				if (note == this.oldnotes.get(j).getNote()) {
+					this.oldnotes.remove(j);
 					break;
 				}
 			}
-			removeMoney(note, 1, false);
+			this.removeMoney(note, 1, false);
 		}
-		animationNotes.remove(i);
+		this.animationNotes.remove(i);
 	}
-	
+
 	public ArrayList<NoteAnimation> getAnimationNotes() {
-		return animationNotes;
+		return this.animationNotes;
 	}
-	
-	public boolean removeMoney(int money, boolean useAnimation) {
-		int [] noteCounts = new int[Note.notes.size()];
-		int [] moneyBelowThisLevel = new int[Note.notes.size()];
-		
+
+	public boolean removeMoney(int money, final boolean useAnimation) {
+		final int[] noteCounts = new int[Note.notes.size()];
+		final int[] moneyBelowThisLevel = new int[Note.notes.size()];
 		int totalmoney = 0;
-		for (int i = 0; i < noteCounts.length; i++) {
-			noteCounts[i] = getNoteCount(Note.notes.get(i));
+		for (int i = 0; i < noteCounts.length; ++i) {
+			noteCounts[i] = this.getNoteCount(Note.notes.get(i));
 			moneyBelowThisLevel[i] = totalmoney;
 			totalmoney += noteCounts[i] * Note.notes.get(i).getUnits();
 		}
-		
-		if (totalmoney >= money) {		
-			for (int i = Note.notes.size() - 1; i >= 0; i--) {
-				Note note = Note.notes.get(i);
+		if (totalmoney >= money) {
+			for (int i = Note.notes.size() - 1; i >= 0; --i) {
+				final Note note = Note.notes.get(i);
 				int notesToRemove = money / note.getUnits();
 				notesToRemove = Math.min(notesToRemove, noteCounts[i]);
-
-				removeMoney(note, notesToRemove, useAnimation);
+				this.removeMoney(note, notesToRemove, useAnimation);
 				money -= note.getUnits() * notesToRemove;
-				if(money == 0) {
+				if (money == 0) {
 					return true;
-				}else if (moneyBelowThisLevel[i] < money) {
-					removeMoney(note, 1, useAnimation);
+				}
+				if (moneyBelowThisLevel[i] < money) {
+					this.removeMoney(note, 1, useAnimation);
 					money -= note.getUnits();
-					
-					addMoney(-money, useAnimation);
-					
+					this.addMoney(-money, useAnimation);
 					return true;
-				} 
-				
+				}
 			}
 		}
-		
 		return false;
 	}
-	
-	private void removeMoney(Note note, int amount, boolean useAnimation) {
+
+	private void removeMoney(final Note note, final int amount, final boolean useAnimation) {
 		if (useAnimation) {
 			int min = 10;
-			for (NoteAnimation animation : animationNotes) {
+			for (final NoteAnimation animation : this.animationNotes) {
 				if (animation.getAnimation() < min) {
 					min = animation.getAnimation();
 				}
 			}
-			
-			for (int i = 0; i < amount; i++) {
-				NoteAnimation animation = new NoteAnimation(note, min - 10, false);
-				animationNotes.add(0, animation);
-				oldnotes.add(0, animation);
-				min -=10;
-			}	
-		}else{
-			money[note.getId()] -= amount;
+			for (int i = 0; i < amount; ++i) {
+				final NoteAnimation animation = new NoteAnimation(note, min - 10, false);
+				this.animationNotes.add(0, animation);
+				this.oldnotes.add(0, animation);
+				min -= 10;
+			}
+		} else {
+			final int[] money = this.money;
+			final int id = note.getId();
+			money[id] -= amount;
 		}
 	}
-	
-	
-	public int[] getMenuRect(int i) {
-		int w = 50 + extended;
-		
-		
-		return new int[] {MinecartModular.MODULAR_SPACE_WIDTH - w, 10 + i * 30, w, 30};
+
+	public int[] getMenuRect(final int i) {
+		final int w = 50 + this.extended;
+		return new int[] { 443 - w, 10 + i * 30, w, 30 };
 	}
 
-	public int[] getPlayerMenuRect(int i) {
-		int[] menu = getMenuRect(i);
-		return new int[] {menu[0] + 19, menu[1] + 3, 24, 24};
+	public int[] getPlayerMenuRect(final int i) {
+		final int[] menu = this.getMenuRect(i);
+		return new int[] { menu[0] + 19, menu[1] + 3, 24, 24 };
 	}
 
-	public void updateExtending(boolean inRect) {
-		if (inRect && extended < 175) {
-			extended = Math.min(175, extended + 20);
-		}else if(!inRect && extended > 0){
-			extended = Math.max(0, extended - 50); 
+	public void updateExtending(final boolean inRect) {
+		if (inRect && this.extended < 175) {
+			this.extended = Math.min(175, this.extended + 20);
+		} else if (!inRect && this.extended > 0) {
+			this.extended = Math.max(0, this.extended - 50);
 		}
 	}
-	
-	public static enum CONTROLLED_BY {
-		PLAYER,
-		COMPUTER,
-		OTHER
-	}
-	
+
 	public CONTROLLED_BY getController() {
-		return control;
+		return this.control;
 	}
 
 	public boolean showProperties() {
-		return this == game.getCurrentPiece();
+		return this == this.game.getCurrentPiece();
 	}
 
-	public boolean canAffordProperty(Property property) {	
-		return getTotalMoney() >= property.getCost();
+	public boolean canAffordProperty(final Property property) {
+		return this.getTotalMoney() >= property.getCost();
 	}
-	
 
-	public void purchaseProperty(Property property) {
-		if (removeMoney(property.getCost(), true)) {
+	public void purchaseProperty(final Property property) {
+		if (this.removeMoney(property.getCost(), true)) {
 			property.setOwner(this);
-		}else{
+		} else {
 			System.out.println("Couldn't remove the resources, this is very weird :S");
 		}
 	}
 
-	public void bankrupt(Piece owesMoneyToThis) {
-		int money = getTotalMoney();
-		removeMoney(money, true);
+	public void bankrupt(final Piece owesMoneyToThis) {
+		final int money = this.getTotalMoney();
+		this.removeMoney(money, true);
 		if (owesMoneyToThis != null) {
 			owesMoneyToThis.addMoney(money, true);
 		}
-		for (Place place : game.getPlaces()) {
+		for (final Place place : this.game.getPlaces()) {
 			if (place instanceof Property) {
-				Property property = (Property)place;
+				final Property property = (Property) place;
 				if (property.getOwner() == this) {
 					property.setOwner(owesMoneyToThis);
 				}
 			}
 		}
-		bankrupt = true;
+		this.bankrupt = true;
 	}
 
-	public boolean canAffordRent(Property property) {
-		return getTotalMoney() >= property.getRentCost();
+	public boolean canAffordRent(final Property property) {
+		return this.getTotalMoney() >= property.getRentCost();
 	}
 
-	public void payPropertyRent(Property property) {
-		if (removeMoney(property.getRentCost(), true)) {
+	public void payPropertyRent(final Property property) {
+		if (this.removeMoney(property.getRentCost(), true)) {
 			property.getOwner().addMoney(property.getRentCost(), true);
-		}else{
+		} else {
 			System.out.println("Couldn't remove the resources, this is very weird :S");
 		}
 	}
-	
+
 	public boolean isBankrupt() {
-		return bankrupt;
+		return this.bankrupt;
 	}
 
-	public boolean canAffordStructure(Street street) {
-		return getTotalMoney() >= street.getStructureCost();
+	public boolean canAffordStructure(final Street street) {
+		return this.getTotalMoney() >= street.getStructureCost();
 	}
 
-	public void buyStructure(Street street) {
-		if (removeMoney(street.getStructureCost(), true)) {
+	public void buyStructure(final Street street) {
+		if (this.removeMoney(street.getStructureCost(), true)) {
 			street.increaseStructure();
-		}else{
+		} else {
 			System.out.println("Couldn't remove the resources, this is very weird :S");
-		}		
+		}
 	}
-	
+
 	public boolean isInJail() {
-		return turnsInJail >= 0;
+		return this.turnsInJail >= 0;
 	}
 
 	public void goToJail() {
-		turnsInJail = 0;
-		pos = ArcadeMonopoly.BOARD_WIDTH;
+		this.turnsInJail = 0;
+		this.pos = 14;
 	}
-	
+
 	public void releaseFromJail() {
-		turnsInJail = -1;
+		this.turnsInJail = -1;
 	}
 
 	public void increaseTurnsInJail() {
-		++turnsInJail;	
+		++this.turnsInJail;
 	}
 
 	public int getTurnsInJail() {
-		return turnsInJail;
+		return this.turnsInJail;
 	}
 
-	
 	public void payFine() {
-		if (removeMoney(50, true)) {
-			releaseFromJail();
-		}else{
+		if (this.removeMoney(50, true)) {
+			this.releaseFromJail();
+		} else {
 			System.out.println("Couldn't remove the resources, this is very weird :S");
-		}	
+		}
 	}
 
 	public boolean canAffordFine() {
-		return getTotalMoney() >= 50;
+		return this.getTotalMoney() >= 50;
 	}
 
-	public void getMoneyFromMortgage(Property selectedPlace) {
-		addMoney(selectedPlace.getMortgageValue(), true);
+	public void getMoneyFromMortgage(final Property selectedPlace) {
+		this.addMoney(selectedPlace.getMortgageValue(), true);
 		selectedPlace.mortgage();
 	}
 
-	public boolean canAffordUnMortgage(Property selectedPlace) {
-		return getTotalMoney() >= selectedPlace.getUnMortgagePrice();
+	public boolean canAffordUnMortgage(final Property selectedPlace) {
+		return this.getTotalMoney() >= selectedPlace.getUnMortgagePrice();
 	}
 
-	public void payUnMortgage(Property selectedPlace) {
-		if (removeMoney(selectedPlace.getUnMortgagePrice(), true)) {
+	public void payUnMortgage(final Property selectedPlace) {
+		if (this.removeMoney(selectedPlace.getUnMortgagePrice(), true)) {
 			selectedPlace.unMortgage();
-		}else{
+		} else {
 			System.out.println("Couldn't remove the resources, this is very weird :S");
-		}	
+		}
 	}
 
-	public void sellStructure(Street selectedPlace) {
-		addMoney(selectedPlace.getStructureSellPrice(), true);
-		selectedPlace.decreaseStructures();		
+	public void sellStructure(final Street selectedPlace) {
+		this.addMoney(selectedPlace.getStructureSellPrice(), true);
+		selectedPlace.decreaseStructures();
+	}
+
+	public enum CONTROLLED_BY {
+		PLAYER,
+		COMPUTER,
+		OTHER
 	}
 }

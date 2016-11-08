@@ -1,109 +1,99 @@
 package vswe.stevescarts.Helpers;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import net.minecraft.util.EnumFacing;
 import vswe.stevescarts.TileEntities.TileEntityDistributor;
-	
+
 public class DistributorSide {
-
-
 	private int id;
 	private Localization.GUI.DISTRIBUTOR name;
-	private ForgeDirection side;
+	private EnumFacing side;
 	private int data;
-	
-	public DistributorSide(int id, Localization.GUI.DISTRIBUTOR name, ForgeDirection side) {
+
+	public DistributorSide(final int id, final Localization.GUI.DISTRIBUTOR name, final EnumFacing side) {
 		this.name = name;
 		this.id = id;
 		this.side = side;
 		this.data = 0;
 	}
-	
-	public void setData(int data) {
+
+	public void setData(final int data) {
 		this.data = data;
-	}	
-	
+	}
+
 	public int getId() {
-		return id;
+		return this.id;
 	}
-		
+
 	public String getName() {
-		return name.translate();
+		return this.name.translate();
 	}
-	
-	public ForgeDirection getSide() {
+
+	public EnumFacing getSide() {
+		return this.side;
+	}
+
+	public EnumFacing getFacing() {
 		return side;
 	}
 
-	public int getIntSide() {
-		for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-			if (ForgeDirection.VALID_DIRECTIONS[i] == side) {
-				return i;
-			}
-		}
-	
-		return 6;
-	}
-	
 	public int getData() {
-		return data;
-	}
-	
-	public boolean isEnabled(TileEntityDistributor distributor) {
-		if (distributor.getInventories().length == 0) {
-			return false;
-		}else if(getSide() == ForgeDirection.DOWN){
-			return !distributor.hasBot;
-		}else if(getSide() == ForgeDirection.UP){
-			return !distributor.hasTop;
-		}else{
-			return true;
-		}
-	}
-	
-	public boolean isSet(int id) {
-		return (data & (1 << id)) != 0;
+		return this.data;
 	}
 
-	public void set(int id) {
+	public boolean isEnabled(final TileEntityDistributor distributor) {
+		if (distributor.getInventories().length == 0) {
+			return false;
+		}
+		if (this.getSide() == EnumFacing.DOWN) {
+			return !distributor.hasBot;
+		}
+		return this.getSide() != EnumFacing.UP || !distributor.hasTop;
+	}
+
+	public boolean isSet(final int id) {
+		return (this.data & 1 << id) != 0x0;
+	}
+
+	public void set(final int id) {
 		int count = 0;
-		for (DistributorSetting setting : DistributorSetting.settings) {
-			if (isSet(setting.getId())) {
-				count++;
+		for (final DistributorSetting setting : DistributorSetting.settings) {
+			if (this.isSet(setting.getId())) {
+				++count;
 			}
 		}
 		if (count < 11) {
-			data |= (1 << id);
+			this.data |= 1 << id;
 		}
-	}	
-	
-	public void reset(int id) {
-		data &= ~(1 << id);
 	}
-	
-	public short getLowShortData() {
-		return (short)(getData() & 65535);
-	}
-	public short getHighShortData() {
-		return (short)((getData() >> 16) & 65535);
-	}	
-	
-	public void setLowShortData(short data) {
-		this.data = (fixSignedIssue(getHighShortData()) << 16) | fixSignedIssue(data);
-	}	
 
-	public void setHighShortData(short data) {
-		this.data = fixSignedIssue(getLowShortData()) | (fixSignedIssue(data) << 16);
-	}	
-	
-	private int fixSignedIssue(short val) {
+	public void reset(final int id) {
+		this.data &= ~(1 << id);
+	}
+
+	public short getLowShortData() {
+		return (short) (this.getData() & 0xFFFF);
+	}
+
+	public short getHighShortData() {
+		return (short) (this.getData() >> 16 & 0xFFFF);
+	}
+
+	public void setLowShortData(final short data) {
+		this.data = (this.fixSignedIssue(this.getHighShortData()) << 16 | this.fixSignedIssue(data));
+	}
+
+	public void setHighShortData(final short data) {
+		this.data = (this.fixSignedIssue(this.getLowShortData()) | this.fixSignedIssue(data) << 16);
+	}
+
+	private int fixSignedIssue(final short val) {
 		if (val < 0) {
 			return val + 65536;
-		}else{
-			return val;
 		}
+		return val;
 	}
-	
-	
+
 	public String getInfo() {
-        return Localization.GUI.DISTRIBUTOR.SIDE_TOOL_TIP.translate(getName());
+		return Localization.GUI.DISTRIBUTOR.SIDE_TOOL_TIP.translate(this.getName());
 	}
 }

@@ -1,9 +1,7 @@
 package vswe.stevescarts.Arcade;
 
-
 public class Chance extends CardPlace {
-
-	public Chance(ArcadeMonopoly game) {
+	public Chance(final ArcadeMonopoly game) {
 		super(game);
 	}
 
@@ -14,7 +12,6 @@ public class Chance extends CardPlace {
 
 	@Override
 	public Card getCard() {
-		return CardChance.cards.get(game.getModule().getCart().rand.nextInt(CardChance.cards.size()));
+		return CardChance.cards.get(this.game.getModule().getCart().rand.nextInt(CardChance.cards.size()));
 	}
-	
 }

@@ -1,4 +1,5 @@
 package vswe.stevescarts.Modules.Addons.Mobdetectors;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -11,34 +12,17 @@ import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 
 public class ModuleMonster extends ModuleMobdetector {
-	public ModuleMonster(MinecartModular cart) {
+	public ModuleMonster(final MinecartModular cart) {
 		super(cart);
 	}
 
+	@Override
 	public String getName() {
 		return Localization.MODULES.ADDONS.DETECTOR_MONSTERS.translate();
 	}
-	public boolean isValidTarget(Entity target) {
-		return
-		(
-			target instanceof EntityMob
-			||
-			target instanceof EntityDragon
-			||
-			target instanceof EntityGhast
-			||
-			target instanceof EntitySlime
-			||
-			target instanceof EntityEnderCrystal
-			||
-			(
-				(target instanceof EntityWolf)
-				&&
-				((EntityWolf)target).isAngry()
-			)
-		)
-		&&
-		!(target instanceof EntityEnderman)	//projectiles can't hit them anyways
-		;
+
+	@Override
+	public boolean isValidTarget(final Entity target) {
+		return (target instanceof EntityMob || target instanceof EntityDragon || target instanceof EntityGhast || target instanceof EntitySlime || target instanceof EntityEnderCrystal || (target instanceof EntityWolf && ((EntityWolf) target).isAngry())) && !(target instanceof EntityEnderman);
 	}
 }

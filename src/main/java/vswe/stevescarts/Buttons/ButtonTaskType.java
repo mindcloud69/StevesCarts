@@ -1,87 +1,75 @@
 package vswe.stevescarts.Buttons;
+
 import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
 import vswe.stevescarts.Computer.ComputerProg;
 import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
 
-import java.util.ArrayList;
 public class ButtonTaskType extends ButtonAssembly {
-	
 	private int typeId;
-	
-    public ButtonTaskType(ModuleComputer module, LOCATION loc, int id)
-    {
-		super(module, loc);	
-		typeId = id;
+
+	public ButtonTaskType(final ModuleComputer module, final LOCATION loc, final int id) {
+		super(module, loc);
+		this.typeId = id;
 	}
-	
+
 	@Override
 	public String toString() {
-		if (haveTasks()) {
-			return "Change to " + ComputerTask.getTypeName(typeId);
-		}else{
-			return "Add " + ComputerTask.getTypeName(typeId) + " task";
+		if (this.haveTasks()) {
+			return "Change to " + ComputerTask.getTypeName(this.typeId);
 		}
+		return "Add " + ComputerTask.getTypeName(this.typeId) + " task";
 	}
-		
+
 	@Override
 	public boolean isVisible() {
-		return super.isVisible() && true;
+		return super.isVisible();
 	}
-	
+
 	@Override
-	public int texture()
-    {
-		if (typeId < 4) {
-			return typeId * 2 + (haveTasks() ? 1 : 0);
-		}else if(typeId == 4) {
-			return 66 + (haveTasks() ? 1 : 0);
-		}else{
-			return typeId * 2 + (haveTasks() ? 1 : 0) - 2;
+	public int texture() {
+		if (this.typeId < 4) {
+			return this.typeId * 2 + (this.haveTasks() ? 1 : 0);
 		}
-    }
-	
+		if (this.typeId == 4) {
+			return 66 + (this.haveTasks() ? 1 : 0);
+		}
+		return this.typeId * 2 + (this.haveTasks() ? 1 : 0) - 2;
+	}
+
 	@Override
 	public boolean isEnabled() {
-		if (module instanceof ModuleComputer && ((ModuleComputer)module).getCurrentProg() != null) {
-			if (haveTasks()) {
-				for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-					if (task.getType() != typeId) {
-						return true;
-					}
-				}
-				return false;
-			}else{
-				return true;
-			}
-		}else{
+		if (!(this.module instanceof ModuleComputer) || ((ModuleComputer) this.module).getCurrentProg() == null) {
 			return false;
-		}		
-	}
-	
-	private boolean haveTasks() {
-		return  ((ModuleComputer)module).getSelectedTasks().size() > 0;
-	}
-
-	
-	@Override
-	public void onServerClick(EntityPlayer player, int mousebutton, boolean ctrlKey, boolean shiftKey) {
-		if (haveTasks()) {
-			for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
-				task.setType(typeId);
-			}
-		}else{
-			ComputerProg program = ((ModuleComputer)module).getCurrentProg();
-			if (program != null) {
-				ComputerTask task = new ComputerTask((ModuleComputer)module, program);
-				task.setType(typeId);
-				program.getTasks().add(task);
-			}	
 		}
-		
-		
-	}	
-	
+		if (this.haveTasks()) {
+			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+				if (task.getType() != this.typeId) {
+					return true;
+				}
+			}
+			return false;
+		}
+		return true;
+	}
 
+	private boolean haveTasks() {
+		return ((ModuleComputer) this.module).getSelectedTasks().size() > 0;
+	}
+
+	@Override
+	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
+		if (this.haveTasks()) {
+			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+				task.setType(this.typeId);
+			}
+		} else {
+			final ComputerProg program = ((ModuleComputer) this.module).getCurrentProg();
+			if (program != null) {
+				final ComputerTask task = new ComputerTask((ModuleComputer) this.module, program);
+				task.setType(this.typeId);
+				program.getTasks().add(task);
+			}
+		}
+	}
 }

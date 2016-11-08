@@ -5,34 +5,6 @@ import vswe.stevescarts.Helpers.AnimationRig;
 import vswe.stevescarts.Helpers.AnimationRigVal;
 
 public class ModuleSolarCompact extends ModuleSolarBase {
-	public ModuleSolarCompact(MinecartModular cart) {
-		super(cart);
-		
-		
-		rig = new AnimationRig();
-		
-		extraction = new AnimationRigVal(rig, 0.4F, 2F, 0.1F);
-		topbot = new AnimationRigVal(rig, 0.1F, 4F, 0.25F);
-		leftright = new AnimationRigVal(rig, 0.01F, 6F, 0.2F);
-		corner = new AnimationRigVal(rig, 0.1F, 4F, 0.25F);
-		extraction2 = new AnimationRigVal(rig, 0F, 1.8F, 0.1F);
-		innerextraction = new AnimationRigVal(rig, 0.4F, 3, 0.2F);
-		angle = new AnimationRigVal(rig, 0F, (float)Math.PI / 2, 0.1F);	
-
-		innerextraction.setUpAndDown(angle);
-	}
-
-	
-	@Override
-	protected int getMaxCapacity(){
-		return 25000;
-	}
-	
-	@Override
-	protected int getGenSpeed() {
-		return 5;
-	}
-	
 	private AnimationRig rig;
 	private AnimationRigVal extraction;
 	private AnimationRigVal topbot;
@@ -41,39 +13,55 @@ public class ModuleSolarCompact extends ModuleSolarBase {
 	private AnimationRigVal angle;
 	private AnimationRigVal extraction2;
 	private AnimationRigVal innerextraction;
-		
+
+	public ModuleSolarCompact(final MinecartModular cart) {
+		super(cart);
+		this.rig = new AnimationRig();
+		this.extraction = new AnimationRigVal(this.rig, 0.4f, 2.0f, 0.1f);
+		this.topbot = new AnimationRigVal(this.rig, 0.1f, 4.0f, 0.25f);
+		this.leftright = new AnimationRigVal(this.rig, 0.01f, 6.0f, 0.2f);
+		this.corner = new AnimationRigVal(this.rig, 0.1f, 4.0f, 0.25f);
+		this.extraction2 = new AnimationRigVal(this.rig, 0.0f, 1.8f, 0.1f);
+		this.innerextraction = new AnimationRigVal(this.rig, 0.4f, 3.0f, 0.2f);
+		this.angle = new AnimationRigVal(this.rig, 0.0f, 1.5707964f, 0.1f);
+		this.innerextraction.setUpAndDown(this.angle);
+	}
+
 	@Override
+	protected int getMaxCapacity() {
+		return 25000;
+	}
+
+	@Override
+	protected int getGenSpeed() {
+		return 5;
+	}
+
 	public boolean updatePanels() {
-		return rig.update(isGoingDown());
+		return this.rig.update(this.isGoingDown());
 	}
 
-
-	
 	public float getExtractionDist() {
-		return extraction.getVal() + extraction2.getVal();
+		return this.extraction.getVal() + this.extraction2.getVal();
 	}
-	
+
 	public float getTopBotExtractionDist() {
-		return topbot.getVal();
+		return this.topbot.getVal();
 	}
-	
+
 	public float getLeftRightExtractionDist() {
-		return leftright.getVal();
+		return this.leftright.getVal();
 	}
-	
+
 	public float getCornerExtractionDist() {
-		return corner.getVal();
-	}	
-	
-	public float getPanelAngle() {
-		return angle.getVal();
+		return this.corner.getVal();
 	}
-	
+
+	public float getPanelAngle() {
+		return this.angle.getVal();
+	}
 
 	public float getInnerExtraction() {
-		return innerextraction.getVal();
-	}	
-	
-	
-	
+		return this.innerextraction.getVal();
+	}
 }

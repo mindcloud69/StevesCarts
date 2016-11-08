@@ -1,33 +1,33 @@
 package vswe.stevescarts.Modules.Addons;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.Carts.MinecartModular;
 
 public class ModuleMelter extends ModuleAddon {
-	public ModuleMelter(MinecartModular cart) {
+	private int tick;
+
+	public ModuleMelter(final MinecartModular cart) {
 		super(cart);
 	}
 
-	//called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
 		super.update();
-
-		if (getCart().worldObj.isRemote) {
+		if (this.getCart().worldObj.isRemote) {
 			return;
 		}
-
-		if (getCart().hasFuel()) {
-			if (tick >= getInterval()) {
-				tick = 0;
-				melt();
-			}else{
-				tick++;
+		if (this.getCart().hasFuel()) {
+			if (this.tick >= this.getInterval()) {
+				this.tick = 0;
+				this.melt();
+			} else {
+				++this.tick;
 			}
 		}
 	}
 
-	private int tick;
 	protected int getInterval() {
 		return 70;
 	}
@@ -41,22 +41,23 @@ public class ModuleMelter extends ModuleAddon {
 	}
 
 	private void melt() {
-		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); x++) {
-			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); z++) {
-				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); y++) {
-                    Block b = getCart().worldObj.getBlock(x + getCart().x(), y + getCart().y(), z + getCart().z());
-					melt(b,x + getCart().x(), y + getCart().y(), z + getCart().z());
+		BlockPos cartPos = getCart().getPosition();
+		for (int x = -this.getBlocksOnSide(); x <= this.getBlocksOnSide(); ++x) {
+			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
+				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
+					BlockPos pos = cartPos.add(x, y, z);
+					final Block b = this.getCart().worldObj.getBlockState(cartPos).getBlock();
+					this.melt(b, cartPos);
 				}
 			}
 		}
 	}
 
-	protected boolean melt(Block b, int x, int y, int z) {
-		if (b == Blocks.snow) {
-			getCart().worldObj.setBlockToAir(x,y,z);
+	protected boolean melt(final Block b, BlockPos pos) {
+		if (b == Blocks.SNOW) {
+			this.getCart().worldObj.setBlockToAir(pos);
 			return true;
 		}
-
 		return false;
 	}
 }

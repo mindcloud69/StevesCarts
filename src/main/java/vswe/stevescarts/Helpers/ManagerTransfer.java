@@ -11,86 +11,83 @@ public class ManagerTransfer {
 	private MinecartModular cart;
 	private boolean toCartEnabled;
 	private boolean fromCartEnabled;
-	
-	public ManagerTransfer() {
-		reset();
-	}
-	
-	public void reset() {
-		side = 0;
-		setting = -1;
-		lastsetting = 0;	
-		lowestsetting = 0;
-		workload = 0;
-		cart = null;
-		toCartEnabled = true;
-		fromCartEnabled = true;
-	}
-	
-	
-	
-    public int getSetting() {
-    	return setting;
-    }
-    
-    public void setSetting(int val) {
-    	setting = val;
-    }   
 
-    public int getSide() {
-    	return side;
-    }
-    
-    public void setSide(int val) {
-    	side = val;
-    }    
-    
-    public int getLastSetting() {
-    	return lastsetting;
-    }    
-    
-    public void setLastSetting(int val) {
-    	lastsetting = val;
-    }   
-    
-    public int getLowestSetting() {
-    	return lowestsetting;
-    }    
-    
-    public void setLowestSetting(int val) {
-    	lowestsetting = val;
-    }    
-    
-    public int getWorkload() {
-    	return workload;
-    }    
-    
-    public void setWorkload(int val) {
-    	workload = val;
-    }      
-    
-    public MinecartModular getCart() {
-    	return cart;
-    }
-    
-    public void setCart(MinecartModular val) {
-    	cart = val;
-    }
-	
+	public ManagerTransfer() {
+		this.reset();
+	}
+
+	public void reset() {
+		this.side = 0;
+		this.setting = -1;
+		this.lastsetting = 0;
+		this.lowestsetting = 0;
+		this.workload = 0;
+		this.cart = null;
+		this.toCartEnabled = true;
+		this.fromCartEnabled = true;
+	}
+
+	public int getSetting() {
+		return this.setting;
+	}
+
+	public void setSetting(final int val) {
+		this.setting = val;
+	}
+
+	public int getSide() {
+		return this.side;
+	}
+
+	public void setSide(final int val) {
+		this.side = val;
+	}
+
+	public int getLastSetting() {
+		return this.lastsetting;
+	}
+
+	public void setLastSetting(final int val) {
+		this.lastsetting = val;
+	}
+
+	public int getLowestSetting() {
+		return this.lowestsetting;
+	}
+
+	public void setLowestSetting(final int val) {
+		this.lowestsetting = val;
+	}
+
+	public int getWorkload() {
+		return this.workload;
+	}
+
+	public void setWorkload(final int val) {
+		this.workload = val;
+	}
+
+	public MinecartModular getCart() {
+		return this.cart;
+	}
+
+	public void setCart(final MinecartModular val) {
+		this.cart = val;
+	}
+
 	public boolean getFromCartEnabled() {
-		return fromCartEnabled;
+		return this.fromCartEnabled;
 	}
-	
-	public void setFromCartEnabled(boolean val) {
-		fromCartEnabled = val;
-	}	
-	
+
+	public void setFromCartEnabled(final boolean val) {
+		this.fromCartEnabled = val;
+	}
+
 	public boolean getToCartEnabled() {
-		return toCartEnabled;
+		return this.toCartEnabled;
 	}
-	
-	public void setToCartEnabled(boolean val) {
-		toCartEnabled = val;
+
+	public void setToCartEnabled(final boolean val) {
+		this.toCartEnabled = val;
 	}
-        
 }

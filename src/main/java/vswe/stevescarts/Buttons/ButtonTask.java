@@ -1,121 +1,107 @@
 package vswe.stevescarts.Buttons;
+
 import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
 import vswe.stevescarts.Computer.ComputerProg;
 import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
 
 import java.util.ArrayList;
+
 public class ButtonTask extends ButtonAssembly {
-	
 	private int id;
-	
-    public ButtonTask(ModuleComputer module, LOCATION loc, int id)
-    {
-		super(module, loc);	
+
+	public ButtonTask(final ModuleComputer module, final LOCATION loc, final int id) {
+		super(module, loc);
 		this.id = id;
 	}
-	
+
 	@Override
 	public String toString() {
-		ComputerTask task = getTask();
+		final ComputerTask task = this.getTask();
 		if (task == null) {
 			return "Something went wrong";
-		}else{
-			return task.toString();
 		}
+		return task.toString();
 	}
-		
+
 	@Override
 	public boolean isVisible() {
-		return super.isVisible() && getTask() != null;
+		return super.isVisible() && this.getTask() != null;
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 	@Override
 	public int borderID() {
-		ComputerTask task = getTask();
+		final ComputerTask task = this.getTask();
 		if (task != null) {
-			boolean selected = task.getIsActivated();
+			final boolean selected = task.getIsActivated();
 			boolean running = false;
-			if (module instanceof ModuleComputer) {
-				ComputerProg program = ((ModuleComputer)module).getActiveProgram();
+			if (this.module instanceof ModuleComputer) {
+				final ComputerProg program = ((ModuleComputer) this.module).getActiveProgram();
 				if (program != null) {
-					running = program.getActiveId() == id;
+					running = (program.getActiveId() == this.id);
 				}
 			}
-			
-		
 			if (running && selected) {
 				return 2;
-			}else if(running) {
+			}
+			if (running) {
 				return 1;
-			}else if(selected) {
+			}
+			if (selected) {
 				return 0;
 			}
 		}
 		return super.borderID();
-	}	
-	
+	}
+
 	@Override
-    public int ColorCode()
-    {
-		ComputerTask task = getTask();
+	public int ColorCode() {
+		final ComputerTask task = this.getTask();
 		if (task != null) {
 			return task.getType();
-		}else{
-			return 0;
 		}
-    }	
-	
+		return 0;
+	}
+
 	@Override
 	public int texture() {
-		ComputerTask task = getTask();
+		final ComputerTask task = this.getTask();
 		if (task != null) {
 			return task.getImage();
-		}else{
-			return super.texture();
 		}
+		return super.texture();
 	}
-	
+
 	@Override
-	public void onServerClick(EntityPlayer player, int mousebutton, boolean ctrlKey, boolean shiftKey) {
-		ComputerTask task = getTask();
-		
-		if (!ctrlKey) {
-			if (module instanceof ModuleComputer) {
-				ComputerProg program = ((ModuleComputer)module).getCurrentProg();
-				if (program != null) {
-					for (ComputerTask t : program.getTasks()) {
-						if (t != task) {
-							t.setIsActivated(false);
-						}
+	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
+		final ComputerTask task = this.getTask();
+		if (!ctrlKey && this.module instanceof ModuleComputer) {
+			final ComputerProg program = ((ModuleComputer) this.module).getCurrentProg();
+			if (program != null) {
+				for (final ComputerTask t : program.getTasks()) {
+					if (t != task) {
+						t.setIsActivated(false);
 					}
 				}
 			}
-		}	
-		
-		
-
+		}
 		task.setIsActivated(!task.getIsActivated());
-				
-	}	
-	
+	}
+
 	private ComputerTask getTask() {
-		ComputerProg program = ((ModuleComputer)module).getCurrentProg();
-		if (program != null) {
-			ArrayList<ComputerTask>	tasks = program.getTasks();
-			if (id >= 0 && id < tasks.size()) {
-				return tasks.get(id);
-			}else{
-				return null;
-			}
-		}else{
+		final ComputerProg program = ((ModuleComputer) this.module).getCurrentProg();
+		if (program == null) {
 			return null;
 		}
+		final ArrayList<ComputerTask> tasks = program.getTasks();
+		if (this.id >= 0 && this.id < tasks.size()) {
+			return tasks.get(this.id);
+		}
+		return null;
 	}
 }

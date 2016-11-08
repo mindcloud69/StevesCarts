@@ -1,21 +1,17 @@
 package vswe.stevescarts.TileEntities;
-import java.util.ArrayList;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Containers.ContainerLiquid;
@@ -30,128 +26,97 @@ import vswe.stevescarts.Modules.Storages.Tanks.ModuleTank;
 import vswe.stevescarts.Slots.SlotLiquidFilter;
 import vswe.stevescarts.Slots.SlotLiquidManagerInput;
 import vswe.stevescarts.Slots.SlotLiquidOutput;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityLiquid extends TileEntityManager  implements IFluidHandler, ITankHolder, ISidedInventory
-{
-	
+import java.util.ArrayList;
+
+public class TileEntityLiquid extends TileEntityManager implements IFluidHandler, ITankHolder {
+	Tank[] tanks;
+	private int tick;
+	private static final int[] topSlots;
+	private static final int[] botSlots;
+	private static final int[] sideSlots;
+
 	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiBase getGui(InventoryPlayer inv) {
+	public GuiBase getGui(final InventoryPlayer inv) {
 		return new GuiLiquid(inv, this);
 	}
-	
-	@Override
-	public ContainerBase getContainer(InventoryPlayer inv) {
-		return new ContainerLiquid(inv, this);		
-	}	
-	
-	Tank[] tanks;
 
-    public TileEntityLiquid()
-    {
-		super();
-		tanks = new Tank[4];
-		for (int i = 0; i < 4; i++) {
-			tanks[i] = new Tank(this, 32000, i);
-		}
-    }
-
-	public Tank[] getTanks() {
-		return tanks;
+	public ContainerBase getContainer(final InventoryPlayer inv) {
+		return new ContainerLiquid(inv, this);
 	}
 
-	private int tick;
-	
+	public TileEntityLiquid() {
+		this.tanks = new Tank[4];
+		for (int i = 0; i < 4; ++i) {
+			this.tanks[i] = new Tank(this, 32000, i);
+		}
+	}
+
+	public Tank[] getTanks() {
+		return this.tanks;
+	}
+
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		
-		if (tick-- <= 0) {
-			tick = 5;
-		}else{
-			return;
-		}
-		
-		if (!worldObj.isRemote) {
-			for (int i = 0; i < 4; i++) {
-				tanks[i].containerTransfer();
+		if (this.tick-- <= 0) {
+			this.tick = 5;
+			if (!this.worldObj.isRemote) {
+				for (int i = 0; i < 4; ++i) {
+					this.tanks[i].containerTransfer();
+				}
 			}
 		}
 	}
-	
-	
-    /**
-     * Fills fluid into internal tanks, distribution is left to the ITankContainer.
-     * @param from Orientation the fluid is pumped in from.
-     * @param resource FluidStack representing the maximum amount of fluid filled into the ITankContainer
-     * @param doFill If false filling will only be simulated.
-     * @return Amount of resource that was filled into internal tanks.
-     */
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		
-		
+
+	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
 		int amount = 0;
 		if (resource != null && resource.amount > 0) {
-			FluidStack fluid = resource.copy();
-			for (int i = 0; i < 4; i++) {
-				int tempAmount = tanks[i].fill(fluid, doFill, worldObj.isRemote);
-		
+			final FluidStack fluid = resource.copy();
+			for (int i = 0; i < 4; ++i) {
+				final int tempAmount = this.tanks[i].fill(fluid, doFill, this.worldObj.isRemote);
 				amount += tempAmount;
-				fluid.amount -= tempAmount;
+				final FluidStack fluidStack = fluid;
+				fluidStack.amount -= tempAmount;
 				if (fluid.amount <= 0) {
 					break;
 				}
 			}
 		}
-		return amount;	
+		return amount;
 	}
-    /**
-     * Fills fluid into the specified internal tank.
-     * @param tankIndex the index of the tank to fill
-     * @param resource FluidStack representing the maximum amount of fluid filled into the ITankContainer
-     * @param doFill If false filling will only be simulated.
-     * @return Amount of resource that was filled into internal tanks.
-     */
-    public int fill(int tankIndex, FluidStack resource, boolean doFill) {
+
+	public int fill(final int tankIndex, final FluidStack resource, final boolean doFill) {
 		if (tankIndex < 0 || tankIndex >= 4) {
 			return 0;
 		}
-	
-		return tanks[tankIndex].fill(resource, doFill, worldObj.isRemote);	
+		return this.tanks[tankIndex].fill(resource, doFill, this.worldObj.isRemote);
 	}
 
+	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
+		return this.drain(from, null, maxDrain, doDrain);
+	}
 
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return drain(from, null, maxDrain, doDrain);
+	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
+		return this.drain(from, resource, (resource == null) ? 0 : resource.amount, doDrain);
 	}
-	
-	
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		return drain(from, resource, resource == null ? 0 : resource.amount, doDrain);
-	}
-	
-	private FluidStack drain(ForgeDirection from, FluidStack resource, int maxDrain, boolean doDrain) {
-	FluidStack ret = resource;
+
+	private FluidStack drain(final EnumFacing from, final FluidStack resource, int maxDrain, final boolean doDrain) {
+		FluidStack ret = resource;
 		if (ret != null) {
 			ret = ret.copy();
 			ret.amount = 0;
 		}
-		for (int i = 0; i < 4; i++) {
-			FluidStack temp = tanks[i].drain(maxDrain, false, worldObj.isRemote);
-			
+		for (int i = 0; i < 4; ++i) {
+			FluidStack temp = this.tanks[i].drain(maxDrain, false, this.worldObj.isRemote);
 			if (temp != null && (ret == null || ret.isFluidEqual(temp))) {
-                temp = tanks[i].drain(maxDrain, doDrain, worldObj.isRemote);
-
+				temp = this.tanks[i].drain(maxDrain, doDrain, this.worldObj.isRemote);
 				if (ret == null) {
 					ret = temp;
-				}else{
-					ret.amount += temp.amount;
+				} else {
+					final FluidStack fluidStack = ret;
+					fluidStack.amount += temp.amount;
 				}
-			
 				maxDrain -= temp.amount;
 				if (maxDrain <= 0) {
 					break;
@@ -161,374 +126,330 @@ public class TileEntityLiquid extends TileEntityManager  implements IFluidHandle
 		if (ret != null && ret.amount == 0) {
 			return null;
 		}
-		return ret;		
+		return ret;
 	}
 
-	
-	@Override
-    public int getSizeInventory()
-    {
-        return 12;
-    }
-
-
-	@Override
-    public String getInventoryName()
-    {
-        return "container.fluidmanager";
-    }
-
-
-	@Override
-	public ItemStack getInputContainer(int tankid) {
-		return getStackInSlot(tankid * 3);
-	}	
-	
-	@Override
-	public void clearInputContainer(int tankid) {
-		setInventorySlotContents(tankid * 3, null);	
+	public int getSizeInventory() {
+		return 12;
 	}
 	
 	@Override
-	public void addToOutputContainer(int tankid, ItemStack item) {
+	public String getName() {
+		return "container.fluidmanager";
+	}
+
+	public ItemStack getInputContainer(final int tankid) {
+		return this.getStackInSlot(tankid * 3);
+	}
+
+	public void clearInputContainer(final int tankid) {
+		this.setInventorySlotContents(tankid * 3, null);
+	}
+
+	public void addToOutputContainer(final int tankid, final ItemStack item) {
 		TransferHandler.TransferItem(item, this, tankid * 3 + 1, tankid * 3 + 1, new ContainerLiquid(null, this), Slot.class, null, -1);
 	}
-	
-	
-	
-	@Override
-	public void onFluidUpdated(int tankid) {
-		markDirty();
+
+	public void onFluidUpdated(final int tankid) {
+		this.markDirty();
 	}
-	
-	
-	@Override
+
+	@Deprecated
 	@SideOnly(Side.CLIENT)
-	public void drawImage(int tankid, GuiBase gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
-		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F);
-	}	
-	
+	public void drawImage(final int tankid, final GuiBase gui, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
+//		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16.0f, sizeY / 16.0f, srcX / 16.0f, srcY / 16.0f);
+	}
 
 	@Override
-	protected boolean isTargetValid(ManagerTransfer transfer) {
+	protected boolean isTargetValid(final ManagerTransfer transfer) {
 		return true;
 	}
-	
+
 	@Override
-	protected boolean doTransfer(ManagerTransfer transfer) {
-		int maximumToTransfer = hasMaxAmount(transfer.getSetting()) ? Math.min(getMaxAmount(transfer.getSetting()) - transfer.getWorkload(), FluidContainerRegistry.BUCKET_VOLUME) : FluidContainerRegistry.BUCKET_VOLUME;
-		
+	protected boolean doTransfer(final ManagerTransfer transfer) {
+		final int maximumToTransfer = this.hasMaxAmount(transfer.getSetting()) ? Math.min(this.getMaxAmount(transfer.getSetting()) - transfer.getWorkload(), 1000) : 1000;
 		boolean sucess = false;
-	
-		if (toCart[transfer.getSetting()]) {
-			for (int i = 0; i < tanks.length; i++) {
-				int fill = fillTank(transfer.getCart(), i, transfer.getSetting(), maximumToTransfer, false);
+		if (this.toCart[transfer.getSetting()]) {
+			int i = 0;
+			while (i < this.tanks.length) {
+				final int fill = this.fillTank(transfer.getCart(), i, transfer.getSetting(), maximumToTransfer, false);
 				if (fill > 0) {
-					fillTank(transfer.getCart(), i, transfer.getSetting(), fill, true);
+					this.fillTank(transfer.getCart(), i, transfer.getSetting(), fill, true);
 					sucess = true;
-					if (hasMaxAmount(transfer.getSetting())) {
+					if (this.hasMaxAmount(transfer.getSetting())) {
 						transfer.setWorkload(transfer.getWorkload() + fill);
+						break;
 					}
 					break;
+				} else {
+					++i;
 				}
-			}			
-		}else{
-			ArrayList<ModuleTank> cartTanks = transfer.getCart().getTanks();
-			for (IFluidTank cartTank : cartTanks) {
-				int drain = drainTank(cartTank, transfer.getSetting(), maximumToTransfer, false);
+			}
+		} else {
+			final ArrayList<ModuleTank> cartTanks = transfer.getCart().getTanks();
+			for (final IFluidTank cartTank : cartTanks) {
+				final int drain = this.drainTank(cartTank, transfer.getSetting(), maximumToTransfer, false);
 				if (drain > 0) {
-					drainTank(cartTank, transfer.getSetting(), drain, true);
+					this.drainTank(cartTank, transfer.getSetting(), drain, true);
 					sucess = true;
-					if (hasMaxAmount(transfer.getSetting())) {
+					if (this.hasMaxAmount(transfer.getSetting())) {
 						transfer.setWorkload(transfer.getWorkload() + drain);
+						break;
 					}
 					break;
 				}
-				
 			}
 		}
-	
-		if (sucess && hasMaxAmount(transfer.getSetting()) && transfer.getWorkload() == getMaxAmount(transfer.getSetting())) {
-			transfer.setLowestSetting(transfer.getSetting() + 1); //this is not avalible anymore
+		if (sucess && this.hasMaxAmount(transfer.getSetting()) && transfer.getWorkload() == this.getMaxAmount(transfer.getSetting())) {
+			transfer.setLowestSetting(transfer.getSetting() + 1);
 		}
-	
 		return sucess;
 	}
 
-	private int fillTank(MinecartModular cart, int tankId, int sideId, int fillAmount,  boolean doFill) {
-		if (isTankValid(tankId, sideId)) {
-		
-			FluidStack fluidToFill = tanks[tankId].drain(fillAmount, doFill);
+	private int fillTank(final MinecartModular cart, final int tankId, final int sideId, int fillAmount, final boolean doFill) {
+		if (this.isTankValid(tankId, sideId)) {
+			final FluidStack fluidToFill = this.tanks[tankId].drain(fillAmount, doFill);
 			if (fluidToFill == null) {
 				return 0;
-			}	
-			
+			}
 			fillAmount = fluidToFill.amount;
-			
-			if (isFluidValid(sideId, fluidToFill)) {
-				ArrayList<ModuleTank> cartTanks = cart.getTanks();
-				for (IFluidTank cartTank : cartTanks) {
-					
-					fluidToFill.amount -= cartTank.fill(fluidToFill, doFill);
+			if (this.isFluidValid(sideId, fluidToFill)) {
+				final ArrayList<ModuleTank> cartTanks = cart.getTanks();
+				for (final IFluidTank cartTank : cartTanks) {
+					final FluidStack fluidStack = fluidToFill;
+					fluidStack.amount -= cartTank.fill(fluidToFill, doFill);
 					if (fluidToFill.amount <= 0) {
 						return fillAmount;
 					}
-					
 				}
 				return fillAmount - fluidToFill.amount;
-			}	
-		
+			}
 		}
 		return 0;
 	}
-	
-	private int drainTank(IFluidTank cartTank, int sideId, int drainAmount,  boolean doDrain) {
-		FluidStack drainedFluid = cartTank.drain(drainAmount, doDrain);
+
+	private int drainTank(final IFluidTank cartTank, final int sideId, int drainAmount, final boolean doDrain) {
+		final FluidStack drainedFluid = cartTank.drain(drainAmount, doDrain);
 		if (drainedFluid == null) {
 			return 0;
-		}		
+		}
 		drainAmount = drainedFluid.amount;
-		
-		if (isFluidValid(sideId, drainedFluid)) {
-			for (int i = 0; i < tanks.length; i++) {
-				Tank tank = tanks[i];
-				if (isTankValid(i, sideId)) {
-					drainedFluid.amount -= tank.fill(drainedFluid, doDrain);
+		if (this.isFluidValid(sideId, drainedFluid)) {
+			for (int i = 0; i < this.tanks.length; ++i) {
+				final Tank tank = this.tanks[i];
+				if (this.isTankValid(i, sideId)) {
+					final FluidStack fluidStack = drainedFluid;
+					fluidStack.amount -= tank.fill(drainedFluid, doDrain);
 					if (drainedFluid.amount <= 0) {
 						return drainAmount;
 					}
 				}
 			}
 			return drainAmount - drainedFluid.amount;
-		}	
+		}
 		return 0;
 	}
-	
-	private boolean isTankValid(int tankId, int sideId) {
-		return !((layoutType == 1 && tankId != sideId) || (layoutType == 2 && color[sideId] != color[tankId]));
+
+	private boolean isTankValid(final int tankId, final int sideId) {
+		return (this.layoutType != 1 || tankId == sideId) && (this.layoutType != 2 || this.color[sideId] == this.color[tankId]);
 	}
-	
-	private boolean isFluidValid(int sideId, FluidStack fluid) {
-		ItemStack filter = getStackInSlot(sideId * 3 + 2);
-		FluidStack filterFluid = FluidContainerRegistry.getFluidForFilledItem(filter);
-		if (filterFluid != null) {
-			if (!filterFluid.isFluidEqual(fluid)) {
-				return false;
+
+	private boolean isFluidValid(final int sideId, final FluidStack fluid) {
+		final ItemStack filter = this.getStackInSlot(sideId * 3 + 2);
+		final FluidStack filterFluid = FluidContainerRegistry.getFluidForFilledItem(filter);
+		return filterFluid == null || filterFluid.isFluidEqual(fluid);
+	}
+
+	public int getMaxAmount(final int id) {
+		return (int) (this.getMaxAmountBuckets(id) * 1000.0f);
+	}
+
+	public float getMaxAmountBuckets(final int id) {
+		switch (this.getAmountId(id)) {
+			case 1: {
+				return 0.25f;
+			}
+			case 2: {
+				return 0.5f;
+			}
+			case 3: {
+				return 0.75f;
+			}
+			case 4: {
+				return 1.0f;
+			}
+			case 5: {
+				return 2.0f;
+			}
+			case 6: {
+				return 3.0f;
+			}
+			case 7: {
+				return 5.0f;
+			}
+			case 8: {
+				return 7.5f;
+			}
+			case 9: {
+				return 10.0f;
+			}
+			case 10: {
+				return 15.0f;
+			}
+			default: {
+				return 0.0f;
 			}
 		}
-		return true;		
 	}
-	
-	public int getMaxAmount(int id) {
-		return (int)(getMaxAmountBuckets(id) * FluidContainerRegistry.BUCKET_VOLUME);
+
+	public boolean hasMaxAmount(final int id) {
+		return this.getAmountId(id) != 0;
 	}
-	
-	public float getMaxAmountBuckets(int id) {
-		switch(getAmountId(id)) {
-			case 1:
-				return 0.25F;
-			case 2:
-				return 0.5F;
-			case 3:
-				return 0.75F;
-			case 4:
-				return 1F;
-			case 5:
-				return 2F;
-			case 6:
-				return 3F;
-			case 7:
-				return 5F;
-			case 8:
-				return 7.5F;
-			case 9:
-				return 10F;
-			case 10:
-				return 15F;
-			default:
-				return 0;
-		}
-	}
-	
-	public boolean hasMaxAmount(int id) {
-		return getAmountId(id) != 0;
-	}
-	
+
 	@Override
 	public int getAmountCount() {
 		return 11;
 	}
-	
+
 	@Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readFromNBT(nbttagcompound);
-        for (int i = 0; i < 4; i++) {
-			tanks[i].setFluid(FluidStack.loadFluidStackFromNBT(nbttagcompound.getCompoundTag("Fluid" + i)));	
-        }
-		setWorkload(nbttagcompound.getShort("workload"));
+	public void readFromNBT(final NBTTagCompound nbttagcompound) {
+		super.readFromNBT(nbttagcompound);
+		for (int i = 0; i < 4; ++i) {
+			this.tanks[i].setFluid(FluidStack.loadFluidStackFromNBT(nbttagcompound.getCompoundTag("Fluid" + i)));
+		}
+		this.setWorkload(nbttagcompound.getShort("workload"));
 	}
-	
+
 	@Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
-    {
+	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-        for (int i = 0; i < 4; i++) {	
-			if (tanks[i].getFluid() != null) {
-				NBTTagCompound compound = new NBTTagCompound();
-				tanks[i].getFluid().writeToNBT(compound);
+		for (int i = 0; i < 4; ++i) {
+			if (this.tanks[i].getFluid() != null) {
+				final NBTTagCompound compound = new NBTTagCompound();
+				this.tanks[i].getFluid().writeToNBT(compound);
 				nbttagcompound.setTag("Fluid" + i, compound);
 			}
-		}	
-		nbttagcompound.setShort("workload", (short)getWorkload());
-	}	
+		}
+		nbttagcompound.setShort("workload", (short) this.getWorkload());
+		return nbttagcompound;
+	}
 
-
-	
 	@Override
-	public void checkGuiData(ContainerManager conManager, ICrafting crafting, boolean isNew) {
+	public void checkGuiData(final ContainerManager conManager, final IContainerListener crafting, final boolean isNew) {
 		super.checkGuiData(conManager, crafting, isNew);
-		ContainerLiquid con = (ContainerLiquid)conManager;
-
-		for (int i = 0; i < 4; i++) {
+		final ContainerLiquid con = (ContainerLiquid) conManager;
+		for (int i = 0; i < 4; ++i) {
 			boolean changed = false;
-			int id = 4 + i * 4;
-			int amount1 = 4 + i * 4 + 1;
-			int amount2 = 4 + i * 4 + 2;
-			int meta = 4 + i * 4 + 3;
-			if ((isNew || con.oldLiquids[i] != null) && tanks[i].getFluid() == null) {
-				updateGuiData(con, crafting, id, (short)-1);
+			final int id = 4 + i * 4;
+			final int amount1 = 4 + i * 4 + 1;
+			final int amount2 = 4 + i * 4 + 2;
+			final int meta = 4 + i * 4 + 3;
+			if ((isNew || con.oldLiquids[i] != null) && this.tanks[i].getFluid() == null) {
+				this.updateGuiData(con, crafting, id, (short) (-1));
 				changed = true;
-			}else if(tanks[i].getFluid() != null) {
+			} else if (this.tanks[i].getFluid() != null) {
 				if (isNew || con.oldLiquids[i] == null) {
-					updateGuiData(con, crafting, id, (short)tanks[i].getFluid().fluidID);	
-					updateGuiData(con, crafting, amount1, getShortFromInt(true, tanks[i].getFluid().amount));	
-					updateGuiData(con, crafting, amount2, getShortFromInt(false, tanks[i].getFluid().amount));		
+//					this.updateGuiData(con, crafting, id, (short) this.tanks[i].getFluid());
+					this.updateGuiData(con, crafting, amount1, this.getShortFromInt(true, this.tanks[i].getFluid().amount));
+					this.updateGuiData(con, crafting, amount2, this.getShortFromInt(false, this.tanks[i].getFluid().amount));
 					changed = true;
-				}else{
-				
-					if (con.oldLiquids[i].fluidID != tanks[i].getFluid().fluidID) {
-						updateGuiData(con, crafting, id, (short)tanks[i].getFluid().fluidID);
+				} else {
+//					if (con.oldLiquids[i].fluidID != this.tanks[i].getFluid().fluidID) {
+//						this.updateGuiData(con, crafting, id, (short) this.tanks[i].getFluid().fluidID);
+//						changed = true;
+//					}
+					if (con.oldLiquids[i].amount != this.tanks[i].getFluid().amount) {
+						this.updateGuiData(con, crafting, amount1, this.getShortFromInt(true, this.tanks[i].getFluid().amount));
+						this.updateGuiData(con, crafting, amount2, this.getShortFromInt(false, this.tanks[i].getFluid().amount));
 						changed = true;
-					}					
-					if (con.oldLiquids[i].amount != tanks[i].getFluid().amount) {
-						updateGuiData(con, crafting, amount1, getShortFromInt(true, tanks[i].getFluid().amount));	
-						updateGuiData(con, crafting, amount2, getShortFromInt(false, tanks[i].getFluid().amount));		
-						changed = true;
-					}					
-				
+					}
 				}
-			
 			}
-			
 			if (changed) {
-				if (tanks[i].getFluid() == null) {
+				if (this.tanks[i].getFluid() == null) {
 					con.oldLiquids[i] = null;
-				}else{
-					con.oldLiquids[i] = tanks[i].getFluid().copy();
+				} else {
+					con.oldLiquids[i] = this.tanks[i].getFluid().copy();
 				}
 			}
 		}
 	}
-	
-	//TODO sync the tag somehow :S
+
 	@Override
-	public void receiveGuiData(int id, short data) {
-		if(id > 3) {
+	public void receiveGuiData(int id, final short data) {
+		if (id > 3) {
 			id -= 4;
-			int tankid = id / 4;
-			int contentid = id % 4;
-			
+			final int tankid = id / 4;
+			final int contentid = id % 4;
 			if (contentid == 0) {
 				if (data == -1) {
-					tanks[tankid].setFluid(null);
-				}else if (tanks[tankid].getFluid() == null){
-					tanks[tankid].setFluid(new FluidStack(data, 0));
+					this.tanks[tankid].setFluid(null);
+				} else if (this.tanks[tankid].getFluid() == null) {
+//					this.tanks[tankid].setFluid(new FluidStack((int) data, 0));
 				}
-			}else if(tanks[tankid].getFluid() != null) {
-
-				tanks[tankid].getFluid().amount = getIntFromShort(contentid == 1,tanks[tankid].getFluid().amount, data);
-				
+			} else if (this.tanks[tankid].getFluid() != null) {
+				this.tanks[tankid].getFluid().amount = this.getIntFromShort(contentid == 1, this.tanks[tankid].getFluid().amount, data);
 			}
-			
-		}else{
+		} else {
 			super.receiveGuiData(id, data);
 		}
 	}
-	
 
-	
-	
-	private boolean isInput(int id) {
+	private boolean isInput(final int id) {
 		return id % 3 == 0;
 	}
-	
-	private boolean isOutput(int id) {
+
+	private boolean isOutput(final int id) {
 		return id % 3 == 1;
 	}
-	
-	@Override
-    public boolean isItemValidForSlot(int slotId, ItemStack item)
-    {	
-		if (isInput(slotId)) {
+
+	public boolean isItemValidForSlot(final int slotId, final ItemStack item) {
+		if (this.isInput(slotId)) {
 			return SlotLiquidManagerInput.isItemStackValid(item, this, -1);
-		}else if(isOutput(slotId)) {
-			return SlotLiquidOutput.isItemStackValid(item);
-		}else{
-			return SlotLiquidFilter.isItemStackValid(item);
 		}
-		
-	}	
-	
-	private static final int[] topSlots = new int[] {0, 3, 6, 9};
-	private static final int[] botSlots = new int[] {1, 4, 7, 10};
-	private static final int[] sideSlots = new int[] {};
-	
-    //slots
-	@Override
-    public int[] getAccessibleSlotsFromSide(int side)
-    {
-        if (side == 1) {
-        	return topSlots;
-        }else if(side == 0) {
-        	return botSlots;
-        }else{
-        	return sideSlots;
-        }
-    }
+		if (this.isOutput(slotId)) {
+			return SlotLiquidOutput.isItemStackValid(item);
+		}
+		return SlotLiquidFilter.isItemStackValid(item);
+	}
 
-    //in
-	@Override
-    public boolean canInsertItem(int slot, ItemStack item, int side)
-    {
-        return side == 1  &&  isInput(slot) && this.isItemValidForSlot(slot, item);
-    }
+	public int[] getAccessibleSlotsFromSide(final int side) {
+		if (side == 1) {
+			return TileEntityLiquid.topSlots;
+		}
+		if (side == 0) {
+			return TileEntityLiquid.botSlots;
+		}
+		return TileEntityLiquid.sideSlots;
+	}
 
-    //out
-	@Override
-    public boolean canExtractItem(int slot, ItemStack item, int side)
-    {
-        return side == 0 && isOutput(slot);
-    }
+	public boolean canInsertItem(final int slot, final ItemStack item, final int side) {
+		return side == 1 && this.isInput(slot) && this.isItemValidForSlot(slot, item);
+	}
 
+	public boolean canExtractItem(final int slot, final ItemStack item, final int side) {
+		return side == 0 && this.isOutput(slot);
+	}
 
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		FluidTankInfo[] info = new FluidTankInfo[tanks.length];
-		for (int i = 0; i < tanks.length; i++) {
-			info[i] = new FluidTankInfo(tanks[i].getFluid(),tanks[i].getCapacity());		
+	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
+		final FluidTankInfo[] info = new FluidTankInfo[this.tanks.length];
+		for (int i = 0; i < this.tanks.length; ++i) {
+			info[i] = new FluidTankInfo(this.tanks[i].getFluid(), this.tanks[i].getCapacity());
 		}
 		return info;
-	} 	
-	
+	}
+
+	static {
+		topSlots = new int[] { 0, 3, 6, 9 };
+		botSlots = new int[] { 1, 4, 7, 10 };
+		sideSlots = new int[0];
+	}
 }

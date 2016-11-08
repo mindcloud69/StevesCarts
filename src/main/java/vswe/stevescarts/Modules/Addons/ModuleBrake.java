@@ -1,17 +1,23 @@
 package vswe.stevescarts.Modules.Addons;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ILeverModule;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModuleBrake extends ModuleAddon implements ILeverModule {
-	public ModuleBrake(MinecartModular cart) {
+	private int[] startstopRect;
+	private int[] turnbackRect;
+
+	public ModuleBrake(final MinecartModular cart) {
 		super(cart);
+		this.startstopRect = new int[] { 15, 20, 24, 12 };
+		this.turnbackRect = new int[] { this.startstopRect[0] + this.startstopRect[2] + 5, this.startstopRect[1], this.startstopRect[2], this.startstopRect[3] };
 	}
 
 	@Override
@@ -20,7 +26,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -35,92 +41,82 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, Localization.MODULES.ADDONS.CONTROL_LEVER.translate(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.ADDONS.CONTROL_LEVER.translate(), 8, 6, 4210752);
 	}
 
-
-	
-	@Override
 	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/lever.png");
-
-		drawButton(gui, x,y, startstopRect, isForceStopping() ? 2 : 1);
-		drawButton(gui, x,y, turnbackRect, 0);
+		this.drawButton(gui, x, y, this.startstopRect, this.isForceStopping() ? 2 : 1);
+		this.drawButton(gui, x, y, this.turnbackRect, 0);
 	}
 
-	private void drawButton(GuiMinecart gui, int x, int y, int[] coords, int imageID) {
-		if (inRect(x,y, coords)) {
-			drawImage(gui,coords, 0, coords[3]);
-		}else{
-			drawImage(gui,coords, 0, 0);
+	private void drawButton(final GuiMinecart gui, final int x, final int y, final int[] coords, final int imageID) {
+		if (this.inRect(x, y, coords)) {
+			this.drawImage(gui, coords, 0, coords[3]);
+		} else {
+			this.drawImage(gui, coords, 0, 0);
 		}
-
-		int srcY = coords[3] * 2 + imageID * (coords[3] - 2);
-		drawImage(gui, coords[0] + 1, coords[1] + 1, 0, srcY, coords[2] - 2, coords[3] - 2);
+		final int srcY = coords[3] * 2 + imageID * (coords[3] - 2);
+		this.drawImage(gui, coords[0] + 1, coords[1] + 1, 0, srcY, coords[2] - 2, coords[3] - 2);
 	}
-
-	private int[] startstopRect = new int[] {15,20, 24, 12};
-	private int[] turnbackRect = new int[] {startstopRect[0] + startstopRect[2] + 5,startstopRect[1], startstopRect[2], startstopRect[3]};
 
 	@Override
 	public boolean stopEngines() {
-		return isForceStopping();
+		return this.isForceStopping();
 	}
 
 	private boolean isForceStopping() {
-		if (isPlaceholder())  {
-			return getSimInfo().getBrakeActive();
-		}else{
-			return getDw(0) != 0;
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getBrakeActive();
 		}
+		return this.getDw(0) != 0;
 	}
 
-	private void setForceStopping(boolean val) {
-		updateDw(0, (byte)(val ? 1 : 0));
-	}
-
-	@Override
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, isForceStopping() ? Localization.MODULES.ADDONS.LEVER_START.translate() : Localization.MODULES.ADDONS.LEVER_STOP.translate(), x,y,startstopRect);
-		drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.LEVER_TURN.translate(), x,y,turnbackRect);
+	private void setForceStopping(final boolean val) {
+		this.updateDw(0, (byte) (val ? 1 : 0));
 	}
 
 	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui,
+			this.isForceStopping() ? Localization.MODULES.ADDONS.LEVER_START.translate() : Localization.MODULES.ADDONS.LEVER_STOP.translate(), x, y, this.startstopRect);
+		this.drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.LEVER_TURN.translate(), x, y, this.turnbackRect);
+	}
+
+	@Override
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (button == 0) {
-			if (inRect(x,y, startstopRect)) {
-				sendPacket(0);
-			}else if (inRect(x,y, turnbackRect)) {
-				sendPacket(1);
+			if (this.inRect(x, y, this.startstopRect)) {
+				this.sendPacket(0);
+			} else if (this.inRect(x, y, this.turnbackRect)) {
+				this.sendPacket(1);
 			}
 		}
 	}
 
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			setForceStopping(!isForceStopping());
-		}else if(id == 1) {
-			turnback();
+			this.setForceStopping(!this.isForceStopping());
+		} else if (id == 1) {
+			this.turnback();
 		}
 	}
 
-	@Override
 	public int numberOfPackets() {
 		return 2;
 	}
-	
+
 	@Override
 	public float getLeverState() {
-		if (isForceStopping()) {
-			return 0;
-		}else{
-			return 1;
+		if (this.isForceStopping()) {
+			return 0.0f;
 		}
+		return 1.0f;
 	}
-	
 
 	@Override
 	public int numberOfDataWatchers() {
@@ -129,18 +125,16 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
+		this.addDw(0, 0);
 	}
 
-	
-	
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setBoolean(generateNBTName("ForceStop",id), isForceStopping());
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setBoolean(this.generateNBTName("ForceStop", id), this.isForceStopping());
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		setForceStopping(tagCompound.getBoolean(generateNBTName("ForceStop",id)));
-	}		
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.setForceStopping(tagCompound.getBoolean(this.generateNBTName("ForceStop", id)));
+	}
 }

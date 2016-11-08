@@ -1,96 +1,88 @@
 package vswe.stevescarts.Arcade;
 
-import vswe.stevescarts.Arcade.TrackOrientation.DIRECTION;
-import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Realtimers.ModuleArcade;
 
 public class Cart {
 	private int x;
 	private int y;
-	private DIRECTION dir;
+	private TrackOrientation.DIRECTION dir;
 	private int imageIndex;
 	private boolean enabled;
-	
-	public Cart(int imageIndex) {
+
+	public Cart(final int imageIndex) {
 		this.imageIndex = imageIndex;
-		enabled = true;
+		this.enabled = true;
 	}
-	
+
 	public int getX() {
-		return x;
+		return this.x;
 	}
-	
+
 	public int getY() {
-		return y;
+		return this.y;
 	}
-	
-	public DIRECTION getDireciotn() {
-		return dir;
+
+	public TrackOrientation.DIRECTION getDireciotn() {
+		return this.dir;
 	}
-	
-	public void setX(int val) {
-		x = val;
+
+	public void setX(final int val) {
+		this.x = val;
 	}
-	
-	public void setY(int val) {
-		y = val;
+
+	public void setY(final int val) {
+		this.y = val;
 	}
-	
-	public void setDirection(DIRECTION val) {
-		dir = val;
-	}	
-	
-	public void setAlive(boolean val) {
-		enabled = val;
+
+	public void setDirection(final TrackOrientation.DIRECTION val) {
+		this.dir = val;
 	}
-	
-	
-	public void move(ArcadeTracks game) {
-		if (!enabled) {
+
+	public void setAlive(final boolean val) {
+		this.enabled = val;
+	}
+
+	public void move(final ArcadeTracks game) {
+		if (!this.enabled) {
 			return;
 		}
-		
-		x += dir.getX();
-		y += dir.getY();
-		
-		if (x < 0 || y < 0 || x >= game.getTrackMap().length || y >= game.getTrackMap()[0].length || game.getTrackMap()[x][y] == null) {
-			if (dir != DIRECTION.STILL) {
-				onCrash();
+		this.x += this.dir.getX();
+		this.y += this.dir.getY();
+		if (this.x < 0 || this.y < 0 || this.x >= game.getTrackMap().length || this.y >= game.getTrackMap()[0].length || game.getTrackMap()[this.x][this.y] == null) {
+			if (this.dir != TrackOrientation.DIRECTION.STILL) {
+				this.onCrash();
 			}
-			dir = DIRECTION.STILL;
-		}else{
-			game.getTrackMap()[x][y].travel(game, this);
-			dir =  game.getTrackMap()[x][y].getOrientation().travel(dir.getOpposite());
-		}	
-		
-		if (game.isItemOnGround() && x == game.getItemX() && y == game.getItemY()) {
-			onItemPickUp();
+			this.dir = TrackOrientation.DIRECTION.STILL;
+		} else {
+			game.getTrackMap()[this.x][this.y].travel(game, this);
+			this.dir = game.getTrackMap()[this.x][this.y].getOrientation().travel(this.dir.getOpposite());
+		}
+		if (game.isItemOnGround() && this.x == game.getItemX() && this.y == game.getItemY()) {
+			this.onItemPickUp();
 			game.pickItemUp();
-		}			
+		}
 	}
-	
-	public void onItemPickUp() {}
-	public void onCrash() {};
-	
-	public void render(ArcadeTracks game, GuiMinecart gui, int tick) {
-		if (!enabled) {
+
+	public void onItemPickUp() {
+	}
+
+	public void onCrash() {
+	}
+
+	public void render(final ArcadeTracks game, final GuiMinecart gui, final int tick) {
+		if (!this.enabled) {
 			return;
-		}		
-		
-		int x = ArcadeTracks.LEFT_MARGIN + 2 + (int)(16 * (this.x + dir.getX() * (tick / 4F)));
-		int y = ArcadeTracks.TOP_MARGIN + 2 + (int)(16 * (this.y + dir.getY() * (tick / 4F)));
-		int u = 256-12*(imageIndex + 1);
-		int v = 256-12;
-		int w = 12;
-		int h = 12;
-		
+		}
+		final int x = 7 + (int) (16.0f * (this.x + this.dir.getX() * (tick / 4.0f)));
+		final int y = 7 + (int) (16.0f * (this.y + this.dir.getY() * (tick / 4.0f)));
+		final int u = 256 - 12 * (this.imageIndex + 1);
+		final int v = 244;
+		final int w = 12;
+		final int h = 12;
 		game.drawImageInArea(gui, x, y, u, v, w, h);
 	}
 
 	public boolean isAlive() {
-		return enabled;
+		return this.enabled;
 	}
-
 }
-

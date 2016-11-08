@@ -1,16 +1,11 @@
 package vswe.stevescarts.Modules.Realtimers;
 
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
 
 public class ModuleRocket extends ModuleBase {
-
-	public ModuleRocket(MinecartModular cart) {
-		super(cart);
-	}
-
-	
 	private boolean flying;
 	private int landDirX;
 	private int landDirZ;
@@ -20,106 +15,100 @@ public class ModuleRocket extends ModuleBase {
 	private boolean isLanding;
 	private double landY;
 	private double groundY;
-	
+
+	public ModuleRocket(final MinecartModular cart) {
+		super(cart);
+	}
+
 	@Override
 	public void update() {
-		if (isPlaceholder()) {
+		if (this.isPlaceholder()) {
 			return;
 		}
-		
-		if (getCart().worldObj.isRemote) {
-			if (!flying && getDw(0) != 0) {
-				takeOff();
-			}else if (!isLanding && getDw(0)  > 1) {
-				land();
-			}else if(flying && isLanding && getDw(0) == 0) {
-				done();
+		if (this.getCart().worldObj.isRemote) {
+			if (!this.flying && this.getDw(0) != 0) {
+				this.takeOff();
+			} else if (!this.isLanding && this.getDw(0) > 1) {
+				this.land();
+			} else if (this.flying && this.isLanding && this.getDw(0) == 0) {
+				this.done();
 			}
 		}
-		
-		if (flying) {
-			getCart().motionX = isLanding ? landDirX * 0.05F : 0;
-			getCart().motionY = isLanding ? 0 : 0.1D;
-			getCart().motionZ = isLanding ? landDirZ * 0.05F : 0;
-			if (!isLanding || landDirX == 0) {
-				getCart().posX = flyX;
-			}else{
-				getCart().posX += getCart().motionX;
+		if (this.flying) {
+			this.getCart().motionX = (this.isLanding ? (this.landDirX * 0.05f) : 0.0);
+			this.getCart().motionY = (this.isLanding ? 0.0 : 0.1);
+			this.getCart().motionZ = (this.isLanding ? (this.landDirZ * 0.05f) : 0.0);
+			if (!this.isLanding || this.landDirX == 0) {
+				this.getCart().posX = this.flyX;
+			} else {
+				final MinecartModular cart = this.getCart();
+				cart.posX += this.getCart().motionX;
 			}
-			if (!isLanding || landDirZ == 0) {
-				getCart().posZ = flyZ;
-			}else{
-				getCart().posZ += getCart().motionZ;
+			if (!this.isLanding || this.landDirZ == 0) {
+				this.getCart().posZ = this.flyZ;
+			} else {
+				final MinecartModular cart2 = this.getCart();
+				cart2.posZ += this.getCart().motionZ;
 			}
-			getCart().rotationYaw = yaw;
-			getCart().rotationPitch = 0;
-			
-			if (isLanding) {
-				getCart().posY = landY;
-				
+			this.getCart().rotationYaw = this.yaw;
+			this.getCart().rotationPitch = 0.0f;
+			BlockPos pos = getCart().getPosition();
+			if (this.isLanding) {
+				this.getCart().posY = this.landY;
+				if (BlockRailBase.isRailBlock(getCart().worldObj, pos)) {
+					this.done();
+					this.updateDw(0, 0);
+				}
+			}
+			if (!this.isLanding && this.getCart().posY - this.groundY > 2.0 && BlockRailBase.isRailBlock(this.getCart().worldObj, pos.add(landDirX, 0, landDirZ))) {
+				this.land();
+				this.updateDw(0, 2);
+			}
+		}
+	}
 
-	            if (BlockRailBase.func_150049_b_( getCart().worldObj, getCart().x(), getCart().y(), getCart().z())) {
-	            	done();
-	            	updateDw(0, (byte)0);
-	            }				
-			}
-			
-			if (!isLanding && getCart().posY - groundY > 2) {
-                if (BlockRailBase.func_150049_b_( getCart().worldObj, getCart().x() + landDirX, getCart().y(), getCart().z() + landDirZ)) {
-	            	land();
-	            	updateDw(0, (byte)2);
-	            }
-			}
-			
-		}
-	}
-	
 	@Override
-	public void activatedByRail(int x, int y, int z, boolean active) {
+	public void activatedByRail(final int x, final int y, final int z, final boolean active) {
 		if (active) {
-			takeOff();
-			updateDw(0, (byte)1);
-		}
-	}	
-	
-	private void takeOff() {
-		flying = true;
-		getCart().setCanUseRail(false);
-		flyX = getCart().posX;
-		flyZ = getCart().posZ;
-		yaw = getCart().rotationYaw;
-		groundY = getCart().posY;
-		
-		
-		if (Math.abs(getCart().motionX) > Math.abs(getCart().motionZ)) {
-			landDirX = getCart().motionX > 0 ? 1 : -1;
-		}else{
-			landDirZ = getCart().motionZ > 0 ? 1 : -1;
+			this.takeOff();
+			this.updateDw(0, 1);
 		}
 	}
-	
+
+	private void takeOff() {
+		this.flying = true;
+		this.getCart().setCanUseRail(false);
+		this.flyX = this.getCart().posX;
+		this.flyZ = this.getCart().posZ;
+		this.yaw = this.getCart().rotationYaw;
+		this.groundY = this.getCart().posY;
+		if (Math.abs(this.getCart().motionX) > Math.abs(this.getCart().motionZ)) {
+			this.landDirX = ((this.getCart().motionX > 0.0) ? 1 : -1);
+		} else {
+			this.landDirZ = ((this.getCart().motionZ > 0.0) ? 1 : -1);
+		}
+	}
+
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
 	}
-	
+
 	@Override
 	public void initDw() {
-		addDw(0, (byte)0);
-	}
-	
-	private void land() {
-    	isLanding = true;
-    	landY = getCart().posY;
-    	getCart().setCanUseRail(true);		
-	}
-	
-	private void done() {
-		flying = false;
-		isLanding = false;
-		landDirX = 0;
-		landDirZ = 0;
+		this.addDw(0, 0);
 	}
 
-	
+	private void land() {
+		this.isLanding = true;
+		this.landY = this.getCart().posY;
+		this.getCart().setCanUseRail(true);
+	}
+
+	private void done() {
+		this.flying = false;
+		this.isLanding = false;
+		this.landDirX = 0;
+		this.landDirZ = 0;
+	}
 }

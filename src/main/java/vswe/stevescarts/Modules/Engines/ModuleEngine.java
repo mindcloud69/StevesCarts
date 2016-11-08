@@ -1,4 +1,5 @@
 package vswe.stevescarts.Modules.Engines;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -11,76 +12,73 @@ public abstract class ModuleEngine extends ModuleBase {
 	private int fuel;
 	protected int[] priorityButton;
 
-	public ModuleEngine(MinecartModular cart) {
+	public ModuleEngine(final MinecartModular cart) {
 		super(cart);
-		initPriorityButton();
+		this.initPriorityButton();
 	}
 
 	protected void initPriorityButton() {
-		priorityButton = new int[] {78,7,16,16};	
+		this.priorityButton = new int[] { 78, 7, 16, 16 };
 	}
-	
-	//called to update the module's actions. Called by the cart's update code.
+
 	@Override
 	public void update() {
 		super.update();
-		loadFuel();
+		this.loadFuel();
 	}
 
-	//returns if this cart supplies the cart with fuel
-	public boolean hasFuel(int comsumption) {
-		return getFuelLevel() >= comsumption && !isDisabled();
+	@Override
+	public boolean hasFuel(final int comsumption) {
+		return this.getFuelLevel() >= comsumption && !this.isDisabled();
 	}
 
 	public int getFuelLevel() {
-		return fuel;
+		return this.fuel;
 	}
 
-	public void setFuelLevel(int val) {
-		fuel = val;
+	public void setFuelLevel(final int val) {
+		this.fuel = val;
 	}
 
 	protected boolean isDisabled() {
-		return getPriority()  >= 3 || getPriority() < 0;
+		return this.getPriority() >= 3 || this.getPriority() < 0;
 	}
 
 	public int getPriority() {
-		if (isPlaceholder()) {
+		if (this.isPlaceholder()) {
 			return 0;
 		}
-	
-		int temp = getDw(0);
+		int temp = this.getDw(0);
 		if (temp < 0 || temp > 3) {
 			temp = 3;
 		}
 		return temp;
 	}
 
-	private void setPriority(int data) {	
+	private void setPriority(int data) {
 		if (data < 0) {
 			data = 0;
-		}else if (data > 3) {
+		} else if (data > 3) {
 			data = 3;
 		}
-
-		updateDw(0, data);
+		this.updateDw(0, data);
 	}
 
-	public void consumeFuel(int comsumption) {
-		setFuelLevel(getFuelLevel() - comsumption);
+	public void consumeFuel(final int comsumption) {
+		this.setFuelLevel(this.getFuelLevel() - comsumption);
 	}
 
-    protected abstract void loadFuel();
+	protected abstract void loadFuel();
 
-	public void smoke(){}
+	public void smoke() {
+	}
 
-	
 	public abstract int getTotalFuel();
+
 	public abstract float[] getGuiBarColor();
-	
-	
+
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -94,75 +92,70 @@ public abstract class ModuleEngine extends ModuleBase {
 		return 50;
 	}
 
-		
-	
 	@Override
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/engine.png");
-
-		int sourceX = 16 * getPriority();
+		final int sourceX = 16 * this.getPriority();
 		int sourceY = 0;
-		if (inRect(x,y, priorityButton)) {
+		if (this.inRect(x, y, this.priorityButton)) {
 			sourceY = 16;
 		}
-		drawImage(gui, priorityButton, sourceX, sourceY);
+		this.drawImage(gui, this.priorityButton, sourceX, sourceY);
 	}
 
 	@Override
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, getPriorityText() , x, y , priorityButton);
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui, this.getPriorityText(), x, y, this.priorityButton);
 	}
 
 	private String getPriorityText() {
-        if (isDisabled()) {
-            return Localization.MODULES.ENGINES.ENGINE_DISABLED.translate();
-        }else{
-            return Localization.MODULES.ENGINES.ENGINE_PRIORITY.translate(String.valueOf(getPriority()));
-        }
+		if (this.isDisabled()) {
+			return Localization.MODULES.ENGINES.ENGINE_DISABLED.translate();
+		}
+		return Localization.MODULES.ENGINES.ENGINE_PRIORITY.translate(String.valueOf(this.getPriority()));
 	}
 
 	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
-		if (inRect(x,y, priorityButton)) {
-			if (button == 0 || button == 1) {
-				sendPacket(0,(byte)button);
-			}
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
+		if (this.inRect(x, y, this.priorityButton) && (button == 0 || button == 1)) {
+			this.sendPacket(0, (byte) button);
 		}
 	}
+
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			int prio = getPriority();
-			prio += data[0] == 0 ? 1 : -1;
+			int prio = this.getPriority();
+			prio += ((data[0] == 0) ? 1 : -1);
 			prio %= 4;
 			if (prio < 0) {
 				prio += 4;
 			}
-			setPriority(prio);
+			this.setPriority(prio);
 		}
 	}
-	@Override
+
 	public int numberOfPackets() {
 		return 1;
 	}
-	
+
 	@Override
 	public void initDw() {
-		addDw(0,0);
-	}	
+		this.addDw(0, 0);
+	}
+
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
 	}
 
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setByte(generateNBTName("Priority",id),(byte)getPriority());
-	}
-	
-	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		setPriority(tagCompound.getByte(generateNBTName("Priority",id)));
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setByte(this.generateNBTName("Priority", id), (byte) this.getPriority());
 	}
 
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.setPriority(tagCompound.getByte(this.generateNBTName("Priority", id)));
+	}
 }

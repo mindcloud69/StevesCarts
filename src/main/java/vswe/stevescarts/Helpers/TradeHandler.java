@@ -1,42 +1,31 @@
 package vswe.stevescarts.Helpers;
 
-import java.util.Random;
-
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityVillager.ITradeList;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
+import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import vswe.stevescarts.Items.ModItems;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 
-public class TradeHandler implements VillagerRegistry.IVillageTradeHandler
-{
-	public static int santaId = 523;
-	
-    public TradeHandler()
-    {
-    	VillagerRegistry.instance().registerVillagerId(santaId);
+import java.util.Random;
 
-		VillagerRegistry.instance().registerVillageTradeHandler(santaId,this);		
-    }
+public class TradeHandler implements ITradeList {
 
+	public static VillagerProfession santaProfession;
 
-    public void registerSkin() {
-        VillagerRegistry.instance().registerVillagerSkin(santaId, ResourceHelper.getResource("/models/santa.png"));
-    }
-
-	/**
-	 * Called to allow changing the content of the {@link MerchantRecipeList} for the villager
-	 * supplied during creation
-	 *
-	 * @param villager
-	 * @param recipeList
-	 */
-	@Override
-	public void manipulateTradesForVillager(EntityVillager villager, MerchantRecipeList recipeList, Random random) {
-		recipeList.add(new MerchantRecipe(new ItemStack(ModItems.component, 3, 50), new ItemStack(ModItems.component,1,51)));
+	public TradeHandler() {
+		santaProfession = new VillagerProfession("stevecarts:santa", ResourceHelper.getResource("/models/santa.png").toString(), ResourceHelper.getResource("/models/santa_zombie.png").toString());
+		VillagerCareer career = new VillagerCareer(santaProfession, "santa");
+		VillagerRegistry.instance().register(santaProfession);
+		career.addTrade(1, this);
 	}
-	
 
-	
+	@Override
+	public void modifyMerchantRecipeList(MerchantRecipeList recipeList, Random random) {
+		recipeList.add(new MerchantRecipe(new ItemStack(ModItems.component, 3, ComponentTypes.STOLEN_PRESENT.getId()), new ItemStack(ModItems.component, 1, ComponentTypes.GREEN_WRAPPING_PAPER.getId())));
+	}
 }

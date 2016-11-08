@@ -1,293 +1,140 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleFarmer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelFarmer extends ModelCartbase
-{
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return resource;
-	}
-
-	protected int getTextureWidth() {
-		return 128;
-	}
-
-	public float extraMult() {
-		return 0.5F;
-	}
-
+public class ModelFarmer extends ModelCartbase {
 	private ModelRenderer mainAnchor;
 	private ModelRenderer anchor;
 	private ModelRenderer[] outers;
 	private ResourceLocation resource;
-    public ModelFarmer(ResourceLocation resource)
-    {
-    	this.resource = resource;
-    	
-		mainAnchor = new ModelRenderer(this);
-		AddRenderer(mainAnchor);
 
-		mainAnchor.setRotationPoint(
-			-18, 		//X
-			4,			//Y
-			0			//Z
-		);
-
-		for (int i=-1; i<=1; i+=2){
-			ModelRenderer smallarm = new ModelRenderer(this, 26, 23);
-			mainAnchor.addChild(smallarm);
-			fixSize(smallarm);
-
-			smallarm.addBox(
-				-1F, 	//X
-				-1F, 	//Y
-				-1F,	 	//Z
-				8,					//Size X
-				2,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			smallarm.setRotationPoint(
-				0, 		//X
-				0,			//Y
-				i*17			//Z
-			);
-		}
-
-		ModelRenderer mainarm = new ModelRenderer(this, 0, 37);
-		mainAnchor.addChild(mainarm);
-		fixSize(mainarm);
-
-		mainarm.addBox(
-			-30F, 	//X
-			-2F, 	//Y
-			-2F,	 	//Z
-			60,					//Size X
-			4,					//Size Y
-			4,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		mainarm.setRotationPoint(
-			8, 		//X
-			0,			//Y
-			0			//Z
-		);
-		mainarm.rotateAngleY = (float)Math.PI / 2;
-
-		for (int i=-1; i<=1; i+=2){
-			ModelRenderer extra = new ModelRenderer(this, 26, 27);
-			mainAnchor.addChild(extra);
-			fixSize(extra);
-
-			extra.addBox(
-				-2.5F, 	//X
-				-2.5F, 	//Y
-				-1F,	 	//Z
-				5,					//Size X
-				5,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			extra.setRotationPoint(
-				8, 		//X
-				0,			//Y
-				i*30			//Z
-			);
-
-			ModelRenderer bigarm = new ModelRenderer(this, 26, 17);
-			mainAnchor.addChild(bigarm);
-			fixSize(bigarm);
-
-			bigarm.addBox(
-				-1F, 	//X
-				-2F, 	//Y
-				-1F,	 	//Z
-				16,					//Size X
-				4,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			bigarm.setRotationPoint(
-				8, 		//X
-				0,			//Y
-				i*32			//Z
-			);
-		}
-
-		anchor = new ModelRenderer(this);
-		mainAnchor.addChild(anchor);
-
-		anchor.setRotationPoint(
-			22, 		//X
-			0,			//Y
-			0			//Z
-		);
-
-		float start = -1.5F;
-		float end = 1.5F;
-		for (float i = -1.5F; i <= 1.5F; i++) {
-			for (int j = 0; j < 6; j++) {
-				ModelRenderer side = new ModelRenderer(this, 0, 0);
-				anchor.addChild(side);
-				fixSize(side);
-
-				side.addBox(
-					-5F, 	//X
-					-2F - 6.8F, 	//Y
-					-1F,	 	//Z
-					10,					//Size X
-					4,					//Size Y
-					2,			     	//Size Z
-					0.0F			 	//Size Increasement
-				);
-				side.setRotationPoint(
-					0, 		//X
-					0,			//Y
-					i*20+(j%2) * 0.005F			//Z
-				);
-				side.rotateAngleZ = j * (float)(Math.PI * 2) / 6;
-			}
-
-			if (i == start || i == end) {
-				ModelRenderer sidecenter = new ModelRenderer(this, 0, 12);
-				anchor.addChild(sidecenter);
-				fixSize(sidecenter);
-
-				sidecenter.addBox(
-					-6F, 	//X
-					-6F, 	//Y
-					-0.5F,	 	//Z
-					12,					//Size X
-					12,					//Size Y
-					1,			     	//Size Z
-					0.0F			 	//Size Increasement
-				);
-				sidecenter.setRotationPoint(
-					0, 		//X
-					0,			//Y
-					i*20			//Z
-				);
-			}else{
-				for (int j=0; j < 3; j++) {
-					ModelRenderer sidecenter = new ModelRenderer(this, 26, 12);
-					anchor.addChild(sidecenter);
-					fixSize(sidecenter);
-
-					sidecenter.addBox(
-						-4F + 3, 	//X
-						-2F  ,	//Y
-						-0.5F,	 	//Z
-						8,					//Size X
-						4,					//Size Y
-						1,			     	//Size Z
-						0.0F			 	//Size Increasement
-					);
-					sidecenter.setRotationPoint(
-						0, 		//X
-						0,			//Y
-						i*20			//Z
-					);
-					sidecenter.rotateAngleZ = (j+0.25F) * (float)(Math.PI * 2) / 3;
-				}
-			}
-		}
-
-		for (int i = 0; i < 6; i++) {
-			ModelRenderer middle = new ModelRenderer(this, 0, 6);
-			anchor.addChild(middle);
-			fixSize(middle);
-
-			middle.addBox(
-				-30F, 	//X
-				-1F - 0.7F, 	//Y
-				-1F,	 	//Z
-				60,					//Size X
-				2,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			middle.setRotationPoint(
-				0, 		//X
-				0,			//Y
-				(i%2) * 0.005F			//Z
-			);
-			middle.rotateAngleX = i * (float)(Math.PI * 2) / 6;
-			middle.rotateAngleY = (float)Math.PI / 2;
-		}
-
-		outers = new ModelRenderer[6];
-		for (int i = 0; i < 6; i++) {
-			ModelRenderer nailAnchor = new ModelRenderer(this);
-			anchor.addChild(nailAnchor);
-			nailAnchor.rotateAngleX = nailRot(i);
-			nailAnchor.rotateAngleY = (float)Math.PI / 2;
-
-			ModelRenderer outer = new ModelRenderer(this, 0, 10);
-			nailAnchor.addChild(outer);
-			fixSize(outer);
-
-			outer.addBox(
-				-30F, 	//X
-				-0.5F, 	//Y
-				-0.5F,	 	//Z
-				60,					//Size X
-				1,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			outer.setRotationPoint(
-				0, 		//X
-				-8.8F,			//Y
-				0			//Z
-			);
-			outer.rotateAngleX = (float)Math.PI;
-			outers[i] = outer;
-
-			for (int j = -13; j <= 13; j++) {
-				if (Math.abs(j) <= 6 && Math.abs(j) >= 4) {
-					continue;
-				}
-
-				ModelRenderer nail = new ModelRenderer(this, 44, 13);
-				outer.addChild(nail);
-				fixSize(nail);
-
-				nail.addBox(
-					-0.5F, 	//X
-					-1.5F, 	//Y
-					-0.5F,	 	//Z
-					1,					//Size X
-					3,					//Size Y
-					1,			     	//Size Z
-					0.0F			 	//Size Increasement
-				);
-				nail.setRotationPoint(
-					j*2, 		//X
-					-2F,			//Y
-					0			//Z
-				);
-				//nail.rotateAngleZ = -angle;
-				//nail.rotateAngleY = (float)Math.PI / 2;
-			}
-		}
-    }
-
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-		mainAnchor.rotateAngleZ = module == null ? (float)Math.PI * 5 / 4 : -((ModuleFarmer)module).getRigAngle();
-		float farmAngle = module == null ? 0 : ((ModuleFarmer)module).getFarmAngle();
-		anchor.rotateAngleZ = -farmAngle;
-		for (int i = 0; i < 6; i++) {
-			outers[i].rotateAngleX = farmAngle + nailRot(i) /*- (float)Math.PI / 4*/;
-		}
-		
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return this.resource;
 	}
 
-	private float nailRot(int i) {
-		return (i+0.5F) * (float)(Math.PI * 2) / 6;
+	@Override
+	protected int getTextureWidth() {
+		return 128;
+	}
+
+	@Override
+	public float extraMult() {
+		return 0.5f;
+	}
+
+	public ModelFarmer(final ResourceLocation resource) {
+		this.resource = resource;
+		this.AddRenderer(this.mainAnchor = new ModelRenderer(this));
+		this.mainAnchor.setRotationPoint(-18.0f, 4.0f, 0.0f);
+		for (int i = -1; i <= 1; i += 2) {
+			final ModelRenderer smallarm = new ModelRenderer(this, 26, 23);
+			this.mainAnchor.addChild(smallarm);
+			this.fixSize(smallarm);
+			smallarm.addBox(-1.0f, -1.0f, -1.0f, 8, 2, 2, 0.0f);
+			smallarm.setRotationPoint(0.0f, 0.0f, (float) (i * 17));
+		}
+		final ModelRenderer mainarm = new ModelRenderer(this, 0, 37);
+		this.mainAnchor.addChild(mainarm);
+		this.fixSize(mainarm);
+		mainarm.addBox(-30.0f, -2.0f, -2.0f, 60, 4, 4, 0.0f);
+		mainarm.setRotationPoint(8.0f, 0.0f, 0.0f);
+		mainarm.rotateAngleY = 1.5707964f;
+		for (int j = -1; j <= 1; j += 2) {
+			final ModelRenderer extra = new ModelRenderer(this, 26, 27);
+			this.mainAnchor.addChild(extra);
+			this.fixSize(extra);
+			extra.addBox(-2.5f, -2.5f, -1.0f, 5, 5, 2, 0.0f);
+			extra.setRotationPoint(8.0f, 0.0f, (float) (j * 30));
+			final ModelRenderer bigarm = new ModelRenderer(this, 26, 17);
+			this.mainAnchor.addChild(bigarm);
+			this.fixSize(bigarm);
+			bigarm.addBox(-1.0f, -2.0f, -1.0f, 16, 4, 2, 0.0f);
+			bigarm.setRotationPoint(8.0f, 0.0f, (float) (j * 32));
+		}
+		this.anchor = new ModelRenderer(this);
+		this.mainAnchor.addChild(this.anchor);
+		this.anchor.setRotationPoint(22.0f, 0.0f, 0.0f);
+		final float start = -1.5f;
+		final float end = 1.5f;
+		for (float k = -1.5f; k <= 1.5f; ++k) {
+			for (int l = 0; l < 6; ++l) {
+				final ModelRenderer side = new ModelRenderer(this, 0, 0);
+				this.anchor.addChild(side);
+				this.fixSize(side);
+				side.addBox(-5.0f, -8.8f, -1.0f, 10, 4, 2, 0.0f);
+				side.setRotationPoint(0.0f, 0.0f, k * 20.0f + l % 2 * 0.005f);
+				side.rotateAngleZ = l * 6.2831855f / 6.0f;
+			}
+			if (k == start || k == end) {
+				final ModelRenderer sidecenter = new ModelRenderer(this, 0, 12);
+				this.anchor.addChild(sidecenter);
+				this.fixSize(sidecenter);
+				sidecenter.addBox(-6.0f, -6.0f, -0.5f, 12, 12, 1, 0.0f);
+				sidecenter.setRotationPoint(0.0f, 0.0f, k * 20.0f);
+			} else {
+				for (int l = 0; l < 3; ++l) {
+					final ModelRenderer sidecenter2 = new ModelRenderer(this, 26, 12);
+					this.anchor.addChild(sidecenter2);
+					this.fixSize(sidecenter2);
+					sidecenter2.addBox(-1.0f, -2.0f, -0.5f, 8, 4, 1, 0.0f);
+					sidecenter2.setRotationPoint(0.0f, 0.0f, k * 20.0f);
+					sidecenter2.rotateAngleZ = (l + 0.25f) * 6.2831855f / 3.0f;
+				}
+			}
+		}
+		for (int m = 0; m < 6; ++m) {
+			final ModelRenderer middle = new ModelRenderer(this, 0, 6);
+			this.anchor.addChild(middle);
+			this.fixSize(middle);
+			middle.addBox(-30.0f, -1.7f, -1.0f, 60, 2, 2, 0.0f);
+			middle.setRotationPoint(0.0f, 0.0f, m % 2 * 0.005f);
+			middle.rotateAngleX = m * 6.2831855f / 6.0f;
+			middle.rotateAngleY = 1.5707964f;
+		}
+		this.outers = new ModelRenderer[6];
+		for (int m = 0; m < 6; ++m) {
+			final ModelRenderer nailAnchor = new ModelRenderer(this);
+			this.anchor.addChild(nailAnchor);
+			nailAnchor.rotateAngleX = this.nailRot(m);
+			nailAnchor.rotateAngleY = 1.5707964f;
+			final ModelRenderer outer = new ModelRenderer(this, 0, 10);
+			nailAnchor.addChild(outer);
+			this.fixSize(outer);
+			outer.addBox(-30.0f, -0.5f, -0.5f, 60, 1, 1, 0.0f);
+			outer.setRotationPoint(0.0f, -8.8f, 0.0f);
+			outer.rotateAngleX = 3.1415927f;
+			this.outers[m] = outer;
+			for (int j2 = -13; j2 <= 13; ++j2) {
+				if (Math.abs(j2) > 6 || Math.abs(j2) < 4) {
+					final ModelRenderer nail = new ModelRenderer(this, 44, 13);
+					outer.addChild(nail);
+					this.fixSize(nail);
+					nail.addBox(-0.5f, -1.5f, -0.5f, 1, 3, 1, 0.0f);
+					nail.setRotationPoint((float) (j2 * 2), -2.0f, 0.0f);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		this.mainAnchor.rotateAngleZ = ((module == null) ? 3.926991f : (-((ModuleFarmer) module).getRigAngle()));
+		final float farmAngle = (module == null) ? 0.0f : ((ModuleFarmer) module).getFarmAngle();
+		this.anchor.rotateAngleZ = -farmAngle;
+		for (int i = 0; i < 6; ++i) {
+			this.outers[i].rotateAngleX = farmAngle + this.nailRot(i);
+		}
+	}
+
+	private float nailRot(final int i) {
+		return (i + 0.5f) * 6.2831855f / 6.0f;
 	}
 }

@@ -1,168 +1,128 @@
 package vswe.stevescarts.Items;
-import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import vswe.stevescarts.StevesCarts;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
-public class ItemCartModule extends Item
-{
 
-    public ItemCartModule()
-    {
-        super();
-        setHasSubtypes(true);
-        setMaxDamage(0);
-        setCreativeTab(StevesCarts.tabsSC2);	
-    }
+import java.util.List;
 
+public class ItemCartModule extends Item {
+//	IIcon unknownIcon;
 
-	public String getName(ItemStack par1ItemStack)
-    {
-		ModuleData data = getModuleData(par1ItemStack, true);
+	public ItemCartModule() {
+		this.setHasSubtypes(true);
+		this.setMaxDamage(0);
+		this.setCreativeTab(StevesCarts.tabsSC2);
+	}
+
+	public String getName(final ItemStack par1ItemStack) {
+		final ModuleData data = this.getModuleData(par1ItemStack, true);
 		if (data == null) {
 			return "Unknown SC2 module";
-		}else{
-			return data.getName();
 		}
-		
-    }
-	
-
-	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int dmg)
-    {
-		ModuleData data = ModuleData.getList().get((byte)dmg);
-		if (data != null) {
-			return data.getIcon();
-		}
-		return unknownIcon;
-    }	
-		
-	IIcon unknownIcon;
-		
-	@Override
-	@SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-		for (ModuleData module : ModuleData.getList().values()) {
-			module.createIcon(register);
-		}
-		unknownIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "unknown_icon");	
-    }	
-
-	@Override
-    public String getUnlocalizedName() {
-	
-		return "item." + StevesCarts.localStart + "unknownmodule";
+		return data.getName();
 	}
-	
-	@Override
-    public String getUnlocalizedName(ItemStack item)
-    {
-		ModuleData data = getModuleData(item, true);
-		if (data != null) {
-			 return "item." + StevesCarts.localStart  + data.getRawName();
-		}
-		return getUnlocalizedName();
-    }
-	
-    @SideOnly(Side.CLIENT)
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @Override
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List)
-    {
-		for (ModuleData module : ModuleData.getList().values()) {
-			if (module.getIsValid()) {
-				par3List.add(module.getItemStack());			
-			}
-        }
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		ModuleData module = getModuleData(par1ItemStack, true);
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIconFromDamage(final int dmg) {
+//		final ModuleData data = ModuleData.getList().get((byte) dmg);
+//		if (data != null) {
+//			return data.getIcon();
+//		}
+//		return this.unknownIcon;
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerIcons(final IIconRegister register) {
+//		for (final ModuleData module : ModuleData.getList().values()) {
+//			module.createIcon(register);
+//		}
+//		final StringBuilder sb = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.unknownIcon = register.registerIcon(sb.append("stevescarts").append(":").append("unknown_icon").toString());
+//	}
+
+	public String getUnlocalizedName() {
+		return "item.SC2:unknownmodule";
+	}
+
+	public String getUnlocalizedName(final ItemStack item) {
+		final ModuleData data = this.getModuleData(item, true);
+		if (data != null) {
+			return "item.SC2:" + data.getRawName();
+		}
+		return this.getUnlocalizedName();
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(final Item item, final CreativeTabs par2CreativeTabs, final List par3List) {
+		for (final ModuleData module : ModuleData.getList().values()) {
+			if (module.getIsValid()) {
+				par3List.add(module.getItemStack());
+			}
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+		final ModuleData module = this.getModuleData(par1ItemStack, true);
 		if (module != null) {
 			module.addInformation(par3List, par1ItemStack.getTagCompound());
-		}else if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartModule){
+		} else if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartModule) {
 			par3List.add("Module id " + par1ItemStack.getItemDamage());
-		}else{
+		} else {
 			par3List.add("Unknown module id");
 		}
-		
-		
-	}	
-    
-    
-	
-	public ModuleData getModuleData(ItemStack itemstack) {
-		return getModuleData(itemstack, false);
 	}
-	
-	public ModuleData getModuleData(ItemStack itemstack, boolean ignoreSize) {
+
+	public ModuleData getModuleData(final ItemStack itemstack) {
+		return this.getModuleData(itemstack, false);
+	}
+
+	public ModuleData getModuleData(final ItemStack itemstack, final boolean ignoreSize) {
 		if (itemstack != null && itemstack.getItem() instanceof ItemCartModule && (ignoreSize || itemstack.stackSize != TileEntityCartAssembler.getRemovedSize())) {
-			return ModuleData.getList().get((byte)itemstack.getItemDamage());
-		}else{
-			return null;
+			return ModuleData.getList().get((byte) itemstack.getItemDamage());
 		}
+		return null;
 	}
 
-
-	public void addExtraDataToCart(NBTTagCompound save, ItemStack module, int i) {
+	public void addExtraDataToCart(final NBTTagCompound save, final ItemStack module, final int i) {
 		if (module.getTagCompound() != null && module.getTagCompound().hasKey("Data")) {
 			save.setByte("Data" + i, module.getTagCompound().getByte("Data"));
-		}else{
-			ModuleData data = getModuleData(module, true);
+		} else {
+			final ModuleData data = this.getModuleData(module, true);
 			if (data.isUsingExtraData()) {
 				save.setByte("Data" + i, data.getDefaultExtraData());
 			}
 		}
 	}
 
-
-
-
-	public void addExtraDataToModule(NBTTagCompound save, ModuleBase module, int i) {
+	public void addExtraDataToModule(final NBTTagCompound save, final ModuleBase module, final int i) {
 		if (module.hasExtraData()) {
 			save.setByte("Data" + i, module.getExtraData());
 		}
 	}
 
-
-	public void addExtraDataToModule(ItemStack module, NBTTagCompound info, int i) {
+	public void addExtraDataToModule(final ItemStack module, final NBTTagCompound info, final int i) {
 		NBTTagCompound save = module.getTagCompound();
 		if (save == null) {
 			module.setTagCompound(save = new NBTTagCompound());
 		}
-		
-
 		if (info != null && info.hasKey("Data" + i)) {
-			save.setByte("Data" , info.getByte("Data" + i));
-		}else{
-			ModuleData data = getModuleData(module, true);
+			save.setByte("Data", info.getByte("Data" + i));
+		} else {
+			final ModuleData data = this.getModuleData(module, true);
 			if (data.isUsingExtraData()) {
 				save.setByte("Data", data.getDefaultExtraData());
 			}
 		}
-		
-				
 	}
-	
 }

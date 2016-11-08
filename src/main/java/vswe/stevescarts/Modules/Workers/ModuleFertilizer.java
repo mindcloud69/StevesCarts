@@ -1,12 +1,17 @@
 package vswe.stevescarts.Modules.Workers;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
@@ -18,11 +23,22 @@ import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotFertilizer;
 
 public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
-	public ModuleFertilizer(MinecartModular cart) {
+	private int tankPosX;
+	private int tankPosY;
+	private int range;
+	private int fert;
+	private final int fertPerBonemeal = 4;
+	private final int maxStacksOfBones = 1;
+
+	public ModuleFertilizer(final MinecartModular cart) {
 		super(cart);
+		this.tankPosX = this.guiWidth() - 21;
+		this.tankPosY = 20;
+		this.range = 1;
+		this.fert = 0;
 	}
 
-	//lower numbers are prioritized
+	@Override
 	public byte getWorkPriority() {
 		return 127;
 	}
@@ -37,41 +53,34 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 		return 1;
 	}
 
-	private int tankPosX = guiWidth() - 21;
-	private int tankPosY = 20;
-	
-	private int range = 1;
-	
+	@Override
 	public void init() {
 		super.init();
-	
-		for (ModuleBase module : getCart().getModules()) {
+		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ModuleFarmer) {
-				range = ((ModuleFarmer)module).getExternalRange();
+				this.range = ((ModuleFarmer) module).getExternalRange();
 				break;
 			}
 		}
-	}	
-
+	}
 
 	@Override
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/fertilize.png");
-
-		drawImage(gui, tankPosX, tankPosY, 0, 0, 18 , 27);
-		float percentage = fert / (float)getMaxFert();
-		int size = (int)(percentage * 23);
-		drawImage(gui, tankPosX + 2, tankPosY + 2 + (23-size), 18, (23-size), 14, size);
+		this.drawImage(gui, this.tankPosX, this.tankPosY, 0, 0, 18, 27);
+		final float percentage = this.fert / this.getMaxFert();
+		final int size = (int) (percentage * 23.0f);
+		this.drawImage(gui, this.tankPosX + 2, this.tankPosY + 2 + (23 - size), 18, 23 - size, 14, size);
 	}
 
 	@Override
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.FERTILIZERS.translate() + ": " + fert + " / " + getMaxFert(), x,y, tankPosX, tankPosY, 18, 27);
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		this.drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.FERTILIZERS.translate() + ": " + this.fert + " / " + this.getMaxFert(), x, y, this.tankPosX, this.tankPosY, 18, 27);
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -85,145 +94,116 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	}
 
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotFertilizer(getCart(),slotId,8+x*18,23+y*18);
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotFertilizer(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 
-	//return true when the work is done, false allow other modules to continue the work
+	@Override
 	public boolean work() {
-       //get the next block so the cart knows where to mine
-        Vec3 next = getNextblock();
-        //save thee coordinates for easy access
-        int x = (int) next.xCoord;
-        int y = (int) next.yCoord;
-        int z = (int) next.zCoord;
-
-        //loop through the blocks in the "hole" in front of the cart
-
-        for (int i = -range; i <= range; i++)
-        {
-            for (int j = -range; j <= range; j++)
-            {
-                //calculate the coordinates of this "hole"
-                int coordX = x + i;
-                int coordY = y - 1;
-                int coordZ = z + j;
-
-				fertilize(coordX, coordY, coordZ);
-            }
-        }
-
+		BlockPos next = this.getNextblock();
+		for (int i = -this.range; i <= this.range; ++i) {
+			for (int j = -this.range; j <= this.range; ++j) {
+				this.fertilize(next.add(i, -1, j));
+			}
+		}
 		return false;
-    }
+	}
 
-    private void fertilize(int x, int y, int z)
-    {
-		Block block = getCart().worldObj.getBlock(x, y + 1, z);
-        int metadataOfBlockAbove = getCart().worldObj.getBlockMetadata(x, y + 1, z);
-        int metadata = getCart().worldObj.getBlockMetadata(x, y, z);
-
-		if (fert > 0) {
-			if (block instanceof BlockCrops && metadataOfBlockAbove != 7)
-			{
-				if ((metadata > 0 && getCart().rand.nextInt(250) == 0) || (metadata == 0 && getCart().rand.nextInt(1000) == 0))
-				{
-					getCart().worldObj.setBlockMetadataWithNotify(x, y + 1, z, metadataOfBlockAbove + 1, 3);
-
-					fert--;
+	private void fertilize(BlockPos pos) {
+		IBlockState stateOfTopBlock = getCart().worldObj.getBlockState(pos.up());
+		Block blockTop = stateOfTopBlock.getBlock();
+		if (this.fert > 0) {
+			/*if (blockTop instanceof BlockCrops && stateOfTopBlock.getValue(BlockCrops.AGE) == 7) {
+				int age = stateOfTopBlock.getValue(BlockCrops.AGE);
+				if ((age > 0 && this.getCart().rand.nextInt(250) == 0) || (age == 0 && this.getCart().rand.nextInt(1000) == 0)) {
+					this.getCart().worldObj.setBlockState(pos.up(), stateOfTopBlock.withProperty(BlockCrops.AGE, age + 1), 3);
+					--this.fert;
 				}
-			}else  if (block instanceof BlockSapling && getCart().worldObj.getBlockLightValue(x, y + 2, z) >= 9) {
-				if (getCart().rand.nextInt(100) == 0) {
-					if (getCart().rand.nextInt(6) == 0) {
-						getCart().worldObj.setBlockMetadataWithNotify(x, y+1, z, metadataOfBlockAbove | 8, 3);
-						((BlockSapling) Blocks.sapling).func_149878_d(getCart().worldObj,x,y+1,z,getCart().rand);
+			} else if (blockTop instanceof BlockSapling && this.getCart().worldObj.getLight(pos.up(2)) >= 9 && this.getCart().rand.nextInt(100) == 0) {
+				if (this.getCart().rand.nextInt(6) == 0) {
+					this.getCart().worldObj.setBlockMetadataWithNotify(pos.up(), stateOfTopBlock | 0x8, 3);
+					((BlockSapling) Blocks.SAPLING).func_149878_d(this.getCart().worldObj, x, y + 1, z, this.getCart().rand);
+				}
+				--this.fert;
+			}*/
+			// I thinks that make the module more useful
+			if(blockTop instanceof IGrowable){
+				IGrowable growable = (IGrowable) blockTop;
+				if(growable.canGrow(getCart().worldObj, pos, stateOfTopBlock, false)){
+					if(growable.canUseBonemeal(getCart().worldObj, this.getCart().rand, pos, stateOfTopBlock)){
+						growable.grow(getCart().worldObj, this.getCart().rand, pos, stateOfTopBlock);
+						--this.fert;
 					}
-					fert--;
 				}
 			}
 		}
-    }
+	}
 
- 	@Override
+	@Override
 	public int numberOfGuiData() {
 		return 1;
 	}
 
 	@Override
-	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0, (short)fert);
+	protected void checkGuiData(final Object[] info) {
+		this.updateGuiData(info, 0, (short) this.fert);
 	}
+
 	@Override
-	public void receiveGuiData(int id, short data) {
+	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			fert = data;
+			this.fert = data;
 		}
 	}
 
+	@Override
 	public void update() {
 		super.update();
-
-		loadSupplies();
+		this.loadSupplies();
 	}
 
 	private void loadSupplies() {
-		if (getCart().worldObj.isRemote) {
+		if (this.getCart().worldObj.isRemote) {
 			return;
 		}
-
-        if (getStack(0) != null)
-        {
-            boolean isBone = getStack(0).getItem() == Items.bone;
-            boolean isBoneMeal = getStack(0).getItem() == Items.dye && getStack(0).getItemDamage() == 15;
-
-            if (isBone || isBoneMeal)
-            {
-                int amount;
-
-                if (isBoneMeal)
-                {
-                    amount = 1;
-                }
-                else
-                {
-                    amount = 3;
-                }
-
-                if (fert <= fertPerBonemeal * (maxStacksOfBones * 3 * 64 - amount) && getStack(0).stackSize > 0)
-                {
-                    getStack(0).stackSize--;
-                    fert += amount * fertPerBonemeal;
-                }
-
-                if (getStack(0).stackSize == 0)
-                {
-                    setStack(0,null);
-                }
-            }
-        }
+		if (this.getStack(0) != null) {
+			final boolean isBone = this.getStack(0).getItem() == Items.BONE;
+			final boolean isBoneMeal = this.getStack(0).getItem() == Items.DYE && this.getStack(0).getItemDamage() == 15;
+			if (isBone || isBoneMeal) {
+				int amount;
+				if (isBoneMeal) {
+					amount = 1;
+				} else {
+					amount = 3;
+				}
+				if (this.fert <= 4 * (192 - amount) && this.getStack(0).stackSize > 0) {
+					final ItemStack stack = this.getStack(0);
+					--stack.stackSize;
+					this.fert += amount * 4;
+				}
+				if (this.getStack(0).stackSize == 0) {
+					this.setStack(0, null);
+				}
+			}
+		}
 	}
 
 	private int getMaxFert() {
-		return fertPerBonemeal * maxStacksOfBones * 3 * 64;
+		return 768;
 	}
 
-    private int fert = 0;
-    private final int fertPerBonemeal = 4;
-	private final int maxStacksOfBones = 1;
-	
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setShort(generateNBTName("Fert",id), (short)fert);
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setShort(this.generateNBTName("Fert", id), (short) this.fert);
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		fert = tagCompound.getShort(generateNBTName("Fert",id));
-	}	
-	
-	
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.fert = tagCompound.getShort(this.generateNBTName("Fert", id));
+	}
+
 	@Override
 	public boolean haveSupplies() {
-		return fert > 0;
-	}	
-	
+		return this.fert > 0;
+	}
 }

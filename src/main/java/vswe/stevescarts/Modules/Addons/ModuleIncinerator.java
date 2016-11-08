@@ -1,64 +1,64 @@
 package vswe.stevescarts.Modules.Addons;
+
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotIncinerator;
+
 public class ModuleIncinerator extends ModuleAddon {
-	public ModuleIncinerator(MinecartModular cart) {
+	public ModuleIncinerator(final MinecartModular cart) {
 		super(cart);
 	}
 
-
-	public void incinerate(ItemStack item) {
-		if (isItemValid(item)) {
-			if (getIncinerationCost() != 0) {
-				int amount = item.stackSize * getIncinerationCost();
-				amount = getCart().drain(FluidRegistry.LAVA, amount, false);
-				int incinerated = amount / getIncinerationCost();
-				getCart().drain(FluidRegistry.LAVA, incinerated * getIncinerationCost(), true);
+	public void incinerate(final ItemStack item) {
+		if (this.isItemValid(item)) {
+			if (this.getIncinerationCost() != 0) {
+				int amount = item.stackSize * this.getIncinerationCost();
+				amount = this.getCart().drain(FluidRegistry.LAVA, amount, false);
+				final int incinerated = amount / this.getIncinerationCost();
+				this.getCart().drain(FluidRegistry.LAVA, incinerated * this.getIncinerationCost(), true);
 				item.stackSize -= incinerated;
-			}else{
+			} else {
 				item.stackSize = 0;
 			}
 		}
 	}
-	
+
 	protected int getIncinerationCost() {
 		return 3;
 	}
-	
-	protected boolean isItemValid(ItemStack item) {
+
+	protected boolean isItemValid(final ItemStack item) {
 		if (item != null) {
-			for(int i = 0; i < getInventorySize(); i++) {
-				if (getStack(i) != null && item.isItemEqual(getStack(i))) {
+			for (int i = 0; i < this.getInventorySize(); ++i) {
+				if (this.getStack(i) != null && item.isItemEqual(this.getStack(i))) {
 					return true;
 				}
 			}
 		}
-		
 		return false;
 	}
-	
+
 	@Override
 	public boolean hasGui() {
 		return true;
-	}	
-	
-	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
 	}
-	
+
+	@Override
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+	}
+
 	@Override
 	protected int getInventoryWidth() {
 		return 4;
-	}	
-	
-	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotIncinerator(getCart(),slotId,8+x*18,23+y*18);
-	}	
+	}
 
+	@Override
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotIncinerator(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
+	}
 }

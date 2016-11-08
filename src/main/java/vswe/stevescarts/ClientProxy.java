@@ -1,45 +1,44 @@
 package vswe.stevescarts;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.init.Items;
+
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Fancy.FancyPancyLoader;
 import vswe.stevescarts.Helpers.*;
-import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.Renders.RendererMinecart;
-import vswe.stevescarts.Renders.RendererMinecartItem;
-import vswe.stevescarts.Renders.RendererUpgrade;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import vswe.stevescarts.ModuleData.ModuleData;
-public class ClientProxy extends CommonProxy{
+import vswe.stevescarts.Renders.RendererMinecart;
 
-	public ClientProxy() {
-		new FancyPancyLoader();
-	}
 
+public class ClientProxy extends CommonProxy {
 	@Override
 	public void renderInit() {
-		RenderingRegistry.registerEntityRenderingHandler(MinecartModular.class, new RendererMinecart());
-		RenderingRegistry.registerEntityRenderingHandler(EntityEasterEgg.class, new RenderSnowball(ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
-		StevesCarts.instance.blockRenderer = new RendererUpgrade();
-		new RendererMinecartItem();
-		RenderingRegistry.registerEntityRenderingHandler(EntityCake.class, new RenderSnowball(Items.cake));
+		RenderingRegistry.registerEntityRenderingHandler((Class) MinecartModular.class, new RenderManagerCart());
+//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
+	//	StevesCarts.instance.blockRenderer = (ISimpleBlockRenderingHandler) new RendererUpgrade();
+
+//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityCake.class, new RenderSnowball(Items.CAKE));
 		ModuleData.initModels();
-        if (StevesCarts.instance.tradeHandler != null) {
-            StevesCarts.instance.tradeHandler.registerSkin();
-        }
 	}
-	
+
+	public class RenderManagerCart implements IRenderFactory<MinecartModular> {
+
+		@Override
+		public Render<? super MinecartModular> createRenderFor(RenderManager manager) {
+			return new RendererMinecart(manager);
+		}
+	}
+
 	@Override
 	public void soundInit() {
 		new SoundHandler();
-        new MinecartSoundMuter();
+		new MinecartSoundMuter();
 	}
 
 	@Override
 	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().theWorld;
 	}
-	
 }

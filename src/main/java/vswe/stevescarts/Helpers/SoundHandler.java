@@ -5,42 +5,36 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.SoundCategory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SoundHandler {
+	public static void playDefaultSound(final String name, SoundCategory category, final float volume, final float pitch) {
+		final ISound soundObj = new PlayerSound(Minecraft.getMinecraft().thePlayer, category, name, volume, pitch);
+		Minecraft.getMinecraft().getSoundHandler().playSound(soundObj);
+	}
 
-    public static void playDefaultSound(String name, float volume, float pitch) {
-        ISound soundObj = new PlayerSound(Minecraft.getMinecraft().thePlayer, name, volume, pitch);
-        Minecraft.getMinecraft().getSoundHandler().playSound(soundObj);
-    }
+	public static void playSound(final String name, SoundCategory category, final float volume, final float pitch) {
+		playDefaultSound("stevescarts:" + name, category, volume, pitch);
+	}
 
+	private static class PlayerSound extends PositionedSound {
+		private EntityPlayer player;
 
-    public static void playSound(String name, float volume, float pitch) {
-        playDefaultSound("stevescarts:" + name, volume, pitch);
-    }
+		protected PlayerSound(final EntityPlayer player, SoundCategory category, final String name, final float volume, final float pitch) {
+			super(new ResourceLocation(name), category);
+			this.player = player;
+			this.volume = volume;
+			this.pitch = pitch;
+			this.update();
+		}
 
-    private static class PlayerSound extends PositionedSound {
-
-        private EntityPlayer player;
-        protected PlayerSound(EntityPlayer player, String name, float volume, float pitch) {
-            super(new ResourceLocation(name));
-
-            this.player = player;
-            this.volume = volume;
-            this.field_147663_c = pitch;
-            update();
-        }
-
-
-        private void update() {
-            xPosF = (float)player.posX;
-            yPosF = (float)player.posY;
-            zPosF = (float)player.posZ;
-        }
-
-    }
+		private void update() {
+			this.xPosF = (float) this.player.posX;
+			this.yPosF = (float) this.player.posY;
+			this.zPosF = (float) this.player.posZ;
+		}
+	}
 }
-
-	

@@ -1,127 +1,54 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelTrackRemover extends ModelCartbase
-{
+public class ModelTrackRemover extends ModelCartbase {
+	private static ResourceLocation texture;
 
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/removerModel.png");
-	
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
-	
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelTrackRemover.texture;
+	}
 
-    public ModelTrackRemover()
-    {
-		super();
-
-		ModelRenderer base = new ModelRenderer(this, 0, 0);
-		AddRenderer(base);
-
-		base.addBox(
-			-5, 	//X
-			-5, 	//Y
-			-0.5F,	 	//Z
-			10,					//Size X
-			10,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		base.setRotationPoint(
-			0.0F, 		//X
-			-5.5F,			//Y
-			-0.0F			//Z
-		);
-
-		base.rotateAngleX = (float)Math.PI / 2;
-
-		ModelRenderer pipe = new ModelRenderer(this, 0, 11);
-		AddRenderer(pipe);
-
-		pipe.addBox(
-			-2.5F, 	//X
-			-2.5F, 	//Y
-			-2.5F,	 	//Z
-			6,					//Size X
-			5,					//Size Y
-			5,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		pipe.setRotationPoint(
-			0.0F, 		//X
-			-9.5F,			//Y
-			-0.0F			//Z
-		);
-
-		pipe.rotateAngleZ = (float)Math.PI / 2;
-
-		ModelRenderer pipe2 = new ModelRenderer(this, 0, 21);
+	public ModelTrackRemover() {
+		final ModelRenderer base = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(base);
+		base.addBox(-5.0f, -5.0f, -0.5f, 10, 10, 1, 0.0f);
+		base.setRotationPoint(0.0f, -5.5f, -0.0f);
+		base.rotateAngleX = 1.5707964f;
+		final ModelRenderer pipe = new ModelRenderer(this, 0, 11);
+		this.AddRenderer(pipe);
+		pipe.addBox(-2.5f, -2.5f, -2.5f, 6, 5, 5, 0.0f);
+		pipe.setRotationPoint(0.0f, -9.5f, -0.0f);
+		pipe.rotateAngleZ = 1.5707964f;
+		final ModelRenderer pipe2 = new ModelRenderer(this, 0, 21);
 		pipe.addChild(pipe2);
-		fixSize(pipe2);
-
-		pipe2.addBox(
-			-2.5F, 	//X
-			-2.5F, 	//Y
-			-2.5F,	 	//Z
-			19,					//Size X
-			5,					//Size Y
-			5,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		pipe2.setRotationPoint(
-			0.005F, 		//X
-			-0.005F,			//Y
-			-0.005F			//Z
-		);
-		pipe2.rotateAngleZ = (float)-Math.PI / 2;
-
-		ModelRenderer pipe3 = new ModelRenderer(this, 22, 0);
+		this.fixSize(pipe2);
+		pipe2.addBox(-2.5f, -2.5f, -2.5f, 19, 5, 5, 0.0f);
+		pipe2.setRotationPoint(0.005f, -0.005f, -0.005f);
+		pipe2.rotateAngleZ = -1.5707964f;
+		final ModelRenderer pipe3 = new ModelRenderer(this, 22, 0);
 		pipe2.addChild(pipe3);
-		fixSize(pipe3);
-
-		pipe3.addBox(
-			-2.5F, 	//X
-			-2.5F, 	//Y
-			-2.5F,	 	//Z
-			14,					//Size X
-			5,					//Size Y
-			5,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		pipe3.setRotationPoint(
-			14F+0.005F, 		//X
-			-0.005F,			//Y
-			0.005F			//Z
-		);
-
-		pipe3.rotateAngleZ = (float)Math.PI / 2;
-
-		ModelRenderer end = new ModelRenderer(this, 0, 31);
+		this.fixSize(pipe3);
+		pipe3.addBox(-2.5f, -2.5f, -2.5f, 14, 5, 5, 0.0f);
+		pipe3.setRotationPoint(14.005f, -0.005f, 0.005f);
+		pipe3.rotateAngleZ = 1.5707964f;
+		final ModelRenderer end = new ModelRenderer(this, 0, 31);
 		pipe3.addChild(end);
-		fixSize(end);
+		this.fixSize(end);
+		end.addBox(-7.0f, -11.0f, -0.5f, 14, 14, 1, 0.0f);
+		end.setRotationPoint(12.0f, 0.0f, -0.0f);
+		end.rotateAngleY = 1.5707964f;
+	}
 
-		end.addBox(
-			-7, 	//X
-			-11, 	//Y
-			-0.5F,	 	//Z
-			14,					//Size X
-			14,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		end.setRotationPoint(
-			12F, 		//X
-			0,			//Y
-			-0.0F			//Z
-		);
-
-		end.rotateAngleY = (float)Math.PI / 2;
-    }
+	static {
+		ModelTrackRemover.texture = ResourceHelper.getResource("/models/removerModel.png");
+	}
 }

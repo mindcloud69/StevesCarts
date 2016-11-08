@@ -1,63 +1,82 @@
 package vswe.stevescarts.Blocks;
-import net.minecraft.client.renderer.texture.IIconRegister;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRail;
+import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import vswe.stevescarts.StevesCarts;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-public class BlockRailJunction extends BlockSpecialRailBase
-{
+import vswe.stevescarts.StevesCarts;
 
-	private IIcon normalIcon;
-	private IIcon cornerIcon;
+public class BlockRailJunction extends BlockRail {
+//	private IIcon normalIcon;
+//	private IIcon cornerIcon;
 
-    public BlockRailJunction()
-    {
-        super(false);
-        setCreativeTab(StevesCarts.tabsSC2Blocks);		
-    }
-
-	@Override
-    public IIcon getIcon(int side, int meta)
-    {
-        return meta >= 6 ? cornerIcon : normalIcon;
+	public static PropertyEnum<EnumRailDirection> SHAPE = BlockRail.SHAPE;
+	
+	public BlockRailJunction() {
+		super();
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
     }
 	
+	//
+//	public IIcon getIcon(final int side, final int meta) {
+//		return (meta >= 6) ? this.cornerIcon : this.normalIcon;
+//	}
+//
+//	@SideOnly(Side.CLIENT)
+//	public void registerBlockIcons(final IIconRegister register) {
+//		final StringBuilder sb = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.normalIcon = register.registerIcon(sb.append("stevescarts").append(":").append("junction_rail").toString());
+//		final StringBuilder sb2 = new StringBuilder();
+//		StevesCarts.instance.getClass();
+//		this.cornerIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("junction_rail").append("_corner").toString());
+//	}
+
+    public IProperty<BlockRailBase.EnumRailDirection> getShapeProperty(){
+        return SHAPE;
+    }
+
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state) {
+        return ((BlockRailBase.EnumRailDirection)state.getValue(SHAPE)).getMetadata();
+    }
+
+    protected BlockStateContainer createBlockState(){
+        return new BlockStateContainer(this, new IProperty[] {SHAPE});
+    }
+	
+	@Override
+	public boolean canMakeSlopes(IBlockAccess world, BlockPos pos) {
+		return false;
+	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register)
-    {
-        normalIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "junction_rail");
-		cornerIcon = register.registerIcon(StevesCarts.instance.textureHeader + ":" + "junction_rail" + "_corner");
-    }
-
-    /*  Return true if the rail can go up and down slopes
-     */
-    @Override
-    public boolean canMakeSlopes(IBlockAccess world, int i, int j, int k)
-    {
-        return false;
-    }
-
-    /*  Return the rails metadata
-     */
-    @Override
-    public int getBasicRailMetadata(IBlockAccess world, EntityMinecart cart, int i, int j, int k)
-    {
+	public EnumRailDirection getRailDirection(IBlockAccess world, BlockPos pos, IBlockState state, EntityMinecart cart) {
 		if (cart instanceof MinecartModular) {
-			MinecartModular modularCart = (MinecartModular)cart;
-			
-			int meta = modularCart.getRailMeta(i,j,k);
-			
-			if (meta != -1) {
-				return meta;
+			final MinecartModular modularCart = (MinecartModular) cart;
+			EnumRailDirection direction = modularCart.getRailDirection(pos);
+			if (direction != null) {
+				return direction;
 			}
 		}
-		
+		return super.getRailDirection(world, pos, state, cart);
+	}
 
-        return world.getBlockMetadata(i, j, k);
-    }
 }

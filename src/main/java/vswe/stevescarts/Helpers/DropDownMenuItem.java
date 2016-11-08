@@ -1,9 +1,8 @@
 package vswe.stevescarts.Helpers;
+
 import vswe.stevescarts.Modules.ModuleBase;
 
-
 public class DropDownMenuItem {
-
 	private String name;
 	private int imageID;
 	private VALUETYPE type;
@@ -16,137 +15,134 @@ public class DropDownMenuItem {
 	private int intMinValue;
 	private int intMaxValue;
 
-	public DropDownMenuItem(String name, int imageID, VALUETYPE type, Class<? extends ModuleBase> moduleClass) {
-		this(name, imageID,type, moduleClass, null);
+	public DropDownMenuItem(final String name, final int imageID, final VALUETYPE type, final Class<? extends ModuleBase> moduleClass) {
+		this(name, imageID, type, moduleClass, null);
 	}
-	
-	
-	public DropDownMenuItem(String name, int imageID, VALUETYPE type, Class<? extends ModuleBase> moduleClass,  Class<? extends ModuleBase> excludedClass) {
+
+	public DropDownMenuItem(final String name, final int imageID, final VALUETYPE type, final Class<? extends ModuleBase> moduleClass, final Class<? extends ModuleBase> excludedClass) {
 		this.name = name;
 		this.imageID = imageID;
 		this.type = type;
 		this.moduleClass = moduleClass;
 		this.excludedClass = excludedClass;
-		isLarge = false;
-		subOpen = false;
-		value = (byte)0;
+		this.isLarge = false;
+		this.subOpen = false;
+		this.value = 0;
 	}
-	
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	
+
 	public Class<? extends ModuleBase> getModuleClass() {
-		return moduleClass;
+		return this.moduleClass;
 	}
-	
+
 	public Class<? extends ModuleBase> getExcludedClass() {
-		return excludedClass;
-	}	
-	
+		return this.excludedClass;
+	}
+
 	public int getImageID() {
-		return imageID;
+		return this.imageID;
 	}
-	
+
 	public boolean hasSubmenu() {
-		return type != VALUETYPE.BOOL;
+		return this.type != VALUETYPE.BOOL;
 	}
-	
+
 	public boolean getIsSubMenuOpen() {
-		return subOpen;
+		return this.subOpen;
 	}
-	
-	public void setIsSubMenuOpen(boolean val) {
-		subOpen = val;
-	}	
-	
+
+	public void setIsSubMenuOpen(final boolean val) {
+		this.subOpen = val;
+	}
+
 	public boolean getIsLarge() {
-		return isLarge;
+		return this.isLarge;
 	}
-	
-	public void setIsLarge(boolean val) {
-		isLarge = val;
+
+	public void setIsLarge(final boolean val) {
+		this.isLarge = val;
 	}
-	
-	public int[] getRect(int menuX, int menuY, int id) {
-		if (getIsLarge()) {
-			return new int[] {menuX, menuY + id * 20, 130,20};
-		}else{
-			return new int[]{menuX, menuY + id * 20, 54,20};
+
+	public int[] getRect(final int menuX, final int menuY, final int id) {
+		if (this.getIsLarge()) {
+			return new int[] { menuX, menuY + id * 20, 130, 20 };
 		}
+		return new int[] { menuX, menuY + id * 20, 54, 20 };
 	}
-	
-	public int[] getSubRect(int menuX, int menuY, int id) {
-		if (getIsSubMenuOpen()) {
-			return new int[] {menuX - 43, menuY + id * 20 + 2, 52,16};
-		}else{
-			return new int[]{menuX, menuY + id * 20 + 2, 9,16};
+
+	public int[] getSubRect(final int menuX, final int menuY, final int id) {
+		if (this.getIsSubMenuOpen()) {
+			return new int[] { menuX - 43, menuY + id * 20 + 2, 52, 16 };
 		}
-	}	
-	
+		return new int[] { menuX, menuY + id * 20 + 2, 9, 16 };
+	}
+
 	public VALUETYPE getType() {
-		return type;
+		return this.type;
 	}
-	
+
 	public boolean getBOOL() {
-		return value != 0;
+		return this.value != 0;
 	}
-	
-	public void setBOOL(boolean val) {
-		value = (byte)(val ? 1 : 0);
+
+	public void setBOOL(final boolean val) {
+		this.value = (byte) (val ? 1 : 0);
 	}
-	
+
 	public int getINT() {
-		return value;
+		return this.value;
 	}
-	
+
 	public void setINT(int val) {
-		if (val < intMinValue) {
-			val = intMinValue;
-		}else if (val > intMaxValue) {
-			val = intMaxValue;
+		if (val < this.intMinValue) {
+			val = this.intMinValue;
+		} else if (val > this.intMaxValue) {
+			val = this.intMaxValue;
 		}
-		value = (byte)val;
-	}	
-	
-	public void setMULTIBOOL(byte val) {
-		value = val;
+		this.value = (byte) val;
 	}
-	
-	public void setMULTIBOOL(int i, boolean val) {
-		value = (byte)((value & ~(1<<i)) | ((val ? 1 : 0) << i));
+
+	public void setMULTIBOOL(final byte val) {
+		this.value = val;
 	}
-	
+
+	public void setMULTIBOOL(final int i, final boolean val) {
+		this.value = (byte) ((this.value & ~(1 << i)) | (val ? 1 : 0) << i);
+	}
+
 	public byte getMULTIBOOL() {
-		return value;
+		return this.value;
 	}
-	
-	public boolean getMULTIBOOL(int i) {
-		return (value & (1<<i)) != 0;
+
+	public boolean getMULTIBOOL(final int i) {
+		return (this.value & 1 << i) != 0x0;
 	}
-	
+
 	public void setMULTIBOOLCount(int val) {
 		if (val > 4) {
 			val = 4;
-		}else if (val < 2) {
+		} else if (val < 2) {
 			val = 2;
 		}
-		multiCount = val;
+		this.multiCount = val;
 	}
-	
+
 	public int getMULTIBOOLCount() {
-		return multiCount;
+		return this.multiCount;
 	}
 
-	public void setINTLimit(int min, int max) {
-		intMinValue = min;
-		intMaxValue = max;
-		
-		setINT(getINT());
+	public void setINTLimit(final int min, final int max) {
+		this.intMinValue = min;
+		this.intMaxValue = max;
+		this.setINT(this.getINT());
 	}
-	
-	
-	public enum VALUETYPE  {BOOL, INT, MULTIBOOL};
 
-
+	public enum VALUETYPE {
+		BOOL,
+		INT,
+		MULTIBOOL
+	}
 }

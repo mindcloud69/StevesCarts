@@ -1,18 +1,16 @@
 package vswe.stevescarts.Slots;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class SlotTorch extends SlotBase
-{
-    public SlotTorch(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
+public class SlotTorch extends SlotBase {
+	public SlotTorch(final IInventory iinventory, final int i, final int j, final int k) {
+		super(iinventory, i, j, k);
+	}
 
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return Block.getBlockFromItem(itemstack.getItem()) == Blocks.torch;
-    }
+	public boolean isItemValid(final ItemStack itemstack) {
+		return Block.getBlockFromItem(itemstack.getItem()) == Blocks.TORCH;
+	}
 }

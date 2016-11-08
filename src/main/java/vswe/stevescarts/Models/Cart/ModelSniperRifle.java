@@ -1,24 +1,25 @@
 package vswe.stevescarts.Models.Cart;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Realtimers.ModuleShooterAdv;
+
 @SideOnly(Side.CLIENT)
-public class ModelSniperRifle extends ModelGun
-{
+public class ModelSniperRifle extends ModelGun {
 	ModelRenderer anchor;
 	ModelRenderer gun;
-    public ModelSniperRifle()
-	{
-		anchor = new ModelRenderer(this);
-		AddRenderer(anchor);
 
-		gun = createGun(anchor);
+	public ModelSniperRifle() {
+		this.AddRenderer(this.anchor = new ModelRenderer(this));
+		this.gun = this.createGun(this.anchor);
 	}
 
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {	
-		gun.rotateAngleZ = module == null ? 0 : ((ModuleShooterAdv)module).getPipeRotation(0);
-		anchor.rotateAngleY = module == null ? 0 : (float)Math.PI + ((ModuleShooterAdv)module).getRifleDirection() + yaw;
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		this.gun.rotateAngleZ = ((module == null) ? 0.0f : ((ModuleShooterAdv) module).getPipeRotation(0));
+		this.anchor.rotateAngleY = ((module == null) ? 0.0f : (3.1415927f + ((ModuleShooterAdv) module).getRifleDirection() + yaw));
 	}
 }

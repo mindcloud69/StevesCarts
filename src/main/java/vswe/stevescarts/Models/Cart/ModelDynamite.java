@@ -1,188 +1,142 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Realtimers.ModuleDynamite;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelDynamite extends ModelCartbase
-{
-	
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/tntModel.png");
-	
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
-	
-
-	public float extraMult() {
-		return 0.25F;
-	}
-
+public class ModelDynamite extends ModelCartbase {
+	private static ResourceLocation texture;
 	private ModelRenderer anchor;
 	private ModelRenderer[] dynamites;
-    public ModelDynamite()
-    {
-		anchor = new ModelRenderer(this, 0, 0);
-		AddRenderer(anchor);
+	private float sizemult;
 
-		dynamites = new ModelRenderer[54];
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelDynamite.texture;
+	}
 
-		dynamites[0] = createDynamite(0,0,0);
-		dynamites[3] = createDynamite(-1,0,0);
-		dynamites[4] = createDynamite(1,0,0);
-		dynamites[18] = createDynamite(-2,0,0);
-		dynamites[19] = createDynamite(2,0,0);
+	@Override
+	public float extraMult() {
+		return 0.25f;
+	}
 
-		dynamites[9] = createDynamite(-0.5F,1,0);
-		dynamites[10] = createDynamite(0.5F,1,0);
-		dynamites[24] = createDynamite(-1.5F,1,0);
-		dynamites[25] = createDynamite(1.5F,1,0);
+	public ModelDynamite() {
+		this.AddRenderer(this.anchor = new ModelRenderer(this, 0, 0));
+		(this.dynamites = new ModelRenderer[54])[0] = this.createDynamite(0.0f, 0.0f, 0.0f);
+		this.dynamites[3] = this.createDynamite(-1.0f, 0.0f, 0.0f);
+		this.dynamites[4] = this.createDynamite(1.0f, 0.0f, 0.0f);
+		this.dynamites[18] = this.createDynamite(-2.0f, 0.0f, 0.0f);
+		this.dynamites[19] = this.createDynamite(2.0f, 0.0f, 0.0f);
+		this.dynamites[9] = this.createDynamite(-0.5f, 1.0f, 0.0f);
+		this.dynamites[10] = this.createDynamite(0.5f, 1.0f, 0.0f);
+		this.dynamites[24] = this.createDynamite(-1.5f, 1.0f, 0.0f);
+		this.dynamites[25] = this.createDynamite(1.5f, 1.0f, 0.0f);
+		this.dynamites[15] = this.createDynamite(0.0f, 2.0f, 0.0f);
+		this.dynamites[30] = this.createDynamite(-1.0f, 2.0f, 0.0f);
+		this.dynamites[31] = this.createDynamite(1.0f, 2.0f, 0.0f);
+		this.dynamites[36] = this.createDynamite(-3.0f, 0.0f, 0.0f);
+		this.dynamites[37] = this.createDynamite(3.0f, 0.0f, 0.0f);
+		this.dynamites[42] = this.createDynamite(-2.5f, 1.0f, 0.0f);
+		this.dynamites[43] = this.createDynamite(2.5f, 1.0f, 0.0f);
+		this.dynamites[48] = this.createDynamite(-2.0f, 2.0f, 0.0f);
+		this.dynamites[49] = this.createDynamite(2.0f, 2.0f, 0.0f);
+		this.dynamites[1] = this.createDynamite(0.0f, 0.0f, -1.0f);
+		this.dynamites[5] = this.createDynamite(-1.0f, 0.0f, -1.0f);
+		this.dynamites[7] = this.createDynamite(1.0f, 0.0f, -1.0f);
+		this.dynamites[20] = this.createDynamite(-2.0f, 0.0f, -1.0f);
+		this.dynamites[22] = this.createDynamite(2.0f, 0.0f, -1.0f);
+		this.dynamites[11] = this.createDynamite(-0.5f, 1.0f, -1.0f);
+		this.dynamites[13] = this.createDynamite(0.5f, 1.0f, -1.0f);
+		this.dynamites[26] = this.createDynamite(-1.5f, 1.0f, -1.0f);
+		this.dynamites[28] = this.createDynamite(1.5f, 1.0f, -1.0f);
+		this.dynamites[16] = this.createDynamite(0.0f, 2.0f, -1.0f);
+		this.dynamites[32] = this.createDynamite(-1.0f, 2.0f, -1.0f);
+		this.dynamites[34] = this.createDynamite(1.0f, 2.0f, -1.0f);
+		this.dynamites[38] = this.createDynamite(-3.0f, 0.0f, -1.0f);
+		this.dynamites[40] = this.createDynamite(3.0f, 0.0f, -1.0f);
+		this.dynamites[44] = this.createDynamite(-2.5f, 1.0f, -1.0f);
+		this.dynamites[46] = this.createDynamite(2.5f, 1.0f, -1.0f);
+		this.dynamites[50] = this.createDynamite(-2.0f, 2.0f, -1.0f);
+		this.dynamites[52] = this.createDynamite(2.0f, 2.0f, -1.0f);
+		this.dynamites[2] = this.createDynamite(0.0f, 0.0f, 1.0f);
+		this.dynamites[8] = this.createDynamite(-1.0f, 0.0f, 1.0f);
+		this.dynamites[6] = this.createDynamite(1.0f, 0.0f, 1.0f);
+		this.dynamites[21] = this.createDynamite(-2.0f, 0.0f, 1.0f);
+		this.dynamites[23] = this.createDynamite(2.0f, 0.0f, 1.0f);
+		this.dynamites[14] = this.createDynamite(-0.5f, 1.0f, 1.0f);
+		this.dynamites[12] = this.createDynamite(0.5f, 1.0f, 1.0f);
+		this.dynamites[29] = this.createDynamite(-1.5f, 1.0f, 1.0f);
+		this.dynamites[27] = this.createDynamite(1.5f, 1.0f, 1.0f);
+		this.dynamites[17] = this.createDynamite(0.0f, 2.0f, 1.0f);
+		this.dynamites[35] = this.createDynamite(-1.0f, 2.0f, 1.0f);
+		this.dynamites[33] = this.createDynamite(1.0f, 2.0f, 1.0f);
+		this.dynamites[41] = this.createDynamite(-3.0f, 0.0f, 1.0f);
+		this.dynamites[39] = this.createDynamite(3.0f, 0.0f, 1.0f);
+		this.dynamites[47] = this.createDynamite(-2.5f, 1.0f, 1.0f);
+		this.dynamites[45] = this.createDynamite(2.5f, 1.0f, 1.0f);
+		this.dynamites[53] = this.createDynamite(-2.0f, 2.0f, 1.0f);
+		this.dynamites[51] = this.createDynamite(2.0f, 2.0f, 1.0f);
+	}
 
-		dynamites[15] = createDynamite(0,2,0);
-		dynamites[30] = createDynamite(-1,2,0);
-		dynamites[31] = createDynamite(1,2,0);
-
-		dynamites[36] = createDynamite(-3,0,0);
-		dynamites[37] = createDynamite(3,0,0);
-
-		dynamites[42] = createDynamite(-2.5F,1,0);
-		dynamites[43] = createDynamite(2.5F,1,0);
-
-		dynamites[48] = createDynamite(-2F,2,0);
-		dynamites[49] = createDynamite(2F,2,0);
-
-		dynamites[1] = createDynamite(0,0,-1);
-		dynamites[5] = createDynamite(-1,0,-1);
-		dynamites[7] = createDynamite(1,0,-1);
-		dynamites[20] = createDynamite(-2,0,-1);
-		dynamites[22] = createDynamite(2,0,-1);
-
-		dynamites[11] = createDynamite(-0.5F,1,-1);
-		dynamites[13] = createDynamite(0.5F,1,-1);
-		dynamites[26] = createDynamite(-1.5F,1,-1);
-		dynamites[28] = createDynamite(1.5F,1,-1);
-
-		dynamites[16] = createDynamite(0,2,-1);
-		dynamites[32] = createDynamite(-1,2,-1);
-		dynamites[34] = createDynamite(1,2,-1);
-
-		dynamites[38] = createDynamite(-3,0,-1);
-		dynamites[40] = createDynamite(3,0,-1);
-
-		dynamites[44] = createDynamite(-2.5F,1,-1);
-		dynamites[46] = createDynamite(2.5F,1,-1);
-
-		dynamites[50] = createDynamite(-2F,2,-1);
-		dynamites[52] = createDynamite(2F,2,-1);
-
-		dynamites[2] = createDynamite(0,0,1);
-		dynamites[8] = createDynamite(-1,0,1);
-		dynamites[6] = createDynamite(1,0,1);
-		dynamites[21] = createDynamite(-2,0,1);
-		dynamites[23] = createDynamite(2,0,1);
-
-		dynamites[14] = createDynamite(-0.5F,1,1);
-		dynamites[12] = createDynamite(0.5F,1,1);
-		dynamites[29] = createDynamite(-1.5F,1,1);
-		dynamites[27] = createDynamite(1.5F,1,1);
-
-		dynamites[17] = createDynamite(0,2,1);
-		dynamites[35] = createDynamite(-1,2,1);
-		dynamites[33] = createDynamite(1,2,1);
-
-		dynamites[41] = createDynamite(-3,0,1);
-		dynamites[39] = createDynamite(3,0,1);
-
-		dynamites[47] = createDynamite(-2.5F,1,1);
-		dynamites[45] = createDynamite(2.5F,1,1);
-
-		dynamites[53] = createDynamite(-2F,2,1);
-		dynamites[51] = createDynamite(2F,2,1);
-    }
-
-	private ModelRenderer createDynamite(float x, float y, float z) {
-		ModelRenderer dynamite = new ModelRenderer(this, 0, 0);
-		anchor.addChild(dynamite);
-		fixSize(dynamite);
-
-		dynamite.addBox(
-			-8, 	//X
-			-4F, 	//Y
-			-4,	 	//Z
-			16,					//Size X
-			8,					//Size Y
-			8,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		dynamite.setRotationPoint(
-			x * 10F, 		//X
-			y * -8F,			//Y
-			z * 18F			//Z
-		);
-
-		dynamite.rotateAngleY = (float)Math.PI/ 2;
-
+	private ModelRenderer createDynamite(final float x, final float y, final float z) {
+		final ModelRenderer dynamite = new ModelRenderer(this, 0, 0);
+		this.anchor.addChild(dynamite);
+		this.fixSize(dynamite);
+		dynamite.addBox(-8.0f, -4.0f, -4.0f, 16, 8, 8, 0.0f);
+		dynamite.setRotationPoint(x * 10.0f, y * -8.0f, z * 18.0f);
+		dynamite.rotateAngleY = 1.5707964f;
 		return dynamite;
 	}
 
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
 		if (module == null) {
-			for (int i = 0; i < dynamites.length; i++) {
-				dynamites[i].isHidden = false;
-			}				
-		}else{	
-			float size = ((ModuleDynamite)module).explosionSize();
-			float max = 4F /*base*/ + 0.8F /* how much a tnt is worth */ * 50 /*the number of tnts possible */;
-			float perModel = max / dynamites.length;
-			for (int i = 0; i < dynamites.length; i++) {
-				dynamites[i].isHidden = i * perModel >= size;
+			for (int i = 0; i < this.dynamites.length; ++i) {
+				this.dynamites[i].isHidden = false;
+			}
+		} else {
+			final float size = ((ModuleDynamite) module).explosionSize();
+			final float max = 44.0f;
+			final float perModel = max / this.dynamites.length;
+			for (int j = 0; j < this.dynamites.length; ++j) {
+				this.dynamites[j].isHidden = (j * perModel >= size);
 			}
 		}
-
-		anchor.setRotationPoint(
-			0, 		//X
-			-24 / sizemult,			//Y
-			0			//Z
-		);
+		this.anchor.setRotationPoint(0.0f, -24.0f / this.sizemult, 0.0f);
 	}
 
-	private float sizemult;
-	public void render(Render render,ModuleBase module, float yaw, float pitch, float roll, float mult, float partialtime)
-    {
+	@Override
+	public void render(final Render render, final ModuleBase module, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
 		if (module == null) {
-			sizemult = 1;
-			super.render(render,module,yaw,pitch,roll, mult, partialtime);
-		}else{
-	
-			float fusemult = (float)Math.abs(Math.sin(((float)((ModuleDynamite)module).getFuse() / ((ModuleDynamite)module).getFuseLength()) * Math.PI * 6));
-
-			sizemult = fusemult * 0.5F + 1;
-			GL11.glScalef(sizemult, sizemult, sizemult);
-
-			super.render(render,module,yaw,pitch,roll, mult, partialtime);
-
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, fusemult);
-			super.render(render,module,yaw,pitch,roll, mult, partialtime);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-			GL11.glScalef(1 / sizemult, 1 / sizemult, 1 / sizemult);
-			
+			this.sizemult = 1.0f;
+			super.render(render, module, yaw, pitch, roll, mult, partialtime);
+		} else {
+			final float fusemult = (float) Math.abs(Math.sin(((ModuleDynamite) module).getFuse() / ((ModuleDynamite) module).getFuseLength() * 3.141592653589793 * 6.0));
+			GL11.glScalef(this.sizemult = fusemult * 0.5f + 1.0f, this.sizemult, this.sizemult);
+			super.render(render, module, yaw, pitch, roll, mult, partialtime);
+			GL11.glDisable(3553);
+			GL11.glDisable(2896);
+			GL11.glEnable(3042);
+			GL11.glBlendFunc(770, 772);
+			GL11.glColor4f(1.0f, 1.0f, 1.0f, fusemult);
+			super.render(render, module, yaw, pitch, roll, mult, partialtime);
+			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+			GL11.glDisable(3042);
+			GL11.glEnable(2896);
+			GL11.glEnable(3553);
+			GL11.glScalef(1.0f / this.sizemult, 1.0f / this.sizemult, 1.0f / this.sizemult);
 		}
-    }
+	}
+
+	static {
+		ModelDynamite.texture = ResourceHelper.getResource("/models/tntModel.png");
+	}
 }

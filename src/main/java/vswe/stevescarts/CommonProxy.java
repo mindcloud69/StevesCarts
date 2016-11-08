@@ -1,70 +1,52 @@
 package vswe.stevescarts;
-import java.lang.reflect.Constructor;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.common.network.IGuiHandler;
 import vswe.stevescarts.TileEntities.TileEntityBase;
-import vswe.stevescarts.Interfaces.GuiBase;
-import vswe.stevescarts.Containers.ContainerBase;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class CommonProxy implements IGuiHandler {
-	public void renderInit()
-	{
+	public void renderInit() {
 	}
 
-	
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {	
-		if (ID == 0) {	
-			MinecartModular cart = getCart(x, world);
+	public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+		if (ID == 0) {
+			final MinecartModular cart = this.getCart(x, world);
 			if (cart != null) {
 				return cart.getGui(player);
 			}
-		}else{	
-			TileEntity tileentity = world.getTileEntity(x, y, z);
-			
+		} else {
+			final TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity != null && tileentity instanceof TileEntityBase) {
-				
-				return ((TileEntityBase)tileentity).getGui(player.inventory);
-									
+				return ((TileEntityBase) tileentity).getGui(player.inventory);
 			}
 		}
-		
 		return null;
 	}
 
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if (ID == 0) {	
-			MinecartModular cart = getCart(x, world);
+	public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+		if (ID == 0) {
+			final MinecartModular cart = this.getCart(x, world);
 			if (cart != null) {
 				return cart.getCon(player.inventory);
 			}
-		}else{
-			TileEntity tileentity = world.getTileEntity(x, y, z);
+		} else {
+			final TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity != null && tileentity instanceof TileEntityBase) {
-				
-				return ((TileEntityBase)tileentity).getContainer(player.inventory);
-				
-				
+				return ((TileEntityBase) tileentity).getContainer(player.inventory);
 			}
 		}
-		
-		
-		
 		return null;
 	}
-	
-	private MinecartModular getCart(int ID, World world) {
-		for (Object e : world.loadedEntityList) {
-			if (e instanceof Entity && ((Entity)e).getEntityId() == ID && e instanceof MinecartModular) {
-				return (MinecartModular)e;
+
+	private MinecartModular getCart(final int ID, final World world) {
+		for (final Object e : world.loadedEntityList) {
+			if (e instanceof Entity && ((Entity) e).getEntityId() == ID && e instanceof MinecartModular) {
+				return (MinecartModular) e;
 			}
 		}
 		return null;
@@ -74,9 +56,6 @@ public class CommonProxy implements IGuiHandler {
 		return null;
 	}
 
-
 	public void soundInit() {
-
 	}
-
 }

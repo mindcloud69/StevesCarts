@@ -1,295 +1,253 @@
 package vswe.stevescarts.Blocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import vswe.stevescarts.Upgrades.AssemblerUpgrade;
 
-public class BlockUpgrade extends BlockContainerBase
-{
+public class BlockUpgrade extends BlockContainerBase {
+	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, AssemblerUpgrade.UPGRADE_AMOUNT);
+	
+	public BlockUpgrade() {
+		super(Material.ROCK);
+		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+	}
 
-    public BlockUpgrade()
-    {
-        super(Material.rock);
-        setCreativeTab(StevesCarts.tabsSC2Blocks);					
-    }
-
-
-    @SideOnly(Side.CLIENT)
-	@Override
-    public IIcon getIcon(int side, int meta)
-    {
-		return AssemblerUpgrade.getStandardIcon();
-    }	
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIcon(final int side, final int meta) {
+//		return AssemblerUpgrade.getStandardIcon();
+//	}
+//
+//	public void registerBlockIcons(final IIconRegister register) {
+//	}
 	
 	@Override
-    public void registerBlockIcons(IIconRegister register)
-    {
-		//Load nothing here
-    }
-	
-    /**
-     * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
-     * x, y, z, startVec, endVec
-     */
-	@Override
-    public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
-    {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);
-    }	
-	
-	private int getUpgradeId(IBlockAccess world, int x, int y, int z) {
-		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile != null && tile instanceof TileEntityUpgrade) {
-			TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
-			return upgrade.getType();
-		}	
-		return 0;
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, TYPE);
 	}
 	
 	@Override
-    public int getDamageValue(World world, int x, int y, int z)
-    {
-        return getUpgradeId(world, x, y, z);
-    }
-	
-	@Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7) {}
-
-    @Override
-    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
-        return side != -1 && getUpgradeId(world, x, y, z) == 13;
-    }
-	
-	
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-		super.onBlockAdded(world, x, y, z);
-        ((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).addUpgrade(world, x, y, z);
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(TYPE, meta);
 	}
-	@Override
-    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player)
-    {
-        if (player.capabilities.isCreativeMode)
-        {
-            world.setBlockMetadataWithNotify(x, y, z, 1, 0);
-        }
-
-        super.onBlockHarvested(world, x, y, z, meta, player);
-    }
 	
 	@Override
-   public void breakBlock(World world, int x, int y, int z, Block id, int meta)
-    {
-		TileEntity tile = world.getTileEntity(x, y, z);
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(TYPE);
+	}
+	
+	@Override
+	public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
+	}
+	
+	@Override
+	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return side != EnumFacing.UP && getMetaFromState(state) == 13;
+	}
+	
+	@Override
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(world, pos, state);
+		((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).addUpgrade(world, pos);
+	}
+	
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+		if (player.capabilities.isCreativeMode) {
+			worldIn.setBlockState(pos, getStateFromMeta(1), 0);
+		}
+		super.onBlockHarvested(worldIn, pos, state, player);
+	}
+	
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		final TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityUpgrade) {
-			TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
+			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 			if (upgrade.getUpgrade() != null) {
 				upgrade.getUpgrade().removed(upgrade);
 			}
-		
-		
-			if (meta != 1) {
-                dropBlockAsItem(world, x, y, z, new ItemStack(ModItems.upgrades, 1, getUpgradeId(world, x, y, z)));
-			}
-			
+			/*if (getMetaFromState(state) != 1) {
+				spawnAsEntity(world, pos, new ItemStack(ModItems.upgrades, 1, getMetaFromState(state)));
+			}*/
+			dropBlockAsItem(world, pos, state, 1);
 			if (upgrade.hasInventory()) {
-				for (int var8 = 0; var8 < upgrade.getSizeInventory(); ++var8)
-				{
-					ItemStack var9 = upgrade.getStackInSlotOnClosing(var8);
-
-					if (var9 != null)
-					{
-						float var10 = world.rand.nextFloat() * 0.8F + 0.1F;
-						float var11 = world.rand.nextFloat() * 0.8F + 0.1F;
-						EntityItem var14;
-
-						for (float var12 = world.rand.nextFloat() * 0.8F + 0.1F; var9.stackSize > 0; world.spawnEntityInWorld(var14))
-						{
+				for (int var8 = 0; var8 < upgrade.getSizeInventory(); ++var8) {
+					final ItemStack var9 = upgrade.getStackInSlotOnClosing(var8);
+					if (var9 != null) {
+						final float var10 = world.rand.nextFloat() * 0.8f + 0.1f;
+						final float var11 = world.rand.nextFloat() * 0.8f + 0.1f;
+						final float var12 = world.rand.nextFloat() * 0.8f + 0.1f;
+						while (var9.stackSize > 0) {
 							int var13 = world.rand.nextInt(21) + 10;
-
-							if (var13 > var9.stackSize)
-							{
+							if (var13 > var9.stackSize) {
 								var13 = var9.stackSize;
 							}
-
-							var9.stackSize -= var13;
-							var14 = new EntityItem(world, (double)((float)x + var10), (double)((float)y + var11), (double)((float)z + var12), new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
-							float var15 = 0.05F;
-							var14.motionX = (double)((float)world.rand.nextGaussian() * var15);
-							var14.motionY = (double)((float)world.rand.nextGaussian() * var15 + 0.2F);
-							var14.motionZ = (double)((float)world.rand.nextGaussian() * var15);
-
-							if (var9.hasTagCompound())
-							{
-								var14.getEntityItem().setTagCompound((NBTTagCompound)var9.getTagCompound().copy());
+							final ItemStack itemStack = var9;
+							itemStack.stackSize -= var13;
+							final EntityItem var14 = new EntityItem(world, (double) (pos.getX() + var10), (double) (pos.getY() + var11), (double) (pos.getZ() + var12), new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
+							final float var15 = 0.05f;
+							var14.motionX = (float) world.rand.nextGaussian() * var15;
+							var14.motionY = (float) world.rand.nextGaussian() * var15 + 0.2f;
+							var14.motionZ = (float) world.rand.nextGaussian() * var15;
+							if (var9.hasTagCompound()) {
+								var14.getEntityItem().setTagCompound(var9.getTagCompound().copy());
 							}
+							world.spawnEntityInWorld(var14);
 						}
 					}
 				}
 			}
-						
 		}
-		super.breakBlock(world, x, y, z, id, meta);
-        ((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).removeUpgrade(world, x, y, z);
-    }
-
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-	public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    /**
-     * The type of render function that is called for this block
-     */
-	@Override
-    public int getRenderType()
-    {
-        return renderAsNormalBlock() || StevesCarts.instance.blockRenderer == null ? 0 : StevesCarts.instance.blockRenderer.getRenderId();
-    }	
+		super.breakBlock(world, pos, state);
+		((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).removeUpgrade(world, pos);
+	}
 	
-
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-    {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
-    }	
-	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
 	@Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-    {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
-	@Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
-    {
-        setUpgradeBounds(par1IBlockAccess, par2, par3, par4);
-    }	
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 	
-	public final int setUpgradeBounds(IBlockAccess world, int x, int y, int z) {
-		TileEntity tile = world.getTileEntity(x,y,z);
-		if(tile instanceof TileEntityUpgrade){
-			TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
-			TileEntityCartAssembler master = upgrade.getMaster();
-			
-			float margin = 0.1875F; //3 pixels
-			float width = 0.125F; //2 pixels
-			
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
+	
+	//TODO
+	/*public int getRenderType() {
+		return (this.renderAsNormalBlock() || StevesCarts.instance.blockRenderer == null) ? 0 : StevesCarts.instance.blockRenderer.getRenderId();
+	}*/
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return super.getRenderType(state);
+	}
+	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return getUpgradeBounds(source, pos);
+	}
+	
+	public final EnumFacing getUpgradeFace(IBlockAccess world, BlockPos pos){
+		final TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileEntityUpgrade) {
+			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
+			BlockPos master = upgrade.getMaster().getPos();
 			if (master == null) {
-				setIdleBlockBounds();
-				return 0;
-			}else if (master.yCoord < y) {
-				setBlockBounds(margin, 0, margin, 1.0F - margin, width, 1.0F - margin);
-				return 0;
-			}else if(master.yCoord > y) {
-				setBlockBounds(margin, 1.0F-width, margin, 1.0F - margin, 1.0F, 1.0F - margin);
-				return 1;
-			}else if (master.xCoord < x) {
-				setBlockBounds(0, margin, margin, width, 1.0F - margin, 1.0F - margin);
-				return 3;
-			}else if(master.xCoord > x) {
-				setBlockBounds(1.0F-width, margin, margin, 1.0F, 1.0F - margin, 1.0F - margin);
-				return 5;
-			}else if (master.zCoord < z) {
-				setBlockBounds(margin, margin, 0, 1.0F - margin, 1.0F - margin, width);
-				return 4;
-			}else if(master.zCoord > z) {
-				setBlockBounds(margin, margin, 1.0F-width, 1.0F - margin, 1.0F - margin, 1.0F);
-				return 2;
+				return null;
+			}
+			if (master.getY() < pos.getY()) {
+				return EnumFacing.DOWN;
+			}
+			if (master.getY() > pos.getY()) {
+				return EnumFacing.UP;
+			}
+			if (master.getX() < pos.getX()) {
+				return EnumFacing.SOUTH;
+			}
+			if (master.getX() > pos.getX()) {
+				return EnumFacing.EAST;
+			}
+			if (master.getZ() < pos.getZ()) {
+				return EnumFacing.WEST;
+			}
+			if (master.getZ() >pos.getZ()) {
+				return EnumFacing.NORTH;
 			}
 		}
-		return -1;
+		return null;
+	}
+
+	public final AxisAlignedBB getUpgradeBounds(IBlockAccess world, BlockPos pos) {
+		final TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileEntityUpgrade) {
+			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
+			BlockPos master = upgrade.getMaster().getPos();
+			final float margin = 0.1875f;
+			final float width = 0.125f;
+			if (master == null) {
+				return getIdleBlockBounds();
+			}
+			if (master.getY() < pos.getY()) {
+				return new AxisAlignedBB(margin, 0.0f, margin, 1.0f - margin, width, 1.0f - margin);
+			}
+			if (master.getY() > pos.getY()) {
+				return new AxisAlignedBB(margin, 1.0f - width, margin, 1.0f - margin, 1.0f, 1.0f - margin);
+			}
+			if (master.getX() < pos.getX()) {
+				return new AxisAlignedBB(0.0f, margin, margin, width, 1.0f - margin, 1.0f - margin);
+			}
+			if (master.getX() > pos.getX()) {
+				return new AxisAlignedBB(1.0f - width, margin, margin, 1.0f, 1.0f - margin, 1.0f - margin);
+			}
+			if (master.getZ() < pos.getZ()) {
+				return new AxisAlignedBB(margin, margin, 0.0f, 1.0f - margin, 1.0f - margin, width);
+			}
+			if (master.getZ() > pos.getZ()) {
+				return new AxisAlignedBB(margin, margin, 1.0f - width, 1.0f - margin, 1.0f - margin, 1.0f);
+			}
+		}
+		return FULL_BLOCK_AABB;
+	}
+
+	public AxisAlignedBB getIdleBlockBounds() {
+		final float margin = 0.1875f;
+		final float width = 0.125f;
+		return new AxisAlignedBB(margin, width, margin, 1.0f - margin, 1.0f - width, 1.0f - margin);
 	}
 	
-	public void setIdleBlockBounds() {
-		float margin = 0.1875F; //3 pixels
-		float width = 0.125F; //2 pixels
-
-		setBlockBounds(margin, width, margin, 1-margin, 1-width, 1-margin);
-	}
-
 	@Override
-    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
-    {
-		
-		
-		if (entityplayer.isSneaking()) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (player.isSneaking()) {
 			return false;
 		}
-
-
- 
-		
-		TileEntity tile = world.getTileEntity(i,j,k);
+		final TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityUpgrade) {
-			TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
-
+			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 			if (upgrade.getMaster() == null) {
 				return false;
 			}
-			
-			if (world.isRemote)
-			{
+			if (world.isRemote) {
 				return true;
 			}
-			
-
-			if (upgrade.getUpgrade().useStandardInterface())
-			{
-				FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 3, world, upgrade.getMaster().xCoord, upgrade.getMaster().yCoord, upgrade.getMaster().zCoord);
+			if (upgrade.getUpgrade().useStandardInterface()) {
+				BlockPos masterPos = upgrade.getMaster().getPos();
+				FMLNetworkHandler.openGui(player, (Object) StevesCarts.instance, 3, world, masterPos.getX(), masterPos.getY(), masterPos.getZ());
 				return true;
 			}
-		
-
-			FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 7, world, i, j, k);
+			FMLNetworkHandler.openGui(player, StevesCarts.instance, 7, world, pos.getX(), pos.getY(), pos.getZ());
 		}
+		return true;
+	}
 
-		
-        return true;
-    }
-
-	@Override
-    public TileEntity createNewTileEntity(World world, int var2)
-    {
-        return new TileEntityUpgrade();
-    }
+	public TileEntity createNewTileEntity(final World world, final int var2) {
+		return new TileEntityUpgrade();
+	}
 }

@@ -1,140 +1,63 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelHull extends ModelCartbase
-{
+public class ModelHull extends ModelCartbase {
+	private ResourceLocation resource;
+
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return resource;
+	public ResourceLocation getResource(final ModuleBase module) {
+		return this.resource;
 	}
-	
+
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-	private ResourceLocation resource;
-	
-	
-    public ModelHull(ResourceLocation resource)
-    {
-		super();
+	public ModelHull(final ResourceLocation resource) {
 		this.resource = resource;
+		final ModelRenderer bot = new ModelRenderer(this, 0, 0);
+		final ModelRenderer front = new ModelRenderer(this, 0, 18);
+		final ModelRenderer left = new ModelRenderer(this, 0, 18);
+		final ModelRenderer right = new ModelRenderer(this, 0, 18);
+		final ModelRenderer back = new ModelRenderer(this, 0, 18);
+		this.AddRenderer(bot);
+		this.AddRenderer(front);
+		this.AddRenderer(left);
+		this.AddRenderer(right);
+		this.AddRenderer(back);
+		bot.addBox(-10.0f, -8.0f, -1.0f, 20, 16, 2, 0.0f);
+		bot.setRotationPoint(0.0f, 4.0f, 0.0f);
+		front.addBox(-8.0f, -9.0f, -1.0f, 16, 8, 2, 0.0f);
+		front.setRotationPoint(-9.0f, 4.0f, 0.0f);
+		left.addBox(-8.0f, -9.0f, -1.0f, 16, 8, 2, 0.0f);
+		left.setRotationPoint(0.0f, 4.0f, -7.0f);
+		right.addBox(-8.0f, -9.0f, -1.0f, 16, 8, 2, 0.0f);
+		right.setRotationPoint(0.0f, 4.0f, 7.0f);
+		back.addBox(-8.0f, -9.0f, -1.0f, 16, 8, 2, 0.0f);
+		back.setRotationPoint(9.0f, 4.0f, 0.0f);
+		bot.rotateAngleX = 1.5707964f;
+		front.rotateAngleY = 4.712389f;
+		left.rotateAngleY = 3.1415927f;
+		back.rotateAngleY = 1.5707964f;
+	}
 
-        ModelRenderer bot = new ModelRenderer(this, 0, 0);
-        ModelRenderer front = new ModelRenderer(this, 0, 18);
-        ModelRenderer left = new ModelRenderer(this, 0, 18);
-        ModelRenderer right = new ModelRenderer(this, 0, 18);		
-        ModelRenderer back = new ModelRenderer(this, 0, 18);
-
-		
-		AddRenderer(bot);
-		AddRenderer(front);
-		AddRenderer(left);
-		AddRenderer(right);
-		AddRenderer(back);
-		
-        bot.addBox(
-			-cartLength / 2, //X
-			-cartWidth / 2,	 //Y
-			-1.0F, 			 //Z
-			cartLength,		 //Size X
-			cartWidth,		 //Size Y
-			2,			     //Size Z
-			0.0F			 //Size Increasement
-		);
-        bot.setRotationPoint(
-			0.0F, 			//X
-			cartOnGround,	//Y
-			0.0F			//Z
-		);
-
-        front.addBox(
-			-cartWidth / 2,			//X
-			-cartHeight - 1, 		//Y
-			-1.0F, 					//Z
-			cartWidth, 				//Size X
-			cartHeight,				//Size Y
-			2,						//Size Z
-			0.0F					//Size Increasement
-		);
-        front.setRotationPoint(
-			-cartLength / 2 + 1,	//X
-			cartOnGround,			//Y
-			0.0F					//Z
-		);
-
-        left.addBox(
-			-cartLength / 2 + 2,	//X
-			-cartHeight - 1,		//Y
-			-1.0F,					//Z
-			cartLength - 4,			//Size X
-			cartHeight,				//Size Y
-			2,						//Size Z
-			0.0F					//Size Increasement
-		);
-        left.setRotationPoint(
-			0.0F,					//X
-			cartOnGround,			//Y
-			-cartWidth / 2 + 1		//Z
-		);
-
-        right.addBox(
-			-cartLength / 2 + 2,	//X
-			-cartHeight - 1,		//Y
-			-1.0F,					//Z
-			cartLength - 4,			//Size X
-			cartHeight,				//Size Y
-			2,						//Size Z
-			0.0F					//Size Increasement
-		);
-        right.setRotationPoint(
-			0.0F, 					//X
-			cartOnGround,			//Y
-			cartWidth / 2 - 1		//Z
-		);
-
-        back.addBox(
-			-cartWidth / 2,			//X
-			-cartHeight - 1,		//Y
-			-1.0F,					//Z
-			cartWidth , 			//Size X
-			cartHeight,				//Size Y
-			2,						//Size Z
-			0.0F					//Size Increasement
-		);
-        back.setRotationPoint(
-			cartLength / 2 - 1, 	//X
-			cartOnGround,			//Y
-			0.0F					//Z
-		);		
-		
-		bot.rotateAngleX = ((float)Math.PI / 2F);
-        front.rotateAngleY = ((float)Math.PI * 3F / 2F);
-        left.rotateAngleY = (float)Math.PI;
-		back.rotateAngleY = ((float)Math.PI / 2F);	
-
-
-
-
-	
-		
-    }
-	
-	public void render(Render render, ModuleBase module, float yaw, float pitch, float roll, float mult, float partialtime)
-    {
+	@Override
+	public void render(final Render render, final ModuleBase module, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
 		if (module != null) {
-			float[] color = module.getCart().getColor();
-			GL11.glColor4f(color[0], color[1], color[2], 1.0F);
+			final float[] color = module.getCart().getColor();
+			GL11.glColor4f(color[0], color[1], color[2], 1.0f);
 		}
-		super.render(render, module,yaw,pitch,roll, mult, partialtime);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    }	
+		super.render(render, module, yaw, pitch, roll, mult, partialtime);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	}
 }

@@ -1,21 +1,15 @@
 package vswe.stevescarts.Modules.Engines;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.ModuleBase;
 
 public class ModuleCheatEngine extends ModuleEngine {
-
-	public ModuleCheatEngine(MinecartModular cart) {
+	public ModuleCheatEngine(final MinecartModular cart) {
 		super(cart);
-
 	}
 
-	@Override
-    public void loadFuel() {
-		//no reason to load fuel
+	public void loadFuel() {
 	}
 
 	@Override
@@ -24,33 +18,31 @@ public class ModuleCheatEngine extends ModuleEngine {
 	}
 
 	@Override
-	public void setFuelLevel(int val) {
-		//in your face
+	public void setFuelLevel(final int val) {
 	}
-	
+
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-        String[] split = getModuleName().split(" ");
-	    drawString(gui, split[0], 8, 6, 0x404040);
-        if (split.length > 1) {
-		    drawString(gui,split[1], 8, 16, 0x404040);
-        }
-        drawString(gui, Localization.MODULES.ENGINES.OVER_9000.translate(String.valueOf(getFuelLevel())), 8, 42, 0x404040);
-	}	
-	
+	public void drawForeground(final GuiMinecart gui) {
+		final String[] split = this.getModuleName().split(" ");
+		this.drawString(gui, split[0], 8, 6, 4210752);
+		if (split.length > 1) {
+			this.drawString(gui, split[1], 8, 16, 4210752);
+		}
+		this.drawString(gui, Localization.MODULES.ENGINES.OVER_9000.translate(String.valueOf(this.getFuelLevel())), 8, 42, 4210752);
+	}
+
 	@Override
 	public int getTotalFuel() {
 		return 9001000;
 	}
-	
+
 	@Override
 	public float[] getGuiBarColor() {
-		return new float[] {0.97F, 0.58F, 0.11F};
+		return new float[] { 0.97f, 0.58f, 0.11f };
 	}
-	
+
 	@Override
 	public boolean hasSlots() {
 		return false;
 	}
-
 }

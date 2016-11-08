@@ -1,30 +1,28 @@
 package vswe.stevescarts.Models.Cart;
+
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelPumpkinHullTop extends ModelHullTop
-{
+public class ModelPumpkinHullTop extends ModelHullTop {
+	private ResourceLocation resourceactive;
+	private ResourceLocation resourceidle;
 
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return (module == null || isActive(module)) ? resourceactive : resourceidle;
+	public ResourceLocation getResource(final ModuleBase module) {
+		return (module == null || this.isActive(module)) ? this.resourceactive : this.resourceidle;
 	}
-	
-	private ResourceLocation resourceactive;
-	private ResourceLocation resourceidle;	
-    public ModelPumpkinHullTop(ResourceLocation resourceactive, ResourceLocation resourceidle)
-    {
+
+	public ModelPumpkinHullTop(final ResourceLocation resourceactive, final ResourceLocation resourceidle) {
 		super(resourceactive);
 		this.resourceactive = resourceactive;
 		this.resourceidle = resourceidle;
-
-    }
-	
-	private boolean isActive(ModuleBase module) {
-		long time = module.getCart().worldObj.getWorldInfo().getWorldTime() % 24000;
-		return time >= 12000 && time <= 18000;
 	}
-	
+
+	private boolean isActive(final ModuleBase module) {
+		final long time = module.getCart().worldObj.getWorldInfo().getWorldTime() % 24000L;
+		return time >= 12000L && time <= 18000L;
+	}
 }

@@ -1,47 +1,28 @@
 package vswe.stevescarts.Slots;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevescarts.Helpers.Tank;
-public class SlotLiquidInput extends SlotBase
-{
+
+public class SlotLiquidInput extends SlotBase {
 	private Tank tank;
 	private int maxsize;
-    public SlotLiquidInput(IInventory iinventory, Tank tank, int maxsize, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
+
+	public SlotLiquidInput(final IInventory iinventory, final Tank tank, final int maxsize, final int i, final int j, final int k) {
+		super(iinventory, i, j, k);
 		this.tank = tank;
 		this.maxsize = maxsize;
-    }
+	}
 
-    
-    public int getSlotStackLimit()
-    {
-    	if (maxsize != -1) {
-    		return maxsize;
-    	}else{
-    		return Math.min(8, tank.getCapacity() / FluidContainerRegistry.BUCKET_VOLUME);
-    		
-	    	/*LiquidStack liquid = tank.getLiquid();
-	    	int space = tank.getCapacity();
-	    	if (liquid != null) {
-	    		space -= liquid.amount;
-	    	}
-	    	
-	        return Math.min(16, 1 + space / LiquidContainerRegistry.BUCKET_VOLUME);*/
-    	}
-    }
-    
-    
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return 
-		(FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null) ||
-		(FluidContainerRegistry.isFilledContainer(itemstack) && (
-			tank.getFluid() == null ||
-			tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))
-		));
-		
+	public int getSlotStackLimit() {
+		if (this.maxsize != -1) {
+			return this.maxsize;
+		}
+		return Math.min(8, this.tank.getCapacity() / 1000);
+	}
 
-    }
+	public boolean isItemValid(final ItemStack itemstack) {
+		return (FluidContainerRegistry.isEmptyContainer(itemstack) && this.tank.getFluid() != null) || (FluidContainerRegistry.isFilledContainer(itemstack) && (this.tank.getFluid() == null || this.tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))));
+	}
 }

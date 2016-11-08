@@ -1,4 +1,5 @@
 package vswe.stevescarts.Modules.Addons;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -7,8 +8,23 @@ import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public class ModuleHeightControl extends ModuleAddon {
-	public ModuleHeightControl(MinecartModular cart) {
+	private int levelNumberBoxX;
+	private int levelNumberBoxY;
+	private int[] arrowUp;
+	private int[] arrowMiddle;
+	private int[] arrowDown;
+	private int oreMapX;
+	private int oreMapY;
+
+	public ModuleHeightControl(final MinecartModular cart) {
 		super(cart);
+		this.levelNumberBoxX = 8;
+		this.levelNumberBoxY = 18;
+		this.arrowUp = new int[] { 9, 36, 17, 9 };
+		this.arrowMiddle = new int[] { 9, 46, 17, 6 };
+		this.arrowDown = new int[] { 9, 53, 17, 9 };
+		this.oreMapX = 40;
+		this.oreMapY = 18;
 	}
 
 	@Override
@@ -17,13 +33,13 @@ public class ModuleHeightControl extends ModuleAddon {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
 	@Override
 	public int guiWidth() {
-		return Math.max(100, oreMapX + 5 +  HeightControlOre.ores.size() * 4);
+		return Math.max(100, this.oreMapX + 5 + HeightControlOre.ores.size() * 4);
 	}
 
 	@Override
@@ -31,179 +47,122 @@ public class ModuleHeightControl extends ModuleAddon {
 		return 65;
 	}
 
-	private int levelNumberBoxX = 8;
-	private int levelNumberBoxY = 18;
-	private int[] arrowUp = new int[] {9,36, 17,9};
-	private int[] arrowMiddle = new int[] {9,46, 17,6};
-	private int[] arrowDown = new int[] {9,53, 17,9};
-	private int oreMapX = 40;
-	private int oreMapY = 18;
-
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
-
-        String s = String.valueOf(getYTarget());
-        int x = levelNumberBoxX + 6;
-        int color = 0xFFFFFF;
-
-        if (getYTarget() >= 100)
-        {
-            x -= 4;
-        }
-        else if (getYTarget() < 10)
-        {
-            x += 3;
-
-            if (getYTarget() < 5)
-            {
-                color = 0xFF0000;
-            }
-        }
-
-        drawString(gui,s, x, levelNumberBoxY + 5, color);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		final String s = String.valueOf(this.getYTarget());
+		int x = this.levelNumberBoxX + 6;
+		int color = 16777215;
+		if (this.getYTarget() >= 100) {
+			x -= 4;
+		} else if (this.getYTarget() < 10) {
+			x += 3;
+			if (this.getYTarget() < 5) {
+				color = 16711680;
+			}
+		}
+		this.drawString(gui, s, x, this.levelNumberBoxY + 5, color);
 	}
 
-		
-	
 	@Override
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/heightcontrol.png");
-
-		//draw the box for the numbers
-		drawImage(gui, levelNumberBoxX, levelNumberBoxY, 4, 36, 21, 15);
-
-		//draw the controls
-		drawImage(gui, arrowUp, 4, 12);
-		drawImage(gui, arrowMiddle, 4, 21);
-		drawImage(gui, arrowDown, 4, 27);
-
-		//draw the ores map
-		for (int i = 0; i < HeightControlOre.ores.size(); i++)
-        {
-			HeightControlOre ore = HeightControlOre.ores.get(i);
-
-            for (int j = 0; j < 11; j++)
-            {
-                int altitude = getYTarget() - j + 5;
-                boolean empty = !(ore.spanLowest <= altitude && altitude <= ore.spanHighest);
-                boolean high = ore.bestLowest <= altitude && altitude <= ore.bestHighest;
-                int srcY;
+		this.drawImage(gui, this.levelNumberBoxX, this.levelNumberBoxY, 4, 36, 21, 15);
+		this.drawImage(gui, this.arrowUp, 4, 12);
+		this.drawImage(gui, this.arrowMiddle, 4, 21);
+		this.drawImage(gui, this.arrowDown, 4, 27);
+		for (int i = 0; i < HeightControlOre.ores.size(); ++i) {
+			final HeightControlOre ore = HeightControlOre.ores.get(i);
+			for (int j = 0; j < 11; ++j) {
+				final int altitude = this.getYTarget() - j + 5;
+				final boolean empty = ore.spanLowest > altitude || altitude > ore.spanHighest;
+				final boolean high = ore.bestLowest <= altitude && altitude <= ore.bestHighest;
+				int srcY;
 				int srcX;
-
-                if (empty)
-                {
-                    srcY = 0;
+				if (empty) {
+					srcY = 0;
 					srcX = 0;
-                }else{
+				} else {
 					srcX = ore.srcX;
-                    srcY = ore.srcY;
-
+					srcY = ore.srcY;
 					if (high) {
 						srcY += 4;
 					}
-
-					/*if (!ore.useDefaultTexture) {
-						loadTexture(gui, ore.specialTexture, true);
-					}*/
 				}
-
-                drawImage(gui,oreMapX + i * 4, oreMapY + j * 4, srcX, srcY, 4, 4);
-
-				/*if (!ore.useDefaultTexture && !empty) {
-					loadTexture(gui,"heightcontrol.png");
-				}*/
-            }
-        }
-
-		//draw the markers
-		if (getYTarget() != (int)getCart().posY) {
-			drawMarker(gui,5,false);
-			//drawTexturedModalRect(j + 110 - 1, k + 75 + 5 * 4 - 1, 180, 0, 26, 6);
+				this.drawImage(gui, this.oreMapX + i * 4, this.oreMapY + j * 4, srcX, srcY, 4, 4);
+			}
 		}
-        int pos = getYTarget() + 5 - (int)getCart().posY;
-
-        if (pos >= 0 && pos < 11)
-        {
-			drawMarker(gui,pos,true);
-            //drawTexturedModalRect(j + 110 - 1, k + 75 + pos * 4 - 1, 180, 6, 26, 6);
-        }
+		if (this.getYTarget() != (int) this.getCart().posY) {
+			this.drawMarker(gui, 5, false);
+		}
+		final int pos = this.getYTarget() + 5 - (int) this.getCart().posY;
+		if (pos >= 0 && pos < 11) {
+			this.drawMarker(gui, pos, true);
+		}
 	}
 
-	private void drawMarker(GuiMinecart gui, int pos, boolean isTargetLevel) {
-		int srcX = 4;
-		int srcY = isTargetLevel ? 6 : 0;
-
-		drawImage(gui, oreMapX - 1, oreMapY + pos * 4 - 1, srcX, srcY, 1, 6);
-		for (int i = 0; i < HeightControlOre.ores.size();i++) {
-			drawImage(gui, oreMapX + i * 4, oreMapY + pos * 4 - 1, srcX + 1, srcY, 4, 6);
+	private void drawMarker(final GuiMinecart gui, final int pos, final boolean isTargetLevel) {
+		final int srcX = 4;
+		final int srcY = isTargetLevel ? 6 : 0;
+		this.drawImage(gui, this.oreMapX - 1, this.oreMapY + pos * 4 - 1, srcX, srcY, 1, 6);
+		for (int i = 0; i < HeightControlOre.ores.size(); ++i) {
+			this.drawImage(gui, this.oreMapX + i * 4, this.oreMapY + pos * 4 - 1, srcX + 1, srcY, 4, 6);
 		}
-		drawImage(gui, oreMapX + HeightControlOre.ores.size() * 4, oreMapY + pos * 4 - 1, srcX + 5, srcY, 1, 6);
+		this.drawImage(gui, this.oreMapX + HeightControlOre.ores.size() * 4, this.oreMapY + pos * 4 - 1, srcX + 5, srcY, 1, 6);
 	}
 
 	@Override
-	public void mouseClicked(GuiMinecart gui, int x, int y, int button) {
+	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (button == 0) {
 			byte packetData = 0;
-			if (inRect(x,y, arrowMiddle)) {
-				//set bit 0 to 1
-				packetData |= 1;
-			}else {
-				if (inRect(x,y, arrowUp)) {
-					//set bit 1 to 0
-				}else if (inRect(x,y, arrowDown)) {
-					//set bit 1 to 1
-					packetData |= 2;
-				}else{
-					return;
+			if (this.inRect(x, y, this.arrowMiddle)) {
+				packetData |= 0x1;
+			} else {
+				if (!this.inRect(x, y, this.arrowUp)) {
+					if (!this.inRect(x, y, this.arrowDown)) {
+						return;
+					}
+					packetData |= 0x2;
 				}
-				if ( gui.isShiftKeyDown()) {
-					//set bit 2 to 1
-					packetData |= 4;
+				if (GuiMinecart.isShiftKeyDown()) {
+					packetData |= 0x4;
 				}
 			}
-
-			sendPacket(0, packetData);
+			this.sendPacket(0, packetData);
 		}
 	}
 
 	@Override
-	protected void receivePacket(int id, byte[] data, EntityPlayer player) {
+	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			byte info = data[0];
-
-			if ((info & 1) != 0) {
-				setYTarget((int)getCart().posY);
-			}else{
+			final byte info = data[0];
+			if ((info & 0x1) != 0x0) {
+				this.setYTarget((int) this.getCart().posY);
+			} else {
 				int mult;
-				int dif;
-				if ((info & 2) == 0) {
+				if ((info & 0x2) == 0x0) {
 					mult = 1;
-				}else{
+				} else {
 					mult = -1;
 				}
-
-				if ((info & 4) == 0) {
+				int dif;
+				if ((info & 0x4) == 0x0) {
 					dif = 1;
-				}else{
+				} else {
 					dif = 10;
 				}
-
-				int targetY = getYTarget();
-
+				int targetY = this.getYTarget();
 				targetY += mult * dif;
 				if (targetY < 0) {
 					targetY = 0;
-				}else if (targetY > 255) {
+				} else if (targetY > 255) {
 					targetY = 255;
 				}
-
-				setYTarget(targetY);
+				this.setYTarget(targetY);
 			}
 		}
 	}
 
-	@Override
 	public int numberOfPackets() {
 		return 1;
 	}
@@ -215,33 +174,32 @@ public class ModuleHeightControl extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0,(int)getCart().posY);
+		this.addDw(0, (int) this.getCart().posY);
 	}
 
-	public void setYTarget(int val) {
-		updateDw(0,val);
+	public void setYTarget(final int val) {
+		this.updateDw(0, val);
 	}
 
 	@Override
 	public int getYTarget() {
-		if (isPlaceholder()) {
+		if (this.isPlaceholder()) {
 			return 64;
 		}
-	
-		int data = getDw(0);
+		int data = this.getDw(0);
 		if (data < 0) {
-			data+=256;
+			data += 256;
 		}
 		return data;
 	}
-	
+
 	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		tagCompound.setShort(generateNBTName("Height",id), (short)getYTarget());
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		tagCompound.setShort(this.generateNBTName("Height", id), (short) this.getYTarget());
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
-		setYTarget(tagCompound.getShort(generateNBTName("Height",id)));
-	}	
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
+		this.setYTarget(tagCompound.getShort(this.generateNBTName("Height", id)));
+	}
 }

@@ -1,21 +1,19 @@
 package vswe.stevescarts.Listeners;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vswe.stevescarts.Carts.MinecartModular;
 
-public class ChunkListener
-{
-    public ChunkListener()
-    {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+public class ChunkListener {
+	public ChunkListener() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
 	@SubscribeEvent
-	public void invoke(EntityEvent.EnteringChunk event) {	
-		if (!event.entity.isDead && event.entity instanceof MinecartModular) {
-			((MinecartModular)event.entity).loadChunks(event.newChunkX,event.newChunkZ);
+	public void invoke(final EntityEvent.EnteringChunk event) {
+		if (!event.getEntity().isDead && event.getEntity() instanceof MinecartModular) {
+			((MinecartModular) event.getEntity()).loadChunks(event.getNewChunkX(), event.getNewChunkZ());
 		}
-
 	}
 }

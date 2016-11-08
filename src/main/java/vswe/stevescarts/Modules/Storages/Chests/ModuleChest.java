@@ -1,4 +1,6 @@
 package vswe.stevescarts.Modules.Storages.Chests;
+
+import net.minecraft.inventory.IInventory;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.Storages.ModuleStorage;
@@ -6,157 +8,143 @@ import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotChest;
 
 public abstract class ModuleChest extends ModuleStorage {
-	public ModuleChest(MinecartModular cart) {
+	private float chestAngle;
+
+	public ModuleChest(final MinecartModular cart) {
 		super(cart);
 	}
 
-	//called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
 		super.update();
-		handleChest();
+		this.handleChest();
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotChest(getCart(),slotId,8+x*18,16+y*18);
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotChest(this.getCart(), slotId, 8 + x * 18, 16 + y * 18);
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
 	public int guiWidth() {
-		return 15 + getInventoryWidth() * 18;
+		return 15 + this.getInventoryWidth() * 18;
 	}
 
 	@Override
 	public int guiHeight() {
-		return 20 + getInventoryHeight() * 18 ;
+		return 20 + this.getInventoryHeight() * 18;
 	}
-
-	private float chestAngle;
 
 	public float getChestAngle() {
-		return chestAngle;
+		return this.chestAngle;
 	}
-	
+
 	protected boolean lidClosed() {
-		return chestAngle <= 0.0F;
+		return this.chestAngle <= 0.0f;
 	}
 
 	protected float getLidSpeed() {
-		return (float)(Math.PI / 20);
-	}	
-		
+		return 0.15707964f;
+	}
+
 	protected float chestFullyOpenAngle() {
-		return (float)Math.PI * 7 / 16F;
+		return 1.3744469f;
 	}
 
 	protected boolean hasVisualChest() {
 		return true;
 	}
-	
+
 	protected boolean playChestSound() {
-		return hasVisualChest();
-	}	
+		return this.hasVisualChest();
+	}
 
 	@Override
 	public int numberOfDataWatchers() {
-		if (hasVisualChest()) {
+		if (this.hasVisualChest()) {
 			return 1;
-		}else{
-			return 0;
 		}
+		return 0;
 	}
 
 	@Override
 	public void initDw() {
-		if (hasVisualChest()) {
-			addDw(0,0);
+		if (this.hasVisualChest()) {
+			this.addDw(0, 0);
 		}
 	}
 
 	public void openChest() {
-		if (hasVisualChest()) {
-			updateDw(0,getDw(0)+1);
+		if (this.hasVisualChest()) {
+			this.updateDw(0, this.getDw(0) + 1);
 		}
 	}
 
 	public void closeChest() {
-		if (hasVisualChest()) {
-			updateDw(0,getDw(0)-1);
+		if (this.hasVisualChest()) {
+			this.updateDw(0, this.getDw(0) - 1);
 		}
 	}
 
 	protected boolean isChestActive() {
-		if (hasVisualChest()) {
-			if (isPlaceholder()) {
-				return getSimInfo().getChestActive();
-			}else{
-				return getDw(0) > 0;
-			}
-		}else{
+		if (!this.hasVisualChest()) {
 			return false;
 		}
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getChestActive();
+		}
+		return this.getDw(0) > 0;
 	}
 
 	protected void handleChest() {
-		if (!hasVisualChest()) {
+		if (!this.hasVisualChest()) {
 			return;
 		}
-
-		if (isChestActive() && lidClosed() && playChestSound())
-		{
-			getCart().worldObj.playSoundEffect(getCart().posX, getCart().posY, getCart().posZ, "random.chestopen", 0.5F, getCart().worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		if (this.isChestActive() && this.lidClosed() && this.playChestSound()) {
+//			this.getCart().worldObj.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestopen", 0.5f, this.getCart().worldObj.rand.nextFloat() * 0.1f + 0.9f);
 		}
-
-		if (isChestActive() && chestAngle < chestFullyOpenAngle()) {
-			chestAngle += getLidSpeed();
-			if (chestAngle >chestFullyOpenAngle())
-			{
-				chestAngle = chestFullyOpenAngle();
+		if (this.isChestActive() && this.chestAngle < this.chestFullyOpenAngle()) {
+			this.chestAngle += this.getLidSpeed();
+			if (this.chestAngle > this.chestFullyOpenAngle()) {
+				this.chestAngle = this.chestFullyOpenAngle();
 			}
-		}else if (!isChestActive() && !lidClosed())
-		{
-			float lastAngle = chestAngle;
-
-			chestAngle -= getLidSpeed();
-
-			if (chestAngle < Math.PI * 3 / 8 && lastAngle >= Math.PI * 3 / 8 && playChestSound())
-			{
-				getCart().worldObj.playSoundEffect(getCart().posX, getCart().posY, getCart().posZ, "random.chestclosed", 0.5F, getCart().worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		} else if (!this.isChestActive() && !this.lidClosed()) {
+			final float lastAngle = this.chestAngle;
+			this.chestAngle -= this.getLidSpeed();
+			if (this.chestAngle < 1.1780972450961724 && lastAngle >= 1.1780972450961724 && this.playChestSound()) {
+//				this.getCart().worldObj.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestclosed", 0.5f, this.getCart().worldObj.rand.nextFloat() * 0.1f + 0.9f);
 			}
-
-			if (chestAngle < 0.0F)
-			{
-				chestAngle = 0.0F;
+			if (this.chestAngle < 0.0f) {
+				this.chestAngle = 0.0f;
 			}
 		}
 	}
-	
+
 	public boolean isCompletelyFilled() {
-		for (int i = 0; i < getInventorySize(); i++) {
-			if (getStack(i) == null) {
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			if (this.getStack(i) == null) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	public boolean isCompletelyEmpty() {
-		for (int i = 0; i < getInventorySize(); i++) {
-			if (getStack(i) != null) {
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			if (this.getStack(i) != null) {
 				return false;
 			}
 		}
 		return true;
-	}	
+	}
 }

@@ -1,108 +1,99 @@
 package vswe.stevescarts.Models.Cart;
-import java.util.ArrayList;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Engines.ModuleSolarTop;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-@SideOnly(Side.CLIENT)
-public class ModelSolarPanelHeads extends ModelSolarPanel
-{
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/panelModelActive.png");
-	private static ResourceLocation texture2 = ResourceHelper.getResource("/models/panelModelIdle.png");
-	
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		if (module != null && ((ModuleSolarTop)module).getLight() == 15) {
-			return texture;
-		}else{
-			return texture2;
-		}
-	}		
+import vswe.stevescarts.Modules.ModuleBase;
 
+import java.util.ArrayList;
+
+@SideOnly(Side.CLIENT)
+public class ModelSolarPanelHeads extends ModelSolarPanel {
+	private static ResourceLocation texture;
+	private static ResourceLocation texture2;
+	ArrayList<ModelRenderer> panels;
+
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		if (module != null && ((ModuleSolarTop) module).getLight() == 15) {
+			return ModelSolarPanelHeads.texture;
+		}
+		return ModelSolarPanelHeads.texture2;
+	}
+
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
 
+	@Override
 	protected int getTextureHeight() {
 		return 16;
 	}
 
-    public ModelSolarPanelHeads(int panelCount)
-    {
-		panels = new ArrayList<ModelRenderer>();
-
-		ModelRenderer moving = createMovingHolder(0,0);
-
-		for (int i = 0; i < panelCount; i++) {
-			createPanel(moving,i);
+	public ModelSolarPanelHeads(final int panelCount) {
+		this.panels = new ArrayList<ModelRenderer>();
+		final ModelRenderer moving = this.createMovingHolder(0, 0);
+		for (int i = 0; i < panelCount; ++i) {
+			this.createPanel(moving, i);
 		}
-    }
+	}
 
-	private void createPanel(ModelRenderer base, int index) {
-		float rotation;
-		float f;
-		
+	private void createPanel(final ModelRenderer base, final int index) {
+		float rotation = 0.0f;
+		float f = 0.0f;
 		switch (index) {
-			case 0:
-				rotation = 0F;
-				f = -1.5F;
+			case 0: {
+				rotation = 0.0f;
+				f = -1.5f;
 				break;
-			case 1:
-				rotation = (float)Math.PI;
-				f = -1.5F;
+			}
+			case 1: {
+				rotation = 3.1415927f;
+				f = -1.5f;
 				break;
-			case 2:
-				rotation = (float)Math.PI * 3F / 2F;
-				f = -6F;
+			}
+			case 2: {
+				rotation = 4.712389f;
+				f = -6.0f;
 				break;
-			case 3:
-				rotation = (float)Math.PI / 2F;
-				f = -6F;
+			}
+			case 3: {
+				rotation = 1.5707964f;
+				f = -6.0f;
 				break;
-			default:
+			}
+			default: {
 				return;
+			}
 		}
-		createPanel(base, rotation, f);
+		this.createPanel(base, rotation, f);
 	}
-	
-	private void createPanel(ModelRenderer base,float rotation,float f) {
-		ModelRenderer panel = new ModelRenderer(this, 0, 0);
-		fixSize(panel);
+
+	private void createPanel(final ModelRenderer base, final float rotation, final float f) {
+		final ModelRenderer panel = new ModelRenderer(this, 0, 0);
+		this.fixSize(panel);
 		base.addChild(panel);
-
-		panel.addBox(
-			-6F, 	//X
-			0, 	//Y
-			-2,	 	//Z
-			12,					//Size X
-			13,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-
-		panel.setRotationPoint(
-			(float)Math.sin(rotation) * f, 		//X
-			-5F,			//Y
-			(float)Math.cos(rotation) * f			//Z
-		);
-
+		panel.addBox(-6.0f, 0.0f, -2.0f, 12, 13, 2, 0.0f);
+		panel.setRotationPoint((float) Math.sin(rotation) * f, -5.0f, (float) Math.cos(rotation) * f);
 		panel.rotateAngleY = rotation;
-
-		panels.add(panel);
+		this.panels.add(panel);
 	}
 
-	ArrayList<ModelRenderer> panels;
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-		super.applyEffects(module,yaw,pitch,roll);
-
-
-		for (ModelRenderer panel : panels) {
-			panel.rotateAngleX = module == null ? 0F : -((ModuleSolarTop)module).getInnerRotation();
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		super.applyEffects(module, yaw, pitch, roll);
+		for (final ModelRenderer panel : this.panels) {
+			panel.rotateAngleX = ((module == null) ? 0.0f : (-((ModuleSolarTop) module).getInnerRotation()));
 		}
-		
+	}
+
+	static {
+		ModelSolarPanelHeads.texture = ResourceHelper.getResource("/models/panelModelActive.png");
+		ModelSolarPanelHeads.texture2 = ResourceHelper.getResource("/models/panelModelIdle.png");
 	}
 }

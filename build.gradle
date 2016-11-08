@@ -13,20 +13,20 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
 
-apply plugin: 'forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "2.0.0.b17"
 group= "vswe.stevescarts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "StevesCarts"
 
 minecraft {
-    version = "1.7.10-10.13.0.1187"
-    assetDir = "eclipse/assets"
-
+    version = "1.10.2-12.18.2.2121"
+    mappings = "snapshot_20161105"
+    runDir = "run"
     replace '${version}', project.version
 }
 

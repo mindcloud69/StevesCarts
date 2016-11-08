@@ -1,38 +1,26 @@
 package vswe.stevescarts.Containers;
-import java.util.ArrayList;
-import java.util.Iterator;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import vswe.stevescarts.Slots.SlotCargo;
 import vswe.stevescarts.TileEntities.TileEntityCargo;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerCargo extends ContainerManager
-{
+import java.util.ArrayList;
 
+public class ContainerCargo extends ContainerManager {
+	public short lastTarget;
 
-
-    public ContainerCargo(IInventory invPlayer, TileEntityCargo cargo)
-    {
+	public ContainerCargo(final IInventory invPlayer, final TileEntityCargo cargo) {
 		super(cargo);
-		
 		cargo.cargoSlots = new ArrayList<SlotCargo>();
 		cargo.lastLayout = -1;
-		for (int i = 0; i < 60; i++) {
-			SlotCargo slot = new SlotCargo(cargo, i);
-			addSlotToContainer(slot);
+		for (int i = 0; i < 60; ++i) {
+			final SlotCargo slot = new SlotCargo(cargo, i);
+			this.addSlotToContainer(slot);
 			cargo.cargoSlots.add(slot);
 		}
-		
-		addPlayer(invPlayer);
-    }
-
-    
-	public short lastTarget;
+		this.addPlayer(invPlayer);
+	}
 
 	@Override
 	protected int offsetX() {

@@ -1,312 +1,281 @@
 package vswe.stevescarts.Modules.Addons;
 
-import java.util.ArrayList;
-
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Enchantments;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.EnchantmentData;
 import vswe.stevescarts.Helpers.EnchantmentInfo;
-import vswe.stevescarts.Helpers.EnchantmentInfo.ENCHANTMENT_TYPE;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotEnchantment;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ModuleEnchants extends ModuleAddon  {
+import java.util.ArrayList;
 
-	public ModuleEnchants(MinecartModular cart) {
+public class ModuleEnchants extends ModuleAddon {
+	private EnchantmentData[] enchants;
+	private ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE> enabledTypes;
+
+	public ModuleEnchants(final MinecartModular cart) {
 		super(cart);
-		enchants = new EnchantmentData[3];
-		enabledTypes = new ArrayList<ENCHANTMENT_TYPE>();
+		this.enchants = new EnchantmentData[3];
+		this.enabledTypes = new ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE>();
 	}
 
-	private EnchantmentData[] enchants;
-	private ArrayList<ENCHANTMENT_TYPE> enabledTypes;
-	
-	
-	//---------TOOLS---------
 	public int getFortuneLevel() {
-		if (useSilkTouch()) {
+		if (this.useSilkTouch()) {
 			return 0;
 		}
-		
-		
-		return getEnchantLevel(EnchantmentInfo.fortune);
+		return this.getEnchantLevel(EnchantmentInfo.fortune);
 	}
-	
-	//implemented but doesn't work properly
+
 	public boolean useSilkTouch() {
 		return false;
 	}
-	
-	public int getUnbreakingLevel() { 
-		return getEnchantLevel(EnchantmentInfo.unbreaking);
+
+	public int getUnbreakingLevel() {
+		return this.getEnchantLevel(EnchantmentInfo.unbreaking);
 	}
-	
+
 	public int getEfficiencyLevel() {
-		return getEnchantLevel(EnchantmentInfo.efficiency);
-	}	
-	
-	
-	
-	
-	//---------SHOOTERS---------
+		return this.getEnchantLevel(EnchantmentInfo.efficiency);
+	}
+
 	public int getPowerLevel() {
-		return getEnchantLevel(EnchantmentInfo.power);
+		return this.getEnchantLevel(EnchantmentInfo.power);
 	}
 
 	public int getPunchLevel() {
-		return getEnchantLevel(EnchantmentInfo.punch);
+		return this.getEnchantLevel(EnchantmentInfo.punch);
 	}
 
 	public boolean useFlame() {
-		return getEnchantLevel(EnchantmentInfo.flame) > 0;
+		return this.getEnchantLevel(EnchantmentInfo.flame) > 0;
 	}
 
 	public boolean useInfinity() {
-		return getEnchantLevel(EnchantmentInfo.infinity) > 0;
+		return this.getEnchantLevel(EnchantmentInfo.infinity) > 0;
 	}
-	
+
 	@Override
 	public boolean hasGui() {
 		return true;
 	}
-	
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
-	}	
-	
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+	}
+
 	@Override
 	protected int getInventoryWidth() {
 		return 1;
 	}
-	
+
 	@Override
 	protected int getInventoryHeight() {
 		return 3;
 	}
-	
+
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotEnchantment(getCart(), enabledTypes, slotId,8 , 14 + y * 20);
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotEnchantment(this.getCart(), this.enabledTypes, slotId, 8, 14 + y * 20);
 	}
-	
 
 	@Override
 	public void update() {
 		super.update();
-		
-		
-		if (!getCart().worldObj.isRemote) {
-			for (int i = 0; i < 3; i++) {
-				if (getStack(i) != null && getStack(i).stackSize > 0) {
-										
-					int stacksize = getStack(i).stackSize;
-					enchants[i] = EnchantmentInfo.addBook(enabledTypes, enchants[i], getStack(i));
-					if (getStack(i).stackSize != stacksize) {
+		if (!this.getCart().worldObj.isRemote) {
+			for (int i = 0; i < 3; ++i) {
+				if (this.getStack(i) != null && this.getStack(i).stackSize > 0) {
+					final int stacksize = this.getStack(i).stackSize;
+					this.enchants[i] = EnchantmentInfo.addBook(this.enabledTypes, this.enchants[i], this.getStack(i));
+					if (this.getStack(i).stackSize != stacksize) {
 						boolean valid = true;
-						for (int j = 0; j < 3; j++) {
-							if (i != j) {
-								if (enchants[i] != null && enchants[j] != null && enchants[i].getEnchantment() == enchants[j].getEnchantment()) {
-									enchants[i] = null;
-									getStack(i).stackSize += 1;
-									valid = false;
-									break;
-								}
+						for (int j = 0; j < 3; ++j) {
+							if (i != j && this.enchants[i] != null && this.enchants[j] != null && this.enchants[i].getEnchantment() == this.enchants[j].getEnchantment()) {
+								this.enchants[i] = null;
+								final ItemStack stack = this.getStack(i);
+								++stack.stackSize;
+								valid = false;
+								break;
 							}
 						}
-						if (valid && getStack(i).stackSize <= 0) {
-							setStack(i, null);									
+						if (valid && this.getStack(i).stackSize <= 0) {
+							this.setStack(i, null);
 						}
 					}
 				}
 			}
-			
 		}
 	}
-	
-	public void damageEnchant(ENCHANTMENT_TYPE type, int dmg) {
-		for (int i = 0; i < 3; i++) {
-			if (enchants[i] != null && enchants[i].getEnchantment().getType() == type) {
-				enchants[i].damageEnchant(dmg);
-				if (enchants[i].getValue() <= 0) {
-					enchants[i] = null;
+
+	public void damageEnchant(final EnchantmentInfo.ENCHANTMENT_TYPE type, final int dmg) {
+		for (int i = 0; i < 3; ++i) {
+			if (this.enchants[i] != null && this.enchants[i].getEnchantment().getType() == type) {
+				this.enchants[i].damageEnchant(dmg);
+				if (this.enchants[i].getValue() <= 0) {
+					this.enchants[i] = null;
 				}
 			}
-		}		
-	}
-	
-	private int getEnchantLevel(EnchantmentInfo info) {
-		if (info != null) {
-			for (int i = 0; i < 3; i++) {
-				if (enchants[i] != null && enchants[i].getEnchantment() == info) {
-					return enchants[i].getLevel();
-				}
-			}				
 		}
-		
+	}
+
+	private int getEnchantLevel(final EnchantmentInfo info) {
+		if (info != null) {
+			for (int i = 0; i < 3; ++i) {
+				if (this.enchants[i] != null && this.enchants[i].getEnchantment() == info) {
+					return this.enchants[i].getLevel();
+				}
+			}
+		}
 		return 0;
 	}
-	
-			
-	
-	@Override
+
 	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiMinecart gui, int x, int y) {
+	@Override
+	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/enchant.png");
-		
-		for (int i = 0; i < 3; i++) {
-			int[] box = getBoxRect(i);
-			
-			if (inRect(x, y, box)) {
-				drawImage(gui, box, 65, 0);
-			}else{
-				drawImage(gui, box, 0, 0);
+		for (int i = 0; i < 3; ++i) {
+			final int[] box = this.getBoxRect(i);
+			if (this.inRect(x, y, box)) {
+				this.drawImage(gui, box, 65, 0);
+			} else {
+				this.drawImage(gui, box, 0, 0);
 			}
-			
-			EnchantmentData data = enchants[i];
+			final EnchantmentData data = this.enchants[i];
 			if (data != null) {
-				int maxlevel = data.getEnchantment().getEnchantment().getMaxLevel();
+				final int maxlevel = data.getEnchantment().getEnchantment().getMaxLevel();
 				int value = data.getValue();
-				for (int j = 0; j < maxlevel; j++) {
-					int[] bar = getBarRect(i, j, maxlevel);
+				for (int j = 0; j < maxlevel; ++j) {
+					final int[] bar = this.getBarRect(i, j, maxlevel);
 					if (j != maxlevel - 1) {
-						drawImage(gui, bar[0] + bar[2], bar[1], 61 + j, 1, 1, bar[3]);
+						this.drawImage(gui, bar[0] + bar[2], bar[1], 61 + j, 1, 1, bar[3]);
 					}
-					
-					int levelmaxvalue = data.getEnchantment().getValue(j + 1);
+					final int levelmaxvalue = data.getEnchantment().getValue(j + 1);
 					if (value > 0) {
-						float mult = (float)value / levelmaxvalue;
-						if (mult > 1) {
-							mult = 1;
+						float mult = value / levelmaxvalue;
+						if (mult > 1.0f) {
+							mult = 1.0f;
 						}
-						bar[2] *= mult;
-						drawImage(gui, bar, 1, 13 + 11 * j);	
+						final int[] array = bar;
+						final int n = 2;
+						array[n] *= (int) mult;
+						this.drawImage(gui, bar, 1, 13 + 11 * j);
 					}
 					value -= levelmaxvalue;
 				}
 			}
 		}
-		
 	}
-	
-	@Override
+
 	@SideOnly(Side.CLIENT)
-	public void drawMouseOver(GuiMinecart gui, int x, int y) {
-		for (int i = 0; i < 3; i++) {
-			EnchantmentData data = enchants[i];
+	@Override
+	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
+		for (int i = 0; i < 3; ++i) {
+			final EnchantmentData data = this.enchants[i];
 			String str;
-			
 			if (data != null) {
 				str = data.getInfoText();
-			}else{
+			} else {
 				str = Localization.MODULES.ADDONS.ENCHANT_INSTRUCTION.translate();
 			}
-			
-			
-			drawStringOnMouseOver(gui, str, x, y, getBoxRect(i));
+			this.drawStringOnMouseOver(gui, str, x, y, this.getBoxRect(i));
 		}
 	}
-	
-	private int[] getBoxRect(int id) {
-		return new int[] {40, 17 + id * 20, 61, 12};
+
+	private int[] getBoxRect(final int id) {
+		return new int[] { 40, 17 + id * 20, 61, 12 };
 	}
-	
-	private int[] getBarRect(int id, int barid, int maxlevel) {
-		int width = (59 - (maxlevel - 1)) / maxlevel;
-		return new int[] {41 + (width + 1) * barid, 18 + id * 20, width, 10};
-	}	
-	
+
+	private int[] getBarRect(final int id, final int barid, final int maxlevel) {
+		final int width = (59 - (maxlevel - 1)) / maxlevel;
+		return new int[] { 41 + (width + 1) * barid, 18 + id * 20, width, 10 };
+	}
 
 	@Override
 	public int numberOfGuiData() {
 		return 9;
-	}	
-	
+	}
+
 	@Override
-	protected void checkGuiData(Object[] info) {
-		for (int i = 0; i < 3; i++) {
-			EnchantmentData data = enchants[i];
+	protected void checkGuiData(final Object[] info) {
+		for (int i = 0; i < 3; ++i) {
+			final EnchantmentData data = this.enchants[i];
 			if (data == null) {
-				updateGuiData(info, i * 3 + 0, (short)(-1));
-			}else{
-				updateGuiData(info, i * 3 + 0, (short)(data.getEnchantment().getEnchantment().effectId));		
-				updateGuiData(info, i * 3 + 1, (short)(data.getValue() & 65535));
-				updateGuiData(info, i * 3 + 2, (short)((data.getValue() >> 16) & 65535));
+				this.updateGuiData(info, i * 3 + 0, (short) (-1));
+			} else {
+				this.updateGuiData(info, i * 3 + 0, (short) Enchantment.getEnchantmentID(data.getEnchantment().getEnchantment()));
+				this.updateGuiData(info, i * 3 + 1, (short) (data.getValue() & 0xFFFF));
+				this.updateGuiData(info, i * 3 + 2, (short) (data.getValue() >> 16 & 0xFFFF));
 			}
 		}
 	}
-	
-	
-	
+
 	@Override
-	public void receiveGuiData(int id, short data) {	
+	public void receiveGuiData(int id, final short data) {
 		int dataint = data;
 		if (dataint < 0) {
 			dataint += 65536;
 		}
-		
-		int enchantId = id / 3;
+		final int enchantId = id / 3;
 		id %= 3;
-		
-		if(id == 0) {
+		if (id == 0) {
 			if (data == -1) {
-				enchants[enchantId] = null;
-			}else{
-				enchants[enchantId] = EnchantmentInfo.createDataFromEffectId(enchants[enchantId], data);
+				this.enchants[enchantId] = null;
+			} else {
+				this.enchants[enchantId] = EnchantmentInfo.createDataFromEffectId(this.enchants[enchantId], data);
 			}
-		}else if(enchants[enchantId] != null) {
+		} else if (this.enchants[enchantId] != null) {
 			if (id == 1) {
-				enchants[enchantId].setValue(((enchants[enchantId].getValue() & -65536) | dataint));
-			}else if (id == 2) {
-				enchants[enchantId].setValue(((enchants[enchantId].getValue() & 65535) | (dataint << 16)));
-			}			
-		}
-		
-
-	}
-	
-	
-	@Override
-	protected void Save(NBTTagCompound tagCompound, int id) {
-		super.Save(tagCompound, id);
-		for (int i = 0; i < 3; i++) {
-			if (enchants[i] == null) {
-				tagCompound.setShort(generateNBTName("EffectId" + i,id), (short)-1);	
-			}else{
-				tagCompound.setShort(generateNBTName("EffectId" + i,id), (short)enchants[i].getEnchantment().getEnchantment().effectId);	
-				tagCompound.setInteger(generateNBTName("Value" + i,id), enchants[i].getValue());
+				this.enchants[enchantId].setValue((this.enchants[enchantId].getValue() & 0xFFFF0000) | dataint);
+			} else if (id == 2) {
+				this.enchants[enchantId].setValue((this.enchants[enchantId].getValue() & 0xFFFF) | dataint << 16);
 			}
 		}
 	}
-	
+
 	@Override
-	protected void Load(NBTTagCompound tagCompound, int id) {
+	protected void Save(final NBTTagCompound tagCompound, final int id) {
+		super.Save(tagCompound, id);
+		for (int i = 0; i < 3; ++i) {
+			if (this.enchants[i] == null) {
+				tagCompound.setShort(this.generateNBTName("EffectId" + i, id), (short) (-1));
+			} else {
+				tagCompound.setShort(this.generateNBTName("EffectId" + i, id), (short) Enchantment.getEnchantmentID(this.enchants[i].getEnchantment().getEnchantment()));
+				tagCompound.setInteger(this.generateNBTName("Value" + i, id), this.enchants[i].getValue());
+			}
+		}
+	}
+
+	@Override
+	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		for (int i = 0; i < 3; i++) {
-			short effect = (tagCompound.getShort(generateNBTName("EffectId" + i,id)));		
+		for (int i = 0; i < 3; ++i) {
+			final short effect = tagCompound.getShort(this.generateNBTName("EffectId" + i, id));
 			if (effect == -1) {
-				enchants[i] = null;
-			}else{
-				enchants[i] = EnchantmentInfo.createDataFromEffectId(enchants[i], effect);
-				if (enchants[i] != null) {
-					enchants[i].setValue(tagCompound.getInteger(generateNBTName("Value" + i,id)));
+				this.enchants[i] = null;
+			} else {
+				this.enchants[i] = EnchantmentInfo.createDataFromEffectId(this.enchants[i], effect);
+				if (this.enchants[i] != null) {
+					this.enchants[i].setValue(tagCompound.getInteger(this.generateNBTName("Value" + i, id)));
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public int guiWidth() {
 		return 110;
 	}
 
-	public void addType(ENCHANTMENT_TYPE type) {
-		enabledTypes.add(type);
+	public void addType(final EnchantmentInfo.ENCHANTMENT_TYPE type) {
+		this.enabledTypes.add(type);
 	}
 }

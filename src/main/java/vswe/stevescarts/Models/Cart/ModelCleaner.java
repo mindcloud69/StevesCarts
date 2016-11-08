@@ -1,153 +1,70 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-@SideOnly(Side.CLIENT)
-public class ModelCleaner extends ModelCartbase
-{
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/cleanerModel.png");
-	
-	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}	
-	
 
+@SideOnly(Side.CLIENT)
+public class ModelCleaner extends ModelCartbase {
+	private static ResourceLocation texture;
+
+	@Override
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelCleaner.texture;
+	}
+
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
 
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-    public ModelCleaner()
-    {
-		ModelRenderer box = new ModelRenderer(this, 0, 0);
-		AddRenderer(box);
-
-		box.addBox(
-			-4, 	//X
-			-3, 	//Y
-			-4,	 	//Z
-			8,					//Size X
-			6,					//Size Y
-			8,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		box.setRotationPoint(
-			4.0F, 		//X
-			-0.0F,			//Y
-			-0.0F			//Z
-		);
-
-		for (int i = 0; i < 2; i++) {
-			ModelRenderer sidetube = new ModelRenderer(this, 0, 14);
-			AddRenderer(sidetube);
-
-			sidetube.addBox(
-				-2, 	//X
-				-2, 	//Y
-				-1,	 	//Z
-				4,					//Size X
-				4,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			sidetube.setRotationPoint(
-				4, 		//X
-				-0.0F,			//Y
-				-5.0F * (i * 2 -1)			//Z
-			);
+	public ModelCleaner() {
+		final ModelRenderer box = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(box);
+		box.addBox(-4.0f, -3.0f, -4.0f, 8, 6, 8, 0.0f);
+		box.setRotationPoint(4.0f, -0.0f, -0.0f);
+		for (int i = 0; i < 2; ++i) {
+			final ModelRenderer sidetube = new ModelRenderer(this, 0, 14);
+			this.AddRenderer(sidetube);
+			sidetube.addBox(-2.0f, -2.0f, -1.0f, 4, 4, 2, 0.0f);
+			sidetube.setRotationPoint(4.0f, -0.0f, -5.0f * (i * 2 - 1));
 		}
-
-		ModelRenderer tube = new ModelRenderer(this, 0, 14);
-		AddRenderer(tube);
-
-		tube.addBox(
-			-2, 	//X
-			-2, 	//Y
-			-1,	 	//Z
-			4,					//Size X
-			4,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		tube.setRotationPoint(
-			-1F, 		//X
-			0.0F,			//Y
-			0			//Z
-		);
-
-		tube.rotateAngleY = (float)Math.PI / 2;
-
-		for (int i = 0; i < 2; i++) {
-			ModelRenderer endtube = new ModelRenderer(this, 0, 14);
-			AddRenderer(endtube);
-
-			endtube.addBox(
-				-2, 	//X
-				-2, 	//Y
-				-1,	 	//Z
-				4,					//Size X
-				4,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			endtube.setRotationPoint(
-				-7, 		//X
-				-0.0F,			//Y
-				-3.0F * (i * 2 -1)			//Z
-			);
-
-			endtube.rotateAngleY = (float)Math.PI / 2;
+		final ModelRenderer tube = new ModelRenderer(this, 0, 14);
+		this.AddRenderer(tube);
+		tube.addBox(-2.0f, -2.0f, -1.0f, 4, 4, 2, 0.0f);
+		tube.setRotationPoint(-1.0f, 0.0f, 0.0f);
+		tube.rotateAngleY = 1.5707964f;
+		for (int j = 0; j < 2; ++j) {
+			final ModelRenderer endtube = new ModelRenderer(this, 0, 14);
+			this.AddRenderer(endtube);
+			endtube.addBox(-2.0f, -2.0f, -1.0f, 4, 4, 2, 0.0f);
+			endtube.setRotationPoint(-7.0f, -0.0f, -3.0f * (j * 2 - 1));
+			endtube.rotateAngleY = 1.5707964f;
 		}
-
-		ModelRenderer connectiontube = new ModelRenderer(this, 0, 20);
-		AddRenderer(connectiontube);
-
-		connectiontube.addBox(
-			-5, 	//X
-			-5, 	//Y
-			-1,	 	//Z
-			10,					//Size X
-			4,					//Size Y
-			4,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		connectiontube.setRotationPoint(
-			-5F, 		//X
-			3F,			//Y
-			0			//Z
-		);
-
-		connectiontube.rotateAngleY = (float)Math.PI / 2;
-
-		for (int i = 0; i < 2; i++) {
-			ModelRenderer externaltube = new ModelRenderer(this, 0, 14);
-			AddRenderer(externaltube);
-
-			externaltube.addBox(
-				-2, 	//X
-				-2, 	//Y
-				-1,	 	//Z
-				4,					//Size X
-				4,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			externaltube.setRotationPoint(
-				-10.95F, 		//X
-				-0.0F,			//Y
-				-3.05F * (i * 2 -1)			//Z
-			);
-
-			externaltube.rotateAngleY = (float)Math.PI / 2;
+		final ModelRenderer connectiontube = new ModelRenderer(this, 0, 20);
+		this.AddRenderer(connectiontube);
+		connectiontube.addBox(-5.0f, -5.0f, -1.0f, 10, 4, 4, 0.0f);
+		connectiontube.setRotationPoint(-5.0f, 3.0f, 0.0f);
+		connectiontube.rotateAngleY = 1.5707964f;
+		for (int k = 0; k < 2; ++k) {
+			final ModelRenderer externaltube = new ModelRenderer(this, 0, 14);
+			this.AddRenderer(externaltube);
+			externaltube.addBox(-2.0f, -2.0f, -1.0f, 4, 4, 2, 0.0f);
+			externaltube.setRotationPoint(-10.95f, -0.0f, -3.05f * (k * 2 - 1));
+			externaltube.rotateAngleY = 1.5707964f;
 		}
-    }
+	}
 
-
+	static {
+		ModelCleaner.texture = ResourceHelper.getResource("/models/cleanerModel.png");
+	}
 }

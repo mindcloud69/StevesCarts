@@ -1,14 +1,11 @@
 package vswe.stevescarts.Arcade;
 
-import java.util.EnumSet;
-
-import vswe.stevescarts.Arcade.Place.PLACE_STATE;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
+import java.util.EnumSet;
 
 public class Community extends CardPlace {
-
-	public Community(ArcadeMonopoly game) {
+	public Community(final ArcadeMonopoly game) {
 		super(game);
 	}
 
@@ -16,15 +13,14 @@ public class Community extends CardPlace {
 	protected int getTextureId() {
 		return 5;
 	}
-	
+
 	@Override
-	public void drawText(GuiMinecart gui, EnumSet<PLACE_STATE> states) {
-		game.getModule().drawSplitString(gui, "Dungeon Chest", 3 + gui.getGuiLeft(), 10 + gui.getGuiTop(), ArcadeMonopoly.PLACE_WIDTH - 6, true, 0x404040);
+	public void drawText(final GuiMinecart gui, final EnumSet<PLACE_STATE> states) {
+		this.game.getModule().drawSplitString(gui, "Dungeon Chest", 3 + gui.getGuiLeft(), 10 + gui.getGuiTop(), 70, true, 4210752);
 	}
 
 	@Override
 	public Card getCard() {
-		return CardCommunity.cards.get(game.getModule().getCart().rand.nextInt(CardCommunity.cards.size()));
+		return CardCommunity.cards.get(this.game.getModule().getCart().rand.nextInt(CardCommunity.cards.size()));
 	}
-	
 }

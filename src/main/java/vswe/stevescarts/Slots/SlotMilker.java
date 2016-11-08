@@ -1,22 +1,15 @@
 package vswe.stevescarts.Slots;
+
 import net.minecraft.init.Items;
-import vswe.stevescarts.Helpers.TransferHandler.TRANSFER_TYPE;
-import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class SlotMilker extends SlotBase
-{
-    public SlotMilker(IInventory iinventory, int i, int j, int k)
-    {
-        super(iinventory, i, j, k);
-    }
+public class SlotMilker extends SlotBase {
+	public SlotMilker(final IInventory iinventory, final int i, final int j, final int k) {
+		super(iinventory, i, j, k);
+	}
 
-    public boolean isItemValid(ItemStack itemstack)
-    {
-        return itemstack != null && itemstack.getItem() == Items.bucket;
-    }
-
-
+	public boolean isItemValid(final ItemStack itemstack) {
+		return itemstack != null && itemstack.getItem() == Items.BUCKET;
+	}
 }

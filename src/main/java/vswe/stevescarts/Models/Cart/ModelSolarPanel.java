@@ -1,28 +1,24 @@
 package vswe.stevescarts.Models.Cart;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import vswe.stevescarts.Modules.ModuleBase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Modules.Engines.ModuleSolarTop;
+import vswe.stevescarts.Modules.ModuleBase;
+
 @SideOnly(Side.CLIENT)
-public abstract class ModelSolarPanel extends ModelCartbase
-{
-    public ModelSolarPanel()
-    {
-		super();
-    }
+public abstract class ModelSolarPanel extends ModelCartbase {
+	ModelRenderer moving;
 
-	protected ModelRenderer createMovingHolder(int x, int y) {
-		ModelRenderer moving = new ModelRenderer(this, x, y);
-
-		this.moving = moving;
-		AddRenderer(moving);
+	protected ModelRenderer createMovingHolder(final int x, final int y) {
+		final ModelRenderer moving = new ModelRenderer(this, x, y);
+		this.AddRenderer(this.moving = moving);
 		return moving;
 	}
 
-	ModelRenderer moving;
-
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-		moving.rotationPointY = module == null ? -4 : ((ModuleSolarTop)module).getMovingLevel();
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		this.moving.rotationPointY = ((module == null) ? -4.0f : ((ModuleSolarTop) module).getMovingLevel());
 	}
 }

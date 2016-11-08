@@ -1,40 +1,33 @@
 package vswe.stevescarts.Modules.Storages.Tanks;
-import net.minecraft.block.Block;
+
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import vswe.stevescarts.Carts.MinecartModular;
-public class ModuleOpenTank extends ModuleTank{
-	public ModuleOpenTank(MinecartModular cart) {
-		super(cart);
-	}
 
+public class ModuleOpenTank extends ModuleTank {
+	int cooldown;
+
+	public ModuleOpenTank(final MinecartModular cart) {
+		super(cart);
+		this.cooldown = 0;
+	}
 
 	@Override
 	protected int getTankSize() {
 		return 7000;
 	}
 
-
-	int cooldown = 0;
-	
-	
 	@Override
 	public void update() {
 		super.update();
-		
-		if (cooldown > 0) {
-			cooldown--;
-		}else{
-			cooldown = 20;
-			
-			if (
-				getCart().worldObj.isRaining() && 
-				getCart().worldObj.canBlockSeeTheSky(getCart().x(), getCart().y() + 1, getCart().z()) && 
-				getCart().worldObj.getPrecipitationHeight(getCart().x(), getCart().z()) < getCart().y() + 1
-			) {
-				fill(new FluidStack(FluidRegistry.WATER, getCart().worldObj.getBiomeGenForCoords(getCart().x(), getCart().z()).getEnableSnow() ? 2 : 5), true);
+		if (this.cooldown > 0) {
+			--this.cooldown;
+		} else {
+			this.cooldown = 20;
+			if (this.getCart().worldObj.isRaining() && this.getCart().worldObj.canSeeSky(new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z())) && this.getCart().worldObj.getPrecipitationHeight(new BlockPos(this.getCart().x(),0, this.getCart().z())).getY() < this.getCart().y() + 1) {
+				this.fill(new FluidStack(FluidRegistry.WATER, this.getCart().worldObj.getBiome(new BlockPos(this.getCart().x(), 0, this.getCart().z())).getEnableSnow() ? 2 : 5), true);
 			}
 		}
 	}
-	
 }

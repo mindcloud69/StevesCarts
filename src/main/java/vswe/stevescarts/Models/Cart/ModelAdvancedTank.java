@@ -1,107 +1,57 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Storages.Tanks.ModuleTank;
 import vswe.stevescarts.Renders.RendererMinecart;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelAdvancedTank extends ModelCartbase
-{
-
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/tankModelLarge.png");
+public class ModelAdvancedTank extends ModelCartbase {
+	private static ResourceLocation texture;
 
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelAdvancedTank.texture;
 	}
 
-
-	
-    public ModelAdvancedTank()
-    {
-
-		for (int i = 0; i < 2; i++) {
-			ModelRenderer tankside = new ModelRenderer(this, 0, 13);
-			AddRenderer(tankside);
-
-			tankside.addBox(
-				-8, 	//X
-				-6.5F, 	//Y
-				-0.5F,	 	//Z
-				16,					//Size X
-				13,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			tankside.setRotationPoint(
-				0F, 		//X
-				-4.5F,			//Y
-				-5.5F + i*11			//Z
-			);
-
-			ModelRenderer tanktopbot = new ModelRenderer(this, 0, 0);
-			AddRenderer(tanktopbot);
-
-			tanktopbot.addBox(
-				-8, 	//X
-				-6, 	//Y
-				-0.5F,	 	//Z
-				16,					//Size X
-				12,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			tanktopbot.setRotationPoint(
-				0, 		//X
-				2.5F - i*14,		//Y
-				0			//Z
-			);
-
-			tanktopbot.rotateAngleX = (float)Math.PI / 2;
-			
-			ModelRenderer tankfrontback = new ModelRenderer(this, 0, 27);
-			AddRenderer(tankfrontback);
-
-			tankfrontback.addBox(
-				-5, 	//X
-				-6.5F, 	//Y
-				-0.5F,	 	//Z
-				10,					//Size X
-				13,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			tankfrontback.setRotationPoint(
-				-7.5F + i*15, 		//X
-				-4.5F,		//Y
-				0 			//Z
-			);
-
-			tankfrontback.rotateAngleY = (float)Math.PI / 2;			
+	public ModelAdvancedTank() {
+		for (int i = 0; i < 2; ++i) {
+			final ModelRenderer tankside = new ModelRenderer(this, 0, 13);
+			this.AddRenderer(tankside);
+			tankside.addBox(-8.0f, -6.5f, -0.5f, 16, 13, 1, 0.0f);
+			tankside.setRotationPoint(0.0f, -4.5f, -5.5f + i * 11);
+			final ModelRenderer tanktopbot = new ModelRenderer(this, 0, 0);
+			this.AddRenderer(tanktopbot);
+			tanktopbot.addBox(-8.0f, -6.0f, -0.5f, 16, 12, 1, 0.0f);
+			tanktopbot.setRotationPoint(0.0f, 2.5f - i * 14, 0.0f);
+			tanktopbot.rotateAngleX = 1.5707964f;
+			final ModelRenderer tankfrontback = new ModelRenderer(this, 0, 27);
+			this.AddRenderer(tankfrontback);
+			tankfrontback.addBox(-5.0f, -6.5f, -0.5f, 10, 13, 1, 0.0f);
+			tankfrontback.setRotationPoint(-7.5f + i * 15, -4.5f, 0.0f);
+			tankfrontback.rotateAngleY = 1.5707964f;
 		}
-
-
-		
-    }
-
+	}
 
 	@Override
-	public void render(Render render,ModuleBase module, float yaw, float pitch, float roll, float mult, float partialtime)
-    {
-
-
-		super.render(render,module,yaw,pitch,roll, mult, partialtime);
+	public void render(final Render render, final ModuleBase module, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
+		super.render(render, module, yaw, pitch, roll, mult, partialtime);
 		if (render != null && module != null) {
-			FluidStack liquid = ((ModuleTank)module).getFluid();
+			final FluidStack liquid = ((ModuleTank) module).getFluid();
 			if (liquid != null) {
-				((RendererMinecart)render).renderLiquidCuboid(liquid,  ((ModuleTank)module).getCapacity(), 0, -4.5F, 0, 14, 13, 10, mult);
+				((RendererMinecart) render).renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), 0.0f, -4.5f, 0.0f, 14.0f, 13.0f, 10.0f, mult);
 			}
 		}
-    }
+	}
+
+	static {
+		ModelAdvancedTank.texture = ResourceHelper.getResource("/models/tankModelLarge.png");
+	}
 }

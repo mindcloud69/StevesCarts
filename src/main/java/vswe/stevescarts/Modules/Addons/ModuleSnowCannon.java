@@ -1,33 +1,32 @@
 package vswe.stevescarts.Modules.Addons;
-import net.minecraft.block.Block;
+
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.Carts.MinecartModular;
 
 public class ModuleSnowCannon extends ModuleAddon {
-	public ModuleSnowCannon(MinecartModular cart) {
+	private int tick;
+
+	public ModuleSnowCannon(final MinecartModular cart) {
 		super(cart);
 	}
 
-	//called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
 		super.update();
-
-		if (getCart().worldObj.isRemote) {
+		if (this.getCart().worldObj.isRemote) {
 			return;
 		}
-
-		if (getCart().hasFuel()) {
-			if (tick >= getInterval()) {
-				tick = 0;
-				generateSnow();
-			}else{
-				tick++;
+		if (this.getCart().hasFuel()) {
+			if (this.tick >= this.getInterval()) {
+				this.tick = 0;
+				this.generateSnow();
+			} else {
+				++this.tick;
 			}
 		}
 	}
 
-	private int tick;
 	protected int getInterval() {
 		return 70;
 	}
@@ -41,19 +40,16 @@ public class ModuleSnowCannon extends ModuleAddon {
 	}
 
 	private void generateSnow() {
-		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); x++) {
-			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); z++) {
-				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); y++) {
-					int x1 = getCart().x() + x;
-					int y1 = getCart().y() + y;
-					int z1 = getCart().z() + z;
-					if (countsAsAir(x1, y1, z1) && getCart().worldObj.getBiomeGenForCoords(x1, z1).getFloatTemperature(x1, y1, z1) <= 1.0F /* snow golems won't be hurt */ && Blocks.snow.canPlaceBlockAt(getCart().worldObj, x1, y1, z1))
-					{
-						getCart().worldObj.setBlock(x1, y1, z1, Blocks.snow);
+		BlockPos cartPos = getCart().getPosition();
+		for (int x = -this.getBlocksOnSide(); x <= this.getBlocksOnSide(); ++x) {
+			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
+				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
+					BlockPos pos = cartPos.add(x, y, z);
+					if (this.countsAsAir(pos) && this.getCart().worldObj.getBiome(pos).getTemperature() <= 1.0f && Blocks.SNOW.canPlaceBlockAt(this.getCart().worldObj, pos)) {
+						this.getCart().worldObj.setBlockState(pos, Blocks.SNOW.getDefaultState());
 					}
 				}
 			}
 		}
 	}
-
 }

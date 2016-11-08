@@ -4,18 +4,15 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.Carts.MinecartModular;
 
 public class ModuleDrillGalgadorian extends ModuleDrill {
-	public ModuleDrillGalgadorian(MinecartModular cart) {
+	public ModuleDrillGalgadorian(final MinecartModular cart) {
 		super(cart);
 	}
 
-	//returns how far the drill should drill above itself, i.e. how tall is the  hole
-    @Override
-	protected int blocksOnTop()
-    {
-        return 9;
-    }
+	@Override
+	protected int blocksOnTop() {
+		return 9;
+	}
 
-	//returns how far the drill should drill on each side
 	@Override
 	protected int blocksOnSide() {
 		return 4;
@@ -23,24 +20,31 @@ public class ModuleDrillGalgadorian extends ModuleDrill {
 
 	@Override
 	protected float getTimeMult() {
-		return 0;
+		return 0.0f;
 	}
-	
-	
+
+	@Override
 	public int getMaxDurability() {
 		return 1;
 	}
+
+	@Override
 	public String getRepairItemName() {
 		return null;
 	}
-	public int getRepairItemUnits(ItemStack item) {
+
+	@Override
+	public int getRepairItemUnits(final ItemStack item) {
 		return 0;
 	}
+
+	@Override
 	public boolean useDurability() {
 		return false;
 	}
+
+	@Override
 	public int getRepairSpeed() {
 		return 1;
-	}		
-	
+	}
 }

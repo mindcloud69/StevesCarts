@@ -1,143 +1,107 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public abstract class ModelWire extends ModelCartbase
-{
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/wireModel.png");
-	
+public abstract class ModelWire extends ModelCartbase {
+	private static ResourceLocation texture;
+
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelWire.texture;
 	}
 
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 2;
 	}
-
-    public ModelWire()
-    {
-		super();
-    }
 
 	protected int baseZ() {
 		return 0;
 	}
 
-	protected void CreateEnd(int x, int y) {
-		CreateEnd(x,y,baseZ());
+	protected void CreateEnd(final int x, final int y) {
+		this.CreateEnd(x, y, this.baseZ());
 	}
 
-	protected void CreateEnd(int x, int y, int z) {
-		ModelRenderer end = new ModelRenderer(this, 28, 0);
-		AddRenderer(end);
-
-		end.addBox(
-			0.5F, 					//X
-			0.5F, 					//Y
-			0.5F,	 				//Z
-			1,					//Size X
-			1,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-
-		end.setRotationPoint(
-			-7.5F + y, 		//X
-			-5.5F - z,			//Y
-			-5.5F + x			//Z
-		);
+	protected void CreateEnd(final int x, final int y, final int z) {
+		final ModelRenderer end = new ModelRenderer(this, 28, 0);
+		this.AddRenderer(end);
+		end.addBox(0.5f, 0.5f, 0.5f, 1, 1, 1, 0.0f);
+		end.setRotationPoint(-7.5f + y, -5.5f - z, -5.5f + x);
 	}
 
-	protected void CreateWire(int x1, int y1, int x2, int y2) {
-		CreateWire(x1,y1,baseZ(),x2,y2,baseZ());
+	protected void CreateWire(final int x1, final int y1, final int x2, final int y2) {
+		this.CreateWire(x1, y1, this.baseZ(), x2, y2, this.baseZ());
 	}
 
 	protected void CreateWire(int x1, int y1, int z1, int x2, int y2, int z2) {
 		if (x1 != x2 && y1 != y2 && z1 != z2) {
 			return;
 		}
-
-		int length;
 		boolean rotate;
 		boolean rotateZ;
+		int length;
 		if (y1 != y2) {
 			rotate = false;
 			rotateZ = false;
 			length = y2 - y1 + 1;
 			if (length < 0) {
-				length*=-1;
-				int y = y1;
+				length *= -1;
+				final int y3 = y1;
 				y1 = y2;
-				y2 = y;
+				y2 = y3;
 			}
-		}else if(z1 != z2){
+		} else if (z1 != z2) {
 			rotate = false;
 			rotateZ = true;
 			length = z2 - z1 + 1;
 			if (length < 0) {
-				length*=-1;
-				int z = z1;
+				length *= -1;
+				final int z3 = z1;
 				z1 = z2;
-				z2 = z;
+				z2 = z3;
 			}
-		}else{
+		} else {
 			rotate = true;
 			rotateZ = false;
 			length = x2 - x1 + 1;
 			if (length < 0) {
-				length*=-1;
-				int x = x1;
+				length *= -1;
+				final int x3 = x1;
 				x1 = x2;
-				x2 = x;
+				x2 = x3;
 			}
 		}
-
 		if (length > 13) {
 			return;
 		}
-
-		ModelRenderer wire = new ModelRenderer(this, 0, 0);
-		AddRenderer(wire);
-
-		wire.addBox(
-			length / 2F, 					//X
-			0.5F, 					//Y
-			0.5F,	 				//Z
-			length,					//Size X
-			1,					//Size Y
-			1,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-
+		final ModelRenderer wire = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(wire);
+		wire.addBox(length / 2.0f, 0.5f, 0.5f, length, 1, 1, 0.0f);
 		if (rotateZ) {
-			wire.setRotationPoint(
-				-7.5F+y1, 		//X
-				-4.0F + length / 2F-z1,			//Y
-				-5.5F + x1			//Z
-			);
-			wire.rotateAngleZ = ((float)Math.PI * 3F / 2F);
-		}else if (rotate) {
-			wire.setRotationPoint(
-				-5.5F+y1, 		//X
-				-5.5F-z1,			//Y
-				-5.0F - length / 2F + x1			//Z
-			);
-			wire.rotateAngleY = ((float)Math.PI * 3F / 2F);
-		}else{
-			wire.setRotationPoint(
-				-7.0F - length / 2F + y1, 		//X
-				-5.5F-z1,			//Y
-				-5.5F+x1			//Z
-			);
+			wire.setRotationPoint(-7.5f + y1, -4.0f + length / 2.0f - z1, -5.5f + x1);
+			wire.rotateAngleZ = 4.712389f;
+		} else if (rotate) {
+			wire.setRotationPoint(-5.5f + y1, -5.5f - z1, -5.0f - length / 2.0f + x1);
+			wire.rotateAngleY = 4.712389f;
+		} else {
+			wire.setRotationPoint(-7.0f - length / 2.0f + y1, -5.5f - z1, -5.5f + x1);
 		}
+	}
+
+	static {
+		ModelWire.texture = ResourceHelper.getResource("/models/wireModel.png");
 	}
 }

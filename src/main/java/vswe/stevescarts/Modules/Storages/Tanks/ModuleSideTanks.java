@@ -1,10 +1,9 @@
 package vswe.stevescarts.Modules.Storages.Tanks;
+
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Models.Cart.ModelCartbase;
-import vswe.stevescarts.Models.Cart.ModelSideTanks;
-import java.util.HashMap;
-public class ModuleSideTanks extends ModuleTank{
-	public ModuleSideTanks(MinecartModular cart) {
+
+public class ModuleSideTanks extends ModuleTank {
+	public ModuleSideTanks(final MinecartModular cart) {
 		super(cart);
 	}
 
@@ -12,6 +11,4 @@ public class ModuleSideTanks extends ModuleTank{
 	protected int getTankSize() {
 		return 8000;
 	}
-
-	
 }

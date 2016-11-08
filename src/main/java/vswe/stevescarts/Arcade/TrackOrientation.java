@@ -1,250 +1,292 @@
 package vswe.stevescarts.Arcade;
 
+import vswe.stevescarts.Interfaces.GuiBase;
+
 import java.util.ArrayList;
 
-import vswe.stevescarts.Arcade.TrackOrientation.DIRECTION;
-import vswe.stevescarts.Interfaces.GuiBase.RENDER_ROTATION;
-
-public abstract class TrackOrientation {	
-	
-	public static ArrayList<TrackOrientation> ALL = new ArrayList<TrackOrientation>();
-	
-	public static TrackOrientation JUNCTION_4WAY  = new TrackOrientation (5, RENDER_ROTATION.NORMAL) {
-		public DIRECTION travel(DIRECTION in) {
-			return in.getOpposite();
-		}
-	};
-	
-	public static TrackOrientation STRAIGHT_HORIZONTAL = new TrackOrientationStraight(1, RENDER_ROTATION.ROTATE_90, DIRECTION.RIGHT);
-	public static TrackOrientation STRAIGHT_VERTICAL = new TrackOrientationStraight(1, RENDER_ROTATION.NORMAL, DIRECTION.DOWN);
-	
-	public static TrackOrientation CORNER_DOWN_RIGHT = new TrackOrientationCorner(0, RENDER_ROTATION.NORMAL, DIRECTION.DOWN, DIRECTION.RIGHT);
-	public static TrackOrientation CORNER_DOWN_LEFT = new TrackOrientationCorner(0, RENDER_ROTATION.ROTATE_90, DIRECTION.DOWN, DIRECTION.LEFT);
-	public static TrackOrientation CORNER_UP_LEFT = new TrackOrientationCorner(0, RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.LEFT);
-	public static TrackOrientation CORNER_UP_RIGHT = new TrackOrientationCorner(0, RENDER_ROTATION.ROTATE_270, DIRECTION.UP, DIRECTION.RIGHT);
-	
-	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_DOWN = new TrackOrientation3Way(4, RENDER_ROTATION.NORMAL, DIRECTION.DOWN,  DIRECTION.DOWN.getRight());
-	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_RIGHT = new TrackOrientation3Way(4, RENDER_ROTATION.ROTATE_270, DIRECTION.RIGHT, DIRECTION.RIGHT.getRight());
-	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_UP = new TrackOrientation3Way(4, RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.UP.getRight());
-	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_LEFT = new TrackOrientation3Way(4,RENDER_ROTATION.ROTATE_90, DIRECTION.LEFT, DIRECTION.LEFT.getRight());
-	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_DOWN = new TrackOrientation3Way(4, RENDER_ROTATION.FLIP_HORIZONTAL, DIRECTION.DOWN, DIRECTION.DOWN.getLeft()).setOpposite(JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_DOWN);
-	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_RIGHT = new TrackOrientation3Way(4, RENDER_ROTATION.ROTATE_270_FLIP, DIRECTION.RIGHT, DIRECTION.RIGHT.getLeft()).setOpposite(JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_RIGHT);
-	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_UP = new TrackOrientation3Way(4, RENDER_ROTATION.FLIP_VERTICAL, DIRECTION.UP, DIRECTION.UP.getLeft()).setOpposite(JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_UP);
-	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_LEFT = new TrackOrientation3Way(4, RENDER_ROTATION.ROTATE_90_FLIP, DIRECTION.LEFT, DIRECTION.LEFT.getLeft()).setOpposite(JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_LEFT);
-	
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(2, RENDER_ROTATION.NORMAL, DIRECTION.DOWN, DIRECTION.DOWN.getOpposite());
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(2, RENDER_ROTATION.FLIP_HORIZONTAL, DIRECTION.DOWN, DIRECTION.DOWN.getOpposite());
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_LEFT = new TrackOrientation3Way(2, RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.UP.getOpposite());
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_RIGHT = new TrackOrientation3Way(2,RENDER_ROTATION.FLIP_VERTICAL , DIRECTION.UP, DIRECTION.UP.getOpposite());
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(2, RENDER_ROTATION.ROTATE_270_FLIP, DIRECTION.RIGHT, DIRECTION.RIGHT.getOpposite());
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(2, RENDER_ROTATION.ROTATE_90, DIRECTION.LEFT, DIRECTION.LEFT.getOpposite());
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_LEFT = new TrackOrientation3Way(2, RENDER_ROTATION.ROTATE_90_FLIP, DIRECTION.LEFT, DIRECTION.LEFT.getOpposite());
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_RIGHT = new TrackOrientation3Way(2, RENDER_ROTATION.ROTATE_270, DIRECTION.RIGHT, DIRECTION.RIGHT.getOpposite());				
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(3, RENDER_ROTATION.NORMAL, DIRECTION.DOWN, DIRECTION.RIGHT).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_RIGHT);
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(3, RENDER_ROTATION.FLIP_HORIZONTAL, DIRECTION.DOWN, DIRECTION.LEFT).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_LEFT);
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_UP_LEFT = new TrackOrientation3Way(3, RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.LEFT).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_LEFT);
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_UP_RIGHT = new TrackOrientation3Way(3, RENDER_ROTATION.FLIP_VERTICAL, DIRECTION.UP, DIRECTION.RIGHT).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_RIGHT);
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(3, RENDER_ROTATION.ROTATE_270_FLIP, DIRECTION.RIGHT, DIRECTION.DOWN).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_RIGHT);
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(3, RENDER_ROTATION.ROTATE_90, DIRECTION.LEFT, DIRECTION.DOWN).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_LEFT);
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_UP_LEFT = new TrackOrientation3Way(3, RENDER_ROTATION.ROTATE_90_FLIP, DIRECTION.LEFT, DIRECTION.UP).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_LEFT);
-	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_UP_RIGHT = new TrackOrientation3Way(3, RENDER_ROTATION.ROTATE_270, DIRECTION.RIGHT, DIRECTION.UP).setOpposite(JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_RIGHT);
-	
-	
-	
+public abstract class TrackOrientation {
+	public static ArrayList<TrackOrientation> ALL;
+	public static TrackOrientation JUNCTION_4WAY;
+	public static TrackOrientation STRAIGHT_HORIZONTAL;
+	public static TrackOrientation STRAIGHT_VERTICAL;
+	public static TrackOrientation CORNER_DOWN_RIGHT;
+	public static TrackOrientation CORNER_DOWN_LEFT;
+	public static TrackOrientation CORNER_UP_LEFT;
+	public static TrackOrientation CORNER_UP_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_DOWN;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_UP;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_DOWN;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_UP;
+	public static TrackOrientation JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_DOWN_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_DOWN_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_UP_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_UP_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_DOWN_RIGHT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_DOWN_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_UP_LEFT;
+	public static TrackOrientation JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_UP_RIGHT;
 	private int v;
-	private RENDER_ROTATION rotation;
+	private GuiBase.RENDER_ROTATION rotation;
 	private TrackOrientation opposite;
 	private int val;
-	TrackOrientation(int v, RENDER_ROTATION rotation) {
+
+	TrackOrientation(final int v, final GuiBase.RENDER_ROTATION rotation) {
 		this.v = v;
-		this.rotation = rotation;	
-		
-		val = ALL.size();
-		ALL.add(this);
+		this.rotation = rotation;
+		this.val = TrackOrientation.ALL.size();
+		TrackOrientation.ALL.add(this);
 	}
-	
-	protected TrackOrientation setOpposite(TrackOrientation opposite) {
+
+	protected TrackOrientation setOpposite(final TrackOrientation opposite) {
 		this.opposite = opposite;
 		if (this.opposite.opposite != null) {
 			this.opposite.opposite.opposite = this;
-		}else{
+		} else {
 			this.opposite.opposite = this;
 		}
-		
 		return this;
 	}
-	
-	
+
 	public int getV() {
-		return v;
+		return this.v;
 	}
-	
-	public RENDER_ROTATION getRotation() {
-		return rotation;
+
+	public GuiBase.RENDER_ROTATION getRotation() {
+		return this.rotation;
 	}
-	
+
 	public TrackOrientation getOpposite() {
-		return opposite;
+		return this.opposite;
 	}
-	
+
 	public int toInteger() {
-		return val;
-	}	
-	
-	public abstract DIRECTION travel(DIRECTION in);
-	
+		return this.val;
+	}
+
+	public abstract DIRECTION travel(final DIRECTION p0);
+
+	static {
+		TrackOrientation.ALL = new ArrayList<TrackOrientation>();
+		TrackOrientation.JUNCTION_4WAY = new TrackOrientation(5, GuiBase.RENDER_ROTATION.NORMAL) {
+			@Override
+			public DIRECTION travel(final DIRECTION in) {
+				return in.getOpposite();
+			}
+		};
+		TrackOrientation.STRAIGHT_HORIZONTAL = new TrackOrientationStraight(1, GuiBase.RENDER_ROTATION.ROTATE_90, DIRECTION.RIGHT);
+		TrackOrientation.STRAIGHT_VERTICAL = new TrackOrientationStraight(1, GuiBase.RENDER_ROTATION.NORMAL, DIRECTION.DOWN);
+		TrackOrientation.CORNER_DOWN_RIGHT = new TrackOrientationCorner(0, GuiBase.RENDER_ROTATION.NORMAL, DIRECTION.DOWN, DIRECTION.RIGHT);
+		TrackOrientation.CORNER_DOWN_LEFT = new TrackOrientationCorner(0, GuiBase.RENDER_ROTATION.ROTATE_90, DIRECTION.DOWN, DIRECTION.LEFT);
+		TrackOrientation.CORNER_UP_LEFT = new TrackOrientationCorner(0, GuiBase.RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.LEFT);
+		TrackOrientation.CORNER_UP_RIGHT = new TrackOrientationCorner(0, GuiBase.RENDER_ROTATION.ROTATE_270, DIRECTION.UP, DIRECTION.RIGHT);
+		TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_DOWN = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.NORMAL, DIRECTION.DOWN, DIRECTION.DOWN.getRight());
+		TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_RIGHT = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.ROTATE_270, DIRECTION.RIGHT, DIRECTION.RIGHT.getRight());
+		TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_UP = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.UP.getRight());
+		TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_LEFT = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.ROTATE_90, DIRECTION.LEFT, DIRECTION.LEFT.getRight());
+		TrackOrientation.JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_DOWN = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.FLIP_HORIZONTAL, DIRECTION.DOWN, DIRECTION.DOWN.getLeft()).setOpposite(TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_DOWN);
+		TrackOrientation.JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_RIGHT = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.ROTATE_270_FLIP, DIRECTION.RIGHT, DIRECTION.RIGHT.getLeft()).setOpposite(TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_RIGHT);
+		TrackOrientation.JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_UP = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.FLIP_VERTICAL, DIRECTION.UP, DIRECTION.UP.getLeft()).setOpposite(TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_UP);
+		TrackOrientation.JUNCTION_3WAY_CORNER_LEFT_ENTRANCE_LEFT = new TrackOrientation3Way(4, GuiBase.RENDER_ROTATION.ROTATE_90_FLIP, DIRECTION.LEFT, DIRECTION.LEFT.getLeft()).setOpposite(TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_LEFT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.NORMAL, DIRECTION.DOWN, DIRECTION.DOWN.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.FLIP_HORIZONTAL, DIRECTION.DOWN, DIRECTION.DOWN.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_LEFT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.UP.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_RIGHT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.FLIP_VERTICAL, DIRECTION.UP, DIRECTION.UP.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.ROTATE_270_FLIP, DIRECTION.RIGHT, DIRECTION.RIGHT.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.ROTATE_90, DIRECTION.LEFT, DIRECTION.LEFT.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_LEFT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.ROTATE_90_FLIP, DIRECTION.LEFT, DIRECTION.LEFT.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_RIGHT = new TrackOrientation3Way(2, GuiBase.RENDER_ROTATION.ROTATE_270, DIRECTION.RIGHT, DIRECTION.RIGHT.getOpposite());
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.NORMAL, DIRECTION.DOWN, DIRECTION.RIGHT).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_RIGHT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.FLIP_HORIZONTAL, DIRECTION.DOWN, DIRECTION.LEFT).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_LEFT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_UP_LEFT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.ROTATE_180, DIRECTION.UP, DIRECTION.LEFT).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_LEFT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_VERTICAL_CORNER_UP_RIGHT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.FLIP_VERTICAL, DIRECTION.UP, DIRECTION.RIGHT).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_UP_RIGHT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_DOWN_RIGHT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.ROTATE_270_FLIP, DIRECTION.RIGHT, DIRECTION.DOWN).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_RIGHT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_DOWN_LEFT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.ROTATE_90, DIRECTION.LEFT, DIRECTION.DOWN).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_DOWN_LEFT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_UP_LEFT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.ROTATE_90_FLIP, DIRECTION.LEFT, DIRECTION.UP).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_LEFT);
+		TrackOrientation.JUNCTION_3WAY_STRAIGHT_TURN_HORIZONTAL_CORNER_UP_RIGHT = new TrackOrientation3Way(3, GuiBase.RENDER_ROTATION.ROTATE_270, DIRECTION.RIGHT, DIRECTION.UP).setOpposite(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_HORIZONTAL_CORNER_UP_RIGHT);
+	}
+
 	private static class TrackOrientationStraight extends TrackOrientation {
 		private DIRECTION base;
-		TrackOrientationStraight(int v, RENDER_ROTATION rotation, DIRECTION base) {
+
+		TrackOrientationStraight(final int v, final GuiBase.RENDER_ROTATION rotation, final DIRECTION base) {
 			super(v, rotation);
 			this.base = base;
 		}
-		
+
 		@Override
-		public DIRECTION travel(DIRECTION in) {
-			if (in.equals(base)) {
-				return base.getOpposite();
-			}else{
-				return base;
+		public DIRECTION travel(final DIRECTION in) {
+			if (in.equals(this.base)) {
+				return this.base.getOpposite();
 			}
-		}		
-	}	
-	
+			return this.base;
+		}
+	}
+
 	private static class TrackOrientationCorner extends TrackOrientation {
 		private DIRECTION dir1;
 		private DIRECTION dir2;
-		TrackOrientationCorner(int v, RENDER_ROTATION rotation, DIRECTION dir1, DIRECTION dir2) {
+
+		TrackOrientationCorner(final int v, final GuiBase.RENDER_ROTATION rotation, final DIRECTION dir1, final DIRECTION dir2) {
 			super(v, rotation);
 			this.dir1 = dir1;
 			this.dir2 = dir2;
 		}
-		
+
 		@Override
-		public DIRECTION travel(DIRECTION in) {
-			if (in.equals(dir1)) {
-				return dir2;
-			}else if(in.equals(dir2)) {
-				return dir1;
-			}else{
-				return in.getOpposite();
+		public DIRECTION travel(final DIRECTION in) {
+			if (in.equals(this.dir1)) {
+				return this.dir2;
 			}
-		}		
+			if (in.equals(this.dir2)) {
+				return this.dir1;
+			}
+			return in.getOpposite();
+		}
 	}
-	
+
 	private static class TrackOrientation3Way extends TrackOrientation {
 		private DIRECTION entrance;
 		private DIRECTION active;
-		TrackOrientation3Way(int v, RENDER_ROTATION rotation, DIRECTION entrance, DIRECTION active) {
+
+		TrackOrientation3Way(final int v, final GuiBase.RENDER_ROTATION rotation, final DIRECTION entrance, final DIRECTION active) {
 			super(v, rotation);
 			this.entrance = entrance;
 			this.active = active;
 		}
-		
+
 		@Override
-		public DIRECTION travel(DIRECTION in) {
-			if (in.equals(entrance)) {
-				return active;
-			}else{
-				return entrance;
+		public DIRECTION travel(final DIRECTION in) {
+			if (in.equals(this.entrance)) {
+				return this.active;
 			}
-		}		
+			return this.entrance;
+		}
 	}
-		
-	
-	
-	
-	public static enum DIRECTION {		
-		UP (0, 0, -1),
-		DOWN (1, 0, 1),
-		LEFT (2, -1, 0),
-		RIGHT (3, 1, 0),
-		STILL (-1, 0 , 0);
-		
+
+	public enum DIRECTION {
+		UP(0, 0, -1),
+		DOWN(1, 0, 1),
+		LEFT(2, -1, 0),
+		RIGHT(3, 1, 0),
+		STILL(-1, 0, 0);
+
 		ArrayList<DIRECTION> ALL;
-		
 		private int x;
 		private int y;
 		private int val;
-		DIRECTION(int val, int x, int y) {
+
+		DIRECTION(final int val, final int x, final int y) {
 			this.val = val;
 			this.x = x;
 			this.y = y;
 		}
-		
+
 		public int getX() {
-			return x;
+			return this.x;
 		}
-		
+
 		public int getY() {
-			return y;
+			return this.y;
 		}
-		
+
 		public DIRECTION getOpposite() {
-			switch(this) {
-				case UP:
-					return DOWN;
-				case DOWN:
-					return UP;
-				case LEFT:
-					return RIGHT;
-				case RIGHT:
-					return LEFT;	
-				default:
-					return STILL;
+			switch (this) {
+				case UP: {
+					return DIRECTION.DOWN;
+				}
+				case DOWN: {
+					return DIRECTION.UP;
+				}
+				case LEFT: {
+					return DIRECTION.RIGHT;
+				}
+				case RIGHT: {
+					return DIRECTION.LEFT;
+				}
+				default: {
+					return DIRECTION.STILL;
+				}
 			}
 		}
-		
+
 		public DIRECTION getLeft() {
-			switch(this) {
-				case UP:
-					return RIGHT;
-				case DOWN:
-					return LEFT;
-				case LEFT:
-					return UP;
-				case RIGHT:
-					return DOWN;	
-				default:
-					return STILL;
+			switch (this) {
+				case UP: {
+					return DIRECTION.RIGHT;
+				}
+				case DOWN: {
+					return DIRECTION.LEFT;
+				}
+				case LEFT: {
+					return DIRECTION.UP;
+				}
+				case RIGHT: {
+					return DIRECTION.DOWN;
+				}
+				default: {
+					return DIRECTION.STILL;
+				}
 			}
-		}	
-		
+		}
+
 		public DIRECTION getRight() {
-			switch(this) {
-				case UP:
-					return LEFT;
-				case DOWN:
-					return RIGHT;
-				case LEFT:
-					return DOWN;
-				case RIGHT:
-					return UP;	
-				default:
-					return STILL;
+			switch (this) {
+				case UP: {
+					return DIRECTION.LEFT;
+				}
+				case DOWN: {
+					return DIRECTION.RIGHT;
+				}
+				case LEFT: {
+					return DIRECTION.DOWN;
+				}
+				case RIGHT: {
+					return DIRECTION.UP;
+				}
+				default: {
+					return DIRECTION.STILL;
+				}
 			}
-		}		
-		
-		public RENDER_ROTATION getRenderRotation() {
-			switch(this) {
-				case UP:
-					return RENDER_ROTATION.NORMAL;
-				case RIGHT:
-					return RENDER_ROTATION.ROTATE_90;
-				case DOWN:
-					return RENDER_ROTATION.ROTATE_180;
-				case LEFT:
-					return RENDER_ROTATION.ROTATE_270;	
-				default:					
-					return RENDER_ROTATION.NORMAL;
-			}			
+		}
+
+		public GuiBase.RENDER_ROTATION getRenderRotation() {
+			switch (this) {
+				case UP: {
+					return GuiBase.RENDER_ROTATION.NORMAL;
+				}
+				case RIGHT: {
+					return GuiBase.RENDER_ROTATION.ROTATE_90;
+				}
+				case DOWN: {
+					return GuiBase.RENDER_ROTATION.ROTATE_180;
+				}
+				case LEFT: {
+					return GuiBase.RENDER_ROTATION.ROTATE_270;
+				}
+				default: {
+					return GuiBase.RENDER_ROTATION.NORMAL;
+				}
+			}
 		}
 
 		public int toInteger() {
-			return val;
+			return this.val;
 		}
 
-		public static DIRECTION fromInteger(int i) {
-			for (DIRECTION dir : values()) {
+		public static DIRECTION fromInteger(final int i) {
+			for (final DIRECTION dir : values()) {
 				if (dir.val == i) {
 					return dir;
 				}
@@ -252,9 +294,4 @@ public abstract class TrackOrientation {
 			return null;
 		}
 	}
-
-
-
-
-
 }

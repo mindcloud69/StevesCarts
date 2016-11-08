@@ -3,7 +3,7 @@ package vswe.stevescarts.Modules.Engines;
 import vswe.stevescarts.Carts.MinecartModular;
 
 public class ModuleSolarBasic extends ModuleSolarTop {
-	public ModuleSolarBasic(MinecartModular cart) {
+	public ModuleSolarBasic(final MinecartModular cart) {
 		super(cart);
 	}
 
@@ -11,15 +11,14 @@ public class ModuleSolarBasic extends ModuleSolarTop {
 	protected int getPanelCount() {
 		return 2;
 	}
-	
+
 	@Override
-	protected int getMaxCapacity(){
+	protected int getMaxCapacity() {
 		return 100000;
 	}
-	
+
 	@Override
 	protected int getGenSpeed() {
 		return 2;
 	}
-	
 }

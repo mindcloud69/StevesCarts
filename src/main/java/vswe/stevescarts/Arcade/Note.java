@@ -1,85 +1,89 @@
 package vswe.stevescarts.Arcade;
 
-import java.util.ArrayList;
-
-import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 
-public class Note {
+import java.util.ArrayList;
 
-	
-	public static final ArrayList<Note> notes = new ArrayList<Note>();
-	public static final Note COAL = new Note(0, 1, 0, 0);
-	public static final Note IRON = new Note(1, 5, 1, 0);
-	public static final Note REDSTONE = new Note(2, 10, 2, 0);
-	public static final Note GOLD = new Note(3, 20, 3, 0);
-	public static final Note LAPIZ = new Note(4, 50, 0, 1);
-	public static final Note DIAMOND = new Note(5, 100, 1, 1);
-	public static final Note EMERALD = new Note(6, 500, 2, 1);
-	
+public class Note {
+	public static final ArrayList<Note> notes;
+	public static final Note COAL;
+	public static final Note IRON;
+	public static final Note REDSTONE;
+	public static final Note GOLD;
+	public static final Note LAPIZ;
+	public static final Note DIAMOND;
+	public static final Note EMERALD;
 	private int units;
 	private int u;
 	private int v;
 	private int id;
-	
-	public Note(int id, int units, int u, int v) {
+
+	public Note(final int id, final int units, final int u, final int v) {
 		this.id = id;
 		this.units = units;
 		this.u = u;
 		this.v = v;
-		
-		notes.add(this);
+		Note.notes.add(this);
 	}
-	
+
 	public int getId() {
-		return id;
+		return this.id;
 	}
-	
-	public void draw(ArcadeMonopoly game, GuiMinecart gui, int x, int y) {
+
+	public void draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y) {
 		game.loadTexture(gui, 1);
-		game.getModule().drawImage(gui, x, y, ArcadeMonopoly.PLACE_WIDTH + u * 16, 22 + 16 + v * 16, 16, 16);		
+		game.getModule().drawImage(gui, x, y, 76 + this.u * 16, 38 + this.v * 16, 16, 16);
 	}
-	
-	public void draw(ArcadeMonopoly game, GuiMinecart gui, int x, int y, int amount) {
-		draw(game, gui, x, y, amount, 0x404040);
+
+	public void draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, final int amount) {
+		this.draw(game, gui, x, y, amount, 4210752);
 	}
-	
-	public void draw(ArcadeMonopoly game, GuiMinecart gui, int x, int y, int amount, int color) {
-		draw(game, gui, x + 10, y);
-		game.getModule().drawString(gui, amount + "x ", new int[] {x + gui.getGuiLeft(), y + gui.getGuiTop(), 10, 16}, color);		
+
+	public void draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, final int amount, final int color) {
+		this.draw(game, gui, x + 10, y);
+		game.getModule().drawString(gui, amount + "x ", new int[] { x + gui.getGuiLeft(), y + gui.getGuiTop(), 10, 16 }, color);
 	}
-	
-	public void drawPlayer(ArcadeMonopoly game, GuiMinecart gui, int x, int y, int amount) {
+
+	public void drawPlayer(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, final int amount) {
 		game.loadTexture(gui, 1);
-		game.drawImageInArea(gui, x, y, ArcadeMonopoly.PLACE_WIDTH + u * 16, 22 + 16 + v * 16, 16, 16);
-		if (x + 16 < MinecartModular.MODULAR_SPACE_WIDTH) {
-			game.getModule().drawString(gui, String.valueOf(amount), x + gui.getGuiLeft(), y + 17 + gui.getGuiTop(), 16, true, 0x404040);
+		game.drawImageInArea(gui, x, y, 76 + this.u * 16, 38 + this.v * 16, 16, 16);
+		if (x + 16 < 443) {
+			game.getModule().drawString(gui, String.valueOf(amount), x + gui.getGuiLeft(), y + 17 + gui.getGuiTop(), 16, true, 4210752);
 		}
-	}	
-	
-	public static int drawValue(ArcadeMonopoly game, GuiMinecart gui, int x, int y, int maxNoteCount, int value) {
+	}
+
+	public static int drawValue(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, int maxNoteCount, int value) {
 		int id = 0;
-		for (int i = notes.size() - 1; i >= 0; i--) {
-			if (value >= notes.get(i).units && (maxNoteCount != 1 || value % notes.get(i).units == 0)) {
-				int amount = value / notes.get(i).units;
-				value -= amount * notes.get(i).units;
-				notes.get(i).draw(game, gui, x + id * 34, y, amount);
-				id++;
-				maxNoteCount--;
+		for (int i = Note.notes.size() - 1; i >= 0; --i) {
+			if (value >= Note.notes.get(i).units && (maxNoteCount != 1 || value % Note.notes.get(i).units == 0)) {
+				final int amount = value / Note.notes.get(i).units;
+				value -= amount * Note.notes.get(i).units;
+				Note.notes.get(i).draw(game, gui, x + id * 34, y, amount);
+				++id;
+				--maxNoteCount;
 			}
 		}
 		return id;
 	}
-	
-	public static void drawPlayerValue(ArcadeMonopoly game, GuiMinecart gui, int x, int y, int[] values) {
-		
-		for (int i = 0; i < notes.size(); i++) {
-			notes.get(i).drawPlayer(game, gui, x + (6 - i) * 20, y, values[i]);
+
+	public static void drawPlayerValue(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, final int[] values) {
+		for (int i = 0; i < Note.notes.size(); ++i) {
+			Note.notes.get(i).drawPlayer(game, gui, x + (6 - i) * 20, y, values[i]);
 		}
-	}	
-	
-	
+	}
+
 	public int getUnits() {
-		return units;
+		return this.units;
+	}
+
+	static {
+		notes = new ArrayList<Note>();
+		COAL = new Note(0, 1, 0, 0);
+		IRON = new Note(1, 5, 1, 0);
+		REDSTONE = new Note(2, 10, 2, 0);
+		GOLD = new Note(3, 20, 3, 0);
+		LAPIZ = new Note(4, 50, 0, 1);
+		DIAMOND = new Note(5, 100, 1, 1);
+		EMERALD = new Note(6, 500, 2, 1);
 	}
 }

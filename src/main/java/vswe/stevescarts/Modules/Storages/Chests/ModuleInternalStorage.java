@@ -1,16 +1,17 @@
 package vswe.stevescarts.Modules.Storages.Chests;
+
 import vswe.stevescarts.Carts.MinecartModular;
 
 public class ModuleInternalStorage extends ModuleChest {
-	public ModuleInternalStorage(MinecartModular cart) {
+	public ModuleInternalStorage(final MinecartModular cart) {
 		super(cart);
 	}
 
 	@Override
-	protected int getInventoryWidth()
-	{
+	protected int getInventoryWidth() {
 		return 3;
 	}
+
 	@Override
 	protected int getInventoryHeight() {
 		return 3;
@@ -20,8 +21,9 @@ public class ModuleInternalStorage extends ModuleChest {
 	protected boolean hasVisualChest() {
 		return false;
 	}
+
 	@Override
 	public int guiWidth() {
 		return super.guiWidth() + 30;
-	}	
+	}
 }

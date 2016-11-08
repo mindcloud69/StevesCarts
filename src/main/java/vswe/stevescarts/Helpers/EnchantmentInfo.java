@@ -1,187 +1,155 @@
 package vswe.stevescarts.Helpers;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import net.minecraft.init.Items;
-import vswe.stevescarts.Helpers.EnchantmentInfo.ENCHANTMENT_TYPE;
-
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.Item;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import java.util.ArrayList;
+
 public class EnchantmentInfo {
-	
 	private Enchantment enchantment;
 	private int rank1Value;
 	private ENCHANTMENT_TYPE type;
-	
-	public EnchantmentInfo(Enchantment enchantment, ENCHANTMENT_TYPE type,  int rank1Value) {
+	public static ArrayList<EnchantmentInfo> enchants;
+	public static EnchantmentInfo fortune;
+	public static EnchantmentInfo efficiency;
+	public static EnchantmentInfo unbreaking;
+	public static EnchantmentInfo power;
+	public static EnchantmentInfo punch;
+	public static EnchantmentInfo flame;
+	public static EnchantmentInfo infinity;
+
+	public EnchantmentInfo(final Enchantment enchantment, final ENCHANTMENT_TYPE type, final int rank1Value) {
 		this.enchantment = enchantment;
 		this.rank1Value = rank1Value;
 		this.type = type;
-		
-		enchants.add(this);
+		EnchantmentInfo.enchants.add(this);
 	}
 
-	
 	public Enchantment getEnchantment() {
-		return enchantment;
+		return this.enchantment;
 	}
-	
+
 	public int getMaxValue() {
 		int max = 0;
-		
-		for (int i = 0; i < getEnchantment().getMaxLevel(); i++) {
-			max += getValue(i + 1);
+		for (int i = 0; i < this.getEnchantment().getMaxLevel(); ++i) {
+			max += this.getValue(i + 1);
 		}
-		
-		return max;	
+		return max;
 	}
-	
-	public int getValue(int level) {	
-		return (int)Math.pow(2, level-1) * rank1Value;		
+
+	public int getValue(final int level) {
+		return (int) Math.pow(2.0, level - 1) * this.rank1Value;
 	}
-	
-	
-	public static ArrayList<EnchantmentInfo> enchants = new ArrayList<EnchantmentInfo>();
-	
-	public static EnchantmentInfo fortune = new EnchantmentInfo(Enchantment.fortune, ENCHANTMENT_TYPE.TOOL, 50000);
-	public static EnchantmentInfo efficiency = new EnchantmentInfo(Enchantment.efficiency, ENCHANTMENT_TYPE.TOOL, 50000);
-	public static EnchantmentInfo unbreaking = new EnchantmentInfo(Enchantment.unbreaking, ENCHANTMENT_TYPE.TOOL, 64000);
-	
-	
-	public static EnchantmentInfo power = new EnchantmentInfo(Enchantment.power, ENCHANTMENT_TYPE.SHOOTER, 750);
-	public static EnchantmentInfo punch = new EnchantmentInfo(Enchantment.punch, ENCHANTMENT_TYPE.SHOOTER, 1000);
-	public static EnchantmentInfo flame = new EnchantmentInfo(Enchantment.flame, ENCHANTMENT_TYPE.SHOOTER, 1000);
-	public static EnchantmentInfo infinity = new EnchantmentInfo(Enchantment.infinity, ENCHANTMENT_TYPE.SHOOTER, 500);
 
-	public static boolean isItemValid(ArrayList<ENCHANTMENT_TYPE> enabledTypes, ItemStack itemstack) {
-	
-		
-		if (itemstack != null && itemstack.getItem() == Items.enchanted_book) {
-
-			for (EnchantmentInfo info : enchants) {
-				
+	public static boolean isItemValid(final ArrayList<ENCHANTMENT_TYPE> enabledTypes, final ItemStack itemstack) {
+		if (itemstack != null && itemstack.getItem() == Items.ENCHANTED_BOOK) {
+			for (final EnchantmentInfo info : EnchantmentInfo.enchants) {
 				boolean isValid = false;
-				for (ENCHANTMENT_TYPE type : enabledTypes) {
+				for (final ENCHANTMENT_TYPE type : enabledTypes) {
 					if (info.type == type) {
 						isValid = true;
 					}
 				}
 				if (isValid) {
-					int level = getEnchantmentLevel(info.getEnchantment().effectId, itemstack);
-					if (level > 0)  {
+					final int level = getEnchantmentLevel(Enchantment.getEnchantmentID(info.getEnchantment()), itemstack);
+					if (level > 0) {
 						return true;
 					}
+					continue;
 				}
 			}
 		}
-		
 		return false;
 	}
-	
-	public static EnchantmentData addBook(ArrayList<ENCHANTMENT_TYPE> enabledTypes, EnchantmentData data, ItemStack itemstack) {
-		if (itemstack != null && itemstack.getItem() == Items.enchanted_book) {
+
+	public static EnchantmentData addBook(final ArrayList<ENCHANTMENT_TYPE> enabledTypes, EnchantmentData data, final ItemStack itemstack) {
+		if (itemstack != null && itemstack.getItem() == Items.ENCHANTED_BOOK) {
 			if (data == null) {
-				for (EnchantmentInfo info : enchants) {
+				for (final EnchantmentInfo info : EnchantmentInfo.enchants) {
 					data = addEnchantment(enabledTypes, data, itemstack, info);
 				}
-			}else{
+			} else {
 				addEnchantment(enabledTypes, data, itemstack, data.getEnchantment());
-			}	
+			}
 		}
-		
 		return data;
 	}
-	
-	
-	private static EnchantmentData addEnchantment(ArrayList<ENCHANTMENT_TYPE> enabledTypes, EnchantmentData data, ItemStack itemstack, EnchantmentInfo info) {
+
+	private static EnchantmentData addEnchantment(final ArrayList<ENCHANTMENT_TYPE> enabledTypes, EnchantmentData data, final ItemStack itemstack, final EnchantmentInfo info) {
 		boolean isValid = false;
-		for (ENCHANTMENT_TYPE type : enabledTypes) {
+		for (final ENCHANTMENT_TYPE type : enabledTypes) {
 			if (info.type == type) {
 				isValid = true;
 			}
 		}
-		
-		if (isValid) {	
-			int level = getEnchantmentLevel(info.getEnchantment().effectId, itemstack);
+		if (isValid) {
+			final int level = getEnchantmentLevel(Enchantment.getEnchantmentID(info.getEnchantment()), itemstack);
 			if (level > 0) {
 				if (data == null) {
 					data = new EnchantmentData(info);
 				}
-				
-				int newValue = data.getEnchantment().getValue(level) + data.getValue();
+				final int newValue = data.getEnchantment().getValue(level) + data.getValue();
 				if (newValue <= data.getEnchantment().getMaxValue()) {
 					data.setValue(newValue);
-					itemstack.stackSize--;
+					--itemstack.stackSize;
 				}
-			}	
+			}
 		}
-		
 		return data;
 	}
-	
-    private static int getEnchantmentLevel(int par0, ItemStack par1ItemStack)
-    {
-        if (par1ItemStack == null)
-        {
-            return 0;
-        }
-        else
-        {
-            NBTTagList nbttaglist =  Items.enchanted_book.func_92110_g(par1ItemStack);
-           
-            if (nbttaglist == null)
-            {
-                return 0;
-            }
-            else
-            {
-                for (int j = 0; j < nbttaglist.tagCount(); ++j)
-                {
-                    short short1 = nbttaglist.getCompoundTagAt(j).getShort("id");
-                    short short2 = nbttaglist.getCompoundTagAt(j).getShort("lvl");
 
-                    if (short1 == par0)
-                    {
-                        return short2;
-                    }
-                }
+	private static int getEnchantmentLevel(final int par0, final ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return 0;
+		}
+		final NBTTagList nbttaglist = Items.ENCHANTED_BOOK.getEnchantments(par1ItemStack);
+		if (nbttaglist == null) {
+			return 0;
+		}
+		for (int j = 0; j < nbttaglist.tagCount(); ++j) {
+			final short short1 = nbttaglist.getCompoundTagAt(j).getShort("id");
+			final short short2 = nbttaglist.getCompoundTagAt(j).getShort("lvl");
+			if (short1 == par0) {
+				return short2;
+			}
+		}
+		return 0;
+	}
 
-                return 0;
-            }
-        }
-    }
-
-
-	public static EnchantmentData createDataFromEffectId(EnchantmentData data, short id) {
-		for (EnchantmentInfo info : enchants) {
-			if (info.getEnchantment().effectId == id) {
+	public static EnchantmentData createDataFromEffectId(EnchantmentData data, final short id) {
+		for (final EnchantmentInfo info : EnchantmentInfo.enchants) {
+			if (Enchantment.getEnchantmentID(info.getEnchantment()) == id) {
 				if (data == null) {
 					data = new EnchantmentData(info);
-				}else{
-					data.setEnchantment(info);
+					break;
 				}
+				data.setEnchantment(info);
 				break;
 			}
 		}
-		
 		return data;
 	}
-	
-	
-	public static enum ENCHANTMENT_TYPE {
+
+	public ENCHANTMENT_TYPE getType() {
+		return this.type;
+	}
+
+	static {
+		EnchantmentInfo.enchants = new ArrayList<EnchantmentInfo>();
+		EnchantmentInfo.fortune = new EnchantmentInfo(Enchantments.FORTUNE, ENCHANTMENT_TYPE.TOOL, 50000);
+		EnchantmentInfo.efficiency = new EnchantmentInfo(Enchantments.EFFICIENCY, ENCHANTMENT_TYPE.TOOL, 50000);
+		EnchantmentInfo.unbreaking = new EnchantmentInfo(Enchantments.UNBREAKING, ENCHANTMENT_TYPE.TOOL, 64000);
+		EnchantmentInfo.power = new EnchantmentInfo(Enchantments.POWER, ENCHANTMENT_TYPE.SHOOTER, 750);
+		EnchantmentInfo.punch = new EnchantmentInfo(Enchantments.PUNCH, ENCHANTMENT_TYPE.SHOOTER, 1000);
+		EnchantmentInfo.flame = new EnchantmentInfo(Enchantments.FLAME, ENCHANTMENT_TYPE.SHOOTER, 1000);
+		EnchantmentInfo.infinity = new EnchantmentInfo(Enchantments.INFINITY, ENCHANTMENT_TYPE.SHOOTER, 500);
+	}
+
+	public enum ENCHANTMENT_TYPE {
 		TOOL,
 		SHOOTER
 	}
-
-
-	public ENCHANTMENT_TYPE getType() {
-		return type;
-	}
-	
 }

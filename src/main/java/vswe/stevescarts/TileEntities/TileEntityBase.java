@@ -1,110 +1,74 @@
 package vswe.stevescarts.TileEntities;
 
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.tileentity.TileEntity;
-import vswe.stevescarts.Containers.ContainerActivator;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Interfaces.GuiBase;
 
 public abstract class TileEntityBase extends TileEntity {
 
-	public TileEntityBase() {
-		super();
+	@Deprecated
+	int xCoord;
+
+	@Deprecated
+	int yCoord;
+
+	@Deprecated
+	int zCoord;
+
+	//This is bad, remove asap
+	@Override
+	public void setPos(BlockPos posIn) {
+		super.setPos(posIn);
+		xCoord = posIn.getX();
+		zCoord = posIn.getZ();
+		yCoord = posIn.getY();
 	}
-	
-	/**
-	 * Called when this tile entity receives a packet from the client.
-	 * @param id The id of the packet
-	 * @param data The bytes the client sent
-	 * @param player The player associated with the client sending the packet
-	 */
-	public void receivePacket(int id, byte[] data, EntityPlayer player) {}	
-	
-	/**
-	 * Returns a new interface for this tile entity
-	 * @param inv The inventory of the player opening the interface
-	 * @return The interface to be shown
-	 */
+
+	public void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
+	}
+
 	@SideOnly(Side.CLIENT)
-	public abstract GuiBase getGui(InventoryPlayer inv);
-	
-	/**
-	 * Returns a new container for this tile entity
-	 * @param inv The inventory of the player opening the container
-	 * @return The container to be used
-	 */
-	public abstract ContainerBase getContainer(InventoryPlayer inv);
-	
-	/**
-	 *Synchronizes the client with the server by sending some data to it
-	 * @param con The container associated with the player on the server
-	 * @param crafting The player to send information to
-	 * @param id The id of this data
-	 * @param data The data to send
-	 */
-	public void updateGuiData(Container con, ICrafting crafting, int id, short data) {
-		crafting.sendProgressBarUpdate(con, id, data);
+	public abstract GuiBase getGui(final InventoryPlayer p0);
+
+	public abstract ContainerBase getContainer(final InventoryPlayer p0);
+
+	public void updateGuiData(final Container con, final IContainerListener crafting, final int id, final short data) {
+		crafting.sendProgressBarUpdate(con, id, (int) data);
 	}
-	
-	/**
-	 * Initializes the synchronizing from the server to the client
-	 * @param con The container on the server for the player
-	 * @param crafting The player
-	 */
-	public void initGuiData(Container con, ICrafting crafting) {}
 
-	/**
-	 * Check if some data has to be synchronized from the server to the client
-	 * @param con The container on the server for the player
-	 * @param crafting The player
-	 */
-	public void checkGuiData(Container con, ICrafting crafting) {}
-	
-
-	
-	/**
-	 * Called when the client is synchronized by receiving new data from the server
-	 * @param id The id of the data
-	 * @param data The data itself
-	 */
-	public void receiveGuiData(int id, short data) {}	
-	
-	/**
-	 * If this Tile Entity can be used by the given player
-	 * @param entityplayer The player that wants to interact
-	 * @return If the player can use this tile entity
-	 */
-   public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-        if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
-        {
-            return false;
-        }
-
-        return entityplayer.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64D;
-    }
-	
-	public short getShortFromInt(boolean first, int val) {
-		if (first) {
-			return (short)(val & 65535);
-		}else {
-			return (short)((val >> 16) & 65535);
-		}
+	public void initGuiData(final Container con, final IContainerListener crafting) {
 	}
-	
-	public int getIntFromShort(boolean first, int oldVal, short val) {
+
+	public void checkGuiData(final Container con, final IContainerListener crafting) {
+	}
+
+	public void receiveGuiData(final int id, final short data) {
+	}
+
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
+		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64.0;
+	}
+
+	public short getShortFromInt(final boolean first, final int val) {
 		if (first) {
-			oldVal = (oldVal & -65536) | val;	
-		}else{
-			oldVal = (oldVal & 65535) | (val << 16);		
+			return (short) (val & 0xFFFF);
 		}
-		
+		return (short) (val >> 16 & 0xFFFF);
+	}
+
+	public int getIntFromShort(final boolean first, int oldVal, final short val) {
+		if (first) {
+			oldVal = ((oldVal & 0xFFFF0000) | val);
+		} else {
+			oldVal = ((oldVal & 0xFFFF) | val << 16);
+		}
 		return oldVal;
-	}	  
-   
+	}
 }

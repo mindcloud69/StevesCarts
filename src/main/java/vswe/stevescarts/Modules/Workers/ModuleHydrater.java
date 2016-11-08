@@ -1,95 +1,71 @@
 package vswe.stevescarts.Modules.Workers;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleFarmer;
+
 public class ModuleHydrater extends ModuleWorker {
-	public ModuleHydrater(MinecartModular cart) {
+	private int range;
+
+	public ModuleHydrater(final MinecartModular cart) {
 		super(cart);
+		this.range = 1;
 	}
 
-	//lower numbers are prioritized
+	@Override
 	public byte getWorkPriority() {
 		return 82;
 	}
 
-
-	
-	private int range = 1;
-	
+	@Override
 	public void init() {
 		super.init();
-	
-		for (ModuleBase module : getCart().getModules()) {
+		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ModuleFarmer) {
-				range = ((ModuleFarmer)module).getExternalRange();
+				this.range = ((ModuleFarmer) module).getExternalRange();
 				break;
 			}
 		}
-	}		
+	}
 
-	//return true when the work is done, false allow other modules to continue the work
+	@Override
 	public boolean work() {
-       //get the next block so the cart knows where to mine
-        Vec3 next = getNextblock();
-        //save thee coordinates for easy access
-        int x = (int) next.xCoord;
-        int y = (int) next.yCoord;
-        int z = (int) next.zCoord;
-
-        //loop through the blocks in the "hole" in front of the cart
-
-        for (int i = -range; i <= range; i++)
-        {
-            for (int j = -range; j <= range; j++)
-            {
-                //calculate the coordinates of this "hole"
-                int coordX = x + i;
-                int coordY = y - 1;
-                int coordZ = z + j;
-
-				if (hydrate(coordX, coordY, coordZ))
-                {
-                    return true;
-                }
-            }
-        }
-
+		BlockPos next = this.getNextblock();
+		for (int i = -this.range; i <= this.range; ++i) {
+			for (int j = -this.range; j <= this.range; ++j) {
+				if (this.hydrate(next.add(i, -1, j))) {
+					return true;
+				}
+			}
+		}
 		return false;
-    }
+	}
 
-   private boolean hydrate(int x, int y, int z)
-   {
-       Block b = getCart().worldObj.getBlock(x, y, z);
-       int m = getCart().worldObj.getBlockMetadata(x, y, z);
-
-        if (b == Blocks.farmland && m != 7)
-        {
-            int waterCost = 7 - m;
-			waterCost = getCart().drain(FluidRegistry.WATER, waterCost, false);
-			
-            if (waterCost > 0)
-            {
-                if (doPreWork())
-                {
-                    startWorking(2 + waterCost);
-                    return true;
-                }
-                else
-                {
-                    stopWorking();
-
-                    getCart().drain(FluidRegistry.WATER, waterCost, true);
-                    getCart().worldObj.setBlockMetadataWithNotify(x, y, z, m + waterCost, 3);
-                }
-            }
-        }
-
-        return false;
-   }
-
+	private boolean hydrate(BlockPos pos) {
+		IBlockState state = getCart().worldObj.getBlockState(pos);
+		if (state.getBlock() == Blocks.FARMLAND){ 
+			int moisture = state.getValue(BlockFarmland.MOISTURE);
+			if(moisture != 7) {
+				int waterCost = 7 - moisture;
+				waterCost = this.getCart().drain(FluidRegistry.WATER, waterCost, false);
+				if (waterCost > 0) {
+					if (this.doPreWork()) {
+						this.startWorking(2 + waterCost);
+						return true;
+					}
+					this.stopWorking();
+					this.getCart().drain(FluidRegistry.WATER, waterCost, true);
+					getCart().worldObj.setBlockState(pos, state.getBlock().getStateFromMeta(moisture + waterCost), 3);
+				}
+			}
+		}
+		return false;
+	}
 }

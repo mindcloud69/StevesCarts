@@ -1,494 +1,450 @@
 package vswe.stevescarts.Interfaces;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.IIcon;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import vswe.stevescarts.ModuleData.ModuleData;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiBase extends GuiNEIKiller
-{
+public abstract class GuiBase extends GuiContainer {
+	private int myOwnEventButton;
+	private long myOwnTimeyWhineyThingy;
+	private int myOwnTouchpadTimeWhineyThingy;
 
-    public GuiBase(Container container)
-    {
-        super(container);
-    }
-    
-	public void drawMouseOver(String str, int x, int y) {
-		List text = new ArrayList();
-		String[] split = str.split("\n");
-		for (int i = 0; i < split.length; i++) {
+	public GuiBase(final Container container) {
+		super(container);
+		this.myOwnEventButton = 0;
+		this.myOwnTimeyWhineyThingy = 0L;
+		this.myOwnTouchpadTimeWhineyThingy = 0;
+	}
+
+	public void drawMouseOver(final String str, final int x, final int y) {
+		final List text = new ArrayList();
+		final String[] split = str.split("\n");
+		for (int i = 0; i < split.length; ++i) {
 			text.add(split[i]);
 		}
-		drawMouseOver(text,x,y);
+		this.drawMouseOver(text, x, y);
 	}
-	
-	public boolean inRect(int x, int y, int[] coords) {
+
+	public boolean inRect(final int x, final int y, final int[] coords) {
 		return coords != null && x >= coords[0] && x < coords[0] + coords[2] && y >= coords[1] && y < coords[1] + coords[3];
 	}
-	
-	public void drawMouseOver(List text, int x, int y) {
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		
-	
+
+	public void drawMouseOver(final List<String> text, final int x, final int y) {
+		GL11.glDisable(2896);
+		GL11.glDisable(2929);
 		int var5 = 0;
-        Iterator var6 = text.iterator();
-
-        while (var6.hasNext())
-        {
-            String var7 = (String)var6.next();
-            int var8 = this.getFontRenderer().getStringWidth(var7);
-
-            if (var8 > var5)
-            {
-                var5 = var8;
-            }
-        }
-
-        int var15 = x + 10;
-        int var16 = y;
-        int var9 = 8;
-
-        if (text.size() > 1)
-        {
-            var9 += 2 + (text.size() - 1) * 10;
-        }
-
-        this.zLevel = 300.0F;
-        itemRender.zLevel = 300.0F;
-        int var10 = -267386864;
-        this.drawGradientRect(var15 - 3, var16 - 4, var15 + var5 + 3, var16 - 3, var10, var10);
-        this.drawGradientRect(var15 - 3, var16 + var9 + 3, var15 + var5 + 3, var16 + var9 + 4, var10, var10);
-        this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 + var9 + 3, var10, var10);
-        this.drawGradientRect(var15 - 4, var16 - 3, var15 - 3, var16 + var9 + 3, var10, var10);
-        this.drawGradientRect(var15 + var5 + 3, var16 - 3, var15 + var5 + 4, var16 + var9 + 3, var10, var10);
-        int var11 = 1347420415;
-        int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
-        this.drawGradientRect(var15 - 3, var16 - 3 + 1, var15 - 3 + 1, var16 + var9 + 3 - 1, var11, var12);
-        this.drawGradientRect(var15 + var5 + 2, var16 - 3 + 1, var15 + var5 + 3, var16 + var9 + 3 - 1, var11, var12);
-        this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 - 3 + 1, var11, var11);
-        this.drawGradientRect(var15 - 3, var16 + var9 + 2, var15 + var5 + 3, var16 + var9 + 3, var12, var12);
-
-        for (int var13 = 0; var13 < text.size(); ++var13)
-        {
-            String var14 = (String)text.get(var13);
-
-            this.getFontRenderer().drawStringWithShadow(var14, var15, var16, -1);
-
-            if (var13 == 0)
-            {
-                var16 += 2;
-            }
-
-            var16 += 10;
-        }
-
-        this.zLevel = 0.0F;
-        itemRender.zLevel = 0.0F;
-		
-
-
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_LIGHTING);	
+		for (final String var7 : text) {
+			final int var8 = this.getFontRenderer().getStringWidth(var7);
+			if (var8 > var5) {
+				var5 = var8;
+			}
+		}
+		final int var9 = x + 10;
+		int var10 = y;
+		int var11 = 8;
+		if (text.size() > 1) {
+			var11 += 2 + (text.size() - 1) * 10;
+		}
+		this.zLevel = 300.0f;
+		//GuiBase.itemRender.zLevel = 300.0f;
+		final int var12 = -267386864;
+		this.drawGradientRect(var9 - 3, var10 - 4, var9 + var5 + 3, var10 - 3, var12, var12);
+		this.drawGradientRect(var9 - 3, var10 + var11 + 3, var9 + var5 + 3, var10 + var11 + 4, var12, var12);
+		this.drawGradientRect(var9 - 3, var10 - 3, var9 + var5 + 3, var10 + var11 + 3, var12, var12);
+		this.drawGradientRect(var9 - 4, var10 - 3, var9 - 3, var10 + var11 + 3, var12, var12);
+		this.drawGradientRect(var9 + var5 + 3, var10 - 3, var9 + var5 + 4, var10 + var11 + 3, var12, var12);
+		final int var13 = 1347420415;
+		final int var14 = (var13 & 0xFEFEFE) >> 1 | (var13 & 0xFF000000);
+		this.drawGradientRect(var9 - 3, var10 - 3 + 1, var9 - 3 + 1, var10 + var11 + 3 - 1, var13, var14);
+		this.drawGradientRect(var9 + var5 + 2, var10 - 3 + 1, var9 + var5 + 3, var10 + var11 + 3 - 1, var13, var14);
+		this.drawGradientRect(var9 - 3, var10 - 3, var9 + var5 + 3, var10 - 3 + 1, var13, var13);
+		this.drawGradientRect(var9 - 3, var10 + var11 + 2, var9 + var5 + 3, var10 + var11 + 3, var14, var14);
+		for (int var15 = 0; var15 < text.size(); ++var15) {
+			final String var16 = text.get(var15);
+			this.getFontRenderer().drawStringWithShadow(var16, var9, var10, -1);
+			if (var15 == 0) {
+				var10 += 2;
+			}
+			var10 += 10;
+		}
+		this.zLevel = 0.0f;
+		//GuiBase.itemRender.zLevel = 0.0f;
+		GL11.glEnable(2929);
+		GL11.glEnable(2896);
 	}
-	
-
 
 	public Minecraft getMinecraft() {
-		return mc;
+		return this.mc;
 	}
-			
-	public FontRenderer getFontRenderer() {
-		return fontRendererObj;
-	}
-	
-	public void setXSize(int val) {
-		xSize = val;
 
-        this.guiLeft = (this.width - this.xSize) / 2;		
+	public FontRenderer getFontRenderer() {
+		return this.fontRendererObj;
 	}
-	
-	public void setYSize(int val) {
-		ySize = val;
-	
-        this.guiTop = (this.height - this.ySize) / 2;		
+
+	public void setXSize(final int val) {
+		this.xSize = val;
+		this.guiLeft = (this.width - this.xSize) / 2;
 	}
-	
+
+	public void setYSize(final int val) {
+		this.ySize = val;
+		this.guiTop = (this.height - this.ySize) / 2;
+	}
+
 	public int getXSize() {
-		return xSize;
+		return this.xSize;
 	}
-	
+
 	public int getYSize() {
-		return  ySize;
-	}	
-	
-	public int getGuiLeft() {
-		return  guiLeft;
+		return this.ySize;
 	}
-	
+
+	public int getGuiLeft() {
+		return this.guiLeft;
+	}
+
 	public int getGuiTop() {
-		return  guiTop;
-	}	
-	
+		return this.guiTop;
+	}
+
 	@Override
-	protected void drawGuiContainerForegroundLayer(int x, int y) {
-		this.drawGuiForeground(x,y);
-	}	
-	public void drawGuiForeground(int x, int y) {}
-	
-	
-	@Override
+	protected void drawGuiContainerForegroundLayer(final int x, final int y) {
+		this.drawGuiForeground(x, y);
+	}
+
+	public void drawGuiForeground(final int x, final int y) {
+	}
+
 	public void drawDefaultBackground() {
 		super.drawDefaultBackground();
-	
-		startScaling();
+		this.startScaling();
 	}
-	
+
 	private int scaleX(float x) {
-		float scale = getScale();
+		final float scale = this.getScale();
 		x /= scale;
-		x += getGuiLeft();
-		x -= (this.width - this.xSize * scale) / (2 * scale);
-		return (int)x;
+		x += this.getGuiLeft();
+		x -= (this.width - this.xSize * scale) / (2.0f * scale);
+		return (int) x;
 	}
+
 	private int scaleY(float y) {
-		float scale = getScale();
+		final float scale = this.getScale();
 		y /= scale;
-		y += getGuiTop();
-		y -= (this.height - this.ySize * scale) / (2 * scale);
-		return (int)y;
-	}	
-	@Override
-	public void drawScreen(int x, int y, float f) {	
-
-		super.drawScreen(scaleX(x), scaleY(y), f);
-		//stop scale
-		stopScaling();
+		y += this.getGuiTop();
+		y -= (this.height - this.ySize * scale) / (2.0f * scale);
+		return (int) y;
 	}
-		
-	
-	protected float getScale() {	
-	
-        net.minecraft.client.gui.ScaledResolution scaledresolution = new net.minecraft.client.gui.ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-        float w = scaledresolution.getScaledWidth() * 0.9F;
-        float h = scaledresolution.getScaledHeight() * 0.9F;
-		float multX = w / getXSize();
-		float multY = h / getYSize();
-		float mult = Math.min(multX, multY);
-		if (mult > 1F) {
-			mult = 1F;
-		}
 
+	@Override
+	public void drawScreen(final int x, final int y, final float f) {
+		super.drawScreen(this.scaleX(x), this.scaleY(y), f);
+		this.stopScaling();
+	}
+
+	protected float getScale() {
+		final ScaledResolution scaledresolution = new ScaledResolution(this.mc);
+		final float w = scaledresolution.getScaledWidth() * 0.9f;
+		final float h = scaledresolution.getScaledHeight() * 0.9f;
+		final float multX = w / this.getXSize();
+		final float multY = h / this.getYSize();
+		float mult = Math.min(multX, multY);
+		if (mult > 1.0f) {
+			mult = 1.0f;
+		}
 		return mult;
 	}
-	
-	
-
 
 	private void startScaling() {
-		//start scale
 		GL11.glPushMatrix();
-	
-		float scale = getScale();
-	
-		GL11.glScalef(scale, scale, 1);
-		GL11.glTranslatef(-guiLeft, -guiTop, 0.0F);	
-		GL11.glTranslatef((this.width - this.xSize * scale) / (2 * scale), (this.height - this.ySize * scale) / (2 * scale), 0.0F);	
-	}	
-	
+		final float scale = this.getScale();
+		GL11.glScalef(scale, scale, 1.0f);
+		GL11.glTranslatef((float) (-this.guiLeft), (float) (-this.guiTop), 0.0f);
+		GL11.glTranslatef((this.width - this.xSize * scale) / (2.0f * scale), (this.height - this.ySize * scale) / (2.0f * scale), 0.0f);
+	}
+
 	private void stopScaling() {
-		//stop scale
-		GL11.glPopMatrix();	
+		GL11.glPopMatrix();
 	}
-	
 
-	
-		
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-		this.drawGuiBackground(f,x,y);
+	protected void drawGuiContainerBackgroundLayer(final float f, final int x, final int y) {
+		this.drawGuiBackground(f, x, y);
 	}
-	public void drawGuiBackground(float f, int x, int y) {}
-	
+
+	public void drawGuiBackground(final float f, final int x, final int y) {
+	}
+
 	@Override
-	protected void mouseClicked(int x, int y, int button) {
-		x = scaleX(x);
-		y = scaleY(y);
+	protected void mouseClicked(int x, int y, final int button) throws IOException {
+		x = this.scaleX(x);
+		y = this.scaleY(y);
 		super.mouseClicked(x, y, button);
-		this.mouseClick(x,y,button);
+		this.mouseClick(x, y, button);
 	}
-	
-	public void mouseClick(int x, int y, int button) {}
 
-	@Override
-	protected void mouseMovedOrUp(int x, int y, int button) {
-		x = scaleX(x);
-		y = scaleY(y);	
-	
-		super.mouseMovedOrUp(x,y,button);
-		this.mouseMoved(x,y,button);
+	public void mouseClick(final int x, final int y, final int button) {
+	}
+
+
+	protected void mouseMovedOrUp(int x, int y, final int button) {
+		x = this.scaleX(x);
+		y = this.scaleY(y);
+		//super.mouseMovedOrUp(x, y, button);
+		this.mouseMoved(x, y, button);
 		this.mouseDraged(x, y, button);
-	}	
-	
-	private int myOwnEventButton = 0;
-	private long myOwnTimeyWhineyThingy = 0L;
-	private int myOwnTouchpadTimeWhineyThingy = 0;
-	
-    /**
-     * Handles mouse input.
-     */
-	@Override
-    public void handleMouseInput()
-    {
-    	
-        int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-
-        if (Mouse.getEventButtonState())
-        {
-            if (this.mc.gameSettings.touchscreen && this.myOwnTouchpadTimeWhineyThingy++ > 0)
-            {
-                return;
-            }
-
-            this.myOwnEventButton = Mouse.getEventButton();
-            this.myOwnTimeyWhineyThingy = Minecraft.getSystemTime();
-            this.mouseClicked(i, j, this.myOwnEventButton);
-        }
-        else if (Mouse.getEventButton() != -1)
-        {
-            if (this.mc.gameSettings.touchscreen && --this.myOwnTouchpadTimeWhineyThingy > 0)
-            {
-                return;
-            }
-
-            this.myOwnEventButton = -1;
-            this.mouseMovedOrUp(i, j, Mouse.getEventButton());
-        }
-        else if (this.myOwnEventButton != -1 && this.myOwnTimeyWhineyThingy > 0L)
-        {
-            long k = Minecraft.getSystemTime() - this.myOwnTimeyWhineyThingy;
-            this.mouseClickMove(i, j, this.myOwnEventButton, k);
-        }else{
-        	this.mouseMovedOrUp(i, j, -1);
-        }
-    }
-	
-	@Override
-	protected void mouseClickMove(int x, int y, int button, long timeSinceClick) {	
-		x = scaleX(x);
-		y = scaleY(y);
-	
-		super.mouseClickMove(x,y,button,timeSinceClick);
-		this.mouseMoved(x,y,-1);		
-		this.mouseDraged(x,y,button);
 	}
-	
-	public void mouseMoved(int x, int y, int button) {}
-	public void mouseDraged(int x, int y, int button) {}
-	@Override
-    protected void keyTyped(char character, int extraInformation)
-    {
-		if (extraInformation == 1 || !disableStandardKeyFunctionality()) {
-			super.keyTyped(character,extraInformation);
+
+	public void handleMouseInput() throws IOException {
+		final int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
+		final int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		if (Mouse.getEventButtonState()) {
+			if (this.mc.gameSettings.touchscreen && this.myOwnTouchpadTimeWhineyThingy++ > 0) {
+				return;
+			}
+			this.myOwnEventButton = Mouse.getEventButton();
+			this.myOwnTimeyWhineyThingy = Minecraft.getSystemTime();
+			this.mouseClicked(i, j, this.myOwnEventButton);
+		} else if (Mouse.getEventButton() != -1) {
+			if (this.mc.gameSettings.touchscreen && --this.myOwnTouchpadTimeWhineyThingy > 0) {
+				return;
+			}
+			this.myOwnEventButton = -1;
+			this.mouseMovedOrUp(i, j, Mouse.getEventButton());
+		} else if (this.myOwnEventButton != -1 && this.myOwnTimeyWhineyThingy > 0L) {
+			final long k = Minecraft.getSystemTime() - this.myOwnTimeyWhineyThingy;
+			this.mouseClickMove(i, j, this.myOwnEventButton, k);
+		} else {
+			this.mouseMovedOrUp(i, j, -1);
 		}
-		this.keyPress(character,extraInformation);
-    }
-	
+	}
+
+	@Override
+	protected void mouseClickMove(int x, int y, final int button, final long timeSinceClick) {
+		x = this.scaleX(x);
+		y = this.scaleY(y);
+		super.mouseClickMove(x, y, button, timeSinceClick);
+		this.mouseMoved(x, y, -1);
+		this.mouseDraged(x, y, button);
+	}
+
+	public void mouseMoved(final int x, final int y, final int button) {
+	}
+
+	public void mouseDraged(final int x, final int y, final int button) {
+	}
+
+	@Override
+	protected void keyTyped(final char character, final int extraInformation) throws IOException {
+		if (extraInformation == 1 || !this.disableStandardKeyFunctionality()) {
+			super.keyTyped(character, extraInformation);
+		}
+		this.keyPress(character, extraInformation);
+	}
+
 	public boolean disableStandardKeyFunctionality() {
 		return false;
 	}
 
-	public void keyPress(char character, int extraInformation) {}	
-	
-	
+	public void keyPress(final char character, final int extraInformation) {
+	}
+
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
-		
 		Keyboard.enableRepeatEvents(false);
 	}
-	
-	public void enableKeyRepeat(boolean val) {
-		Keyboard.enableRepeatEvents(val);		
+
+	public void enableKeyRepeat(final boolean val) {
+		Keyboard.enableRepeatEvents(val);
 	}
-	
-	
+
 	public float getZLevel() {
-		return zLevel;
+		return this.zLevel;
 	}
-	
-	public void drawIcon(IIcon icon, int targetX, int targetY, float sizeX, float sizeY, float offsetX, float offsetY) {
-		Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-		
-		float x = icon.getMinU() + offsetX * (icon.getMaxU() - icon.getMinU());
-		float y = icon.getMinV() + offsetY * (icon.getMaxV() - icon.getMinV());
-		float width = (icon.getMaxU() - icon.getMinU()) * sizeX;
-		float height = (icon.getMaxV() - icon.getMinV()) * sizeY;
-		
-        tessellator.addVertexWithUV(targetX + 0, 			targetY + 16 * sizeY, 	this.getZLevel(), 	x + 0, 			y + height);
-        tessellator.addVertexWithUV(targetX + 16 * sizeX, 	targetY + 16 * sizeY, 	this.getZLevel(), 	x + width, 		y + height);
-        tessellator.addVertexWithUV(targetX + 16 * sizeX, 	targetY + 0, 			this.getZLevel(), 	x + width, 		y + 0);
-        tessellator.addVertexWithUV(targetX + 0, 			targetY + 0, 			this.getZLevel(), 	x + 0, 			y + 0);
-        tessellator.draw();	
-	}	
-	
-	
-	
-	
-    /**
-     * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
-     */
-    public void drawTexturedModalRect(int x, int y, int u, int v, int w, int h, RENDER_ROTATION rotation)
-    {
-        float fw = 0.00390625F;
-        float fy = 0.00390625F;
-        
-        double a = (double)((float)(u + 0) * fw);
-        double b = (double)((float)(u + w) * fw);
-        double c = (double)((float)(v + h) * fy);
-        double d = (double)((float)(v + 0) * fy);
-           
-        double [] ptA = new double[] {a, c};
-        double [] ptB = new double[] {b, c};
-        double [] ptC = new double[] {b, d};
-        double [] ptD = new double[] {a, d};  
-        
-        
-        double [] pt1, pt2, pt3, pt4;
-        
-        switch (rotation) {
-        	default:
-        	case NORMAL:
-        		pt1 = ptA;
-        		pt2 = ptB;
-        		pt3 = ptC;
-	        	pt4 = ptD;        
-        		break;
-        	case ROTATE_90:
-        		pt1 = ptB;
-        		pt2 = ptC;
-        		pt3 = ptD;
-	        	pt4 = ptA;
-	        	break;
-        	case ROTATE_180:
-        		pt1 = ptC;
-        		pt2 = ptD;
-        		pt3 = ptA;
-	        	pt4 = ptB;
-	        	break;	        	
-        	case ROTATE_270:
-        		pt1 = ptD;
-        		pt2 = ptA;
-        		pt3 = ptB;
-	        	pt4 = ptC;
-	        	break;
-	        	
-        	case FLIP_HORIZONTAL:
-        		pt1 = ptB;
-        		pt2 = ptA;
-        		pt3 = ptD;
-	        	pt4 = ptC;
-	        	break;
-        	case ROTATE_90_FLIP:
-        		pt1 = ptA;
-        		pt2 = ptD;
-        		pt3 = ptC;
-	        	pt4 = ptB;
-	        	break;	
-        	case FLIP_VERTICAL:
-        		pt1 = ptD;
-        		pt2 = ptC;
-        		pt3 = ptB;
-	        	pt4 = ptA;
-	        	break;	        	
-        	case ROTATE_270_FLIP:
-        		pt1 = ptC;
-        		pt2 = ptB;
-        		pt3 = ptA;
-	        	pt4 = ptD;
-	        	break;	        	
-        }
-        
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + h), (double)this.zLevel, pt1[0], pt1[1]);
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + h), (double)this.zLevel, pt2[0], pt2[1]);
-        tessellator.addVertexWithUV((double)(x + w), (double)(y + 0), (double)this.zLevel, pt3[0], pt3[1]);
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)this.zLevel, pt4[0], pt4[1]);
-        tessellator.draw();
-    }	
-	
-	public static enum RENDER_ROTATION{
+
+//	public void drawIcon(final IIcon icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
+//		final Tessellator tessellator = Tessellator.instance;
+//		tessellator.startDrawingQuads();
+//		final float x = icon.getMinU() + offsetX * (icon.getMaxU() - icon.getMinU());
+//		final float y = icon.getMinV() + offsetY * (icon.getMaxV() - icon.getMinV());
+//		final float width = (icon.getMaxU() - icon.getMinU()) * sizeX;
+//		final float height = (icon.getMaxV() - icon.getMinV()) * sizeY;
+//		tessellator.addVertexWithUV((double) (targetX + 0), (double) (targetY + 16.0f * sizeY), (double) this.getZLevel(), (double) (x + 0.0f), (double) (y + height));
+//		tessellator.addVertexWithUV((double) (targetX + 16.0f * sizeX), (double) (targetY + 16.0f * sizeY), (double) this.getZLevel(), (double) (x + width), (double) (y + height));
+//		tessellator.addVertexWithUV((double) (targetX + 16.0f * sizeX), (double) (targetY + 0), (double) this.getZLevel(), (double) (x + width), (double) (y + 0.0f));
+//		tessellator.addVertexWithUV((double) (targetX + 0), (double) (targetY + 0), (double) this.getZLevel(), (double) (x + 0.0f), (double) (y + 0.0f));
+//		tessellator.draw();
+//	}
+
+	public void drawModuleIcon(ModuleData icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
+		//TODO
+	}
+
+	public void drawTexturedModalRect(final int x, final int y, final int u, final int v, final int w, final int h, final RENDER_ROTATION rotation) {
+		final float fw = 0.00390625f;
+		final float fy = 0.00390625f;
+		final double a = (u + 0) * fw;
+		final double b = (u + w) * fw;
+		final double c = (v + h) * fy;
+		final double d = (v + 0) * fy;
+		final double[] ptA = { a, c };
+		final double[] ptB = { b, c };
+		final double[] ptC = { b, d };
+		final double[] ptD = { a, d };
+		double[] pt1 = null;
+		double[] pt2 = null;
+		double[] pt3 = null;
+		double[] pt4 = null;
+		switch (rotation) {
+			default: {
+				pt1 = ptA;
+				pt2 = ptB;
+				pt3 = ptC;
+				pt4 = ptD;
+				break;
+			}
+			case ROTATE_90: {
+				pt1 = ptB;
+				pt2 = ptC;
+				pt3 = ptD;
+				pt4 = ptA;
+				break;
+			}
+			case ROTATE_180: {
+				pt1 = ptC;
+				pt2 = ptD;
+				pt3 = ptA;
+				pt4 = ptB;
+				break;
+			}
+			case ROTATE_270: {
+				pt1 = ptD;
+				pt2 = ptA;
+				pt3 = ptB;
+				pt4 = ptC;
+				break;
+			}
+			case FLIP_HORIZONTAL: {
+				pt1 = ptB;
+				pt2 = ptA;
+				pt3 = ptD;
+				pt4 = ptC;
+				break;
+			}
+			case ROTATE_90_FLIP: {
+				pt1 = ptA;
+				pt2 = ptD;
+				pt3 = ptC;
+				pt4 = ptB;
+				break;
+			}
+			case FLIP_VERTICAL: {
+				pt1 = ptD;
+				pt2 = ptC;
+				pt3 = ptB;
+				pt4 = ptA;
+				break;
+			}
+			case ROTATE_270_FLIP: {
+				pt1 = ptC;
+				pt2 = ptB;
+				pt3 = ptA;
+				pt4 = ptD;
+				break;
+			}
+		}
+		//TODO
+//		final Tessellator tessellator = Tessellator.getInstance();
+//		tessellator.startDrawingQuads();
+//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + h), (double) this.zLevel, pt1[0], pt1[1]);
+//		tessellator.addVertexWithUV((double) (x + w), (double) (y + h), (double) this.zLevel, pt2[0], pt2[1]);
+//		tessellator.addVertexWithUV((double) (x + w), (double) (y + 0), (double) this.zLevel, pt3[0], pt3[1]);
+//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) this.zLevel, pt4[0], pt4[1]);
+//		tessellator.draw();
+	}
+
+	public enum RENDER_ROTATION {
 		NORMAL,
 		ROTATE_90,
 		ROTATE_180,
 		ROTATE_270,
-		
 		FLIP_HORIZONTAL,
 		ROTATE_90_FLIP,
 		FLIP_VERTICAL,
 		ROTATE_270_FLIP;
-		
+
 		public RENDER_ROTATION getNextRotation() {
-			switch(this) {
-				default:
-				case NORMAL:
-					return ROTATE_90;
-				case ROTATE_90:
-					return ROTATE_180;
-				case ROTATE_180:
-					return ROTATE_270;
-				case ROTATE_270:
-					return NORMAL;
-				
-				case FLIP_HORIZONTAL:
-					return ROTATE_90_FLIP;
-				case ROTATE_90_FLIP:
-					return FLIP_VERTICAL;
-				case FLIP_VERTICAL:
-					return ROTATE_270_FLIP;
-				case ROTATE_270_FLIP:
-					return FLIP_HORIZONTAL;				
+			switch (this) {
+				default: {
+					return RENDER_ROTATION.ROTATE_90;
+				}
+				case ROTATE_90: {
+					return RENDER_ROTATION.ROTATE_180;
+				}
+				case ROTATE_180: {
+					return RENDER_ROTATION.ROTATE_270;
+				}
+				case ROTATE_270: {
+					return RENDER_ROTATION.NORMAL;
+				}
+				case FLIP_HORIZONTAL: {
+					return RENDER_ROTATION.ROTATE_90_FLIP;
+				}
+				case ROTATE_90_FLIP: {
+					return RENDER_ROTATION.FLIP_VERTICAL;
+				}
+				case FLIP_VERTICAL: {
+					return RENDER_ROTATION.ROTATE_270_FLIP;
+				}
+				case ROTATE_270_FLIP: {
+					return RENDER_ROTATION.FLIP_HORIZONTAL;
+				}
 			}
 		}
-		
+
 		public RENDER_ROTATION getFlippedRotation() {
-			switch(this) {
-				default:
-				case NORMAL:
-					return FLIP_HORIZONTAL;
-				case ROTATE_90:
-					return ROTATE_90_FLIP;
-				case ROTATE_180:
-					return FLIP_VERTICAL;
-				case ROTATE_270:
-					return ROTATE_270_FLIP;
-				
-				case FLIP_HORIZONTAL:
-					return NORMAL;
-				case ROTATE_90_FLIP:
-					return ROTATE_90;
-				case FLIP_VERTICAL:
-					return ROTATE_180;
-				case ROTATE_270_FLIP:
-					return ROTATE_270;				
+			switch (this) {
+				default: {
+					return RENDER_ROTATION.FLIP_HORIZONTAL;
+				}
+				case ROTATE_90: {
+					return RENDER_ROTATION.ROTATE_90_FLIP;
+				}
+				case ROTATE_180: {
+					return RENDER_ROTATION.FLIP_VERTICAL;
+				}
+				case ROTATE_270: {
+					return RENDER_ROTATION.ROTATE_270_FLIP;
+				}
+				case FLIP_HORIZONTAL: {
+					return RENDER_ROTATION.NORMAL;
+				}
+				case ROTATE_90_FLIP: {
+					return RENDER_ROTATION.ROTATE_90;
+				}
+				case FLIP_VERTICAL: {
+					return RENDER_ROTATION.ROTATE_180;
+				}
+				case ROTATE_270_FLIP: {
+					return RENDER_ROTATION.ROTATE_270;
+				}
 			}
-		}		
+		}
 	}
-	
-	
 }

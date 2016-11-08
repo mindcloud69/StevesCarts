@@ -1,37 +1,32 @@
 package vswe.stevescarts.Buttons;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
+
 import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
 
 public class ButtonFlowConditionSecondVar extends ButtonFlowConditionVar {
-	
-
-    public ButtonFlowConditionSecondVar(ModuleComputer module, LOCATION loc, boolean increase)
-    {
-		super(module, loc, increase);	
+	public ButtonFlowConditionSecondVar(final ModuleComputer module, final LOCATION loc, final boolean increase) {
+		super(module, loc, increase);
 	}
-	
 
 	@Override
 	public boolean isVisible() {
-		if (((ModuleComputer)module).getSelectedTasks() != null) {
-			for (ComputerTask task : ((ModuleComputer)module).getSelectedTasks()) {
+		if (((ModuleComputer) this.module).getSelectedTasks() != null) {
+			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
 				if (!task.getFlowConditionUseSecondVar()) {
 					return false;
 				}
 			}
 		}
-		
 		return super.isVisible();
 	}
-	
+
 	@Override
-	protected int getIndex(ComputerTask task) {
+	protected int getIndex(final ComputerTask task) {
 		return task.getFlowConditionSecondVarIndex();
 	}
-	
+
 	@Override
-	protected void setIndex(ComputerTask task, int val) {
+	protected void setIndex(final ComputerTask task, final int val) {
 		task.setFlowConditionSecondVar(val);
 	}
-	
 }

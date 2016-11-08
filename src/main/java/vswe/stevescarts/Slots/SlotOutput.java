@@ -1,44 +1,36 @@
 package vswe.stevescarts.Slots;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
 
-public class SlotOutput extends SlotAssembler
-{
-	
-
-    public SlotOutput(TileEntityCartAssembler assembler, int i, int j, int k)
-    {
-        super(assembler, i, j, k, 0, true,0);
-
-    }
+public class SlotOutput extends SlotAssembler {
+	public SlotOutput(final TileEntityCartAssembler assembler, final int i, final int j, final int k) {
+		super(assembler, i, j, k, 0, true, 0);
+	}
 
 	@Override
 	public void validate() {
+	}
 
-	}	
-	
 	@Override
 	public void invalidate() {
-
 	}
-	
+
 	@Override
-    public boolean isItemValid(ItemStack itemstack)
-    {
-		if (!getAssembler().getIsAssembling() && itemstack.getItem() == ModItems.carts) {
-			NBTTagCompound info = itemstack.getTagCompound();
-			if (info != null && info.hasKey("maxTime")) {	
+	public boolean isItemValid(final ItemStack itemstack) {
+		if (!this.getAssembler().getIsAssembling() && itemstack.getItem() == ModItems.carts) {
+			final NBTTagCompound info = itemstack.getTagCompound();
+			if (info != null && info.hasKey("maxTime")) {
 				return true;
 			}
-			
 		}
-        return false;
-    }	
-	
+		return false;
+	}
+
+	@Override
 	public boolean shouldUpdatePlaceholder() {
 		return false;
 	}
-	
 }

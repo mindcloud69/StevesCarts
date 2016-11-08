@@ -1,15 +1,18 @@
 package vswe.stevescarts.Modules.Workers.Tools;
-import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.IPlantable;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
@@ -20,33 +23,37 @@ import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotSeed;
 
-public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule, ICropModule  {
-	public ModuleFarmer(MinecartModular cart) {
+import java.util.ArrayList;
+
+public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule, ICropModule {
+	private ArrayList<ICropModule> plantModules;
+	private int farming;
+	private float farmAngle;
+	private float rigAngle;
+
+	public ModuleFarmer(final MinecartModular cart) {
 		super(cart);
+		this.rigAngle = -3.926991f;
 	}
 
-	
 	protected abstract int getRange();
-	
+
 	public int getExternalRange() {
-		return getRange();
+		return this.getRange();
 	}
-	
-	private ArrayList<ICropModule> plantModules;
+
 	@Override
 	public void init() {
 		super.init();
-		plantModules = new ArrayList<ICropModule>();
-		
-		for (ModuleBase module : getCart().getModules()) {
+		this.plantModules = new ArrayList<ICropModule>();
+		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ICropModule) {
-				plantModules.add((ICropModule)module);
+				this.plantModules.add((ICropModule) module);
 			}
 		}
-	}	
-	
-		
-	//lower numbers are prioritised
+	}
+
+	@Override
 	public byte getWorkPriority() {
 		return 80;
 	}
@@ -57,351 +64,251 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui, Localization.MODULES.TOOLS.FARMER.translate(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, Localization.MODULES.TOOLS.FARMER.translate(), 8, 6, 4210752);
 	}
-
 
 	@Override
 	protected int getInventoryWidth() {
 		return super.getInventoryWidth() + 3;
 	}
-	
+
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
+	protected SlotBase getSlot(final int slotId, int x, final int y) {
 		if (x == 0) {
 			return super.getSlot(slotId, x, y);
-		}else{
-			x--;
-			return new SlotSeed(getCart(), this, slotId,8+x*18,28+y*18);
 		}
-	}		
-	
+		--x;
+		return new SlotSeed(this.getCart(), this, slotId, 8 + x * 18, 28 + y * 18);
+	}
 
-	//return true when the work is done, false allow other modules to continue the work
+	@Override
 	public boolean work() {
-       //get the next block so the cart knows where to mine
-        Vec3 next = getNextblock();
-        //save thee coordinates for easy access
-        int x = (int) next.xCoord;
-        int y = (int) next.yCoord;
-        int z = (int) next.zCoord;
-
-        //loop through the blocks in the "hole" in front of the cart
-
-        for (int i = -getRange(); i <= getRange(); i++)
-        {
-            for (int j = -getRange(); j <= getRange(); j++)
-            {
-                //calculate the coordinates of this "hole"
-                int coordX = x + i;
-                int coordY = y - 1;
-                int coordZ = z + j;
-
-				if (farm(coordX, coordY, coordZ))
-                {
-                    return true;
-                }
-                else if (till(coordX, coordY, coordZ))
-                {
-                    return true;
-                }
-                else if (plant(coordX, coordY, coordZ))
-                {
-                    return true;
-                }
-            }
-        }
-
-		return false;
-    }
-
-   protected boolean till(int x, int y, int z)
-    {
-        Block b = getCart().worldObj.getBlock(x, y, z);
-
-        if (getCart().worldObj.isAirBlock(x, y + 1, z) && (b == Blocks.grass || b == Blocks.dirt))
-        {
-            if (doPreWork())
-            {
-				startWorking(10);
-                return true;
-            }
-            else
-            {
-                stopWorking();
-                getCart().worldObj.setBlock(x, y, z, Blocks.farmland);
-            }
-        }
-
-        return false;
-    }
-
-   protected boolean plant(int x, int y, int z)
-   {
-		int hasSeeds = -1;
-
-		Block soilblock = getCart().worldObj.getBlock(x, y, z);
-		
-		if (soilblock != null) {
-			
-				
-			//check if there's any seeds to place
-			for (int i = 0; i < getInventorySize(); i++)
-			{
-				//check if the slot contains seeds
-				if (getStack(i) != null)
-				{
-					if (isSeedValidHandler(getStack(i)))
-					{
-
-						Block cropblock = getCropFromSeedHandler(getStack(i));
-						
-						if (cropblock != null && cropblock instanceof IPlantable && getCart().worldObj.isAirBlock(x, y + 1, z)  && soilblock.canSustainPlant(getCart().worldObj, x, y, z, ForgeDirection.UP, ((IPlantable)cropblock))) {
-							hasSeeds = i;
-							break;							
-						}
-
-					}
-				}
-			}
-	
-			if (hasSeeds != -1)
-			{
-				if (doPreWork())
-				{
-					startWorking(25);
+		BlockPos next = this.getNextblock();
+		for (int i = -this.getRange(); i <= this.getRange(); ++i) {
+			for (int j = -this.getRange(); j <= this.getRange(); ++j) {
+				BlockPos coord = next.add(i, -1, j);
+				if (this.farm(coord)) {
 					return true;
 				}
-				else
-				{
-					stopWorking();
-
-
-                    Block cropblock = getCropFromSeedHandler(getStack(hasSeeds));
-										
-					getCart().worldObj.setBlock(x, y + 1, z, cropblock);
-										
-					getStack(hasSeeds).stackSize--;
-	
-					if (getStack(hasSeeds).stackSize <= 0)
-					{
-						setStack(hasSeeds,null);
-					}
-						
-					
+				if (this.till(coord)) {
+					return true;
+				}
+				if (this.plant(coord)) {
+					return true;
 				}
 			}
 		}
-        
+		return false;
+	}
 
-        return false;
-    }
-
-   protected boolean farm(int x, int y, int z)
-    {
-		if (!isBroken()) {
-			Block block = getCart().worldObj.getBlock(x, y + 1 , z);
-	        int m = getCart().worldObj.getBlockMetadata(x, y + 1, z);
-	
-	        if (isReadyToHarvestHandler(x, y + 1, z))
-	        {
-	            if (doPreWork())
-	            {
-	            	int efficiency = enchanter != null ? enchanter.getEfficiencyLevel() : 0;	
-	            	int workingtime = (int)(getBaseFarmingTime() / Math.pow(1.3F, efficiency));
-					setFarming(workingtime * 4);
-	                startWorking(workingtime);
-	                return true;
-	            }
-	            else
-	            {
-	                stopWorking();
-	                
-	                
-	                ArrayList<ItemStack> stuff;
-	        		if (shouldSilkTouch(block, x, y, z, m)) {
-	        			stuff = new ArrayList<ItemStack>();
-	        			ItemStack stack = getSilkTouchedItem(block, m);
-	        			if (stack != null) {
-	        				stuff.add(stack);
-	        			}
-	        		}else{
-	        			int fortune = enchanter != null ? enchanter.getFortuneLevel() : 0;
-	                	stuff = block.getDrops(getCart().worldObj, x, y + 1, z, m, fortune);
-	        		}
-	        		
-	                
-	                for (ItemStack iStack : stuff)
-	                {
-	                    getCart().addItemToChest(iStack);
-	
-	                    if (iStack.stackSize != 0)
-	                    {
-	                        EntityItem entityitem = new EntityItem(getCart().worldObj, getCart().posX, getCart().posY, getCart().posZ , iStack);
-	                        entityitem.motionX = (float)(x - getCart().x()) / 10;
-	                        entityitem.motionY = 0.15F;
-	                        entityitem.motionZ = (float)(z - getCart().z()) / 10;
-	                        getCart().worldObj.spawnEntityInWorld(entityitem);
-	                    }
-	                }
-	
-	                getCart().worldObj.setBlockToAir(x, y + 1, z);
-	                
-	                damageTool(3);
-	            }
-	        }
+	protected boolean till(BlockPos pos) {
+		final Block b = this.getCart().worldObj.getBlockState(pos).getBlock();
+		if (this.getCart().worldObj.isAirBlock(pos.up()) && (b == Blocks.GRASS || b == Blocks.DIRT)) {
+			if (this.doPreWork()) {
+				this.startWorking(10);
+				return true;
+			}
+			this.stopWorking();
+			this.getCart().worldObj.setBlockState(pos, Blocks.FARMLAND.getDefaultState());
 		}
+		return false;
+	}
 
-        return false;
-    }
+	protected boolean plant(BlockPos pos) {
+		int hasSeeds = -1;
+		final Block soilblock = this.getCart().worldObj.getBlockState(pos).getBlock();
+		if (soilblock != null) {
+			for (int i = 0; i < this.getInventorySize(); ++i) {
+				if (this.getStack(i) != null && this.isSeedValidHandler(this.getStack(i))) {
+					final Block cropblock = this.getCropFromSeedHandler(this.getStack(i));
+					if (cropblock != null && cropblock instanceof IPlantable && this.getCart().worldObj.isAirBlock(pos.up()) && soilblock.canSustainPlant(this.getCart().worldObj.getBlockState(pos), this.getCart().worldObj, pos, EnumFacing.UP, (IPlantable) cropblock)) {
+						hasSeeds = i;
+						break;
+					}
+				}
+			}
+			if (hasSeeds != -1) {
+				if (this.doPreWork()) {
+					this.startWorking(25);
+					return true;
+				}
+				this.stopWorking();
+				final Block cropblock2 = this.getCropFromSeedHandler(this.getStack(hasSeeds));
+				this.getCart().worldObj.setBlockState(pos.up(), cropblock2.getDefaultState());
+				final ItemStack stack = this.getStack(hasSeeds);
+				--stack.stackSize;
+				if (this.getStack(hasSeeds).stackSize <= 0) {
+					this.setStack(hasSeeds, null);
+				}
+			}
+		}
+		return false;
+	}
 
- 
-   protected int getBaseFarmingTime() {
-	   return 25;
-   }
-   
-	public boolean isSeedValidHandler(ItemStack seed) {
-		for (ICropModule module : plantModules) {
+	protected boolean farm(BlockPos pos) {
+		if (!this.isBroken()) {
+			pos = pos.up();
+			final Block block = this.getCart().worldObj.getBlockState(pos).getBlock();
+			IBlockState blockState = getCart().worldObj.getBlockState(pos.up());
+			if (this.isReadyToHarvestHandler(pos)) {
+				if (this.doPreWork()) {
+					final int efficiency = (this.enchanter != null) ? this.enchanter.getEfficiencyLevel() : 0;
+					final int workingtime = (int) (this.getBaseFarmingTime() / Math.pow(1.2999999523162842, efficiency));
+					this.setFarming(workingtime * 4);
+					this.startWorking(workingtime);
+					return true;
+				}
+				this.stopWorking();
+				ArrayList<ItemStack> stuff;
+				if (this.shouldSilkTouch(blockState, pos)) {
+					stuff = new ArrayList<ItemStack>();
+					final ItemStack stack = this.getSilkTouchedItem(blockState);
+					if (stack != null) {
+						stuff.add(stack);
+					}
+				} else {
+					final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
+					stuff = (ArrayList<ItemStack>) block.getDrops(this.getCart().worldObj, pos, blockState, fortune);
+				}
+				for (final ItemStack iStack : stuff) {
+					this.getCart().addItemToChest(iStack);
+					if (iStack.stackSize != 0) {
+						final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+						entityitem.motionX = (pos.getX() - this.getCart().x()) / 10.0f;
+						entityitem.motionY = 0.15000000596046448;
+						entityitem.motionZ = (pos.getZ() - this.getCart().z()) / 10.0f;
+						this.getCart().worldObj.spawnEntityInWorld(entityitem);
+					}
+				}
+				this.getCart().worldObj.setBlockToAir(pos);
+				this.damageTool(3);
+			}
+		}
+		return false;
+	}
+
+	protected int getBaseFarmingTime() {
+		return 25;
+	}
+
+	public boolean isSeedValidHandler(final ItemStack seed) {
+		for (final ICropModule module : this.plantModules) {
 			if (module.isSeedValid(seed)) {
 				return true;
 			}
 		}
-		
 		return false;
 	}
-	
-	protected Block getCropFromSeedHandler(ItemStack seed) {
-		for (ICropModule module : plantModules) {
+
+	protected Block getCropFromSeedHandler(final ItemStack seed) {
+		for (final ICropModule module : this.plantModules) {
 			if (module.isSeedValid(seed)) {
 				return module.getCropFromSeed(seed);
 			}
 		}
-		
 		return null;
-	}	
-	
+	}
 
-	protected boolean isReadyToHarvestHandler(int x, int y, int z) {
-		for (ICropModule module : plantModules) {
-			if (module.isReadyToHarvest(x,y,z)) {
+	protected boolean isReadyToHarvestHandler(BlockPos pos) {
+		for (final ICropModule module : this.plantModules) {
+			if (module.isReadyToHarvest(pos)) {
 				return true;
 			}
 		}
-		
 		return false;
-	}		
+	}
 
 	@Override
-	public boolean isSeedValid(ItemStack seed) {
-        return seed.getItem() == Items.wheat_seeds
-				|| seed.getItem() == Items.potato
-				|| seed.getItem() == Items.carrot;
-	}	
-	
+	public boolean isSeedValid(final ItemStack seed) {
+		return seed.getItem() == Items.WHEAT_SEEDS || seed.getItem() == Items.POTATO || seed.getItem() == Items.CARROT;
+	}
+
 	@Override
-	public Block getCropFromSeed(ItemStack seed) {
-		if (seed.getItem() == Items.carrot) {
-			return Blocks.carrots;
-		}else if(seed.getItem() == Items.potato) {
-			return Blocks.potatoes;
-		}else if(seed.getItem() == Items.wheat_seeds){
-			return Blocks.wheat;
+	public Block getCropFromSeed(final ItemStack seed) {
+		if (seed.getItem() == Items.CARROT) {
+			return Blocks.CARROTS;
 		}
-		
+		if (seed.getItem() == Items.POTATO) {
+			return Blocks.POTATOES;
+		}
+		if (seed.getItem() == Items.WHEAT_SEEDS) {
+			return Blocks.WHEAT;
+		}
 		return null;
 	}
-	
-	
-	@Override
-	public boolean isReadyToHarvest(int x, int y, int z) {
-		Block block = getCart().worldObj.getBlock(x, y , z);
-        int m = getCart().worldObj.getBlockMetadata(x, y, z);
 
-		if (block instanceof BlockCrops && m == 7) {
-			return true;
-		} 
-		
-		return false;
+	@Override
+	public boolean isReadyToHarvest(BlockPos pos) {
+		IBlockState blockState = getCart().worldObj.getBlockState(pos);
+		return blockState.getBlock() instanceof BlockCrops &&blockState.getValue(BlockCrops.AGE) == 7;
 	}
-	
-	private int farming;
-	private float farmAngle;
-	private float rigAngle = -(float)Math.PI * 5 / 4;
 
 	public float getFarmAngle() {
-		return farmAngle;
+		return this.farmAngle;
 	}
 
 	public float getRigAngle() {
-		return rigAngle;
+		return this.rigAngle;
 	}
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
+		this.addDw(0, 0);
 	}
+
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
 	}
 
-	private void setFarming(int val) {
-		farming = val;
-		updateDw(0, (byte)(val > 0 ? 1 : 0));
+	private void setFarming(final int val) {
+		this.farming = val;
+		this.updateDw(0, (byte) ((val > 0) ? 1 : 0));
 	}
 
 	protected boolean isFarming() {
-		if (isPlaceholder()) {
-			return getSimInfo().getIsFarming();
-		}else{
-			return getCart().isEngineBurning() && getDw(0) != 0;
+		if (this.isPlaceholder()) {
+			return this.getSimInfo().getIsFarming();
 		}
+		return this.getCart().isEngineBurning() && this.getDw(0) != 0;
 	}
 
-    /**
-     Called every tick, here the necessary actions should be taken
-     **/
-    public void update()
-    {
-        //call the method from the super class, this will do all ordinary things first
-        super.update();
-
-		if (!getCart().worldObj.isRemote) {
-			setFarming(farming-1);
-		}else{
-			float up = -(float)Math.PI * 5 / 4;
-			float down = -(float)Math.PI;
-			boolean flag = isFarming();
-			if (flag){
-				if (rigAngle < down) {
-					rigAngle += 0.1F;
-					if (rigAngle > down) {
-						rigAngle = down;
+	@Override
+	public void update() {
+		super.update();
+		if (!this.getCart().worldObj.isRemote) {
+			this.setFarming(this.farming - 1);
+		} else {
+			final float up = -3.926991f;
+			final float down = -3.1415927f;
+			final boolean flag = this.isFarming();
+			if (flag) {
+				if (this.rigAngle < down) {
+					this.rigAngle += 0.1f;
+					if (this.rigAngle > down) {
+						this.rigAngle = down;
 					}
-				}else{
-					farmAngle = (float)((farmAngle + 0.15F) % (Math.PI * 2));
+				} else {
+					this.farmAngle = (float) ((this.farmAngle + 0.15f) % 6.283185307179586);
 				}
-			}else{
-				if (rigAngle > up) {
-					rigAngle -= 0.075F;
-					if (rigAngle < up) {
-						rigAngle = up;
-					}
+			} else if (this.rigAngle > up) {
+				this.rigAngle -= 0.075f;
+				if (this.rigAngle < up) {
+					this.rigAngle = up;
 				}
 			}
 		}
-    }
+	}
 
-	
 	@Override
 	public boolean haveSupplies() {
-		for (int i = 0; i < getInventorySize(); i++) {
-			ItemStack item = getStack(i);
-			if (item != null && isSeedValidHandler(item)) {
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			final ItemStack item = this.getStack(i);
+			if (item != null && this.isSeedValidHandler(item)) {
 				return true;
 			}
 		}
 		return false;
-	}	
-}                   
+	}
+}

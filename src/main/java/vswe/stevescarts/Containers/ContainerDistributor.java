@@ -1,42 +1,32 @@
 package vswe.stevescarts.Containers;
-import java.util.ArrayList;
-import java.util.Iterator;
-import vswe.stevescarts.TileEntities.TileEntityBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+
 import net.minecraft.inventory.IInventory;
 import vswe.stevescarts.Helpers.DistributorSide;
+import vswe.stevescarts.TileEntities.TileEntityBase;
 import vswe.stevescarts.TileEntities.TileEntityDistributor;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerDistributor extends ContainerBase
-{
+import java.util.ArrayList;
 
+public class ContainerDistributor extends ContainerBase {
+	private TileEntityDistributor distributor;
+	public ArrayList<Short> cachedValues;
+
+	@Override
 	public IInventory getMyInventory() {
 		return null;
 	}
-	
+
+	@Override
 	public TileEntityBase getTileEntity() {
-		return distributor;
-	}		
-	
+		return this.distributor;
+	}
 
-    private TileEntityDistributor distributor;
-    public ContainerDistributor(IInventory invPlayer, TileEntityDistributor distributor)
-    {
-        this.distributor = distributor;
-
-		cachedValues = new ArrayList<Short>();
-		for (DistributorSide side : distributor.getSides()) {
-			cachedValues.add((short)0);
-			cachedValues.add((short)0);
-		}		
-    }
-
-   
-	
-	public ArrayList<Short> cachedValues;
-	
+	public ContainerDistributor(final IInventory invPlayer, final TileEntityDistributor distributor) {
+		this.distributor = distributor;
+		this.cachedValues = new ArrayList<Short>();
+		for (final DistributorSide side : distributor.getSides()) {
+			this.cachedValues.add((short) 0);
+			this.cachedValues.add((short) 0);
+		}
+	}
 }

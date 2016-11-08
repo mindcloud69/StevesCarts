@@ -1,119 +1,78 @@
 package vswe.stevescarts.Models.Cart;
+
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Workers.ModuleTorch;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class ModelTorchplacer extends ModelCartbase
-{
+public class ModelTorchplacer extends ModelCartbase {
+	private static ResourceLocation texture;
+	ModelRenderer[] torches1;
+	ModelRenderer[] torches2;
 
-	
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/torchModel.png");
-	
 	@Override
-	public ResourceLocation getResource(ModuleBase module) {
-		return texture;
-	}		
-	
+	public ResourceLocation getResource(final ModuleBase module) {
+		return ModelTorchplacer.texture;
+	}
 
+	@Override
 	protected int getTextureWidth() {
 		return 32;
 	}
+
+	@Override
 	protected int getTextureHeight() {
 		return 32;
 	}
 
-	ModelRenderer[] torches1;
-	ModelRenderer[] torches2;
-    public ModelTorchplacer()
-    {
-		torches1 = createSide(false);
-		torches2 = createSide(true);
-    }
+	public ModelTorchplacer() {
+		this.torches1 = this.createSide(false);
+		this.torches2 = this.createSide(true);
+	}
 
-	private ModelRenderer[] createSide(boolean opposite) {
-		ModelRenderer anchor = new ModelRenderer(this, 0, 0);
-		AddRenderer(anchor);
-
+	private ModelRenderer[] createSide(final boolean opposite) {
+		final ModelRenderer anchor = new ModelRenderer(this, 0, 0);
+		this.AddRenderer(anchor);
 		if (opposite) {
-			anchor.rotateAngleY = (float)Math.PI;
+			anchor.rotateAngleY = 3.1415927f;
 		}
-
-		ModelRenderer base = new ModelRenderer(this, 0, 0);
+		final ModelRenderer base = new ModelRenderer(this, 0, 0);
 		anchor.addChild(base);
-		fixSize(base);
-
-		base.addBox(
-			-7, 	//X
-			-2F, 	//Y
-			-1,	 	//Z
-			14,					//Size X
-			4,					//Size Y
-			2,			     	//Size Z
-			0.0F			 	//Size Increasement
-		);
-		base.setRotationPoint(
-			0, 		//X
-			-2F,			//Y
-			-9F			//Z
-		);
-
-		ModelRenderer[] torches = new ModelRenderer[3];
-		for (int i= -1; i <= 1; i++) {
-			ModelRenderer torchHolder = new ModelRenderer(this, 0, 6);
+		this.fixSize(base);
+		base.addBox(-7.0f, -2.0f, -1.0f, 14, 4, 2, 0.0f);
+		base.setRotationPoint(0.0f, -2.0f, -9.0f);
+		final ModelRenderer[] torches = new ModelRenderer[3];
+		for (int i = -1; i <= 1; ++i) {
+			final ModelRenderer torchHolder = new ModelRenderer(this, 0, 6);
 			base.addChild(torchHolder);
-			fixSize(torchHolder);
-
-			torchHolder.addBox(
-				-1, 	//X
-				-1F, 	//Y
-				-0.5F,	 	//Z
-				2,					//Size X
-				2,					//Size Y
-				1,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			torchHolder.setRotationPoint(
-				i * 4, 		//X
-				0F,			//Y
-				-1.5F			//Z
-			);
-
-			ModelRenderer torch = new ModelRenderer(this, 0, 9);
-			torches[i+1] = torch;
-			torchHolder.addChild(torch);
-			fixSize(torch);
-
-			torch.addBox(
-				-1, 	//X
-				-5F, 	//Y
-				-1F,	 	//Z
-				2,					//Size X
-				10,					//Size Y
-				2,			     	//Size Z
-				0.0F			 	//Size Increasement
-			);
-			torch.setRotationPoint(
-				0, 		//X
-				0F,			//Y
-				-1.5F			//Z
-			);
+			this.fixSize(torchHolder);
+			torchHolder.addBox(-1.0f, -1.0f, -0.5f, 2, 2, 1, 0.0f);
+			torchHolder.setRotationPoint((float) (i * 4), 0.0f, -1.5f);
+			final ModelRenderer torch = new ModelRenderer(this, 0, 9);
+			torchHolder.addChild(torches[i + 1] = torch);
+			this.fixSize(torch);
+			torch.addBox(-1.0f, -5.0f, -1.0f, 2, 10, 2, 0.0f);
+			torch.setRotationPoint(0.0f, 0.0f, -1.5f);
 		}
 		return torches;
 	}
 
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
-
-		
-		int torches = module == null ? 7 : ((ModuleTorch)module).getTorches();
-		for (int i = 0; i < 3; i++)
-		{
-			boolean isTorch = (torches & (1 << i)) != 0;
-			torches1[i].isHidden = !isTorch;
-			torches2[2-i].isHidden = !isTorch;
+	@Override
+	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
+		final int torches = (module == null) ? 7 : ((ModuleTorch) module).getTorches();
+		for (int i = 0; i < 3; ++i) {
+			final boolean isTorch = (torches & 1 << i) != 0x0;
+			this.torches1[i].isHidden = !isTorch;
+			this.torches2[2 - i].isHidden = !isTorch;
 		}
+	}
+
+	static {
+		ModelTorchplacer.texture = ResourceHelper.getResource("/models/torchModel.png");
 	}
 }

@@ -1,11 +1,12 @@
 package vswe.stevescarts.Modules.Realtimers;
-import java.util.ArrayList;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -14,325 +15,258 @@ import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotFirework;
 
+import java.util.ArrayList;
+
 public class ModuleFirework extends ModuleBase {
-	public ModuleFirework(MinecartModular cart) {
+	private int fireCooldown;
+
+	public ModuleFirework(final MinecartModular cart) {
 		super(cart);
 	}
 
-	private int fireCooldown;
-	
 	@Override
 	public void update() {
-		if (fireCooldown > 0) {
-			fireCooldown--;
+		if (this.fireCooldown > 0) {
+			--this.fireCooldown;
 		}
 	}
-	
-	
+
 	@Override
-	public void activatedByRail(int x, int y, int z, boolean active) {
-		if (active && fireCooldown == 0 && getCart().hasFuel()) {
-			fire();
-			fireCooldown = 20;
+	public void activatedByRail(final int x, final int y, final int z, final boolean active) {
+		if (active && this.fireCooldown == 0 && this.getCart().hasFuel()) {
+			this.fire();
+			this.fireCooldown = 20;
 		}
-	}	
-	
-	
+	}
+
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
 	@Override
-	protected SlotBase getSlot(int slotId, int x, int y) {
-		return new SlotFirework(getCart(),slotId,8+x*18,16+y*18);
+	protected SlotBase getSlot(final int slotId, final int x, final int y) {
+		return new SlotFirework(this.getCart(), slotId, 8 + x * 18, 16 + y * 18);
 	}
 
 	@Override
-	public void drawForeground(GuiMinecart gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
+	public void drawForeground(final GuiMinecart gui) {
+		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
 	public int guiWidth() {
-		return 15 + getInventoryWidth() * 18;
+		return 15 + this.getInventoryWidth() * 18;
 	}
 
 	@Override
 	public int guiHeight() {
-		return 20 + getInventoryHeight() * 18 ;
+		return 20 + this.getInventoryHeight() * 18;
 	}
 
 	@Override
-	protected int getInventoryWidth()
-	{
+	protected int getInventoryWidth() {
 		return 8;
 	}
+
 	@Override
 	protected int getInventoryHeight() {
 		return 3;
-	}	
-	
+	}
+
 	public void fire() {
-		if (getCart().worldObj.isRemote) {
+		if (this.getCart().worldObj.isRemote) {
 			return;
 		}
-	
-		ItemStack firework = getFirework();
+		final ItemStack firework = this.getFirework();
 		if (firework != null) {
-			launchFirework(firework);
+			this.launchFirework(firework);
 		}
 	}
-	
+
 	private ItemStack getFirework() {
 		boolean hasGunpowder = false;
-		boolean hasPaper = false;	
-	
-		for (int i = 0; i < getInventorySize(); i++) {
-			ItemStack item = getStack(i);
-			
+		boolean hasPaper = false;
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			final ItemStack item = this.getStack(i);
 			if (item != null) {
-			
-				if (item.getItem() == Items.fireworks) {
-					ItemStack firework = item.copy();
-					firework.stackSize = 1;
-                    removeItemStack(item, 1, i);
-					
+				if (item.getItem() == Items.FIREWORKS) {
+					final ItemStack firework = item.copy();
+					this.removeItemStack(item, firework.stackSize = 1, i);
 					return firework;
-				}else if(item.getItem() == Items.paper) {
+				}
+				if (item.getItem() == Items.PAPER) {
 					hasPaper = true;
-				}else if(item.getItem() == Items.gunpowder) {
+				} else if (item.getItem() == Items.GUNPOWDER) {
 					hasGunpowder = true;
 				}
-			}			
+			}
 		}
-		
-
-		
 		if (hasPaper && hasGunpowder) {
-
-		
-			ItemStack firework = new ItemStack(Items.fireworks);
-			
-			int maxGunpowder = getCart().rand.nextInt(3) + 1;
+			final ItemStack firework2 = new ItemStack(Items.FIREWORKS);
+			final int maxGunpowder = this.getCart().rand.nextInt(3) + 1;
 			int countGunpowder = 0;
 			boolean removedPaper = false;
-			for (int i = 0; i < getInventorySize(); i++) {
-				ItemStack item = getStack(i);
-				
-				if (item != null) {
-					if(item.getItem() == Items.paper && !removedPaper) {
-                        removeItemStack(item, 1, i);
+			for (int j = 0; j < this.getInventorySize(); ++j) {
+				final ItemStack item2 = this.getStack(j);
+				if (item2 != null) {
+					if (item2.getItem() == Items.PAPER && !removedPaper) {
+						this.removeItemStack(item2, 1, j);
 						removedPaper = true;
-					}else if(item.getItem() == Items.gunpowder && countGunpowder < maxGunpowder) {
-						while (item.stackSize > 0 && countGunpowder < maxGunpowder) {
-							countGunpowder++;
-                            removeItemStack(item, 1, i);
+					} else if (item2.getItem() == Items.GUNPOWDER && countGunpowder < maxGunpowder) {
+						while (item2.stackSize > 0 && countGunpowder < maxGunpowder) {
+							++countGunpowder;
+							this.removeItemStack(item2, 1, j);
 						}
 					}
 				}
 			}
-			
-			int chargeCount = 1;
-			
-			while (chargeCount < 7 && getCart().rand.nextInt(3 + chargeCount / 3) == 0) {
-				chargeCount++;
-			}
-			
-			NBTTagCompound itemstackNBT = new NBTTagCompound();
-			NBTTagCompound fireworksNBT = new NBTTagCompound();
-			NBTTagList explosionsNBT = new NBTTagList();
-			
-			for (int i = 0; i < chargeCount; i++) {
-				ItemStack charge = getCharge();
+			int chargeCount;
+			for (chargeCount = 1; chargeCount < 7 && this.getCart().rand.nextInt(3 + chargeCount / 3) == 0; ++chargeCount) {}
+			final NBTTagCompound itemstackNBT = new NBTTagCompound();
+			final NBTTagCompound fireworksNBT = new NBTTagCompound();
+			final NBTTagList explosionsNBT = new NBTTagList();
+			for (int k = 0; k < chargeCount; ++k) {
+				final ItemStack charge = this.getCharge();
 				if (charge == null) {
 					break;
-				}else if (charge.hasTagCompound() && charge.getTagCompound().hasKey("Explosion")) {					
-					explosionsNBT.appendTag(charge.getTagCompound().getCompoundTag("Explosion"));					
-				}				
+				}
+				if (charge.hasTagCompound() && charge.getTagCompound().hasKey("Explosion")) {
+					explosionsNBT.appendTag(charge.getTagCompound().getCompoundTag("Explosion"));
+				}
 			}
-			
 			fireworksNBT.setTag("Explosions", explosionsNBT);
-			fireworksNBT.setByte("Flight", (byte)countGunpowder);
+			fireworksNBT.setByte("Flight", (byte) countGunpowder);
 			itemstackNBT.setTag("Fireworks", fireworksNBT);
-			firework.setTagCompound(itemstackNBT);			
-			
-			return firework;
+			firework2.setTagCompound(itemstackNBT);
+			return firework2;
 		}
-
-
 		return null;
 	}
-	
+
 	private ItemStack getCharge() {
-	
-		for (int i = 0; i < getInventorySize(); i++) {
-			ItemStack item = getStack(i);
-			
-			if (item != null) {
-			
-				if (item.getItem() == Items.firework_charge) {
-					ItemStack charge = item.copy();
-					charge.stackSize = 1;
-                    removeItemStack(item, 1, i);
-					
-					return charge;
-				}
-			}			
-		}	
-	
-		ItemStack charge = new ItemStack(Items.firework_charge);
-		NBTTagCompound itemNBT = new NBTTagCompound();
-		NBTTagCompound explosionNBT = new NBTTagCompound();
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			final ItemStack item = this.getStack(i);
+			if (item != null && item.getItem() == Items.FIREWORK_CHARGE) {
+				final ItemStack charge = item.copy();
+				this.removeItemStack(item, charge.stackSize = 1, i);
+				return charge;
+			}
+		}
+		final ItemStack charge2 = new ItemStack(Items.FIREWORK_CHARGE);
+		final NBTTagCompound itemNBT = new NBTTagCompound();
+		final NBTTagCompound explosionNBT = new NBTTagCompound();
 		byte type = 0;
-
-		
-
 		boolean removedGunpowder = false;
-		boolean canHasTrail = getCart().rand.nextInt(16) == 0;
-		boolean canHasFlicker = getCart().rand.nextInt(8) == 0;
-		boolean canHasModifier = getCart().rand.nextInt(4) == 0;
-		byte modifierType = (byte)(getCart().rand.nextInt(4) + 1);
+		final boolean canHasTrail = this.getCart().rand.nextInt(16) == 0;
+		final boolean canHasFlicker = this.getCart().rand.nextInt(8) == 0;
+		final boolean canHasModifier = this.getCart().rand.nextInt(4) == 0;
+		final byte modifierType = (byte) (this.getCart().rand.nextInt(4) + 1);
 		boolean removedModifier = false;
 		boolean removedDiamond = false;
 		boolean removedGlow = false;
-		for (int i = 0; i < getInventorySize(); i++) {
-			ItemStack item = getStack(i);
-			
-			if (item != null) {
-				if(item.getItem() == Items.gunpowder && !removedGunpowder) {
-                    removeItemStack(item, 1, i);
+		for (int j = 0; j < this.getInventorySize(); ++j) {
+			final ItemStack item2 = this.getStack(j);
+			if (item2 != null) {
+				if (item2.getItem() == Items.GUNPOWDER && !removedGunpowder) {
+					this.removeItemStack(item2, 1, j);
 					removedGunpowder = true;
-				}else if(item.getItem() == Items.glowstone_dust && canHasFlicker && !removedGlow) {
-                    removeItemStack(item, 1, i);
+				} else if (item2.getItem() == Items.GLOWSTONE_DUST && canHasFlicker && !removedGlow) {
+					this.removeItemStack(item2, 1, j);
 					removedGlow = true;
 					explosionNBT.setBoolean("Flicker", true);
-				}else if(item.getItem() == Items.diamond && canHasTrail && !removedDiamond) {
-                    removeItemStack(item, 1, i);
+				} else if (item2.getItem() == Items.DIAMOND && canHasTrail && !removedDiamond) {
+					this.removeItemStack(item2, 1, j);
 					removedDiamond = true;
 					explosionNBT.setBoolean("Trail", true);
-				}else if(canHasModifier && !removedModifier && (
-					(item.getItem() == Items.fire_charge && modifierType == 1) ||
-					(item.getItem() == Items.gold_nugget && modifierType == 2) ||
-					(item.getItem() == Items.skull && modifierType == 3) ||
-					(item.getItem() == Items.feather && modifierType == 4)
-					)
-				
-				
-				) {
-                    removeItemStack(item, 1, i);
-					removedModifier = true;		
+				} else if (canHasModifier && !removedModifier && ((item2.getItem() == Items.FIREWORK_CHARGE && modifierType == 1) || (item2.getItem() == Items.GOLD_NUGGET && modifierType == 2) || (item2.getItem() == Items.SKULL && modifierType == 3) || (item2.getItem() == Items.FEATHER && modifierType == 4))) {
+					this.removeItemStack(item2, 1, j);
+					removedModifier = true;
 					type = modifierType;
 				}
 			}
 		}
-
-
-		
-	
-	
-
-		int[] colors = generateColors(type != 0 ? 7 : 8);
+		final int[] colors = this.generateColors((type != 0) ? 7 : 8);
 		if (colors == null) {
 			return null;
 		}
-		explosionNBT.setIntArray("Colors", colors);	
-		if (getCart().rand.nextInt(4) == 0) {
-			int[] fade = generateColors(8);
+		explosionNBT.setIntArray("Colors", colors);
+		if (this.getCart().rand.nextInt(4) == 0) {
+			final int[] fade = this.generateColors(8);
 			if (fade != null) {
 				explosionNBT.setIntArray("FadeColors", fade);
 			}
 		}
 		explosionNBT.setByte("Type", type);
 		itemNBT.setTag("Explosion", explosionNBT);
-		charge.setTagCompound(itemNBT);	
-		
-
-		return charge;
+		charge2.setTagCompound(itemNBT);
+		return charge2;
 	}
-	
-	
-	private int[] generateColors(int maxColorCount) {
-		int[] maxColors = new int[16];
-		int[] currentColors = new int[16];
-		
-		for (int i = 0; i < getInventorySize(); i++) {
-			ItemStack item = getStack(i);
-			
-			if (item != null) {		
-				if(item.getItem() == Items.dye) {
-					maxColors[item.getItemDamage()] += item.stackSize;	
-				}
-			}
-		}
-		
-		int colorCount = getCart().rand.nextInt(2) + 1;
-		while (colorCount <= maxColorCount - 2 && getCart().rand.nextInt(2) == 0) {
-			colorCount+=2;
-		}	
 
-		ArrayList<Integer> colorPointers = new ArrayList<Integer>();
-		for (int i = 0; i < 16; i++) {
-			if (maxColors[i] > 0) {
-				colorPointers.add(i);
+	private int[] generateColors(final int maxColorCount) {
+		final int[] maxColors = new int[16];
+		final int[] currentColors = new int[16];
+		for (int i = 0; i < this.getInventorySize(); ++i) {
+			final ItemStack item = this.getStack(i);
+			if (item != null && item.getItem() == Items.DYE) {
+				final int[] array = maxColors;
+				final int itemDamage = item.getItemDamage();
+				array[itemDamage] += item.stackSize;
 			}
 		}
-		
+		int colorCount;
+		for (colorCount = this.getCart().rand.nextInt(2) + 1; colorCount <= maxColorCount - 2 && this.getCart().rand.nextInt(2) == 0; colorCount += 2) {}
+		final ArrayList<Integer> colorPointers = new ArrayList<Integer>();
+		for (int j = 0; j < 16; ++j) {
+			if (maxColors[j] > 0) {
+				colorPointers.add(j);
+			}
+		}
 		if (colorPointers.size() == 0) {
 			return null;
 		}
-		
-		ArrayList<Integer> usedColors = new ArrayList<Integer>();
+		final ArrayList<Integer> usedColors = new ArrayList<Integer>();
 		while (colorCount > 0 && colorPointers.size() > 0) {
-			int pointerId = getCart().rand.nextInt(colorPointers.size());
-			int colorId = colorPointers.get(pointerId);
-			currentColors[colorId]++;
-			if(--maxColors[colorId] <= 0) {
+			final int pointerId = this.getCart().rand.nextInt(colorPointers.size());
+			final int colorId = colorPointers.get(pointerId);
+			final int[] array2 = currentColors;
+			final int n = colorId;
+			++array2[n];
+			final int[] array3 = maxColors;
+			final int n2 = colorId;
+			if (--array3[n2] <= 0) {
 				colorPointers.remove(pointerId);
 			}
 			usedColors.add(colorId);
-			colorCount--;
+			--colorCount;
 		}
-		
-		int[] colors = new int[usedColors.size()];
-
-		for (int i = 0; i < colors.length; ++i)
-		{
-			colors[i] = ItemDye.field_150922_c[usedColors.get(i)];
+		final int[] colors = new int[usedColors.size()];
+		for (int k = 0; k < colors.length; ++k) {
+			colors[k] = ItemDye.field_150922_c[usedColors.get(k)];
 		}
-
-		for (int i = 0; i < getInventorySize(); i++) {
-			ItemStack item = getStack(i);
-			
-			if (item != null) {
-				if(item.getItem() == Items.dye) {
-					if (currentColors[item.getItemDamage()] > 0) {
-						int count = Math.min(currentColors[item.getItemDamage()], item.stackSize);
-						currentColors[item.getItemDamage()] -= count;
-					}
-				}
+		for (int k = 0; k < this.getInventorySize(); ++k) {
+			final ItemStack item2 = this.getStack(k);
+			if (item2 != null && item2.getItem() == Items.DYE && currentColors[item2.getItemDamage()] > 0) {
+				final int count = Math.min(currentColors[item2.getItemDamage()], item2.stackSize);
+				final int[] array4 = currentColors;
+				final int itemDamage2 = item2.getItemDamage();
+				array4[itemDamage2] -= count;
 			}
-		}			
-		
+		}
 		return colors;
 	}
-	
 
-	private void removeItemStack(ItemStack item, int count,  int id) {
-        if (!getCart().hasCreativeSupplies()) {
-            item.stackSize -= count;
-            if (item.stackSize <= 0) {
-                setStack(id, null);
-            }
-        }
-    }
-	
-	private void launchFirework(ItemStack firework) {
-		EntityFireworkRocket rocket = new EntityFireworkRocket(getCart().worldObj, getCart().posX, getCart().posY + 1, getCart().posZ, firework);
-		getCart().worldObj.spawnEntityInWorld(rocket);	
+	private void removeItemStack(final ItemStack item, final int count, final int id) {
+		if (!this.getCart().hasCreativeSupplies()) {
+			item.stackSize -= count;
+			if (item.stackSize <= 0) {
+				this.setStack(id, null);
+			}
+		}
 	}
-	
-	
 
-	
+	private void launchFirework(final ItemStack firework) {
+		final EntityFireworkRocket rocket = new EntityFireworkRocket(this.getCart().worldObj, this.getCart().posX, this.getCart().posY + 1.0, this.getCart().posZ, firework);
+		this.getCart().worldObj.spawnEntityInWorld(rocket);
+	}
 }

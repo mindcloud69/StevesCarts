@@ -1,25 +1,20 @@
 package vswe.stevescarts.Upgrades;
 
-
 import vswe.stevescarts.Helpers.Localization;
 
 public class FuelCapacity extends BaseEffect {
-
-
 	private int capacity;
-	public FuelCapacity(int capacity) {
-		super();
+
+	public FuelCapacity(final int capacity) {
 		this.capacity = capacity;
 	}
-	
+
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.FUEL_CAPACITY.translate((capacity >= 0 ? "+" : "") + capacity);
+		return Localization.UPGRADES.FUEL_CAPACITY.translate(((this.capacity >= 0) ? "+" : "") + this.capacity);
 	}
-	
+
 	public int getFuelCapacity() {
-		return capacity;
+		return this.capacity;
 	}
-
-
 }

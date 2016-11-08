@@ -1,39 +1,30 @@
 package vswe.stevescarts.Buttons;
-import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-import vswe.stevescarts.Computer.ComputerProg;
+
 import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
 
-import java.util.ArrayList;
 public class ButtonFlowForEndInteger extends ButtonFlowForInteger {
-	
-
-    public ButtonFlowForEndInteger(ModuleComputer module, LOCATION loc, int dif)
-    {
-		super(module, loc, dif);	
+	public ButtonFlowForEndInteger(final ModuleComputer module, final LOCATION loc, final int dif) {
+		super(module, loc, dif);
 	}
-	
 
 	@Override
 	protected String getName() {
 		return "end";
 	}
-	
+
 	@Override
-	protected boolean isVarVisible(ComputerTask task) {
+	protected boolean isVarVisible(final ComputerTask task) {
 		return task.getFlowForUseEndVar();
 	}
-	
+
 	@Override
-	protected int getInteger(ComputerTask task) {
+	protected int getInteger(final ComputerTask task) {
 		return task.getFlowForEndInteger();
 	}
-	
+
 	@Override
-	protected void setInteger(ComputerTask task, int val) {
+	protected void setInteger(final ComputerTask task, final int val) {
 		task.setFlowForEndInteger(val);
 	}
-	
-
 }

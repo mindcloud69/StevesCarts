@@ -1,34 +1,30 @@
 package vswe.stevescarts.Buttons;
-import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-import vswe.stevescarts.Computer.ComputerProg;
+
 import vswe.stevescarts.Computer.ComputerTask;
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
 
-import java.util.ArrayList;
 public class ButtonVarFirstVar extends ButtonVarVar {
-	
-
-    public ButtonVarFirstVar(ModuleComputer module, LOCATION loc, boolean increase)
-    {
-		super(module, loc, increase);	
+	public ButtonVarFirstVar(final ModuleComputer module, final LOCATION loc, final boolean increase) {
+		super(module, loc, increase);
 	}
-	
 
-	protected int getIndex(ComputerTask task) {
+	@Override
+	protected int getIndex(final ComputerTask task) {
 		return task.getVarFirstVarIndex();
 	}
-	
-	protected void setIndex(ComputerTask task, int val) {
+
+	@Override
+	protected void setIndex(final ComputerTask task, final int val) {
 		task.setVarFirstVar(val);
 	}
-	
+
+	@Override
 	protected String getName() {
 		return "first";
 	}
-	
-	protected boolean isVarVisible(ComputerTask task) {
+
+	@Override
+	protected boolean isVarVisible(final ComputerTask task) {
 		return task.getVarUseFirstVar();
 	}
-
 }
