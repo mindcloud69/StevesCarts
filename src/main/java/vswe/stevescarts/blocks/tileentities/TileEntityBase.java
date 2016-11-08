@@ -5,13 +5,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.guis.GuiBase;
 
-public abstract class TileEntityBase extends TileEntity {
+public abstract class TileEntityBase extends TileEntity implements ITickable {
 
 	@Deprecated
 	int xCoord;
@@ -70,5 +71,14 @@ public abstract class TileEntityBase extends TileEntity {
 			oldVal = ((oldVal & 0xFFFF) | val << 16);
 		}
 		return oldVal;
+	}
+
+	@Override
+	public void update() {
+		updateEntity();
+	}
+
+	public void updateEntity() {
+
 	}
 }
