@@ -158,7 +158,7 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 		Collections.sort( entities, this.sorter);
 		for (EntityLivingBase target : entities) {
 			if (!(target instanceof EntityPlayer) && !(target instanceof EntityIronGolem) && !(target instanceof EntityDragon) && !(target instanceof EntitySlime) && !(target instanceof EntityWaterMob) && !(target instanceof EntityWither) && !(target instanceof EntityEnderman) && (!(target instanceof EntitySpider) || target instanceof EntityCaveSpider) && !(target instanceof EntityGiantZombie) && !(target instanceof EntityFlying)) {
-				if (target instanceof EntitySkeleton && ((EntitySkeleton) target).func_189771_df() == SkeletonType.NORMAL) {
+				if (target instanceof EntitySkeleton && ((EntitySkeleton) target).getSkeletonType() == SkeletonType.NORMAL) {
 					continue;
 				}
 				if (target.getRidingEntity() == null) {
