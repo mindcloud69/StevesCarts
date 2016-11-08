@@ -1,4 +1,4 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.pig;
 
 import org.lwjgl.opengl.GL11;
 
@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.hull.ModulePig;
 

@@ -1,4 +1,4 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.engines;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;

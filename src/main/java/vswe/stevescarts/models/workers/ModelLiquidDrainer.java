@@ -1,7 +1,8 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.workers;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.models.ModelCleaner;
 import vswe.stevescarts.modules.ModuleBase;
 
 @SideOnly(Side.CLIENT)

@@ -1,52 +1,48 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.storages.chests;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.storages.chests.ModuleChest;
 
 @SideOnly(Side.CLIENT)
-public class ModelFrontChest extends ModelCartbase {
+public class ModelTopChest extends ModelCartbase {
 	private static ResourceLocation texture;
 	ModelRenderer lid;
 
 	@Override
 	public ResourceLocation getResource(final ModuleBase module) {
-		return ModelFrontChest.texture;
+		return ModelTopChest.texture;
 	}
 
-	@Override
-	protected int getTextureHeight() {
-		return 32;
-	}
-
-	public ModelFrontChest() {
+	public ModelTopChest() {
 		this.lid = this.AddChest();
 	}
 
 	private ModelRenderer AddChest() {
 		final ModelRenderer chestAnchor = new ModelRenderer(this);
 		this.AddRenderer(chestAnchor);
-		chestAnchor.rotateAngleY = 1.5707964f;
-		chestAnchor.setRotationPoint(-3.5f, 0.0f, 0.0f);
-		final ModelRenderer base = new ModelRenderer(this, 0, 11);
+		chestAnchor.rotateAngleY = 4.712389f;
+		chestAnchor.setRotationPoint(-2.5f, -3.0f, 2.0f);
+		final ModelRenderer base = new ModelRenderer(this, 0, 19);
 		this.fixSize(base);
 		chestAnchor.addChild(base);
-		base.addBox(7.0f, 3.0f, 4.0f, 14, 6, 8, 0.0f);
+		base.addBox(6.0f, 2.0f, 8.0f, 12, 4, 16, 0.0f);
 		base.setRotationPoint(-14.0f, -5.5f, -18.5f);
 		final ModelRenderer lid = new ModelRenderer(this, 0, 0);
 		this.fixSize(lid);
 		chestAnchor.addChild(lid);
-		lid.addBox(7.0f, -3.0f, -8.0f, 14, 3, 8, 0.0f);
-		lid.setRotationPoint(-14.0f, -1.5f, -6.5f);
-		final ModelRenderer lock = new ModelRenderer(this, 0, 25);
+		lid.addBox(6.0f, -3.0f, -16.0f, 12, 3, 16, 0.0f);
+		lid.setRotationPoint(-14.0f, -2.5f, 5.5f);
+		final ModelRenderer lock = new ModelRenderer(this, 0, 39);
 		this.fixSize(lock);
 		lid.addChild(lock);
 		lock.addBox(1.0f, 1.5f, 0.5f, 2, 3, 1, 0.0f);
-		lock.setRotationPoint(12.0f, -3.0f, -9.5f);
+		lock.setRotationPoint(10.0f, -3.0f, -17.5f);
 		return lid;
 	}
 
@@ -56,6 +52,6 @@ public class ModelFrontChest extends ModelCartbase {
 	}
 
 	static {
-		ModelFrontChest.texture = ResourceHelper.getResource("/models/frontChestModel.png");
+		ModelTopChest.texture = ResourceHelper.getResource("/models/topChestModel.png");
 	}
 }

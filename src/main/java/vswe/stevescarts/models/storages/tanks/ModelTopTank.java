@@ -1,4 +1,4 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.storages.tanks;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.storages.tanks.ModuleTank;
 import vswe.stevescarts.renders.RendererMinecart;

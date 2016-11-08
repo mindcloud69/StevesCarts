@@ -1,4 +1,4 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.realtimers;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.realtimers.ModuleShooter;
 

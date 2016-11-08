@@ -1,8 +1,9 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.realtimers;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.realtimers.ModuleShooterAdvSide;
 

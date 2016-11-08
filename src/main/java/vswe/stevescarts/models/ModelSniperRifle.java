@@ -3,6 +3,7 @@ package vswe.stevescarts.models;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.models.realtimers.ModelGun;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.realtimers.ModuleShooterAdv;
 

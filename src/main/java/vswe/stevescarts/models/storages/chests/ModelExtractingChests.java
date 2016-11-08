@@ -1,10 +1,11 @@
-package vswe.stevescarts.models;
+package vswe.stevescarts.models.storages.chests;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.storages.chests.ModuleExtractingChests;
 
