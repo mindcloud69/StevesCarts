@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import techreborn.lib.ModInfo;
+import vswe.stevescarts.Constants;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -126,7 +126,7 @@ public class ModelGenerator {
 	}
 
 	public ModelResourceLocation getModel(ItemStack stack) {
-		return new ModelResourceLocation(ModInfo.MOD_ID + ":" + stack.getItem().getUnlocalizedName(stack).substring(5), "inventory");
+		return new ModelResourceLocation(Constants.MOD_ID + ":" + stack.getItem().getUnlocalizedName(stack).substring(5), "inventory");
 	}
 
 	public static Reader getReaderForResource(ResourceLocation location) throws IOException {
