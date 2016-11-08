@@ -21,8 +21,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.EntityEasterEgg;
+import vswe.stevescarts.renders.model.ItemModelManager;
+import vswe.stevescarts.renders.model.TexturedItem;
 
-public class ItemCartComponent extends Item {
+public class ItemCartComponent extends Item  implements TexturedItem {
 	//	private IIcon[] icons;
 	//	private IIcon unknownIcon;
 
@@ -34,6 +36,7 @@ public class ItemCartComponent extends Item {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setCreativeTab(StevesCarts.tabsSC2Components);
+		ItemModelManager.registerItem(this);
 	}
 
 	private String getName(final int dmg) {
@@ -55,9 +58,12 @@ public class ItemCartComponent extends Item {
 	//		return this.icons[dmg];
 	//	}
 	//
-	//	private String getRawName(final int i) {
-	//		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
-	//	}
+		private String getRawName(final int i) {
+			if(getName(i) == null){
+				return null;
+			}
+			return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
+		}
 	//
 	//	@SideOnly(Side.CLIENT)
 	//	public void registerIcons(final IIconRegister register) {
@@ -206,5 +212,18 @@ public class ItemCartComponent extends Item {
 			return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 		}
 		return super.onItemRightClick(item, world, player, hand);
+	}
+
+	@Override
+	public String getTextureName(int damage) {
+		if(getRawName(damage) == null){
+			return "stevescarts:items/unknown_icon";
+		}
+		return "stevescarts:items/" + getRawName(damage) + "_icon";
+	}
+
+	@Override
+	public int getMaxMeta() {
+		return size();
 	}
 }

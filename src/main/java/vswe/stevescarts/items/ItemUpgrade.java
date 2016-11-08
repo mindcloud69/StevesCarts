@@ -17,15 +17,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.renders.model.ItemModelManager;
+import vswe.stevescarts.renders.model.TexturedItem;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 import vswe.stevescarts.upgrades.BaseEffect;
 
-public class ItemUpgrade extends ItemBlock {
+public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	public ItemUpgrade(final Block block) {
 		super(block);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		ItemModelManager.registerItem(this);
 	}
 
 	//	@SideOnly(Side.CLIENT)
@@ -93,5 +96,22 @@ public class ItemUpgrade extends ItemBlock {
 				par3List.add(effect.getName());
 			}
 		}
+	}
+
+	@Override
+	public String getTextureName(int damage) {
+		AssemblerUpgrade data = AssemblerUpgrade.getUpgrade(damage);
+		if (data != null) {
+			if(data.getIcon() == null){
+				data.setIcon("stevescarts:items/" + data.getRawName() + "_upgrade_icon");
+			}
+			return data.getIcon();
+		}
+		return "stevescarts:items/unknown_icon";
+	}
+
+	@Override
+	public int getMaxMeta() {
+		return AssemblerUpgrade.getUpgradesList().size();
 	}
 }
