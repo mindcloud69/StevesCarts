@@ -3,6 +3,7 @@ package vswe.stevescarts;
 import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -11,6 +12,7 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.handlers.SoundHandler;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
 import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.renders.ItemStackRenderer;
 import vswe.stevescarts.renders.RendererMinecart;
 import vswe.stevescarts.renders.model.ItemModelManager;
 
@@ -25,6 +27,8 @@ public class ClientProxy extends CommonProxy {
 
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityCake.class, new RenderSnowball(Items.CAKE));
 		ModuleData.initModels();
+
+		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
 	}
 
 	public class RenderManagerCart implements IRenderFactory<EntityMinecartModular> {

@@ -176,6 +176,9 @@ public class BlockUpgrade extends BlockContainerBase {
 		final TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileEntityUpgrade) {
 			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
+			if(upgrade.getMaster() == null){
+				return FULL_BLOCK_AABB;
+			}
 			BlockPos master = upgrade.getMaster().getPos();
 			final float margin = 0.1875f;
 			final float width = 0.125f;
