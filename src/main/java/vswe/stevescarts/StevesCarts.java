@@ -42,7 +42,7 @@ public class StevesCarts {
 	public static boolean arcadeDevOperator;
 	@SidedProxy(clientSide = "vswe.stevescarts.ClientProxy", serverSide = "vswe.stevescarts.CommonProxy")
 	public static CommonProxy proxy;
-	@Mod.Instance("StevesCarts")
+	@Mod.Instance("stevescarts")
 	public static StevesCarts instance;
 	public static CreativeTabSC2 tabsSC2;
 	public static CreativeTabSC2 tabsSC2Components;

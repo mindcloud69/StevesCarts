@@ -18,7 +18,6 @@ import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;
 
 public class AssemblerUpgrade {
-	public static final int UPGRADE_AMOUNT = 20;
 	private static HashMap<Byte, AssemblerUpgrade> upgrades;
 	//	private static HashMap<Byte, IIcon> sides;
 	private byte id;
