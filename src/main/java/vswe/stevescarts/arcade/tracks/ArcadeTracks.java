@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Constants;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.arcade.ArcadeGame;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;

@@ -3,7 +3,6 @@ package vswe.stevescarts.helpers;
 import java.util.ArrayList;
 
 import vswe.stevescarts.Constants;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.modules.addons.ModuleBrake;
 import vswe.stevescarts.modules.addons.ModuleInvisible;
 import vswe.stevescarts.modules.addons.ModuleLiquidSensors;

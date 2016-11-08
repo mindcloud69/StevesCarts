@@ -9,7 +9,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -35,7 +34,7 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onRenderTick(final TickEvent.RenderTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
@@ -58,7 +57,7 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 			((EntityMinecartModular) event.getEntity()).loadChunks(event.getNewChunkX(), event.getNewChunkZ());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onCrafting(final PlayerEvent.ItemCraftedEvent event) {
 		this.onCrafting(event.player, event.crafting, event.craftMatrix);

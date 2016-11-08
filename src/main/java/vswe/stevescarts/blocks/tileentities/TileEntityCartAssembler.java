@@ -21,7 +21,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Constants;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.BlockCartAssembler;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.containers.ContainerBase;

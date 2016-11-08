@@ -87,7 +87,7 @@ public class StevesCarts {
 		ModItems.addRecipes();
 		ModBlocks.addRecipes();
 	}
-	
+
 	public class WoodFuelHandler implements IFuelHandler {
 		@Override
 		public int getBurnTime(final ItemStack fuel) {

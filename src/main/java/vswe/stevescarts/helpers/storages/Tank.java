@@ -14,8 +14,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.helpers.IconData;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.helpers.Localization.MODULES;
-import vswe.stevescarts.helpers.Localization.MODULES.TANKS;
 
 public class Tank implements IFluidTank {
 	private FluidStack fluid;

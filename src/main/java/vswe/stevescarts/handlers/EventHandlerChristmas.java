@@ -17,12 +17,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import vswe.stevescarts.Constants;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.items.ModItems;
 
 public class EventHandlerChristmas {
-	
+
 	@SubscribeEvent
 	public void onEntityLivingDeath(final LivingDeathEvent event) {
 		final EntityLivingBase monster = event.getEntityLiving();
@@ -36,7 +35,7 @@ public class EventHandlerChristmas {
 			this.dropItem(monster, ComponentTypes.RED_WRAPPING_PAPER.getItemStack());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onEntityInteract(final PlayerInteractEvent.EntityInteract event) {
 		final EntityPlayer player = event.getEntityPlayer();
@@ -66,7 +65,7 @@ public class EventHandlerChristmas {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void tickEnd(final TickEvent.PlayerTickEvent event) {
 		if (event.side == Side.SERVER) {
