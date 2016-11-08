@@ -2,6 +2,8 @@ package vswe.stevescarts.Modules.Addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -12,6 +14,7 @@ import vswe.stevescarts.Modules.IActivatorModule;
 
 public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	private int[] buttonRect;
+	private static DataParameter<Boolean> VISABLE = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleInvisible(final MinecartModular cart) {
 		super(cart);
@@ -74,7 +77,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 		if (this.isPlaceholder()) {
 			return !this.getSimInfo().getInvisActive();
 		}
-		return this.getDw(0) != 0;
+		return this.getDw(VISABLE);
 	}
 
 	private String getStateName() {
@@ -96,7 +99,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	}
 
 	public void setIsVisible(final boolean val) {
-		this.updateDw(0, val ? 1 : 0);
+		this.updateDw(VISABLE, val);
 	}
 
 	public int numberOfPackets() {
@@ -115,7 +118,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 1);
+		registerDw(VISABLE, true);
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package vswe.stevescarts.Modules.Engines;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
@@ -11,6 +13,7 @@ import vswe.stevescarts.Modules.ModuleBase;
 public abstract class ModuleEngine extends ModuleBase {
 	private int fuel;
 	protected int[] priorityButton;
+	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
 
 	public ModuleEngine(final MinecartModular cart) {
 		super(cart);
@@ -48,7 +51,7 @@ public abstract class ModuleEngine extends ModuleBase {
 		if (this.isPlaceholder()) {
 			return 0;
 		}
-		int temp = this.getDw(0);
+		int temp = this.getDw(PRIORITY);
 		if (temp < 0 || temp > 3) {
 			temp = 3;
 		}
@@ -61,7 +64,7 @@ public abstract class ModuleEngine extends ModuleBase {
 		} else if (data > 3) {
 			data = 3;
 		}
-		this.updateDw(0, data);
+		this.updateDw(PRIORITY, data);
 	}
 
 	public void consumeFuel(final int comsumption) {
@@ -141,7 +144,7 @@ public abstract class ModuleEngine extends ModuleBase {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(PRIORITY, 0);
 	}
 
 	@Override

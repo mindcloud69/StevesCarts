@@ -4,6 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -17,6 +19,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 	private float sensorRotation;
 	private int activetime;
 	private int mult;
+	private static DataParameter<Byte> SENSOR_INFO = createDw(DataSerializers.BYTE);
 
 	public ModuleLiquidSensors(final MinecartModular cart) {
 		super(cart);
@@ -63,7 +66,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 1);
+		registerDw(SENSOR_INFO, (byte)1);
 	}
 
 	private void activateLight(final int light) {
@@ -88,31 +91,31 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		if (this.isPlaceholder()) {
 			return;
 		}
-		byte data = this.getDw(0);
+		byte data = this.getDw(SENSOR_INFO);
 		data &= 0xFFFFFFFC;
 		data |= (byte) val;
 		this.setSensorInfo(data);
 	}
 
-	private void setSensorInfo(final int val) {
+	private void setSensorInfo(byte val) {
 		if (this.isPlaceholder()) {
 			return;
 		}
-		this.updateDw(0, val);
+		registerDw(SENSOR_INFO, val);
 	}
 
 	public int getLight() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getLiquidLight();
 		}
-		return this.getDw(0) & 0x3;
+		return this.getDw(SENSOR_INFO) & 0x3;
 	}
 
 	protected boolean isDrillSpinning() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getDrillSpinning();
 		}
-		return (this.getDw(0) & 0x4) != 0x0;
+		return (this.getDw(SENSOR_INFO) & 0x4) != 0x0;
 	}
 
 	public float getSensorRotation() {

@@ -1,6 +1,8 @@
 package vswe.stevescarts.Modules.Engines;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -14,6 +16,9 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private int panelCoolDown;
 	private boolean down;
 	private boolean upState;
+	
+	private static DataParameter<Integer> LIGHT = createDw(DataSerializers.VARINT);
+	private static DataParameter<Boolean> UP_STATE = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleSolarBase(final MinecartModular cart) {
 		super(cart);
@@ -59,9 +64,9 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		if (this.isPlaceholder()) {
 			this.light = (this.getSimInfo().getMaxLight() ? 15 : 14);
 		} else if (this.getCart().worldObj.isRemote) {
-			this.light = this.getDw(1);
+			this.light = this.getDw(LIGHT);
 		} else {
-			this.updateDw(1, (byte) this.light);
+			this.updateDw(LIGHT, this.light);
 		}
 		this.maxLight = (this.light == 15);
 		if (!this.upState && this.light == 15) {
@@ -113,8 +118,8 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	@Override
 	public void initDw() {
 		super.initDw();
-		this.addDw(1, 0);
-		this.addDw(2, 0);
+		registerDw(LIGHT, 0);
+		registerDw(UP_STATE, false);
 	}
 
 	protected boolean isGoingDown() {
@@ -136,7 +141,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		}
 		this.upState = this.updatePanels();
 		if (!this.getCart().worldObj.isRemote) {
-			this.updateDw(2, this.upState ? 1 : 0);
+			this.updateDw(UP_STATE, this.upState);
 		}
 	}
 

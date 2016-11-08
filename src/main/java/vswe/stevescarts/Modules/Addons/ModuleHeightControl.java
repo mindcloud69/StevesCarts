@@ -2,6 +2,9 @@ package vswe.stevescarts.Modules.Addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import vswe.stevescarts.Carts.CartDataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.HeightControlOre;
 import vswe.stevescarts.Helpers.ResourceHelper;
@@ -15,6 +18,7 @@ public class ModuleHeightControl extends ModuleAddon {
 	private int[] arrowDown;
 	private int oreMapX;
 	private int oreMapY;
+	private static DataParameter<Integer> Y_TARGET = createDw(DataSerializers.VARINT);
 
 	public ModuleHeightControl(final MinecartModular cart) {
 		super(cart);
@@ -174,11 +178,11 @@ public class ModuleHeightControl extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, (int) this.getCart().posY);
+		registerDw(Y_TARGET, (int) this.getCart().posY);
 	}
 
 	public void setYTarget(final int val) {
-		this.updateDw(0, val);
+		this.updateDw(Y_TARGET, val);
 	}
 
 	@Override
@@ -186,7 +190,7 @@ public class ModuleHeightControl extends ModuleAddon {
 		if (this.isPlaceholder()) {
 			return 64;
 		}
-		int data = this.getDw(0);
+		int data = this.getDw(Y_TARGET);
 		if (data < 0) {
 			data += 256;
 		}

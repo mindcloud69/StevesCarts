@@ -2,6 +2,8 @@ package vswe.stevescarts.Modules.Addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,6 +18,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	private float shieldDistance;
 	private float shieldAngle;
 	private int[] buttonRect;
+	private static DataParameter<Boolean> STATUS = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleShield(final MinecartModular cart) {
 		super(cart);
@@ -94,7 +97,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 
 	public void setShieldStatus(final boolean val) {
 		if (!this.isPlaceholder()) {
-			this.updateDw(0, (byte) (val ? 1 : 0));
+			this.updateDw(STATUS, val);
 		}
 	}
 
@@ -102,7 +105,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getShieldActive();
 		}
-		return this.getDw(0) != 0;
+		return this.getDw(STATUS);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -138,7 +141,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.updateDw(0, this.getShieldStatus() ? 0 : 1);
+			this.updateDw(STATUS, this.getShieldStatus());
 		}
 	}
 
@@ -153,7 +156,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(STATUS, false);
 	}
 
 	@Override
