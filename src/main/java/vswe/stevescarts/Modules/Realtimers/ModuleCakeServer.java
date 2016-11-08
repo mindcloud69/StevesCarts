@@ -5,6 +5,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -22,6 +24,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 	private static final int SLICES_PER_CAKE = 6;
 	private static final int MAX_TOTAL_SLICES = 66;
 	private int[] rect;
+	private static DataParameter<Integer> BUFFER = createDw(DataSerializers.VARINT);
 
 	public ModuleCakeServer(final MinecartModular cart) {
 		super(cart);
@@ -52,14 +55,14 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 	}
 
 	private void setCakeBuffer(final int i) {
-		this.updateShortDw(0, i);
+		this.updateDw(BUFFER, i);
 	}
 
 	private int getCakeBuffer() {
 		if (this.isPlaceholder()) {
 			return 6;
 		}
-		return this.getShortDw(0);
+		return this.getDw(BUFFER);
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		this.addShortDw(0, 0);
+		registerDw(BUFFER, 0);
 	}
 
 	@Override

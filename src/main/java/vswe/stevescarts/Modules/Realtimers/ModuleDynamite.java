@@ -4,6 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.ComponentTypes;
 import vswe.stevescarts.Helpers.Localization;
@@ -19,6 +21,10 @@ public class ModuleDynamite extends ModuleBase {
 	private int fuseStartY;
 	private final int maxFuseLength = 150;
 
+	private static DataParameter<Byte> FUSE = createDw(DataSerializers.BYTE);
+	private static DataParameter<Byte> FUSE_LENGTH = createDw(DataSerializers.BYTE);
+	private static DataParameter<Byte> EXPLOSION = createDw(DataSerializers.BYTE);
+	
 	public ModuleDynamite(final MinecartModular cart) {
 		super(cart);
 		this.fuseStartX = super.guiWidth() + 5;
@@ -152,7 +158,7 @@ public class ModuleDynamite extends ModuleBase {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getExplosionSize() / 2.5f;
 		}
-		return this.getDw(2) / 2.5f;
+		return this.getDw(EXPLOSION) / 2.5f;
 	}
 
 	public void createExplosives() {
@@ -163,7 +169,7 @@ public class ModuleDynamite extends ModuleBase {
 		if (ComponentTypes.DYNAMITE.isStackOfType(this.getStack(0))) {
 			f += this.getStack(0).stackSize * 2;
 		}
-		this.updateDw(2, (byte) f);
+		this.updateDw(EXPLOSION, (byte) f);
 	}
 
 	@Override
@@ -173,16 +179,16 @@ public class ModuleDynamite extends ModuleBase {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
-		this.addDw(1, 70);
-		this.addDw(2, 8);
+		registerDw(FUSE, (byte)0);
+		registerDw(FUSE_LENGTH, (byte)70);
+		registerDw(EXPLOSION, (byte)8);
 	}
 
 	public int getFuse() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().fuse;
 		}
-		final int val = this.getDw(0);
+		final int val = this.getDw(FUSE);
 		if (val < 0) {
 			return val + 256;
 		}
@@ -193,7 +199,7 @@ public class ModuleDynamite extends ModuleBase {
 		if (this.isPlaceholder()) {
 			this.getSimInfo().fuse = val;
 		} else {
-			this.updateDw(0, (byte) val);
+			this.updateDw(FUSE, (byte) val);
 		}
 	}
 
@@ -201,14 +207,14 @@ public class ModuleDynamite extends ModuleBase {
 		if (val > 150) {
 			val = 150;
 		}
-		this.updateDw(1, (byte) val);
+		this.updateDw(FUSE_LENGTH, (byte) val);
 	}
 
 	public int getFuseLength() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getFuseLength();
 		}
-		final int val = this.getDw(1);
+		final int val = this.getDw(FUSE_LENGTH);
 		if (val < 0) {
 			return val + 256;
 		}

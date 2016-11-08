@@ -6,6 +6,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
@@ -24,6 +27,8 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	protected Tank tank;
 	private int tick;
 	protected int[] tankBounds;
+	private static DataParameter<String> FLUID_NAME = createDw(DataSerializers.STRING);
+	private static DataParameter<Integer> FLUID_AMOUNT = createDw(DataSerializers.VARINT);
 
 	public ModuleTank(final MinecartModular cart) {
 		super(cart);
@@ -76,10 +81,10 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 			if (!this.getCart().worldObj.isRemote) {
 				this.tank.containerTransfer();
 			} else if (!this.isPlaceholder()) {
-				if (this.getShortDw(0) == -1) {
+				if (this.getDw(FLUID_NAME).isEmpty()) {
 					this.tank.setFluid(null);
 				} else {
-					this.tank.setFluid(new FluidStack((int) this.getShortDw(0), this.getIntDw(1)));
+					this.tank.setFluid(new FluidStack(FluidRegistry.getFluid(this.getDw(FLUID_NAME)), this.getDw(FLUID_AMOUNT)));
 				}
 			}
 		}
@@ -167,13 +172,13 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	}
 
 	protected void updateDw() {
-		this.updateShortDw(0, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().fluidID);
-		this.updateIntDw(1, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().amount);
+		this.updateDw(FLUID_NAME, (this.tank.getFluid() == null) ? "" : this.tank.getFluid().getFluid().getName());
+		this.updateDw(FLUID_AMOUNT, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().amount);
 	}
 
 	public void initDw() {
-		this.addShortDw(0, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().fluidID);
-		this.addIntDw(1, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().amount);
+		registerDw(FLUID_NAME, (this.tank.getFluid() == null) ? "" : this.tank.getFluid().getFluid().getName());
+		registerDw(FLUID_AMOUNT, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().amount);
 	}
 
 	public float getFluidRenderHeight() {

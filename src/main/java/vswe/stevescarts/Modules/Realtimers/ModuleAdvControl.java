@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -34,6 +36,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	private double odo;
 	private double trip;
 	private int[] buttonRect;
+	private static DataParameter<Integer> SPEED = createDw(DataSerializers.VARINT);
 
 	public ModuleAdvControl(final MinecartModular cart) {
 		super(cart);
@@ -224,7 +227,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 				--this.speedChangeCooldown;
 			}
 			if (this.isForwardKeyDown() && this.isLeftKeyDown() && this.isRightKeyDown() && this.getCart().getRidingEntity() != null && this.getCart().getRidingEntity() instanceof EntityPlayer) {
-				this.getCart().getRidingEntity().mountEntity((Entity) this.getCart());
+				this.getCart().getRidingEntity().startRiding(getCart());
 				this.keyinformation = 0;
 			}
 		}
@@ -350,14 +353,14 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		if (val < 0 || val > 6) {
 			return;
 		}
-		this.updateDw(0, val);
+		this.updateDw(SPEED, val);
 	}
 
 	private int getSpeedSetting() {
 		if (this.isPlaceholder()) {
 			return 1;
 		}
-		return this.getDw(0);
+		return this.getDw(SPEED);
 	}
 
 	@Override
@@ -367,7 +370,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(SPEED, 0);
 	}
 
 	@Override
