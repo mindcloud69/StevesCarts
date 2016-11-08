@@ -16,6 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
@@ -614,41 +617,21 @@ public abstract class ModuleBase {
 		return id;
 	}
 
-//	protected final void addIntDw(final int id, final int val) {
-//		this.getCart().getDataWatcher().addObject(this.getDwId(id), (Object) val);
-//	}
-//
-//	protected final void updateIntDw(final int id, final int val) {
-//		this.getCart().getDataWatcher().updateObject(this.getDwId(id), (Object) val);
-//	}
-//
-//	protected final int getIntDw(final int id) {
-//		return this.getCart().getDataWatcher().getWatchableObjectInt(this.getDwId(id));
-//	}
-//
-//	protected final void addShortDw(final int id, final int val) {
-//		this.getCart().getDataWatcher().addObject(this.getDwId(id), (Object) (short) val);
-//	}
-//
-//	protected final void updateShortDw(final int id, final int val) {
-//		this.getCart().getDataWatcher().updateObject(this.getDwId(id), (Object) (short) val);
-//	}
-//
-//	protected final short getShortDw(final int id) {
-//		return this.getCart().getDataWatcher().getWatchableObjectShort(this.getDwId(id));
-//	}
-//
-//	protected final void addDw(final int id, final int val) {
-//		this.getCart().getDataWatcher().addObject(this.getDwId(id), (Object) (byte) val);
-//	}
-//
-//	protected final void updateDw(final int id, final int val) {
-//		this.getCart().getDataWatcher().updateObject(this.getDwId(id), (Object) (byte) val);
-//	}
-//
-//	protected final byte getDw(final int id) {
-//		return this.getCart().getDataWatcher().getWatchableObjectByte(this.getDwId(id));
-//	}
+	protected final <T> void registerDw(DataParameter<T> key, T value){
+		this.getCart().getDataManager().register(key, value);
+	}
+	
+	protected final <T> void updateDw(DataParameter<T> key, T value){
+		this.getCart().getDataManager().set(key, value);
+	}
+	
+	protected <T> T getDw(DataParameter<T> key){
+		return this.getCart().getDataManager().get(key);
+	}
+	
+	protected static <T> DataParameter<T> createDw(DataSerializer<T> serializer){
+		return EntityDataManager.createKey(MinecartModular.class, serializer);
+	}
 
 	public int numberOfGuiData() {
 		return 0;

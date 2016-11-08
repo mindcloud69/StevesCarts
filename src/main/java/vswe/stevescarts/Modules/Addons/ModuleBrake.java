@@ -2,6 +2,9 @@ package vswe.stevescarts.Modules.Addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -13,6 +16,7 @@ import vswe.stevescarts.Modules.ILeverModule;
 public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	private int[] startstopRect;
 	private int[] turnbackRect;
+	private static DataParameter<Boolean> FORGE_STOPPING = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleBrake(final MinecartModular cart) {
 		super(cart);
@@ -72,11 +76,11 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getBrakeActive();
 		}
-		return this.getDw(0) != 0;
+		return getDw(FORGE_STOPPING);
 	}
 
 	private void setForceStopping(final boolean val) {
-		this.updateDw(0, (byte) (val ? 1 : 0));
+		this.updateDw(FORGE_STOPPING, val);
 	}
 
 	@Override
@@ -125,7 +129,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		this.registerDw(FORGE_STOPPING, false);
 	}
 
 	@Override

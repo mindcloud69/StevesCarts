@@ -2,6 +2,8 @@ package vswe.stevescarts.Modules.Addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -12,6 +14,7 @@ import vswe.stevescarts.Modules.IActivatorModule;
 public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	private boolean rdyToInit;
 	private int[] buttonRect;
+	private static DataParameter<Boolean> LOADING_CHUNK = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleChunkLoader(final MinecartModular cart) {
 		super(cart);
@@ -56,7 +59,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	public void setChunkLoading(final boolean val) {
 		if (!this.isPlaceholder()) {
-			this.updateDw(0, (byte) (val ? 1 : 0));
+			this.updateDw(LOADING_CHUNK, val);
 			if (!this.getCart().worldObj.isRemote && this.rdyToInit) {
 				if (val) {
 					this.getCart().initChunkLoading();
@@ -68,7 +71,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	}
 
 	private boolean isLoadingChunk() {
-		return !this.isPlaceholder() && this.getDw(0) != 0;
+		return !this.isPlaceholder() && getDw(LOADING_CHUNK);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -122,7 +125,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(LOADING_CHUNK, false);
 	}
 
 	@Override

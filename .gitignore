@@ -1,20 +1,21 @@
-#Ignore eclipse workspace files
-.classpath
-.project
-.settings
-eclipse
 
-#Ignore IntelliJ IDEA files
+/bin
+/out
+/classes
+/build
+/eclipse
+/.gradle
 *.iml
-*.ipr
-*.iws
-out
+/.metadata
+/.settings
+./classpath
+/dep
 
-#Ignore minecraft source files
-build
-
-#Ignore compiled mod files
-bin
-
-#Ignore gradle logs
-.gradle
+Thumbs.db
+changelog.txt
+*.log
+*.launch
+*.project
+*.classpath
+.idea/*
+java_pid2412.hprof

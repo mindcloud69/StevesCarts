@@ -2,7 +2,11 @@ package vswe.stevescarts.Modules.Addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+
 import org.lwjgl.opengl.GL11;
+
+import vswe.stevescarts.Carts.CartDataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
@@ -15,6 +19,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	private int cooldown;
 	private boolean hover;
 	private Random random;
+	private static DataParameter<int[]> COLORS = createDw(CartDataSerializers.VARINT);
 
 	public ModuleColorRandomizer(final MinecartModular cart) {
 		super(cart);
@@ -108,9 +113,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 255);
-		this.addDw(1, 255);
-		this.addDw(2, 255);
+		registerDw(COLORS, new int[]{255, 255, 255});
 	}
 
 	public int numberOfPackets() {
@@ -128,7 +131,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 		if (this.isPlaceholder()) {
 			return 255;
 		}
-		int tempVal = this.getDw(i);
+		int tempVal = this.getDw(COLORS)[i];
 		if (tempVal < 0) {
 			tempVal += 256;
 		}
@@ -136,7 +139,9 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	}
 
 	public void setColorVal(final int id, final int val) {
-		this.updateDw(id, val);
+		int[] colors = getDw(COLORS);
+		colors[id] = val;
+		updateDw(COLORS, colors);
 	}
 
 	private float getColorComponent(final int i) {
