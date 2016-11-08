@@ -1,9 +1,5 @@
 package vswe.stevescarts.upgrades;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
@@ -11,11 +7,17 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.items.ModItems;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class AssemblerUpgrade {
 	private static HashMap<Byte, AssemblerUpgrade> upgrades;
@@ -24,7 +26,7 @@ public class AssemblerUpgrade {
 	private int sideTexture;
 	private String name;
 	private ArrayList<BaseEffect> effects;
-	//	private IIcon icon;
+	private String icon;
 
 	public static HashMap<Byte, AssemblerUpgrade> getUpgrades() {
 		return AssemblerUpgrade.upgrades;
@@ -58,14 +60,14 @@ public class AssemblerUpgrade {
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books[0], ComponentTypes.SIMPLE_PCB.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-				{ Items.REDSTONE, books[1], Items.REDSTONE },
-				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
-				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-					{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
-					{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-						{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
-						{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-							{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
+			{ Items.REDSTONE, books[1], Items.REDSTONE },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+			{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+			{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+			{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
 		new AssemblerUpgrade(5, "New Era").addEffect(new WorkEfficiency(1.0f)).addEffect(new FuelCost(30.0f)).addRecipe(new Object[][] {
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), books[4], ComponentTypes.GALGADORIAN_METAL.getItemStack() },
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB, ComponentTypes.GALGADORIAN_METAL.getItemStack() },
@@ -255,10 +257,15 @@ public class AssemblerUpgrade {
 	//		this.icon = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName().replace("_upgrade", "")).append("_icon").toString());
 	//	}
 	//
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIcon() {
-	//		return this.icon;
-	//	}
+	@SideOnly(Side.CLIENT)
+	public String getIcon() {
+		return this.icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
 	//
 	//	@SideOnly(Side.CLIENT)
 	//	public IIcon getMainTexture() {

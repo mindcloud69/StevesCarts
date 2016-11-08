@@ -2,6 +2,7 @@ package vswe.stevescarts.items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,14 +14,17 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.renders.model.ItemModelManager;
+import vswe.stevescarts.renders.model.TexturedItem;
 
-public class ItemCartModule extends Item {
+public class ItemCartModule extends Item implements TexturedItem {
 	//	IIcon unknownIcon;
 
 	public ItemCartModule() {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setCreativeTab(StevesCarts.tabsSC2);
+		ItemModelManager.registerItem(this);
 	}
 
 	public String getName(final ItemStack par1ItemStack) {
@@ -30,25 +34,6 @@ public class ItemCartModule extends Item {
 		}
 		return data.getName();
 	}
-
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIconFromDamage(final int dmg) {
-	//		final ModuleData data = ModuleData.getList().get((byte) dmg);
-	//		if (data != null) {
-	//			return data.getIcon();
-	//		}
-	//		return this.unknownIcon;
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerIcons(final IIconRegister register) {
-	//		for (final ModuleData module : ModuleData.getList().values()) {
-	//			module.createIcon(register);
-	//		}
-	//		final StringBuilder sb = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.unknownIcon = register.registerIcon(sb.append("stevescarts").append(":").append("unknown_icon").toString());
-	//	}
 
 	@Override
 	public String getUnlocalizedName() {
@@ -129,4 +114,22 @@ public class ItemCartModule extends Item {
 			}
 		}
 	}
+
+	@Override
+	public String getTextureName(int damage) {
+		ModuleData data = ModuleData.getList().get((byte) damage);
+		if (data != null) {
+			if(data.getIcon() == null){
+				data.setIcon("stevescarts:items/" + data.getRawName() + "_icon");
+			}
+			return data.getIcon();
+		}
+		return "stevescarts:items/unknown_icon";
+	}
+
+	@Override
+	public int getMaxMeta() {
+		return ModuleData.getList().size();
+	}
+
 }

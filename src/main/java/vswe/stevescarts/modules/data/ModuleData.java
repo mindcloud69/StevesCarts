@@ -1,11 +1,5 @@
 package vswe.stevescarts.modules.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -16,6 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Constants;
 import vswe.stevescarts.StevesCarts;
+import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.CartVersion;
 import vswe.stevescarts.helpers.ColorHelper;
@@ -23,7 +18,6 @@ import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.helpers.ResourceHelper;
-import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.models.ModelBridge;
 import vswe.stevescarts.models.ModelCage;
 import vswe.stevescarts.models.ModelCake;
@@ -72,108 +66,22 @@ import vswe.stevescarts.models.workers.tools.ModelDrill;
 import vswe.stevescarts.models.workers.tools.ModelFarmer;
 import vswe.stevescarts.models.workers.tools.ModelWoodCutter;
 import vswe.stevescarts.modules.ModuleBase;
-import vswe.stevescarts.modules.addons.ModuleAddon;
-import vswe.stevescarts.modules.addons.ModuleBrake;
-import vswe.stevescarts.modules.addons.ModuleChunkLoader;
-import vswe.stevescarts.modules.addons.ModuleColorRandomizer;
-import vswe.stevescarts.modules.addons.ModuleColorizer;
-import vswe.stevescarts.modules.addons.ModuleCrafter;
-import vswe.stevescarts.modules.addons.ModuleCrafterAdv;
-import vswe.stevescarts.modules.addons.ModuleCreativeIncinerator;
-import vswe.stevescarts.modules.addons.ModuleCreativeSupplies;
-import vswe.stevescarts.modules.addons.ModuleDrillIntelligence;
-import vswe.stevescarts.modules.addons.ModuleEnchants;
-import vswe.stevescarts.modules.addons.ModuleHeightControl;
-import vswe.stevescarts.modules.addons.ModuleIncinerator;
-import vswe.stevescarts.modules.addons.ModuleInvisible;
-import vswe.stevescarts.modules.addons.ModuleLabel;
-import vswe.stevescarts.modules.addons.ModuleLiquidSensors;
-import vswe.stevescarts.modules.addons.ModuleMelter;
-import vswe.stevescarts.modules.addons.ModuleMelterExtreme;
-import vswe.stevescarts.modules.addons.ModuleOreTracker;
-import vswe.stevescarts.modules.addons.ModulePowerObserver;
-import vswe.stevescarts.modules.addons.ModuleShield;
-import vswe.stevescarts.modules.addons.ModuleSmelter;
-import vswe.stevescarts.modules.addons.ModuleSmelterAdv;
-import vswe.stevescarts.modules.addons.ModuleSnowCannon;
-import vswe.stevescarts.modules.addons.mobdetectors.ModuleAnimal;
-import vswe.stevescarts.modules.addons.mobdetectors.ModuleBat;
-import vswe.stevescarts.modules.addons.mobdetectors.ModuleMonster;
-import vswe.stevescarts.modules.addons.mobdetectors.ModulePlayer;
-import vswe.stevescarts.modules.addons.mobdetectors.ModuleVillager;
+import vswe.stevescarts.modules.addons.*;
+import vswe.stevescarts.modules.addons.mobdetectors.*;
 import vswe.stevescarts.modules.addons.plants.ModuleModTrees;
 import vswe.stevescarts.modules.addons.plants.ModuleNetherwart;
 import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
-import vswe.stevescarts.modules.addons.projectiles.ModuleCake;
-import vswe.stevescarts.modules.addons.projectiles.ModuleEgg;
-import vswe.stevescarts.modules.addons.projectiles.ModuleFireball;
-import vswe.stevescarts.modules.addons.projectiles.ModulePotion;
-import vswe.stevescarts.modules.addons.projectiles.ModuleSnowball;
-import vswe.stevescarts.modules.engines.ModuleCheatEngine;
-import vswe.stevescarts.modules.engines.ModuleCoalStandard;
-import vswe.stevescarts.modules.engines.ModuleCoalTiny;
-import vswe.stevescarts.modules.engines.ModuleEngine;
-import vswe.stevescarts.modules.engines.ModuleSolarBasic;
-import vswe.stevescarts.modules.engines.ModuleSolarCompact;
-import vswe.stevescarts.modules.engines.ModuleSolarStandard;
-import vswe.stevescarts.modules.engines.ModuleThermalAdvanced;
-import vswe.stevescarts.modules.engines.ModuleThermalStandard;
-import vswe.stevescarts.modules.hull.ModuleCheatHull;
-import vswe.stevescarts.modules.hull.ModuleGalgadorian;
-import vswe.stevescarts.modules.hull.ModuleHull;
-import vswe.stevescarts.modules.hull.ModulePig;
-import vswe.stevescarts.modules.hull.ModulePumpkin;
-import vswe.stevescarts.modules.hull.ModuleReinforced;
-import vswe.stevescarts.modules.hull.ModuleStandard;
-import vswe.stevescarts.modules.hull.ModuleWood;
-import vswe.stevescarts.modules.realtimers.ModuleAdvControl;
-import vswe.stevescarts.modules.realtimers.ModuleArcade;
-import vswe.stevescarts.modules.realtimers.ModuleCage;
-import vswe.stevescarts.modules.realtimers.ModuleCakeServer;
-import vswe.stevescarts.modules.realtimers.ModuleCakeServerDynamite;
-import vswe.stevescarts.modules.realtimers.ModuleCleaner;
-import vswe.stevescarts.modules.realtimers.ModuleDynamite;
-import vswe.stevescarts.modules.realtimers.ModuleExperience;
-import vswe.stevescarts.modules.realtimers.ModuleFirework;
-import vswe.stevescarts.modules.realtimers.ModuleFlowerRemover;
-import vswe.stevescarts.modules.realtimers.ModuleMilker;
-import vswe.stevescarts.modules.realtimers.ModuleNote;
-import vswe.stevescarts.modules.realtimers.ModuleSeat;
-import vswe.stevescarts.modules.realtimers.ModuleShooter;
-import vswe.stevescarts.modules.realtimers.ModuleShooterAdv;
+import vswe.stevescarts.modules.addons.projectiles.*;
+import vswe.stevescarts.modules.engines.*;
+import vswe.stevescarts.modules.hull.*;
+import vswe.stevescarts.modules.realtimers.*;
 import vswe.stevescarts.modules.storages.ModuleStorage;
-import vswe.stevescarts.modules.storages.chests.ModuleEggBasket;
-import vswe.stevescarts.modules.storages.chests.ModuleExtractingChests;
-import vswe.stevescarts.modules.storages.chests.ModuleFrontChest;
-import vswe.stevescarts.modules.storages.chests.ModuleGiftStorage;
-import vswe.stevescarts.modules.storages.chests.ModuleInternalStorage;
-import vswe.stevescarts.modules.storages.chests.ModuleSideChests;
-import vswe.stevescarts.modules.storages.chests.ModuleTopChest;
-import vswe.stevescarts.modules.storages.tanks.ModuleAdvancedTank;
-import vswe.stevescarts.modules.storages.tanks.ModuleCheatTank;
-import vswe.stevescarts.modules.storages.tanks.ModuleFrontTank;
-import vswe.stevescarts.modules.storages.tanks.ModuleInternalTank;
-import vswe.stevescarts.modules.storages.tanks.ModuleOpenTank;
-import vswe.stevescarts.modules.storages.tanks.ModuleSideTanks;
-import vswe.stevescarts.modules.storages.tanks.ModuleTopTank;
-import vswe.stevescarts.modules.workers.ModuleBridge;
-import vswe.stevescarts.modules.workers.ModuleFertilizer;
-import vswe.stevescarts.modules.workers.ModuleHydrater;
-import vswe.stevescarts.modules.workers.ModuleLiquidDrainer;
-import vswe.stevescarts.modules.workers.ModuleRailer;
-import vswe.stevescarts.modules.workers.ModuleRailerLarge;
-import vswe.stevescarts.modules.workers.ModuleRemover;
-import vswe.stevescarts.modules.workers.ModuleTorch;
-import vswe.stevescarts.modules.workers.tools.ModuleDrillDiamond;
-import vswe.stevescarts.modules.workers.tools.ModuleDrillGalgadorian;
-import vswe.stevescarts.modules.workers.tools.ModuleDrillHardened;
-import vswe.stevescarts.modules.workers.tools.ModuleDrillIron;
-import vswe.stevescarts.modules.workers.tools.ModuleFarmerDiamond;
-import vswe.stevescarts.modules.workers.tools.ModuleFarmerGalgadorian;
-import vswe.stevescarts.modules.workers.tools.ModuleTool;
-import vswe.stevescarts.modules.workers.tools.ModuleWoodcutterDiamond;
-import vswe.stevescarts.modules.workers.tools.ModuleWoodcutterGalgadorian;
-import vswe.stevescarts.modules.workers.tools.ModuleWoodcutterHardened;
+import vswe.stevescarts.modules.storages.chests.*;
+import vswe.stevescarts.modules.storages.tanks.*;
+import vswe.stevescarts.modules.workers.*;
+import vswe.stevescarts.modules.workers.tools.*;
+
+import java.util.*;
 
 public class ModuleData {
 	private static HashMap<Byte, ModuleData> moduleList;
@@ -202,7 +110,7 @@ public class ModuleData {
 	private byte extraDataDefaultValue;
 	private ArrayList<Object[][]> recipes;
 	private static final int MAX_MESSAGE_ROW_LENGTH = 30;
-	//	private IIcon icon;
+	private String icon;
 
 	public static HashMap<Byte, ModuleData> getList() {
 		return ModuleData.moduleList;
@@ -219,7 +127,7 @@ public class ModuleData {
 		final ItemStack bonemeal = new ItemStack(Items.DYE, 1, 15);
 		ModuleData.moduleGroups = new Class[] { ModuleHull.class, ModuleEngine.class, ModuleTool.class, ModuleStorage.class, ModuleAddon.class };
 		ModuleData.moduleGroupNames = new Localization.MODULE_INFO[] { Localization.MODULE_INFO.HULL_CATEGORY, Localization.MODULE_INFO.ENGINE_CATEGORY, Localization.MODULE_INFO.TOOL_CATEGORY,
-				Localization.MODULE_INFO.STORAGE_CATEGORY, Localization.MODULE_INFO.ADDON_CATEGORY, Localization.MODULE_INFO.ATTACHMENT_CATEGORY };
+			Localization.MODULE_INFO.STORAGE_CATEGORY, Localization.MODULE_INFO.ADDON_CATEGORY, Localization.MODULE_INFO.ATTACHMENT_CATEGORY };
 		ModuleData.moduleList = new HashMap<Byte, ModuleData>();
 		final ModuleDataGroup engineGroup = new ModuleDataGroup(Localization.MODULE_INFO.ENGINE_GROUP);
 		final ModuleData coalStandard = new ModuleData(0, "Coal Engine", ModuleCoalStandard.class, 15).addRecipe(new Object[][] { { Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT },
@@ -294,8 +202,8 @@ public class ModuleData {
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack() },
 			{ null, ComponentTypes.REINFORCED_METAL.getItemStack(), null },
 			{ ComponentTypes.ADVANCED_PCB.getItemStack(), Items.GOLD_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack() } }).addRecipe(new Object[][] {
-				{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack() },
-				{ null, farmerbasic.getItemStack(), null }, { null, ComponentTypes.SIMPLE_PCB.getItemStack(), null } });
+			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack() },
+			{ null, farmerbasic.getItemStack(), null }, { null, ComponentTypes.SIMPLE_PCB.getItemStack(), null } });
 		farmerGroup.add(farmerbasic);
 		farmerGroup.add(farmergalg);
 		final ModuleDataGroup woodcutterGroup = new ModuleDataGroup(Localization.MODULE_INFO.CUTTER_GROUP);
@@ -306,14 +214,14 @@ public class ModuleData {
 			{ ComponentTypes.HARDENED_SAW_BLADE.getItemStack(), ComponentTypes.HARDENED_SAW_BLADE.getItemStack(), ComponentTypes.HARDENED_SAW_BLADE.getItemStack() },
 			{ ComponentTypes.HARDENED_SAW_BLADE.getItemStack(), Items.DIAMOND, ComponentTypes.HARDENED_SAW_BLADE.getItemStack() },
 			{ null, ComponentTypes.WOOD_CUTTING_CORE.getItemStack(), null } }).addRecipe(new Object[][] {
-				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
-				{ ComponentTypes.REINFORCED_METAL.getItemStack(), Items.IRON_INGOT, ComponentTypes.REINFORCED_METAL.getItemStack() }, { null, woodcutter.getItemStack(), null } });
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), Items.IRON_INGOT, ComponentTypes.REINFORCED_METAL.getItemStack() }, { null, woodcutter.getItemStack(), null } });
 		final ModuleData woodcutterGalgadorian = new ModuleDataTool(80, "Galgadorian Wood Cutter", ModuleWoodcutterGalgadorian.class, 120, true).addSide(SIDE.FRONT).addRecipe(new Object[][] {
 			{ ComponentTypes.GALGADORIAN_SAW_BLADE.getItemStack(), ComponentTypes.GALGADORIAN_SAW_BLADE.getItemStack(), ComponentTypes.GALGADORIAN_SAW_BLADE.getItemStack() },
 			{ ComponentTypes.GALGADORIAN_SAW_BLADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.GALGADORIAN_SAW_BLADE.getItemStack() },
 			{ null, ComponentTypes.WOOD_CUTTING_CORE.getItemStack(), null } }).addRecipe(new Object[][] {
-				{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack() },
-				{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), Items.IRON_INGOT, ComponentTypes.GALGADORIAN_METAL.getItemStack() }, { null, woodcutterHardened.getItemStack(), null } });
+			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack() },
+			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), Items.IRON_INGOT, ComponentTypes.GALGADORIAN_METAL.getItemStack() }, { null, woodcutterHardened.getItemStack(), null } });
 		woodcutterGroup.add(woodcutter);
 		woodcutterGroup.add(woodcutterHardened);
 		woodcutterGroup.add(woodcutterGalgadorian);
@@ -456,7 +364,8 @@ public class ModuleData {
 		}
 		addNemesis(snowgenerator, melter);
 		addNemesis(snowgenerator, extrememelter);
-		final ModuleData cage = new ModuleData(57, "Cage", ModuleCage.class, 7).addSides(new SIDE[] { SIDE.TOP, SIDE.CENTER }).addRecipe(new Object[][] { { Blocks.OAK_FENCE, Blocks.OAK_FENCE, Blocks.OAK_FENCE },
+		final ModuleData cage = new ModuleData(57, "Cage", ModuleCage.class, 7).addSides(new SIDE[] { SIDE.TOP, SIDE.CENTER }).addRecipe(new Object[][] {
+			{ Blocks.OAK_FENCE, Blocks.OAK_FENCE, Blocks.OAK_FENCE },
 			{ Blocks.OAK_FENCE, ComponentTypes.SIMPLE_PCB.getItemStack(), Blocks.OAK_FENCE }, { Blocks.OAK_FENCE, Blocks.OAK_FENCE, Blocks.OAK_FENCE } });
 		new ModuleData(58, "Crop: Nether Wart", ModuleNetherwart.class, 20).addRequirement(farmerGroup).addRecipe(new Object[][] { { Items.NETHER_WART },
 			{ ComponentTypes.EMPTY_DISK.getItemStack() } });
@@ -1219,10 +1128,14 @@ public class ModuleData {
 	//		this.icon = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName()).append("_icon").toString());
 	//	}
 
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIcon() {
-	//		return this.icon;
-	//	}
+	@SideOnly(Side.CLIENT)
+	public String getIcon() {
+		return this.icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
 	public enum SIDE {
 		NONE(Localization.MODULE_INFO.SIDE_NONE),
