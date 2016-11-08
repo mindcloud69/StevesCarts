@@ -6,6 +6,8 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -15,6 +17,8 @@ import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotBridge;
 
 public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
+	private static DataParameter<Boolean> BRIDGE = createDw(DataSerializers.BOOLEAN);
+	
 	public ModuleBridge(final MinecartModular cart) {
 		super(cart);
 	}
@@ -93,7 +97,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(BRIDGE, false);
 	}
 
 	@Override
@@ -102,14 +106,14 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	}
 
 	private void setBridge(final boolean val) {
-		this.updateDw(0, val ? 1 : 0);
+		this.updateDw(BRIDGE, val);
 	}
 
 	public boolean needBridge() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getNeedBridge();
 		}
-		return this.getDw(0) != 0;
+		return this.getDw(BRIDGE);
 	}
 
 	@Override

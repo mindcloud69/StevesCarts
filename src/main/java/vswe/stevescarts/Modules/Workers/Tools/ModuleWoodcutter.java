@@ -12,6 +12,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -35,6 +37,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	private ModulePlantSize plantSize;
 	private boolean isPlanting;
 	private float cutterAngle;
+	private static DataParameter<Boolean> IS_CUTTING = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleWoodcutter(final MinecartModular cart) {
 		super(cart);
@@ -288,7 +291,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(IS_CUTTING, false);
 	}
 
 	@Override
@@ -297,14 +300,14 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	}
 
 	private void setCutting(final boolean val) {
-		this.updateDw(0, (byte) (val ? 1 : 0));
+		this.updateDw(IS_CUTTING, val);
 	}
 
 	protected boolean isCutting() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getIsCutting();
 		}
-		return this.getDw(0) != 0;
+		return this.getDw(IS_CUTTING);
 	}
 
 	public float getCutterAngle() {

@@ -3,6 +3,8 @@ package vswe.stevescarts.Modules.Addons;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -23,6 +25,10 @@ public class ModuleLabel extends ModuleAddon {
 	private int delay;
 	private ArrayList<SlotBase> storageSlots;
 	private ModuleTool tool;
+	private static DataParameter<Integer> SECONDS = createDw(DataSerializers.VARINT);
+	private static DataParameter<Byte> USED = createDw(DataSerializers.BYTE);
+	private static DataParameter<Integer> DATA = createDw(DataSerializers.VARINT);
+	private static DataParameter<Byte> ACTIVE = createDw(DataSerializers.BYTE);
 
 	public ModuleLabel(final MinecartModular cart) {
 		super(cart);
@@ -48,7 +54,7 @@ public class ModuleLabel extends ModuleAddon {
 		this.labels.add(new LabelInformation(Localization.MODULES.ADDONS.FUEL) {
 			@Override
 			public String getLabel() {
-				int seconds = getIntDw(1);
+				int seconds = getDw(SECONDS);
 				if (seconds == -1) {
 					return Localization.MODULES.ADDONS.FUEL_NO_CONSUMPTION.translate();
 				}
@@ -62,7 +68,7 @@ public class ModuleLabel extends ModuleAddon {
 		this.labels.add(new LabelInformation(Localization.MODULES.ADDONS.STORAGE) {
 			@Override
 			public String getLabel() {
-				int used = getDw(2);
+				int used = getDw(USED);
 				if (used < 0) {
 					used += 256;
 				}
@@ -84,7 +90,7 @@ public class ModuleLabel extends ModuleAddon {
 							if (!ModuleLabel.this.tool.useDurability()) {
 								return Localization.MODULES.ADDONS.UNBREAKABLE.translate();
 							}
-							final int data = getIntDw(3);
+							final int data = getDw(DATA);
 							if (data == 0) {
 								return Localization.MODULES.ADDONS.BROKEN.translate();
 							}
@@ -153,11 +159,11 @@ public class ModuleLabel extends ModuleAddon {
 	}
 
 	private boolean isActive(final int i) {
-		return !this.isPlaceholder() && (this.getDw(0) & 1 << i) != 0x0;
+		return !this.isPlaceholder() && (this.getDw(ACTIVE) & 1 << i) != 0x0;
 	}
 
 	private void toggleActive(final int i) {
-		this.updateDw(0, this.getDw(0) ^ 1 << i);
+		this.updateDw(ACTIVE, (byte) (this.getDw(ACTIVE) ^ 1 << i));
 	}
 
 	@Override
@@ -171,11 +177,11 @@ public class ModuleLabel extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
-		this.addIntDw(1, 0);
-		this.addDw(2, 0);
+		registerDw(ACTIVE, (byte)0);
+		registerDw(SECONDS, 0);
+		registerDw(USED, (byte)0);
 		if (this.hasToolWithDurability()) {
-			this.addIntDw(3, -1);
+			registerDw(DATA, -1);
 		}
 	}
 
@@ -198,7 +204,7 @@ public class ModuleLabel extends ModuleAddon {
 							data /= consumption * 20;
 						}
 					}
-					this.updateIntDw(1, data);
+					this.updateDw(SECONDS, data);
 				}
 				if (this.isActive(4)) {
 					int data = 0;
@@ -207,21 +213,21 @@ public class ModuleLabel extends ModuleAddon {
 							++data;
 						}
 					}
-					this.updateDw(2, (byte) data);
+					this.updateDw(USED, (byte) data);
 				}
 				if (this.hasToolWithDurability()) {
 					if (this.isActive(5)) {
 						if (this.tool.isRepairing()) {
 							if (this.tool.isActuallyRepairing()) {
-								this.updateIntDw(3, -3 - this.tool.getRepairPercentage());
+								this.updateDw(DATA, -3 - this.tool.getRepairPercentage());
 							} else {
-								this.updateIntDw(3, -2);
+								this.updateDw(DATA, -2);
 							}
 						} else {
-							this.updateIntDw(3, this.tool.getCurrentDurability());
+							this.updateDw(DATA, this.tool.getCurrentDurability());
 						}
-					} else if (this.getIntDw(3) != -1) {
-						this.updateIntDw(3, -1);
+					} else if (this.getDw(DATA) != -1) {
+						this.updateDw(DATA, -1);
 					}
 				}
 				this.delay = 20;
@@ -287,11 +293,11 @@ public class ModuleLabel extends ModuleAddon {
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.updateDw(0, tagCompound.getByte(this.generateNBTName("Active", id)));
+		this.updateDw(ACTIVE, tagCompound.getByte(this.generateNBTName("Active", id)));
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("Active", id), this.getDw(0));
+		tagCompound.setByte(this.generateNBTName("Active", id), this.getDw(ACTIVE));
 	}
 }

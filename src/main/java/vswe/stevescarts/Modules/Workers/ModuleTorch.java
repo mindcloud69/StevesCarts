@@ -6,6 +6,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -20,6 +22,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	private int lightLimit;
 	private int[] boxRect;
 	boolean markerMoving;
+	private static DataParameter<Integer> TORCHES = createDw(DataSerializers.VARINT);
 
 	public ModuleTorch(final MinecartModular cart) {
 		super(cart);
@@ -210,7 +213,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(TORCHES, 0);
 	}
 
 	@Override
@@ -232,14 +235,14 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 		for (int i = 0; i < 3; ++i) {
 			val |= ((this.getStack(i) != null) ? 1 : 0) << i;
 		}
-		this.updateDw(0, val);
+		this.updateDw(TORCHES, val);
 	}
 
 	public int getTorches() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getTorchInfo();
 		}
-		return this.getDw(0);
+		return this.getDw(TORCHES);
 	}
 
 	@Override

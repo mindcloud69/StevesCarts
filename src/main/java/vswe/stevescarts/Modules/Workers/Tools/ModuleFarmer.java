@@ -9,6 +9,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -30,6 +32,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	private int farming;
 	private float farmAngle;
 	private float rigAngle;
+	private static DataParameter<Boolean> IS_FARMING = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleFarmer(final MinecartModular cart) {
 		super(cart);
@@ -254,7 +257,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(IS_FARMING, false);
 	}
 
 	@Override
@@ -264,14 +267,14 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 
 	private void setFarming(final int val) {
 		this.farming = val;
-		this.updateDw(0, (byte) ((val > 0) ? 1 : 0));
+		this.updateDw(IS_FARMING, val > 0);
 	}
 
 	protected boolean isFarming() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getIsFarming();
 		}
-		return this.getCart().isEngineBurning() && this.getDw(0) != 0;
+		return this.getCart().isEngineBurning() && this.getDw(IS_FARMING);
 	}
 
 	@Override

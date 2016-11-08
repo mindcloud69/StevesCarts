@@ -12,6 +12,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -40,6 +42,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	private float drillRotation;
 	private int miningCoolDown;
 	private int[] buttonRect;
+	private static DataParameter<Boolean> IS_MINING = createDw(DataSerializers.BOOLEAN);
+	private static DataParameter<Boolean> IS_ENABLED = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleDrill(final MinecartModular cart) {
 		super(cart);
@@ -315,18 +319,18 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	protected void startDrill() {
-		this.updateDw(0, 1);
+		this.updateDw(IS_MINING, true);
 	}
 
 	protected void stopDrill() {
-		this.updateDw(0, 0);
+		this.updateDw(IS_MINING, false);
 	}
 
 	protected boolean isMining() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getDrillSpinning();
 		}
-		return this.getDw(0) != 0;
+		return this.getDw(IS_MINING);
 	}
 
 	protected boolean isDrillSpinning() {
@@ -335,8 +339,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
-		this.addDw(1, 1);
+		registerDw(IS_MINING, false);
+		registerDw(IS_ENABLED, true);
 	}
 
 	@Override
@@ -349,11 +353,11 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	private boolean isDrillEnabled() {
-		return this.getDw(1) != 0;
+		return this.getDw(IS_ENABLED);
 	}
 
 	public void setDrillEnabled(final boolean val) {
-		this.updateDw(1, val ? 1 : 0);
+		this.updateDw(IS_ENABLED, val);
 	}
 
 	@Override

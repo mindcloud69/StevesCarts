@@ -7,6 +7,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -21,7 +23,8 @@ import java.util.ArrayList;
 public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	private boolean hasGeneratedAngles;
 	private float[] railAngles;
-
+	private static DataParameter<Byte> RAILS = createDw(DataSerializers.BYTE);
+	
 	public ModuleRailer(final MinecartModular cart) {
 		super(cart);
 		this.hasGeneratedAngles = false;
@@ -123,7 +126,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(RAILS, (byte)0);
 	}
 
 	@Override
@@ -147,14 +150,14 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 				++valid;
 			}
 		}
-		this.updateDw(0, valid);
+		this.updateDw(RAILS, valid);
 	}
 
 	public int getRails() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getRailCount();
 		}
-		return this.getDw(0);
+		return this.getDw(RAILS);
 	}
 
 	public float getRailAngle(final int i) {
