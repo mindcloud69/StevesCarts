@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import vswe.stevescarts.entitys.CartDataSerializers;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -17,7 +17,7 @@ public class ModuleColorizer extends ModuleAddon {
 	private int markerMoving;
 	private static DataParameter<int[]> COLORS = createDw(CartDataSerializers.VARINT);
 
-	public ModuleColorizer(final MinecartModular cart) {
+	public ModuleColorizer(final EntityMinecartModular cart) {
 		super(cart);
 		this.markerOffsetX = 10;
 		this.scrollWidth = 64;

@@ -1,9 +1,9 @@
 package vswe.stevescarts.modules.storages.tanks;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleInternalTank extends ModuleTank {
-	public ModuleInternalTank(final MinecartModular cart) {
+	public ModuleInternalTank(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

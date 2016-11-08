@@ -8,11 +8,11 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleCleaner extends ModuleBase {
-	public ModuleCleaner(final MinecartModular cart) {
+	public ModuleCleaner(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

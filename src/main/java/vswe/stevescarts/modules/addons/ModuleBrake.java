@@ -6,7 +6,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -17,7 +17,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	private int[] turnbackRect;
 	private static DataParameter<Boolean> FORGE_STOPPING = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleBrake(final MinecartModular cart) {
+	public ModuleBrake(final EntityMinecartModular cart) {
 		super(cart);
 		this.startstopRect = new int[] { 15, 20, 24, 12 };
 		this.turnbackRect = new int[] { this.startstopRect[0] + this.startstopRect[2] + 5, this.startstopRect[1], this.startstopRect[2], this.startstopRect[3] };

@@ -4,10 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleFireball extends ModuleProjectile {
-	public ModuleFireball(final MinecartModular cart) {
+	public ModuleFireball(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

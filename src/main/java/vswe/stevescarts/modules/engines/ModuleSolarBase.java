@@ -5,7 +5,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -20,7 +20,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private static DataParameter<Integer> LIGHT = createDw(DataSerializers.VARINT);
 	private static DataParameter<Boolean> UP_STATE = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleSolarBase(final MinecartModular cart) {
+	public ModuleSolarBase(final EntityMinecartModular cart) {
 		super(cart);
 		this.down = true;
 	}

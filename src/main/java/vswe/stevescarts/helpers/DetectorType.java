@@ -11,21 +11,21 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.BlockRailAdvDetector;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public enum DetectorType implements IStringSerializable {
 	NORMAL(0, true, false, true, new String[] { "detector_manager_bot", "detector_manager_top", "detector_manager_yellow", "detector_manager_blue", "detector_manager_green", "detector_manager_red" }),
 	UNIT(1, false, false, false, new String[] { "detector_manager_bot", "detector_manager_bot", "detector_unit_yellow", "detector_unit_blue", "detector_unit_green", "detector_unit_red" }),
 	STOP(2, true, true, false, new String[] { "detector_manager_bot", "detector_station_top", "detector_station_yellow", "detector_station_blue", "detector_station_green", "detector_station_red" }) {
 		@Override
-		public void activate(final TileEntityDetector detector, final MinecartModular cart) {
+		public void activate(final TileEntityDetector detector, final EntityMinecartModular cart) {
 			cart.releaseCart();
 		}
 	},
 	JUNCTION(3, true, false, false, new String[] { "detector_manager_bot", "detector_junction_top", "detector_junction_yellow", "detector_junction_blue", "detector_junction_green",
 	"detector_junction_red" }) {
 		@Override
-		public void activate(final TileEntityDetector detector, final MinecartModular cart) {
+		public void activate(final TileEntityDetector detector, final EntityMinecartModular cart) {
 			this.update(detector, true);
 		}
 
@@ -113,7 +113,7 @@ public enum DetectorType implements IStringSerializable {
 		return this.emitRedstone;
 	}
 
-	public void activate(final TileEntityDetector detector, final MinecartModular cart) {
+	public void activate(final TileEntityDetector detector, final EntityMinecartModular cart) {
 	}
 
 	public void deactivate(final TileEntityDetector detector) {

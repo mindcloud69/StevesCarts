@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.items.ItemCarts;
 
 public abstract class CartVersion {
@@ -16,7 +16,7 @@ public abstract class CartVersion {
 
 	public abstract void update(final ArrayList<Byte> p0);
 
-	public static byte[] updateCart(final MinecartModular cart, byte[] data) {
+	public static byte[] updateCart(final EntityMinecartModular cart, byte[] data) {
 		if (cart.cartVersion != getCurrentVersion()) {
 			data = updateArray(data, cart.cartVersion);
 			cart.cartVersion = (byte) getCurrentVersion();

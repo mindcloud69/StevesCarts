@@ -1,4 +1,4 @@
-package vswe.stevescarts.helpers;
+package vswe.stevescarts.handlers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;

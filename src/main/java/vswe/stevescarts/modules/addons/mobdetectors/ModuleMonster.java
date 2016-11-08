@@ -8,11 +8,11 @@ import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntityWolf;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleMonster extends ModuleMobdetector {
-	public ModuleMonster(final MinecartModular cart) {
+	public ModuleMonster(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

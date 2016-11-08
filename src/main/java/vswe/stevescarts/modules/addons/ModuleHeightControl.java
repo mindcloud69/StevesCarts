@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.HeightControlOre;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -20,7 +20,7 @@ public class ModuleHeightControl extends ModuleAddon {
 	private int oreMapY;
 	private static DataParameter<Integer> Y_TARGET = createDw(DataSerializers.VARINT);
 
-	public ModuleHeightControl(final MinecartModular cart) {
+	public ModuleHeightControl(final EntityMinecartModular cart) {
 		super(cart);
 		this.levelNumberBoxX = 8;
 		this.levelNumberBoxY = 18;

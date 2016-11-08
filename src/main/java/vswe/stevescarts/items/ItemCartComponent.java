@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
+import vswe.stevescarts.entitys.EntityEasterEgg;
 import vswe.stevescarts.helpers.ComponentTypes;
-import vswe.stevescarts.helpers.EntityEasterEgg;
 
 public class ItemCartComponent extends Item {
 	//	private IIcon[] icons;

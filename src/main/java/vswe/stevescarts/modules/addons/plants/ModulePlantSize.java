@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -14,7 +14,7 @@ public class ModulePlantSize extends ModuleAddon {
 	private int size;
 	private int[] boxrect;
 
-	public ModulePlantSize(final MinecartModular cart) {
+	public ModulePlantSize(final EntityMinecartModular cart) {
 		super(cart);
 		this.size = 1;
 		this.boxrect = new int[] { 10, 18, 44, 44 };

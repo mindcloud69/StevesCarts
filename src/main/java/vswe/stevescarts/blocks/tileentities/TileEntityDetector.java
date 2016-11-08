@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDetector;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiDetector;
 import vswe.stevescarts.helpers.DetectorType;
@@ -239,11 +239,11 @@ public class TileEntityDetector extends TileEntityBase {
 		this.mainObj.generatePosition(5, 60, 245, 0);
 	}
 
-	public boolean evaluate(final MinecartModular cart, final int depth) {
+	public boolean evaluate(final EntityMinecartModular cart, final int depth) {
 		return this.mainObj.evaluateLogicTree(this, cart, depth);
 	}
 
-	public void handleCart(final MinecartModular cart) {
+	public void handleCart(final EntityMinecartModular cart) {
 		final boolean truthValue = this.evaluate(cart, 0);
 		IBlockState blockState = worldObj.getBlockState(pos);
 		int meta = blockState.getBlock().getMetaFromState(blockState);

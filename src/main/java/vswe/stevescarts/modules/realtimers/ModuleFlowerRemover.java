@@ -9,7 +9,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IShearable;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleFlowerRemover extends ModuleBase {
@@ -17,7 +17,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 	private float bladeangle;
 	private float bladespeed;
 
-	public ModuleFlowerRemover(final MinecartModular cart) {
+	public ModuleFlowerRemover(final EntityMinecartModular cart) {
 		super(cart);
 		this.bladespeed = 0.0f;
 	}

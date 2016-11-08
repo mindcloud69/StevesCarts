@@ -4,7 +4,7 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleRocket extends ModuleBase {
@@ -20,7 +20,7 @@ public class ModuleRocket extends ModuleBase {
 	//TODO: Find a name
 	private static DataParameter<Integer> UNKNOWN = createDw(DataSerializers.VARINT);
 
-	public ModuleRocket(final MinecartModular cart) {
+	public ModuleRocket(final EntityMinecartModular cart) {
 		super(cart);
 	}
 
@@ -45,13 +45,13 @@ public class ModuleRocket extends ModuleBase {
 			if (!this.isLanding || this.landDirX == 0) {
 				this.getCart().posX = this.flyX;
 			} else {
-				final MinecartModular cart = this.getCart();
+				final EntityMinecartModular cart = this.getCart();
 				cart.posX += this.getCart().motionX;
 			}
 			if (!this.isLanding || this.landDirZ == 0) {
 				this.getCart().posZ = this.flyZ;
 			} else {
-				final MinecartModular cart2 = this.getCart();
+				final EntityMinecartModular cart2 = this.getCart();
 				cart2.posZ += this.getCart().motionZ;
 			}
 			this.getCart().rotationYaw = this.yaw;

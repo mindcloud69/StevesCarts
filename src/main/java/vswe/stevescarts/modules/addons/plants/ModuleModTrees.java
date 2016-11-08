@@ -7,12 +7,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ITreeModule;
 import vswe.stevescarts.modules.addons.ModuleAddon;
 
 public class ModuleModTrees extends ModuleAddon implements ITreeModule {
-	public ModuleModTrees(final MinecartModular cart) {
+	public ModuleModTrees(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

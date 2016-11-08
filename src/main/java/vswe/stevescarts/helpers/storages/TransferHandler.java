@@ -1,4 +1,4 @@
-package vswe.stevescarts.helpers;
+package vswe.stevescarts.helpers.storages;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;

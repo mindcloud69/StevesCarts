@@ -15,14 +15,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotLiquidInput;
 import vswe.stevescarts.containers.slots.SlotLiquidOutput;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ColorHelper;
-import vswe.stevescarts.helpers.ITankHolder;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
-import vswe.stevescarts.helpers.Tank;
+import vswe.stevescarts.helpers.storages.ITankHolder;
+import vswe.stevescarts.helpers.storages.Tank;
 import vswe.stevescarts.modules.storages.ModuleStorage;
 
 public abstract class ModuleTank extends ModuleStorage implements IFluidTank, ITankHolder {
@@ -32,7 +32,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	private static DataParameter<String> FLUID_NAME = createDw(DataSerializers.STRING);
 	private static DataParameter<Integer> FLUID_AMOUNT = createDw(DataSerializers.VARINT);
 
-	public ModuleTank(final MinecartModular cart) {
+	public ModuleTank(final EntityMinecartModular cart) {
 		super(cart);
 		this.tankBounds = new int[] { 35, 20, 36, 51 };
 		this.tank = new Tank(this, this.getTankSize(), 0);

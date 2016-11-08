@@ -1,9 +1,9 @@
 package vswe.stevescarts.modules.engines;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleThermalStandard extends ModuleThermalBase {
-	public ModuleThermalStandard(final MinecartModular cart) {
+	public ModuleThermalStandard(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

@@ -30,7 +30,7 @@ import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityBase;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerMinecart;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 
 public class PacketHandler {
@@ -62,7 +62,7 @@ public class PacketHandler {
 					data2[j] = reader.readByte();
 				}
 				final World world2 = player.worldObj;
-				final MinecartModular cart = this.getCart(entityid, world2);
+				final EntityMinecartModular cart = this.getCart(entityid, world2);
 				if (cart != null) {
 					this.receivePacketAtCart(cart, id, data2, player);
 				}
@@ -88,7 +88,7 @@ public class PacketHandler {
 				for (int i = 0; i < len; ++i) {
 					data[i] = reader.readByte();
 				}
-				final MinecartModular cart = this.getCart(entityid, world);
+				final EntityMinecartModular cart = this.getCart(entityid, world);
 				if (cart != null) {
 					this.receivePacketAtCart(cart, id, data, player);
 				}
@@ -101,7 +101,7 @@ public class PacketHandler {
 				final Container con = player.openContainer;
 				if (con instanceof ContainerMinecart) {
 					final ContainerMinecart conMC = (ContainerMinecart) con;
-					final MinecartModular cart2 = conMC.cart;
+					final EntityMinecartModular cart2 = conMC.cart;
 					this.receivePacketAtCart(cart2, id, data2, player);
 				} else if (con instanceof ContainerBase) {
 					final ContainerBase conBase = (ContainerBase) con;
@@ -116,7 +116,7 @@ public class PacketHandler {
 		}
 	}
 
-	private void receivePacketAtCart(final MinecartModular cart, final int id, final byte[] data, final EntityPlayer player) {
+	private void receivePacketAtCart(final EntityMinecartModular cart, final int id, final byte[] data, final EntityPlayer player) {
 		for (final ModuleBase module : cart.getModules()) {
 			if (id >= module.getPacketStart() && id < module.getPacketStart() + module.totalNumberOfPackets()) {
 				module.delegateReceivedPacket(id - module.getPacketStart(), data, player);
@@ -125,10 +125,10 @@ public class PacketHandler {
 		}
 	}
 
-	private MinecartModular getCart(final int ID, final World world) {
+	private EntityMinecartModular getCart(final int ID, final World world) {
 		for (final Object e : world.loadedEntityList) {
-			if (e instanceof Entity && ((Entity) e).getEntityId() == ID && e instanceof MinecartModular) {
-				return (MinecartModular) e;
+			if (e instanceof Entity && ((Entity) e).getEntityId() == ID && e instanceof EntityMinecartModular) {
+				return (EntityMinecartModular) e;
 			}
 		}
 		return null;
@@ -151,7 +151,7 @@ public class PacketHandler {
 		return new FMLProxyPacket(new PacketBuffer(buf), "SC2");
 	}
 
-	public static void sendPacket(final MinecartModular cart, final int id, final byte[] extraData) {
+	public static void sendPacket(final EntityMinecartModular cart, final int id, final byte[] extraData) {
 		final ByteArrayOutputStream bs = new ByteArrayOutputStream();
 		final DataOutputStream ds = new DataOutputStream(bs);
 		try {
@@ -164,7 +164,7 @@ public class PacketHandler {
 		StevesCarts.packetHandler.sendToServer(createPacket(bs.toByteArray()));
 	}
 
-	public static void sendPacketToPlayer(final int id, final byte[] data, final EntityPlayer player, final MinecartModular cart) {
+	public static void sendPacketToPlayer(final int id, final byte[] data, final EntityPlayer player, final EntityMinecartModular cart) {
 		final ByteArrayOutputStream bs = new ByteArrayOutputStream();
 		final DataOutputStream ds = new DataOutputStream(bs);
 		try {

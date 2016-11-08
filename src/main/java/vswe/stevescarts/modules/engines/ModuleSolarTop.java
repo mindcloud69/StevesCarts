@@ -1,6 +1,6 @@
 package vswe.stevescarts.modules.engines;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public abstract class ModuleSolarTop extends ModuleSolarBase {
 	private float minVal;
@@ -10,7 +10,7 @@ public abstract class ModuleSolarTop extends ModuleSolarBase {
 	private float innerRotation;
 	private float movingLevel;
 
-	public ModuleSolarTop(final MinecartModular cart) {
+	public ModuleSolarTop(final EntityMinecartModular cart) {
 		super(cart);
 		this.minVal = -4.0f;
 		this.maxVal = -13.0f;

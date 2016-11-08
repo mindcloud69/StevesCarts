@@ -8,7 +8,7 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class MinecartSoundMuter {
 	public MinecartSoundMuter() {
@@ -21,15 +21,15 @@ public class MinecartSoundMuter {
 		if (sound instanceof MovingSoundMinecartRiding) {
 			final MovingSoundMinecartRiding cartSound = (MovingSoundMinecartRiding) sound;
 			final EntityMinecart cart = (EntityMinecart) ReflectionHelper.getPrivateValue((Class) MovingSoundMinecartRiding.class, cartSound, 1);
-			if (cart instanceof MinecartModular) {
-				final MinecartModular modular = (MinecartModular) cart;
+			if (cart instanceof EntityMinecartModular) {
+				final EntityMinecartModular modular = (EntityMinecartModular) cart;
 				modular.setSound(cartSound, true);
 			}
 		} else if (sound instanceof MovingSoundMinecart) {
 			final MovingSoundMinecart cartSound2 = (MovingSoundMinecart) sound;
 			final EntityMinecart cart = (EntityMinecart) ReflectionHelper.getPrivateValue((Class) MovingSoundMinecart.class, cartSound2, 0);
-			if (cart instanceof MinecartModular) {
-				final MinecartModular modular = (MinecartModular) cart;
+			if (cart instanceof EntityMinecartModular) {
+				final EntityMinecartModular modular = (EntityMinecartModular) cart;
 				modular.setSound(cartSound2, false);
 			}
 		}

@@ -2,7 +2,7 @@ package vswe.stevescarts.modules.addons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -19,7 +19,7 @@ public class ModuleDrillIntelligence extends ModuleAddon {
 	private boolean clicked;
 	private int lastId;
 
-	public ModuleDrillIntelligence(final MinecartModular cart) {
+	public ModuleDrillIntelligence(final EntityMinecartModular cart) {
 		super(cart);
 		this.guiW = -1;
 		this.guiH = -1;

@@ -13,7 +13,7 @@ import vswe.stevescarts.containers.slots.SlotLiquidOutput;
 import vswe.stevescarts.containers.slots.SlotLiquidUpgradeInput;
 import vswe.stevescarts.guis.GuiUpgrade;
 import vswe.stevescarts.helpers.ResourceHelper;
-import vswe.stevescarts.helpers.Tank;
+import vswe.stevescarts.helpers.storages.Tank;
 
 public abstract class TankEffect extends InventoryEffect {
 	private static final int tankInterfaceX = 35;

@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.ModBlocks;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -43,7 +43,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	private static DataParameter<Boolean> IS_MINING = createDw(DataSerializers.BOOLEAN);
 	private static DataParameter<Boolean> IS_ENABLED = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleDrill(final MinecartModular cart) {
+	public ModuleDrill(final EntityMinecartModular cart) {
 		super(cart);
 		this.sensorLight = 1;
 		this.buttonRect = new int[] { 15, 30, 24, 12 };

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotCake;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -25,7 +25,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 	private int[] rect;
 	private static DataParameter<Integer> BUFFER = createDw(DataSerializers.VARINT);
 
-	public ModuleCakeServer(final MinecartModular cart) {
+	public ModuleCakeServer(final EntityMinecartModular cart) {
 		super(cart);
 		this.cooldown = 0;
 		this.rect = new int[] { 40, 20, 13, 36 };

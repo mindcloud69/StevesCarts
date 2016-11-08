@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.tileentities.TileEntityBase;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferHandler;
 
 public abstract class ContainerBase extends Container {
 	public abstract IInventory getMyInventory();

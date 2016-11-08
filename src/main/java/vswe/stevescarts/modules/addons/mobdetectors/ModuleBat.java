@@ -2,11 +2,11 @@ package vswe.stevescarts.modules.addons.mobdetectors;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityBat;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleBat extends ModuleMobdetector {
-	public ModuleBat(final MinecartModular cart) {
+	public ModuleBat(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

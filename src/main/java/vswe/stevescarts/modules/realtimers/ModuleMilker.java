@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotMilker;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.modules.ModuleBase;
 
@@ -17,7 +17,7 @@ public class ModuleMilker extends ModuleBase {
 	int cooldown;
 	int milkbuffer;
 
-	public ModuleMilker(final MinecartModular cart) {
+	public ModuleMilker(final EntityMinecartModular cart) {
 		super(cart);
 		this.cooldown = 0;
 		this.milkbuffer = 0;

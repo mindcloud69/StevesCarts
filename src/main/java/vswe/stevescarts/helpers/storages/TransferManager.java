@@ -1,18 +1,18 @@
-package vswe.stevescarts.helpers;
+package vswe.stevescarts.helpers.storages;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
-public class ManagerTransfer {
+public class TransferManager {
 	private int side;
 	private int setting;
 	private int lastsetting;
 	private int lowestsetting;
 	private int workload;
-	private MinecartModular cart;
+	private EntityMinecartModular cart;
 	private boolean toCartEnabled;
 	private boolean fromCartEnabled;
 
-	public ManagerTransfer() {
+	public TransferManager() {
 		this.reset();
 	}
 
@@ -67,11 +67,11 @@ public class ManagerTransfer {
 		this.workload = val;
 	}
 
-	public MinecartModular getCart() {
+	public EntityMinecartModular getCart() {
 		return this.cart;
 	}
 
-	public void setCart(final MinecartModular val) {
+	public void setCart(final EntityMinecartModular val) {
 		this.cart = val;
 	}
 

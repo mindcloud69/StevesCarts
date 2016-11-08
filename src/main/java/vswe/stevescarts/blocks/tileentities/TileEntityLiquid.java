@@ -22,13 +22,13 @@ import vswe.stevescarts.containers.ContainerManager;
 import vswe.stevescarts.containers.slots.SlotLiquidFilter;
 import vswe.stevescarts.containers.slots.SlotLiquidManagerInput;
 import vswe.stevescarts.containers.slots.SlotLiquidOutput;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiLiquid;
-import vswe.stevescarts.helpers.ITankHolder;
-import vswe.stevescarts.helpers.ManagerTransfer;
-import vswe.stevescarts.helpers.Tank;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.ITankHolder;
+import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.modules.storages.tanks.ModuleTank;
 
 public class TileEntityLiquid extends TileEntityManager implements IFluidHandler, ITankHolder {
@@ -174,12 +174,12 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	@Override
-	protected boolean isTargetValid(final ManagerTransfer transfer) {
+	protected boolean isTargetValid(final TransferManager transfer) {
 		return true;
 	}
 
 	@Override
-	protected boolean doTransfer(final ManagerTransfer transfer) {
+	protected boolean doTransfer(final TransferManager transfer) {
 		final int maximumToTransfer = this.hasMaxAmount(transfer.getSetting()) ? Math.min(this.getMaxAmount(transfer.getSetting()) - transfer.getWorkload(), 1000) : 1000;
 		boolean sucess = false;
 		if (this.toCart[transfer.getSetting()]) {
@@ -219,7 +219,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		return sucess;
 	}
 
-	private int fillTank(final MinecartModular cart, final int tankId, final int sideId, int fillAmount, final boolean doFill) {
+	private int fillTank(final EntityMinecartModular cart, final int tankId, final int sideId, int fillAmount, final boolean doFill) {
 		if (this.isTankValid(tankId, sideId)) {
 			final FluidStack fluidToFill = this.tanks[tankId].drain(fillAmount, doFill);
 			if (fluidToFill == null) {

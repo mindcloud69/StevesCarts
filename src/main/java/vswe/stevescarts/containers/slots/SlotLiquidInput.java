@@ -3,7 +3,7 @@ package vswe.stevescarts.containers.slots;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import vswe.stevescarts.helpers.Tank;
+import vswe.stevescarts.helpers.storages.Tank;
 
 public class SlotLiquidInput extends SlotBase {
 	private Tank tank;

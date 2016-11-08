@@ -10,7 +10,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotTorch;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ISuppliesModule;
@@ -22,7 +22,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	boolean markerMoving;
 	private static DataParameter<Integer> TORCHES = createDw(DataSerializers.VARINT);
 
-	public ModuleTorch(final MinecartModular cart) {
+	public ModuleTorch(final EntityMinecartModular cart) {
 		super(cart);
 		this.lightLimit = 8;
 		this.boxRect = new int[] { 12, this.guiHeight() - 10, 46, 9 };

@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -15,7 +15,7 @@ public class ModuleSeat extends ModuleBase {
 	private boolean relative;
 	private float chairAngle;
 
-	public ModuleSeat(final MinecartModular cart) {
+	public ModuleSeat(final EntityMinecartModular cart) {
 		super(cart);
 		this.buttonRect = new int[] { 20, 20, 24, 12 };
 	}

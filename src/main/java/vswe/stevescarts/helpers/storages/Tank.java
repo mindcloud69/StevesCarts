@@ -1,4 +1,4 @@
-package vswe.stevescarts.helpers;
+package vswe.stevescarts.helpers.storages;
 
 import org.lwjgl.opengl.GL11;
 
@@ -12,6 +12,10 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.guis.GuiBase;
+import vswe.stevescarts.helpers.IconData;
+import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.Localization.MODULES;
+import vswe.stevescarts.helpers.Localization.MODULES.TANKS;
 
 public class Tank implements IFluidTank {
 	private FluidStack fluid;

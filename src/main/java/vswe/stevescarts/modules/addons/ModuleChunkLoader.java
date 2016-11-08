@@ -6,7 +6,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.IActivatorModule;
@@ -16,7 +16,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	private int[] buttonRect;
 	private static DataParameter<Boolean> LOADING_CHUNK = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleChunkLoader(final MinecartModular cart) {
+	public ModuleChunkLoader(final EntityMinecartModular cart) {
 		super(cart);
 		this.buttonRect = new int[] { 20, 20, 24, 12 };
 	}

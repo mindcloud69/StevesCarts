@@ -9,7 +9,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.IFluidBlock;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.workers.ModuleLiquidDrainer;
 import vswe.stevescarts.modules.workers.tools.ModuleDrill;
@@ -20,7 +20,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 	private int mult;
 	private static DataParameter<Byte> SENSOR_INFO = createDw(DataSerializers.BYTE);
 
-	public ModuleLiquidSensors(final MinecartModular cart) {
+	public ModuleLiquidSensors(final EntityMinecartModular cart) {
 		super(cart);
 		this.activetime = -1;
 		this.mult = 1;

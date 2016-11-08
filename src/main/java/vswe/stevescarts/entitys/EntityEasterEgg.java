@@ -1,4 +1,4 @@
-package vswe.stevescarts.helpers;
+package vswe.stevescarts.entitys;
 
 import java.util.ArrayList;
 
@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import vswe.stevescarts.helpers.GiftItem;
 
 public class EntityEasterEgg extends EntityEgg {
 	public EntityEasterEgg(final World world) {

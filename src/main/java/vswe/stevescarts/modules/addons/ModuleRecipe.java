@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotChest;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -27,7 +27,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	private int maxItemCount;
 	private int mode;
 
-	public ModuleRecipe(final MinecartModular cart) {
+	public ModuleRecipe(final EntityMinecartModular cart) {
 		super(cart);
 		this.maxItemCount = 1;
 		this.target = 3;

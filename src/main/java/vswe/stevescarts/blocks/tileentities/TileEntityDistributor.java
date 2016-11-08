@@ -27,7 +27,7 @@ import vswe.stevescarts.guis.GuiDistributor;
 import vswe.stevescarts.helpers.DistributorSetting;
 import vswe.stevescarts.helpers.DistributorSide;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.helpers.Tank;
+import vswe.stevescarts.helpers.storages.Tank;
 
 public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler {
 	private ArrayList<DistributorSide> sides;

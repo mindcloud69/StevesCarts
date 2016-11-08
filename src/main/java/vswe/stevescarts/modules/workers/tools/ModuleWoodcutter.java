@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFuel;
 import vswe.stevescarts.containers.slots.SlotSapling;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.BlockPosHelpers;
 import vswe.stevescarts.helpers.Localization;
@@ -36,7 +36,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	private float cutterAngle;
 	private static DataParameter<Boolean> IS_CUTTING = createDw(DataSerializers.BOOLEAN);
 
-	public ModuleWoodcutter(final MinecartModular cart) {
+	public ModuleWoodcutter(final EntityMinecartModular cart) {
 		super(cart);
 		this.cutterAngle = 0.7853982f;
 	}

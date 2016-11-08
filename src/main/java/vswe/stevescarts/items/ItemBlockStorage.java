@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.helpers.ComponentTypes;
-import vswe.stevescarts.helpers.StorageBlock;
+import vswe.stevescarts.helpers.storages.StorageBlock;
 
 public class ItemBlockStorage extends ItemBlock {
 	public static StorageBlock[] blocks;

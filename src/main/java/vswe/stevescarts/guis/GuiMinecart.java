@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.slots.SlotBase;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.ModuleCountPair;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
@@ -21,15 +21,15 @@ public class GuiMinecart extends GuiBase {
 	public static ResourceLocation moduleTexture;
 	private boolean isScrolling;
 	private int[] scrollBox;
-	private MinecartModular cart;
+	private EntityMinecartModular cart;
 
-	public GuiMinecart(final InventoryPlayer invPlayer, final MinecartModular cart) {
+	public GuiMinecart(final InventoryPlayer invPlayer, final EntityMinecartModular cart) {
 		super(cart.getCon(invPlayer));
 		this.scrollBox = new int[] { 450, 15, 18, 225 };
 		this.setup(cart);
 	}
 
-	protected void setup(final MinecartModular cart) {
+	protected void setup(final EntityMinecartModular cart) {
 		this.cart = cart;
 		this.setXSize(478);
 		this.setYSize(256);

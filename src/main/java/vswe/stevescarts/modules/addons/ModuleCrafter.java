@@ -6,15 +6,15 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotCartCrafter;
 import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
-import vswe.stevescarts.helpers.CraftingDummy;
+import vswe.stevescarts.helpers.crafting.CraftingDummy;
 
 public class ModuleCrafter extends ModuleRecipe {
 	private CraftingDummy dummy;
 	private int cooldown;
 
-	public ModuleCrafter(final MinecartModular cart) {
+	public ModuleCrafter(final EntityMinecartModular cart) {
 		super(cart);
 		this.cooldown = 0;
 		this.dummy = new CraftingDummy(this);

@@ -18,7 +18,7 @@ import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.blocks.tileentities.TileEntityManager;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.DetectorType;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.upgrades.BaseEffect;
@@ -55,10 +55,10 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 
 	@Override
 	public void onMinecartPass(World world, EntityMinecart entityMinecart, BlockPos pos) {
-		if (world.isRemote || !(entityMinecart instanceof MinecartModular)) {
+		if (world.isRemote || !(entityMinecart instanceof EntityMinecartModular)) {
 			return;
 		}
-		final MinecartModular cart = (MinecartModular) entityMinecart;
+		final EntityMinecartModular cart = (EntityMinecartModular) entityMinecart;
 		if (world.getBlockState(pos.down()).getBlock() == ModBlocks.DETECTOR_UNIT.getBlock() && DetectorType.getTypeFromSate(world.getBlockState(pos.down())).canInteractWithCart()) {
 			final TileEntity tileentity = world.getTileEntity(pos.down());
 			if (tileentity != null && tileentity instanceof TileEntityDetector) {
@@ -198,7 +198,7 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 		return true;
 	}
 
-	private boolean isCartReadyForAction(final MinecartModular cart, BlockPos pos) {
+	private boolean isCartReadyForAction(final EntityMinecartModular cart, BlockPos pos) {
 		return cart.disabledPos.equals(pos) && cart.isDisabled();
 	}
 

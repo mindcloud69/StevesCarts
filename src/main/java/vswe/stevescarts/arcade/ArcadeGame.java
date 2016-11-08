@@ -7,8 +7,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.guis.GuiMinecart;
+import vswe.stevescarts.handlers.SoundHandler;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.helpers.SoundHandler;
 import vswe.stevescarts.modules.realtimers.ModuleArcade;
 
 public abstract class ArcadeGame {

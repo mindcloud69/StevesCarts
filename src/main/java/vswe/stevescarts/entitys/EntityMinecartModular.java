@@ -53,12 +53,10 @@ import vswe.stevescarts.containers.ContainerMinecart;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ActivatorOption;
 import vswe.stevescarts.helpers.CartVersion;
-import vswe.stevescarts.helpers.CompWorkModule;
 import vswe.stevescarts.helpers.DetectorType;
-import vswe.stevescarts.helpers.EntityDataManagerLockable;
 import vswe.stevescarts.helpers.GuiAllocationHelper;
 import vswe.stevescarts.helpers.ModuleCountPair;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.IActivatorModule;
@@ -68,10 +66,11 @@ import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.engines.ModuleEngine;
 import vswe.stevescarts.modules.storages.chests.ModuleChest;
 import vswe.stevescarts.modules.storages.tanks.ModuleTank;
+import vswe.stevescarts.modules.workers.CompWorkModule;
 import vswe.stevescarts.modules.workers.ModuleWorker;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
 
-public class MinecartModular extends EntityMinecart implements IInventory, IEntityAdditionalSpawnData, IFluidHandler {
+public class EntityMinecartModular extends EntityMinecart implements IInventory, IEntityAdditionalSpawnData, IFluidHandler {
 
 	public BlockPos disabledPos;
 	protected boolean wasDisabled;
@@ -138,9 +137,9 @@ public class MinecartModular extends EntityMinecart implements IInventory, IEnti
 		return this.moduleCounts;
 	}
 
-	private static final DataParameter<Boolean> CART_FLAG = EntityDataManager.<Boolean> createKey(MinecartModular.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> CART_FLAG = EntityDataManager.<Boolean> createKey(EntityMinecartModular.class, DataSerializers.BOOLEAN);
 
-	public MinecartModular(final World world, final double x, final double y, final double z, final NBTTagCompound info, final String name) {
+	public EntityMinecartModular(final World world, final double x, final double y, final double z, final NBTTagCompound info, final String name) {
 		super(world, x, y, z);
 		this.engineFlag = false;
 		this.fixedRailDirection = null;
@@ -155,14 +154,14 @@ public class MinecartModular extends EntityMinecart implements IInventory, IEnti
 		}
 	}
 
-	public MinecartModular(final World world) {
+	public EntityMinecartModular(final World world) {
 		super(world);
 		this.engineFlag = false;
 		this.fixedRailDirection = null;
 		this.rand = new Random();
 	}
 
-	public MinecartModular(final World world, final TileEntityCartAssembler assembler, final byte[] data) {
+	public EntityMinecartModular(final World world, final TileEntityCartAssembler assembler, final byte[] data) {
 		this(world);
 		this.setPlaceholder(assembler);
 		this.loadPlaceholderModules(data);
@@ -244,7 +243,7 @@ public class MinecartModular extends EntityMinecart implements IInventory, IEnti
 		for (final byte id : bytes) {
 			try {
 				final Class<? extends ModuleBase> moduleClass = ModuleData.getList().get(id).getModuleClass();
-				final Constructor moduleConstructor = moduleClass.getConstructor(MinecartModular.class);
+				final Constructor moduleConstructor = moduleClass.getConstructor(EntityMinecartModular.class);
 				final Object moduleObject = moduleConstructor.newInstance(this);
 				final ModuleBase module = (ModuleBase) moduleObject;
 				module.setModuleId(id);

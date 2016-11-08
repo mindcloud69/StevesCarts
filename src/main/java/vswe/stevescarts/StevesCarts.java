@@ -13,14 +13,14 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
-import vswe.stevescarts.entitys.MinecartModular;
-import vswe.stevescarts.helpers.CraftingHandler;
+import vswe.stevescarts.entitys.EntityCake;
+import vswe.stevescarts.entitys.EntityEasterEgg;
+import vswe.stevescarts.entitys.EntityMinecartModular;
+import vswe.stevescarts.handlers.TradeHandler;
+import vswe.stevescarts.handlers.WoodFuelHandler;
 import vswe.stevescarts.helpers.CreativeTabSC2;
-import vswe.stevescarts.helpers.EntityCake;
-import vswe.stevescarts.helpers.EntityEasterEgg;
 import vswe.stevescarts.helpers.GiftItem;
-import vswe.stevescarts.helpers.TradeHandler;
-import vswe.stevescarts.helpers.WoodFuelHandler;
+import vswe.stevescarts.helpers.crafting.CraftingHandler;
 import vswe.stevescarts.items.ItemBlockStorage;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.listeners.ChunkListener;
@@ -72,7 +72,7 @@ public class StevesCarts {
 		ModBlocks.init();
 		ModItems.postBlockInit(config);
 		AssemblerUpgrade.init();
-		this.initCart(0, MinecartModular.class);
+		this.initCart(0, EntityMinecartModular.class);
 		EntityRegistry.registerModEntity(EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
 		StevesCarts.proxy.soundInit();
@@ -102,7 +102,7 @@ public class StevesCarts {
 		ModBlocks.addRecipes();
 	}
 
-	private void initCart(final int ID, final Class<? extends MinecartModular> cart) {
+	private void initCart(final int ID, final Class<? extends EntityMinecartModular> cart) {
 		EntityRegistry.registerModEntity(cart, "Minecart.Vswe." + ID, ID, StevesCarts.instance, 80, 3, true);
 	}
 

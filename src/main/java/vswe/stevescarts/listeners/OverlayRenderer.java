@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class OverlayRenderer {
 	public OverlayRenderer() {
@@ -25,8 +25,8 @@ public class OverlayRenderer {
 	private void renderOverlay() {
 		final Minecraft minecraft = Minecraft.getMinecraft();
 		final EntityPlayer player = minecraft.thePlayer;
-		if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof MinecartModular) {
-			((MinecartModular) player.getRidingEntity()).renderOverlay(minecraft);
+		if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityMinecartModular) {
+			((EntityMinecartModular) player.getRidingEntity()).renderOverlay(minecraft);
 		}
 	}
 }

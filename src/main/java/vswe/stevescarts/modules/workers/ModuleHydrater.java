@@ -5,14 +5,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidRegistry;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.workers.tools.ModuleFarmer;
 
 public class ModuleHydrater extends ModuleWorker {
 	private int range;
 
-	public ModuleHydrater(final MinecartModular cart) {
+	public ModuleHydrater(final EntityMinecartModular cart) {
 		super(cart);
 		this.range = 1;
 	}

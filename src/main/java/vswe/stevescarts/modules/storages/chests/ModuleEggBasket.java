@@ -3,11 +3,11 @@ package vswe.stevescarts.modules.storages.chests;
 import java.util.Random;
 
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.ComponentTypes;
 
 public class ModuleEggBasket extends ModuleChest {
-	public ModuleEggBasket(final MinecartModular cart) {
+	public ModuleEggBasket(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

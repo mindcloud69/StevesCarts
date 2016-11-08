@@ -3,10 +3,10 @@ package vswe.stevescarts.modules.addons.projectiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModulePotion extends ModuleProjectile {
-	public ModulePotion(final MinecartModular cart) {
+	public ModulePotion(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

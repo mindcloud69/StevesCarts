@@ -3,11 +3,11 @@ package vswe.stevescarts.modules.storages.chests;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.GiftItem;
 
 public class ModuleGiftStorage extends ModuleChest {
-	public ModuleGiftStorage(final MinecartModular cart) {
+	public ModuleGiftStorage(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

@@ -9,12 +9,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.BlockPosHelpers;
 import vswe.stevescarts.modules.workers.tools.ModuleDrill;
 
 public class ModuleLiquidDrainer extends ModuleWorker {
-	public ModuleLiquidDrainer(final MinecartModular cart) {
+	public ModuleLiquidDrainer(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

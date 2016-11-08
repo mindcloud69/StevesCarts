@@ -1,9 +1,9 @@
 package vswe.stevescarts.modules.hull;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleStandard extends ModuleHull {
-	public ModuleStandard(final MinecartModular cart) {
+	public ModuleStandard(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import vswe.stevescarts.blocks.tileentities.TileEntityBase;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class CommonProxy implements IGuiHandler {
 	public void renderInit() {
@@ -16,7 +16,7 @@ public class CommonProxy implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		if (ID == 0) {
-			final MinecartModular cart = this.getCart(x, world);
+			final EntityMinecartModular cart = this.getCart(x, world);
 			if (cart != null) {
 				return cart.getGui(player);
 			}
@@ -32,7 +32,7 @@ public class CommonProxy implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		if (ID == 0) {
-			final MinecartModular cart = this.getCart(x, world);
+			final EntityMinecartModular cart = this.getCart(x, world);
 			if (cart != null) {
 				return cart.getCon(player.inventory);
 			}
@@ -45,10 +45,10 @@ public class CommonProxy implements IGuiHandler {
 		return null;
 	}
 
-	private MinecartModular getCart(final int ID, final World world) {
+	private EntityMinecartModular getCart(final int ID, final World world) {
 		for (final Object e : world.loadedEntityList) {
-			if (e instanceof Entity && ((Entity) e).getEntityId() == ID && e instanceof MinecartModular) {
-				return (MinecartModular) e;
+			if (e instanceof Entity && ((Entity) e).getEntityId() == ID && e instanceof EntityMinecartModular) {
+				return (EntityMinecartModular) e;
 			}
 		}
 		return null;

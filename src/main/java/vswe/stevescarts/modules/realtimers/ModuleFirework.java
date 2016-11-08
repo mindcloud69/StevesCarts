@@ -10,14 +10,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFirework;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.modules.ModuleBase;
 
 public class ModuleFirework extends ModuleBase {
 	private int fireCooldown;
 
-	public ModuleFirework(final MinecartModular cart) {
+	public ModuleFirework(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

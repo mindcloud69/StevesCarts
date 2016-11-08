@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotRepair;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.EnchantmentInfo;
 import vswe.stevescarts.helpers.Localization;
@@ -25,7 +25,7 @@ public abstract class ModuleTool extends ModuleWorker {
 	protected ModuleEnchants enchanter;
 	private int[] durabilityRect;
 
-	public ModuleTool(final MinecartModular cart) {
+	public ModuleTool(final EntityMinecartModular cart) {
 		super(cart);
 		this.maximumRepairUnits = 1;
 		this.durabilityRect = new int[] { 10, 15, 52, 8 };

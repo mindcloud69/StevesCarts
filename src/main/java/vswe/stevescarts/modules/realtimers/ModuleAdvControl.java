@@ -11,7 +11,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.PacketHandler;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
@@ -35,7 +35,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	private int[] buttonRect;
 	private static DataParameter<Integer> SPEED = createDw(DataSerializers.VARINT);
 
-	public ModuleAdvControl(final MinecartModular cart) {
+	public ModuleAdvControl(final EntityMinecartModular cart) {
 		super(cart);
 		this.first = true;
 		this.buttonRect = new int[] { 15, 20, 24, 12 };

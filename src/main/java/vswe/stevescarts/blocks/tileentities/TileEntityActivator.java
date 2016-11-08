@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.ContainerActivator;
 import vswe.stevescarts.containers.ContainerBase;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiActivator;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.helpers.ActivatorOption;
@@ -107,7 +107,7 @@ public class TileEntityActivator extends TileEntityBase {
 		}
 	}
 
-	public void handleCart(final MinecartModular cart, final boolean isOrange) {
+	public void handleCart(final EntityMinecartModular cart, final boolean isOrange) {
 		for (final ActivatorOption option : this.options) {
 			if (!option.isDisabled()) {
 				cart.handleActivator(option, isOrange);

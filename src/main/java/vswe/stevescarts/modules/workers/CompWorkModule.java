@@ -1,8 +1,6 @@
-package vswe.stevescarts.helpers;
+package vswe.stevescarts.modules.workers;
 
 import java.util.Comparator;
-
-import vswe.stevescarts.modules.workers.ModuleWorker;
 
 public class CompWorkModule implements Comparator {
 	@Override

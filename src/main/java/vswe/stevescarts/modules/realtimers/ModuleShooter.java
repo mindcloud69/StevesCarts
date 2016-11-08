@@ -15,7 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.MathHelper;
 import vswe.stevescarts.containers.slots.SlotArrow;
 import vswe.stevescarts.containers.slots.SlotBase;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.EnchantmentInfo;
 import vswe.stevescarts.helpers.Localization;
@@ -43,7 +43,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	private int arrowInterval;
 	private static DataParameter<Byte> ACTIVE_PIPE = createDw(DataSerializers.BYTE);
 
-	public ModuleShooter(final MinecartModular cart) {
+	public ModuleShooter(final EntityMinecartModular cart) {
 		super(cart);
 		this.dragState = -1;
 		this.AInterval = new int[] { 1, 3, 5, 7, 10, 13, 17, 21, 27, 35, 44, 55, 70, 95, 130, 175, 220, 275, 340, 420, 520, 650 };

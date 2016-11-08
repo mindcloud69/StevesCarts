@@ -2,7 +2,7 @@ package vswe.stevescarts.modules.storages.tanks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.ColorHelper;
 import vswe.stevescarts.helpers.Localization;
 
@@ -10,7 +10,7 @@ public class ModuleCheatTank extends ModuleTank {
 	private static final ColorHelper[] colors;
 	private int mode;
 
-	public ModuleCheatTank(final MinecartModular cart) {
+	public ModuleCheatTank(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

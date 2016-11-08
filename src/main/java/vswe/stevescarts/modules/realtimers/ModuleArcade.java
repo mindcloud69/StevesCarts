@@ -12,7 +12,7 @@ import vswe.stevescarts.arcade.sweeper.ArcadeSweeper;
 import vswe.stevescarts.arcade.tetris.ArcadeTetris;
 import vswe.stevescarts.arcade.tracks.ArcadeTracks;
 import vswe.stevescarts.arcade.tracks.TrackStory;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
@@ -22,7 +22,7 @@ public class ModuleArcade extends ModuleBase {
 	private ArcadeGame currentGame;
 	private int afkTimer;
 
-	public ModuleArcade(final MinecartModular cart) {
+	public ModuleArcade(final EntityMinecartModular cart) {
 		super(cart);
 		(this.games = new ArrayList<ArcadeGame>()).add(new ArcadeTracks(this));
 		this.games.add(new ArcadeTetris(this));

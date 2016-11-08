@@ -2,7 +2,7 @@ package vswe.stevescarts.modules.engines;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 
@@ -10,7 +10,7 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 	private short coolantLevel;
 	private static final int RELOAD_LIQUID_SIZE = 1;
 
-	public ModuleThermalBase(final MinecartModular cart) {
+	public ModuleThermalBase(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

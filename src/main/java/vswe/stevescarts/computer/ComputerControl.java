@@ -3,7 +3,7 @@ package vswe.stevescarts.computer;
 import java.util.Collection;
 import java.util.HashMap;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.buttons.ButtonBase;
 import vswe.stevescarts.guis.buttons.ButtonControlType;
 import vswe.stevescarts.modules.ModuleBase;
@@ -35,7 +35,7 @@ public class ComputerControl {
 		return ComputerControl.controls.values();
 	}
 
-	public static void createButtons(final MinecartModular cart, final ModuleComputer assembly) {
+	public static void createButtons(final EntityMinecartModular cart, final ModuleComputer assembly) {
 		for (final ComputerControl control : getList()) {
 			if (control.isControlValid(cart)) {
 				new ButtonControlType(assembly, ButtonBase.LOCATION.TASK, control.id);
@@ -55,7 +55,7 @@ public class ComputerControl {
 		ComputerControl.controls.put(this.id, this);
 	}
 
-	public boolean isControlValid(final MinecartModular cart) {
+	public boolean isControlValid(final EntityMinecartModular cart) {
 		for (final ModuleBase module : cart.getModules()) {
 			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
 				return true;
@@ -72,7 +72,7 @@ public class ComputerControl {
 		return this.texture;
 	}
 
-	public void runHandler(final MinecartModular cart, final byte val) {
+	public void runHandler(final EntityMinecartModular cart, final byte val) {
 		for (final ModuleBase module : cart.getModules()) {
 			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
 				this.run(module, this.clamp(val, (byte) this.getIntegerMin(), (byte) this.getIntegerMax()));

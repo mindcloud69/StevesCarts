@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotEnchantment;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.EnchantmentData;
 import vswe.stevescarts.helpers.EnchantmentInfo;
@@ -20,7 +20,7 @@ public class ModuleEnchants extends ModuleAddon {
 	private EnchantmentData[] enchants;
 	private ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE> enabledTypes;
 
-	public ModuleEnchants(final MinecartModular cart) {
+	public ModuleEnchants(final EntityMinecartModular cart) {
 		super(cart);
 		this.enchants = new EnchantmentData[3];
 		this.enabledTypes = new ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE>();

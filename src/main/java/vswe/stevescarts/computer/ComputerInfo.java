@@ -3,7 +3,7 @@ package vswe.stevescarts.computer;
 import java.util.Collection;
 import java.util.HashMap;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.buttons.ButtonBase;
 import vswe.stevescarts.guis.buttons.ButtonInfoType;
 import vswe.stevescarts.modules.ModuleBase;
@@ -34,7 +34,7 @@ public class ComputerInfo {
 		return ComputerInfo.infos.values();
 	}
 
-	public static void createButtons(final MinecartModular cart, final ModuleComputer assembly) {
+	public static void createButtons(final EntityMinecartModular cart, final ModuleComputer assembly) {
 		for (final ComputerInfo info : getList()) {
 			if (info.isInfoValid(cart)) {
 				new ButtonInfoType(assembly, ButtonBase.LOCATION.TASK, info.id);
@@ -61,7 +61,7 @@ public class ComputerInfo {
 		ComputerInfo.infos.put(this.id, this);
 	}
 
-	public boolean isInfoValid(final MinecartModular cart) {
+	public boolean isInfoValid(final EntityMinecartModular cart) {
 		for (final ModuleBase module : cart.getModules()) {
 			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
 				return true;
@@ -78,7 +78,7 @@ public class ComputerInfo {
 		return this.texture;
 	}
 
-	public void getHandler(final MinecartModular cart, final ComputerVar var) {
+	public void getHandler(final EntityMinecartModular cart, final ComputerVar var) {
 		for (final ModuleBase module : cart.getModules()) {
 			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
 				var.setByteValue(this.get(module));

@@ -1,7 +1,8 @@
-package vswe.stevescarts.helpers;
+package vswe.stevescarts.helpers.storages;
 
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.blocks.ModBlocks;
+import vswe.stevescarts.helpers.RecipeHelper;
 
 public class StorageBlock {
 	private String name;

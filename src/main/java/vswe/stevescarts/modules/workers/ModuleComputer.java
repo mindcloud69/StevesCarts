@@ -9,7 +9,7 @@ import vswe.stevescarts.computer.ComputerProg;
 import vswe.stevescarts.computer.ComputerTask;
 import vswe.stevescarts.computer.ComputerVar;
 import vswe.stevescarts.computer.IWriting;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.guis.buttons.ButtonBase;
 import vswe.stevescarts.guis.buttons.ButtonControlInteger;
@@ -63,7 +63,7 @@ public class ModuleComputer extends ModuleWorker {
 	private static final int taskSize = 2;
 	private static final int varSize = 5;
 
-	public ModuleComputer(final MinecartModular cart) {
+	public ModuleComputer(final EntityMinecartModular cart) {
 		super(cart);
 		this.programs = new ArrayList<ComputerProg>();
 		this.editTasks = new ArrayList<ComputerTask>();

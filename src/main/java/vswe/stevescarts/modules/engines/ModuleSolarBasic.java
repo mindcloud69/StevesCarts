@@ -1,9 +1,9 @@
 package vswe.stevescarts.modules.engines;
 
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleSolarBasic extends ModuleSolarTop {
-	public ModuleSolarBasic(final MinecartModular cart) {
+	public ModuleSolarBasic(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

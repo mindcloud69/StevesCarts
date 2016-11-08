@@ -15,7 +15,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.CartVersion;
 import vswe.stevescarts.helpers.ColorHelper;
 import vswe.stevescarts.helpers.ComponentTypes;
@@ -892,7 +892,7 @@ public class ModuleData {
 		return modules;
 	}
 
-	public static ItemStack createModularCart(final MinecartModular parentcart) {
+	public static ItemStack createModularCart(final EntityMinecartModular parentcart) {
 		final ItemStack cart = new ItemStack(ModItems.carts, 1);
 		final NBTTagCompound save = new NBTTagCompound();
 		final byte[] moduleIDs = new byte[parentcart.getModules().size()];

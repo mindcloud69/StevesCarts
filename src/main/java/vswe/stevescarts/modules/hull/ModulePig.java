@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModulePig extends ModuleHull {
 	private int oinkTimer;
@@ -19,7 +19,7 @@ public class ModulePig extends ModuleHull {
 	 */
 	private LayerBipedArmor fakeArmorLayer;
 
-	public ModulePig(final MinecartModular cart) {
+	public ModulePig(final EntityMinecartModular cart) {
 		super(cart);
 		this.oinkTimer = this.getRandomTimer();
 	}

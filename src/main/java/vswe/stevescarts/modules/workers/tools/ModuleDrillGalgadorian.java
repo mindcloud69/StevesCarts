@@ -1,10 +1,10 @@
 package vswe.stevescarts.modules.workers.tools;
 
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleDrillGalgadorian extends ModuleDrill {
-	public ModuleDrillGalgadorian(final MinecartModular cart) {
+	public ModuleDrillGalgadorian(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

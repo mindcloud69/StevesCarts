@@ -3,7 +3,7 @@ package vswe.stevescarts.containers.slots;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import vswe.stevescarts.helpers.TransferHandler;
+import vswe.stevescarts.helpers.storages.TransferHandler;
 
 public class SlotLiquidFilter extends SlotBase implements ISpecialItemTransferValidator {
 	public SlotLiquidFilter(final IInventory iinventory, final int i, final int j, final int k) {

@@ -2,11 +2,11 @@ package vswe.stevescarts.modules.workers.tools;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleFarmerDiamond extends ModuleFarmer {
-	public ModuleFarmerDiamond(final MinecartModular cart) {
+	public ModuleFarmerDiamond(final EntityMinecartModular cart) {
 		super(cart);
 	}
 

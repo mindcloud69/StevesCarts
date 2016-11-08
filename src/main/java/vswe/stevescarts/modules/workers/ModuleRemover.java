@@ -4,14 +4,14 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import vswe.stevescarts.entitys.MinecartModular;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleRemover extends ModuleWorker {
 	private int removeX;
 	private int removeY;
 	private int removeZ;
 
-	public ModuleRemover(final MinecartModular cart) {
+	public ModuleRemover(final EntityMinecartModular cart) {
 		super(cart);
 		this.removeY = -1;
 	}
