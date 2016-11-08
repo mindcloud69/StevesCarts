@@ -10,6 +10,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.MathHelper;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.EnchantmentInfo;
@@ -41,6 +43,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	private final int[] AInterval;
 	private int arrowTick;
 	private int arrowInterval;
+	private static DataParameter<Byte> ACTIVE_PIPE = createDw(DataSerializers.BYTE);
 
 	public ModuleShooter(final MinecartModular cart) {
 		super(cart);
@@ -436,18 +439,18 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(ACTIVE_PIPE, (byte)0);
 	}
 
 	public void setActivePipes(final byte val) {
-		this.updateDw(0, val);
+		this.updateDw(ACTIVE_PIPE, val);
 	}
 
 	public byte getActivePipes() {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getActivePipes();
 		}
-		return this.getDw(0);
+		return this.getDw(ACTIVE_PIPE);
 	}
 
 	protected boolean isPipeActive(final int id) {

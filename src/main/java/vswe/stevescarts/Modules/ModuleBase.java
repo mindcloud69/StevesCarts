@@ -188,7 +188,7 @@ public abstract class ModuleBase {
 		return -1;
 	}
 
-	public void moveMinecartOnRail(final int x, final int y, final int z) {
+	public void moveMinecartOnRail(BlockPos pos) {
 	}
 
 	public ItemStack getStack(final int slot) {

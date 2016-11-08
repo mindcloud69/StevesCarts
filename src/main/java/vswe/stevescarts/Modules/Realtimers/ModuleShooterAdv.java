@@ -5,6 +5,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -25,6 +27,8 @@ public class ModuleShooterAdv extends ModuleShooter {
 	private ArrayList<ModuleMobdetector> detectors;
 	private EntityNearestTarget sorter;
 	private float detectorAngle;
+	private static DataParameter<Byte> OPTION = createDw(DataSerializers.BYTE);
+	private static DataParameter<Byte> RIFLE_DIRECTION = createDw(DataSerializers.BYTE);
 
 	public ModuleShooterAdv(final MinecartModular cart) {
 		super(cart);
@@ -200,22 +204,22 @@ public class ModuleShooterAdv extends ModuleShooter {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
-		this.addDw(1, 0);
+		registerDw(OPTION, (byte)0);
+		registerDw(RIFLE_DIRECTION, (byte)0);
 	}
 
 	private void switchOption(final int id) {
-		byte val = this.getDw(0);
+		byte val = this.getDw(OPTION);
 		val ^= (byte) (1 << id);
-		this.updateDw(0, val);
+		this.updateDw(OPTION, val);
 	}
 
 	public void setOptions(final byte val) {
-		this.updateDw(0, val);
+		this.updateDw(OPTION, val);
 	}
 
 	public byte selectedOptions() {
-		return this.getDw(0);
+		return this.getDw(OPTION);
 	}
 
 	private boolean isOptionActive(final int id) {
@@ -249,7 +253,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 		if (val < 0.0f) {
 			val += 256.0f;
 		}
-		this.updateDw(1, (byte) val);
+		this.updateDw(RIFLE_DIRECTION, (byte) val);
 	}
 
 	public float getRifleDirection() {
@@ -257,7 +261,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 		if (this.isPlaceholder()) {
 			val = 0.0f;
 		} else {
-			val = this.getDw(1);
+			val = this.getDw(RIFLE_DIRECTION);
 		}
 		val /= 256.0f;
 		val *= 6.2831855f;

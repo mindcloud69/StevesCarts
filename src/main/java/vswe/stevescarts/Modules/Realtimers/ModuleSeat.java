@@ -93,9 +93,9 @@ public class ModuleSeat extends ModuleBase {
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0 && player != null) {
 			if (this.getCart().getRidingEntity() == null) {
-				player.mountEntity((Entity) this.getCart());
+				player.startRiding((Entity) this.getCart());
 			} else if (this.getCart().getRidingEntity() == player) {
-				player.mountEntity((Entity) null);
+				player.dismountRidingEntity();
 			}
 		}
 	}

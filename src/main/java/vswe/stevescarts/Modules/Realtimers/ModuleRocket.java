@@ -1,6 +1,8 @@
 package vswe.stevescarts.Modules.Realtimers;
 
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
@@ -15,6 +17,8 @@ public class ModuleRocket extends ModuleBase {
 	private boolean isLanding;
 	private double landY;
 	private double groundY;
+	//TODO: Find a name
+	private static DataParameter<Integer> UNKNOWN = createDw(DataSerializers.VARINT);
 
 	public ModuleRocket(final MinecartModular cart) {
 		super(cart);
@@ -26,11 +30,11 @@ public class ModuleRocket extends ModuleBase {
 			return;
 		}
 		if (this.getCart().worldObj.isRemote) {
-			if (!this.flying && this.getDw(0) != 0) {
+			if (!this.flying && this.getDw(UNKNOWN) != 0) {
 				this.takeOff();
-			} else if (!this.isLanding && this.getDw(0) > 1) {
+			} else if (!this.isLanding && this.getDw(UNKNOWN) > 1) {
 				this.land();
-			} else if (this.flying && this.isLanding && this.getDw(0) == 0) {
+			} else if (this.flying && this.isLanding && this.getDw(UNKNOWN) == 0) {
 				this.done();
 			}
 		}
@@ -57,12 +61,12 @@ public class ModuleRocket extends ModuleBase {
 				this.getCart().posY = this.landY;
 				if (BlockRailBase.isRailBlock(getCart().worldObj, pos)) {
 					this.done();
-					this.updateDw(0, 0);
+					this.updateDw(UNKNOWN, 0);
 				}
 			}
 			if (!this.isLanding && this.getCart().posY - this.groundY > 2.0 && BlockRailBase.isRailBlock(this.getCart().worldObj, pos.add(landDirX, 0, landDirZ))) {
 				this.land();
-				this.updateDw(0, 2);
+				this.updateDw(UNKNOWN, 2);
 			}
 		}
 	}
@@ -71,7 +75,7 @@ public class ModuleRocket extends ModuleBase {
 	public void activatedByRail(final int x, final int y, final int z, final boolean active) {
 		if (active) {
 			this.takeOff();
-			this.updateDw(0, 1);
+			this.updateDw(UNKNOWN, 1);
 		}
 	}
 
@@ -96,7 +100,7 @@ public class ModuleRocket extends ModuleBase {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(UNKNOWN, 0);
 	}
 
 	private void land() {

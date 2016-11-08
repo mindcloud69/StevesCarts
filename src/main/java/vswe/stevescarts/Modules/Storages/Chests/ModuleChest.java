@@ -1,6 +1,8 @@
 package vswe.stevescarts.Modules.Storages.Chests;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.Storages.ModuleStorage;
@@ -9,6 +11,7 @@ import vswe.stevescarts.Slots.SlotChest;
 
 public abstract class ModuleChest extends ModuleStorage {
 	private float chestAngle;
+	private static DataParameter<Boolean> IS_OPEN = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleChest(final MinecartModular cart) {
 		super(cart);
@@ -80,19 +83,19 @@ public abstract class ModuleChest extends ModuleStorage {
 	@Override
 	public void initDw() {
 		if (this.hasVisualChest()) {
-			this.addDw(0, 0);
+			registerDw(IS_OPEN, false);
 		}
 	}
 
 	public void openChest() {
 		if (this.hasVisualChest()) {
-			this.updateDw(0, this.getDw(0) + 1);
+			this.updateDw(IS_OPEN, true);
 		}
 	}
 
 	public void closeChest() {
 		if (this.hasVisualChest()) {
-			this.updateDw(0, this.getDw(0) - 1);
+			this.updateDw(IS_OPEN, false);
 		}
 	}
 
@@ -103,7 +106,7 @@ public abstract class ModuleChest extends ModuleStorage {
 		if (this.isPlaceholder()) {
 			return this.getSimInfo().getChestActive();
 		}
-		return this.getDw(0) > 0;
+		return this.getDw(IS_OPEN);
 	}
 
 	protected void handleChest() {

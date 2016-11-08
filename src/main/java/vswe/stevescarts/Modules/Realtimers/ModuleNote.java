@@ -4,6 +4,8 @@ import net.minecraft.block.BlockNote;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -57,6 +59,8 @@ public class ModuleNote extends ModuleBase {
 	private boolean veryLongTrack;
 	private int speedSetting;
 	private short lastModuleHeader;
+	
+	private static DataParameter<Boolean> PLAYING = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleNote(final MinecartModular cart) {
 		super(cart);
@@ -540,15 +544,15 @@ public class ModuleNote extends ModuleBase {
 
 	@Override
 	public void initDw() {
-		this.addDw(0, 0);
+		registerDw(PLAYING, false);
 	}
 
 	private boolean isPlaying() {
-		return !this.isPlaceholder() && (this.getDw(0) != 0 || this.playProgress > 0);
+		return !this.isPlaceholder() && (this.getDw(PLAYING) || this.playProgress > 0);
 	}
 
 	private void setPlaying(final boolean val) {
-		this.updateDw(0, val ? 1 : 0);
+		this.updateDw(PLAYING, val);
 	}
 
 	public int numberOfPackets() {
