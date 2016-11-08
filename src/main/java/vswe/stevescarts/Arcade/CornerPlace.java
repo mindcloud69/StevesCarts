@@ -1,8 +1,8 @@
 package vswe.stevescarts.Arcade;
 
-import vswe.stevescarts.Interfaces.GuiMinecart;
-
 import java.util.EnumSet;
+
+import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public class CornerPlace extends Place {
 	private int texture;

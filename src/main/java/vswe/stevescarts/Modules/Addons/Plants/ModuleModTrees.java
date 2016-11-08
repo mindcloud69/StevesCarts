@@ -6,11 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.OreDictionary;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.Addons.ModuleAddon;
 import vswe.stevescarts.Modules.ITreeModule;
+import vswe.stevescarts.Modules.Addons.ModuleAddon;
 
 public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 	public ModuleModTrees(final MinecartModular cart) {
@@ -19,12 +18,12 @@ public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 
 	@Override
 	public boolean isLeaves(IBlockState blockState, BlockPos pos) {
-		return blockState.getBlock().isLeaves(blockState, (IBlockAccess) this.getCart().worldObj, pos);
+		return blockState.getBlock().isLeaves(blockState, this.getCart().worldObj, pos);
 	}
 
 	@Override
 	public boolean isWood(IBlockState blockState, BlockPos pos) {
-		return blockState.getBlock().isWood((IBlockAccess) this.getCart().worldObj, pos);
+		return blockState.getBlock().isWood(this.getCart().worldObj, pos);
 	}
 
 	@Override

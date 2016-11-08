@@ -15,6 +15,7 @@ public class SlotLiquidFilter extends SlotBase implements ISpecialItemTransferVa
 		return false;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return isItemStackValid(itemstack);
 	}
@@ -23,6 +24,7 @@ public class SlotLiquidFilter extends SlotBase implements ISpecialItemTransferVa
 		return FluidContainerRegistry.isFilledContainer(itemstack);
 	}
 
+	@Override
 	public int getSlotStackLimit() {
 		return 1;
 	}

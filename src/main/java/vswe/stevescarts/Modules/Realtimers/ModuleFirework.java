@@ -1,12 +1,11 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import net.minecraft.entity.Entity;
+import java.util.ArrayList;
+
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -14,8 +13,6 @@ import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotFirework;
-
-import java.util.ArrayList;
 
 public class ModuleFirework extends ModuleBase {
 	private int fireCooldown;

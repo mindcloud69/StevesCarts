@@ -40,7 +40,7 @@ public abstract class TileEntityBase extends TileEntity {
 	public abstract ContainerBase getContainer(final InventoryPlayer p0);
 
 	public void updateGuiData(final Container con, final IContainerListener crafting, final int id, final short data) {
-		crafting.sendProgressBarUpdate(con, id, (int) data);
+		crafting.sendProgressBarUpdate(con, id, data);
 	}
 
 	public void initGuiData(final Container con, final IContainerListener crafting) {

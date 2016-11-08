@@ -9,6 +9,7 @@ public class SlotCake extends SlotBase {
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return itemstack != null && itemstack.getItem() == Items.CAKE;
 	}

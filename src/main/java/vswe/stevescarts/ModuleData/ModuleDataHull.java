@@ -1,10 +1,10 @@
 package vswe.stevescarts.ModuleData;
 
+import java.util.List;
+
 import vswe.stevescarts.Helpers.ColorHelper;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.List;
 
 public class ModuleDataHull extends ModuleData {
 	private int modularCapacity;

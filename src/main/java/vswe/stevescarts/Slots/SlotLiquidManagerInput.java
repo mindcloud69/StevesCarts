@@ -1,6 +1,5 @@
 package vswe.stevescarts.Slots;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevescarts.Helpers.Tank;
@@ -16,6 +15,7 @@ public class SlotLiquidManagerInput extends SlotBase {
 		this.tankid = tankid;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return isItemStackValid(itemstack, this.manager, this.tankid);
 	}

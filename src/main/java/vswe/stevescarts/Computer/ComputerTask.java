@@ -1,8 +1,8 @@
 package vswe.stevescarts.Computer;
 
-import vswe.stevescarts.Modules.Workers.ModuleComputer;
-
 import java.util.Random;
+
+import vswe.stevescarts.Modules.Workers.ModuleComputer;
 
 public class ComputerTask {
 	private static Random rand;
@@ -215,6 +215,7 @@ public class ComputerTask {
 		return id;
 	}
 
+	@Override
 	public ComputerTask clone() {
 		final ComputerTask clone = new ComputerTask(this.module, this.prog);
 		clone.info = this.info;

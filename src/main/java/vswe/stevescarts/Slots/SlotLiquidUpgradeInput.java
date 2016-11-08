@@ -1,6 +1,5 @@
 package vswe.stevescarts.Slots;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.Helpers.Tank;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;

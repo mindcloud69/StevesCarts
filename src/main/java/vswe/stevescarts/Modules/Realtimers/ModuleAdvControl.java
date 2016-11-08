@@ -1,26 +1,23 @@
 package vswe.stevescarts.Modules.Realtimers;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Engines.ModuleEngine;
 import vswe.stevescarts.Modules.ILeverModule;
 import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.PacketHandler;
+import vswe.stevescarts.Modules.Engines.ModuleEngine;
 
 public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	private byte[] engineInformation;
@@ -104,8 +101,8 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		minecraft.fontRendererObj.drawString(this.distToString(this.trip), 7, enginesEndAt + 52 + 31, 4210752);
 		//TODO
 		//final RenderItem itemRenderer = new RenderItem();
-	//	itemRenderer.renderItemIntoGUI(minecraft.fontRendererObj, minecraft.renderEngine, new ItemStack(Items.CLOCK, 1), 5, enginesEndAt + 32 + 3);
-	//	itemRenderer.renderItemIntoGUI(minecraft.fontRendererObj, minecraft.renderEngine, new ItemStack(Items.COMPASS, 1), 21, enginesEndAt + 32 + 3);
+		//	itemRenderer.renderItemIntoGUI(minecraft.fontRendererObj, minecraft.renderEngine, new ItemStack(Items.CLOCK, 1), 5, enginesEndAt + 32 + 3);
+		//	itemRenderer.renderItemIntoGUI(minecraft.fontRendererObj, minecraft.renderEngine, new ItemStack(Items.COMPASS, 1), 21, enginesEndAt + 32 + 3);
 	}
 
 	private String distToString(double dist) {
@@ -137,19 +134,19 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		return s;
 	}
 
-//	@Override
-//	public RAILDIRECTION getSpecialRailDirection(final int x, final int y, final int z) {
-//		if (this.isForwardKeyDown()) {
-//			return RAILDIRECTION.FORWARD;
-//		}
-//		if (this.isLeftKeyDown()) {
-//			return RAILDIRECTION.LEFT;
-//		}
-//		if (this.isRightKeyDown()) {
-//			return RAILDIRECTION.RIGHT;
-//		}
-//		return RAILDIRECTION.DEFAULT;
-//	}
+	//	@Override
+	//	public RAILDIRECTION getSpecialRailDirection(final int x, final int y, final int z) {
+	//		if (this.isForwardKeyDown()) {
+	//			return RAILDIRECTION.FORWARD;
+	//		}
+	//		if (this.isLeftKeyDown()) {
+	//			return RAILDIRECTION.LEFT;
+	//		}
+	//		if (this.isRightKeyDown()) {
+	//			return RAILDIRECTION.RIGHT;
+	//		}
+	//		return RAILDIRECTION.DEFAULT;
+	//	}
 
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
@@ -345,6 +342,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		this.sendPacket(0, data, player);
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 4;
 	}

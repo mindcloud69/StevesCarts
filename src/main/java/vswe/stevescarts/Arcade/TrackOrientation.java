@@ -1,8 +1,8 @@
 package vswe.stevescarts.Arcade;
 
-import vswe.stevescarts.Interfaces.GuiBase;
-
 import java.util.ArrayList;
+
+import vswe.stevescarts.Interfaces.GuiBase;
 
 public abstract class TrackOrientation {
 	public static ArrayList<TrackOrientation> ALL;

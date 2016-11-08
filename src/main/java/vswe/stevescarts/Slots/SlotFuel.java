@@ -11,6 +11,7 @@ public class SlotFuel extends SlotBase {
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return this.getItemBurnTime(itemstack) > 0;
 	}

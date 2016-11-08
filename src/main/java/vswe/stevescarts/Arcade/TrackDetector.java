@@ -1,9 +1,9 @@
 package vswe.stevescarts.Arcade;
 
+import java.util.ArrayList;
+
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.Realtimers.ModuleArcade;
-
-import java.util.ArrayList;
 
 public class TrackDetector extends Track {
 	private ArrayList<TrackCoordinate> targets;

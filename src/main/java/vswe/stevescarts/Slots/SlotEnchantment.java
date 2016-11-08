@@ -1,10 +1,10 @@
 package vswe.stevescarts.Slots;
 
+import java.util.ArrayList;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.Helpers.EnchantmentInfo;
-
-import java.util.ArrayList;
 
 public class SlotEnchantment extends SlotBase {
 	private ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE> enabledTypes;
@@ -14,6 +14,7 @@ public class SlotEnchantment extends SlotBase {
 		this.enabledTypes = enabledTypes;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return EnchantmentInfo.isItemValid(this.enabledTypes, itemstack);
 	}

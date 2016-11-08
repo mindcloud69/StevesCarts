@@ -1,10 +1,8 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
@@ -28,7 +26,7 @@ public class ModelBridge extends ModelCartbase {
 		}
 		final boolean needBridge = ((ModuleBridge) module).needBridge();
 		BlockPos next = ((ModuleBridge) module).getNextblock();
-		final int y = (int) next.getY();
+		final int y = next.getY();
 		final int yDif = module.getCart().getYTarget() - y;
 		if (needBridge) {
 			if (yDif > 0) {

@@ -1,6 +1,5 @@
 package vswe.stevescarts.Modules.Addons;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import vswe.stevescarts.Carts.MinecartModular;

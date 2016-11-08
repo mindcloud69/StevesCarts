@@ -1,7 +1,8 @@
 package vswe.stevescarts.Items;
 
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -9,7 +10,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -18,15 +18,13 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Helpers.ComponentTypes;
 import vswe.stevescarts.Helpers.EntityEasterEgg;
-import vswe.stevescarts.StevesCarts;
-
-import java.util.List;
 
 public class ItemCartComponent extends Item {
-//	private IIcon[] icons;
-//	private IIcon unknownIcon;
+	//	private IIcon[] icons;
+	//	private IIcon unknownIcon;
 
 	public static int size() {
 		return ComponentTypes.values().length;
@@ -49,35 +47,36 @@ public class ItemCartComponent extends Item {
 		return this.getName(par1ItemStack.getItemDamage());
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIconFromDamage(final int dmg) {
-//		if (dmg < 0 || dmg >= this.icons.length || this.icons[dmg] == null) {
-//			return this.unknownIcon;
-//		}
-//		return this.icons[dmg];
-//	}
-//
-//	private String getRawName(final int i) {
-//		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public void registerIcons(final IIconRegister register) {
-//		this.icons = new IIcon[size()];
-//		for (int i = 0; i < this.icons.length; ++i) {
-//			if (this.getName(i) != null) {
-//				final IIcon[] icons = this.icons;
-//				final int n = i;
-//				final StringBuilder sb = new StringBuilder();
-//				StevesCarts.instance.getClass();
-//				icons[n] = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName(i)).append("_icon").toString());
-//			}
-//		}
-//		final StringBuilder sb2 = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.unknownIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("unknown_icon").toString());
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIconFromDamage(final int dmg) {
+	//		if (dmg < 0 || dmg >= this.icons.length || this.icons[dmg] == null) {
+	//			return this.unknownIcon;
+	//		}
+	//		return this.icons[dmg];
+	//	}
+	//
+	//	private String getRawName(final int i) {
+	//		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerIcons(final IIconRegister register) {
+	//		this.icons = new IIcon[size()];
+	//		for (int i = 0; i < this.icons.length; ++i) {
+	//			if (this.getName(i) != null) {
+	//				final IIcon[] icons = this.icons;
+	//				final int n = i;
+	//				final StringBuilder sb = new StringBuilder();
+	//				StevesCarts.instance.getClass();
+	//				icons[n] = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName(i)).append("_icon").toString());
+	//			}
+	//		}
+	//		final StringBuilder sb2 = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.unknownIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("unknown_icon").toString());
+	//	}
 
+	@Override
 	public String getUnlocalizedName(final ItemStack item) {
 		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || this.getName(item.getItemDamage()) == null) {
 			return this.getUnlocalizedName();
@@ -85,10 +84,12 @@ public class ItemCartComponent extends Item {
 		return "item.SC2:" + this.getName(item.getItemDamage());
 	}
 
+	@Override
 	public String getUnlocalizedName() {
 		return "item.SC2:unknowncomponent";
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
@@ -100,6 +101,7 @@ public class ItemCartComponent extends Item {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
 		for (int i = 0; i < size(); ++i) {
@@ -146,7 +148,7 @@ public class ItemCartComponent extends Item {
 	private boolean isThrowableEgg(final ItemStack item) {
 		return item != null && item.getItemDamage() == 70;
 	}
-	
+
 	@Override
 	public ItemStack onItemUseFinish(ItemStack item, World world, EntityLivingBase entity) {
 		if (entity instanceof EntityPlayer && this.isEdibleEgg(item)) {
@@ -177,10 +179,12 @@ public class ItemCartComponent extends Item {
 		return  super.onItemUseFinish(item, world, entity);
 	}
 
+	@Override
 	public int getMaxItemUseDuration(final ItemStack item) {
 		return this.isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
 	}
 
+	@Override
 	public EnumAction getItemUseAction(final ItemStack item) {
 		return this.isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
 	}

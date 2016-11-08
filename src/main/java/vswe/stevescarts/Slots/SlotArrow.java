@@ -12,6 +12,7 @@ public class SlotArrow extends SlotBase {
 		this.shooter = shooter;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return this.shooter.isValidProjectileItem(itemstack);
 	}

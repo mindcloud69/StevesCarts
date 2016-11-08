@@ -10,6 +10,7 @@ public class SlotFirework extends SlotBase {
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		final Item item = itemstack.getItem();
 		return item == Items.FIREWORKS || item == Items.GUNPOWDER || item == Items.FIREWORK_CHARGE || item == Items.DYE || item == Items.PAPER || item == Items.GLOWSTONE_DUST || item == Items.DIAMOND || item == Items.FIRE_CHARGE || item == Items.FEATHER || item == Items.GOLD_NUGGET || item == Items.SKULL;

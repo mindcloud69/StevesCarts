@@ -157,8 +157,8 @@ public class ModuleDrillIntelligence extends ModuleAddon {
 			for (int j = 0; j < h; ++j) {
 				final int[] rect = this.getSettingRect(i, j);
 				final String str = this.isLocked(j * w + i) ? Localization.MODULES.ADDONS.LOCKED.translate()
-				                                            : (Localization.MODULES.ADDONS.CHANGE_INTELLIGENCE.translate() + "\n" + Localization.MODULES.ADDONS.CURRENT_INTELLIGENCE.translate(
-					                                            this.isActive(j * w + i) ? "0" : "1"));
+						: (Localization.MODULES.ADDONS.CHANGE_INTELLIGENCE.translate() + "\n" + Localization.MODULES.ADDONS.CURRENT_INTELLIGENCE.translate(
+								this.isActive(j * w + i) ? "0" : "1"));
 				this.drawStringOnMouseOver(gui, str, x, y, rect);
 			}
 		}
@@ -188,6 +188,7 @@ public class ModuleDrillIntelligence extends ModuleAddon {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

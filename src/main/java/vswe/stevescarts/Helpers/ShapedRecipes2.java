@@ -12,6 +12,7 @@ public class ShapedRecipes2 extends ShapedRecipes {
 		super(par1, par2, par3ArrayOfItemStack, par4ItemStack);
 	}
 
+	@Override
 	public boolean matches(final InventoryCrafting par1InventoryCrafting, final World par2World) {
 		for (int var3 = 0; var3 <= 3 - this.recipeWidth; ++var3) {
 			for (int var4 = 0; var4 <= 3 - this.recipeHeight; ++var4) {
@@ -50,7 +51,7 @@ public class ShapedRecipes2 extends ShapedRecipes {
 					if (var9.getItemDamage() != -1 && var9.getItemDamage() != var10.getItemDamage()) {
 						return false;
 					}
-					if (var9.getItem() instanceof ItemEnchantedBook && var10.getItem() instanceof ItemEnchantedBook && !Items.ENCHANTED_BOOK.getEnchantments(var9).equals((Object) Items.ENCHANTED_BOOK.getEnchantments(var10))) {
+					if (var9.getItem() instanceof ItemEnchantedBook && var10.getItem() instanceof ItemEnchantedBook && !Items.ENCHANTED_BOOK.getEnchantments(var9).equals(Items.ENCHANTED_BOOK.getEnchantments(var10))) {
 						return false;
 					}
 				}

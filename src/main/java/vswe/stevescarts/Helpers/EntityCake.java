@@ -1,8 +1,6 @@
 package vswe.stevescarts.Helpers;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.init.Blocks;
@@ -26,6 +24,7 @@ public class EntityCake extends EntityEgg {
 		super(world, x, y, z);
 	}
 
+	@Override
 	protected void onImpact(final RayTraceResult data) {
 		BlockPos pos = getPosition();
 		if (data.entityHit != null) {

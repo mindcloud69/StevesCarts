@@ -1,23 +1,23 @@
 package vswe.stevescarts.Renders;
 
+import java.util.ArrayList;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.IconData;
-import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Helpers.Tank;
 import vswe.stevescarts.Models.Cart.ModelCartbase;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.ArrayList;
 
 public class RendererMinecart extends Render {
 	public RendererMinecart(RenderManager renderManager) {
@@ -102,73 +102,73 @@ public class RendererMinecart extends Render {
 	}
 
 	public void renderLiquidCuboid(final FluidStack liquid, final int tankSize, final float x, final float y, final float z, final float sizeX, final float sizeY, final float sizeZ, float mult) {
-//		final IconData data = Tank.getIconAndTexture(liquid);
-//		if (data == null || data.getIcon() == null) {
-//			return;
-//		}
-//		if (liquid.amount > 0) {
-//			final float filled = liquid.amount / tankSize;
-//			GL11.glPushMatrix();
-//			GL11.glTranslatef(x * mult, (y + sizeY * (1.0f - filled) / 2.0f) * mult, z * mult);
-//			ResourceHelper.bindResource(data.getResource());
-//			Tank.applyColorFilter(liquid);
-//			final float scale = 0.5f;
-//			GL11.glScalef(scale, scale, scale);
-//			GL11.glDisable(2896);
-//			mult /= scale;
-//			this.renderCuboid(data.getIcon(), sizeX * mult, sizeY * mult * filled, sizeZ * mult);
-//			GL11.glEnable(2896);
-//			GL11.glDisable(3042);
-//			GL11.glDisable(32826);
-//			GL11.glPopMatrix();
-//			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//		}
+		//		final IconData data = Tank.getIconAndTexture(liquid);
+		//		if (data == null || data.getIcon() == null) {
+		//			return;
+		//		}
+		//		if (liquid.amount > 0) {
+		//			final float filled = liquid.amount / tankSize;
+		//			GL11.glPushMatrix();
+		//			GL11.glTranslatef(x * mult, (y + sizeY * (1.0f - filled) / 2.0f) * mult, z * mult);
+		//			ResourceHelper.bindResource(data.getResource());
+		//			Tank.applyColorFilter(liquid);
+		//			final float scale = 0.5f;
+		//			GL11.glScalef(scale, scale, scale);
+		//			GL11.glDisable(2896);
+		//			mult /= scale;
+		//			this.renderCuboid(data.getIcon(), sizeX * mult, sizeY * mult * filled, sizeZ * mult);
+		//			GL11.glEnable(2896);
+		//			GL11.glDisable(3042);
+		//			GL11.glDisable(32826);
+		//			GL11.glPopMatrix();
+		//			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		//		}
 	}
 
-//	private void renderCuboid(final IIcon icon, final double sizeX, final double sizeY, final double sizeZ) {
-//		this.renderFace(icon, sizeX, sizeZ, 0.0f, 90.0f, 0.0f, -(float) (sizeY / 2.0), 0.0f);
-//		this.renderFace(icon, sizeX, sizeZ, 0.0f, -90.0f, 0.0f, (float) (sizeY / 2.0), 0.0f);
-//		this.renderFace(icon, sizeX, sizeY, 0.0f, 0.0f, 0.0f, 0.0f, (float) (sizeZ / 2.0));
-//		this.renderFace(icon, sizeX, sizeY, 180.0f, 0.0f, 0.0f, 0.0f, -(float) (sizeZ / 2.0));
-//		this.renderFace(icon, sizeZ, sizeY, 90.0f, 0.0f, (float) (sizeX / 2.0), 0.0f, 0.0f);
-//		this.renderFace(icon, sizeZ, sizeY, -90.0f, 0.0f, -(float) (sizeX / 2.0), 0.0f, 0.0f);
-//	}
+	//	private void renderCuboid(final IIcon icon, final double sizeX, final double sizeY, final double sizeZ) {
+	//		this.renderFace(icon, sizeX, sizeZ, 0.0f, 90.0f, 0.0f, -(float) (sizeY / 2.0), 0.0f);
+	//		this.renderFace(icon, sizeX, sizeZ, 0.0f, -90.0f, 0.0f, (float) (sizeY / 2.0), 0.0f);
+	//		this.renderFace(icon, sizeX, sizeY, 0.0f, 0.0f, 0.0f, 0.0f, (float) (sizeZ / 2.0));
+	//		this.renderFace(icon, sizeX, sizeY, 180.0f, 0.0f, 0.0f, 0.0f, -(float) (sizeZ / 2.0));
+	//		this.renderFace(icon, sizeZ, sizeY, 90.0f, 0.0f, (float) (sizeX / 2.0), 0.0f, 0.0f);
+	//		this.renderFace(icon, sizeZ, sizeY, -90.0f, 0.0f, -(float) (sizeX / 2.0), 0.0f, 0.0f);
+	//	}
 
-//	private void renderFace(final IIcon icon, final double totalTargetW, final double totalTargetH, final float yaw, final float roll, final float offX, final float offY, final float offZ) {
-//		GL11.glPushMatrix();
-//		GL11.glTranslatef(offX, offY, offZ);
-//		GL11.glRotatef(yaw, 0.0f, 1.0f, 0.0f);
-//		GL11.glRotatef(roll, 1.0f, 0.0f, 0.0f);
-//		final Tessellator tessellator = Tessellator.instance;
-//		final double srcX = icon.getMinU();
-//		final double srcY = icon.getMinV();
-//		final double srcW = icon.getMaxU() - srcX;
-//		final double srcH = icon.getMaxV() - srcY;
-//		double currentTargetW;
-//		for (double d = 0.001, currentTargetX = 0.0; totalTargetW - currentTargetX > d * 2.0; currentTargetX += currentTargetW - d) {
-//			currentTargetW = Math.min(totalTargetW - currentTargetX, 1.0);
-//			double currentTargetH;
-//			for (double currentTargetY = 0.0; totalTargetH - currentTargetY > d * 2.0; currentTargetY += currentTargetH - d) {
-//				currentTargetH = Math.min(totalTargetH - currentTargetY, 1.0);
-//				tessellator.startDrawingQuads();
-//				tessellator.setNormal(0.0f, 1.0f, 0.0f);
-//				tessellator.addVertexWithUV(currentTargetX - totalTargetW / 2.0, currentTargetY - totalTargetH / 2.0, 0.0, srcX, srcY);
-//				tessellator.addVertexWithUV(currentTargetX + currentTargetW - totalTargetW / 2.0, currentTargetY - totalTargetH / 2.0, 0.0, srcX + srcW * currentTargetW, srcY);
-//				tessellator.addVertexWithUV(currentTargetX + currentTargetW - totalTargetW / 2.0, currentTargetY + currentTargetH - totalTargetH / 2.0, 0.0, srcX + srcW * currentTargetW, srcY + srcH * currentTargetH);
-//				tessellator.addVertexWithUV(currentTargetX - totalTargetW / 2.0, currentTargetY + currentTargetH - totalTargetH / 2.0, 0.0, srcX, srcY + srcH * currentTargetH);
-//				tessellator.draw();
-//			}
-//		}
-//		GL11.glPopMatrix();
-//	}
+	//	private void renderFace(final IIcon icon, final double totalTargetW, final double totalTargetH, final float yaw, final float roll, final float offX, final float offY, final float offZ) {
+	//		GL11.glPushMatrix();
+	//		GL11.glTranslatef(offX, offY, offZ);
+	//		GL11.glRotatef(yaw, 0.0f, 1.0f, 0.0f);
+	//		GL11.glRotatef(roll, 1.0f, 0.0f, 0.0f);
+	//		final Tessellator tessellator = Tessellator.instance;
+	//		final double srcX = icon.getMinU();
+	//		final double srcY = icon.getMinV();
+	//		final double srcW = icon.getMaxU() - srcX;
+	//		final double srcH = icon.getMaxV() - srcY;
+	//		double currentTargetW;
+	//		for (double d = 0.001, currentTargetX = 0.0; totalTargetW - currentTargetX > d * 2.0; currentTargetX += currentTargetW - d) {
+	//			currentTargetW = Math.min(totalTargetW - currentTargetX, 1.0);
+	//			double currentTargetH;
+	//			for (double currentTargetY = 0.0; totalTargetH - currentTargetY > d * 2.0; currentTargetY += currentTargetH - d) {
+	//				currentTargetH = Math.min(totalTargetH - currentTargetY, 1.0);
+	//				tessellator.startDrawingQuads();
+	//				tessellator.setNormal(0.0f, 1.0f, 0.0f);
+	//				tessellator.addVertexWithUV(currentTargetX - totalTargetW / 2.0, currentTargetY - totalTargetH / 2.0, 0.0, srcX, srcY);
+	//				tessellator.addVertexWithUV(currentTargetX + currentTargetW - totalTargetW / 2.0, currentTargetY - totalTargetH / 2.0, 0.0, srcX + srcW * currentTargetW, srcY);
+	//				tessellator.addVertexWithUV(currentTargetX + currentTargetW - totalTargetW / 2.0, currentTargetY + currentTargetH - totalTargetH / 2.0, 0.0, srcX + srcW * currentTargetW, srcY + srcH * currentTargetH);
+	//				tessellator.addVertexWithUV(currentTargetX - totalTargetW / 2.0, currentTargetY + currentTargetH - totalTargetH / 2.0, 0.0, srcX, srcY + srcH * currentTargetH);
+	//				tessellator.draw();
+	//			}
+	//		}
+	//		GL11.glPopMatrix();
+	//	}
 
 	protected void renderLabel(final MinecartModular cart, final double x, final double y, final double z) {
 		final ArrayList<String> labels = cart.getLabel();
 		if (labels != null && labels.size() > 0) {
-			final float distance = cart.getDistanceToEntity((Entity) this.renderManager.livingPlayer);
-				if (distance <= 64.0f) {
-					final FontRenderer frend = this.getFontRendererFromRenderManager();
-					final float var12 = 1.6f;
+			final float distance = cart.getDistanceToEntity(this.renderManager.renderViewEntity);
+			if (distance <= 64.0f) {
+				final FontRenderer frend = this.getFontRendererFromRenderManager();
+				final float var12 = 1.6f;
 				final float var13 = 0.016666668f * var12;
 				GL11.glPushMatrix();
 				GL11.glTranslatef((float) x + 0.0f, (float) y + 1.0f + (labels.size() - 1) * 0.12f, (float) z);
@@ -189,14 +189,14 @@ public class RendererMinecart extends Render {
 				}
 				final int halfW = boxwidth / 2;
 				final int halfH = boxheight / 2;
-				final Tessellator tes = Tessellator.instance;
+				final Tessellator tes = Tessellator.getInstance();
+				VertexBuffer buffer = tes.getBuffer();
 				GL11.glDisable(3553);
-				tes.startDrawingQuads();
-				tes.setColorRGBA_F(0.0f, 0.0f, 0.0f, 0.25f);
-				tes.addVertex((double) (-halfW - 1), (double) (-halfH - 1), 0.0);
-				tes.addVertex((double) (-halfW - 1), (double) (halfH + 1), 0.0);
-				tes.addVertex((double) (halfW + 1), (double) (halfH + 1), 0.0);
-				tes.addVertex((double) (halfW + 1), (double) (-halfH - 1), 0.0);
+				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.pos(-halfW - 1, -halfH - 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+				buffer.pos(-halfW - 1, halfH + 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+				buffer.pos(halfW + 1, halfH + 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+				buffer.pos(halfW + 1, -halfH - 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
 				tes.draw();
 				GL11.glEnable(3553);
 				int yPos = -halfH;
@@ -219,10 +219,12 @@ public class RendererMinecart extends Render {
 		}
 	}
 
+	@Override
 	protected ResourceLocation getEntityTexture(final Entity par1Entity) {
 		return null;
 	}
 
+	@Override
 	public void doRender(final Entity par1Entity, final double x, final double y, final double z, final float yaw, final float partialTickTime) {
 		this.renderCart((MinecartModular) par1Entity, x, y, z, yaw, partialTickTime);
 	}

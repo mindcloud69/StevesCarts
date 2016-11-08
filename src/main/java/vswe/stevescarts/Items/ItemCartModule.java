@@ -1,5 +1,7 @@
 package vswe.stevescarts.Items;
 
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -7,15 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
 
-import java.util.List;
-
 public class ItemCartModule extends Item {
-//	IIcon unknownIcon;
+	//	IIcon unknownIcon;
 
 	public ItemCartModule() {
 		this.setHasSubtypes(true);
@@ -31,29 +31,31 @@ public class ItemCartModule extends Item {
 		return data.getName();
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIconFromDamage(final int dmg) {
-//		final ModuleData data = ModuleData.getList().get((byte) dmg);
-//		if (data != null) {
-//			return data.getIcon();
-//		}
-//		return this.unknownIcon;
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public void registerIcons(final IIconRegister register) {
-//		for (final ModuleData module : ModuleData.getList().values()) {
-//			module.createIcon(register);
-//		}
-//		final StringBuilder sb = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.unknownIcon = register.registerIcon(sb.append("stevescarts").append(":").append("unknown_icon").toString());
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIconFromDamage(final int dmg) {
+	//		final ModuleData data = ModuleData.getList().get((byte) dmg);
+	//		if (data != null) {
+	//			return data.getIcon();
+	//		}
+	//		return this.unknownIcon;
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerIcons(final IIconRegister register) {
+	//		for (final ModuleData module : ModuleData.getList().values()) {
+	//			module.createIcon(register);
+	//		}
+	//		final StringBuilder sb = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.unknownIcon = register.registerIcon(sb.append("stevescarts").append(":").append("unknown_icon").toString());
+	//	}
 
+	@Override
 	public String getUnlocalizedName() {
 		return "item.SC2:unknownmodule";
 	}
 
+	@Override
 	public String getUnlocalizedName(final ItemStack item) {
 		final ModuleData data = this.getModuleData(item, true);
 		if (data != null) {
@@ -62,6 +64,7 @@ public class ItemCartModule extends Item {
 		return this.getUnlocalizedName();
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item item, final CreativeTabs par2CreativeTabs, final List par3List) {
 		for (final ModuleData module : ModuleData.getList().values()) {
@@ -71,6 +74,7 @@ public class ItemCartModule extends Item {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		final ModuleData module = this.getModuleData(par1ItemStack, true);

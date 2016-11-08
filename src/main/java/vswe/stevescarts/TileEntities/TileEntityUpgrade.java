@@ -1,17 +1,26 @@
 package vswe.stevescarts.TileEntities;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Containers.ContainerBase;
@@ -25,8 +34,6 @@ import vswe.stevescarts.Interfaces.GuiUpgrade;
 import vswe.stevescarts.Upgrades.AssemblerUpgrade;
 import vswe.stevescarts.Upgrades.InterfaceEffect;
 import vswe.stevescarts.Upgrades.InventoryEffect;
-
-import javax.annotation.Nullable;
 
 public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder {
 	public Tank tank;
@@ -50,7 +57,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public void setMaster(final TileEntityCartAssembler master) {
 		if (this.worldObj.isRemote && this.master != master) {
-//			this.worldObj.markBlockForUpdate(this.getPos());
+			//			this.worldObj.markBlockForUpdate(this.getPos());
 		}
 		this.master = master;
 	}
@@ -91,9 +98,10 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public Packet getDescriptionPacket() {
 		final NBTTagCompound var1 = new NBTTagCompound();
 		this.writeToNBT(var1);
-		return (Packet) new SPacketUpdateTileEntity(this.pos, 1, var1);
+		return new SPacketUpdateTileEntity(this.pos, 1, var1);
 	}
 
+	@Override
 	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
@@ -102,18 +110,19 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return AssemblerUpgrade.getUpgrade(this.type);
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getTexture(final boolean outside) {
-//		if (this.getUpgrade() == null) {
-//			return null;
-//		}
-//		return outside ? this.getUpgrade().getMainTexture() : this.getUpgrade().getSideTexture();
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getTexture(final boolean outside) {
+	//		if (this.getUpgrade() == null) {
+	//			return null;
+	//		}
+	//		return outside ? this.getUpgrade().getMainTexture() : this.getUpgrade().getSideTexture();
+	//	}
 
 	public boolean hasInventory() {
 		return this.inventoryStacks != null;
 	}
 
+	@Override
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
 		this.setType(tagCompound.getByte("Type"));
@@ -132,6 +141,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 	}
 
+	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 		final NBTTagList items = new NBTTagList();
@@ -208,6 +218,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 	}
 
+	@Override
 	public int getSizeInventory() {
 		if (this.inventoryStacks != null) {
 			return this.inventoryStacks.length;
@@ -218,6 +229,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return this.master.getSizeInventory();
 	}
 
+	@Override
 	public ItemStack getStackInSlot(final int i) {
 		if (this.inventoryStacks == null) {
 			if (this.master == null) {
@@ -232,6 +244,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 	}
 
+	@Override
 	public ItemStack decrStackSize(final int i, final int j) {
 		if (this.inventoryStacks == null) {
 			if (this.master == null) {
@@ -267,6 +280,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return null;
 	}
 
+	@Override
 	public void setInventorySlotContents(final int i, final ItemStack itemstack) {
 		if (this.inventoryStacks == null) {
 			if (this.master != null) {
@@ -292,6 +306,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return false;
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
@@ -318,6 +333,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 	}
 
+	@Override
 	public void markDirty() {
 		if (this.getUpgrade() != null) {
 			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
@@ -327,6 +343,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 	}
 
+	@Override
 	public boolean isItemValidForSlot(final int slot, final ItemStack item) {
 		if (this.getUpgrade() != null) {
 			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
@@ -361,6 +378,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	}
 
+	@Override
 	public boolean canInsertItem(final int slot, final ItemStack item, EnumFacing side) {
 		if (this.getUpgrade() != null) {
 			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
@@ -371,6 +389,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return this.getMaster() != null && this.getMaster().canInsertItem(slot, item, side);
 	}
 
+	@Override
 	public boolean canExtractItem(final int slot, final ItemStack item, EnumFacing side) {
 		if (this.getUpgrade() != null) {
 			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
@@ -382,10 +401,12 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 
+	@Override
 	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
 		return this.fill(resource, doFill);
 	}
 
+	@Override
 	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
 		if (resource != null && resource.isFluidEqual(this.getFluid())) {
 			return this.drain(from, resource.amount, doDrain);
@@ -393,10 +414,12 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return null;
 	}
 
+	@Override
 	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
 		return this.drain(maxDrain, doDrain);
 	}
 
+	@Override
 	public FluidStack getFluid() {
 		if (this.tank == null) {
 			return null;
@@ -404,6 +427,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return this.tank.getFluid();
 	}
 
+	@Override
 	public int getCapacity() {
 		if (this.tank == null) {
 			return 0;
@@ -411,6 +435,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return this.tank.getCapacity();
 	}
 
+	@Override
 	public int fill(final FluidStack resource, final boolean doFill) {
 		if (this.tank == null) {
 			return 0;
@@ -419,6 +444,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return result;
 	}
 
+	@Override
 	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		if (this.tank == null) {
 			return null;
@@ -427,18 +453,22 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return result;
 	}
 
+	@Override
 	public ItemStack getInputContainer(final int tankid) {
 		return this.getStackInSlot(0);
 	}
 
+	@Override
 	public void clearInputContainer(final int tankid) {
 		this.setInventorySlotContents(0, null);
 	}
 
+	@Override
 	public void addToOutputContainer(final int tankid, final ItemStack item) {
 		TransferHandler.TransferItem(item, this, 1, 1, new ContainerUpgrade(null, this), Slot.class, null, -1);
 	}
 
+	@Override
 	public void onFluidUpdated(final int tankid) {
 	}
 
@@ -448,27 +478,32 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public void drawImage(final int tankid, final GuiBase gui, final IIcon icon, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
-//		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16.0f, sizeY / 16.0f, srcX / 16.0f, srcY / 16.0f);
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public void drawImage(final int tankid, final GuiBase gui, final IIcon icon, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
+	//		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16.0f, sizeY / 16.0f, srcX / 16.0f, srcY / 16.0f);
+	//	}
 
+	@Override
 	public int getFluidAmount() {
 		return (this.tank == null) ? 0 : this.tank.getFluidAmount();
 	}
 
+	@Override
 	public FluidTankInfo getInfo() {
 		return (this.tank == null) ? null : this.tank.getInfo();
 	}
 
+	@Override
 	public boolean canFill(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
+	@Override
 	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
+	@Override
 	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
 		return new FluidTankInfo[] { this.getInfo() };
 	}

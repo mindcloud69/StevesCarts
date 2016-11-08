@@ -3,13 +3,10 @@ package vswe.stevescarts.Modules.Workers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ISuppliesModule;
@@ -18,7 +15,7 @@ import vswe.stevescarts.Slots.SlotBridge;
 
 public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	private static DataParameter<Boolean> BRIDGE = createDw(DataSerializers.BOOLEAN);
-	
+
 	public ModuleBridge(final MinecartModular cart) {
 		super(cart);
 	}

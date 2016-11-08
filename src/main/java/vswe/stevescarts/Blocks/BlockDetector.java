@@ -1,11 +1,12 @@
 package vswe.stevescarts.Blocks;
 
+import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -14,11 +15,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
-import vswe.stevescarts.Helpers.DetectorType;
 import vswe.stevescarts.StevesCarts;
+import vswe.stevescarts.Helpers.DetectorType;
 import vswe.stevescarts.TileEntities.TileEntityDetector;
-
-import java.util.List;
 
 public class BlockDetector extends BlockContainerBase {
 	public BlockDetector() {
@@ -27,18 +26,19 @@ public class BlockDetector extends BlockContainerBase {
 		this.setDefaultState(this.getStateFromMeta(0));
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIcon(final int side, final int meta) {
-//		return DetectorType.getTypeFromSate(meta).getIcon(side);
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public void registerBlockIcons(final IIconRegister register) {
-//		for (final DetectorType type : DetectorType.values()) {
-//			type.registerIcons(register);
-//		}
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIcon(final int side, final int meta) {
+	//		return DetectorType.getTypeFromSate(meta).getIcon(side);
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerBlockIcons(final IIconRegister register) {
+	//		for (final DetectorType type : DetectorType.values()) {
+	//			type.registerIcons(register);
+	//		}
+	//	}
 
+	@Override
 	public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
 		for (final DetectorType type : DetectorType.values()) {
 			list.add(new ItemStack(item, 1, type.getMeta()));
@@ -89,6 +89,7 @@ public class BlockDetector extends BlockContainerBase {
 		return type.shouldEmitRedstone() || type == DetectorType.REDSTONE;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(final World world, final int var2) {
 		return new TileEntityDetector();
 	}
@@ -97,14 +98,17 @@ public class BlockDetector extends BlockContainerBase {
 		return meta;
 	}
 
+	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.NORMAL);
 	}
 
+	@Override
 	public int getMetaFromState(IBlockState state) {
 		return (state.getValue(DetectorType.SATE)).getMeta();
 	}
 
+	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, DetectorType.SATE);
 	}

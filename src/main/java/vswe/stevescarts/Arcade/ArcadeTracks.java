@@ -1,16 +1,16 @@
 package vswe.stevescarts.Arcade;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.Realtimers.ModuleArcade;
-import vswe.stevescarts.StevesCarts;
-
-import java.util.ArrayList;
 
 public class ArcadeTracks extends ArcadeGame {
 	private TrackLevel currentMap;
@@ -237,7 +237,7 @@ public class ArcadeTracks extends ArcadeGame {
 				this.getModule().drawString(gui, Localization.ARCADE.SAVE.translate(), menu[0] + 3, menu[1] + 3, 4210752);
 			}
 			this.getModule().drawString(gui, this.saveName + ((this.saveName.length() < 15 && this.getModule().getCart().worldObj.getWorldTime() % 20L < 10L) ? "|"
-			                                                                                                                                                  : ""), menu[0] + 5, menu[1] + 16, 16777215);
+					: ""), menu[0] + 5, menu[1] + 16, 16777215);
 		} else if (this.isMenuOpen) {
 			for (final ScrollableList list : this.lists) {
 				list.drawForeground(gui);

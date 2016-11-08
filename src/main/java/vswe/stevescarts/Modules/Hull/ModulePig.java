@@ -1,8 +1,6 @@
 package vswe.stevescarts.Modules.Hull;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +8,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -28,7 +25,7 @@ public class ModulePig extends ModuleHull {
 	}
 
 	private void oink() {
-//		this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "mob.pig.say", 1.0f, (this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.2f + 1.0f);
+		//		this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "mob.pig.say", 1.0f, (this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.2f + 1.0f);
 	}
 
 	private int getRandomTimer() {

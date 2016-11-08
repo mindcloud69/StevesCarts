@@ -1,6 +1,10 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import net.minecraft.block.SoundType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -15,13 +19,8 @@ import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Addons.Mobdetectors.ModuleMobdetector;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import vswe.stevescarts.Modules.Addons.Mobdetectors.ModuleMobdetector;
 
 public class ModuleShooterAdv extends ModuleShooter {
 	private ArrayList<ModuleMobdetector> detectors;
@@ -164,7 +163,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 	}
 
 	private Entity getTarget() {
-		final List<Entity> entities = this.getCart().worldObj.getEntitiesWithinAABB((Class) Entity.class, this.getCart().getEntityBoundingBox().expand((double) this.getTargetDistance(), 4.0, (double) this.getTargetDistance()));
+		final List<Entity> entities = this.getCart().worldObj.getEntitiesWithinAABB(Entity.class, this.getCart().getEntityBoundingBox().expand(this.getTargetDistance(), 4.0, this.getTargetDistance()));
 		Collections.sort(entities, this.sorter);
 		for (final Entity target : entities) {
 			if (target != this.getCart() && this.canSee(target)) {

@@ -1,21 +1,20 @@
 package vswe.stevescarts.TileEntities;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Containers.ContainerManager;
 import vswe.stevescarts.Helpers.ManagerTransfer;
 import vswe.stevescarts.Helpers.NBTHelper;
-import vswe.stevescarts.PacketHandler;
-
-import javax.annotation.Nullable;
 
 public abstract class TileEntityManager extends TileEntityBase implements IInventory {
 	private ManagerTransfer standardTransferHandler;
@@ -37,10 +36,12 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		this.standardTransferHandler = new ManagerTransfer();
 	}
 
+	@Override
 	public ItemStack getStackInSlot(final int i) {
 		return this.cargoItemStacks[i];
 	}
 
+	@Override
 	public ItemStack decrStackSize(final int i, final int j) {
 		if (this.cargoItemStacks[i] == null) {
 			return null;
@@ -59,6 +60,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		return itemstack2;
 	}
 
+	@Override
 	public void setInventorySlotContents(final int i, final ItemStack itemstack) {
 		this.cargoItemStacks[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
@@ -67,6 +69,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		this.markDirty();
 	}
 
+	@Override
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		final NBTTagList nbttaglist = nbttagcompound.getTagList("Items", NBTHelper.COMPOUND.getId());
@@ -94,6 +97,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		}
 	}
 
+	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setByte("movetime", (byte) this.moveTime);
@@ -126,6 +130,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		return nbttagcompound;
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
@@ -205,34 +210,34 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		while (transfer.getSetting() < 4) {
 			Label_0130:
 			{
-				if (this.color[transfer.getSetting()] - 1 == transfer.getSide()) {
-					transfer.setLowestSetting(transfer.getSetting());
-					if (transfer.getLastSetting() != transfer.getSetting()) {
-						transfer.setWorkload(0);
-						transfer.setLastSetting(transfer.getSetting());
-						return true;
-					}
-					Label_0108:
-					{
-						if (this.toCart[transfer.getSetting()]) {
-							if (!transfer.getToCartEnabled()) {
-								break Label_0108;
-							}
-						} else if (!transfer.getFromCartEnabled()) {
-							break Label_0108;
-						}
-						if (this.isTargetValid(transfer)) {
-							if (this.doTransfer(transfer)) {
-								return true;
-							}
-							break Label_0130;
-						}
-					}
-					transfer.setLowestSetting(transfer.getSetting() + 1);
+			if (this.color[transfer.getSetting()] - 1 == transfer.getSide()) {
+				transfer.setLowestSetting(transfer.getSetting());
+				if (transfer.getLastSetting() != transfer.getSetting()) {
+					transfer.setWorkload(0);
+					transfer.setLastSetting(transfer.getSetting());
 					return true;
 				}
+				Label_0108:
+				{
+					if (this.toCart[transfer.getSetting()]) {
+						if (!transfer.getToCartEnabled()) {
+							break Label_0108;
+						}
+					} else if (!transfer.getFromCartEnabled()) {
+						break Label_0108;
+					}
+					if (this.isTargetValid(transfer)) {
+						if (this.doTransfer(transfer)) {
+							return true;
+						}
+						break Label_0130;
+					}
+				}
+				transfer.setLowestSetting(transfer.getSetting() + 1);
+				return true;
 			}
-			transfer.setSetting(transfer.getSetting() + 1);
+			}
+		transfer.setSetting(transfer.getSetting() + 1);
 		}
 		return false;
 	}
@@ -393,9 +398,11 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		return this.moveTime * i / 24;
 	}
 
+	@Override
 	public void closeInventory(EntityPlayer player) {
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player) {
 	}
 

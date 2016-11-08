@@ -10,6 +10,7 @@ public class SlotTorch extends SlotBase {
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return Block.getBlockFromItem(itemstack.getItem()) == Blocks.TORCH;
 	}

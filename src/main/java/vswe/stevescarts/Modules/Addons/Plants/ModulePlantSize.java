@@ -90,6 +90,7 @@ public class ModulePlantSize extends ModuleAddon {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

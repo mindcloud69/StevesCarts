@@ -138,6 +138,7 @@ public abstract class ModuleEngine extends ModuleBase {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

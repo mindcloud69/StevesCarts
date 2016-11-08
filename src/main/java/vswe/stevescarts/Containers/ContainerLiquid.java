@@ -1,7 +1,6 @@
 package vswe.stevescarts.Containers;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraftforge.fluids.FluidStack;
 import vswe.stevescarts.Slots.SlotLiquidFilter;
 import vswe.stevescarts.Slots.SlotLiquidManagerInput;

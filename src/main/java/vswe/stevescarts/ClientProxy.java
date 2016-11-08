@@ -7,7 +7,8 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.*;
+import vswe.stevescarts.Helpers.MinecartSoundMuter;
+import vswe.stevescarts.Helpers.SoundHandler;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.Renders.RendererMinecart;
 
@@ -15,11 +16,11 @@ import vswe.stevescarts.Renders.RendererMinecart;
 public class ClientProxy extends CommonProxy {
 	@Override
 	public void renderInit() {
-		RenderingRegistry.registerEntityRenderingHandler((Class) MinecartModular.class, new RenderManagerCart());
-//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
-	//	StevesCarts.instance.blockRenderer = (ISimpleBlockRenderingHandler) new RendererUpgrade();
+		RenderingRegistry.registerEntityRenderingHandler(MinecartModular.class, new RenderManagerCart());
+		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
+		//	StevesCarts.instance.blockRenderer = (ISimpleBlockRenderingHandler) new RendererUpgrade();
 
-//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityCake.class, new RenderSnowball(Items.CAKE));
+		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityCake.class, new RenderSnowball(Items.CAKE));
 		ModuleData.initModels();
 	}
 

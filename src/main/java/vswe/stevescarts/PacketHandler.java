@@ -1,7 +1,12 @@
 package vswe.stevescarts;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
@@ -27,10 +32,6 @@ import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Containers.ContainerMinecart;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.TileEntities.TileEntityBase;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class PacketHandler {
 	@SideOnly(Side.CLIENT)
@@ -188,6 +189,6 @@ public class PacketHandler {
 				ds.writeByte(b);
 			}
 		} catch (IOException ex) {}
-		StevesCarts.packetHandler.sendToAllAround(createPacket(bs.toByteArray()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 64.0));
+		StevesCarts.packetHandler.sendToAllAround(createPacket(bs.toByteArray()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64.0));
 	}
 }

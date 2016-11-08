@@ -1,11 +1,11 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class EntityDataManagerLockable extends EntityDataManager {
 	private boolean isLocked;
@@ -25,7 +25,7 @@ public class EntityDataManagerLockable extends EntityDataManager {
 			setEntryValues(lockedList);
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void setEntryValues(List<DataEntry<?>> entriesIn) {
@@ -35,6 +35,6 @@ public class EntityDataManagerLockable extends EntityDataManager {
 			super.setEntryValues(entriesIn);
 		}
 	}
-	
-	
+
+
 }

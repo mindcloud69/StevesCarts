@@ -1,8 +1,8 @@
 package vswe.stevescarts.Helpers;
 
-import vswe.stevescarts.Modules.ModuleBase;
-
 import java.util.ArrayList;
+
+import vswe.stevescarts.Modules.ModuleBase;
 
 public class GuiAllocationHelper {
 	public int width;

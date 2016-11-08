@@ -93,13 +93,14 @@ public class ModuleSeat extends ModuleBase {
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0 && player != null) {
 			if (this.getCart().getRidingEntity() == null) {
-				player.startRiding((Entity) this.getCart());
+				player.startRiding(this.getCart());
 			} else if (this.getCart().getRidingEntity() == player) {
 				player.dismountRidingEntity();
 			}
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

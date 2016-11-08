@@ -37,6 +37,7 @@ public class ModuleSolarCompact extends ModuleSolarBase {
 		return 5;
 	}
 
+	@Override
 	public boolean updatePanels() {
 		return this.rig.update(this.isGoingDown());
 	}

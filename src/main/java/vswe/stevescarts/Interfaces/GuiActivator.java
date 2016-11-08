@@ -1,16 +1,16 @@
 package vswe.stevescarts.Interfaces;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Containers.ContainerActivator;
 import vswe.stevescarts.Helpers.ActivatorOption;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.TileEntities.TileEntityActivator;
 
 @SideOnly(Side.CLIENT)

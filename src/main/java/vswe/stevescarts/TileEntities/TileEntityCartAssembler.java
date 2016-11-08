@@ -1,7 +1,8 @@
 package vswe.stevescarts.TileEntities;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,10 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -20,16 +18,22 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Blocks.BlockCartAssembler;
 import vswe.stevescarts.Blocks.ModBlocks;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Containers.ContainerCartAssembler;
 import vswe.stevescarts.Containers.ContainerUpgrade;
-import vswe.stevescarts.Helpers.*;
+import vswe.stevescarts.Helpers.DropDownMenuItem;
+import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.Helpers.ManagerTransfer;
+import vswe.stevescarts.Helpers.NBTHelper;
+import vswe.stevescarts.Helpers.SimulationInfo;
+import vswe.stevescarts.Helpers.TitleBox;
+import vswe.stevescarts.Helpers.TransferHandler;
 import vswe.stevescarts.Interfaces.GuiBase;
 import vswe.stevescarts.Interfaces.GuiCartAssembler;
 import vswe.stevescarts.Items.ItemCarts;
@@ -40,10 +44,18 @@ import vswe.stevescarts.Slots.SlotAssembler;
 import vswe.stevescarts.Slots.SlotAssemblerFuel;
 import vswe.stevescarts.Slots.SlotHull;
 import vswe.stevescarts.Slots.SlotOutput;
-import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.Upgrades.*;
-
-import java.util.ArrayList;
+import vswe.stevescarts.Upgrades.AssemblerUpgrade;
+import vswe.stevescarts.Upgrades.BaseEffect;
+import vswe.stevescarts.Upgrades.CombustionFuel;
+import vswe.stevescarts.Upgrades.Deployer;
+import vswe.stevescarts.Upgrades.Disassemble;
+import vswe.stevescarts.Upgrades.FuelCapacity;
+import vswe.stevescarts.Upgrades.FuelCost;
+import vswe.stevescarts.Upgrades.Manager;
+import vswe.stevescarts.Upgrades.TimeFlat;
+import vswe.stevescarts.Upgrades.TimeFlatCart;
+import vswe.stevescarts.Upgrades.TimeFlatRemoved;
+import vswe.stevescarts.Upgrades.WorkEfficiency;
 
 public class TileEntityCartAssembler extends TileEntityBase implements IInventory, ISidedInventory {
 	private int maxAssemblingTime;
@@ -711,7 +723,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public void puke(final ItemStack item) {
-		final EntityItem entityitem = new EntityItem(this.worldObj, (double) pos.getX(), pos.getY() + 0.25, (double) pos.getZ(), item);
+		final EntityItem entityitem = new EntityItem(this.worldObj, pos.getX(), pos.getY() + 0.25, pos.getZ(), item);
 		entityitem.motionX = (0.5f - this.worldObj.rand.nextFloat()) / 10.0f;
 		entityitem.motionY = 0.15000000596046448;
 		entityitem.motionZ = (0.5f - this.worldObj.rand.nextFloat()) / 10.0f;
@@ -740,7 +752,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 						final byte[] moduleIDs = info.getByteArray("Spares");
 						for (int i = 0; i < moduleIDs.length; ++i) {
 							final byte id = moduleIDs[i];
-							final ItemStack module = new ItemStack(ModItems.modules, 1, (int) id);
+							final ItemStack module = new ItemStack(ModItems.modules, 1, id);
 							ModItems.modules.addExtraDataToModule(module, info, i + modulecount);
 							this.spareModules.add(module);
 						}
@@ -945,7 +957,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
 		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
-	
+
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		final ItemStack item = this.getStackInSlot(index);
@@ -959,14 +971,17 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		return item;
 	}
 
+	@Override
 	public int getSizeInventory() {
 		return this.inventoryStacks.length;
 	}
 
+	@Override
 	public ItemStack getStackInSlot(final int i) {
 		return this.inventoryStacks[i];
 	}
 
+	@Override
 	public ItemStack decrStackSize(final int i, final int j) {
 		if (this.inventoryStacks[i] == null) {
 			return null;
@@ -985,6 +1000,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		return itemstack2;
 	}
 
+	@Override
 	public void setInventorySlotContents(final int i, final ItemStack itemstack) {
 		this.inventoryStacks[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
@@ -992,32 +1008,36 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		}
 		this.markDirty();
 	}
-	
+
 	@Override
 	public String getName() {
 		return "container.cartassembler";
 	}
-	
+
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString(getName());
 	}
-	
+
 	@Override
 	public boolean hasCustomName() {
 		return false;
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
 
+	@Override
 	public void closeInventory(EntityPlayer player) {
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player) {
 	}
 
+	@Override
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
 		final NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
@@ -1050,6 +1070,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		this.isAssembling = tagCompound.getBoolean("isAssembling");
 	}
 
+	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 		final NBTTagList items = new NBTTagList();
@@ -1113,19 +1134,22 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		return this.outputItem;
 	}
 
+	@Override
 	public boolean isItemValidForSlot(final int slotId, final ItemStack item) {
 		return slotId >= 0 && slotId < this.slots.size() && this.slots.get(slotId).isItemValid(item);
 	}
-	
+
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 		return (side == EnumFacing.DOWN || side == EnumFacing.UP) ? this.topbotSlots : this.sideSlots;
 	}
 
+	@Override
 	public boolean canInsertItem(final int slot, final ItemStack item, EnumFacing side) {
 		return (side == EnumFacing.DOWN || side == EnumFacing.UP) && this.isItemValidForSlot(slot, item);
 	}
 
+	@Override
 	public boolean canExtractItem(final int slot, final ItemStack item, EnumFacing side) {
 		return true;
 	}

@@ -1,13 +1,12 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Modules.Engines.ModuleSolarCompact;
 import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.Modules.Engines.ModuleSolarCompact;
 
 @SideOnly(Side.CLIENT)
 public class ModelCompactSolarPanel extends ModelCartbase {
@@ -79,7 +78,7 @@ public class ModelCompactSolarPanel extends ModelCartbase {
 		final ModelRenderer panel = new ModelRenderer(this, textureOffsetX, textureOffsetY);
 		parent.addChild(panel);
 		this.fixSize(panel);
-		panel.addBox((float) (-width / 2), (float) (-height / 2), -0.5f, width, height, 1, 0.0f);
+		panel.addBox(-width / 2, -height / 2, -0.5f, width, height, 1, 0.0f);
 		panel.setRotationPoint(0.0f, 0.0f, offset);
 		return panel;
 	}

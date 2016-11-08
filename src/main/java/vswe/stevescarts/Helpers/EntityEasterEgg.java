@@ -1,6 +1,7 @@
 package vswe.stevescarts.Helpers;
 
-import net.minecraft.entity.Entity;
+import java.util.ArrayList;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityChicken;
@@ -11,8 +12,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
 
 public class EntityEasterEgg extends EntityEgg {
 	public EntityEasterEgg(final World world) {
@@ -26,7 +25,7 @@ public class EntityEasterEgg extends EntityEgg {
 	public EntityEasterEgg(final World world, final double x, final double y, final double z) {
 		super(world, x, y, z);
 	}
-	
+
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (result.entityHit != null) {

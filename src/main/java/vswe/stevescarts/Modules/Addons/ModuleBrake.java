@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -86,7 +85,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
 		this.drawStringOnMouseOver(gui,
-			this.isForceStopping() ? Localization.MODULES.ADDONS.LEVER_START.translate() : Localization.MODULES.ADDONS.LEVER_STOP.translate(), x, y, this.startstopRect);
+				this.isForceStopping() ? Localization.MODULES.ADDONS.LEVER_START.translate() : Localization.MODULES.ADDONS.LEVER_STOP.translate(), x, y, this.startstopRect);
 		this.drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.LEVER_TURN.translate(), x, y, this.turnbackRect);
 	}
 
@@ -110,6 +109,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 2;
 	}

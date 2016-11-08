@@ -10,6 +10,7 @@ public class SlotLiquidOutput extends SlotBase implements ISpecialItemTransferVa
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return isItemStackValid(itemstack);
 	}

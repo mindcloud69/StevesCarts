@@ -1,5 +1,7 @@
 package vswe.stevescarts.TileEntities;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -10,9 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Containers.ContainerDistributor;
 import vswe.stevescarts.Helpers.DistributorSetting;
@@ -21,9 +28,6 @@ import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.Tank;
 import vswe.stevescarts.Interfaces.GuiBase;
 import vswe.stevescarts.Interfaces.GuiDistributor;
-import vswe.stevescarts.PacketHandler;
-
-import java.util.ArrayList;
 
 public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler {
 	private ArrayList<DistributorSide> sides;
@@ -59,6 +63,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		this.sides.add(new DistributorSide(5, Localization.GUI.DISTRIBUTOR.SIDE_RED, EnumFacing.EAST));
 	}
 
+	@Override
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		for (final DistributorSide side : this.getSides()) {
@@ -66,6 +71,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		}
 	}
 
+	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		for (final DistributorSide side : this.getSides()) {
@@ -196,10 +202,12 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return invs[id];
 	}
 
+	@Override
 	public int getSizeInventory() {
 		return 120;
 	}
 
+	@Override
 	public ItemStack getStackInSlot(final int slot) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
@@ -208,6 +216,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return null;
 	}
 
+	@Override
 	public ItemStack decrStackSize(final int slot, final int count) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
@@ -216,6 +225,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return null;
 	}
 
+	@Override
 	public void setInventorySlotContents(final int slot, final ItemStack itemstack) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
@@ -233,16 +243,20 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return false;
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
 
+	@Override
 	public void closeInventory(EntityPlayer player) {
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player) {
 	}
 
+	@Override
 	public ItemStack removeStackFromSlot(final int slot) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
@@ -260,6 +274,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return false;
 	}
 
+	@Override
 	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
 		final IFluidTank[] tanks = this.getTanks(from);
 		int amount = 0;
@@ -269,10 +284,12 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return amount;
 	}
 
+	@Override
 	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
 		return this.drain(from, null, maxDrain, doDrain);
 	}
 
+	@Override
 	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
 		return this.drain(from, resource, (resource == null) ? 0 : resource.amount, doDrain);
 	}
@@ -353,26 +370,32 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		}
 	}
 
+	@Override
 	public boolean canInsertItem(final int slot, final ItemStack item, EnumFacing side) {
 		return true;
 	}
 
+	@Override
 	public boolean canExtractItem(final int slot, final ItemStack item, EnumFacing side) {
 		return true;
 	}
 
+	@Override
 	public boolean isItemValidForSlot(final int slotId, final ItemStack item) {
 		return true;
 	}
 
+	@Override
 	public boolean canFill(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
+	@Override
 	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
 		return true;
 	}
 
+	@Override
 	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
 		final IFluidTank[] tanks = this.getTanks(from);
 		final FluidTankInfo[] infos = new FluidTankInfo[tanks.length];
@@ -419,7 +442,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	@Override
 	public void setField(int id, int value) {
-		
+
 	}
 
 	@Override
@@ -429,6 +452,6 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	@Override
 	public void clear() {
-		
+
 	}
 }

@@ -9,10 +9,12 @@ public class SlotWater extends SlotBase {
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public int getSlotStackLimit() {
 		return 1;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return itemstack.getItem() == Items.WATER_BUCKET;
 	}

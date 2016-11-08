@@ -37,26 +37,26 @@ public class TransferHandler {
 	}
 
 	public static void TransferItem(final ItemStack iStack,
-	                                final IInventory inv,
-	                                final int start,
-	                                final int end,
-	                                final Container cont,
-	                                final Class validSlot,
-	                                final Class invalidSlot,
-	                                final int maxItems) {
+			final IInventory inv,
+			final int start,
+			final int end,
+			final Container cont,
+			final Class validSlot,
+			final Class invalidSlot,
+			final int maxItems) {
 		TransferItem(iStack, inv, start, end, cont, validSlot, invalidSlot, maxItems, TRANSFER_TYPE.OTHER, false);
 	}
 
 	public static void TransferItem(final ItemStack iStack,
-	                                final IInventory inv,
-	                                int start,
-	                                int end,
-	                                final Container cont,
-	                                final Class validSlot,
-	                                final Class invalidSlot,
-	                                int maxItems,
-	                                final TRANSFER_TYPE type,
-	                                final boolean fake) {
+			final IInventory inv,
+			int start,
+			int end,
+			final Container cont,
+			final Class validSlot,
+			final Class invalidSlot,
+			int maxItems,
+			final TRANSFER_TYPE type,
+			final boolean fake) {
 		start = Math.max(0, start);
 		end = Math.min(inv.getSizeInventory() - 1, end);
 		int startEmpty = start;

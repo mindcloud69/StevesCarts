@@ -13,6 +13,7 @@ public class CommonProxy implements IGuiHandler {
 	public void renderInit() {
 	}
 
+	@Override
 	public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		if (ID == 0) {
 			final MinecartModular cart = this.getCart(x, world);
@@ -28,6 +29,7 @@ public class CommonProxy implements IGuiHandler {
 		return null;
 	}
 
+	@Override
 	public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		if (ID == 0) {
 			final MinecartModular cart = this.getCart(x, world);

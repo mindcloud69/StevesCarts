@@ -33,6 +33,7 @@ public class ModuleFarmerGalgadorian extends ModuleFarmer {
 		return 1;
 	}
 
+	@Override
 	public int getRange() {
 		return 2;
 	}

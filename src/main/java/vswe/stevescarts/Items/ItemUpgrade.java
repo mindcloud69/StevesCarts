@@ -1,5 +1,7 @@
 package vswe.stevescarts.Items;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,8 +20,6 @@ import vswe.stevescarts.TileEntities.TileEntityUpgrade;
 import vswe.stevescarts.Upgrades.AssemblerUpgrade;
 import vswe.stevescarts.Upgrades.BaseEffect;
 
-import java.util.List;
-
 public class ItemUpgrade extends ItemBlock {
 	public ItemUpgrade(final Block block) {
 		super(block);
@@ -28,22 +28,22 @@ public class ItemUpgrade extends ItemBlock {
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIconFromDamage(final int dmg) {
-//		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(dmg);
-//		if (upgrade != null) {
-//			return upgrade.getIcon();
-//		}
-//		return null;
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public void registerIcons(final IIconRegister register) {
-//		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-//			upgrade.createIcon(register);
-//		}
-//		AssemblerUpgrade.initSides(register);
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIconFromDamage(final int dmg) {
+	//		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(dmg);
+	//		if (upgrade != null) {
+	//			return upgrade.getIcon();
+	//		}
+	//		return null;
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerIcons(final IIconRegister register) {
+	//		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
+	//			upgrade.createIcon(register);
+	//		}
+	//		AssemblerUpgrade.initSides(register);
+	//	}
 
 	public String getName(final ItemStack item) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
@@ -53,6 +53,7 @@ public class ItemUpgrade extends ItemBlock {
 		return "Unknown";
 	}
 
+	@Override
 	public String getUnlocalizedName(final ItemStack item) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
 		if (upgrade != null) {
@@ -61,10 +62,11 @@ public class ItemUpgrade extends ItemBlock {
 		return "item.unknown";
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-			final ItemStack iStack = new ItemStack(par1, 1, (int) upgrade.getId());
+			final ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());
 			par3List.add(iStack);
 		}
 	}
@@ -82,6 +84,7 @@ public class ItemUpgrade extends ItemBlock {
 		return false;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(par1ItemStack.getItemDamage());

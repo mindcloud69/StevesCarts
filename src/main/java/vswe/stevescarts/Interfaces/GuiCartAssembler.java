@@ -1,18 +1,21 @@
 package vswe.stevescarts.Interfaces;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import vswe.stevescarts.PacketHandler;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Containers.ContainerCartAssembler;
 import vswe.stevescarts.Helpers.DropDownMenuItem;
 import vswe.stevescarts.Helpers.Localization;
@@ -21,13 +24,8 @@ import vswe.stevescarts.Helpers.TitleBox;
 import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.ModuleData.ModuleDataHull;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Slots.SlotAssembler;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiCartAssembler extends GuiBase {
@@ -284,7 +282,7 @@ public class GuiCartAssembler extends GuiBase {
 		final float n = left + 256;
 		final int n2 = top;
 		final StevesCarts instance = StevesCarts.instance;
-		GL11.glTranslatef(n, (float) (n2 + (StevesCarts.renderSteve ? 50 : 100)), 100.0f);
+		GL11.glTranslatef(n, n2 + (StevesCarts.renderSteve ? 50 : 100), 100.0f);
 		final float scale = 50.0f;
 		GL11.glScalef(-scale, scale, scale);
 		GL11.glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
@@ -300,11 +298,11 @@ public class GuiCartAssembler extends GuiBase {
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));
 			final float temp = player.rotationPitch;
 			player.rotationPitch = 0.7853982f;
-			Minecraft.getMinecraft().getRenderManager().doRenderEntity((Entity) player, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
+			Minecraft.getMinecraft().getRenderManager().doRenderEntity(player, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
 			player.rotationPitch = temp;
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
 		} else {
-			Minecraft.getMinecraft().getRenderManager().doRenderEntity((Entity) this.assembler.getPlaceholder(), 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
+			Minecraft.getMinecraft().getRenderManager().doRenderEntity(this.assembler.getPlaceholder(), 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
 		}
 		GL11.glPopMatrix();
 		RenderHelper.disableStandardItemLighting();

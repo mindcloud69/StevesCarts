@@ -1,20 +1,16 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import net.minecraft.block.Block;
+import java.util.List;
+
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.IShearable;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModuleFlowerRemover extends ModuleBase {
 	private int tick;
@@ -80,15 +76,15 @@ public class ModuleFlowerRemover extends ModuleBase {
 	}
 
 	private void shearEntities() {
-		final List<EntityLiving> entities = this.getCart().worldObj.getEntitiesWithinAABB((Class) EntityLiving.class, this.getCart().getEntityBoundingBox().expand((double) this.getBlocksOnSide(), (double) (this.getBlocksFromLevel() + 2.0f), (double) this.getBlocksOnSide()));
+		final List<EntityLiving> entities = this.getCart().worldObj.getEntitiesWithinAABB(EntityLiving.class, this.getCart().getEntityBoundingBox().expand(this.getBlocksOnSide(), this.getBlocksFromLevel() + 2.0f, this.getBlocksOnSide()));
 		for (EntityLiving target : entities) {
 			if (target instanceof IShearable) {
 				BlockPos pos = target.getPosition();
 				final IShearable shearable = (IShearable) target;
-				if (!shearable.isShearable((ItemStack) null, (IBlockAccess) this.getCart().worldObj, pos)) {
+				if (!shearable.isShearable((ItemStack) null, this.getCart().worldObj, pos)) {
 					continue;
 				}
-				this.addStuff(shearable.onSheared((ItemStack) null, (IBlockAccess) this.getCart().worldObj, pos, 0));
+				this.addStuff(shearable.onSheared((ItemStack) null, this.getCart().worldObj, pos, 0));
 			}
 		}
 	}

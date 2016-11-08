@@ -1,19 +1,18 @@
 package vswe.stevescarts.Containers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.TileEntities.TileEntityBase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ContainerMinecart extends ContainerBase {
 	private IInventory player;
@@ -80,6 +79,7 @@ public class ContainerMinecart extends ContainerBase {
 		return this.cart.isUseableByPlayer(entityplayer);
 	}
 
+	@Override
 	public void onContainerClosed(final EntityPlayer par1EntityPlayer) {
 		super.onContainerClosed(par1EntityPlayer);
 		this.cart.closeInventory(par1EntityPlayer);

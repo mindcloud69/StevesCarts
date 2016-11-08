@@ -1,6 +1,5 @@
 package vswe.stevescarts.Slots;
 
-import net.minecraft.inventory.IInventory;
 import vswe.stevescarts.TileEntities.TileEntityCargo;
 
 public class SlotCargo extends SlotBase implements ISpecialSlotValidator {

@@ -2,10 +2,6 @@ package vswe.stevescarts.Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.StevesCarts;
 
 public class BlockMetalStorage extends Block  {
@@ -15,17 +11,17 @@ public class BlockMetalStorage extends Block  {
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIcon(final int side, int meta) {
-//		meta %= ModItems.storages.icons.length;
-//		return ModItems.storages.icons[meta];
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIcon(final int side, int meta) {
+	//		meta %= ModItems.storages.icons.length;
+	//		return ModItems.storages.icons[meta];
+	//	}
 
 	public int damageDropped(final int meta) {
 		return meta;
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public void registerBlockIcons(final IIconRegister register) {
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerBlockIcons(final IIconRegister register) {
+	//	}
 }

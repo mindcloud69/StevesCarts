@@ -1,5 +1,7 @@
 package vswe.stevescarts.Modules.Addons;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.item.ItemStack;
@@ -7,8 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
-
-import java.util.ArrayList;
 
 public class ModuleOreTracker extends ModuleAddon {
 	public ModuleOreTracker(final MinecartModular cart) {

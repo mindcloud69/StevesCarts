@@ -1,7 +1,6 @@
 package vswe.stevescarts.Blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailDetector;
 import net.minecraft.block.state.IBlockState;
@@ -11,15 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.DetectorType;
 import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityActivator;
 import vswe.stevescarts.TileEntities.TileEntityDetector;
 import vswe.stevescarts.TileEntities.TileEntityManager;
@@ -29,28 +26,28 @@ import vswe.stevescarts.Upgrades.Disassemble;
 import vswe.stevescarts.Upgrades.Transposer;
 
 public class BlockRailAdvDetector extends BlockRailDetector {
-//	private IIcon normalIcon;
-//	private IIcon cornerIcon;
-	
+	//	private IIcon normalIcon;
+	//	private IIcon cornerIcon;
+
 	public BlockRailAdvDetector() {
 		super();
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
-//	public IIcon getIcon(final int side, final int meta) {
-//		return (meta >= 6) ? this.cornerIcon : this.normalIcon;
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public void registerBlockIcons(final IIconRegister register) {
-//		final StringBuilder sb = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.normalIcon = register.registerIcon(sb.append("stevescarts").append(":").append("advanced_detector_rail").toString());
-//		final StringBuilder sb2 = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.cornerIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("advanced_detector_rail").append("_corner").toString());
-//	}
-	
+	//	public IIcon getIcon(final int side, final int meta) {
+	//		return (meta >= 6) ? this.cornerIcon : this.normalIcon;
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerBlockIcons(final IIconRegister register) {
+	//		final StringBuilder sb = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.normalIcon = register.registerIcon(sb.append("stevescarts").append(":").append("advanced_detector_rail").toString());
+	//		final StringBuilder sb2 = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.cornerIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("advanced_detector_rail").append("_corner").toString());
+	//	}
+
 	@Override
 	public boolean canMakeSlopes(IBlockAccess world, BlockPos pos) {
 		return false;
@@ -204,7 +201,7 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 	private boolean isCartReadyForAction(final MinecartModular cart, BlockPos pos) {
 		return cart.disabledPos.equals(pos) && cart.isDisabled();
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		pos = pos.down();
@@ -215,5 +212,5 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 	public void refreshState(World world, BlockPos pos, IBlockState state, final boolean flag) {
 		new BlockRailBase.Rail(world, pos, state).place(flag, false);
 	}
-	
+
 }

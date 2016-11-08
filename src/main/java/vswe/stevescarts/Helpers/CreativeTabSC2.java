@@ -13,6 +13,7 @@ public class CreativeTabSC2 extends CreativeTabs {
 		super(label);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getIconItemStack() {
 		return this.item;
@@ -22,6 +23,7 @@ public class CreativeTabSC2 extends CreativeTabs {
 		this.item = item;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem() {
 		return null;

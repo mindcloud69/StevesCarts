@@ -2,9 +2,7 @@ package vswe.stevescarts.Modules.Storages.Tanks;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -15,7 +13,11 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.*;
+import vswe.stevescarts.Helpers.ColorHelper;
+import vswe.stevescarts.Helpers.ITankHolder;
+import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.Helpers.ResourceHelper;
+import vswe.stevescarts.Helpers.Tank;
 import vswe.stevescarts.Interfaces.GuiBase;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.Storages.ModuleStorage;
@@ -38,10 +40,12 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 
 	protected abstract int getTankSize();
 
+	@Override
 	public boolean hasGui() {
 		return true;
 	}
 
+	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
 		if (y == 0) {
 			return new SlotLiquidInput(this.getCart(), this.tank, -1, slotId, 8 + x * 18, 24 + y * 24);
@@ -49,23 +53,28 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		return new SlotLiquidOutput(this.getCart(), slotId, 8 + x * 18, 24 + y * 24);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawForeground(final GuiMinecart gui) {
 		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
 	}
 
+	@Override
 	public int getInventoryWidth() {
 		return 1;
 	}
 
+	@Override
 	public int getInventoryHeight() {
 		return 2;
 	}
 
+	@Override
 	public int guiWidth() {
 		return 100;
 	}
 
+	@Override
 	public int guiHeight() {
 		return 80;
 	}
@@ -74,6 +83,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		return true;
 	}
 
+	@Override
 	public void update() {
 		super.update();
 		if (this.tick-- <= 0) {
@@ -90,18 +100,22 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		}
 	}
 
+	@Override
 	public ItemStack getInputContainer(final int tankid) {
 		return this.getStack(0);
 	}
 
+	@Override
 	public void clearInputContainer(final int tankid) {
 		this.setStack(0, null);
 	}
 
+	@Override
 	public void addToOutputContainer(final int tankid, final ItemStack item) {
 		this.addStack(1, item);
 	}
 
+	@Override
 	public void onFluidUpdated(final int tankid) {
 		if (this.getCart().worldObj.isRemote) {
 			return;
@@ -109,11 +123,12 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		this.updateDw();
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public void drawImage(final int tankid, final GuiBase gui, final IIcon icon, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
-//		this.drawImage((GuiMinecart) gui, icon, targetX, targetY, srcX, srcY, sizeX, sizeY);
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public void drawImage(final int tankid, final GuiBase gui, final IIcon icon, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
+	//		this.drawImage((GuiMinecart) gui, icon, targetX, targetY, srcX, srcY, sizeX, sizeY);
+	//	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		this.tank.drawFluid(gui, this.tankBounds[0], this.tankBounds[1]);
@@ -121,6 +136,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		this.drawImage(gui, this.tankBounds, 0, 0);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
 		this.drawStringOnMouseOver(gui, this.getTankInfo(), x, y, this.tankBounds);
@@ -136,22 +152,27 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		return str;
 	}
 
+	@Override
 	public FluidStack getFluid() {
 		return (this.tank.getFluid() == null) ? null : this.tank.getFluid().copy();
 	}
 
+	@Override
 	public int getCapacity() {
 		return this.getTankSize();
 	}
 
+	@Override
 	public int fill(final FluidStack resource, final boolean doFill) {
 		return this.tank.fill(resource, doFill, this.getCart().worldObj.isRemote);
 	}
 
+	@Override
 	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return this.tank.drain(maxDrain, doDrain, this.getCart().worldObj.isRemote);
 	}
 
+	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		if (this.tank.getFluid() != null) {
 			final NBTTagCompound compound = new NBTTagCompound();
@@ -161,12 +182,14 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		tagCompound.setBoolean(this.generateNBTName("Locked", id), this.tank.isLocked());
 	}
 
+	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		this.tank.setFluid(FluidStack.loadFluidStackFromNBT(tagCompound.getCompoundTag(this.generateNBTName("Fluid", id))));
 		this.tank.setLocked(tagCompound.getBoolean(this.generateNBTName("Locked", id)));
 		this.updateDw();
 	}
 
+	@Override
 	public int numberOfDataWatchers() {
 		return 2;
 	}
@@ -176,6 +199,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		this.updateDw(FLUID_AMOUNT, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().amount);
 	}
 
+	@Override
 	public void initDw() {
 		registerDw(FLUID_NAME, (this.tank.getFluid() == null) ? "" : this.tank.getFluid().getFluid().getName());
 		registerDw(FLUID_AMOUNT, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().amount);
@@ -196,18 +220,22 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		return this.getFluid() == null || this.getFluid().amount == 0;
 	}
 
+	@Override
 	public int getFluidAmount() {
 		return (this.getFluid() == null) ? 0 : this.getFluid().amount;
 	}
 
+	@Override
 	public FluidTankInfo getInfo() {
 		return new FluidTankInfo(this.getFluid(), this.getCapacity());
 	}
 
+	@Override
 	protected int numberOfPackets() {
 		return 1;
 	}
 
+	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0 && (this.getFluid() != null || this.tank.isLocked())) {
 			this.tank.setLocked(!this.tank.isLocked());
@@ -218,20 +246,24 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		}
 	}
 
+	@Override
 	public int numberOfGuiData() {
 		return 1;
 	}
 
+	@Override
 	protected void checkGuiData(final Object[] info) {
 		this.updateGuiData(info, 0, (short) (this.tank.isLocked() ? 1 : 0));
 	}
 
+	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
 			this.tank.setLocked(data != 0);
 		}
 	}
 
+	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (this.inRect(x, y, this.tankBounds)) {
 			byte data = (byte) button;

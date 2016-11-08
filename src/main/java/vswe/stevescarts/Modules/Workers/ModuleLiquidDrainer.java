@@ -1,5 +1,7 @@
 package vswe.stevescarts.Modules.Workers;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -10,8 +12,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.BlockPosHelpers;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
-
-import java.util.ArrayList;
 
 public class ModuleLiquidDrainer extends ModuleWorker {
 	public ModuleLiquidDrainer(final MinecartModular cart) {

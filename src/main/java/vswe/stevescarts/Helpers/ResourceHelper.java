@@ -1,11 +1,11 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.HashMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.HashMap;
 
 @SideOnly(Side.CLIENT)
 public class ResourceHelper {

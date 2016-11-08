@@ -1,5 +1,8 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -7,9 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.ModuleData.ModuleData;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class GiftItem {
 	private int chanceWeight;
@@ -48,7 +48,7 @@ public class GiftItem {
 	public static void addModuleGifts(final ArrayList<GiftItem> gifts) {
 		for (final ModuleData module : ModuleData.getList().values()) {
 			if (module.getIsValid() && !module.getIsLocked() && module.getHasRecipe() && module.getCost() > 0) {
-				final GiftItem item = new GiftItem(new ItemStack(ModItems.modules, 1, (int) module.getID()), module.getCost() * 20, (int) Math.pow(151 - module.getCost(), 2.0));
+				final GiftItem item = new GiftItem(new ItemStack(ModItems.modules, 1, module.getID()), module.getCost() * 20, (int) Math.pow(151 - module.getCost(), 2.0));
 				item.fixedSize = true;
 				gifts.add(item);
 			}

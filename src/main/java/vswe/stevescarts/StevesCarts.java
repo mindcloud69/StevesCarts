@@ -1,5 +1,7 @@
 package vswe.stevescarts;
 
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -9,13 +11,23 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import org.apache.logging.log4j.Logger;
 import vswe.stevescarts.Blocks.ModBlocks;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Helpers.*;
+import vswe.stevescarts.Helpers.CraftingHandler;
+import vswe.stevescarts.Helpers.CreativeTabSC2;
+import vswe.stevescarts.Helpers.EntityCake;
+import vswe.stevescarts.Helpers.EntityEasterEgg;
+import vswe.stevescarts.Helpers.GiftItem;
+import vswe.stevescarts.Helpers.TradeHandler;
+import vswe.stevescarts.Helpers.WoodFuelHandler;
 import vswe.stevescarts.Items.ItemBlockStorage;
 import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.Listeners.*;
+import vswe.stevescarts.Listeners.ChunkListener;
+import vswe.stevescarts.Listeners.MobDeathListener;
+import vswe.stevescarts.Listeners.MobInteractListener;
+import vswe.stevescarts.Listeners.OverlayRenderer;
+import vswe.stevescarts.Listeners.PlayerSleepListener;
+import vswe.stevescarts.Listeners.TicketListener;
 import vswe.stevescarts.TileEntities.TileEntityCargo;
 import vswe.stevescarts.Upgrades.AssemblerUpgrade;
 
@@ -61,8 +73,8 @@ public class StevesCarts {
 		ModItems.postBlockInit(config);
 		AssemblerUpgrade.init();
 		this.initCart(0, MinecartModular.class);
-		EntityRegistry.registerModEntity((Class) EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
-		EntityRegistry.registerModEntity((Class) EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
 		StevesCarts.proxy.soundInit();
 		config.save();
 	}
@@ -91,7 +103,7 @@ public class StevesCarts {
 	}
 
 	private void initCart(final int ID, final Class<? extends MinecartModular> cart) {
-		EntityRegistry.registerModEntity((Class) cart, "Minecart.Vswe." + ID, ID, StevesCarts.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(cart, "Minecart.Vswe." + ID, ID, StevesCarts.instance, 80, 3, true);
 	}
 
 	static {

@@ -145,6 +145,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

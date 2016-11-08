@@ -1,6 +1,5 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -38,7 +37,7 @@ public class ModelWoodCutter extends ModelCartbase {
 			anchor.addChild(main);
 			this.fixSize(main);
 			main.addBox(-3.5f, -1.5f, -0.5f, 7, 3, 1, 0.0f);
-			main.setRotationPoint(-13.0f, 0.0f, (float) (i * 2));
+			main.setRotationPoint(-13.0f, 0.0f, i * 2);
 			final ModelRenderer tip = new ModelRenderer(this, 0, 4);
 			main.addChild(tip);
 			this.fixSize(tip);

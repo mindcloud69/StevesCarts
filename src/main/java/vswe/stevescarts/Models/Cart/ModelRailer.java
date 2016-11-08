@@ -1,6 +1,5 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,7 +33,7 @@ public class ModelRailer extends ModelCartbase {
 		for (int r = 0; r < this.rails.length; ++r) {
 			final ModelRenderer railAnchor = new ModelRenderer(this);
 			this.AddRenderer(railAnchor);
-			(this.rails[r] = railAnchor).setRotationPoint(0.0f, (float) (-r), 0.0f);
+			(this.rails[r] = railAnchor).setRotationPoint(0.0f, (-r), 0.0f);
 			final ModelRenderer rail1 = new ModelRenderer(this, 18, 0);
 			this.fixSize(rail1);
 			railAnchor.addChild(rail1);

@@ -81,13 +81,13 @@ public abstract class TankEffect extends InventoryEffect {
 			changed = true;
 		} else if (upgrade.tank.getFluid() != null) {
 			if (isNew || oldfluid == null) {
-//				upgrade.updateGuiData(con, crafting, id, (short) upgrade.tank.getFluid().fluidID);
+				//				upgrade.updateGuiData(con, crafting, id, (short) upgrade.tank.getFluid().fluidID);
 				upgrade.updateGuiData(con, crafting, amount1, upgrade.getShortFromInt(true, upgrade.tank.getFluid().amount));
 				upgrade.updateGuiData(con, crafting, amount2, upgrade.getShortFromInt(false, upgrade.tank.getFluid().amount));
 				changed = true;
 			} else {
 				if (!oldfluid.getFluid().getName().equals(upgrade.tank.getFluid().getFluid().getName())) {
-//					upgrade.updateGuiData(con, crafting, id, (short) upgrade.tank.getFluid().fluidID);
+					//					upgrade.updateGuiData(con, crafting, id, (short) upgrade.tank.getFluid().fluidID);
 					changed = true;
 				}
 				if (oldfluid.amount != upgrade.tank.getFluid().amount) {
@@ -112,7 +112,7 @@ public abstract class TankEffect extends InventoryEffect {
 			if (data == -1) {
 				upgrade.tank.setFluid(null);
 			} else if (upgrade.tank.getFluid() == null) {
-//				upgrade.tank.setFluid(new FluidStack((int) data, 0));
+				//				upgrade.tank.setFluid(new FluidStack((int) data, 0));
 			}
 		} else if (upgrade.tank.getFluid() != null) {
 			upgrade.tank.getFluid().amount = upgrade.getIntFromShort(id == 1, upgrade.tank.getFluid().amount, data);

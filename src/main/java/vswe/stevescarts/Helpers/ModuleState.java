@@ -1,19 +1,41 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySnowman;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import vswe.stevescarts.Carts.MinecartModular;
+import vswe.stevescarts.Modules.IActivatorModule;
+import vswe.stevescarts.Modules.ISuppliesModule;
+import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Addons.ModuleChunkLoader;
 import vswe.stevescarts.Modules.Addons.ModuleInvisible;
 import vswe.stevescarts.Modules.Addons.ModulePowerObserver;
 import vswe.stevescarts.Modules.Addons.ModuleShield;
-import vswe.stevescarts.Modules.IActivatorModule;
-import vswe.stevescarts.Modules.ISuppliesModule;
-import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Realtimers.ModuleCage;
 import vswe.stevescarts.Modules.Realtimers.ModuleCakeServer;
 import vswe.stevescarts.Modules.Realtimers.ModuleShooter;
@@ -26,9 +48,6 @@ import vswe.stevescarts.Modules.Workers.ModuleTorch;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleFarmer;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleWoodcutter;
-
-import java.util.Collection;
-import java.util.HashMap;
 
 public class ModuleState {
 	private static HashMap<Byte, ModuleState> states;
@@ -92,7 +111,7 @@ public class ModuleState {
 			}
 			case PASSENGER: {
 				if (!cart.getPassengers().isEmpty()) {
-					 Entity passenger = cart.getPassengers().get(0);
+					Entity passenger = cart.getPassengers().get(0);
 					return ((ModuleStatePassenger) this).passengerClass.isAssignableFrom(passenger.getClass()) && ((ModuleStatePassenger) this).isPassengerValid(passenger);
 				}
 				break;

@@ -10,6 +10,7 @@ public class SlotModule extends Slot {
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return itemstack.getItem() == ModItems.modules;
 	}

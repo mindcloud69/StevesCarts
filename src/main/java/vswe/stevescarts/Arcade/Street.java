@@ -1,9 +1,10 @@
 package vswe.stevescarts.Arcade;
 
-import org.lwjgl.opengl.GL11;
-import vswe.stevescarts.Interfaces.GuiMinecart;
-
 import java.util.EnumSet;
+
+import org.lwjgl.opengl.GL11;
+
+import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public class Street extends Property {
 	private float[] color;

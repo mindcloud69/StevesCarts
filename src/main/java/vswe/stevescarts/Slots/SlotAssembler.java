@@ -1,7 +1,6 @@
 package vswe.stevescarts.Slots;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.ModuleData.ModuleData;
@@ -33,6 +32,7 @@ public class SlotAssembler extends Slot {
 		return this.useLarge;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return itemstack != null && this.isValid && ModuleData.isValidModuleItem(this.groupID, itemstack) && (!this.getHasStack() || (this.getStack().stackSize > 0 && itemstack.stackSize > 0));
 	}
@@ -99,6 +99,7 @@ public class SlotAssembler extends Slot {
 		return true;
 	}
 
+	@Override
 	public void onSlotChanged() {
 		super.onSlotChanged();
 		if (this.shouldUpdatePlaceholder()) {
@@ -108,10 +109,12 @@ public class SlotAssembler extends Slot {
 		}
 	}
 
+	@Override
 	public int getSlotStackLimit() {
 		return 1;
 	}
 
+	@Override
 	public boolean canTakeStack(final EntityPlayer player) {
 		return this.getStack() != null && this.getStack().stackSize > 0;
 	}

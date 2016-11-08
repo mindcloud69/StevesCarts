@@ -12,6 +12,7 @@ public class SlotIncinerator extends SlotBase implements ISpecialSlotValidator {
 		return false;
 	}
 
+	@Override
 	public int getSlotStackLimit() {
 		return 1;
 	}

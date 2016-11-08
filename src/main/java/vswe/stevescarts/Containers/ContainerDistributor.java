@@ -1,11 +1,11 @@
 package vswe.stevescarts.Containers;
 
+import java.util.ArrayList;
+
 import net.minecraft.inventory.IInventory;
 import vswe.stevescarts.Helpers.DistributorSide;
 import vswe.stevescarts.TileEntities.TileEntityBase;
 import vswe.stevescarts.TileEntities.TileEntityDistributor;
-
-import java.util.ArrayList;
 
 public class ContainerDistributor extends ContainerBase {
 	private TileEntityDistributor distributor;

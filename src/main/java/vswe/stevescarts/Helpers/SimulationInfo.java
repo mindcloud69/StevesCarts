@@ -1,5 +1,8 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.ArrayList;
+
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Modules.Addons.ModuleBrake;
 import vswe.stevescarts.Modules.Addons.ModuleInvisible;
 import vswe.stevescarts.Modules.Addons.ModuleLiquidSensors;
@@ -17,9 +20,6 @@ import vswe.stevescarts.Modules.Workers.ModuleTorch;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleFarmer;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleWoodcutter;
-import vswe.stevescarts.StevesCarts;
-
-import java.util.ArrayList;
 
 public class SimulationInfo {
 	private ArrayList<DropDownMenuItem> items;

@@ -1,6 +1,7 @@
 package vswe.stevescarts.Modules.Addons;
 
-import net.minecraft.entity.Entity;
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -12,13 +13,11 @@ import vswe.stevescarts.Helpers.LabelInformation;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Engines.ModuleEngine;
 import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.Modules.Engines.ModuleEngine;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleTool;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotChest;
-
-import java.util.ArrayList;
 
 public class ModuleLabel extends ModuleAddon {
 	private ArrayList<LabelInformation> labels;
@@ -73,7 +72,7 @@ public class ModuleLabel extends ModuleAddon {
 					used += 256;
 				}
 				return (ModuleLabel.this.storageSlots == null) ? "" : (Localization.MODULES.ADDONS.STORAGE.translate() + ": " + used + "/" + ModuleLabel.this.storageSlots.size() + (
-					(ModuleLabel.this.storageSlots.size() == 0) ? "" : ("[" + (int) (100.0f * used / ModuleLabel.this.storageSlots.size()) + "%]")));
+						(ModuleLabel.this.storageSlots.size() == 0) ? "" : ("[" + (int) (100.0f * used / ModuleLabel.this.storageSlots.size()) + "%]")));
 			}
 		});
 	}

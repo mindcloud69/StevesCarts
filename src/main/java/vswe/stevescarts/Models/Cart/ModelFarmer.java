@@ -1,6 +1,5 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,7 +38,7 @@ public class ModelFarmer extends ModelCartbase {
 			this.mainAnchor.addChild(smallarm);
 			this.fixSize(smallarm);
 			smallarm.addBox(-1.0f, -1.0f, -1.0f, 8, 2, 2, 0.0f);
-			smallarm.setRotationPoint(0.0f, 0.0f, (float) (i * 17));
+			smallarm.setRotationPoint(0.0f, 0.0f, i * 17);
 		}
 		final ModelRenderer mainarm = new ModelRenderer(this, 0, 37);
 		this.mainAnchor.addChild(mainarm);
@@ -52,12 +51,12 @@ public class ModelFarmer extends ModelCartbase {
 			this.mainAnchor.addChild(extra);
 			this.fixSize(extra);
 			extra.addBox(-2.5f, -2.5f, -1.0f, 5, 5, 2, 0.0f);
-			extra.setRotationPoint(8.0f, 0.0f, (float) (j * 30));
+			extra.setRotationPoint(8.0f, 0.0f, j * 30);
 			final ModelRenderer bigarm = new ModelRenderer(this, 26, 17);
 			this.mainAnchor.addChild(bigarm);
 			this.fixSize(bigarm);
 			bigarm.addBox(-1.0f, -2.0f, -1.0f, 16, 4, 2, 0.0f);
-			bigarm.setRotationPoint(8.0f, 0.0f, (float) (j * 32));
+			bigarm.setRotationPoint(8.0f, 0.0f, j * 32);
 		}
 		this.anchor = new ModelRenderer(this);
 		this.mainAnchor.addChild(this.anchor);
@@ -118,7 +117,7 @@ public class ModelFarmer extends ModelCartbase {
 					outer.addChild(nail);
 					this.fixSize(nail);
 					nail.addBox(-0.5f, -1.5f, -0.5f, 1, 3, 1, 0.0f);
-					nail.setRotationPoint((float) (j2 * 2), -2.0f, 0.0f);
+					nail.setRotationPoint(j2 * 2, -2.0f, 0.0f);
 				}
 			}
 		}

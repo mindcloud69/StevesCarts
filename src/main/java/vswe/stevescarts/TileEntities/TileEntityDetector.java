@@ -39,6 +39,7 @@ public class TileEntityDetector extends TileEntityBase {
 		this.mainObj = new LogicObject((byte) 1, (byte) 0);
 	}
 
+	@Override
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		final byte count = nbttagcompound.getByte("LogicObjectCount");
@@ -47,6 +48,7 @@ public class TileEntityDetector extends TileEntityBase {
 		}
 	}
 
+	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		final int count = this.saveLogicObject(nbttagcompound, this.mainObj, 0, false);

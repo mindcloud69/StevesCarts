@@ -1,22 +1,21 @@
 package vswe.stevescarts.Interfaces;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.inventory.Container;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import vswe.stevescarts.ModuleData.ModuleData;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Container;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.ModuleData.ModuleData;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiBase extends GuiContainer {
@@ -130,6 +129,7 @@ public abstract class GuiBase extends GuiContainer {
 	public void drawGuiForeground(final int x, final int y) {
 	}
 
+	@Override
 	public void drawDefaultBackground() {
 		super.drawDefaultBackground();
 		this.startScaling();
@@ -174,7 +174,7 @@ public abstract class GuiBase extends GuiContainer {
 		GL11.glPushMatrix();
 		final float scale = this.getScale();
 		GL11.glScalef(scale, scale, 1.0f);
-		GL11.glTranslatef((float) (-this.guiLeft), (float) (-this.guiTop), 0.0f);
+		GL11.glTranslatef((-this.guiLeft), (-this.guiTop), 0.0f);
 		GL11.glTranslatef((this.width - this.xSize * scale) / (2.0f * scale), (this.height - this.ySize * scale) / (2.0f * scale), 0.0f);
 	}
 
@@ -210,6 +210,7 @@ public abstract class GuiBase extends GuiContainer {
 		this.mouseDraged(x, y, button);
 	}
 
+	@Override
 	public void handleMouseInput() throws IOException {
 		final int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
 		final int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
@@ -278,19 +279,19 @@ public abstract class GuiBase extends GuiContainer {
 		return this.zLevel;
 	}
 
-//	public void drawIcon(final IIcon icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
-//		final Tessellator tessellator = Tessellator.instance;
-//		tessellator.startDrawingQuads();
-//		final float x = icon.getMinU() + offsetX * (icon.getMaxU() - icon.getMinU());
-//		final float y = icon.getMinV() + offsetY * (icon.getMaxV() - icon.getMinV());
-//		final float width = (icon.getMaxU() - icon.getMinU()) * sizeX;
-//		final float height = (icon.getMaxV() - icon.getMinV()) * sizeY;
-//		tessellator.addVertexWithUV((double) (targetX + 0), (double) (targetY + 16.0f * sizeY), (double) this.getZLevel(), (double) (x + 0.0f), (double) (y + height));
-//		tessellator.addVertexWithUV((double) (targetX + 16.0f * sizeX), (double) (targetY + 16.0f * sizeY), (double) this.getZLevel(), (double) (x + width), (double) (y + height));
-//		tessellator.addVertexWithUV((double) (targetX + 16.0f * sizeX), (double) (targetY + 0), (double) this.getZLevel(), (double) (x + width), (double) (y + 0.0f));
-//		tessellator.addVertexWithUV((double) (targetX + 0), (double) (targetY + 0), (double) this.getZLevel(), (double) (x + 0.0f), (double) (y + 0.0f));
-//		tessellator.draw();
-//	}
+	//	public void drawIcon(final IIcon icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
+	//		final Tessellator tessellator = Tessellator.instance;
+	//		tessellator.startDrawingQuads();
+	//		final float x = icon.getMinU() + offsetX * (icon.getMaxU() - icon.getMinU());
+	//		final float y = icon.getMinV() + offsetY * (icon.getMaxV() - icon.getMinV());
+	//		final float width = (icon.getMaxU() - icon.getMinU()) * sizeX;
+	//		final float height = (icon.getMaxV() - icon.getMinV()) * sizeY;
+	//		tessellator.addVertexWithUV((double) (targetX + 0), (double) (targetY + 16.0f * sizeY), (double) this.getZLevel(), (double) (x + 0.0f), (double) (y + height));
+	//		tessellator.addVertexWithUV((double) (targetX + 16.0f * sizeX), (double) (targetY + 16.0f * sizeY), (double) this.getZLevel(), (double) (x + width), (double) (y + height));
+	//		tessellator.addVertexWithUV((double) (targetX + 16.0f * sizeX), (double) (targetY + 0), (double) this.getZLevel(), (double) (x + width), (double) (y + 0.0f));
+	//		tessellator.addVertexWithUV((double) (targetX + 0), (double) (targetY + 0), (double) this.getZLevel(), (double) (x + 0.0f), (double) (y + 0.0f));
+	//		tessellator.draw();
+	//	}
 
 	public void drawModuleIcon(ModuleData icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
 		//TODO
@@ -370,13 +371,13 @@ public abstract class GuiBase extends GuiContainer {
 			}
 		}
 		//TODO
-//		final Tessellator tessellator = Tessellator.getInstance();
-//		tessellator.startDrawingQuads();
-//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + h), (double) this.zLevel, pt1[0], pt1[1]);
-//		tessellator.addVertexWithUV((double) (x + w), (double) (y + h), (double) this.zLevel, pt2[0], pt2[1]);
-//		tessellator.addVertexWithUV((double) (x + w), (double) (y + 0), (double) this.zLevel, pt3[0], pt3[1]);
-//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) this.zLevel, pt4[0], pt4[1]);
-//		tessellator.draw();
+		//		final Tessellator tessellator = Tessellator.getInstance();
+		//		tessellator.startDrawingQuads();
+		//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + h), (double) this.zLevel, pt1[0], pt1[1]);
+		//		tessellator.addVertexWithUV((double) (x + w), (double) (y + h), (double) this.zLevel, pt2[0], pt2[1]);
+		//		tessellator.addVertexWithUV((double) (x + w), (double) (y + 0), (double) this.zLevel, pt3[0], pt3[1]);
+		//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) this.zLevel, pt4[0], pt4[1]);
+		//		tessellator.draw();
 	}
 
 	public enum RENDER_ROTATION {

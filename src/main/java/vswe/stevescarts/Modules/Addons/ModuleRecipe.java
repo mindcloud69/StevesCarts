@@ -1,5 +1,7 @@
 package vswe.stevescarts.Modules.Addons;
 
+import java.util.ArrayList;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -15,8 +17,6 @@ import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotChest;
 import vswe.stevescarts.TileEntities.TileEntityCargo;
-
-import java.util.ArrayList;
 
 public abstract class ModuleRecipe extends ModuleAddon {
 	private int target;
@@ -141,7 +141,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 					str = null;
 				} else {
 					str = Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT.translate((i == 0) ? "0"
-					                                                                          : "1") + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_10.translate() + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_64.translate();
+							: "1") + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_10.translate() + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_64.translate();
 				}
 				if (str != null) {
 					this.drawStringOnMouseOver(gui, str, x, y, this.getControlRect(i));

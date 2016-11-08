@@ -1,14 +1,15 @@
 package vswe.stevescarts.Modules.Realtimers;
 
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.List;
 
 public class ModuleCleaner extends ModuleBase {
 	public ModuleCleaner(final MinecartModular cart) {
@@ -39,7 +40,7 @@ public class ModuleCleaner extends ModuleBase {
 		for (Entity e : list) {
 			if (e instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) e;
-				if (eItem.delayBeforeCanPickup <= 10) {
+				if ((Integer)ObfuscationReflectionHelper.getPrivateValue(EntityItem.class, eItem, 1) <= 10) {
 					final double difX = this.getCart().posX - eItem.posX;
 					final double difY = this.getCart().posY - eItem.posY;
 					final double difZ = this.getCart().posZ - eItem.posZ;
@@ -59,11 +60,12 @@ public class ModuleCleaner extends ModuleBase {
 		for (int e = 0; e < list.size(); ++e) {
 			if (list.get(e) instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) list.get(e);
-				if (eItem.delayBeforeCanPickup <= 10 && !eItem.isDead) {
+				if ((Integer)ObfuscationReflectionHelper.getPrivateValue(EntityItem.class, eItem, 1) <= 10 && !eItem.isDead) {
 					final int stackSize = eItem.getEntityItem().stackSize;
 					this.getCart().addItemToChest(eItem.getEntityItem());
 					if (stackSize != eItem.getEntityItem().stackSize) {
-						this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
+						//TODO
+						//this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
 						if (eItem.getEntityItem().stackSize <= 0) {
 							eItem.setDead();
 						}
@@ -78,7 +80,8 @@ public class ModuleCleaner extends ModuleBase {
 					final ItemStack iItem = new ItemStack(Items.ARROW, 1);
 					this.getCart().addItemToChest(iItem);
 					if (iItem.stackSize <= 0) {
-						this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
+						//TODO
+						//this.getCart().worldObj.playSound((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
 						eItem2.setDead();
 					} else if (this.failPickup(iItem)) {
 						eItem2.setDead();

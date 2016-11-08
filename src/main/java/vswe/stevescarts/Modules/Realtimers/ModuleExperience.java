@@ -1,6 +1,7 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import net.minecraft.entity.Entity;
+import java.util.List;
+
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,8 +12,6 @@ import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.List;
 
 public class ModuleExperience extends ModuleBase {
 	private static final int MAX_EXPERIENCE_AMOUNT = 1500;

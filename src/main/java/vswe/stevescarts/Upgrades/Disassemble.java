@@ -1,6 +1,7 @@
 package vswe.stevescarts.Upgrades;
 
-import net.minecraft.inventory.IInventory;
+import java.util.ArrayList;
+
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,8 +14,6 @@ import vswe.stevescarts.Slots.SlotCart;
 import vswe.stevescarts.Slots.SlotModule;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-
-import java.util.ArrayList;
 
 public class Disassemble extends InventoryEffect {
 	@Override

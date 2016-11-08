@@ -1,17 +1,18 @@
 package vswe.stevescarts.Interfaces;
 
+import java.util.ArrayList;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.ModuleCountPair;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Slots.SlotBase;
-
-import java.util.ArrayList;
 
 @SideOnly(Side.CLIENT)
 public class GuiMinecart extends GuiBase {

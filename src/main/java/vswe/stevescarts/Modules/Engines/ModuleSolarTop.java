@@ -28,6 +28,7 @@ public abstract class ModuleSolarTop extends ModuleSolarBase {
 		return this.movingLevel;
 	}
 
+	@Override
 	public boolean updatePanels() {
 		if (this.movingLevel > this.minVal) {
 			this.movingLevel = this.minVal;

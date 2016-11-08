@@ -1,5 +1,7 @@
 package vswe.stevescarts.Models.Cart;
 
+import java.util.ArrayList;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
@@ -8,8 +10,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.ArrayList;
 
 @SideOnly(Side.CLIENT)
 public abstract class ModelCartbase extends ModelBase {

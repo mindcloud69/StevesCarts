@@ -8,6 +8,7 @@ public class SlotCartCrafter extends SlotFake {
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return true;
 	}

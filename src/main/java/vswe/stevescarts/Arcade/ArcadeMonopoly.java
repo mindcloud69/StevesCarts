@@ -1,15 +1,16 @@
 package vswe.stevescarts.Arcade;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.Realtimers.ModuleArcade;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
 
 public class ArcadeMonopoly extends ArcadeGame {
 	private Die die;
@@ -77,19 +78,19 @@ public class ArcadeMonopoly extends ArcadeGame {
 		final PropertyGroup stationGroup = new PropertyGroup();
 		final PropertyGroup utilGroup = new PropertyGroup();
 		this.places = new Place[] { new Go(this), new Street(this, streetGroup1, "Soaryn Chest", 30, 2), new Community(this), new Street(this, streetGroup1, "Eddie's Cobble Stairs", 30, 2),
-			new Place(this), new Utility(this, utilGroup, 0, "Test"), new Street(this, streetGroup2, "Ecu's Eco Escape", 60, 4), new Station(this, stationGroup, 0, "Wooden Station"),
-			new Street(this, streetGroup2, "Test", 60, 4), new Villager(this), new Street(this, streetGroup3, "Direwolf's 9x9", 100, 6), new Chance(this),
-			new Street(this, streetGroup3, "Greg's Forest", 100, 6), new Street(this, streetGroup3, "Alice's Tunnel", 110, 8), new Jail(this),
-			new Street(this, streetGroup4, "Flora's Alveary", 140, 10), new Utility(this, utilGroup, 1, "Test"), new Street(this, streetGroup4, "Sengir's Greenhouse", 140, 10),
-			new Street(this, streetGroup4, "Test", 160, 12), new Station(this, stationGroup, 1, "Standard Station"), new Street(this, streetGroup5, "Muse's Moon Base", 200, 14), new Community(this),
-			new Street(this, streetGroup5, "Algorithm's Crafting CPU", 200, 14), new Street(this, streetGroup5, "Pink Lemmingaide Stand", 240, 16), new CornerPlace(this, 2),
-			new Street(this, streetGroup6, "Covert's Railyard", 250, 18), new Chance(this), new Street(this, streetGroup6, "Test", 250, 18), new Street(this, streetGroup6, "Test", 270, 20),
-			new Community(this), new Street(this, streetGroup6, "Test", 270, 20), new Station(this, stationGroup, 2, "Reinforced Station"),
-			new Street(this, streetGroup7, "Player's Industrial Warehouse", 320, 22), new Villager(this), new Street(this, streetGroup7, "Dan's Computer Repair", 320, 22),
-			new Street(this, streetGroup7, "iChun's Hat Shop", 350, 24), new Utility(this, utilGroup, 2, "Test"), new Street(this, streetGroup7, "Lex's Forge", 350, 24), new GoToJail(this),
-			new Street(this, streetGroup8, "Morvelaira's Pretty Wall", 400, 26), new Street(this, streetGroup8, "Rorax's Tower of Doom", 400, 26), new Community(this),
-			new Street(this, streetGroup8, "Jaded's Crash Lab", 440, 30), new Station(this, stationGroup, 3, "Galgadorian Station"), new Chance(this), new Street(this, streetGroup9, "Test", 500, 40),
-			new Place(this), new Street(this, streetGroup9, "Vswe's Redstone Tower", 600, 50) };
+				new Place(this), new Utility(this, utilGroup, 0, "Test"), new Street(this, streetGroup2, "Ecu's Eco Escape", 60, 4), new Station(this, stationGroup, 0, "Wooden Station"),
+				new Street(this, streetGroup2, "Test", 60, 4), new Villager(this), new Street(this, streetGroup3, "Direwolf's 9x9", 100, 6), new Chance(this),
+				new Street(this, streetGroup3, "Greg's Forest", 100, 6), new Street(this, streetGroup3, "Alice's Tunnel", 110, 8), new Jail(this),
+				new Street(this, streetGroup4, "Flora's Alveary", 140, 10), new Utility(this, utilGroup, 1, "Test"), new Street(this, streetGroup4, "Sengir's Greenhouse", 140, 10),
+				new Street(this, streetGroup4, "Test", 160, 12), new Station(this, stationGroup, 1, "Standard Station"), new Street(this, streetGroup5, "Muse's Moon Base", 200, 14), new Community(this),
+				new Street(this, streetGroup5, "Algorithm's Crafting CPU", 200, 14), new Street(this, streetGroup5, "Pink Lemmingaide Stand", 240, 16), new CornerPlace(this, 2),
+				new Street(this, streetGroup6, "Covert's Railyard", 250, 18), new Chance(this), new Street(this, streetGroup6, "Test", 250, 18), new Street(this, streetGroup6, "Test", 270, 20),
+				new Community(this), new Street(this, streetGroup6, "Test", 270, 20), new Station(this, stationGroup, 2, "Reinforced Station"),
+				new Street(this, streetGroup7, "Player's Industrial Warehouse", 320, 22), new Villager(this), new Street(this, streetGroup7, "Dan's Computer Repair", 320, 22),
+				new Street(this, streetGroup7, "iChun's Hat Shop", 350, 24), new Utility(this, utilGroup, 2, "Test"), new Street(this, streetGroup7, "Lex's Forge", 350, 24), new GoToJail(this),
+				new Street(this, streetGroup8, "Morvelaira's Pretty Wall", 400, 26), new Street(this, streetGroup8, "Rorax's Tower of Doom", 400, 26), new Community(this),
+				new Street(this, streetGroup8, "Jaded's Crash Lab", 440, 30), new Station(this, stationGroup, 3, "Galgadorian Station"), new Chance(this), new Street(this, streetGroup9, "Test", 500, 40),
+				new Place(this), new Street(this, streetGroup9, "Vswe's Redstone Tower", 600, 50) };
 		((Property) this.places[1]).setOwner(this.pieces.get(0));
 		((Property) this.places[3]).setOwner(this.pieces.get(0));
 		this.die = new Die(this, 0);
@@ -492,7 +493,7 @@ public class ArcadeMonopoly extends ArcadeGame {
 		boolean foundHover = false;
 		if (this.selectedPlace != -1) {
 			this.drawPropertyOnBoardWithPositionRotationAndScale(gui, this.places[this.selectedPlace], this.selectedPlace, true, false, (int) ((590.6666666666666 - (
-				(this.getId(this.selectedPlace) == 0) ? 122 : 76)) / 2.0), 51, 0, 0.75f);
+					(this.getId(this.selectedPlace) == 0) ? 122 : 76)) / 2.0), 51, 0, 0.75f);
 		}
 		for (int i = 0; i < this.places.length; ++i) {
 			if (!foundHover && this.getModule().inRect((int) smallgridX, (int) smallgridY, this.getSmallgridPlaceArea(i))) {
@@ -523,7 +524,7 @@ public class ArcadeMonopoly extends ArcadeGame {
 					}
 					case 2: {
 						v = ((this.getSelectedPlace() != null && this.getSelectedPlace() instanceof Property && ((Property) this.getSelectedPlace()).getOwner() == this.pieces.get(i)) ? (
-							((Property) this.getSelectedPlace()).isMortgaged() ? 2 : 1) : 0);
+								((Property) this.getSelectedPlace()).isMortgaged() ? 2 : 1) : 0);
 						break;
 					}
 				}
@@ -624,7 +625,7 @@ public class ArcadeMonopoly extends ArcadeGame {
 		GL11.glTranslatef(0.0f, 0.0f, 100.0f);
 		GL11.glTranslatef(posX + x, posY + y, 0.0f);
 		GL11.glScalef(s, s, 1.0f);
-		GL11.glRotatef((float) (this.cardRotation + (isFront ? 0 : 180)), 0.0f, 1.0f, 0.0f);
+		GL11.glRotatef(this.cardRotation + (isFront ? 0 : 180), 0.0f, 1.0f, 0.0f);
 		GL11.glTranslatef(-posX, -posY, 0.0f);
 		this.loadTexture(gui, 0);
 		final int[] rect = { 0, 0, 142, 80 };
@@ -825,14 +826,14 @@ public class ArcadeMonopoly extends ArcadeGame {
 	}
 
 	private void drawPropertyOnBoardWithPositionRotationAndScale(final GuiMinecart gui,
-	                                                             final Place place,
-	                                                             final int id,
-	                                                             final boolean zoom,
-	                                                             final boolean hover,
-	                                                             final int x,
-	                                                             final int y,
-	                                                             final int r,
-	                                                             final float s) {
+			final Place place,
+			final int id,
+			final boolean zoom,
+			final boolean hover,
+			final int x,
+			final int y,
+			final int r,
+			final float s) {
 		GL11.glPushMatrix();
 		final EnumSet<Place.PLACE_STATE> states = EnumSet.noneOf(Place.PLACE_STATE.class);
 		if (zoom) {
@@ -853,7 +854,7 @@ public class ArcadeMonopoly extends ArcadeGame {
 		final float posY = gui.getGuiTop();
 		GL11.glTranslatef(posX + x * s, posY + y * s, 0.0f);
 		GL11.glScalef(s, s, 1.0f);
-		GL11.glRotatef((float) r, 0.0f, 0.0f, 1.0f);
+		GL11.glRotatef(r, 0.0f, 0.0f, 1.0f);
 		GL11.glTranslatef(-posX, -posY, 0.0f);
 		place.draw(gui, states);
 		final int[] total = new int[place.getPieceAreaCount()];

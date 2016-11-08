@@ -1,8 +1,9 @@
 package vswe.stevescarts.Items;
 
+import java.util.HashMap;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.config.Configuration;
@@ -13,8 +14,6 @@ import vswe.stevescarts.Helpers.DetectorType;
 import vswe.stevescarts.Helpers.RecipeHelper;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.Upgrades.AssemblerUpgrade;
-
-import java.util.HashMap;
 
 public final class ModItems {
 	public static ItemCarts carts;
@@ -46,7 +45,7 @@ public final class ModItems {
 			//GameRegistry.registerCustomItemStack(subcomponent.getUnlocalizedName(), subcomponent);
 		}
 		for (final ModuleData module : ModuleData.getList().values()) {
-			final ItemStack submodule = new ItemStack(ModItems.modules, 1, (int) module.getID());
+			final ItemStack submodule = new ItemStack(ModItems.modules, 1, module.getID());
 			//GameRegistry.registerCustomItemStack(submodule.getUnlocalizedName(), submodule);
 		}
 	}
@@ -57,10 +56,10 @@ public final class ModItems {
 		ModItems.storages = (ItemBlockStorage) new ItemStack(ModBlocks.STORAGE.getBlock()).getItem();
 		for (int i = 0; i < ItemBlockStorage.blocks.length; ++i) {
 			final ItemStack storage = new ItemStack(ModItems.storages, 1, i);
-		//	GameRegistry.registerCustomItemStack(storage.getUnlocalizedName(), storage);
+			//	GameRegistry.registerCustomItemStack(storage.getUnlocalizedName(), storage);
 		}
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-			final ItemStack upgradeStack = new ItemStack(ModItems.upgrades, 1, (int) upgrade.getId());
+			final ItemStack upgradeStack = new ItemStack(ModItems.upgrades, 1, upgrade.getId());
 			//GameRegistry.registerCustomItemStack(upgradeStack.getUnlocalizedName(), upgradeStack);
 		}
 		for (final DetectorType type : DetectorType.values()) {
@@ -71,7 +70,7 @@ public final class ModItems {
 
 	public static void addRecipes() {
 		for (final ModuleData module : ModuleData.getList().values()) {
-			final ItemStack submodule = new ItemStack(ModItems.modules, 1, (int) module.getID());
+			final ItemStack submodule = new ItemStack(ModItems.modules, 1, module.getID());
 			if (!module.getIsLocked() && ModItems.validModules.get(module.getID())) {
 				module.loadRecipe();
 			}

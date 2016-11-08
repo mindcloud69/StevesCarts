@@ -3,13 +3,11 @@ package vswe.stevescarts.Modules.Workers;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
@@ -59,9 +57,9 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean work() {
 		BlockPos next = this.getLastblock();
-		final int x = (int) next.getX();
-		final int y = (int) next.getY();
-		final int z = (int) next.getZ();
+		final int x = next.getX();
+		final int y = next.getY();
+		final int z = next.getZ();
 		if (this.light <= this.lightLimit) {
 			for (int side = -1; side <= 1; side += 2) {
 				final int xTorch = x + ((this.getCart().z() != z) ? side : 0);
@@ -148,6 +146,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

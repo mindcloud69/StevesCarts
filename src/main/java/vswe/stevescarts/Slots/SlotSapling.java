@@ -12,6 +12,7 @@ public class SlotSapling extends SlotBase {
 		this.module = module;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return this.module.isSaplingHandler(itemstack);
 	}

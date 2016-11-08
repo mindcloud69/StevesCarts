@@ -1,8 +1,8 @@
 package vswe.stevescarts.Modules.Addons;
 
+import java.util.ArrayList;
+
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Enchantments;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,8 +15,6 @@ import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotEnchantment;
-
-import java.util.ArrayList;
 
 public class ModuleEnchants extends ModuleAddon {
 	private EnchantmentData[] enchants;

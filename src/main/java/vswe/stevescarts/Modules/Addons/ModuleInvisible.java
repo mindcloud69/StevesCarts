@@ -102,6 +102,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 		this.updateDw(VISABLE, val);
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

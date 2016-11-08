@@ -2,8 +2,6 @@ package vswe.stevescarts.Modules.Workers.Tools;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -14,8 +12,8 @@ import vswe.stevescarts.Helpers.EnchantmentInfo;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Addons.ModuleEnchants;
 import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.Modules.Addons.ModuleEnchants;
 import vswe.stevescarts.Modules.Workers.ModuleWorker;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotRepair;

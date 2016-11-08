@@ -1,16 +1,16 @@
 package vswe.stevescarts.Modules.Workers;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Interfaces.GuiMinecart;
@@ -18,13 +18,11 @@ import vswe.stevescarts.Modules.ISuppliesModule;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotBuilder;
 
-import java.util.ArrayList;
-
 public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	private boolean hasGeneratedAngles;
 	private float[] railAngles;
 	private static DataParameter<Byte> RAILS = createDw(DataSerializers.BYTE);
-	
+
 	public ModuleRailer(final MinecartModular cart) {
 		super(cart);
 		this.hasGeneratedAngles = false;
@@ -53,9 +51,9 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean work() {
 		BlockPos next = this.getNextblock();
-		final int x = (int) next.getX();
-		final int y = (int) next.getY();
-		final int z = (int) next.getZ();
+		final int x = next.getX();
+		final int y = next.getY();
+		final int z = next.getZ();
 		final ArrayList<Integer[]> pos = this.getValidRailPositions(x, y, z);
 		if (this.doPreWork()) {
 			boolean valid = false;
@@ -70,7 +68,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 			} else {
 				boolean front = false;
 				for (int j = 0; j < pos.size(); ++j) {
-					if (BlockRailBase.isRailBlock(this.getCart().worldObj, new BlockPos((int) pos.get(j)[0], (int) pos.get(j)[1], (int) pos.get(j)[2]))) {
+					if (BlockRailBase.isRailBlock(this.getCart().worldObj, new BlockPos(pos.get(j)[0], pos.get(j)[1], pos.get(j)[2]))) {
 						front = true;
 						break;
 					}

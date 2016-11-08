@@ -1,11 +1,12 @@
 package vswe.stevescarts.Modules.Workers.Tools;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Blocks.ModBlocks;
@@ -24,15 +24,13 @@ import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
+import vswe.stevescarts.Modules.IActivatorModule;
+import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Addons.ModuleDrillIntelligence;
 import vswe.stevescarts.Modules.Addons.ModuleIncinerator;
 import vswe.stevescarts.Modules.Addons.ModuleLiquidSensors;
 import vswe.stevescarts.Modules.Addons.ModuleOreTracker;
-import vswe.stevescarts.Modules.IActivatorModule;
-import vswe.stevescarts.Modules.ModuleBase;
 import vswe.stevescarts.Modules.Storages.Chests.ModuleChest;
-
-import java.util.ArrayList;
 
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
 	private ModuleDrillIntelligence intelligence;
@@ -230,17 +228,17 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		}
 		if (!hasChest) {
 			final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
-			entityitem.motionX = (float) (this.getCart().x() - Coords.getX()) / 10.0f;
+			entityitem.motionX = (this.getCart().x() - Coords.getX()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
-			entityitem.motionZ = (float) (this.getCart().z() - Coords.getZ()) / 10.0f;
+			entityitem.motionZ = (this.getCart().z() - Coords.getZ()) / 10.0f;
 			this.getCart().worldObj.spawnEntityInWorld(entityitem);
 			return true;
 		}
 		if (iStack.stackSize != size) {
 			final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
-			entityitem.motionX = (float) (this.getCart().z() - Coords.getZ()) / 10.0f;
+			entityitem.motionX = (this.getCart().z() - Coords.getZ()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
-			entityitem.motionZ = (float) (this.getCart().x() - Coords.getX()) / 10.0f;
+			entityitem.motionZ = (this.getCart().x() - Coords.getX()) / 10.0f;
 			this.getCart().worldObj.spawnEntityInWorld(entityitem);
 			return true;
 		}
@@ -374,6 +372,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

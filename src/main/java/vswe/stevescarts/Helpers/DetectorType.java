@@ -1,18 +1,17 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.HashMap;
+
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Blocks.BlockRailAdvDetector;
 import vswe.stevescarts.Blocks.ModBlocks;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityDetector;
-
-import java.util.HashMap;
-
-import net.minecraft.block.state.IBlockState;
 
 public enum DetectorType implements IStringSerializable {
 	NORMAL(0, true, false, true, new String[] { "detector_manager_bot", "detector_manager_top", "detector_manager_yellow", "detector_manager_blue", "detector_manager_green", "detector_manager_red" }),
@@ -24,7 +23,7 @@ public enum DetectorType implements IStringSerializable {
 		}
 	},
 	JUNCTION(3, true, false, false, new String[] { "detector_manager_bot", "detector_junction_top", "detector_junction_yellow", "detector_junction_blue", "detector_junction_green",
-		"detector_junction_red" }) {
+	"detector_junction_red" }) {
 		@Override
 		public void activate(final TileEntityDetector detector, final MinecartModular cart) {
 			this.update(detector, true);
@@ -44,7 +43,7 @@ public enum DetectorType implements IStringSerializable {
 		}
 	},
 	REDSTONE(4, false, false, false, new String[] { "detector_redstone_bot", "detector_redstone_bot", "detector_redstone_yellow", "detector_redstone_blue", "detector_redstone_green",
-		"detector_redstone_red" }) {
+	"detector_redstone_red" }) {
 		@Override
 		public void initOperators(final HashMap<Byte, OperatorObject> operators) {
 			super.initOperators(operators);
@@ -80,26 +79,27 @@ public enum DetectorType implements IStringSerializable {
 		return this.meta;
 	}
 
+	@Override
 	public String getName() {
 		final StringBuilder append = new StringBuilder().append("item.");
 		final StevesCarts instance = StevesCarts.instance;
 		return I18n.translateToLocal(append.append("SC2:").append("BlockDetector").append(this.meta).append(".name").toString());
 	}
 
-//	public void registerIcons(final IIconRegister register) {
-//		this.icons = new IIcon[this.textures.length];
-//		for (int i = 0; i < this.textures.length; ++i) {
-//			final IIcon[] icons = this.icons;
-//			final int n = i;
-//			final StringBuilder sb = new StringBuilder();
-//			StevesCarts.instance.getClass();
-//			icons[n] = register.registerIcon(sb.append("stevescarts").append(":").append(this.textures[i]).toString());
-//		}
-//	}
-//
-//	public IIcon getIcon(final int side) {
-//		return this.icons[side];
-//	}
+	//	public void registerIcons(final IIconRegister register) {
+	//		this.icons = new IIcon[this.textures.length];
+	//		for (int i = 0; i < this.textures.length; ++i) {
+	//			final IIcon[] icons = this.icons;
+	//			final int n = i;
+	//			final StringBuilder sb = new StringBuilder();
+	//			StevesCarts.instance.getClass();
+	//			icons[n] = register.registerIcon(sb.append("stevescarts").append(":").append(this.textures[i]).toString());
+	//		}
+	//	}
+	//
+	//	public IIcon getIcon(final int side) {
+	//		return this.icons[side];
+	//	}
 
 	public boolean canInteractWithCart() {
 		return this.acceptCart;

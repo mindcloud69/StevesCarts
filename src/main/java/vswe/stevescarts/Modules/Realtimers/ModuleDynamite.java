@@ -1,8 +1,6 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -24,7 +22,7 @@ public class ModuleDynamite extends ModuleBase {
 	private static DataParameter<Byte> FUSE = createDw(DataSerializers.BYTE);
 	private static DataParameter<Byte> FUSE_LENGTH = createDw(DataSerializers.BYTE);
 	private static DataParameter<Byte> EXPLOSION = createDw(DataSerializers.BYTE);
-	
+
 	public ModuleDynamite(final MinecartModular cart) {
 		super(cart);
 		this.fuseStartX = super.guiWidth() + 5;
@@ -229,6 +227,7 @@ public class ModuleDynamite extends ModuleBase {
 		return 150;
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

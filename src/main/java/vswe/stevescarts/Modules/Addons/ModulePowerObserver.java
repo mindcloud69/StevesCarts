@@ -171,6 +171,7 @@ public class ModulePowerObserver extends ModuleAddon {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 3;
 	}

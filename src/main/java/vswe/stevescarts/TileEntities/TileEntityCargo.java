@@ -1,6 +1,7 @@
 package vswe.stevescarts.TileEntities;
 
-import net.minecraft.block.Block;
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -8,7 +9,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,13 +16,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Containers.ContainerBase;
 import vswe.stevescarts.Containers.ContainerCargo;
 import vswe.stevescarts.Containers.ContainerManager;
-import vswe.stevescarts.Helpers.*;
+import vswe.stevescarts.Helpers.CargoItemSelection;
+import vswe.stevescarts.Helpers.ComponentTypes;
+import vswe.stevescarts.Helpers.Localization;
+import vswe.stevescarts.Helpers.ManagerTransfer;
+import vswe.stevescarts.Helpers.TransferHandler;
 import vswe.stevescarts.Interfaces.GuiBase;
 import vswe.stevescarts.Interfaces.GuiCargo;
 import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.Slots.*;
-
-import java.util.ArrayList;
+import vswe.stevescarts.Slots.ISlotExplosions;
+import vswe.stevescarts.Slots.SlotArrow;
+import vswe.stevescarts.Slots.SlotBridge;
+import vswe.stevescarts.Slots.SlotBuilder;
+import vswe.stevescarts.Slots.SlotCake;
+import vswe.stevescarts.Slots.SlotCargo;
+import vswe.stevescarts.Slots.SlotChest;
+import vswe.stevescarts.Slots.SlotFertilizer;
+import vswe.stevescarts.Slots.SlotFirework;
+import vswe.stevescarts.Slots.SlotFuel;
+import vswe.stevescarts.Slots.SlotMilker;
+import vswe.stevescarts.Slots.SlotSapling;
+import vswe.stevescarts.Slots.SlotSeed;
+import vswe.stevescarts.Slots.SlotTorch;
 
 public class TileEntityCargo extends TileEntityManager {
 	public static ArrayList<CargoItemSelection> itemSelections;
@@ -65,15 +80,16 @@ public class TileEntityCargo extends TileEntityManager {
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_CAKES, SlotCake.class, new ItemStack(Items.CAKE, 1)));
 	}
 
+	@Override
 	public int getSizeInventory() {
 		return 60;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "container.cargomanager";
 	}
-	
+
 	@Override
 	protected void updateLayout() {
 		if (this.cargoSlots != null && this.lastLayout != this.layoutType) {
@@ -269,6 +285,7 @@ public class TileEntityCargo extends TileEntityManager {
 		return false;
 	}
 
+	@Override
 	public boolean isItemValidForSlot(final int slotId, final ItemStack item) {
 		return true;
 	}

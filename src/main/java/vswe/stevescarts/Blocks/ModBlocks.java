@@ -1,9 +1,10 @@
 package vswe.stevescarts.Blocks;
 
+import java.lang.reflect.Constructor;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -14,9 +15,13 @@ import vswe.stevescarts.Items.ItemBlockDetector;
 import vswe.stevescarts.Items.ItemBlockStorage;
 import vswe.stevescarts.Items.ItemUpgrade;
 import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.TileEntities.*;
-
-import java.lang.reflect.Constructor;
+import vswe.stevescarts.TileEntities.TileEntityActivator;
+import vswe.stevescarts.TileEntities.TileEntityCargo;
+import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
+import vswe.stevescarts.TileEntities.TileEntityDetector;
+import vswe.stevescarts.TileEntities.TileEntityDistributor;
+import vswe.stevescarts.TileEntities.TileEntityLiquid;
+import vswe.stevescarts.TileEntities.TileEntityUpgrade;
 
 public enum ModBlocks {
 	CARGO_MANAGER("BlockCargoManager", BlockCargoManager.class, TileEntityCargo.class, "cargo"),
@@ -50,10 +55,10 @@ public enum ModBlocks {
 	}
 
 	ModBlocks(final String name,
-	          final Class<? extends Block> clazz,
-	          final Class<? extends TileEntity> tileEntityClazz,
-	          final String tileEntityName,
-	          final Class<? extends ItemBlock> itemClazz) {
+			final Class<? extends Block> clazz,
+			final Class<? extends TileEntity> tileEntityClazz,
+			final String tileEntityName,
+			final Class<? extends ItemBlock> itemClazz) {
 		this.name = name;
 		this.clazz = clazz;
 		this.tileEntityClazz = tileEntityClazz;
@@ -65,16 +70,16 @@ public enum ModBlocks {
 		for (final ModBlocks blockInfo : values()) {
 			try {
 				if (Block.class.isAssignableFrom(blockInfo.clazz)) {
-					final Constructor<? extends Block> blockConstructor = blockInfo.clazz.getConstructor((Class<?>[]) new Class[0]);
+					final Constructor<? extends Block> blockConstructor = blockInfo.clazz.getConstructor(new Class[0]);
 					final Object blockInstance = blockConstructor.newInstance();
 					final Block blockBase = (Block) blockInstance;
 					final Block block = (Block) blockInstance;
 					block.setHardness(2.0f);
-					GameRegistry.registerBlock(block, (Class) blockInfo.itemClazz, blockInfo.name);
+					GameRegistry.registerBlock(block, blockInfo.itemClazz, blockInfo.name);
 					blockBase.setUnlocalizedName("tile.SC2:" + blockInfo.name);
 					blockInfo.block = block;
 					if (blockInfo.tileEntityClazz != null) {
-						GameRegistry.registerTileEntity((Class) blockInfo.tileEntityClazz, blockInfo.tileEntityName);
+						GameRegistry.registerTileEntity(blockInfo.tileEntityClazz, blockInfo.tileEntityName);
 					}
 				} else {
 					System.out.println("This is not a block (" + blockInfo.name + ")");

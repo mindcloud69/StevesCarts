@@ -1,10 +1,17 @@
 package vswe.stevescarts.Computer;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 import vswe.stevescarts.Buttons.ButtonBase;
 import vswe.stevescarts.Buttons.ButtonControlType;
 import vswe.stevescarts.Carts.MinecartModular;
-import vswe.stevescarts.Modules.Addons.*;
 import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.Modules.Addons.ModuleChunkLoader;
+import vswe.stevescarts.Modules.Addons.ModuleColorizer;
+import vswe.stevescarts.Modules.Addons.ModuleHeightControl;
+import vswe.stevescarts.Modules.Addons.ModuleInvisible;
+import vswe.stevescarts.Modules.Addons.ModuleShield;
 import vswe.stevescarts.Modules.Realtimers.ModuleDynamite;
 import vswe.stevescarts.Modules.Realtimers.ModuleFirework;
 import vswe.stevescarts.Modules.Realtimers.ModuleShooter;
@@ -12,9 +19,6 @@ import vswe.stevescarts.Modules.Realtimers.ModuleShooterAdv;
 import vswe.stevescarts.Modules.Workers.ModuleComputer;
 import vswe.stevescarts.Modules.Workers.ModuleTorch;
 import vswe.stevescarts.Modules.Workers.Tools.ModuleDrill;
-
-import java.util.Collection;
-import java.util.HashMap;
 
 public class ComputerControl {
 	private static HashMap<Byte, ComputerControl> controls;

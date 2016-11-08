@@ -1,36 +1,31 @@
 package vswe.stevescarts.Upgrades;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.Blocks.ModBlocks;
-import vswe.stevescarts.Helpers.ComponentTypes;
-import vswe.stevescarts.Helpers.RecipeHelper;
-import vswe.stevescarts.Items.ModItems;
-import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.TileEntities.TileEntityUpgrade;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.translation.I18n;
+import vswe.stevescarts.Blocks.ModBlocks;
+import vswe.stevescarts.Helpers.ComponentTypes;
+import vswe.stevescarts.Helpers.RecipeHelper;
+import vswe.stevescarts.Items.ModItems;
+import vswe.stevescarts.TileEntities.TileEntityUpgrade;
+
 public class AssemblerUpgrade {
 	public static final int UPGRADE_AMOUNT = 20;
 	private static HashMap<Byte, AssemblerUpgrade> upgrades;
-//	private static HashMap<Byte, IIcon> sides;
+	//	private static HashMap<Byte, IIcon> sides;
 	private byte id;
 	private int sideTexture;
 	private String name;
 	private ArrayList<BaseEffect> effects;
-//	private IIcon icon;
+	//	private IIcon icon;
 
 	public static HashMap<Byte, AssemblerUpgrade> getUpgrades() {
 		return AssemblerUpgrade.upgrades;
@@ -64,14 +59,14 @@ public class AssemblerUpgrade {
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books[0], ComponentTypes.SIMPLE_PCB.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ Items.REDSTONE, books[1], Items.REDSTONE },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
+				{ Items.REDSTONE, books[1], Items.REDSTONE },
+				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
+				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+					{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
+					{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+						{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
+						{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+							{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
 		new AssemblerUpgrade(5, "New Era").addEffect(new WorkEfficiency(1.0f)).addEffect(new FuelCost(30.0f)).addRecipe(new Object[][] {
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), books[4], ComponentTypes.GALGADORIAN_METAL.getItemStack() },
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB, ComponentTypes.GALGADORIAN_METAL.getItemStack() },
@@ -116,24 +111,24 @@ public class AssemblerUpgrade {
 			{ Items.REDSTONE, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.REDSTONE } });
 	}
 
-//	public static IIcon getStandardIcon() {
-//		return AssemblerUpgrade.sides.get((byte) 0);
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public static void initSides(final IIconRegister register) {
-//		final ArrayList<Integer> used = new ArrayList<Integer>();
-//		for (final AssemblerUpgrade upgrade : getUpgradesList()) {
-//			if (!used.contains(upgrade.sideTexture)) {
-//				final HashMap<Byte, IIcon> sides = AssemblerUpgrade.sides;
-//				final Byte value = (byte) upgrade.sideTexture;
-//				final StringBuilder sb = new StringBuilder();
-//				StevesCarts.instance.getClass();
-//				sides.put(value, register.registerIcon(sb.append("stevescarts").append(":upgrade_side_").append(upgrade.sideTexture).append("_icon").toString()));
-//				used.add(upgrade.sideTexture);
-//			}
-//		}
-//	}
+	//	public static IIcon getStandardIcon() {
+	//		return AssemblerUpgrade.sides.get((byte) 0);
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public static void initSides(final IIconRegister register) {
+	//		final ArrayList<Integer> used = new ArrayList<Integer>();
+	//		for (final AssemblerUpgrade upgrade : getUpgradesList()) {
+	//			if (!used.contains(upgrade.sideTexture)) {
+	//				final HashMap<Byte, IIcon> sides = AssemblerUpgrade.sides;
+	//				final Byte value = (byte) upgrade.sideTexture;
+	//				final StringBuilder sb = new StringBuilder();
+	//				StevesCarts.instance.getClass();
+	//				sides.put(value, register.registerIcon(sb.append("stevescarts").append(":upgrade_side_").append(upgrade.sideTexture).append("_icon").toString()));
+	//				used.add(upgrade.sideTexture);
+	//			}
+	//		}
+	//	}
 
 	public AssemblerUpgrade(final int id, final String name) {
 		this(id, name, 0);
@@ -174,7 +169,7 @@ public class AssemblerUpgrade {
 	}
 
 	protected ItemStack getItemStack(final int count) {
-		return new ItemStack(ModItems.upgrades, count, (int) this.id);
+		return new ItemStack(ModItems.upgrades, count, this.id);
 	}
 
 	public ArrayList<BaseEffect> getEffects() {
@@ -254,30 +249,30 @@ public class AssemblerUpgrade {
 		return this.name.replace(":", "").replace(" ", "_").toLowerCase();
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public void createIcon(final IIconRegister register) {
-//		final StringBuilder sb = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.icon = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName().replace("_upgrade", "")).append("_icon").toString());
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIcon() {
-//		return this.icon;
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getMainTexture() {
-//		return this.icon;
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getSideTexture() {
-//		return AssemblerUpgrade.sides.get((byte) this.sideTexture);
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public void createIcon(final IIconRegister register) {
+	//		final StringBuilder sb = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.icon = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName().replace("_upgrade", "")).append("_icon").toString());
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIcon() {
+	//		return this.icon;
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getMainTexture() {
+	//		return this.icon;
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getSideTexture() {
+	//		return AssemblerUpgrade.sides.get((byte) this.sideTexture);
+	//	}
 
 	static {
 		AssemblerUpgrade.upgrades = new HashMap<Byte, AssemblerUpgrade>();
-//		AssemblerUpgrade.sides = new HashMap<Byte, IIcon>();
+		//		AssemblerUpgrade.sides = new HashMap<Byte, IIcon>();
 	}
 }

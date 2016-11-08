@@ -1,13 +1,13 @@
 package vswe.stevescarts.Modules.Realtimers;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -18,14 +18,12 @@ import vswe.stevescarts.Helpers.EnchantmentInfo;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Addons.ModuleEnchants;
-import vswe.stevescarts.Modules.Addons.Projectiles.ModuleProjectile;
 import vswe.stevescarts.Modules.ISuppliesModule;
 import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.Modules.Addons.ModuleEnchants;
+import vswe.stevescarts.Modules.Addons.Projectiles.ModuleProjectile;
 import vswe.stevescarts.Slots.SlotArrow;
 import vswe.stevescarts.Slots.SlotBase;
-
-import java.util.ArrayList;
 
 public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	private ArrayList<ModuleProjectile> projectiles;
@@ -218,6 +216,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 2;
 	}

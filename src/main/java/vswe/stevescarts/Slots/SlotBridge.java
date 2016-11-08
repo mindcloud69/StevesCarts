@@ -11,6 +11,7 @@ public class SlotBridge extends SlotBase implements ISpecialItemTransferValidato
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return isBridgeMaterial(itemstack);
 	}

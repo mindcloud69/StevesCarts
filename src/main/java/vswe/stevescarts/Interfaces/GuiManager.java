@@ -1,5 +1,7 @@
 package vswe.stevescarts.Interfaces;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
@@ -7,7 +9,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.Containers.ContainerManager;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.TileEntities.TileEntityManager;
@@ -37,17 +38,17 @@ public abstract class GuiManager extends GuiBase {
 		for (int i = 0; i < 4; ++i) {
 			this.drawExtraOverlay(i, x, y);
 			this.drawMouseOver(Localization.GUI.MANAGER.CHANGE_TRANSFER_DIRECTION.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + (
-				this.manager.toCart[i] ? Localization.GUI.MANAGER.DIRECTION_TO_CART.translate()
-				                       : Localization.GUI.MANAGER.DIRECTION_FROM_CART.translate()), x, y, this.getArrowCoords(i));
+					this.manager.toCart[i] ? Localization.GUI.MANAGER.DIRECTION_TO_CART.translate()
+							: Localization.GUI.MANAGER.DIRECTION_FROM_CART.translate()), x, y, this.getArrowCoords(i));
 			this.drawMouseOver(Localization.GUI.MANAGER.CHANGE_TURN_BACK_SETTING.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + (
-				(this.manager.color[i] == 5) ? Localization.GUI.MANAGER.TURN_BACK_NOT_SELECTED.translate()
-				                             : (this.manager.doReturn[this.manager.color[i] - 1] ? Localization.GUI.MANAGER.TURN_BACK_DO.translate()
-				                                                                                 : Localization.GUI.MANAGER.TURN_BACK_DO_NOT.translate())), x, y, this.getReturnCoords(i));
+					(this.manager.color[i] == 5) ? Localization.GUI.MANAGER.TURN_BACK_NOT_SELECTED.translate()
+							: (this.manager.doReturn[this.manager.color[i] - 1] ? Localization.GUI.MANAGER.TURN_BACK_DO.translate()
+									: Localization.GUI.MANAGER.TURN_BACK_DO_NOT.translate())), x, y, this.getReturnCoords(i));
 			this.drawMouseOver(Localization.GUI.MANAGER.CHANGE_TRANSFER_SIZE.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + this.getMaxSizeOverlay(i), x, y, this.getTextCoords(i));
 			this.drawMouseOver(Localization.GUI.MANAGER.CHANGE_SIDE.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SIDE.translate() + ": " + (new String[] {
-				Localization.GUI.MANAGER.SIDE_RED.translate(), Localization.GUI.MANAGER.SIDE_BLUE.translate(), Localization.GUI.MANAGER.SIDE_YELLOW.translate(),
-				Localization.GUI.MANAGER.SIDE_GREEN.translate(),
-				Localization.GUI.MANAGER.SIDE_DISABLED.translate() })[this.manager.color[i] - 1], x, y, this.getColorpickerCoords(i));
+					Localization.GUI.MANAGER.SIDE_RED.translate(), Localization.GUI.MANAGER.SIDE_BLUE.translate(), Localization.GUI.MANAGER.SIDE_YELLOW.translate(),
+					Localization.GUI.MANAGER.SIDE_GREEN.translate(),
+					Localization.GUI.MANAGER.SIDE_DISABLED.translate() })[this.manager.color[i] - 1], x, y, this.getColorpickerCoords(i));
 		}
 		this.drawMouseOver(this.getLayoutString() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + this.getLayoutOption(this.manager.layoutType), x, y, this.getMiddleCoords());
 		GL11.glEnable(2896);

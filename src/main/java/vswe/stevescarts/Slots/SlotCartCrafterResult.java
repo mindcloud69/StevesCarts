@@ -10,10 +10,12 @@ public class SlotCartCrafterResult extends SlotBase implements ISpecialItemTrans
 		super(iinventory, i, j, k);
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return false;
 	}
 
+	@Override
 	public boolean canTakeStack(final EntityPlayer par1EntityPlayer) {
 		return false;
 	}
@@ -23,6 +25,7 @@ public class SlotCartCrafterResult extends SlotBase implements ISpecialItemTrans
 		return false;
 	}
 
+	@Override
 	public int getSlotStackLimit() {
 		return 0;
 	}

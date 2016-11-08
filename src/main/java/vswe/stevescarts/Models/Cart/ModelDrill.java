@@ -1,6 +1,5 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,7 +35,7 @@ public class ModelDrill extends ModelCartbase {
 		for (int i = 0; i < 6; ++i) {
 			final ModelRenderer drill = this.fixSize(new ModelRenderer(this, 0, srcY));
 			this.drillAnchor.addChild(drill);
-			drill.addBox(-3.0f + i * 0.5f, -3.0f + i * 0.5f, (float) i, 6 - i, 6 - i, 1, 0.0f);
+			drill.addBox(-3.0f + i * 0.5f, -3.0f + i * 0.5f, i, 6 - i, 6 - i, 1, 0.0f);
 			drill.setRotationPoint(0.0f, 0.0f, 11.0f);
 			srcY += 7 - i;
 		}

@@ -114,6 +114,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

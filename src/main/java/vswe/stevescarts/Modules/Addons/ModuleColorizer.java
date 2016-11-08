@@ -1,13 +1,10 @@
 package vswe.stevescarts.Modules.Addons;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.lwjgl.opengl.GL11;
-
 import vswe.stevescarts.Carts.CartDataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.Localization;
@@ -19,7 +16,7 @@ public class ModuleColorizer extends ModuleAddon {
 	private int scrollWidth;
 	private int markerMoving;
 	private static DataParameter<int[]> COLORS = createDw(CartDataSerializers.VARINT);
-	
+
 	public ModuleColorizer(final MinecartModular cart) {
 		super(cart);
 		this.markerOffsetX = 10;
@@ -75,7 +72,7 @@ public class ModuleColorizer extends ModuleAddon {
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
 		final String[] colorNames = { Localization.MODULES.ADDONS.COLOR_RED.translate(), Localization.MODULES.ADDONS.COLOR_GREEN.translate(),
-			Localization.MODULES.ADDONS.COLOR_BLUE.translate() };
+				Localization.MODULES.ADDONS.COLOR_BLUE.translate() };
 		for (int i = 0; i < 3; ++i) {
 			this.drawStringOnMouseOver(gui, colorNames[i] + ": " + this.getColorVal(i), x, y, this.getArea(i));
 		}
@@ -137,6 +134,7 @@ public class ModuleColorizer extends ModuleAddon {
 		registerDw(COLORS, new int[]{255, 255, 255});
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 3;
 	}

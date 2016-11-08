@@ -1,15 +1,14 @@
 package vswe.stevescarts.Modules.Workers.Tools;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
@@ -22,15 +21,13 @@ import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.BlockPosHelpers;
 import vswe.stevescarts.Helpers.Localization;
 import vswe.stevescarts.Interfaces.GuiMinecart;
-import vswe.stevescarts.Modules.Addons.Plants.ModulePlantSize;
 import vswe.stevescarts.Modules.ISuppliesModule;
 import vswe.stevescarts.Modules.ITreeModule;
 import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.Modules.Addons.Plants.ModulePlantSize;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotFuel;
 import vswe.stevescarts.Slots.SlotSapling;
-
-import java.util.ArrayList;
 
 public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule, ITreeModule {
 	private ArrayList<ITreeModule> treeModules;
@@ -171,7 +168,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		if (sapling != null) {
 			if (this.doPreWork()) {
-				if (sapling.getItem().onItemUse(sapling, (EntityPlayer) this.getFakePlayer(), getCart().worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS) {
+				if (sapling.getItem().onItemUse(sapling, this.getFakePlayer(), getCart().worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS) {
 					if (sapling.stackSize == 0) {
 						this.setStack(saplingSlotId, null);
 					}
@@ -366,12 +363,12 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isLeaves(IBlockState blockState, BlockPos pos) {
 		return blockState.getBlock() == Blocks.LEAVES || blockState.getBlock() == Blocks.LEAVES2;
 	}
-	
+
 	@Override
 	public boolean isWood(IBlockState blockState, BlockPos pos) {
 		return blockState.getBlock() == Blocks.LOG || blockState.getBlock() == Blocks.LOG2;

@@ -1,12 +1,16 @@
 package vswe.stevescarts.Helpers;
 
-import net.minecraft.init.Blocks;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.Interfaces.GuiBase;
 
 public class Tank implements IFluidTank {
@@ -30,6 +34,7 @@ public class Tank implements IFluidTank {
 		return tank;
 	}
 
+	@Override
 	public FluidStack getFluid() {
 		return this.fluid;
 	}
@@ -38,6 +43,7 @@ public class Tank implements IFluidTank {
 		this.fluid = fluid;
 	}
 
+	@Override
 	public int getCapacity() {
 		return this.tankSize;
 	}
@@ -90,6 +96,7 @@ public class Tank implements IFluidTank {
 		}
 	}
 
+	@Override
 	public int fill(final FluidStack resource, final boolean doFill) {
 		return this.fill(resource, doFill, false);
 	}
@@ -112,6 +119,7 @@ public class Tank implements IFluidTank {
 		return fill;
 	}
 
+	@Override
 	public FluidStack drain(final int maxDrain, final boolean doDrain) {
 		return this.drain(maxDrain, doDrain, false);
 	}
@@ -162,31 +170,31 @@ public class Tank implements IFluidTank {
 	}
 
 	private String formatNumber(final int number) {
-		return String.format("%,d", number).replace('�', ' ');
+		return String.format("%,d", number)/*.replace('�', ' ')*/;
 	}
 
 	@Deprecated
 	public static IconData getIconAndTexture(final FluidStack stack) {
-//		IIcon icon = null;
-//		String texture = null;
-//		if (stack != null) {
-//			final Fluid fluid = stack.getFluid();
-//			if (fluid != null) {
-//				icon = fluid.getIcon();
-//				if (icon == null) {
-//					if (FluidRegistry.WATER.equals(fluid)) {
-//						icon = Blocks.water.getIcon(0, 0);
-//					} else if (FluidRegistry.LAVA.equals(fluid)) {
-//						icon = Blocks.lava.getIcon(0, 0);
-//					}
-//				}
-//				if (icon != null) {
-//					texture = "/atlas/blocks.png";
-//				}
-//			}
-//		}
-//		return new IconData(icon, texture);
-        return null;
+		//		IIcon icon = null;
+		//		String texture = null;
+		//		if (stack != null) {
+		//			final Fluid fluid = stack.getFluid();
+		//			if (fluid != null) {
+		//				icon = fluid.getIcon();
+		//				if (icon == null) {
+		//					if (FluidRegistry.WATER.equals(fluid)) {
+		//						icon = Blocks.water.getIcon(0, 0);
+		//					} else if (FluidRegistry.LAVA.equals(fluid)) {
+		//						icon = Blocks.lava.getIcon(0, 0);
+		//					}
+		//				}
+		//				if (icon != null) {
+		//					texture = "/atlas/blocks.png";
+		//				}
+		//			}
+		//		}
+		//		return new IconData(icon, texture);
+		return null;
 	}
 
 	private static float getColorComponent(final int color, final int id) {
@@ -198,36 +206,38 @@ public class Tank implements IFluidTank {
 		GL11.glColor4f(getColorComponent(color, 2), getColorComponent(color, 1), getColorComponent(color, 0), 1.0f);
 	}
 
-    @Deprecated
+	@Deprecated
 	@SideOnly(Side.CLIENT)
 	public void drawFluid(final GuiBase gui, final int startX, final int startY) {
-//		if (this.fluid != null) {
-//			final int fluidLevel = (int) (48.0f * (this.fluid.amount / this.tankSize));
-//			final IconData data = getIconAndTexture(this.fluid);
-//			if (data.getIcon() == null) {
-//				return;
-//			}
-//			ResourceHelper.bindResource(data.getResource());
-//			applyColorFilter(this.fluid);
-//			for (int y = 0; y < 3; ++y) {
-//				int pixels = fluidLevel - (2 - y) * 16;
-//				if (pixels > 0) {
-//					if (pixels > 16) {
-//						pixels = 16;
-//					}
-//					for (int x = 0; x < 2; ++x) {
-//						this.owner.drawImage(this.tankid, gui, data.getIcon(), startX + 2 + 16 * x, startY + 1 + 16 * y + (16 - pixels), 0, 16 - pixels, 16, pixels);
-//					}
-//				}
-//			}
-//			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//		}
+		//		if (this.fluid != null) {
+		//			final int fluidLevel = (int) (48.0f * (this.fluid.amount / this.tankSize));
+		//			final IconData data = getIconAndTexture(this.fluid);
+		//			if (data.getIcon() == null) {
+		//				return;
+		//			}
+		//			ResourceHelper.bindResource(data.getResource());
+		//			applyColorFilter(this.fluid);
+		//			for (int y = 0; y < 3; ++y) {
+		//				int pixels = fluidLevel - (2 - y) * 16;
+		//				if (pixels > 0) {
+		//					if (pixels > 16) {
+		//						pixels = 16;
+		//					}
+		//					for (int x = 0; x < 2; ++x) {
+		//						this.owner.drawImage(this.tankid, gui, data.getIcon(), startX + 2 + 16 * x, startY + 1 + 16 * y + (16 - pixels), 0, 16 - pixels, 16, pixels);
+		//					}
+		//				}
+		//			}
+		//			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		//		}
 	}
 
+	@Override
 	public int getFluidAmount() {
 		return (this.fluid == null) ? 0 : this.fluid.amount;
 	}
 
+	@Override
 	public FluidTankInfo getInfo() {
 		return new FluidTankInfo(this.fluid, this.getCapacity());
 	}

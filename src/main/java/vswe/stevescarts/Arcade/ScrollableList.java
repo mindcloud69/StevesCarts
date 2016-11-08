@@ -1,8 +1,8 @@
 package vswe.stevescarts.Arcade;
 
-import vswe.stevescarts.Interfaces.GuiMinecart;
-
 import java.util.ArrayList;
+
+import vswe.stevescarts.Interfaces.GuiMinecart;
 
 public class ScrollableList {
 	private int x;

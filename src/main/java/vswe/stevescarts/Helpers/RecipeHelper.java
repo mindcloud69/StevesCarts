@@ -1,15 +1,14 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import vswe.stevescarts.Items.ModItems;
-
-import java.util.ArrayList;
 
 public final class RecipeHelper {
 	public static void addRecipe(final ItemStack item, final Object[][] recipe) {

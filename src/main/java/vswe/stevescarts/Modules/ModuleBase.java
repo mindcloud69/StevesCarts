@@ -1,6 +1,11 @@
 package vswe.stevescarts.Modules;
 
-import net.minecraft.block.Block;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockVine;
@@ -13,7 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -26,7 +30,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Buttons.ButtonBase;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Containers.ContainerMinecart;
@@ -37,13 +41,7 @@ import vswe.stevescarts.Interfaces.GuiBase;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Models.Cart.ModelCartbase;
 import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Slots.SlotBase;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 public abstract class ModuleBase {
 	private MinecartModular cart;
@@ -319,24 +317,24 @@ public abstract class ModuleBase {
 		}
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public void drawImage(final GuiMinecart gui, final IIcon icon, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
-//		this.drawImage(gui, icon, new int[] { targetX, targetY, sizeX, sizeY }, srcX, srcY);
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public void drawImage(final GuiMinecart gui, final IIcon icon, int[] rect, final int srcX, int srcY) {
-//		if (rect.length < 4) {
-//			return;
-//		}
-//		rect = this.cloneRect(rect);
-//		if (!this.doStealInterface()) {
-//			srcY -= this.handleScroll(rect);
-//		}
-//		if (rect[3] > 0) {
-//			gui.drawIcon(icon, gui.getGuiLeft() + rect[0] + this.getX(), gui.getGuiTop() + rect[1] + this.getY(), rect[2] / 16.0f, rect[3] / 16.0f, srcX / 16.0f, srcY / 16.0f);
-//		}
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public void drawImage(final GuiMinecart gui, final IIcon icon, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
+	//		this.drawImage(gui, icon, new int[] { targetX, targetY, sizeX, sizeY }, srcX, srcY);
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public void drawImage(final GuiMinecart gui, final IIcon icon, int[] rect, final int srcX, int srcY) {
+	//		if (rect.length < 4) {
+	//			return;
+	//		}
+	//		rect = this.cloneRect(rect);
+	//		if (!this.doStealInterface()) {
+	//			srcY -= this.handleScroll(rect);
+	//		}
+	//		if (rect[3] > 0) {
+	//			gui.drawIcon(icon, gui.getGuiLeft() + rect[0] + this.getX(), gui.getGuiTop() + rect[1] + this.getY(), rect[2] / 16.0f, rect[3] / 16.0f, srcX / 16.0f, srcY / 16.0f);
+	//		}
+	//	}
 
 	public int handleScroll(final int[] rect) {
 		final int n = 1;
@@ -381,7 +379,7 @@ public abstract class ModuleBase {
 		}
 	}
 
-	public RAILDIRECTION getSpecialRailDirection(final int x, final int y, final int z) {
+	public RAILDIRECTION getSpecialRailDirection(BlockPos pos) {
 		return RAILDIRECTION.DEFAULT;
 	}
 
@@ -620,15 +618,15 @@ public abstract class ModuleBase {
 	protected final <T> void registerDw(DataParameter<T> key, T value){
 		this.getCart().getDataManager().register(key, value);
 	}
-	
+
 	protected final <T> void updateDw(DataParameter<T> key, T value){
 		this.getCart().getDataManager().set(key, value);
 	}
-	
+
 	protected <T> T getDw(DataParameter<T> key){
 		return this.getCart().getDataManager().get(key);
 	}
-	
+
 	protected static <T> DataParameter<T> createDw(DataSerializer<T> serializer){
 		return EntityDataManager.createKey(MinecartModular.class, serializer);
 	}
@@ -646,9 +644,9 @@ public abstract class ModuleBase {
 	}
 
 	private final void updateGuiData(final Container con, final List players, final int id, final short data) {
-//		for (final IContainerListener player : players) {
-//			player.sendProgressBarUpdate(con, id, (int) data);
-//		}
+		//		for (final IContainerListener player : players) {
+		//			player.sendProgressBarUpdate(con, id, (int) data);
+		//		}
 	}
 
 	public final void updateGuiData(final Object[] info, final int id, final short data) {
@@ -659,22 +657,22 @@ public abstract class ModuleBase {
 		final int globalId = id + this.getGuiDataStart();
 		final List players = (List) info[1];
 		boolean flag;
-//		final boolean isNew = flag = (boolean) info[2];
-//		if (!flag) {
-//			if (con.cache != null) {
-//				final Short val = con.cache.get((short) globalId);
-//				flag = (val == null || val != data);
-//			} else {
-//				flag = true;
-//			}
-//		}
-//		if (flag) {
-//			if (con.cache == null) {
-//				con.cache = new HashMap<Short, Short>();
-//			}
-//			this.updateGuiData(con, players, globalId, data);
-//			con.cache.put((short) globalId, data);
-//		}
+		//		final boolean isNew = flag = (boolean) info[2];
+		//		if (!flag) {
+		//			if (con.cache != null) {
+		//				final Short val = con.cache.get((short) globalId);
+		//				flag = (val == null || val != data);
+		//			} else {
+		//				flag = true;
+		//			}
+		//		}
+		//		if (flag) {
+		//			if (con.cache == null) {
+		//				con.cache = new HashMap<Short, Short>();
+		//			}
+		//			this.updateGuiData(con, players, globalId, data);
+		//			con.cache.put((short) globalId, data);
+		//		}
 	}
 
 	public final void initGuiData(final Container con, final IContainerListener player) {
@@ -735,11 +733,11 @@ public abstract class ModuleBase {
 		final float var7 = 0.00390625f;
 		final float var8 = 0.00390625f;
 		final Tessellator tess = Tessellator.getInstance();
-//		tess.startDrawingQuads();
-//		tess.addVertexWithUV((double) (targetX + 0), (double) (targetY + height), -90.0, (double) ((sourceX + 0) * var7), (double) ((sourceY + height) * var8));
-//		tess.addVertexWithUV((double) (targetX + width), (double) (targetY + height), -90.0, (double) ((sourceX + width) * var7), (double) ((sourceY + height) * var8));
-//		tess.addVertexWithUV((double) (targetX + width), (double) (targetY + 0), -90.0, (double) ((sourceX + width) * var7), (double) ((sourceY + 0) * var8));
-//		tess.addVertexWithUV((double) (targetX + 0), (double) (targetY + 0), -90.0, (double) ((sourceX + 0) * var7), (double) ((sourceY + 0) * var8));
+		//		tess.startDrawingQuads();
+		//		tess.addVertexWithUV((double) (targetX + 0), (double) (targetY + height), -90.0, (double) ((sourceX + 0) * var7), (double) ((sourceY + height) * var8));
+		//		tess.addVertexWithUV((double) (targetX + width), (double) (targetY + height), -90.0, (double) ((sourceX + width) * var7), (double) ((sourceY + height) * var8));
+		//		tess.addVertexWithUV((double) (targetX + width), (double) (targetY + 0), -90.0, (double) ((sourceX + width) * var7), (double) ((sourceY + 0) * var8));
+		//		tess.addVertexWithUV((double) (targetX + 0), (double) (targetY + 0), -90.0, (double) ((sourceX + 0) * var7), (double) ((sourceY + 0) * var8));
 		tess.draw();
 	}
 

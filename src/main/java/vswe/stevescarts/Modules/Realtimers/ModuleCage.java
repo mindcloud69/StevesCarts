@@ -1,11 +1,23 @@
 package vswe.stevescarts.Modules.Realtimers;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityGiantZombie;
+import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,10 +30,6 @@ import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.IActivatorModule;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class ModuleCage extends ModuleBase implements IActivatorModule {
 	private int[] autoRect;
@@ -115,6 +123,7 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 2;
 	}
@@ -145,7 +154,7 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 		if (this.getCart().worldObj.isRemote || !this.isCageEmpty()) {
 			return;
 		}
-		final List<EntityLivingBase> entities = this.getCart().worldObj.getEntitiesWithinAABB((Class) EntityLivingBase.class, this.getCart().getEntityBoundingBox().expand((double) searchDistance, 4.0, (double) searchDistance));
+		final List<EntityLivingBase> entities = this.getCart().worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getCart().getEntityBoundingBox().expand(searchDistance, 4.0, searchDistance));
 		Collections.sort( entities, this.sorter);
 		for (EntityLivingBase target : entities) {
 			if (!(target instanceof EntityPlayer) && !(target instanceof EntityIronGolem) && !(target instanceof EntityDragon) && !(target instanceof EntitySlime) && !(target instanceof EntityWaterMob) && !(target instanceof EntityWither) && !(target instanceof EntityEnderman) && (!(target instanceof EntitySpider) || target instanceof EntityCaveSpider) && !(target instanceof EntityGiantZombie) && !(target instanceof EntityFlying)) {
@@ -153,7 +162,7 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 					continue;
 				}
 				if (target.getRidingEntity() == null) {
-					target.startRiding((Entity) this.getCart());
+					target.startRiding(this.getCart());
 					return;
 				}
 				continue;

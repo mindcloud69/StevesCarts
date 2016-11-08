@@ -1,6 +1,5 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -52,7 +51,7 @@ public class ModelTorchplacer extends ModelCartbase {
 			base.addChild(torchHolder);
 			this.fixSize(torchHolder);
 			torchHolder.addBox(-1.0f, -1.0f, -0.5f, 2, 2, 1, 0.0f);
-			torchHolder.setRotationPoint((float) (i * 4), 0.0f, -1.5f);
+			torchHolder.setRotationPoint(i * 4, 0.0f, -1.5f);
 			final ModelRenderer torch = new ModelRenderer(this, 0, 9);
 			torchHolder.addChild(torches[i + 1] = torch);
 			this.fixSize(torch);

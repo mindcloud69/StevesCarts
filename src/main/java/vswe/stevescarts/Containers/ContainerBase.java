@@ -16,6 +16,7 @@ public abstract class ContainerBase extends Container {
 
 	public abstract TileEntityBase getTileEntity();
 
+	@Override
 	public ItemStack transferStackInSlot(final EntityPlayer player, final int i) {
 		if (this.getMyInventory() == null) {
 			return null;
@@ -45,6 +46,7 @@ public abstract class ContainerBase extends Container {
 		return itemstack;
 	}
 
+	@Override
 	protected boolean mergeItemStack(final ItemStack par1ItemStack, final int par2, final int par3, final boolean par4) {
 		if (this.getMyInventory() == null) {
 			return false;
@@ -109,10 +111,12 @@ public abstract class ContainerBase extends Container {
 		return var5;
 	}
 
+	@Override
 	public boolean canInteractWith(final EntityPlayer entityplayer) {
 		return this.getTileEntity() != null && this.getTileEntity().isUseableByPlayer(entityplayer);
 	}
 
+	@Override
 	public void addListener(final IContainerListener par1ICrafting) {
 		super.addListener(par1ICrafting);
 		if (this.getTileEntity() != null) {
@@ -120,6 +124,7 @@ public abstract class ContainerBase extends Container {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(final int par1, int par2) {
 		par2 &= 0xFFFF;
@@ -128,6 +133,7 @@ public abstract class ContainerBase extends Container {
 		}
 	}
 
+	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (this.getTileEntity() != null) {

@@ -1,12 +1,12 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.ArrayList;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
-
-import java.util.ArrayList;
 
 public class EnchantmentInfo {
 	private Enchantment enchantment;

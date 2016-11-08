@@ -1,6 +1,5 @@
 package vswe.stevescarts.Modules.Storages.Chests;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
@@ -114,7 +113,7 @@ public abstract class ModuleChest extends ModuleStorage {
 			return;
 		}
 		if (this.isChestActive() && this.lidClosed() && this.playChestSound()) {
-//			this.getCart().worldObj.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestopen", 0.5f, this.getCart().worldObj.rand.nextFloat() * 0.1f + 0.9f);
+			//			this.getCart().worldObj.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestopen", 0.5f, this.getCart().worldObj.rand.nextFloat() * 0.1f + 0.9f);
 		}
 		if (this.isChestActive() && this.chestAngle < this.chestFullyOpenAngle()) {
 			this.chestAngle += this.getLidSpeed();
@@ -125,7 +124,7 @@ public abstract class ModuleChest extends ModuleStorage {
 			final float lastAngle = this.chestAngle;
 			this.chestAngle -= this.getLidSpeed();
 			if (this.chestAngle < 1.1780972450961724 && lastAngle >= 1.1780972450961724 && this.playChestSound()) {
-//				this.getCart().worldObj.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestclosed", 0.5f, this.getCart().worldObj.rand.nextFloat() * 0.1f + 0.9f);
+				//				this.getCart().worldObj.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestclosed", 0.5f, this.getCart().worldObj.rand.nextFloat() * 0.1f + 0.9f);
 			}
 			if (this.chestAngle < 0.0f) {
 				this.chestAngle = 0.0f;

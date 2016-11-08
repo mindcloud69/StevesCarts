@@ -1,64 +1,59 @@
 package vswe.stevescarts.Blocks;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
 import vswe.stevescarts.TileEntities.TileEntityUpgrade;
 
-import java.util.ArrayList;
-
 public class BlockCartAssembler extends BlockContainerBase {
-//	private IIcon topIcon;
-//	private IIcon botIcon;
-//	private IIcon[] sideIcons;
+	//	private IIcon topIcon;
+	//	private IIcon botIcon;
+	//	private IIcon[] sideIcons;
 
 	public BlockCartAssembler() {
 		super(Material.ROCK);
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIcon(final int side, final int meta) {
-//		if (side == 0) {
-//			return this.botIcon;
-//		}
-//		if (side == 1) {
-//			return this.topIcon;
-//		}
-//		return this.sideIcons[side - 2];
-//	}
-//
-//	@SideOnly(Side.CLIENT)
-//	public void registerBlockIcons(final IIconRegister register) {
-//		final StringBuilder sb = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.topIcon = register.registerIcon(sb.append("stevescarts").append(":").append("cart_assembler").append("_top").toString());
-//		final StringBuilder sb2 = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.botIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("cart_assembler").append("_bot").toString());
-//		this.sideIcons = new IIcon[4];
-//		for (int i = 1; i <= 4; ++i) {
-//			final IIcon[] sideIcons = this.sideIcons;
-//			final int n = i - 1;
-//			final StringBuilder sb3 = new StringBuilder();
-//			StevesCarts.instance.getClass();
-//			sideIcons[n] = register.registerIcon(sb3.append("stevescarts").append(":").append("cart_assembler").append("_side_").append(i).toString());
-//		}
-//	}
+	//	@SideOnly(Side.CLIENT)
+	//	public IIcon getIcon(final int side, final int meta) {
+	//		if (side == 0) {
+	//			return this.botIcon;
+	//		}
+	//		if (side == 1) {
+	//			return this.topIcon;
+	//		}
+	//		return this.sideIcons[side - 2];
+	//	}
+	//
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerBlockIcons(final IIconRegister register) {
+	//		final StringBuilder sb = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.topIcon = register.registerIcon(sb.append("stevescarts").append(":").append("cart_assembler").append("_top").toString());
+	//		final StringBuilder sb2 = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.botIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("cart_assembler").append("_bot").toString());
+	//		this.sideIcons = new IIcon[4];
+	//		for (int i = 1; i <= 4; ++i) {
+	//			final IIcon[] sideIcons = this.sideIcons;
+	//			final int n = i - 1;
+	//			final StringBuilder sb3 = new StringBuilder();
+	//			StevesCarts.instance.getClass();
+	//			sideIcons[n] = register.registerIcon(sb3.append("stevescarts").append(":").append("cart_assembler").append("_side_").append(i).toString());
+	//		}
+	//	}
 
 	public boolean onBlockActivated(final World world, final BlockPos pos, final EntityPlayer entityplayer, final int par6, final float par7, final float par8, final float par9) {
 		if (entityplayer.isSneaking()) {
@@ -181,6 +176,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 		}
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(final World world, final int var2) {
 		return new TileEntityCartAssembler();
 	}
@@ -207,7 +203,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 						}
 						final ItemStack itemStack = var9;
 						itemStack.stackSize -= var13;
-						final EntityItem var14 = new EntityItem(world, (double) (pos.getX() + var10), (double) (pos.getY() + var11), (double) (pos.getZ() + var12), new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
+						final EntityItem var14 = new EntityItem(world, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 						final float var15 = 0.05f;
 						var14.motionX = (float) world.rand.nextGaussian() * var15;
 						var14.motionY = (float) world.rand.nextGaussian() * var15 + 0.2f;
@@ -221,7 +217,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 			}
 			final ItemStack outputItem = var7.getOutputOnInterupt();
 			if (outputItem != null) {
-				final EntityItem eItem = new EntityItem(world, pos.getX() + 0.20000000298023224, pos.getY() + 0.20000000298023224, (double) (pos.getZ() + 0.2f), outputItem);
+				final EntityItem eItem = new EntityItem(world, pos.getX() + 0.20000000298023224, pos.getY() + 0.20000000298023224, pos.getZ() + 0.2f, outputItem);
 				eItem.motionX = (float) world.rand.nextGaussian() * 0.05f;
 				eItem.motionY = (float) world.rand.nextGaussian() * 0.25f;
 				eItem.motionZ = (float) world.rand.nextGaussian() * 0.05f;

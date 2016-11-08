@@ -68,6 +68,7 @@ public class Tile {
 		return TILE_OPEN_RESULT.OK;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public void mark() {
 		switch (this.state) {
 			case CLOSED: {

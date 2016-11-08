@@ -18,6 +18,7 @@ public class SlotRepair extends SlotBase implements ISpecialItemTransferValidato
 		return false;
 	}
 
+	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		return this.tool.isValidRepairMaterial(itemstack);
 	}

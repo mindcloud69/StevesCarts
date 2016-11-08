@@ -1,10 +1,10 @@
 package vswe.stevescarts.Modules.Addons;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import vswe.stevescarts.Carts.CartDataSerializers;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.HeightControlOre;
 import vswe.stevescarts.Helpers.ResourceHelper;
@@ -128,7 +128,7 @@ public class ModuleHeightControl extends ModuleAddon {
 					}
 					packetData |= 0x2;
 				}
-				if (GuiMinecart.isShiftKeyDown()) {
+				if (GuiScreen.isShiftKeyDown()) {
 					packetData |= 0x4;
 				}
 			}
@@ -167,6 +167,7 @@ public class ModuleHeightControl extends ModuleAddon {
 		}
 	}
 
+	@Override
 	public int numberOfPackets() {
 		return 1;
 	}

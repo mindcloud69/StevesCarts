@@ -1,11 +1,10 @@
 package vswe.stevescarts.Containers;
 
+import java.util.ArrayList;
+
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import vswe.stevescarts.Slots.SlotCargo;
 import vswe.stevescarts.TileEntities.TileEntityCargo;
-
-import java.util.ArrayList;
 
 public class ContainerCargo extends ContainerManager {
 	public short lastTarget;

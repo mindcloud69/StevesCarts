@@ -1,16 +1,18 @@
 package vswe.stevescarts.Helpers;
 
+import java.util.ArrayList;
+
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.gui.Gui;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Interfaces.GuiDetector;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.Modules.ModuleBase;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.TileEntities.TileEntityDetector;
-
-import java.util.ArrayList;
 
 public class LogicObject {
 	private byte id;
@@ -149,8 +151,8 @@ public class LogicObject {
 				tooClose = true;
 			}
 			if (!tooClose) {
-				GuiDetector.drawRect(px1, py2, px2, py2 + 1, -12566464);
-				GuiDetector.drawRect(px1, py1, px1 + 1, py2, -12566464);
+				Gui.drawRect(px1, py2, px2, py2 + 1, -12566464);
+				Gui.drawRect(px1, py1, px1 + 1, py2, -12566464);
 				GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			}
 		}

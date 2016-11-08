@@ -1,13 +1,19 @@
 package vswe.stevescarts.Arcade;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.Localization;
-
-import java.io.*;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 
 public class TrackLevel {
 	public static final TrackLevel editor;
@@ -90,23 +96,23 @@ public class TrackLevel {
 			final int type = trackdata >> 9 & 0x7;
 			final TrackOrientation orientation = TrackOrientation.ALL.get(trackdata >> 12 & 0x3F);
 			final int extraLength = trackdata >> 18 & 0x3F;
-			final Track track = TrackEditor.getRealTrack(trackX, trackY, type, orientation);
-			final byte[] extraData = new byte[extraLength];
-			data.read(extraData);
-			track.setExtraInfo(extraData);
-			map.getTracks().add(track);
+		final Track track = TrackEditor.getRealTrack(trackX, trackY, type, orientation);
+		final byte[] extraData = new byte[extraLength];
+		data.read(extraData);
+		track.setExtraInfo(extraData);
+		map.getTracks().add(track);
 		}
 		return map;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static boolean saveMap(final String name,
-	                              final int playerX,
-	                              final int playerY,
-	                              final TrackOrientation.DIRECTION playerDir,
-	                              final int itemX,
-	                              final int itemY,
-	                              final ArrayList<Track> tracks) {
+			final int playerX,
+			final int playerY,
+			final TrackOrientation.DIRECTION playerDir,
+			final int itemX,
+			final int itemY,
+			final ArrayList<Track> tracks) {
 		try {
 			final byte[] bytes = saveMapData(name, playerX, playerY, playerDir, itemX, itemY, tracks);
 			writeToFile(new File(Minecraft.getMinecraft().mcDataDir, "sc2/arcade/trackoperator/" + name.replace(" ", "_") + ".dat"), bytes);
@@ -118,12 +124,12 @@ public class TrackLevel {
 
 	@SideOnly(Side.CLIENT)
 	public static String saveMapToString(final String name,
-	                                     final int playerX,
-	                                     final int playerY,
-	                                     final TrackOrientation.DIRECTION playerDir,
-	                                     final int itemX,
-	                                     final int itemY,
-	                                     final ArrayList<Track> tracks) {
+			final int playerX,
+			final int playerY,
+			final TrackOrientation.DIRECTION playerDir,
+			final int itemX,
+			final int itemY,
+			final ArrayList<Track> tracks) {
 		try {
 			final byte[] bytes = saveMapData(name, playerX, playerY, playerDir, itemX, itemY, tracks);
 			String str = "TrackLevel.loadMap(new byte[] {";
@@ -142,12 +148,12 @@ public class TrackLevel {
 
 	@SideOnly(Side.CLIENT)
 	public static byte[] saveMapData(final String name,
-	                                 final int playerX,
-	                                 final int playerY,
-	                                 final TrackOrientation.DIRECTION playerDir,
-	                                 final int itemX,
-	                                 final int itemY,
-	                                 final ArrayList<Track> tracks) throws IOException {
+			final int playerX,
+			final int playerY,
+			final TrackOrientation.DIRECTION playerDir,
+			final int itemX,
+			final int itemY,
+			final ArrayList<Track> tracks) throws IOException {
 		final ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		final DataOutputStream data = new DataOutputStream(stream);
 		data.writeByte(getFileVersion());

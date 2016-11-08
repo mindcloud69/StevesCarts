@@ -16,7 +16,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private int panelCoolDown;
 	private boolean down;
 	private boolean upState;
-	
+
 	private static DataParameter<Integer> LIGHT = createDw(DataSerializers.VARINT);
 	private static DataParameter<Boolean> UP_STATE = createDw(DataSerializers.BOOLEAN);
 

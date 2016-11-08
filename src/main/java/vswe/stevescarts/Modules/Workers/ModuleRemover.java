@@ -4,7 +4,6 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import vswe.stevescarts.Carts.MinecartModular;
 
 public class ModuleRemover extends ModuleWorker {

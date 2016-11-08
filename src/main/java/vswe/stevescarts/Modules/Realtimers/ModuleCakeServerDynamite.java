@@ -1,14 +1,12 @@
 package vswe.stevescarts.Modules.Realtimers;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.Slots.SlotBase;
 import vswe.stevescarts.Slots.SlotCakeDynamite;
-import vswe.stevescarts.StevesCarts;
 
 public class ModuleCakeServerDynamite extends ModuleCakeServer {
 	private int dynamiteCount;

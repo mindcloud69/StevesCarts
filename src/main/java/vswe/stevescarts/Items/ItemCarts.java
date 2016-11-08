@@ -1,8 +1,9 @@
 package vswe.stevescarts.Items;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -21,10 +22,6 @@ import vswe.stevescarts.Helpers.CartVersion;
 import vswe.stevescarts.Helpers.ColorHelper;
 import vswe.stevescarts.Helpers.ModuleCountPair;
 import vswe.stevescarts.ModuleData.ModuleData;
-import vswe.stevescarts.StevesCarts;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ItemCarts extends ItemMinecart {
 	public ItemCarts() {
@@ -38,13 +35,13 @@ public class ItemCarts extends ItemMinecart {
 		return "Modular cart";
 	}
 
-//	@SideOnly(Side.CLIENT)
-//	public void registerIcons(final IIconRegister register) {
-//		final StringBuilder sb = new StringBuilder();
-//		StevesCarts.instance.getClass();
-//		this.itemIcon = register.registerIcon(sb.append("stevescarts").append(":").append("modular_cart").append("_icon").toString());
-//	}
-	
+	//	@SideOnly(Side.CLIENT)
+	//	public void registerIcons(final IIconRegister register) {
+	//		final StringBuilder sb = new StringBuilder();
+	//		StevesCarts.instance.getClass();
+	//		this.itemIcon = register.registerIcon(sb.append("stevescarts").append(":").append("modular_cart").append("_icon").toString());
+	//	}
+
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		CartVersion.updateItemStack(stack);
@@ -67,6 +64,7 @@ public class ItemCarts extends ItemMinecart {
 		return EnumActionResult.PASS;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(final ItemStack item, final EntityPlayer player, final List list, final boolean useExtraInfo) {
 		CartVersion.updateItemStack(item);
@@ -137,6 +135,7 @@ public class ItemCarts extends ItemMinecart {
 		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 	}
 
+	@Override
 	public boolean getShareTag() {
 		return true;
 	}

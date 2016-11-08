@@ -38,6 +38,7 @@ public class ModuleFarmerDiamond extends ModuleFarmer {
 		return 500;
 	}
 
+	@Override
 	public int getRange() {
 		return 1;
 	}

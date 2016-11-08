@@ -1,13 +1,12 @@
 package vswe.stevescarts.Models.Cart;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Helpers.ResourceHelper;
-import vswe.stevescarts.Modules.Engines.ModuleCoalBase;
 import vswe.stevescarts.Modules.ModuleBase;
+import vswe.stevescarts.Modules.Engines.ModuleCoalBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelEngineInside extends ModelEngineBase {

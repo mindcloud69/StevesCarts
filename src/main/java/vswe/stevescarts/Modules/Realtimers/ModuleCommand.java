@@ -1,5 +1,7 @@
 package vswe.stevescarts.Modules.Realtimers;
 
+import java.util.List;
+
 import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,8 +10,6 @@ import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Helpers.ResourceHelper;
 import vswe.stevescarts.Interfaces.GuiMinecart;
 import vswe.stevescarts.Modules.ModuleBase;
-
-import java.util.List;
 
 public abstract class ModuleCommand extends ModuleBase implements ICommandSender {
 	private String command;
@@ -63,6 +63,7 @@ public abstract class ModuleCommand extends ModuleBase implements ICommandSender
 	public void sendChatToPlayer(final String var1) {
 	}
 
+	@Override
 	public boolean canCommandSenderUseCommand(final int var1, final String var2) {
 		return var1 <= 2;
 	}

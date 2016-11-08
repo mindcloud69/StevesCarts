@@ -1,5 +1,6 @@
 package vswe.stevescarts.Buttons;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -53,11 +54,11 @@ public abstract class ButtonBase {
 
 	public final void computeOnClick(final GuiMinecart gui, final int mousebutton) {
 		if (this.isVisible() && this.isEnabled()) {
-			this.onClientClick(mousebutton, GuiMinecart.isCtrlKeyDown(), GuiMinecart.isShiftKeyDown());
+			this.onClientClick(mousebutton, GuiScreen.isCtrlKeyDown(), GuiScreen.isShiftKeyDown());
 			if (this.handleClickOnServer()) {
 				byte clickinformation = (byte) (mousebutton & 0x3F);
-				clickinformation |= (byte) ((GuiMinecart.isCtrlKeyDown() ? 1 : 0) << 6);
-				clickinformation |= (byte) ((GuiMinecart.isShiftKeyDown() ? 1 : 0) << 7);
+				clickinformation |= (byte) ((GuiScreen.isCtrlKeyDown() ? 1 : 0) << 6);
+				clickinformation |= (byte) ((GuiScreen.isShiftKeyDown() ? 1 : 0) << 7);
 				this.module.sendButtonPacket(this, clickinformation);
 			}
 		}

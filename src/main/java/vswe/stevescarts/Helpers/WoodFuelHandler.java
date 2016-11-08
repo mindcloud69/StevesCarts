@@ -11,6 +11,7 @@ public class WoodFuelHandler implements IFuelHandler {
 		GameRegistry.registerFuelHandler(this);
 	}
 
+	@Override
 	public int getBurnTime(final ItemStack fuel) {
 		if (fuel != null && fuel.getItem() != null && fuel.getItem() == ModItems.component) {
 			if (ItemCartComponent.isWoodLog(fuel)) {

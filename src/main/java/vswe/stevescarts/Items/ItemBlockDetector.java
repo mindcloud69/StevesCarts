@@ -1,7 +1,6 @@
 package vswe.stevescarts.Items;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.StevesCarts;
@@ -14,6 +13,7 @@ public class ItemBlockDetector extends ItemBlock {
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
+	@Override
 	public String getUnlocalizedName(final ItemStack item) {
 		if (item != null) {
 			return "item.SC2:BlockDetector" + item.getItemDamage();
@@ -21,6 +21,7 @@ public class ItemBlockDetector extends ItemBlock {
 		return "item.unknown";
 	}
 
+	@Override
 	public int getMetadata(final int dmg) {
 		return dmg;
 	}
