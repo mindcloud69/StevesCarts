@@ -16,6 +16,7 @@ import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.handlers.SoundHandler;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
+import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.renders.ItemStackRenderer;
 import vswe.stevescarts.renders.RendererCart;
@@ -62,6 +63,7 @@ public class ClientProxy extends CommonProxy {
     {
         registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
         registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
+        registerItemModel(ModItems.carts, 0);
     }
 
 	public static void registerItemModel(Item i, int meta)

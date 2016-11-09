@@ -57,6 +57,8 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 				}
 			}
 			//	if (type == IItemRenderer.ItemRenderType.INVENTORY) {
+			GL11.glRotated(90D, 0D, 1, 0);
+			GL11.glTranslated(-1, -0.75, 0);
 			GL11.glScalef(lowestMult, lowestMult, lowestMult);
 			//	}
 			for (final ModelCartbase model : models.values()) {
