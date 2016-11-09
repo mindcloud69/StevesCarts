@@ -14,6 +14,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -383,14 +386,15 @@ public abstract class GuiBase extends GuiContainer {
 				break;
 			}
 		}
-		//TODO
-		//		final Tessellator tessellator = Tessellator.getInstance();
-		//		tessellator.startDrawingQuads();
-		//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + h), (double) this.zLevel, pt1[0], pt1[1]);
-		//		tessellator.addVertexWithUV((double) (x + w), (double) (y + h), (double) this.zLevel, pt2[0], pt2[1]);
-		//		tessellator.addVertexWithUV((double) (x + w), (double) (y + 0), (double) this.zLevel, pt3[0], pt3[1]);
-		//		tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) this.zLevel, pt4[0], pt4[1]);
-		//		tessellator.draw();
+		
+		Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexbuffer.pos((x + 0), (double) (y + h), (double) this.zLevel).tex(pt1[0], pt1[1]).endVertex();
+        vertexbuffer.pos((x + w), (double) (y + h), (double) this.zLevel).tex(pt2[0], pt2[1]).endVertex();
+        vertexbuffer.pos((x + w), (double) (y + 0), (double) this.zLevel).tex(pt3[0], pt3[1]).endVertex();
+        vertexbuffer.pos((x + 0), (double) (y + 0), (double) this.zLevel).tex(pt4[0], pt4[1]).endVertex();
+        tessellator.draw();
 	}
 
 	public enum RENDER_ROTATION {
