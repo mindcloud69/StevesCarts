@@ -67,6 +67,7 @@ public class StevesCarts {
 		EntityRegistry.registerModEntity(EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
 		StevesCarts.proxy.soundInit();
+		StevesCarts.proxy.initItemModels();
 		config.save();
 	}
 
