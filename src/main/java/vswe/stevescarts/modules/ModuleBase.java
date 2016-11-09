@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
@@ -616,6 +617,11 @@ public abstract class ModuleBase {
 	}
 
 	protected final <T> void registerDw(DataParameter<T> key, T value){
+		for(DataEntry entry : this.getCart().getDataManager().getAll()){
+			if(entry.getKey() == key){
+				return;
+			}
+		}
 		this.getCart().getDataManager().register(key, value);
 	}
 
