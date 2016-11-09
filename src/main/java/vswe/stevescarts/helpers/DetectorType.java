@@ -65,7 +65,7 @@ public enum DetectorType implements IStringSerializable {
 	private boolean emitRedstone;
 	private HashMap<Byte, OperatorObject> operators;
 
-	public static PropertyEnum<DetectorType> SATE = PropertyEnum.create("DetectorType", DetectorType.class);
+	public static PropertyEnum<DetectorType> SATE = PropertyEnum.create("detectortype", DetectorType.class);
 
 	DetectorType(final int meta, final boolean acceptCart, final boolean stopCart, final boolean emitRedstone, final String[] textures) {
 		this.meta = meta;

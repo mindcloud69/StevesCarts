@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -19,10 +18,15 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 
-public class RendererMinecart extends Render {
-	public RendererMinecart(RenderManager renderManager) {
+public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
+	public RendererCart(RenderManager renderManager) {
 		super(renderManager);
 		this.shadowSize = 0.5f;
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(T entity) {
+		return null;
 	}
 
 	public void renderCart(final EntityMinecartModular cart, double x, double y, double z, float yaw, final float partialTickTime) {
@@ -219,13 +223,9 @@ public class RendererMinecart extends Render {
 		}
 	}
 
-	@Override
-	protected ResourceLocation getEntityTexture(final Entity par1Entity) {
-		return null;
-	}
 
 	@Override
-	public void doRender(final Entity par1Entity, final double x, final double y, final double z, final float yaw, final float partialTickTime) {
-		this.renderCart((EntityMinecartModular) par1Entity, x, y, z, yaw, partialTickTime);
+	public void doRender(final EntityMinecartModular par1Entity, final double x, final double y, final double z, final float yaw, final float partialTickTime) {
+		this.renderCart(par1Entity, x, y, z, yaw, partialTickTime);
 	}
 }

@@ -12,14 +12,14 @@ import vswe.stevescarts.handlers.SoundHandler;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.renders.ItemStackRenderer;
-import vswe.stevescarts.renders.RendererMinecart;
+import vswe.stevescarts.renders.RendererCart;
 import vswe.stevescarts.renders.model.ItemModelManager;
 
 public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void renderInit() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartModular.class, new RenderManagerCart());
+
 
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
 		//	StevesCarts.instance.blockRenderer = (ISimpleBlockRenderingHandler) new RendererUpgrade();
@@ -34,13 +34,14 @@ public class ClientProxy extends CommonProxy {
 
 		@Override
 		public Render<? super EntityMinecartModular> createRenderFor(RenderManager manager) {
-			return new RendererMinecart(manager);
+			return new RendererCart(manager);
 		}
 	}
 
 	@Override
 	public void soundInit() {
 		ItemModelManager.load(); //Called in pre-init
+		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartModular.class, new RenderManagerCart()); //Needs to be done after the mc ones have been done
 		new SoundHandler();
 		new MinecartSoundMuter();
 	}

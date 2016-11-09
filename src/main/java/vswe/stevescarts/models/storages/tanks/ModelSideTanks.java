@@ -10,7 +10,7 @@ import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.storages.tanks.ModuleTank;
-import vswe.stevescarts.renders.RendererMinecart;
+import vswe.stevescarts.renders.RendererCart;
 
 @SideOnly(Side.CLIENT)
 public class ModelSideTanks extends ModelCartbase {
@@ -71,8 +71,8 @@ public class ModelSideTanks extends ModelCartbase {
 		if (render != null && module != null) {
 			final FluidStack liquid = ((ModuleTank) module).getFluid();
 			if (liquid != null) {
-				((RendererMinecart) render).renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -2.0f, -0.5f, -11.0f, 10.0f, 4.0f, 4.0f, mult);
-				((RendererMinecart) render).renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -2.0f, -0.5f, 11.0f, 10.0f, 4.0f, 4.0f, mult);
+				((RendererCart) render).renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -2.0f, -0.5f, -11.0f, 10.0f, 4.0f, 4.0f, mult);
+				((RendererCart) render).renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -2.0f, -0.5f, 11.0f, 10.0f, 4.0f, 4.0f, mult);
 			}
 		}
 	}
