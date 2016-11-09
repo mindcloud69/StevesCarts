@@ -30,10 +30,9 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fluids.Fluid;
@@ -69,6 +68,8 @@ import vswe.stevescarts.modules.storages.tanks.ModuleTank;
 import vswe.stevescarts.modules.workers.CompWorkModule;
 import vswe.stevescarts.modules.workers.ModuleWorker;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
+
+import javax.annotation.Nullable;
 
 public class EntityMinecartModular extends EntityMinecart implements IInventory, IEntityAdditionalSpawnData, IFluidHandler {
 
@@ -1023,9 +1024,14 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		return entityplayer.getDistanceSq(this.x(), this.y(), this.z()) <= 64.0;
 	}
 
-	public boolean interactFirst(final EntityPlayer entityplayer) {
+	@Override
+	public EnumActionResult applyPlayerInteraction(EntityPlayer entityplayer,
+	                                               Vec3d vec,
+	                                               @Nullable
+		                                               ItemStack stack,
+	                                               EnumHand hand) {
 		if (this.isPlaceholder) {
-			return false;
+			return EnumActionResult.FAIL;
 		}
 		if (this.modules != null && !entityplayer.isSneaking()) {
 			boolean interupt = false;
@@ -1035,7 +1041,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				}
 			}
 			if (interupt) {
-				return true;
+				return EnumActionResult.SUCCESS;
 			}
 		}
 		if (!this.worldObj.isRemote) {
@@ -1050,8 +1056,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 0, this.worldObj, this.getEntityId(), 0, 0);
 			this.openInventory(entityplayer);
 		}
-		return true;
+		return EnumActionResult.SUCCESS;
 	}
+
 
 	public void loadChunks() {
 		this.loadChunks(this.cartTicket, this.x() >> 4, this.z() >> 4);
