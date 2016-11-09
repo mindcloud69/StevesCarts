@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -78,7 +79,7 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 		if (cart.getRenderFlippedYaw(yaw + (flip ? 0.0f : 180.0f))) {
 			flip = !flip;
 		}
-		GL11.glTranslatef((float) x, (float) y, (float) z);
+		GL11.glTranslatef((float) x, (float) y + 0.375F, (float) z);
 		GL11.glRotatef(yaw, 0.0f, 1.0f, 0.0f);
 		GL11.glRotatef(partialRotPitch, 0.0f, 0.0f, 1.0f);
 		if (damageRot > 0.0f) {
