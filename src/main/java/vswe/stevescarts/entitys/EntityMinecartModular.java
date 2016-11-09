@@ -121,6 +121,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	private MovingSound soundRiding;
 	@SideOnly(Side.CLIENT)
 	private int keepSilent;
+	
+	private static final DataParameter<Boolean> IS_BURNING = EntityDataManager.createKey(EntityMinecartModular.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityMinecartModular.class, DataSerializers.BOOLEAN);
 
 	public ArrayList<ModuleBase> getModules() {
 		return this.modules;
@@ -141,8 +144,6 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public ArrayList<ModuleCountPair> getModuleCounts() {
 		return this.moduleCounts;
 	}
-
-	private static final DataParameter<Boolean> CART_FLAG = EntityDataManager.<Boolean> createKey(EntityMinecartModular.class, DataSerializers.BOOLEAN);
 
 	public EntityMinecartModular(final World world, final double x, final double y, final double z, final NBTTagCompound info, final String name) {
 		super(world, x, y, z);
@@ -394,7 +395,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			this.overrideDatawatcher();
 		}
 		super.entityInit();
-		dataManager.register(CART_FLAG, false);
+		dataManager.register(IS_BURNING, false);
+		dataManager.register(IS_DISANABLED, false);
 	}
 
 	public void updateFuel() {
@@ -424,22 +426,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public boolean isEngineBurning() {
-		return this.isCartFlag(0);
+		return dataManager.get(IS_BURNING);
 	}
 
 	public void setEngineBurning(final boolean on) {
-		this.setCartFlag(0, on);
-	}
-
-	private boolean isCartFlag(final int id) {
-		return dataManager.get(CART_FLAG);
-	}
-
-	private void setCartFlag(final int id, final boolean val) {
-		if (this.worldObj.isRemote) {
-			return;
-		}
-		dataManager.set(CART_FLAG, val);
+		dataManager.set(IS_BURNING, on);
 	}
 
 	private ModuleEngine getCurrentEngine() {
@@ -667,7 +658,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		}
 		boolean canBeDisabled = blockState.getBlock() == ModBlocks.ADVANCED_DETECTOR.getBlock()
 				&& (stateBelow.getBlock() != ModBlocks.DETECTOR_UNIT.getBlock() || !DetectorType.getTypeFromSate(stateBelow).canInteractWithCart() || DetectorType.getTypeFromSate(stateBelow).shouldStopCart());
-		final boolean forceUnDisable = this.wasDisabled && disabledPos != null ? this.disabledPos.equals(pos) : true;
+		final boolean forceUnDisable = this.wasDisabled && disabledPos != null && this.disabledPos.equals(pos);
 		if (!forceUnDisable && this.wasDisabled) {
 			this.wasDisabled = false;
 		}
@@ -962,11 +953,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public boolean isDisabled() {
-		return this.isCartFlag(1);
+		return dataManager.get(IS_DISANABLED);
 	}
 
 	public void setIsDisabled(final boolean disabled) {
-		this.setCartFlag(1, disabled);
+		dataManager.set(IS_DISANABLED, disabled);
 	}
 
 	@Override

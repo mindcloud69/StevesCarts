@@ -199,7 +199,7 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 	}
 
 	private boolean isCartReadyForAction(final EntityMinecartModular cart, BlockPos pos) {
-		return cart.disabledPos.equals(pos) && cart.isDisabled();
+		return cart.disabledPos != null && cart.disabledPos.equals(pos) && cart.isDisabled();
 	}
 
 	@Override
