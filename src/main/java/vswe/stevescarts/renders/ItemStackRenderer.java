@@ -28,11 +28,6 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 		}
 		GL11.glPushMatrix();
 		GL11.glScalef(-1.0f, -1.0f, 1.0f);
-		//		if (type == IItemRenderer.ItemRenderType.EQUIPPED) {
-		//			GL11.glTranslatef(0.0f, -1.0f, 1.0f);
-		//		} else if (type == IItemRenderer.ItemRenderType.INVENTORY) {
-		//			GL11.glTranslatef(0.0f, 0.1f, 0.0f);
-		//		}
 		final NBTTagCompound info = itemStack.getTagCompound();
 		if (info != null) {
 			final NBTTagByteArray moduleIDTag = (NBTTagByteArray) info.getTag("Modules");
@@ -56,9 +51,9 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 					}
 				}
 			}
-			//	if (type == IItemRenderer.ItemRenderType.INVENTORY) {
+			GL11.glRotated(90D, 0D, 1, 0);
+			GL11.glTranslated(-1, -0.75, 0);
 			GL11.glScalef(lowestMult, lowestMult, lowestMult);
-			//	}
 			for (final ModelCartbase model : models.values()) {
 				model.render(null, null, 0.0f, 0.0f, 0.0f, 0.0625f, 0.0f);
 			}

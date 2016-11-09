@@ -386,15 +386,15 @@ public abstract class GuiBase extends GuiContainer {
 				break;
 			}
 		}
-		
+
 		Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        vertexbuffer.pos((x + 0), (double) (y + h), (double) this.zLevel).tex(pt1[0], pt1[1]).endVertex();
-        vertexbuffer.pos((x + w), (double) (y + h), (double) this.zLevel).tex(pt2[0], pt2[1]).endVertex();
-        vertexbuffer.pos((x + w), (double) (y + 0), (double) this.zLevel).tex(pt3[0], pt3[1]).endVertex();
-        vertexbuffer.pos((x + 0), (double) (y + 0), (double) this.zLevel).tex(pt4[0], pt4[1]).endVertex();
-        tessellator.draw();
+		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		vertexbuffer.pos((x + 0), y + h, this.zLevel).tex(pt1[0], pt1[1]).endVertex();
+		vertexbuffer.pos((x + w), y + h, this.zLevel).tex(pt2[0], pt2[1]).endVertex();
+		vertexbuffer.pos((x + w), y + 0, this.zLevel).tex(pt3[0], pt3[1]).endVertex();
+		vertexbuffer.pos((x + 0), y + 0, this.zLevel).tex(pt4[0], pt4[1]).endVertex();
+		tessellator.draw();
 	}
 
 	public enum RENDER_ROTATION {
