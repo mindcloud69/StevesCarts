@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;

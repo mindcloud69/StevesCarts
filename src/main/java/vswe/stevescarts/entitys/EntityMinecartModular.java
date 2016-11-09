@@ -121,7 +121,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	private MovingSound soundRiding;
 	@SideOnly(Side.CLIENT)
 	private int keepSilent;
-	
+
 	private static final DataParameter<Boolean> IS_BURNING = EntityDataManager.createKey(EntityMinecartModular.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityMinecartModular.class, DataSerializers.BOOLEAN);
 

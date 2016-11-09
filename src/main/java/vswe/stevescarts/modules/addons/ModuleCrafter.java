@@ -3,7 +3,6 @@ package vswe.stevescarts.modules.addons;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotCartCrafter;
 import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
 import vswe.stevescarts.entitys.EntityMinecartModular;

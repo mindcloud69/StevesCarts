@@ -58,13 +58,13 @@ public class ClientProxy extends CommonProxy {
 		return FMLClientHandler.instance().getClient().theWorld;
 	}
 
-    @Override
-    public void initItemModels()
-    {
-        registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
-        registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
-        registerItemModel(ModItems.carts, 0);
-    }
+	@Override
+	public void initItemModels()
+	{
+		registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
+		registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
+		registerItemModel(ModItems.carts, 0);
+	}
 
 	public static void registerItemModel(Item i, int meta)
 	{
