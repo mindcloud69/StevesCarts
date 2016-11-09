@@ -101,7 +101,6 @@ public class GuiMinecart extends GuiBase {
 		x -= this.getGuiLeft();
 		y -= this.getGuiTop();
 		final ArrayList<ModuleCountPair> moduleCounts = this.cart.getModuleCounts();
-		ResourceHelper.bindResource(GuiMinecart.moduleTexture);
 		GL11.glEnable(3042);
 		for (int i = 0; i < moduleCounts.size(); ++i) {
 			final ModuleCountPair count = moduleCounts.get(i);

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -15,6 +18,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 
 @SideOnly(Side.CLIENT)
@@ -294,7 +298,10 @@ public abstract class GuiBase extends GuiContainer {
 	//	}
 
 	public void drawModuleIcon(ModuleData icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
-		//TODO
+		RenderHelper.enableGUIStandardItemLighting();
+		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+		itemRenderer.renderItemAndEffectIntoGUI(icon.getItemStack(), targetX, targetY);
+
 	}
 
 	public void drawTexturedModalRect(final int x, final int y, final int u, final int v, final int w, final int h, final RENDER_ROTATION rotation) {

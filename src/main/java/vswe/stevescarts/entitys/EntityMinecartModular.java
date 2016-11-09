@@ -643,7 +643,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		}
 	}
 
-	public void moveMinecartOnRail(BlockPos pos, final double acceleration) {
+
+	@Override
+	public void moveMinecartOnRail(BlockPos pos) {
 		super.moveMinecartOnRail(pos);
 		if (this.modules != null) {
 			for (final ModuleBase module : this.modules) {
@@ -661,7 +663,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		}
 		boolean canBeDisabled = blockState.getBlock() == ModBlocks.ADVANCED_DETECTOR.getBlock()
 				&& (stateBelow.getBlock() != ModBlocks.DETECTOR_UNIT.getBlock() || !DetectorType.getTypeFromSate(stateBelow).canInteractWithCart() || DetectorType.getTypeFromSate(stateBelow).shouldStopCart());
-		final boolean forceUnDisable = this.wasDisabled && this.disabledPos.equals(pos);
+		final boolean forceUnDisable = this.wasDisabled && disabledPos != null ? this.disabledPos.equals(pos) : true;
 		if (!forceUnDisable && this.wasDisabled) {
 			this.wasDisabled = false;
 		}
@@ -677,7 +679,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			}
 			this.disabledPos = new BlockPos(pos);
 		}
-		if (!fixedRailPos.equals(pos)) {
+		if (fixedRailPos != null && !fixedRailPos.equals(pos)) {
 			this.fixedRailDirection = null;
 			fixedRailPos = new BlockPos(fixedRailPos.getX(), -1, fixedRailPos.getZ());
 		}
