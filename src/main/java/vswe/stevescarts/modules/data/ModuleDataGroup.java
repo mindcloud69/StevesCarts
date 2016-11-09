@@ -12,7 +12,7 @@ public class ModuleDataGroup {
 	public ModuleDataGroup(final Localization.MODULE_INFO name) {
 		this.name = name;
 		this.count = 1;
-		this.modules = new ArrayList<ModuleData>();
+		this.modules = new ArrayList<>();
 	}
 
 	public String getName() {

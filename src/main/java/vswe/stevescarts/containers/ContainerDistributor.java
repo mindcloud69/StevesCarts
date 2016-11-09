@@ -23,7 +23,7 @@ public class ContainerDistributor extends ContainerBase {
 
 	public ContainerDistributor(final IInventory invPlayer, final TileEntityDistributor distributor) {
 		this.distributor = distributor;
-		this.cachedValues = new ArrayList<Short>();
+		this.cachedValues = new ArrayList<>();
 		for (final DistributorSide side : distributor.getSides()) {
 			this.cachedValues.add((short) 0);
 			this.cachedValues.add((short) 0);

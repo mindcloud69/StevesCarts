@@ -62,7 +62,7 @@ public class ArcadeMonopoly extends ArcadeGame {
 	public ArcadeMonopoly(final ModuleArcade module) {
 		super(module, Localization.ARCADE.MADNESS);
 		this.selectedPlace = -1;
-		(this.pieces = new ArrayList<Piece>()).add(new Piece(this, 0, Piece.CONTROLLED_BY.PLAYER));
+		(this.pieces = new ArrayList<>()).add(new Piece(this, 0, Piece.CONTROLLED_BY.PLAYER));
 		this.pieces.add(new Piece(this, 1, Piece.CONTROLLED_BY.COMPUTER));
 		this.pieces.add(new Piece(this, 2, Piece.CONTROLLED_BY.COMPUTER));
 		this.pieces.add(new Piece(this, 3, Piece.CONTROLLED_BY.COMPUTER));
@@ -96,7 +96,7 @@ public class ArcadeMonopoly extends ArcadeGame {
 		((Property) this.places[3]).setOwner(this.pieces.get(0));
 		this.die = new Die(this, 0);
 		this.die2 = new Die(this, 1);
-		(this.buttons = new ArrayList<Button>()).add(this.roll = new Button() {
+		(this.buttons = new ArrayList<>()).add(this.roll = new Button() {
 			@Override
 			public String getName() {
 				return "Roll";

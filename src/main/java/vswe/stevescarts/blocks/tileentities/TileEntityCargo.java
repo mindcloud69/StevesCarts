@@ -63,7 +63,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	public static void loadSelectionSettings() {
-		(TileEntityCargo.itemSelections = new ArrayList<CargoItemSelection>()).add(new CargoItemSelection(Localization.GUI.CARGO.AREA_ALL, Slot.class, new ItemStack(ModItems.carts, 1, 0)));
+		(TileEntityCargo.itemSelections = new ArrayList<>()).add(new CargoItemSelection(Localization.GUI.CARGO.AREA_ALL, Slot.class, new ItemStack(ModItems.carts, 1, 0)));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_ENGINE, SlotFuel.class, new ItemStack(ModItems.modules, 1, 0)));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_RAILER, SlotBuilder.class, new ItemStack(ModItems.modules, 1, 10)));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_STORAGE, SlotChest.class, new ItemStack(Blocks.CHEST, 1)));

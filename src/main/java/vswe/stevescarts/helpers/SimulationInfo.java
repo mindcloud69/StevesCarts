@@ -126,7 +126,7 @@ public class SimulationInfo {
 	}
 
 	public SimulationInfo() {
-		this.items = new ArrayList<DropDownMenuItem>();
+		this.items = new ArrayList<>();
 		this.itemBOOLChest = new DropDownMenuItem("Chest", 0, DropDownMenuItem.VALUETYPE.BOOL, ModuleChest.class, ModuleInternalStorage.class);
 		this.itemBOOLInvis = new DropDownMenuItem("Invisible", 1, DropDownMenuItem.VALUETYPE.BOOL, ModuleInvisible.class);
 		this.itemBOOLBrake = new DropDownMenuItem("Brake", 2, DropDownMenuItem.VALUETYPE.BOOL, ModuleBrake.class);

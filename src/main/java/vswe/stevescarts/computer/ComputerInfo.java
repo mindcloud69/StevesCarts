@@ -96,7 +96,7 @@ public class ComputerInfo {
 	}
 
 	static {
-		ComputerInfo.infos = new HashMap<Byte, ComputerInfo>();
+		ComputerInfo.infos = new HashMap<>();
 		new ComputerInfo(1, "Light threshold [0-15]", 84, ModuleTorch.class) {
 			@Override
 			protected int get(final ModuleBase module) {

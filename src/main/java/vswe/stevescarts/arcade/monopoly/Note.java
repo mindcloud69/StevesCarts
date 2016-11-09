@@ -77,7 +77,7 @@ public class Note {
 	}
 
 	static {
-		notes = new ArrayList<Note>();
+		notes = new ArrayList<>();
 		COAL = new Note(0, 1, 0, 0);
 		IRON = new Note(1, 5, 1, 0);
 		REDSTONE = new Note(2, 10, 2, 0);

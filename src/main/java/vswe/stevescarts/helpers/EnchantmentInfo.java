@@ -138,7 +138,7 @@ public class EnchantmentInfo {
 	}
 
 	static {
-		EnchantmentInfo.enchants = new ArrayList<EnchantmentInfo>();
+		EnchantmentInfo.enchants = new ArrayList<>();
 		EnchantmentInfo.fortune = new EnchantmentInfo(Enchantments.FORTUNE, ENCHANTMENT_TYPE.TOOL, 50000);
 		EnchantmentInfo.efficiency = new EnchantmentInfo(Enchantments.EFFICIENCY, ENCHANTMENT_TYPE.TOOL, 50000);
 		EnchantmentInfo.unbreaking = new EnchantmentInfo(Enchantments.UNBREAKING, ENCHANTMENT_TYPE.TOOL, 64000);

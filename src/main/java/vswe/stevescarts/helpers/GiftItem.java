@@ -34,7 +34,7 @@ public class GiftItem {
 	}
 
 	public static void init() {
-		(GiftItem.ChristmasList = new ArrayList<GiftItem>()).add(new GiftItem(new ItemStack(Blocks.DIRT, 32), 25, 200000));
+		(GiftItem.ChristmasList = new ArrayList<>()).add(new GiftItem(new ItemStack(Blocks.DIRT, 32), 25, 200000));
 		GiftItem.ChristmasList.add(new GiftItem(new ItemStack(Blocks.STONE, 16), 50, 100000));
 		GiftItem.ChristmasList.add(new GiftItem(new ItemStack(Items.COAL, 8), 50, 50000));
 		GiftItem.ChristmasList.add(new GiftItem(new ItemStack(Items.REDSTONE, 2), 75, 22000));
@@ -42,7 +42,7 @@ public class GiftItem {
 		GiftItem.ChristmasList.add(new GiftItem(Items.GOLD_INGOT, 80, 17000));
 		GiftItem.ChristmasList.add(new GiftItem(Items.DIAMOND, 250, 5000));
 		addModuleGifts(GiftItem.ChristmasList);
-		addModuleGifts(GiftItem.EasterList = new ArrayList<GiftItem>());
+		addModuleGifts(GiftItem.EasterList = new ArrayList<>());
 	}
 
 	public static void addModuleGifts(final ArrayList<GiftItem> gifts) {
@@ -60,7 +60,7 @@ public class GiftItem {
 		for (final GiftItem gift : gifts) {
 			totalChanceWeight += gift.chanceWeight;
 		}
-		final ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+		final ArrayList<ItemStack> items = new ArrayList<>();
 		if (totalChanceWeight == 0) {
 			return items;
 		}

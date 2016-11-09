@@ -44,7 +44,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	@Override
 	public void init() {
 		super.init();
-		this.plantModules = new ArrayList<ICropModule>();
+		this.plantModules = new ArrayList<>();
 		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ICropModule) {
 				this.plantModules.add((ICropModule) module);
@@ -161,7 +161,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				this.stopWorking();
 				ArrayList<ItemStack> stuff;
 				if (this.shouldSilkTouch(blockState, pos)) {
-					stuff = new ArrayList<ItemStack>();
+					stuff = new ArrayList<>();
 					final ItemStack stack = this.getSilkTouchedItem(blockState);
 					if (stack != null) {
 						stuff.add(stack);

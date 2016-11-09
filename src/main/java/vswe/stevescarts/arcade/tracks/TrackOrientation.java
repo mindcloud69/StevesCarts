@@ -78,7 +78,7 @@ public abstract class TrackOrientation {
 	public abstract DIRECTION travel(final DIRECTION p0);
 
 	static {
-		TrackOrientation.ALL = new ArrayList<TrackOrientation>();
+		TrackOrientation.ALL = new ArrayList<>();
 		TrackOrientation.JUNCTION_4WAY = new TrackOrientation(5, GuiBase.RENDER_ROTATION.NORMAL) {
 			@Override
 			public DIRECTION travel(final DIRECTION in) {

@@ -24,7 +24,7 @@ public class ModuleArcade extends ModuleBase {
 
 	public ModuleArcade(final EntityMinecartModular cart) {
 		super(cart);
-		(this.games = new ArrayList<ArcadeGame>()).add(new ArcadeTracks(this));
+		(this.games = new ArrayList<>()).add(new ArcadeTracks(this));
 		this.games.add(new ArcadeTetris(this));
 		this.games.add(new ArcadeInvaders(this));
 		this.games.add(new ArcadeSweeper(this));

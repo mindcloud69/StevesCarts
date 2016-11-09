@@ -10,6 +10,6 @@ public class GuiAllocationHelper {
 	public ArrayList<ModuleBase> modules;
 
 	public GuiAllocationHelper() {
-		this.modules = new ArrayList<ModuleBase>();
+		this.modules = new ArrayList<>();
 	}
 }

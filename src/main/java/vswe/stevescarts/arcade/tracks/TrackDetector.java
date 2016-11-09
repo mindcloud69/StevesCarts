@@ -10,7 +10,7 @@ public class TrackDetector extends Track {
 
 	public TrackDetector(final int x, final int y, final TrackOrientation orientation) {
 		super(x, y, orientation);
-		this.targets = new ArrayList<TrackCoordinate>();
+		this.targets = new ArrayList<>();
 	}
 
 	@Override

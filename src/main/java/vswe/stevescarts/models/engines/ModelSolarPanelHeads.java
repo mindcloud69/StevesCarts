@@ -35,7 +35,7 @@ public class ModelSolarPanelHeads extends ModelSolarPanel {
 	}
 
 	public ModelSolarPanelHeads(final int panelCount) {
-		this.panels = new ArrayList<ModelRenderer>();
+		this.panels = new ArrayList<>();
 		final ModelRenderer moving = this.createMovingHolder(0, 0);
 		for (int i = 0; i < panelCount; ++i) {
 			this.createPanel(moving, i);

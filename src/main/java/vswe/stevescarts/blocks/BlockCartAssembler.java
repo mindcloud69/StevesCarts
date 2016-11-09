@@ -118,7 +118,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 	}
 
 	private ArrayList<TileEntityCartAssembler> getMasters(final World world, final BlockPos pos) {
-		final ArrayList<TileEntityCartAssembler> masters = new ArrayList<TileEntityCartAssembler>();
+		final ArrayList<TileEntityCartAssembler> masters = new ArrayList<>();
 		for (int i = -1; i <= 1; ++i) {
 			for (int j = -1; j <= 1; ++j) {
 				for (int k = -1; k <= 1; ++k) {

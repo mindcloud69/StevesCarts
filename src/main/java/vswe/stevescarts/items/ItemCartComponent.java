@@ -60,12 +60,12 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 	//		return this.icons[dmg];
 	//	}
 	//
-		private String getRawName(final int i) {
-			if(getName(i) == null){
-				return null;
-			}
-			return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
+	private String getRawName(final int i) {
+		if(getName(i) == null){
+			return null;
 		}
+		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
+	}
 	//
 	//	@SideOnly(Side.CLIENT)
 	//	public void registerIcons(final IIconRegister register) {

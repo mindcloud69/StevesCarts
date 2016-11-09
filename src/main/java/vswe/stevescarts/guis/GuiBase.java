@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -15,10 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 
 @SideOnly(Side.CLIENT)
@@ -216,27 +214,35 @@ public abstract class GuiBase extends GuiContainer {
 
 	@Override
 	public void handleMouseInput() throws IOException {
-		final int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
-		final int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		final int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
+		final int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 		if (Mouse.getEventButtonState()) {
 			if (this.mc.gameSettings.touchscreen && this.myOwnTouchpadTimeWhineyThingy++ > 0) {
 				return;
 			}
 			this.myOwnEventButton = Mouse.getEventButton();
 			this.myOwnTimeyWhineyThingy = Minecraft.getSystemTime();
-			this.mouseClicked(i, j, this.myOwnEventButton);
+			this.mouseClicked(mouseX, mouseY, this.myOwnEventButton);
 		} else if (Mouse.getEventButton() != -1) {
 			if (this.mc.gameSettings.touchscreen && --this.myOwnTouchpadTimeWhineyThingy > 0) {
 				return;
 			}
 			this.myOwnEventButton = -1;
-			this.mouseMovedOrUp(i, j, Mouse.getEventButton());
+			this.mouseReleased(mouseX, mouseY, Mouse.getEventButton());
+			this.mouseMovedOrUp(mouseX, mouseY, Mouse.getEventButton());
 		} else if (this.myOwnEventButton != -1 && this.myOwnTimeyWhineyThingy > 0L) {
 			final long k = Minecraft.getSystemTime() - this.myOwnTimeyWhineyThingy;
-			this.mouseClickMove(i, j, this.myOwnEventButton, k);
+			this.mouseClickMove(mouseX, mouseY, this.myOwnEventButton, k);
 		} else {
-			this.mouseMovedOrUp(i, j, -1);
+			this.mouseMovedOrUp(mouseX, mouseY, -1);
 		}
+	}
+
+	@Override
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		mouseX = this.scaleX(mouseX);
+		mouseY = this.scaleY(mouseY);
+		super.mouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override

@@ -123,7 +123,7 @@ public class ComputerControl {
 	}
 
 	static {
-		ComputerControl.controls = new HashMap<Byte, ComputerControl>();
+		ComputerControl.controls = new HashMap<>();
 		new ComputerControl(1, "Light threshold [0-15]", 69, ModuleTorch.class) {
 			@Override
 			protected void run(final ModuleBase module, final byte val) {

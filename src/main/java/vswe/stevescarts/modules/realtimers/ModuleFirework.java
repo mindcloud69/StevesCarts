@@ -213,7 +213,7 @@ public class ModuleFirework extends ModuleBase {
 		}
 		int colorCount;
 		for (colorCount = this.getCart().rand.nextInt(2) + 1; colorCount <= maxColorCount - 2 && this.getCart().rand.nextInt(2) == 0; colorCount += 2) {}
-		final ArrayList<Integer> colorPointers = new ArrayList<Integer>();
+		final ArrayList<Integer> colorPointers = new ArrayList<>();
 		for (int j = 0; j < 16; ++j) {
 			if (maxColors[j] > 0) {
 				colorPointers.add(j);
@@ -222,7 +222,7 @@ public class ModuleFirework extends ModuleBase {
 		if (colorPointers.size() == 0) {
 			return null;
 		}
-		final ArrayList<Integer> usedColors = new ArrayList<Integer>();
+		final ArrayList<Integer> usedColors = new ArrayList<>();
 		while (colorCount > 0 && colorPointers.size() > 0) {
 			final int pointerId = this.getCart().rand.nextInt(colorPointers.size());
 			final int colorId = colorPointers.get(pointerId);

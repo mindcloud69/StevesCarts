@@ -85,7 +85,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	}
 
 	protected ArrayList<Integer[]> getValidRailPositions(final int x, final int y, final int z) {
-		final ArrayList<Integer[]> lst = new ArrayList<Integer[]>();
+		final ArrayList<Integer[]> lst = new ArrayList<>();
 		if (y >= this.getCart().y()) {
 			lst.add(new Integer[] { x, y + 1, z });
 		}

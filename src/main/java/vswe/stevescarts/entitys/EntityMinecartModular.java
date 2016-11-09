@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -32,7 +34,11 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fluids.Fluid;
@@ -68,8 +74,6 @@ import vswe.stevescarts.modules.storages.tanks.ModuleTank;
 import vswe.stevescarts.modules.workers.CompWorkModule;
 import vswe.stevescarts.modules.workers.ModuleWorker;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
-
-import javax.annotation.Nullable;
 
 public class EntityMinecartModular extends EntityMinecart implements IInventory, IEntityAdditionalSpawnData, IFluidHandler {
 
@@ -174,11 +178,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	private void loadPlaceholderModules(final byte[] data) {
 		if (this.modules == null) {
-			this.modules = new ArrayList<ModuleBase>();
+			this.modules = new ArrayList<>();
 			this.doLoadModules(data);
 		} else {
-			final ArrayList<Byte> modulesToAdd = new ArrayList<Byte>();
-			final ArrayList<Byte> oldModules = new ArrayList<Byte>();
+			final ArrayList<Byte> modulesToAdd = new ArrayList<>();
+			final ArrayList<Byte> oldModules = new ArrayList<>();
 			for (int i = 0; i < this.moduleLoadingData.length; ++i) {
 				oldModules.add(this.moduleLoadingData[i]);
 			}
@@ -235,7 +239,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	protected void loadModules(final byte[] bytes) {
-		this.modules = new ArrayList<ModuleBase>();
+		this.modules = new ArrayList<>();
 		this.doLoadModules(bytes);
 		this.initModules();
 	}
@@ -257,7 +261,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	private void initModules() {
-		this.moduleCounts = new ArrayList<ModuleCountPair>();
+		this.moduleCounts = new ArrayList<>();
 		for (final ModuleBase module : this.modules) {
 			final ModuleData data = ModuleData.getList().get(module.getModuleId());
 			boolean found = false;
@@ -275,9 +279,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		for (final ModuleBase module : this.modules) {
 			module.preInit();
 		}
-		this.workModules = new ArrayList<ModuleWorker>();
-		this.engineModules = new ArrayList<ModuleEngine>();
-		this.tankModules = new ArrayList<ModuleTank>();
+		this.workModules = new ArrayList<>();
+		this.engineModules = new ArrayList<>();
+		this.tankModules = new ArrayList<>();
 		final int x = 0;
 		final int y = 0;
 		final int maxH = 0;
@@ -304,7 +308,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		final CompWorkModule sorter = new CompWorkModule();
 		Collections.sort(this.workModules, sorter);
 		if (!this.isPlaceholder) {
-			final ArrayList<GuiAllocationHelper> lines = new ArrayList<GuiAllocationHelper>();
+			final ArrayList<GuiAllocationHelper> lines = new ArrayList<>();
 			int slots = 0;
 			for (final ModuleBase module3 : this.modules) {
 				if (module3.hasGui()) {
@@ -448,7 +452,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			}
 		}
 		final int consumption = this.getConsumption(true);
-		final ArrayList<ModuleEngine> priority = new ArrayList<ModuleEngine>();
+		final ArrayList<ModuleEngine> priority = new ArrayList<>();
 		int mostImportant = -1;
 		for (final ModuleEngine engine : this.engineModules) {
 			if (engine.hasFuel(consumption) && (mostImportant == -1 || mostImportant >= engine.getPriority())) {
@@ -1028,10 +1032,10 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer entityplayer,
-	                                               Vec3d vec,
-	                                               @Nullable
-		                                               ItemStack stack,
-	                                               EnumHand hand) {
+			Vec3d vec,
+			@Nullable
+			ItemStack stack,
+			EnumHand hand) {
 		if (this.isPlaceholder) {
 			return EnumActionResult.FAIL;
 		}
@@ -1198,7 +1202,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public ArrayList<String> getLabel() {
-		final ArrayList<String> label = new ArrayList<String>();
+		final ArrayList<String> label = new ArrayList<>();
 		if (this.getModules() != null) {
 			for (final ModuleBase module : this.getModules()) {
 				module.addToLabel(label);
@@ -1339,7 +1343,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@SideOnly(Side.CLIENT)
 	private void generateModels() {
 		if (this.modules != null) {
-			final ArrayList<String> invalid = new ArrayList<String>();
+			final ArrayList<String> invalid = new ArrayList<>();
 			for (final ModuleBase module : this.modules) {
 				final ModuleData data = module.getData();
 				if (data.haveRemovedModels()) {
@@ -1352,7 +1356,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				final ModuleBase module = this.modules.get(i);
 				final ModuleData data = module.getData();
 				if (data != null && data.haveModels(this.isPlaceholder)) {
-					final ArrayList<ModelCartbase> models = new ArrayList<ModelCartbase>();
+					final ArrayList<ModelCartbase> models = new ArrayList<>();
 					for (final String str : data.getModels(this.isPlaceholder).keySet()) {
 						if (!invalid.contains(str)) {
 							models.add(data.getModels(this.isPlaceholder).get(str));

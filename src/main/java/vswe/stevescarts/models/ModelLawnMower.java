@@ -31,7 +31,7 @@ public class ModelLawnMower extends ModelCartbase {
 	}
 
 	public ModelLawnMower() {
-		this.bladepins = new ArrayList<ModelRenderer>();
+		this.bladepins = new ArrayList<>();
 		this.createSide(false);
 		this.createSide(true);
 	}

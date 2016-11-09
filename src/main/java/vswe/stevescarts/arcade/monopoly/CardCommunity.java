@@ -15,7 +15,7 @@ public abstract class CardCommunity extends Card {
 	}
 
 	static {
-		(CardCommunity.cards = new ArrayList<CardCommunity>()).add(new CardCommunity("You just found a ton of buckets in the dungeon.") {
+		(CardCommunity.cards = new ArrayList<>()).add(new CardCommunity("You just found a ton of buckets in the dungeon.") {
 			@Override
 			public void doStuff(final ArcadeMonopoly game, final Piece piece) {
 				piece.addMoney(Note.IRON, 9, true);

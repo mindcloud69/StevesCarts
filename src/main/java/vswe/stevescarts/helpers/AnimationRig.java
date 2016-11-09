@@ -6,7 +6,7 @@ public class AnimationRig {
 	private ArrayList<AnimationRigVal> rigs;
 
 	public AnimationRig() {
-		this.rigs = new ArrayList<AnimationRigVal>();
+		this.rigs = new ArrayList<>();
 	}
 
 	public boolean update(final boolean goDown) {

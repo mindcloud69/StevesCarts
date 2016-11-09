@@ -11,7 +11,7 @@ public class ContainerCargo extends ContainerManager {
 
 	public ContainerCargo(final IInventory invPlayer, final TileEntityCargo cargo) {
 		super(cargo);
-		cargo.cargoSlots = new ArrayList<SlotCargo>();
+		cargo.cargoSlots = new ArrayList<>();
 		cargo.lastLayout = -1;
 		for (int i = 0; i < 60; ++i) {
 			final SlotCargo slot = new SlotCargo(cargo, i);

@@ -6,7 +6,7 @@ public class PropertyGroup {
 	private ArrayList<Property> properties;
 
 	public PropertyGroup() {
-		this.properties = new ArrayList<Property>();
+		this.properties = new ArrayList<>();
 	}
 
 	public ArrayList<Property> getProperties() {

@@ -12,7 +12,7 @@ public abstract class InventoryEffect extends InterfaceEffect {
 	protected ArrayList<Slot> slots;
 
 	public InventoryEffect() {
-		this.slots = new ArrayList<Slot>();
+		this.slots = new ArrayList<>();
 	}
 
 	public Class<? extends Slot> getSlot(final int id) {

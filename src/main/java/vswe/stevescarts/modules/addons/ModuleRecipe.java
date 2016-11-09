@@ -32,8 +32,8 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		this.maxItemCount = 1;
 		this.target = 3;
 		this.dirty = true;
-		this.allTheSlots = new ArrayList<SlotBase>();
-		this.outputSlots = new ArrayList<SlotBase>();
+		this.allTheSlots = new ArrayList<>();
+		this.outputSlots = new ArrayList<>();
 	}
 
 	protected abstract int getLimitStartX();
@@ -281,7 +281,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 
 	protected void prepareLists() {
 		if (this.inputSlots == null) {
-			this.inputSlots = new ArrayList<SlotBase>();
+			this.inputSlots = new ArrayList<>();
 			for (final ModuleBase module : this.getCart().getModules()) {
 				if (module.getSlots() != null) {
 					for (final SlotBase slot : module.getSlots()) {

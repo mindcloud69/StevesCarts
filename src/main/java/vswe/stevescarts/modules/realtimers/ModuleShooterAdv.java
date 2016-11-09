@@ -37,7 +37,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 	@Override
 	public void preInit() {
 		super.preInit();
-		this.detectors = new ArrayList<ModuleMobdetector>();
+		this.detectors = new ArrayList<>();
 		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ModuleMobdetector) {
 				this.detectors.add((ModuleMobdetector) module);

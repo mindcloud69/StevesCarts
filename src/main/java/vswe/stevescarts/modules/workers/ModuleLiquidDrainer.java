@@ -29,7 +29,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 	}
 
 	public void handleLiquid(final ModuleDrill drill, BlockPos pos) {
-		final ArrayList<BlockPos> checked = new ArrayList<BlockPos>();
+		final ArrayList<BlockPos> checked = new ArrayList<>();
 		final int result = this.drainAt(drill, checked, pos, 0);
 		if (result > 0 && this.doPreWork()) {
 			drill.kill();

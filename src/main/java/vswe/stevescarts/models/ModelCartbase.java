@@ -23,7 +23,7 @@ public abstract class ModelCartbase extends ModelBase {
 	public abstract ResourceLocation getResource(final ModuleBase p0);
 
 	public ModelCartbase() {
-		this.renderers = new ArrayList<ModelRenderer>();
+		this.renderers = new ArrayList<>();
 	}
 
 	public void render(final Render render, final ModuleBase module, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {

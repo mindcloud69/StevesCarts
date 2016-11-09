@@ -65,8 +65,8 @@ public class ModuleComputer extends ModuleWorker {
 
 	public ModuleComputer(final EntityMinecartModular cart) {
 		super(cart);
-		this.programs = new ArrayList<ComputerProg>();
-		this.editTasks = new ArrayList<ComputerTask>();
+		this.programs = new ArrayList<>();
+		this.editTasks = new ArrayList<>();
 	}
 
 	@Override

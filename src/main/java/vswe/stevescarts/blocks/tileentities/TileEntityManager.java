@@ -183,6 +183,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		this.standardTransferHandler.setWorkload(val);
 	}
 
+	@Override
 	public void updateEntity() {
 		if (this.worldObj.isRemote) {
 			this.updateLayout();

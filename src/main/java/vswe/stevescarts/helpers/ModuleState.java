@@ -163,7 +163,7 @@ public class ModuleState {
 	}
 
 	static {
-		ModuleState.states = new HashMap<Byte, ModuleState>();
+		ModuleState.states = new HashMap<>();
 		new ModuleState(0, ModuleRailer.class, Localization.GUI.DETECTOR.RAIL, STATETYPE.SUPPLY);
 		new ModuleState(1, ModuleTorch.class, Localization.GUI.DETECTOR.TORCH, STATETYPE.SUPPLY);
 		new ModuleState(2, ModuleWoodcutter.class, Localization.GUI.DETECTOR.SAPLING, STATETYPE.SUPPLY);

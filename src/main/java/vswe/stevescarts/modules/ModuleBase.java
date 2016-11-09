@@ -67,7 +67,7 @@ public abstract class ModuleBase {
 
 	public void init() {
 		if (this.useButtons()) {
-			this.buttons = new ArrayList<ButtonBase>();
+			this.buttons = new ArrayList<>();
 			this.buttonSorter = new CompButtons();
 			this.loadButtons();
 			this.buttonVisibilityChanged();
@@ -154,7 +154,7 @@ public abstract class ModuleBase {
 
 	public int generateSlots(int slotCount) {
 		this.slotGlobalStart = slotCount;
-		this.slotList = new ArrayList<SlotBase>();
+		this.slotList = new ArrayList<>();
 		for (int j = 0; j < this.getInventoryHeight(); ++j) {
 			for (int i = 0; i < this.getInventoryWidth(); ++i) {
 				this.slotList.add(this.getSlot(slotCount++, i, j));

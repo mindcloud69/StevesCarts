@@ -28,7 +28,7 @@ public class LogicObject {
 		this.id = id;
 		this.type = type;
 		this.data = data;
-		this.childs = new ArrayList<LogicObject>();
+		this.childs = new ArrayList<>();
 	}
 
 	public LogicObject(final byte type, final byte data) {

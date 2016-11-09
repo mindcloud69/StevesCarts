@@ -30,12 +30,12 @@ public class ModuleCrafter extends ModuleRecipe {
 					}
 					this.prepareLists();
 					if (this.canCraftMoreOfResult(result)) {
-						final ArrayList<ItemStack> originals = new ArrayList<ItemStack>();
+						final ArrayList<ItemStack> originals = new ArrayList<>();
 						for (int i = 0; i < this.allTheSlots.size(); ++i) {
 							final ItemStack item = this.allTheSlots.get(i).getStack();
 							originals.add((item == null) ? null : item.copy());
 						}
-						final ArrayList<ItemStack> containers = new ArrayList<ItemStack>();
+						final ArrayList<ItemStack> containers = new ArrayList<>();
 						boolean valid = true;
 						boolean edited = false;
 						for (int j = 0; j < 9; ++j) {
@@ -113,7 +113,7 @@ public class ModuleCrafter extends ModuleRecipe {
 	@Override
 	public int generateSlots(int slotCount) {
 		this.slotGlobalStart = slotCount;
-		this.slotList = new ArrayList<SlotBase>();
+		this.slotList = new ArrayList<>();
 		for (int y = 0; y < 3; ++y) {
 			for (int x = 0; x < 3; ++x) {
 				this.slotList.add(new SlotCartCrafter(this.getCart(), slotCount++, 10 + 18 * x, 15 + 18 * y));

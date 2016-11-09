@@ -54,7 +54,7 @@ public class DistributorSetting {
 	}
 
 	static {
-		(DistributorSetting.settings = new ArrayList<DistributorSetting>()).add(new DistributorSetting(0, true, Localization.GUI.DISTRIBUTOR.SETTING_ALL));
+		(DistributorSetting.settings = new ArrayList<>()).add(new DistributorSetting(0, true, Localization.GUI.DISTRIBUTOR.SETTING_ALL));
 		DistributorSetting.settings.add(new DistributorSetting(1, false, Localization.GUI.DISTRIBUTOR.SETTING_ALL));
 		DistributorSetting.settings.add(new distributorSettingColor(2, true, Localization.GUI.DISTRIBUTOR.SETTING_RED, 1));
 		DistributorSetting.settings.add(new distributorSettingColor(3, false, Localization.GUI.DISTRIBUTOR.SETTING_RED, 1));

@@ -47,7 +47,7 @@ public class ResourceHelper {
 	}
 
 	static {
-		ResourceHelper.resources = new HashMap<String, ResourceLocation>();
-		ResourceHelper.pathResources = new HashMap<String, ResourceLocation>();
+		ResourceHelper.resources = new HashMap<>();
+		ResourceHelper.pathResources = new HashMap<>();
 	}
 }

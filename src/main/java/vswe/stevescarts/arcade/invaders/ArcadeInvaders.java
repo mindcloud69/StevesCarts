@@ -36,10 +36,10 @@ public class ArcadeInvaders extends ArcadeGame {
 
 	public ArcadeInvaders(final ModuleArcade module) {
 		super(module, Localization.ARCADE.GHAST);
-		this.invaders = new ArrayList<Unit>();
-		this.buildings = new ArrayList<Unit>();
-		this.lives = new ArrayList<Player>();
-		this.projectiles = new ArrayList<Projectile>();
+		this.invaders = new ArrayList<>();
+		this.buildings = new ArrayList<>();
+		this.lives = new ArrayList<>();
+		this.projectiles = new ArrayList<>();
 		this.start();
 	}
 

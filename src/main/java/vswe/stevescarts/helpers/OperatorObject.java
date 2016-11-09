@@ -56,8 +56,8 @@ public class OperatorObject {
 	}
 
 	static {
-		OperatorObject.allOperators = new HashMap<Byte, OperatorObject>();
-		final HashMap<Byte, OperatorObject> operators = new HashMap<Byte, OperatorObject>();
+		OperatorObject.allOperators = new HashMap<>();
+		final HashMap<Byte, OperatorObject> operators = new HashMap<>();
 		new OperatorObject(operators, 0, Localization.GUI.DETECTOR.OUTPUT, 1) {
 			@Override
 			public boolean inTab() {
@@ -105,7 +105,7 @@ public class OperatorObject {
 		new OperatorObjectRedirector(operators, 9, Localization.GUI.DETECTOR.SOUTH, 0, 0, 1);
 		new OperatorObjectRedirector(operators, 10, Localization.GUI.DETECTOR.EAST, 1, 0, 0);
 		for (final DetectorType type : DetectorType.values()) {
-			type.initOperators(new HashMap<Byte, OperatorObject>(operators));
+			type.initOperators(new HashMap<>(operators));
 		}
 	}
 

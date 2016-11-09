@@ -107,15 +107,15 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		this.yaw = 0.0f;
 		this.roll = 0.0f;
 		this.rolldown = false;
-		this.upgrades = new ArrayList<TileEntityUpgrade>();
-		this.spareModules = new ArrayList<ItemStack>();
-		this.dropDownItems = new ArrayList<DropDownMenuItem>();
-		this.slots = new ArrayList<SlotAssembler>();
-		this.engineSlots = new ArrayList<SlotAssembler>();
-		this.addonSlots = new ArrayList<SlotAssembler>();
-		this.chestSlots = new ArrayList<SlotAssembler>();
-		this.funcSlots = new ArrayList<SlotAssembler>();
-		this.titleBoxes = new ArrayList<TitleBox>();
+		this.upgrades = new ArrayList<>();
+		this.spareModules = new ArrayList<>();
+		this.dropDownItems = new ArrayList<>();
+		this.slots = new ArrayList<>();
+		this.engineSlots = new ArrayList<>();
+		this.addonSlots = new ArrayList<>();
+		this.chestSlots = new ArrayList<>();
+		this.funcSlots = new ArrayList<>();
+		this.titleBoxes = new ArrayList<>();
 		int slotID = 0;
 		this.hullSlot = new SlotHull(this, slotID++, 18, 25);
 		this.slots.add(this.hullSlot);
@@ -185,7 +185,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public ArrayList<AssemblerUpgrade> getUpgrades() {
-		final ArrayList<AssemblerUpgrade> lst = new ArrayList<AssemblerUpgrade>();
+		final ArrayList<AssemblerUpgrade> lst = new ArrayList<>();
 		for (final TileEntityUpgrade tile : this.upgrades) {
 			lst.add(tile.getUpgrade());
 		}
@@ -193,7 +193,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public ArrayList<BaseEffect> getEffects() {
-		final ArrayList<BaseEffect> lst = new ArrayList<BaseEffect>();
+		final ArrayList<BaseEffect> lst = new ArrayList<>();
 		for (final TileEntityUpgrade tile : this.upgrades) {
 			final AssemblerUpgrade upgrade = tile.getUpgrade();
 			if (upgrade != null) {
@@ -335,7 +335,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public ItemStack getCartFromModules(final boolean isSimulated) {
-		final ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+		final ArrayList<ItemStack> items = new ArrayList<>();
 		for (int i = 0; i < this.getSizeInventory() - this.nonModularSlots(); ++i) {
 			final ItemStack item = this.getStackInSlot(i);
 			if (item != null) {
@@ -372,7 +372,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public ArrayList<ModuleData> getModules(final boolean includeHull, final int[] invalid) {
-		final ArrayList<ModuleData> modules = new ArrayList<ModuleData>();
+		final ArrayList<ModuleData> modules = new ArrayList<>();
 		for (int i = includeHull ? 0 : 1; i < this.getSizeInventory() - this.nonModularSlots(); ++i) {
 			final ItemStack item = this.getStackInSlot(i);
 			if (item != null) {
@@ -409,7 +409,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public ArrayList<String> getErrors() {
-		final ArrayList<String> errors = new ArrayList<String>();
+		final ArrayList<String> errors = new ArrayList<>();
 		if (this.hullSlot.getStack() == null) {
 			errors.add(Localization.GUI.ASSEMBLER.HULL_ERROR.translate());
 		} else {
@@ -422,7 +422,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 				} else if (this.outputSlot != null && this.outputSlot.getStack() != null) {
 					errors.add(Localization.GUI.ASSEMBLER.DEPARTURE_BAY.translate());
 				}
-				final ArrayList<ModuleData> modules = new ArrayList<ModuleData>();
+				final ArrayList<ModuleData> modules = new ArrayList<>();
 				for (int i = 0; i < this.getSizeInventory() - this.nonModularSlots(); ++i) {
 					if (this.getStackInSlot(i) != null) {
 						final ModuleData data = ModItems.modules.getModuleData(this.getStackInSlot(i));
@@ -441,7 +441,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public int getTotalCost() {
-		final ArrayList<ModuleData> modules = new ArrayList<ModuleData>();
+		final ArrayList<ModuleData> modules = new ArrayList<>();
 		for (int i = 0; i < this.getSizeInventory() - this.nonModularSlots(); ++i) {
 			if (this.getStackInSlot(i) != null) {
 				final ModuleData data = ModItems.modules.getModuleData(this.getStackInSlot(i));
@@ -544,7 +544,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	private ArrayList<SlotAssembler> getValidSlotFromHull(final ModuleDataHull hull) {
-		final ArrayList<SlotAssembler> slots = new ArrayList<SlotAssembler>();
+		final ArrayList<SlotAssembler> slots = new ArrayList<>();
 		for (int i = 0; i < hull.getEngineMax(); ++i) {
 			slots.add(this.getEngines().get(i));
 		}
@@ -730,6 +730,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		this.worldObj.spawnEntityInWorld(entityitem);
 	}
 
+	@Override
 	public void updateEntity() {
 		if (!this.loaded) {
 			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(worldObj, pos);
@@ -928,7 +929,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	private byte[] getModularInfoBytes() {
-		final ArrayList<Byte> datalist = new ArrayList<Byte>();
+		final ArrayList<Byte> datalist = new ArrayList<>();
 		for (int i = 0; i < this.getSizeInventory() - this.nonModularSlots(); ++i) {
 			if (this.getStackInSlot(i) != null) {
 				final ModuleData data = ModItems.modules.getModuleData(this.getStackInSlot(i));

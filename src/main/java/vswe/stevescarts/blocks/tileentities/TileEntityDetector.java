@@ -83,6 +83,7 @@ public class TileEntityDetector extends TileEntityBase {
 		this.createObject(id, parent, extra, data);
 	}
 
+	@Override
 	public void updateEntity() {
 		if (this.activeTimer > 0 && --this.activeTimer == 0) {
 			IBlockState blockState = worldObj.getBlockState(pos);

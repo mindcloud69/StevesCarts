@@ -1,5 +1,9 @@
 package vswe.stevescarts.upgrades;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
@@ -14,10 +18,6 @@ import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.items.ModItems;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 
 public class AssemblerUpgrade {
 	private static HashMap<Byte, AssemblerUpgrade> upgrades;
@@ -60,14 +60,14 @@ public class AssemblerUpgrade {
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books[0], ComponentTypes.SIMPLE_PCB.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ Items.REDSTONE, books[1], Items.REDSTONE },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
-			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
+				{ Items.REDSTONE, books[1], Items.REDSTONE },
+				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
+				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+					{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
+					{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+						{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
+						{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+							{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
 		new AssemblerUpgrade(5, "New Era").addEffect(new WorkEfficiency(1.0f)).addEffect(new FuelCost(30.0f)).addRecipe(new Object[][] {
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), books[4], ComponentTypes.GALGADORIAN_METAL.getItemStack() },
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB, ComponentTypes.GALGADORIAN_METAL.getItemStack() },
@@ -139,7 +139,7 @@ public class AssemblerUpgrade {
 		this.id = (byte) id;
 		this.sideTexture = sideTexture;
 		this.name = name;
-		this.effects = new ArrayList<BaseEffect>();
+		this.effects = new ArrayList<>();
 		AssemblerUpgrade.upgrades.put(this.id, this);
 	}
 
@@ -278,7 +278,7 @@ public class AssemblerUpgrade {
 	//	}
 
 	static {
-		AssemblerUpgrade.upgrades = new HashMap<Byte, AssemblerUpgrade>();
+		AssemblerUpgrade.upgrades = new HashMap<>();
 		//		AssemblerUpgrade.sides = new HashMap<Byte, IIcon>();
 	}
 }

@@ -16,7 +16,7 @@ public final class RecipeHelper {
 			if (item.getItem() == ModItems.component && !ModItems.component.isValid(item)) {
 				return;
 			}
-			final ArrayList<Object> usedItems = new ArrayList<Object>();
+			final ArrayList<Object> usedItems = new ArrayList<>();
 			final String chars = "ABCDEFGHI";
 			final String[] parts = new String[recipe.length];
 			boolean isOreDict = false;

@@ -15,7 +15,7 @@ public abstract class CardChance extends Card {
 	}
 
 	static {
-		(CardChance.cards = new ArrayList<CardChance>()).add(new CardChance("Jaded managed to crash the server, again. The server had to roll back. Go 3 steps back.") {
+		(CardChance.cards = new ArrayList<>()).add(new CardChance("Jaded managed to crash the server, again. The server had to roll back. Go 3 steps back.") {
 			@Override
 			public void doStuff(final ArcadeMonopoly game, final Piece piece) {
 				game.movePiece(-3);

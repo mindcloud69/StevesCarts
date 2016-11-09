@@ -182,6 +182,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	}
 
+	@Override
 	public void updateEntity() {
 		if (this.getUpgrade() != null && this.getMaster() != null) {
 			this.getUpgrade().update(this);

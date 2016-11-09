@@ -18,7 +18,7 @@ public class ScrollableList {
 		this.x = x;
 		this.y = y;
 		this.game = game;
-		this.items = new ArrayList<String>();
+		this.items = new ArrayList<>();
 	}
 
 	public void clearList() {

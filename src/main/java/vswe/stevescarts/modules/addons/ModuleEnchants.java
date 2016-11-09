@@ -23,7 +23,7 @@ public class ModuleEnchants extends ModuleAddon {
 	public ModuleEnchants(final EntityMinecartModular cart) {
 		super(cart);
 		this.enchants = new EnchantmentData[3];
-		this.enabledTypes = new ArrayList<EnchantmentInfo.ENCHANTMENT_TYPE>();
+		this.enabledTypes = new ArrayList<>();
 	}
 
 	public int getFortuneLevel() {

@@ -55,7 +55,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public TileEntityDistributor() {
 		this.dirty = true;
 		this.dirty2 = true;
-		(this.sides = new ArrayList<DistributorSide>()).add(new DistributorSide(0, Localization.GUI.DISTRIBUTOR.SIDE_ORANGE, EnumFacing.UP));
+		(this.sides = new ArrayList<>()).add(new DistributorSide(0, Localization.GUI.DISTRIBUTOR.SIDE_ORANGE, EnumFacing.UP));
 		this.sides.add(new DistributorSide(1, Localization.GUI.DISTRIBUTOR.SIDE_PURPLE, EnumFacing.DOWN));
 		this.sides.add(new DistributorSide(2, Localization.GUI.DISTRIBUTOR.SIDE_YELLOW, EnumFacing.NORTH));
 		this.sides.add(new DistributorSide(3, Localization.GUI.DISTRIBUTOR.SIDE_GREEN, EnumFacing.WEST));
@@ -80,6 +80,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return nbttagcompound;
 	}
 
+	@Override
 	public void updateEntity() {
 		this.dirty = true;
 		this.dirty2 = true;
@@ -329,7 +330,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (invs.length > 0) {
 			for (final DistributorSide side : this.getSides()) {
 				if (side.getSide() == direction) {
-					final ArrayList<IFluidTank> tanks = new ArrayList<IFluidTank>();
+					final ArrayList<IFluidTank> tanks = new ArrayList<>();
 					if (this.hasTop && this.hasBot) {
 						this.populateTanks(tanks, side, invs[0], false);
 						this.populateTanks(tanks, side, invs[1], true);
@@ -411,7 +412,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (invs.length > 0) {
 			for (final DistributorSide otherSide : this.getSides()) {
 				if (otherSide.getFacing() == side) {
-					final ArrayList<Integer> slotchunks = new ArrayList<Integer>();
+					final ArrayList<Integer> slotchunks = new ArrayList<>();
 					if (this.hasTop && this.hasBot) {
 						this.populateSlots(slotchunks, otherSide, invs[0], false);
 						this.populateSlots(slotchunks, otherSide, invs[1], true);

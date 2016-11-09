@@ -32,7 +32,7 @@ public class ModuleLabel extends ModuleAddon {
 	public ModuleLabel(final EntityMinecartModular cart) {
 		super(cart);
 		this.delay = 0;
-		(this.labels = new ArrayList<LabelInformation>()).add(new LabelInformation(Localization.MODULES.ADDONS.NAME) {
+		(this.labels = new ArrayList<>()).add(new LabelInformation(Localization.MODULES.ADDONS.NAME) {
 			@Override
 			public String getLabel() {
 				return ModuleLabel.this.getCart().getCartName();
@@ -113,7 +113,7 @@ public class ModuleLabel extends ModuleAddon {
 
 	@Override
 	public void init() {
-		this.storageSlots = new ArrayList<SlotBase>();
+		this.storageSlots = new ArrayList<>();
 		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module.getSlots() != null) {
 				for (final SlotBase slot : module.getSlots()) {

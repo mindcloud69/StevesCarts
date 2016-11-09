@@ -237,6 +237,6 @@ public final class ModItems {
 	}
 
 	static {
-		ModItems.validModules = new HashMap<Byte, Boolean>();
+		ModItems.validModules = new HashMap<>();
 	}
 }

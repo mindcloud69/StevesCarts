@@ -23,7 +23,7 @@ public class ContainerActivator extends ContainerBase {
 
 	public ContainerActivator(final IInventory invPlayer, final TileEntityActivator activator) {
 		this.activator = activator;
-		this.lastOptions = new ArrayList<Integer>();
+		this.lastOptions = new ArrayList<>();
 		for (final ActivatorOption option : activator.getOptions()) {
 			this.lastOptions.add(option.getOption());
 		}

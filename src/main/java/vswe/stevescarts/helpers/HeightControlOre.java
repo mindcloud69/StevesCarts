@@ -41,7 +41,7 @@ public class HeightControlOre {
 	}
 
 	static {
-		ores = new ArrayList<HeightControlOre>();
+		ores = new ArrayList<>();
 		new HeightControlOre("Diamond", 0, 15, 12, 5);
 		new HeightControlOre("Redstone", 1, 16, 13, 5);
 		new HeightControlOre("Gold", 2, 33, 30, 5);

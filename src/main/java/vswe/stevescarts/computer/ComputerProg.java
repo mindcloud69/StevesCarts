@@ -14,8 +14,8 @@ public class ComputerProg {
 
 	public ComputerProg(final ModuleComputer module) {
 		this.module = module;
-		this.tasks = new ArrayList<ComputerTask>();
-		this.vars = new ArrayList<ComputerVar>();
+		this.tasks = new ArrayList<>();
+		this.vars = new ArrayList<>();
 		this.info = 1;
 	}
 

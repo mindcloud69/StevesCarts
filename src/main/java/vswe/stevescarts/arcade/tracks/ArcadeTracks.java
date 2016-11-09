@@ -65,7 +65,7 @@ public class ArcadeTracks extends ArcadeGame {
 		this.saveName = "";
 		this.lastSavedName = "";
 		this.validSaveNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789 ";
-		(this.carts = new ArrayList<Cart>()).add(this.player = new Cart(0) {
+		(this.carts = new ArrayList<>()).add(this.player = new Cart(0) {
 			@Override
 			public void onItemPickUp() {
 				ArcadeTracks.this.completeLevel();
@@ -80,7 +80,7 @@ public class ArcadeTracks extends ArcadeGame {
 			}
 		});
 		this.carts.add(this.enderman = new Cart(1));
-		(this.lists = new ArrayList<ScrollableList>()).add(this.storyList = new ScrollableList(this, 5, 40) {
+		(this.lists = new ArrayList<>()).add(this.storyList = new ScrollableList(this, 5, 40) {
 			@Override
 			public boolean isVisible() {
 				return ArcadeTracks.this.currentMenuTab == 0 && !ArcadeTracks.this.storySelected;
@@ -159,7 +159,7 @@ public class ArcadeTracks extends ArcadeGame {
 	private void loadMap(final TrackLevel map) {
 		this.isUsingEditor = false;
 		this.trackMap = new Track[27][10];
-		this.tracks = new ArrayList<Track>();
+		this.tracks = new ArrayList<>();
 		for (final Track track : map.getTracks()) {
 			final Track newtrack = track.copy();
 			this.tracks.add(newtrack);

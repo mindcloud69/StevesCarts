@@ -84,9 +84,9 @@ public class ModuleNote extends ModuleBase {
 		this.speedSetting = 5;
 		this.maximumNotesPerTrack = (int) Math.pow(2.0, 12.0) - 1;
 		this.maximumTracksPerModule = (int) Math.pow(2.0, 4.0) - 1;
-		this.tracks = new ArrayList<Track>();
+		this.tracks = new ArrayList<>();
 		if (this.getCart().worldObj.isRemote) {
-			this.buttons = new ArrayList<Button>();
+			this.buttons = new ArrayList<>();
 			this.createTrack = new Button(this.notemapX - 60, this.notemapY - 20);
 			this.createTrack.text = Localization.MODULES.ATTACHMENTS.CREATE_TRACK.translate();
 			this.createTrack.imageID = 0;
@@ -95,7 +95,7 @@ public class ModuleNote extends ModuleBase {
 			this.removeTrack.imageID = 1;
 			this.speedButton = new Button(this.notemapX - 20, this.notemapY - 20);
 			this.updateSpeedButton();
-			this.instrumentbuttons = new ArrayList<Button>();
+			this.instrumentbuttons = new ArrayList<>();
 			for (int i = 0; i < 6; ++i) {
 				final Button tempButton = new Button(this.notemapX - 20 + (i + 1) * 20, this.notemapY - 20);
 				this.instrumentbuttons.add(tempButton);
@@ -843,7 +843,7 @@ public class ModuleNote extends ModuleBase {
 		public int lastNoteCount;
 
 		public Track() {
-			this.notes = new ArrayList<Note>();
+			this.notes = new ArrayList<>();
 			this.volume = 3;
 			if (ModuleNote.this.getCart().worldObj.isRemote) {
 				final int ID = ModuleNote.this.tracks.size() + 1;

@@ -20,8 +20,8 @@ public class Piece {
 		this.u = u;
 		this.money = new int[] { 30, 30, 30, 30, 30, 30, 30 };
 		this.control = control;
-		this.animationNotes = new ArrayList<NoteAnimation>();
-		this.oldnotes = new ArrayList<NoteAnimation>();
+		this.animationNotes = new ArrayList<>();
+		this.oldnotes = new ArrayList<>();
 		this.turnsInJail = -1;
 	}
 

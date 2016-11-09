@@ -25,7 +25,7 @@ public abstract class CartVersion {
 	}
 
 	private static byte[] updateArray(byte[] data, int version) {
-		final ArrayList<Byte> modules = new ArrayList<Byte>();
+		final ArrayList<Byte> modules = new ArrayList<>();
 		for (final byte b : data) {
 			modules.add(b);
 		}
@@ -70,7 +70,7 @@ public abstract class CartVersion {
 	}
 
 	static {
-		CartVersion.versions = new ArrayList<CartVersion>();
+		CartVersion.versions = new ArrayList<>();
 		new CartVersion() {
 			@Override
 			public void update(final ArrayList<Byte> modules) {

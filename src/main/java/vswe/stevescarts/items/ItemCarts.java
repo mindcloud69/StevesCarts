@@ -72,7 +72,7 @@ public class ItemCarts extends ItemMinecart {
 		if (info != null) {
 			final NBTTagByteArray moduleIDTag = (NBTTagByteArray) info.getTag("Modules");
 			final byte[] bytes = moduleIDTag.getByteArray();
-			final ArrayList<ModuleCountPair> counts = new ArrayList<ModuleCountPair>();
+			final ArrayList<ModuleCountPair> counts = new ArrayList<>();
 			for (int i = 0; i < bytes.length; ++i) {
 				final byte id = bytes[i];
 				final ModuleData module = ModuleData.getList().get(id);

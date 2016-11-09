@@ -46,7 +46,7 @@ public class GuiDetector extends GuiBase {
 			child.setParent(null);
 		}
 		detector.recalculateTree();
-		(this.menus = new ArrayList<DropDownMenu>()).add(this.modulesMenu = new DropDownMenuPages(0, 2));
+		(this.menus = new ArrayList<>()).add(this.modulesMenu = new DropDownMenuPages(0, 2));
 		this.menus.add(this.statesMenu = new DropDownMenu(1));
 		this.menus.add(this.flowMenu = new DropDownMenu(2));
 	}

@@ -1,15 +1,16 @@
 package vswe.stevescarts.renders;
 
+import java.util.HashMap;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
-import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.data.ModuleData;
-
-import java.util.HashMap;
 
 public class ItemStackRenderer extends TileEntityItemStackRenderer {
 
@@ -27,16 +28,16 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 		}
 		GL11.glPushMatrix();
 		GL11.glScalef(-1.0f, -1.0f, 1.0f);
-//		if (type == IItemRenderer.ItemRenderType.EQUIPPED) {
-//			GL11.glTranslatef(0.0f, -1.0f, 1.0f);
-//		} else if (type == IItemRenderer.ItemRenderType.INVENTORY) {
-//			GL11.glTranslatef(0.0f, 0.1f, 0.0f);
-//		}
+		//		if (type == IItemRenderer.ItemRenderType.EQUIPPED) {
+		//			GL11.glTranslatef(0.0f, -1.0f, 1.0f);
+		//		} else if (type == IItemRenderer.ItemRenderType.INVENTORY) {
+		//			GL11.glTranslatef(0.0f, 0.1f, 0.0f);
+		//		}
 		final NBTTagCompound info = itemStack.getTagCompound();
 		if (info != null) {
 			final NBTTagByteArray moduleIDTag = (NBTTagByteArray) info.getTag("Modules");
 			final byte[] bytes = moduleIDTag.getByteArray();
-			final HashMap<String, ModelCartbase> models = new HashMap<String, ModelCartbase>();
+			final HashMap<String, ModelCartbase> models = new HashMap<>();
 			float lowestMult = 1.0f;
 			for (final byte id : bytes) {
 				final ModuleData module = ModuleData.getList().get(id);
@@ -55,9 +56,9 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 					}
 				}
 			}
-		//	if (type == IItemRenderer.ItemRenderType.INVENTORY) {
-				GL11.glScalef(lowestMult, lowestMult, lowestMult);
-		//	}
+			//	if (type == IItemRenderer.ItemRenderType.INVENTORY) {
+			GL11.glScalef(lowestMult, lowestMult, lowestMult);
+			//	}
 			for (final ModelCartbase model : models.values()) {
 				model.render(null, null, 0.0f, 0.0f, 0.0f, 0.0625f, 0.0f);
 			}

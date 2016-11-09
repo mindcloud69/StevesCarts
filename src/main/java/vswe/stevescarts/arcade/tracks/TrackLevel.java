@@ -33,7 +33,7 @@ public class TrackLevel {
 
 	@SideOnly(Side.CLIENT)
 	public static ArrayList<TrackLevel> loadMapsFromFolder() {
-		final ArrayList<TrackLevel> maps = new ArrayList<TrackLevel>();
+		final ArrayList<TrackLevel> maps = new ArrayList<>();
 		try {
 			final File dir = new File(Minecraft.getMinecraft().mcDataDir, TrackLevel.MAP_FOLDER_PATH);
 			final File[] children = dir.listFiles();
@@ -220,8 +220,8 @@ public class TrackLevel {
 		this.playerDir = playerDir;
 		this.itemX = itemX;
 		this.itemY = itemY;
-		this.tracks = new ArrayList<Track>();
-		this.messages = new ArrayList<LevelMessage>();
+		this.tracks = new ArrayList<>();
+		this.messages = new ArrayList<>();
 	}
 
 	public String getName() {

@@ -48,7 +48,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		this.dragState = -1;
 		this.AInterval = new int[] { 1, 3, 5, 7, 10, 13, 17, 21, 27, 35, 44, 55, 70, 95, 130, 175, 220, 275, 340, 420, 520, 650 };
 		this.arrowInterval = 5;
-		this.generatePipes(this.pipes = new ArrayList<Integer>());
+		this.generatePipes(this.pipes = new ArrayList<>());
 		this.pipeRotations = new float[this.pipes.size()];
 		this.generateInterfaceRegions();
 	}
@@ -56,7 +56,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	@Override
 	public void init() {
 		super.init();
-		this.projectiles = new ArrayList<ModuleProjectile>();
+		this.projectiles = new ArrayList<>();
 		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ModuleProjectile) {
 				this.projectiles.add((ModuleProjectile) module);

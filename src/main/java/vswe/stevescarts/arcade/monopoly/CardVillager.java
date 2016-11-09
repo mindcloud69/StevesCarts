@@ -15,7 +15,7 @@ public abstract class CardVillager extends Card {
 	}
 
 	static {
-		(CardVillager.cards = new ArrayList<CardVillager>()).add(new CardVillager("No, I'm a helicopter.") {
+		(CardVillager.cards = new ArrayList<>()).add(new CardVillager("No, I'm a helicopter.") {
 			@Override
 			public void doStuff(final ArcadeMonopoly game, final Piece piece) {
 			}

@@ -41,7 +41,7 @@ public class ModuleSmelter extends ModuleRecipe {
 				if (result != null && this.getCart().getModules() != null) {
 					this.prepareLists();
 					if (this.canCraftMoreOfResult(result)) {
-						final ArrayList<ItemStack> originals = new ArrayList<ItemStack>();
+						final ArrayList<ItemStack> originals = new ArrayList<>();
 						for (int i = 0; i < this.allTheSlots.size(); ++i) {
 							final ItemStack item = this.allTheSlots.get(i).getStack();
 							originals.add((item == null) ? null : item.copy());

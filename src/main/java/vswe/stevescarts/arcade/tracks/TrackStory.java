@@ -11,7 +11,7 @@ public class TrackStory {
 
 	public TrackStory(final Localization.STORIES.THE_BEGINNING name) {
 		this.name = name;
-		this.maps = new ArrayList<TrackLevel>();
+		this.maps = new ArrayList<>();
 		TrackStory.stories.add(this);
 	}
 
@@ -28,7 +28,7 @@ public class TrackStory {
 	}
 
 	static {
-		TrackStory.stories = new ArrayList<TrackStory>();
+		TrackStory.stories = new ArrayList<>();
 		final TrackLevel newday = TrackLevel.loadMap(new byte[] { 0, 9, 65, 32, 110, 101, 119, 32, 100, 97, 121, 1, 103, 54, 33, 0, 16, 33, 0, 16, 34, 0, 16, 35, 0, 16, 36, 0, 16, 37, 0, 64, 38, 0,
 				32, 70, 0, 16, -125, 0, 16, -124, 0, 16, -123, 0, 80, -122, 0, 32, 102, 0, 16, -126, 0, 48, -127, 0, 32, -95, 0, 16, -30, 0, 16, -29, 0, 16, -28, 0, 16, -27, 0, 16, -26, 0, 96, -31, 0, 32,
 				-63 });

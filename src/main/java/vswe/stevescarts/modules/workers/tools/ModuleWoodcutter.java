@@ -78,7 +78,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	@Override
 	public void init() {
 		super.init();
-		this.treeModules = new ArrayList<ITreeModule>();
+		this.treeModules = new ArrayList<>();
 		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ITreeModule) {
 				this.treeModules.add((ITreeModule) module);
@@ -94,7 +94,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	public abstract int getPercentageDropChance();
 
 	public ArrayList<ItemStack> getTierDrop(final ArrayList<ItemStack> baseItems) {
-		final ArrayList<ItemStack> nerfedItems = new ArrayList<ItemStack>();
+		final ArrayList<ItemStack> nerfedItems = new ArrayList<>();
 		for (final ItemStack item : baseItems) {
 			if (item != null) {
 				this.dropItemByMultiplierChance(nerfedItems, item, this.getPercentageDropChance());
@@ -188,7 +188,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			pos = pos.up();
 			IBlockState state = getCart().worldObj.getBlockState(pos);
 			if (state != null && this.isWoodHandler(state, pos)) {
-				final ArrayList<BlockPos> checked = new ArrayList<BlockPos>();
+				final ArrayList<BlockPos> checked = new ArrayList<>();
 				if (this.removeAt(pos, checked)) {
 					return true;
 				}
@@ -237,7 +237,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		ArrayList<ItemStack> stuff;
 		if (shouldSilkTouch(blockState, here)) {
-			stuff = new ArrayList<ItemStack>();
+			stuff = new ArrayList<>();
 			final ItemStack stack = this.getSilkTouchedItem(blockState);
 			if (stack != null) {
 				stuff.add(stack);
