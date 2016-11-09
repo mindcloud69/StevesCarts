@@ -87,18 +87,12 @@ public class BlockCartAssembler extends BlockContainerBase {
 	}
 
 	private void checkForUpgrades(final World world, final BlockPos pos) {
-		for (int i = -1; i <= 1; ++i) {
-			for (int j = -1; j <= 1; ++j) {
-				for (int k = -1; k <= 1; ++k) {
-					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						this.checkForUpgrade(world, pos.add(i, j, k));
-					}
-				}
-			}
+		for(EnumFacing facing : EnumFacing.HORIZONTALS){
+			this.checkForUpgrade(world, pos.offset(facing), facing);
 		}
 	}
 
-	private TileEntityCartAssembler checkForUpgrade(final World world, final BlockPos pos) {
+	private TileEntityCartAssembler checkForUpgrade(final World world, final BlockPos pos, EnumFacing facing) {
 		final TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityUpgrade) {
 			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
@@ -106,13 +100,13 @@ public class BlockCartAssembler extends BlockContainerBase {
 			if (masters.size() == 1) {
 				final TileEntityCartAssembler master = masters.get(0);
 				master.addUpgrade(upgrade);
-				upgrade.setMaster(master);
+				upgrade.setMaster(master, facing);
 				return master;
 			}
 			for (final TileEntityCartAssembler master2 : masters) {
 				master2.removeUpgrade(upgrade);
 			}
-			upgrade.setMaster(null);
+			upgrade.setMaster(null, null);
 		}
 		return null;
 	}

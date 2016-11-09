@@ -1,6 +1,9 @@
 package vswe.stevescarts.blocks;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -14,12 +17,18 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.items.ModItems;
 
 public class BlockUpgrade extends BlockContainerBase {
+
+	public static final IUnlistedProperty<EnumFacing> SIDE = Properties.toUnlisted(PropertyEnum.create("side", EnumFacing.class));
 
 	public BlockUpgrade() {
 		super(Material.ROCK);
@@ -41,7 +50,7 @@ public class BlockUpgrade extends BlockContainerBase {
 	@Override
 	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		TileEntity tile = world.getTileEntity(pos);
-		if(tile instanceof TileEntityUpgrade){
+		if (tile instanceof TileEntityUpgrade) {
 			TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 			return side != EnumFacing.UP && upgrade.getType() == 13;
 		}
@@ -51,7 +60,7 @@ public class BlockUpgrade extends BlockContainerBase {
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if(tile instanceof TileEntityUpgrade){
+		if (tile instanceof TileEntityUpgrade) {
 			TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 			upgrade.setType(stack.getItemDamage());
 		}
@@ -67,7 +76,7 @@ public class BlockUpgrade extends BlockContainerBase {
 	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
 		if (player.capabilities.isCreativeMode) {
 			TileEntity tile = worldIn.getTileEntity(pos);
-			if(tile instanceof TileEntityUpgrade){
+			if (tile instanceof TileEntityUpgrade) {
 				TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 				upgrade.setType(1);
 			}
@@ -142,7 +151,7 @@ public class BlockUpgrade extends BlockContainerBase {
 		return getUpgradeBounds(source, pos);
 	}
 
-	public final EnumFacing getUpgradeFace(IBlockAccess world, BlockPos pos){
+	public final EnumFacing getUpgradeFace(IBlockAccess world, BlockPos pos) {
 		final TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileEntityUpgrade) {
 			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
@@ -165,7 +174,7 @@ public class BlockUpgrade extends BlockContainerBase {
 			if (master.getZ() < pos.getZ()) {
 				return EnumFacing.WEST;
 			}
-			if (master.getZ() >pos.getZ()) {
+			if (master.getZ() > pos.getZ()) {
 				return EnumFacing.NORTH;
 			}
 		}
@@ -176,7 +185,7 @@ public class BlockUpgrade extends BlockContainerBase {
 		final TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileEntityUpgrade) {
 			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
-			if(upgrade.getMaster() == null){
+			if (upgrade.getMaster() == null) {
 				return FULL_BLOCK_AABB;
 			}
 			BlockPos master = upgrade.getMaster().getPos();
@@ -241,4 +250,25 @@ public class BlockUpgrade extends BlockContainerBase {
 	public TileEntity createNewTileEntity(final World world, final int var2) {
 		return new TileEntityUpgrade();
 	}
+
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		if (world.getTileEntity(pos) instanceof TileEntityUpgrade) {
+			TileEntityUpgrade upgrade = (TileEntityUpgrade) world.getTileEntity(pos);
+			IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
+			if(upgrade.getSide() == null){
+				return super.getExtendedState(state, world, pos);
+			}
+			return extendedBlockState.withProperty(SIDE, upgrade.getSide());
+		}
+		return super.getExtendedState(state, world, pos);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new ExtendedBlockState(this, new IProperty[] {},
+			new IUnlistedProperty[] { SIDE });
+	}
+
+
 }

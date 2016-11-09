@@ -16,6 +16,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -23,6 +24,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.blocks.BlockCartAssembler;
+import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerUpgrade;
 import vswe.stevescarts.guis.GuiBase;
@@ -43,6 +46,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	private NBTTagCompound comp;
 	ItemStack[] inventoryStacks;
 	private int[] slotsForSide;
+	private EnumFacing side;
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -55,11 +59,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return new ContainerUpgrade(inv, this);
 	}
 
-	public void setMaster(final TileEntityCartAssembler master) {
-		if (this.worldObj.isRemote && this.master != master) {
-			//			this.worldObj.markBlockForUpdate(this.getPos());
-		}
+	public void setMaster(final TileEntityCartAssembler master, EnumFacing side) {
 		this.master = master;
+		this.side = side;
+	}
+
+	public EnumFacing getSide() {
+		return side;
 	}
 
 	public TileEntityCartAssembler getMaster() {
@@ -135,6 +141,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 				this.setInventorySlotContents(slot, iStack);
 			}
 		}
+		if(tagCompound.hasKey("Side")){
+			side = EnumFacing.values()[tagCompound.getInteger("Side")];
+			BlockPos sidePos = pos.offset(side);
+			if(worldObj.getBlockState(sidePos).getBlock() == ModBlocks.CART_ASSEMBLER.getBlock()){
+				((BlockCartAssembler)ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(worldObj, sidePos);
+			}
+		}
 		final AssemblerUpgrade upgrade = this.getUpgrade();
 		if (upgrade != null) {
 			upgrade.load(this, tagCompound);
@@ -158,6 +171,9 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 		tagCompound.setTag("Items", items);
 		tagCompound.setByte("Type", (byte) this.type);
+		if(side != null){
+			tagCompound.setInteger("Side", side.ordinal());
+		}
 		final AssemblerUpgrade upgrade = this.getUpgrade();
 		if (upgrade != null) {
 			upgrade.save(this, tagCompound);
