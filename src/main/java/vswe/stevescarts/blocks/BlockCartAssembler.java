@@ -91,7 +91,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 			for (int j = -1; j <= 1; ++j) {
 				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						this.checkForUpgrade(world, pos);
+						this.checkForUpgrade(world, pos.add(i, j, k));
 					}
 				}
 			}
@@ -123,7 +123,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 			for (int j = -1; j <= 1; ++j) {
 				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						final TileEntityCartAssembler temp = this.getMaster(world, pos);
+						final TileEntityCartAssembler temp = this.getMaster(world, pos.add(i, j, k));
 						if (temp != null) {
 							masters.add(temp);
 						}
@@ -140,7 +140,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 			for (int j = -1; j <= 1; ++j) {
 				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						final TileEntityCartAssembler temp = this.getMaster(world, pos);
+						final TileEntityCartAssembler temp = this.getMaster(world, pos.add(i, j, k));
 						if (temp != null) {
 							if (master != null) {
 								return null;
