@@ -1,12 +1,18 @@
 package vswe.stevescarts;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.handlers.SoundHandler;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
@@ -49,5 +55,23 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().theWorld;
+	}
+
+    @Override
+    public void initItemModels()
+    {
+        registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
+        registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
+    }
+
+	public static void registerItemModel(Item i, int meta)
+	{
+		ResourceLocation loc = i.getRegistryName();
+		ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(loc, "inventory"));
+	}
+
+	public static void registerItemModel(Block b, int meta)
+	{
+		registerItemModel(Item.getItemFromBlock(b), meta);
 	}
 }

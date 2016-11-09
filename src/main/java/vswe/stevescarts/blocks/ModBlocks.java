@@ -76,7 +76,7 @@ public enum ModBlocks {
 					final Block block = (Block) blockInstance;
 					block.setHardness(2.0f);
 					GameRegistry.registerBlock(block, blockInfo.itemClazz, blockInfo.name);
-					blockBase.setUnlocalizedName("tile.SC2:" + blockInfo.name);
+					blockBase.setUnlocalizedName("SC2:" + blockInfo.name);
 					blockInfo.block = block;
 					if (blockInfo.tileEntityClazz != null) {
 						GameRegistry.registerTileEntity(blockInfo.tileEntityClazz, blockInfo.tileEntityName);
