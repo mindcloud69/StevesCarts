@@ -19,7 +19,13 @@ plugins {
 	id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 
-version = version_major + '.' + version_minor + '.' + version_patch + '.' + version_status + getBuildNumber()
+version = version_major + '.' + version_minor + '.' + version_patch
+
+def ENV = System.getenv()
+if (ENV.BUILD_NUMBER) {
+    version = version + "." + "${System.getenv().BUILD_NUMBER}"
+}
+
 group= "vswe.stevescarts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "StevesCarts"
 
@@ -30,35 +36,6 @@ minecraft {
     replace '${version}', project.version
 }
 
-repositories {
-	maven {
-		name = "jei"
-		url "http://dvs1.progwml6.com/files/maven"
-	}
-
-	maven {
-		name 'top'
-		url "http://maven.tterrag.com/"
-	}
-	maven { 
-		name 'waila'
-		url = "http://mobiusstrip.eu/maven" 
-	}
-}
-
-dependencies {
-	//JEI
-	deobfCompile "mezz.jei:jei_${mcversion}:${jei_version}:api"
-	runtime "mezz.jei:jei_${mcversion}:${jei_version}"
-	//TheOneProbe
-	deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
-	//Waila
-	deobfCompile "mcp.mobius.waila:Waila:${waila_version}"
-}
-
-def getBuildNumber() {
-	return "17"
-}
 
 processResources{
 	inputs.property "version", project.version
@@ -73,3 +50,11 @@ processResources{
 		exclude 'mcmod.info'
 	}
 }
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    exclude "**/*.psd"
+    classifier = 'dev'
+}
+
+build.dependsOn deobfJar
