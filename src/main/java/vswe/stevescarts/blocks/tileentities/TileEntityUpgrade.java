@@ -2,6 +2,7 @@ package vswe.stevescarts.blocks.tileentities;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -17,6 +18,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -48,6 +50,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	ItemStack[] inventoryStacks;
 	private int[] slotsForSide;
 	private EnumFacing side;
+	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -62,12 +65,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public void setMaster(final TileEntityCartAssembler master, EnumFacing side) {
 		this.master = master;
-		if(side == null){
-			side = EnumFacing.NORTH; //TODO unconnected
-		}
 		this.side = side;
-		BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
-		worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side));
+		if(side != null){
+			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
+		} else {
+			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
+		}
+
 	}
 
 	public EnumFacing getSide() {
@@ -80,6 +84,11 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public void setType(final int type) {
 		this.type = type;
+		if(side != null){
+			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
+		} else {
+			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
+		}
 		if (!this.initialized) {
 			this.initialized = true;
 			final AssemblerUpgrade upgrade = this.getUpgrade();
@@ -554,6 +563,11 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public boolean hasCustomName()
 	{
+		return false;
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return false;
 	}
 }

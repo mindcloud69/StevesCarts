@@ -8,12 +8,50 @@
     "model": "stevescarts:upgrade"
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{}],
     "type": {
       "0": {
         "textures": {
           "1": "stevescarts:blocks/batteries_icon"
+        }
+      },
+      "1": {
+        "textures": {
+          "1": "stevescarts:blocks/power_crystal_icon"
+        }
+      },
+      "2": {
+        "textures": {
+          "1": "stevescarts:blocks/module_knowledge_icon"
+        }
+      },
+      "3": {
+        "textures": {
+          "1": "stevescarts:blocks/industrial_espionage_icon"
+        }
+      },
+      "4": {
+        "textures": {
+          "1": "stevescarts:blocks/experienced_assembler_icon"
+        }
+      },
+      "5": {
+        "textures": {
+          "1": "stevescarts:blocks/new_era_icon"
+        }
+      },
+      "6": {
+        "textures": {
+          "1": "stevescarts:blocks/co2_friendly_icon"
+        }
+      },
+      "7": {
+        "textures": {
+          "1": "stevescarts:blocks/generic_engine_icon"
+        }
+      },
+      "7": {
+        "textures": {
+          "1": "stevescarts:blocks/module_input_icon"
         }
       }
     },
