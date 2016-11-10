@@ -10,6 +10,10 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerManager;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -486,5 +490,25 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	@Override
 	public boolean hasCustomName() {
 		return false;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return (T) new InvWrapper(this);
+		}
+		return super.getCapability(capability, facing);
 	}
 }
