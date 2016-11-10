@@ -49,9 +49,64 @@
           "1": "stevescarts:blocks/generic_engine_icon"
         }
       },
-      "7": {
+      "8": {
         "textures": {
           "1": "stevescarts:blocks/module_input_icon"
+        }
+      },
+      "9": {
+        "textures": {
+          "1": "stevescarts:blocks/production_line_icon"
+        }
+      },
+      "10": {
+        "textures": {
+          "1": "stevescarts:blocks/cart_deployer_icon"
+        }
+      },
+      "11": {
+        "textures": {
+          "1": "stevescarts:blocks/cart_modifier_icon"
+        }
+      },
+      "12": {
+        "textures": {
+          "1": "stevescarts:blocks/cart_crane_icon"
+        }
+      },
+      "13": {
+        "textures": {
+          "1": "stevescarts:blocks/redstone_control_icon"
+        }
+      },
+      "14": {
+        "textures": {
+          "1": "stevescarts:blocks/creative_mode_icon"
+        }
+      },
+      "15": {
+        "textures": {
+          "1": "stevescarts:blocks/quick_demolisher_icon"
+        }
+      },
+      "16": {
+        "textures": {
+          "1": "stevescarts:blocks/entropy_icon"
+        }
+      },
+      "17": {
+        "textures": {
+          "1": "stevescarts:blocks/manager_bridge_icon"
+        }
+      },
+      "18": {
+        "textures": {
+          "1": "stevescarts:blocks/thermal_engine_icon"
+        }
+      },
+      "19": {
+        "textures": {
+          "1": "stevescarts:blocks/solar_panel_icon"
         }
       }
     },

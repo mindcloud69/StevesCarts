@@ -17,6 +17,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -41,7 +42,7 @@ import vswe.stevescarts.upgrades.AssemblerUpgrade;
 import vswe.stevescarts.upgrades.InterfaceEffect;
 import vswe.stevescarts.upgrades.InventoryEffect;
 
-public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder {
+public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder, ITickable {
 	public Tank tank;
 	private TileEntityCartAssembler master;
 	private int type;
@@ -49,8 +50,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	private NBTTagCompound comp;
 	ItemStack[] inventoryStacks;
 	private int[] slotsForSide;
-	private EnumFacing side;
 	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
+	boolean shouldSetType;
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -65,7 +66,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public void setMaster(final TileEntityCartAssembler master, EnumFacing side) {
 		this.master = master;
-		this.side = side;
 		if(side != null){
 			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
 		} else {
@@ -75,19 +75,21 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	public EnumFacing getSide() {
-		return side;
+		return worldObj.getBlockState(pos).getValue(BlockUpgrade.FACING);
 	}
 
 	public TileEntityCartAssembler getMaster() {
 		return this.master;
 	}
 
-	public void setType(final int type) {
+	public void setType(final int type){
+		setType(type, true);
+	}
+
+	public void setType(final int type, boolean setBlockState) {
 		this.type = type;
-		if(side != null){
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
-		} else {
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
+		if(setBlockState){
+			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
 		}
 		if (!this.initialized) {
 			this.initialized = true;
@@ -116,7 +118,9 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return this.comp;
 	}
 
-	public Packet getDescriptionPacket() {
+	@Nullable
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		final NBTTagCompound var1 = new NBTTagCompound();
 		this.writeToNBT(var1);
 		return new SPacketUpdateTileEntity(this.pos, 1, var1);
@@ -131,14 +135,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return AssemblerUpgrade.getUpgrade(this.type);
 	}
 
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getTexture(final boolean outside) {
-	//		if (this.getUpgrade() == null) {
-	//			return null;
-	//		}
-	//		return outside ? this.getUpgrade().getMainTexture() : this.getUpgrade().getSideTexture();
-	//	}
-
 	public boolean hasInventory() {
 		return this.inventoryStacks != null;
 	}
@@ -146,7 +142,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		this.setType(tagCompound.getByte("Type"));
+		this.setType(tagCompound.getByte("Type"), false);
+		shouldSetType = true;
 		final NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
 		for (int i = 0; i < items.tagCount(); ++i) {
 			final NBTTagCompound item = items.getCompoundTagAt(i);
@@ -154,13 +151,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			final ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
 			if (slot >= 0 && slot < this.getSizeInventory()) {
 				this.setInventorySlotContents(slot, iStack);
-			}
-		}
-		if(tagCompound.hasKey("Side")){
-			side = EnumFacing.values()[tagCompound.getInteger("Side")];
-			BlockPos sidePos = pos.offset(side);
-			if(worldObj.getBlockState(sidePos).getBlock() == ModBlocks.CART_ASSEMBLER.getBlock()){
-				((BlockCartAssembler)ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(worldObj, sidePos);
 			}
 		}
 		final AssemblerUpgrade upgrade = this.getUpgrade();
@@ -186,9 +176,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 		tagCompound.setTag("Items", items);
 		tagCompound.setByte("Type", (byte) this.type);
-		if(side != null){
-			tagCompound.setInteger("Side", side.ordinal());
-		}
 		final AssemblerUpgrade upgrade = this.getUpgrade();
 		if (upgrade != null) {
 			upgrade.save(this, tagCompound);
@@ -569,5 +556,15 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return false;
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		if(shouldSetType){
+			worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
+			worldObj.notifyNeighborsOfStateChange(pos, blockType);
+			shouldSetType = false;
+		}
 	}
 }
