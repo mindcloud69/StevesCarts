@@ -104,7 +104,7 @@ public class AssemblerUpgrade {
 		new AssemblerUpgrade(17, "Manager Bridge").addEffect(new Manager()).addEffect(new TimeFlatCart(200)).addRecipe(new Object[][] { { Items.IRON_INGOT, Items.ENDER_PEARL, Items.IRON_INGOT },
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), ComponentTypes.SIMPLE_PCB.getItemStack() },
 			{ Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
-		new AssemblerUpgrade(18, "Thermal Engine Upgrade").addEffect(new ThermalFuel()).addEffect(new FuelCost(0.05f)).addRecipe(new Object[][] {
+		new AssemblerUpgrade(18, "Thermal Engine").addEffect(new ThermalFuel()).addEffect(new FuelCost(0.05f)).addRecipe(new Object[][] {
 			{ Blocks.NETHER_BRICK, ComponentTypes.ADVANCED_PCB.getItemStack(), Blocks.NETHER_BRICK }, { Blocks.PISTON, Blocks.FURNACE, Blocks.PISTON },
 			{ Blocks.OBSIDIAN, ComponentTypes.BLANK_UPGRADE.getItemStack(), Blocks.OBSIDIAN } });
 		new AssemblerUpgrade(19, "Solar Panel").addEffect(new Solar()).addRecipe(new Object[][] {

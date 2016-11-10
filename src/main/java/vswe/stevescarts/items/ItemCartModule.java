@@ -128,7 +128,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 
 	@Override
 	public int getMaxMeta() {
-		return ModuleData.getList().size();
+		return 102;
 	}
 
 }

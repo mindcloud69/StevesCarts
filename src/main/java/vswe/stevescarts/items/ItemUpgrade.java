@@ -31,22 +31,6 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 		ItemModelManager.registerItem(this);
 	}
 
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIconFromDamage(final int dmg) {
-	//		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(dmg);
-	//		if (upgrade != null) {
-	//			return upgrade.getIcon();
-	//		}
-	//		return null;
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerIcons(final IIconRegister register) {
-	//		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-	//			upgrade.createIcon(register);
-	//		}
-	//		AssemblerUpgrade.initSides(register);
-	//	}
 
 	public String getName(final ItemStack item) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
