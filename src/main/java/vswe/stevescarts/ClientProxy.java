@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -18,6 +19,7 @@ import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.handlers.SoundHandler;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
+import vswe.stevescarts.items.ItemCartComponent;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.renders.ItemStackRenderer;
@@ -76,6 +78,11 @@ public class ClientProxy extends CommonProxy {
 		registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
 		registerItemModel(ModItems.carts, 0);
 		registerItemModel(ModBlocks.LIQUID_MANAGER.getBlock(), 0);
+		for (int i = 0; i < 3; ++i) {
+			ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockMetalStorage", "type=" + i);
+			ModelLoader.setCustomModelResourceLocation(ModItems.storages, i, location);
+		}
+
 	}
 
 	public static void registerItemModel(Item i, int meta)

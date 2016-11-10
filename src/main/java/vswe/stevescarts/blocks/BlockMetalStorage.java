@@ -2,26 +2,41 @@ package vswe.stevescarts.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import vswe.stevescarts.StevesCarts;
+import vswe.stevescarts.items.ItemBlockStorage;
+import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
 public class BlockMetalStorage extends Block  {
+
+	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, ItemBlockStorage.blocks.length);
 
 	public BlockMetalStorage() {
 		super(Material.IRON);
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0));
 	}
 
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIcon(final int side, int meta) {
-	//		meta %= ModItems.storages.icons.length;
-	//		return ModItems.storages.icons[meta];
-	//	}
 
 	public int damageDropped(final int meta) {
 		return meta;
 	}
 
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerBlockIcons(final IIconRegister register) {
-	//	}
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(TYPE, meta);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return (state.getValue(TYPE));
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, TYPE);
+	}
+
 }

@@ -100,7 +100,7 @@ public class BlockDetector extends BlockContainerBase {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.NORMAL);
+		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.getTypeFromint(meta));
 	}
 
 	@Override
