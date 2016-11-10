@@ -1,9 +1,12 @@
 package vswe.stevescarts.items;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.StevesCarts;
+
+import java.util.List;
 
 public class ItemBlockDetector extends ItemBlock {
 	public ItemBlockDetector(final Block b) {
@@ -24,5 +27,11 @@ public class ItemBlockDetector extends ItemBlock {
 	@Override
 	public int getMetadata(final int dmg) {
 		return dmg;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+		tooltip.add("Not yet implemented - Coming soon");
+		super.addInformation(stack, playerIn, tooltip, advanced);
 	}
 }
