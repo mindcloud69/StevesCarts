@@ -563,7 +563,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		super.update();
 		if(shouldSetType){
 			worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
-			worldObj.notifyNeighborsOfStateChange(pos, blockType);
 			shouldSetType = false;
 		}
 	}

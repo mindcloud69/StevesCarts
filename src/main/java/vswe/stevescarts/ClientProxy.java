@@ -82,7 +82,8 @@ public class ClientProxy extends CommonProxy {
 			ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockMetalStorage", "type=" + i);
 			ModelLoader.setCustomModelResourceLocation(ModItems.storages, i, location);
 		}
-
+		registerItemModel(ModBlocks.JUNCTION.getBlock(), 0);
+		registerItemModel(ModBlocks.ADVANCED_DETECTOR.getBlock(), 0);
 	}
 
 	public static void registerItemModel(Item i, int meta)
