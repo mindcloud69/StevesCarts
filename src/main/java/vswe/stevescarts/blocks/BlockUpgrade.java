@@ -1,7 +1,9 @@
 package vswe.stevescarts.blocks;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,16 +19,23 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.helpers.PropertyString;
 import vswe.stevescarts.items.ModItems;
+import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
 public class BlockUpgrade extends BlockContainerBase {
 
 	public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final IUnlistedProperty<Integer> TYPE = Properties.toUnlisted(PropertyInteger.create("type", 0, AssemblerUpgrade.getUpgradesList().size()));
 
 	public BlockUpgrade() {
 		super(Material.ROCK);
@@ -38,7 +47,8 @@ public class BlockUpgrade extends BlockContainerBase {
 	protected BlockStateContainer createBlockState() {
 
 		FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-		return new BlockStateContainer(this, FACING);
+		return new ExtendedBlockState(this, new IProperty[] { FACING },
+			new IUnlistedProperty[] { TYPE });
 	}
 
 	@Override
@@ -49,6 +59,13 @@ public class BlockUpgrade extends BlockContainerBase {
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(FACING, getSideFromint(meta));
+	}
+
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		TileEntityUpgrade upgrade = (TileEntityUpgrade) world.getTileEntity(pos);
+		IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
+		return extendedBlockState.withProperty(TYPE, upgrade.getType()).withProperty(FACING, upgrade.getSide());
 	}
 
 	public EnumFacing getSideFromint(int i) {

@@ -1,8 +1,4 @@
 {
-  "textures": {
-    "0": "stevescarts:items/blank_upgrade_icon",
-    "1": "stevescarts:blocks/creative_mode_icon"
-  },
   "elements": [
     {
       "name": "Cube",
