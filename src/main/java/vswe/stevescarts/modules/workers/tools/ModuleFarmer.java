@@ -149,7 +149,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		if (!this.isBroken()) {
 			pos = pos.up();
 			final Block block = this.getCart().worldObj.getBlockState(pos).getBlock();
-			IBlockState blockState = getCart().worldObj.getBlockState(pos.up());
+			IBlockState blockState = getCart().worldObj.getBlockState(pos);
 			if (this.isReadyToHarvestHandler(pos)) {
 				if (this.doPreWork()) {
 					final int efficiency = (this.enchanter != null) ? this.enchanter.getEfficiencyLevel() : 0;
