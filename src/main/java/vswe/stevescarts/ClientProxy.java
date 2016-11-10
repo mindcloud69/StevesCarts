@@ -75,6 +75,7 @@ public class ClientProxy extends CommonProxy {
 		registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
 		registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
 		registerItemModel(ModItems.carts, 0);
+		registerItemModel(ModBlocks.LIQUID_MANAGER.getBlock(), 0);
 	}
 
 	public static void registerItemModel(Item i, int meta)
