@@ -85,6 +85,7 @@ public class ClientProxy extends CommonProxy {
 		registerItemModel(ModBlocks.JUNCTION.getBlock(), 0);
 		registerItemModel(ModBlocks.ADVANCED_DETECTOR.getBlock(), 0);
 		registerItemModel(ModBlocks.MODULE_TOGGLER.getBlock(), 0);
+		registerItemModel(ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), 0);
 	}
 
 	public static void registerItemModel(Item i, int meta)
