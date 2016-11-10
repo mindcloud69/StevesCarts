@@ -31,7 +31,6 @@ if (ENV.BUILD_NUMBER) {
 }
 
 group= "vswe.stevescarts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "StevesCarts"
 
 minecraft {
     version = mcversion + "-" + forgeversion
