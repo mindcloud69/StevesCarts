@@ -168,7 +168,7 @@ public class Tank implements IFluidTank {
 			}
 			amount = this.fluid.amount;
 		}
-		return "�F" + name + "\n�7" + this.formatNumber(amount) + " / " + this.formatNumber(this.tankSize);
+		return name + "\n" + this.formatNumber(amount) + " / " + this.formatNumber(this.tankSize);
 	}
 
 	private String formatNumber(final int number) {
