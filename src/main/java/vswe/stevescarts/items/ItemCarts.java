@@ -57,9 +57,9 @@ public class ItemCarts extends ItemMinecart {
 					e.printStackTrace();
 					return EnumActionResult.FAIL;
 				}
+				--stack.stackSize;
+				return EnumActionResult.SUCCESS;
 			}
-			--stack.stackSize;
-			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;
 	}
