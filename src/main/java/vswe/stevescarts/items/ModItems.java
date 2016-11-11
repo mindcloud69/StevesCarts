@@ -98,7 +98,7 @@ public final class ModItems {
 		RecipeHelper.addRecipe(ComponentTypes.GRAPHICAL_INTERFACE.getItemStack(), new Object[][] { { Items.GOLD_INGOT, Items.DIAMOND, Items.GOLD_INGOT },
 			{ Blocks.GLASS_PANE, ComponentTypes.SIMPLE_PCB.getItemStack(), Blocks.GLASS_PANE }, { Items.REDSTONE, Blocks.GLASS_PANE, Items.REDSTONE } });
 		RecipeHelper.addRecipe(ComponentTypes.RAW_HANDLE.getItemStack(), new Object[][] { { null, null, Items.IRON_INGOT }, { null, Items.IRON_INGOT, null }, { Items.IRON_INGOT, null, null } });
-		FurnaceRecipes.instance().addSmelting(ComponentTypes.RAW_HANDLE.getItemStack().getItem(), ComponentTypes.REFINED_HANDLE.getItemStack(), 0.0f);
+		FurnaceRecipes.instance().addSmeltingRecipe(ComponentTypes.RAW_HANDLE.getItemStack(), ComponentTypes.REFINED_HANDLE.getItemStack(), 0.0f);
 		RecipeHelper.addRecipe(ComponentTypes.SPEED_HANDLE.getItemStack(), new Object[][] { { null, null, blue }, { Items.GOLD_INGOT, ComponentTypes.REFINED_HANDLE.getItemStack(), null },
 			{ Items.REDSTONE, Items.GOLD_INGOT, null } });
 		RecipeHelper.addRecipe(ComponentTypes.WHEEL.getItemStack(), new Object[][] { { Items.IRON_INGOT, Items.STICK, Items.IRON_INGOT }, { Items.STICK, Items.IRON_INGOT, Items.STICK },
@@ -110,14 +110,14 @@ public final class ModItems {
 			{ "treeSapling", ComponentTypes.ADVANCED_PCB.getItemStack(), "treeSapling" }, { "treeSapling", "treeSapling", "treeSapling" } });
 		RecipeHelper.addRecipe(ComponentTypes.RAW_HARDENER.getItemStack(2), new Object[][] { { Blocks.OBSIDIAN, null, Blocks.OBSIDIAN }, { null, Items.DIAMOND, null },
 			{ Blocks.OBSIDIAN, null, Blocks.OBSIDIAN } });
-		FurnaceRecipes.instance().addSmelting(ComponentTypes.RAW_HARDENER.getItemStack().getItem(), ComponentTypes.REFINED_HARDENER.getItemStack(), 0.0f);
+		FurnaceRecipes.instance().addSmeltingRecipe(ComponentTypes.RAW_HARDENER.getItemStack(), ComponentTypes.REFINED_HARDENER.getItemStack(), 0.0f);
 		RecipeHelper.addRecipe(ComponentTypes.HARDENED_MESH.getItemStack(), new Object[][] { { Blocks.IRON_BARS, ComponentTypes.REFINED_HARDENER.getItemStack(), Blocks.IRON_BARS },
 			{ ComponentTypes.REFINED_HARDENER.getItemStack(), Blocks.IRON_BARS, ComponentTypes.REFINED_HARDENER.getItemStack() },
 			{ Blocks.IRON_BARS, ComponentTypes.REFINED_HARDENER.getItemStack(), Blocks.IRON_BARS } });
 		RecipeHelper.addRecipe(ComponentTypes.STABILIZED_METAL.getItemStack(5), new Object[][] { { Items.IRON_INGOT, ComponentTypes.HARDENED_MESH.getItemStack(), Items.IRON_INGOT },
 			{ Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT },
 			{ ComponentTypes.REFINED_HARDENER.getItemStack(), ComponentTypes.REFINED_HARDENER.getItemStack(), ComponentTypes.REFINED_HARDENER.getItemStack() } });
-		FurnaceRecipes.instance().addSmelting(ComponentTypes.STABILIZED_METAL.getItemStack().getItem(), ComponentTypes.REINFORCED_METAL.getItemStack(), 0.0f);
+		FurnaceRecipes.instance().addSmeltingRecipe(ComponentTypes.STABILIZED_METAL.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), 0.0f);
 		RecipeHelper.addRecipe(ComponentTypes.REINFORCED_WHEELS.getItemStack(), new Object[][] { { null, Items.IRON_INGOT, null },
 			{ Items.IRON_INGOT, ComponentTypes.REINFORCED_METAL.getItemStack(), Items.IRON_INGOT }, { null, Items.IRON_INGOT, null } });
 		RecipeHelper.addRecipe(ComponentTypes.PIPE.getItemStack(), new Object[][] { { Blocks.STONE, Blocks.STONE, Blocks.STONE }, { Items.IRON_INGOT, null, null } });
@@ -170,12 +170,12 @@ public final class ModItems {
 		RecipeHelper.addRecipe(ComponentTypes.LUMP_OF_GALGADOR.getItemStack(2), new Object[][] { { Items.GLOWSTONE_DUST, Blocks.DIAMOND_BLOCK, Items.GLOWSTONE_DUST },
 			{ ComponentTypes.EYE_OF_GALGADOR.getItemStack(), Items.GLOWSTONE_DUST, ComponentTypes.EYE_OF_GALGADOR.getItemStack() },
 			{ ComponentTypes.STABILIZED_METAL.getItemStack(), ComponentTypes.EYE_OF_GALGADOR.getItemStack(), ComponentTypes.STABILIZED_METAL.getItemStack() } });
-		FurnaceRecipes.instance().addSmelting(ComponentTypes.LUMP_OF_GALGADOR.getItemStack().getItem(), ComponentTypes.GALGADORIAN_METAL.getItemStack(), 0.0f);
+		FurnaceRecipes.instance().addSmeltingRecipe(ComponentTypes.LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack(), 0.0f);
 		RecipeHelper.addRecipe(ComponentTypes.LARGE_LUMP_OF_GALGADOR.getItemStack(), new Object[][] {
 			{ ComponentTypes.LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.LUMP_OF_GALGADOR.getItemStack() },
 			{ ComponentTypes.LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.LUMP_OF_GALGADOR.getItemStack() },
 			{ ComponentTypes.LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.LUMP_OF_GALGADOR.getItemStack() } });
-		FurnaceRecipes.instance().addSmelting(ComponentTypes.LARGE_LUMP_OF_GALGADOR.getItemStack().getItem(), ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack(), 0.0f);
+		FurnaceRecipes.instance().addSmeltingRecipe(ComponentTypes.LARGE_LUMP_OF_GALGADOR.getItemStack(), ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack(), 0.0f);
 		RecipeHelper.addRecipe(ComponentTypes.RED_GIFT_RIBBON.getItemStack(), new Object[][] { { Items.STRING, Items.STRING, Items.STRING }, { Items.STRING, red, Items.STRING },
 			{ Items.STRING, Items.STRING, Items.STRING } });
 		RecipeHelper.addRecipe(ComponentTypes.YELLOW_GIFT_RIBBON.getItemStack(), new Object[][] { { Items.STRING, Items.STRING, Items.STRING }, { Items.STRING, yellow, Items.STRING },

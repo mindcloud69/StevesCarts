@@ -81,6 +81,7 @@ public class StevesCarts {
 			MinecraftForge.EVENT_BUS.register(new EventHandlerChristmas());
 		}
 		GiftItem.init();
+		AssemblerUpgrade.initRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(StevesCarts.instance, StevesCarts.proxy);
 		StevesCarts.proxy.renderInit();
 		StevesCarts.tabsSC2Blocks.setIcon(new ItemStack(ModBlocks.CART_ASSEMBLER.getBlock(), 1));

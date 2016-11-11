@@ -3,6 +3,9 @@ package vswe.stevescarts.upgrades;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
@@ -22,6 +25,7 @@ import vswe.stevescarts.items.ModItems;
 public class AssemblerUpgrade {
 	private static HashMap<Byte, AssemblerUpgrade> upgrades;
 	//	private static HashMap<Byte, IIcon> sides;
+	private List<Pair<Object[][], Integer>> recipes = new ArrayList<>();
 	private byte id;
 	private int sideTexture;
 	private String name;
@@ -157,12 +161,20 @@ public class AssemblerUpgrade {
 	}
 
 	public AssemblerUpgrade addRecipe(final int resultCount, final Object[][] recipe) {
-		RecipeHelper.addRecipe(this.getItemStack(resultCount), recipe);
+		recipes.add(Pair.of(recipe, resultCount));
 		return this;
 	}
 
 	public AssemblerUpgrade addRecipe(final Object[][] recipe) {
 		return this.addRecipe(1, recipe);
+	}
+	
+	public static void initRecipes(){
+		for(AssemblerUpgrade update : getUpgrades().values()){
+			for(Pair<Object[][], Integer> recipePair : update.recipes){
+				RecipeHelper.addRecipe(update.getItemStack(recipePair.getRight()), recipePair.getLeft());
+			}
+		}
 	}
 
 	protected ItemStack getItemStack() {
