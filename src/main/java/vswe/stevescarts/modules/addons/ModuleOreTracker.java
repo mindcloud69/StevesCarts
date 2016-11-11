@@ -3,7 +3,9 @@ package vswe.stevescarts.modules.addons;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockOre;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
@@ -49,13 +51,17 @@ public class ModuleOreTracker extends ModuleAddon {
 
 	private boolean isOre(BlockPos pos) {
 		final Block b = this.getCart().worldObj.getBlockState(pos).getBlock();
-		if (b == null) {
+		if (b == null || b == Blocks.AIR) {
 			return false;
 		}
 		if (b instanceof BlockOre) {
 			return true;
 		}
-		final int[] oreIds = OreDictionary.getOreIDs(new ItemStack(b));
+		ItemStack stack = new ItemStack(b);
+		if (stack == null || stack.getItem() == null){
+			return false;
+		}
+		final int[] oreIds = OreDictionary.getOreIDs(stack);
 		if (oreIds.length == 0) {
 			return false;
 		}
