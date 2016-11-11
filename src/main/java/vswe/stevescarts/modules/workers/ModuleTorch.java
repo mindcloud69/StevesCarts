@@ -1,13 +1,16 @@
 package vswe.stevescarts.modules.workers;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotTorch;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -56,16 +59,21 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
-		BlockPos next = this.getLastblock();
+		final BlockPos next = this.getLastblock();
+		final EntityMinecartModular cart = getCart();
+		final World world = cart.worldObj;
 		final int x = next.getX();
 		final int y = next.getY();
 		final int z = next.getZ();
+		final int cartX = cart.x();
+		final int cartZ = cart.z();
 		if (this.light <= this.lightLimit) {
 			for (int side = -1; side <= 1; side += 2) {
-				final int xTorch = x + ((this.getCart().z() != z) ? side : 0);
-				final int zTorch = z + ((this.getCart().x() != x) ? side : 0);
+				final int xTorch = x + ((cartZ != z) ? side : 0);
+				final int zTorch = z + ((cartX != x) ? side : 0);
 				for (int level = 2; level >= -2; --level) {
-					if (this.getCart().worldObj.isAirBlock(new BlockPos(xTorch, y + level, zTorch)) && Blocks.TORCH.canPlaceBlockAt(this.getCart().worldObj, new BlockPos(xTorch, y + level, zTorch))) {
+					BlockPos pos = new BlockPos(xTorch, y + level, zTorch);
+					if (world.isAirBlock(pos) && Blocks.TORCH.canPlaceBlockAt(world, pos)) {
 						int i = 0;
 						while (i < this.getInventorySize()) {
 							if (this.getStack(i) != null && Block.getBlockFromItem(this.getStack(i).getItem()) == Blocks.TORCH) {
@@ -73,8 +81,9 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 									this.startWorking(3);
 									return true;
 								}
-								this.getCart().worldObj.setBlockState(new BlockPos(xTorch, y + level, zTorch), Blocks.TORCH.getDefaultState());
-								if (!this.getCart().hasCreativeSupplies()) {
+								IBlockState state = Blocks.TORCH.getStateForPlacement(world, pos, EnumFacing.DOWN, 0, 0, 0, 0, null, new ItemStack(Blocks.TORCH));
+								world.setBlockState(new BlockPos(xTorch, y + level, zTorch), state);
+								if (!cart.hasCreativeSupplies()) {
 									final ItemStack stack = this.getStack(i);
 									--stack.stackSize;
 									if (this.getStack(i).stackSize == 0) {
@@ -90,7 +99,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 						}
 						break;
 					}
-					if (this.getCart().worldObj.getBlockState(new BlockPos(xTorch, y + level, zTorch)).getBlock() == Blocks.TORCH) {
+					if (world.getBlockState(pos).getBlock() == Blocks.TORCH) {
 						break;
 					}
 				}
