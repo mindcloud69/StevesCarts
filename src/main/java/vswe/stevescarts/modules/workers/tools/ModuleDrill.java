@@ -1,6 +1,7 @@
 package vswe.stevescarts.modules.workers.tools;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -181,7 +182,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			}
 			this.getCart().worldObj.setBlockToAir(coord);
 		} else if (block.getDrops(this.getCart().worldObj, coord, blockState, fortune).size() != 0) {
-			final ArrayList<ItemStack> stacks = (ArrayList<ItemStack>) block.getDrops(this.getCart().worldObj, coord, blockState, fortune);
+			List<ItemStack> stacks = block.getDrops(this.getCart().worldObj, coord, blockState, fortune);
 			boolean shouldRemove = false;
 			for (int j = 0; j < stacks.size(); ++j) {
 				if (!this.minedItem(stacks.get(j), next)) {
