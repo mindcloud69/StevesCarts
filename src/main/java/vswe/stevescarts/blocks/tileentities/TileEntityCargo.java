@@ -11,8 +11,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerCargo;
 import vswe.stevescarts.containers.ContainerManager;
@@ -292,5 +296,25 @@ public class TileEntityCargo extends TileEntityManager {
 
 	public TransferManager getCurrentTransferForSlots() {
 		return this.latestTransferToBeUsed;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return (T) new InvWrapper(this);
+		}
+		return super.getCapability(capability, facing);
 	}
 }
