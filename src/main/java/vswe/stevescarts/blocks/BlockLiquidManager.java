@@ -6,9 +6,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
 
@@ -100,14 +101,15 @@ public class BlockLiquidManager extends BlockContainerBase {
 		super.breakBlock(par1World, pos, state);
 	}
 
-	public boolean onBlockActivated(final World world, final int i, final int j, final int k, final EntityPlayer entityplayer, final int par6, final float par7, final float par8, final float par9) {
-		if (entityplayer.isSneaking()) {
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (player.isSneaking()) {
 			return false;
 		}
 		if (world.isRemote) {
 			return true;
 		}
-		FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 2, world, i, j, k);
+		player.openGui(StevesCarts.instance, 2, world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 

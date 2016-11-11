@@ -26,6 +26,11 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 			renderer.renderByItem(itemStack);
 			return;
 		}
+		//		if (type == IItemRenderer.ItemRenderType.EQUIPPED) {
+		//			GL11.glTranslatef(0.0f, -1.0f, 1.0f);
+		//		} else if (type == IItemRenderer.ItemRenderType.INVENTORY) {
+		//			GL11.glTranslatef(0.0f, 0.1f, 0.0f);
+		//		}
 		GL11.glPushMatrix();
 		GL11.glScalef(-1.0f, -1.0f, 1.0f);
 		final NBTTagCompound info = itemStack.getTagCompound();

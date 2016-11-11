@@ -3,7 +3,6 @@ package vswe.stevescarts.modules.addons;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockOre;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

@@ -168,7 +168,7 @@ public class AssemblerUpgrade {
 	public AssemblerUpgrade addRecipe(final Object[][] recipe) {
 		return this.addRecipe(1, recipe);
 	}
-	
+
 	public static void initRecipes(){
 		for(AssemblerUpgrade update : getUpgrades().values()){
 			for(Pair<Object[][], Integer> recipePair : update.recipes){

@@ -7,7 +7,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.items.ItemBlockStorage;
-import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
 public class BlockMetalStorage extends Block  {
 
