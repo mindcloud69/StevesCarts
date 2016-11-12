@@ -36,17 +36,21 @@ public class BlockDetector extends BlockContainerBase {
 		}
 	}
 
-	public boolean isSideSolid(final IBlockAccess world, final int x, final int y, final int z, final EnumFacing side) {
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 
-	public boolean isBlockNormalCube() {
+	@Override
+	public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 
-	public boolean isBlockSolid(final IBlockAccess world, final int x, final int y, final int z, final int side) {
+	@Override
+	public boolean isBlockNormalCube(IBlockState state) {
 		return true;
 	}
+
 
 	@Override
 	public boolean onBlockActivated(World world,
