@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.BlockFlower;
@@ -737,11 +739,12 @@ public abstract class ModuleBase {
 		final float var7 = 0.00390625f;
 		final float var8 = 0.00390625f;
 		final Tessellator tess = Tessellator.getInstance();
-		//		tess.startDrawingQuads();
-		//		tess.addVertexWithUV((double) (targetX + 0), (double) (targetY + height), -90.0, (double) ((sourceX + 0) * var7), (double) ((sourceY + height) * var8));
-		//		tess.addVertexWithUV((double) (targetX + width), (double) (targetY + height), -90.0, (double) ((sourceX + width) * var7), (double) ((sourceY + height) * var8));
-		//		tess.addVertexWithUV((double) (targetX + width), (double) (targetY + 0), -90.0, (double) ((sourceX + width) * var7), (double) ((sourceY + 0) * var8));
-		//		tess.addVertexWithUV((double) (targetX + 0), (double) (targetY + 0), -90.0, (double) ((sourceX + 0) * var7), (double) ((sourceY + 0) * var8));
+		VertexBuffer vertexbuffer = tess.getBuffer();
+		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		vertexbuffer.pos((double) (targetX + 0), (double) (targetY + height), -90.0).tex((double) ((sourceX + 0) * var7), (double) ((sourceY + height) * var8)).endVertex();
+		vertexbuffer.pos((double) (targetX + width), (double) (targetY + height), -90.0).tex((double) ((sourceX + width) * var7), (double) ((sourceY + height) * var8)).endVertex();
+		vertexbuffer.pos((double) (targetX + width), (double) (targetY + 0), -90.0).tex((double) ((sourceX + width) * var7), (double) ((sourceY + 0) * var8)).endVertex();
+		vertexbuffer.pos((double) (targetX + 0), (double) (targetY + 0), -90.0).tex((double) ((sourceX + 0) * var7), (double) ((sourceY + 0) * var8)).endVertex();
 		tess.draw();
 	}
 

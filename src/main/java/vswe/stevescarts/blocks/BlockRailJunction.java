@@ -13,8 +13,6 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class BlockRailJunction extends BlockRail {
-	//	private IIcon normalIcon;
-	//	private IIcon cornerIcon;
 
 	public static PropertyEnum<EnumRailDirection> SHAPE = BlockRail.SHAPE;
 
@@ -23,21 +21,6 @@ public class BlockRailJunction extends BlockRail {
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
 	}
-
-	//
-	//	public IIcon getIcon(final int side, final int meta) {
-	//		return (meta >= 6) ? this.cornerIcon : this.normalIcon;
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerBlockIcons(final IIconRegister register) {
-	//		final StringBuilder sb = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.normalIcon = register.registerIcon(sb.append("stevescarts").append(":").append("junction_rail").toString());
-	//		final StringBuilder sb2 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.cornerIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("junction_rail").append("_corner").toString());
-	//	}
 
 	@Override
 	public IProperty<BlockRailBase.EnumRailDirection> getShapeProperty(){

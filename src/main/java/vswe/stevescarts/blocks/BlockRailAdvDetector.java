@@ -26,27 +26,11 @@ import vswe.stevescarts.upgrades.Disassemble;
 import vswe.stevescarts.upgrades.Transposer;
 
 public class BlockRailAdvDetector extends BlockRailDetector {
-	//	private IIcon normalIcon;
-	//	private IIcon cornerIcon;
 
 	public BlockRailAdvDetector() {
 		super();
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
-
-	//	public IIcon getIcon(final int side, final int meta) {
-	//		return (meta >= 6) ? this.cornerIcon : this.normalIcon;
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerBlockIcons(final IIconRegister register) {
-	//		final StringBuilder sb = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.normalIcon = register.registerIcon(sb.append("stevescarts").append(":").append("advanced_detector_rail").toString());
-	//		final StringBuilder sb2 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.cornerIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("advanced_detector_rail").append("_corner").toString());
-	//	}
 
 	@Override
 	public boolean canMakeSlopes(IBlockAccess world, BlockPos pos) {

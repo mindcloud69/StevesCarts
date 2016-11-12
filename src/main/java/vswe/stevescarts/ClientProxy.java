@@ -17,6 +17,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.handlers.SoundHandler;
+import vswe.stevescarts.helpers.DetectorType;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
@@ -27,7 +28,7 @@ import vswe.stevescarts.renders.model.ItemModelManager;
 public class ClientProxy extends CommonProxy {
 
 	@Override
-	public void renderInit() {
+	public void init() {
 
 
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
@@ -36,7 +37,6 @@ public class ClientProxy extends CommonProxy {
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityCake.class, new RenderSnowball(Items.CAKE));
 		ModuleData.initModels();
 
-		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
 
 		ModelLoader.setCustomStateMapper(ModBlocks.UPGRADE.getBlock(), new DefaultStateMapper() {
 			@Override
@@ -57,11 +57,18 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void soundInit() {
+	public void preInit() {
 		ItemModelManager.load(); //Called in pre-init
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartModular.class, new RenderManagerCart()); //Needs to be done after the mc ones have been done
 		new SoundHandler();
 		new MinecartSoundMuter();
+	}
+
+	@Override
+	public void loadComplete() {
+		super.loadComplete();
+		//Done here to try and load after all other mods, as some mods override this
+		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
 	}
 
 	@Override
@@ -84,6 +91,11 @@ public class ClientProxy extends CommonProxy {
 		registerItemModel(ModBlocks.ADVANCED_DETECTOR.getBlock(), 0);
 		registerItemModel(ModBlocks.MODULE_TOGGLER.getBlock(), 0);
 		registerItemModel(ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), 0);
+		registerItemModel(ModBlocks.DETECTOR_UNIT.getBlock(), 0);
+		for (int i = 0; i < 5; ++i) {
+			ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockDetector", "detectortype=" + DetectorType.getTypeFromint(i).getName());
+			ModelLoader.setCustomModelResourceLocation(ModItems.detectors, i, location);
+		}
 	}
 
 	public static void registerItemModel(Item i, int meta)

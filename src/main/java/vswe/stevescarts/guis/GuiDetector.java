@@ -142,7 +142,6 @@ public class GuiDetector extends GuiBase {
 			++statePosId;
 		}
 		this.modulesMenu.drawMain(this, x, y);
-		ResourceHelper.bindResource(GuiDetector.moduleTexture);
 		int modulePosId = 0;
 		for (final ModuleData module : ModuleData.getModules()) {
 			if (module.getIsValid()) {
@@ -279,7 +278,6 @@ public class GuiDetector extends GuiBase {
 
 	static {
 		GuiDetector.texture = ResourceHelper.getResource("/gui/detector.png");
-		GuiDetector.moduleTexture = ResourceHelper.getResourceFromPath("/atlas/items.png");
 		GuiDetector.stateTexture = ResourceHelper.getResource("/gui/states.png");
 		GuiDetector.dropdownTexture = ResourceHelper.getResource("/gui/detector2.png");
 	}

@@ -14,59 +14,11 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
 
 public class BlockLiquidManager extends BlockContainerBase {
-	//	private IIcon topIcon;
-	//	private IIcon botIcon;
-	//	private IIcon redIcon;
-	//	private IIcon blueIcon;
-	//	private IIcon greenIcon;
-	//	private IIcon yellowIcon;
 
 	public BlockLiquidManager() {
 		super(Material.ROCK);
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
-
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIcon(final int side, final int meta) {
-	//		if (side == 0) {
-	//			return this.botIcon;
-	//		}
-	//		if (side == 1) {
-	//			return this.topIcon;
-	//		}
-	//		if (side == 2) {
-	//			return this.yellowIcon;
-	//		}
-	//		if (side == 3) {
-	//			return this.blueIcon;
-	//		}
-	//		if (side == 4) {
-	//			return this.greenIcon;
-	//		}
-	//		return this.redIcon;
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerBlockIcons(final IIconRegister register) {
-	//		final StringBuilder sb = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.topIcon = register.registerIcon(sb.append("stevescarts").append(":").append("liquid_manager").append("_top").toString());
-	//		final StringBuilder sb2 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.botIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("liquid_manager").append("_bot").toString());
-	//		final StringBuilder sb3 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.redIcon = register.registerIcon(sb3.append("stevescarts").append(":").append("liquid_manager").append("_red").toString());
-	//		final StringBuilder sb4 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.blueIcon = register.registerIcon(sb4.append("stevescarts").append(":").append("liquid_manager").append("_blue").toString());
-	//		final StringBuilder sb5 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.greenIcon = register.registerIcon(sb5.append("stevescarts").append(":").append("liquid_manager").append("_green").toString());
-	//		final StringBuilder sb6 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.yellowIcon = register.registerIcon(sb6.append("stevescarts").append(":").append("liquid_manager").append("_yellow").toString());
-	//	}
 
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state) {

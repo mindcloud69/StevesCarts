@@ -41,6 +41,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
@@ -1027,6 +1029,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			@Nullable
 			ItemStack stack,
 			EnumHand hand) {
+		if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, entityplayer, stack, hand))){
+			return EnumActionResult.SUCCESS;
+		}
 		if (this.isPlaceholder) {
 			return EnumActionResult.FAIL;
 		}
@@ -1603,5 +1608,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	public Entity getRider(){
 		return this.getControllingPassenger();
+	}
+
+	@Nullable
+	@Override
+	public Entity getControllingPassenger() {
+		return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
 	}
 }

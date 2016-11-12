@@ -7,7 +7,7 @@ import net.minecraft.network.datasync.DataSerializers;
 
 public class CartDataSerializers {
 
-	public CartDataSerializers() {
+	public static void init() {
 		DataSerializers.registerSerializer(VARINT);
 	}
 

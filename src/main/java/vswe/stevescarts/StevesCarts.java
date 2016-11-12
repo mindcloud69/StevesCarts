@@ -1,5 +1,8 @@
 package vswe.stevescarts;
 
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.item.ItemStack;
@@ -14,8 +17,10 @@ import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import vswe.stevescarts.arcade.tracks.Cart;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
+import vswe.stevescarts.entitys.CartDataSerializers;
 import vswe.stevescarts.entitys.EntityCake;
 import vswe.stevescarts.entitys.EntityEasterEgg;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -66,7 +71,7 @@ public class StevesCarts {
 		this.initCart(0, EntityMinecartModular.class);
 		EntityRegistry.registerModEntity(EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
-		StevesCarts.proxy.soundInit();
+		StevesCarts.proxy.preInit();
 		StevesCarts.proxy.initItemModels();
 		config.save();
 	}
@@ -83,11 +88,17 @@ public class StevesCarts {
 		GiftItem.init();
 		AssemblerUpgrade.initRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(StevesCarts.instance, StevesCarts.proxy);
-		StevesCarts.proxy.renderInit();
+		StevesCarts.proxy.init();
 		StevesCarts.tabsSC2Blocks.setIcon(new ItemStack(ModBlocks.CART_ASSEMBLER.getBlock(), 1));
 		TileEntityCargo.loadSelectionSettings();
 		ModItems.addRecipes();
 		ModBlocks.addRecipes();
+		CartDataSerializers.init();
+	}
+
+	@Mod.EventHandler
+	public void loadComplete(FMLLoadCompleteEvent event){
+		proxy.loadComplete();
 	}
 
 	public class WoodFuelHandler implements IFuelHandler {

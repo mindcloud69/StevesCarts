@@ -108,7 +108,6 @@ public class LogicObject {
 			}
 			gui.drawTexturedModalRect(gui.getGuiLeft() + this.x, gui.getGuiTop() + this.y, 0, 202 + yIndex * 16, 16, 16);
 			if (this.isModule()) {
-				ResourceHelper.bindResource(GuiDetector.moduleTexture);
 				final ModuleData module = ModuleData.getList().get(this.data);
 				if (module != null) {
 					gui.drawModuleIcon(module, gui.getGuiLeft() + this.x, gui.getGuiTop() + this.y, 1.0f, 1.0f, 0.0f, 0.0f);
