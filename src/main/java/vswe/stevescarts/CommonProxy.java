@@ -10,7 +10,7 @@ import vswe.stevescarts.blocks.tileentities.TileEntityBase;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class CommonProxy implements IGuiHandler {
-	public void renderInit() {
+	public void init() {
 	}
 
 	@Override
@@ -58,7 +58,9 @@ public class CommonProxy implements IGuiHandler {
 		return null;
 	}
 
-	public void soundInit() {}
+	public void preInit() {}
 
 	public void initItemModels() {}
+
+	public void loadComplete(){}
 }

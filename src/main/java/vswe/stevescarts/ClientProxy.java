@@ -27,7 +27,7 @@ import vswe.stevescarts.renders.model.ItemModelManager;
 public class ClientProxy extends CommonProxy {
 
 	@Override
-	public void renderInit() {
+	public void init() {
 
 
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
@@ -36,7 +36,6 @@ public class ClientProxy extends CommonProxy {
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityCake.class, new RenderSnowball(Items.CAKE));
 		ModuleData.initModels();
 
-		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
 
 		ModelLoader.setCustomStateMapper(ModBlocks.UPGRADE.getBlock(), new DefaultStateMapper() {
 			@Override
@@ -57,11 +56,18 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void soundInit() {
+	public void preInit() {
 		ItemModelManager.load(); //Called in pre-init
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartModular.class, new RenderManagerCart()); //Needs to be done after the mc ones have been done
 		new SoundHandler();
 		new MinecartSoundMuter();
+	}
+
+	@Override
+	public void loadComplete() {
+		super.loadComplete();
+		//Done here to try and load after all other mods, as some mods override this
+		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
 	}
 
 	@Override

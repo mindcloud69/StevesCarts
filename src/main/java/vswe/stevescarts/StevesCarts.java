@@ -1,5 +1,7 @@
 package vswe.stevescarts;
 
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.item.ItemStack;
@@ -66,7 +68,7 @@ public class StevesCarts {
 		this.initCart(0, EntityMinecartModular.class);
 		EntityRegistry.registerModEntity(EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
-		StevesCarts.proxy.soundInit();
+		StevesCarts.proxy.preInit();
 		StevesCarts.proxy.initItemModels();
 		config.save();
 	}
@@ -83,11 +85,16 @@ public class StevesCarts {
 		GiftItem.init();
 		AssemblerUpgrade.initRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(StevesCarts.instance, StevesCarts.proxy);
-		StevesCarts.proxy.renderInit();
+		StevesCarts.proxy.init();
 		StevesCarts.tabsSC2Blocks.setIcon(new ItemStack(ModBlocks.CART_ASSEMBLER.getBlock(), 1));
 		TileEntityCargo.loadSelectionSettings();
 		ModItems.addRecipes();
 		ModBlocks.addRecipes();
+	}
+
+	@Mod.EventHandler
+	public void loadComplete(FMLLoadCompleteEvent event){
+		proxy.loadComplete();
 	}
 
 	public class WoodFuelHandler implements IFuelHandler {
