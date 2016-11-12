@@ -1,14 +1,13 @@
 package vswe.stevescarts.modules.realtimers;
 
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -21,7 +20,6 @@ import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ILeverModule;
 import vswe.stevescarts.modules.ModuleBase;
-import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.engines.ModuleEngine;
 
 public class ModuleAdvControl extends ModuleBase implements ILeverModule {
@@ -472,9 +470,9 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	@Override
 	public void postUpdate() {
-//		if (this.getCart().worldObj.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer && this.getCart().getControllingPassenger() == this.getClientPlayer()) {
-//			KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
-//		}
+		//		if (this.getCart().worldObj.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer && this.getCart().getControllingPassenger() == this.getClientPlayer()) {
+		//			KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
+		//		}
 	}
 
 	@Override

@@ -2,10 +2,9 @@ package vswe.stevescarts.modules;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.BlockFlower;
@@ -15,6 +14,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -649,10 +650,10 @@ public abstract class ModuleBase {
 		this.guiDataOffset = val;
 	}
 
-	private final void updateGuiData(final Container con, final List players, final int id, final short data) {
-		//		for (final IContainerListener player : players) {
-		//			player.sendProgressBarUpdate(con, id, (int) data);
-		//		}
+	private final void updateGuiData(Container con, List<IContainerListener> players, final int id, final short data) {
+		for (final IContainerListener player : players) {
+			player.sendProgressBarUpdate(con, id, data);
+		}
 	}
 
 	public final void updateGuiData(final Object[] info, final int id, final short data) {
@@ -663,22 +664,22 @@ public abstract class ModuleBase {
 		final int globalId = id + this.getGuiDataStart();
 		final List players = (List) info[1];
 		boolean flag;
-		//		final boolean isNew = flag = (boolean) info[2];
-		//		if (!flag) {
-		//			if (con.cache != null) {
-		//				final Short val = con.cache.get((short) globalId);
-		//				flag = (val == null || val != data);
-		//			} else {
-		//				flag = true;
-		//			}
-		//		}
-		//		if (flag) {
-		//			if (con.cache == null) {
-		//				con.cache = new HashMap<Short, Short>();
-		//			}
-		//			this.updateGuiData(con, players, globalId, data);
-		//			con.cache.put((short) globalId, data);
-		//		}
+		final boolean isNew = flag = (boolean) info[2];
+		if (!flag) {
+			if (con.cache != null) {
+				final Short val = con.cache.get((short) globalId);
+				flag = (val == null || val != data);
+			} else {
+				flag = true;
+			}
+		}
+		if (flag) {
+			if (con.cache == null) {
+				con.cache = new HashMap<>();
+			}
+			this.updateGuiData(con, players, globalId, data);
+			con.cache.put((short) globalId, data);
+		}
 	}
 
 	public final void initGuiData(final Container con, final IContainerListener player) {
@@ -741,10 +742,10 @@ public abstract class ModuleBase {
 		final Tessellator tess = Tessellator.getInstance();
 		VertexBuffer vertexbuffer = tess.getBuffer();
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vertexbuffer.pos((double) (targetX + 0), (double) (targetY + height), -90.0).tex((double) ((sourceX + 0) * var7), (double) ((sourceY + height) * var8)).endVertex();
-		vertexbuffer.pos((double) (targetX + width), (double) (targetY + height), -90.0).tex((double) ((sourceX + width) * var7), (double) ((sourceY + height) * var8)).endVertex();
-		vertexbuffer.pos((double) (targetX + width), (double) (targetY + 0), -90.0).tex((double) ((sourceX + width) * var7), (double) ((sourceY + 0) * var8)).endVertex();
-		vertexbuffer.pos((double) (targetX + 0), (double) (targetY + 0), -90.0).tex((double) ((sourceX + 0) * var7), (double) ((sourceY + 0) * var8)).endVertex();
+		vertexbuffer.pos(targetX + 0, targetY + height, -90.0).tex((sourceX + 0) * var7, (sourceY + height) * var8).endVertex();
+		vertexbuffer.pos(targetX + width, targetY + height, -90.0).tex((sourceX + width) * var7, (sourceY + height) * var8).endVertex();
+		vertexbuffer.pos(targetX + width, targetY + 0, -90.0).tex((sourceX + width) * var7, (sourceY + 0) * var8).endVertex();
+		vertexbuffer.pos(targetX + 0, targetY + 0, -90.0).tex((sourceX + 0) * var7, (sourceY + 0) * var8).endVertex();
 		tess.draw();
 	}
 
