@@ -40,7 +40,7 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.guis.buttons.ButtonBase;
-import vswe.stevescarts.helpers.CompButtons;
+import vswe.stevescarts.helpers.ButtonComparator;
 import vswe.stevescarts.helpers.NBTHelper;
 import vswe.stevescarts.helpers.SimulationInfo;
 import vswe.stevescarts.models.ModelCartbase;
@@ -55,7 +55,6 @@ public abstract class ModuleBase {
 	private int dataWatcherOffset;
 	private int packetOffset;
 	private ArrayList<ButtonBase> buttons;
-	private CompButtons buttonSorter;
 	protected int slotGlobalStart;
 	private byte moduleId;
 	private ArrayList<ModelCartbase> models;
@@ -71,7 +70,6 @@ public abstract class ModuleBase {
 	public void init() {
 		if (this.useButtons()) {
 			this.buttons = new ArrayList<>();
-			this.buttonSorter = new CompButtons();
 			this.loadButtons();
 			this.buttonVisibilityChanged();
 		}
@@ -367,7 +365,7 @@ public abstract class ModuleBase {
 	}
 
 	public final void buttonVisibilityChanged() {
-		Collections.sort(this.buttons, this.buttonSorter);
+		Collections.sort(this.buttons, ButtonComparator.INSTANCE);
 		ButtonBase.LOCATION lastLoc = null;
 		int id = 0;
 		for (final ButtonBase button : this.buttons) {
