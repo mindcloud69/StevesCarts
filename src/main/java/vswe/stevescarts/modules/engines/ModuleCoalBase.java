@@ -2,6 +2,8 @@ package vswe.stevescarts.modules.engines;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumParticleTypes;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFuel;
@@ -13,8 +15,15 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	private int fireCoolDown;
 	private int fireIndex;
 
+	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
+	
 	public ModuleCoalBase(final EntityMinecartModular cart) {
 		super(cart);
+	}
+	
+	@Override
+	protected DataParameter<Integer> getPriorityDw() {
+		return PRIORITY;
 	}
 
 	@Override

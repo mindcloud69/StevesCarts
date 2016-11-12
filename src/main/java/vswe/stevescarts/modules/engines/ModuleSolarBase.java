@@ -19,10 +19,16 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 
 	private static DataParameter<Integer> LIGHT = createDw(DataSerializers.VARINT);
 	private static DataParameter<Boolean> UP_STATE = createDw(DataSerializers.BOOLEAN);
-
+	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
+	
 	public ModuleSolarBase(final EntityMinecartModular cart) {
 		super(cart);
 		this.down = true;
+	}
+	
+	@Override
+	protected DataParameter<Integer> getPriorityDw() {
+		return PRIORITY;
 	}
 
 	@Override

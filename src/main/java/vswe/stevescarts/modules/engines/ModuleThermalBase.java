@@ -1,6 +1,8 @@
 package vswe.stevescarts.modules.engines;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fluids.FluidRegistry;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
@@ -9,9 +11,15 @@ import vswe.stevescarts.helpers.Localization;
 public abstract class ModuleThermalBase extends ModuleEngine {
 	private short coolantLevel;
 	private static final int RELOAD_LIQUID_SIZE = 1;
+	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
 
 	public ModuleThermalBase(final EntityMinecartModular cart) {
 		super(cart);
+	}
+	
+	@Override
+	protected DataParameter<Integer> getPriorityDw() {
+		return PRIORITY;
 	}
 
 	private int getCoolantLevel() {

@@ -13,7 +13,6 @@ import vswe.stevescarts.modules.ModuleBase;
 public abstract class ModuleEngine extends ModuleBase {
 	private int fuel;
 	protected int[] priorityButton;
-	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
 
 	public ModuleEngine(final EntityMinecartModular cart) {
 		super(cart);
@@ -46,12 +45,14 @@ public abstract class ModuleEngine extends ModuleBase {
 	protected boolean isDisabled() {
 		return this.getPriority() >= 3 || this.getPriority() < 0;
 	}
+	
+	protected abstract DataParameter<Integer> getPriorityDw();
 
 	public int getPriority() {
 		if (this.isPlaceholder()) {
 			return 0;
 		}
-		int temp = this.getDw(PRIORITY);
+		int temp = this.getDw(getPriorityDw());
 		if (temp < 0 || temp > 3) {
 			temp = 3;
 		}
@@ -64,7 +65,7 @@ public abstract class ModuleEngine extends ModuleBase {
 		} else if (data > 3) {
 			data = 3;
 		}
-		this.updateDw(PRIORITY, data);
+		this.updateDw(getPriorityDw(), data);
 	}
 
 	public void consumeFuel(final int comsumption) {
@@ -145,7 +146,7 @@ public abstract class ModuleEngine extends ModuleBase {
 
 	@Override
 	public void initDw() {
-		registerDw(PRIORITY, 0);
+		registerDw(getPriorityDw(), 0);
 	}
 
 	@Override
