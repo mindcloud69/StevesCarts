@@ -1,5 +1,7 @@
 package vswe.stevescarts.blocks;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +15,6 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
 
-import javax.annotation.Nullable;
-
 public class BlockActivator extends BlockContainerBase {
 
 	public BlockActivator() {
@@ -24,16 +24,16 @@ public class BlockActivator extends BlockContainerBase {
 
 	@Override
 	public boolean onBlockActivated(World worldIn,
-	                                BlockPos pos,
-	                                IBlockState state,
-	                                EntityPlayer playerIn,
-	                                EnumHand hand,
-	                                @Nullable
-		                                ItemStack heldItem,
-	                                EnumFacing side,
-	                                float hitX,
-	                                float hitY,
-	                                float hitZ) {
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer playerIn,
+			EnumHand hand,
+			@Nullable
+			ItemStack heldItem,
+			EnumFacing side,
+			float hitX,
+			float hitY,
+			float hitZ) {
 		if (playerIn.isSneaking()) {
 			return false;
 		}

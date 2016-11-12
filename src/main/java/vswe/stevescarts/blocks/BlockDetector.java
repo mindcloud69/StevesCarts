@@ -2,6 +2,8 @@ package vswe.stevescarts.blocks;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -19,8 +21,6 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.helpers.DetectorType;
-
-import javax.annotation.Nullable;
 
 public class BlockDetector extends BlockContainerBase {
 	public BlockDetector() {
@@ -50,16 +50,16 @@ public class BlockDetector extends BlockContainerBase {
 
 	@Override
 	public boolean onBlockActivated(World world,
-	                                BlockPos pos,
-	                                IBlockState state,
-	                                EntityPlayer entityPlayer,
-	                                EnumHand hand,
-	                                @Nullable
-		                                ItemStack heldItem,
-	                                EnumFacing side,
-	                                float hitX,
-	                                float hitY,
-	                                float hitZ) {
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer entityPlayer,
+			EnumHand hand,
+			@Nullable
+			ItemStack heldItem,
+			EnumFacing side,
+			float hitX,
+			float hitY,
+			float hitZ) {
 		if (entityPlayer.isSneaking()) {
 			return false;
 		}
