@@ -17,6 +17,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.handlers.SoundHandler;
+import vswe.stevescarts.helpers.DetectorType;
 import vswe.stevescarts.helpers.MinecartSoundMuter;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
@@ -90,6 +91,11 @@ public class ClientProxy extends CommonProxy {
 		registerItemModel(ModBlocks.ADVANCED_DETECTOR.getBlock(), 0);
 		registerItemModel(ModBlocks.MODULE_TOGGLER.getBlock(), 0);
 		registerItemModel(ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), 0);
+		registerItemModel(ModBlocks.DETECTOR_UNIT.getBlock(), 0);
+		for (int i = 0; i < 5; ++i) {
+			ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockDetector", "detectortype=" + DetectorType.getTypeFromint(i).getName());
+			ModelLoader.setCustomModelResourceLocation(ModItems.detectors, i, location);
+		}
 	}
 
 	public static void registerItemModel(Item i, int meta)

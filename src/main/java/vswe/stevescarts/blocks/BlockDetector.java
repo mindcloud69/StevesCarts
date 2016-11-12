@@ -27,20 +27,7 @@ public class BlockDetector extends BlockContainerBase {
 		super(Material.CIRCUITS);
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 		this.setDefaultState(this.getStateFromMeta(0));
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
-
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIcon(final int side, final int meta) {
-	//		return DetectorType.getTypeFromSate(meta).getIcon(side);
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerBlockIcons(final IIconRegister register) {
-	//		for (final DetectorType type : DetectorType.values()) {
-	//			type.registerIcons(register);
-	//		}
-	//	}
 
 	@Override
 	public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {

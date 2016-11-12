@@ -29,9 +29,4 @@ public class ItemBlockDetector extends ItemBlock {
 		return dmg;
 	}
 
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		tooltip.add("Not yet implemented - Coming soon");
-		super.addInformation(stack, playerIn, tooltip, advanced);
-	}
 }

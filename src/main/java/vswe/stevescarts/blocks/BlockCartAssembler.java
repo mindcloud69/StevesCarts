@@ -19,43 +19,12 @@ import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 
 public class BlockCartAssembler extends BlockContainerBase {
-	//	private IIcon topIcon;
-	//	private IIcon botIcon;
-	//	private IIcon[] sideIcons;
 
 	public BlockCartAssembler() {
 		super(Material.ROCK);
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIcon(final int side, final int meta) {
-	//		if (side == 0) {
-	//			return this.botIcon;
-	//		}
-	//		if (side == 1) {
-	//			return this.topIcon;
-	//		}
-	//		return this.sideIcons[side - 2];
-	//	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerBlockIcons(final IIconRegister register) {
-	//		final StringBuilder sb = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.topIcon = register.registerIcon(sb.append("stevescarts").append(":").append("cart_assembler").append("_top").toString());
-	//		final StringBuilder sb2 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.botIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("cart_assembler").append("_bot").toString());
-	//		this.sideIcons = new IIcon[4];
-	//		for (int i = 1; i <= 4; ++i) {
-	//			final IIcon[] sideIcons = this.sideIcons;
-	//			final int n = i - 1;
-	//			final StringBuilder sb3 = new StringBuilder();
-	//			StevesCarts.instance.getClass();
-	//			sideIcons[n] = register.registerIcon(sb3.append("stevescarts").append(":").append("cart_assembler").append("_side_").append(i).toString());
-	//		}
-	//	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityplayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
