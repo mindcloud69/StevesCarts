@@ -1,6 +1,7 @@
 package vswe.stevescarts.helpers;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -79,11 +80,15 @@ public enum DetectorType implements IStringSerializable {
 		return this.meta;
 	}
 
-	@Override
-	public String getName() {
+	public String getTranslatedName(){
 		final StringBuilder append = new StringBuilder().append("item.");
 		final StevesCarts instance = StevesCarts.instance;
 		return I18n.translateToLocal(append.append("SC2:").append("BlockDetector").append(this.meta).append(".name").toString());
+	}
+
+	@Override
+	public String getName() {
+		return name().toLowerCase(Locale.ENGLISH);
 	}
 
 	//	public void registerIcons(final IIconRegister register) {

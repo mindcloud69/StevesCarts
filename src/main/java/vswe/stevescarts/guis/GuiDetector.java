@@ -54,7 +54,7 @@ public class GuiDetector extends GuiBase {
 	@Override
 	public void drawGuiForeground(final int x, final int y) {
 		GL11.glDisable(2896);
-		this.getFontRenderer().drawString(DetectorType.getTypeFromSate(this.detector.getWorld().getBlockState(this.detector.getPos())).getName(), 8, 6, 4210752);
+		this.getFontRenderer().drawString(DetectorType.getTypeFromSate(this.detector.getWorld().getBlockState(this.detector.getPos())).getTranslatedName(), 8, 6, 4210752);
 		if (this.modulesMenu.getScroll() != 0) {
 			int modulePosId = 0;
 			for (final ModuleData module : ModuleData.getModules()) {
