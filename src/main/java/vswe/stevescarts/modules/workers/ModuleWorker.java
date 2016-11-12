@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
@@ -94,8 +95,8 @@ public abstract class ModuleWorker extends ModuleBase {
 		return super.getMaxSpeed();
 	}
 
-	protected boolean isValidForTrack(BlockPos pos, final boolean flag) {
-		boolean result = this.countsAsAir(pos) && (!flag || getCart().worldObj.isSideSolid(pos.down(), EnumFacing.UP));
+	protected boolean isValidForTrack(World world, BlockPos pos, final boolean flag) {
+		boolean result = this.countsAsAir(pos) && (!flag || world.isSideSolid(pos.down(), EnumFacing.UP));
 		if (result) {
 			final int coordX = pos.getX() - (this.getCart().x() - pos.getX());
 			final int coordZ = pos.getY() - (this.getCart().z() - pos.getY());

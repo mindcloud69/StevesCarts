@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -30,7 +31,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 
 	public void handleLiquid(final ModuleDrill drill, BlockPos pos) {
 		final ArrayList<BlockPos> checked = new ArrayList<>();
-		final int result = this.drainAt(drill, checked, pos, 0);
+		final int result = this.drainAt(getCart().worldObj, drill, checked, pos, 0);
 		if (result > 0 && this.doPreWork()) {
 			drill.kill();
 			this.startWorking((int) (2.5f * result));
@@ -44,9 +45,9 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		return true;
 	}
 
-	private int drainAt(final ModuleDrill drill, final ArrayList<BlockPos> checked, final BlockPos pos, int buckets) {
+	private int drainAt(World world, final ModuleDrill drill, final ArrayList<BlockPos> checked, final BlockPos pos, int buckets) {
 		int drained = 0;
-		IBlockState blockState = this.getCart().worldObj.getBlockState(pos);
+		IBlockState blockState = world.getBlockState(pos);
 		final Block b = blockState.getBlock();
 		if (!this.isLiquid(b)) {
 			return 0;
@@ -65,7 +66,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 					if (isDrainable) {
 						this.getCart().fill(liquid, true);
 					}
-					this.getCart().worldObj.setBlockToAir(pos);
+					world.setBlockToAir(pos);
 				}
 				drained += (isDrainable ? 40 : 3);
 				buckets += (isDrainable ? 1 : 0);
@@ -79,7 +80,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 						if (Math.abs(x) + Math.abs(y) + Math.abs(z) == 1) {
 							BlockPos next = pos.add(x, y, z);
 							if (!checked.contains(next)) {
-								drained += this.drainAt(drill, checked, next, buckets);
+								drained += this.drainAt(world, drill, checked, next, buckets);
 							}
 						}
 					}

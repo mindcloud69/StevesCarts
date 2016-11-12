@@ -1,6 +1,7 @@
 package vswe.stevescarts.modules.workers.tools;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOldLeaf;
@@ -17,6 +18,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFuel;
 import vswe.stevescarts.containers.slots.SlotSapling;
@@ -93,8 +95,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public abstract int getPercentageDropChance();
 
-	public ArrayList<ItemStack> getTierDrop(final ArrayList<ItemStack> baseItems) {
-		final ArrayList<ItemStack> nerfedItems = new ArrayList<>();
+	public List<ItemStack> getTierDrop(List<ItemStack> baseItems) {
+		List<ItemStack> nerfedItems = new ArrayList<>();
 		for (final ItemStack item : baseItems) {
 			if (item != null) {
 				this.dropItemByMultiplierChance(nerfedItems, item, this.getPercentageDropChance());
@@ -103,7 +105,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return nerfedItems;
 	}
 
-	private void dropItemByMultiplierChance(final ArrayList<ItemStack> items, final ItemStack item, int percentage) {
+	private void dropItemByMultiplierChance(List<ItemStack> items, final ItemStack item, int percentage) {
 		int drop = 0;
 		while (percentage > 0) {
 			if (this.getCart().rand.nextInt(100) < percentage) {
@@ -116,10 +118,11 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	@Override
 	public boolean work() {
+		World world = getCart().worldObj;
 		BlockPos next = this.getNextblock();
 		final int size = this.getPlantSize();
-		this.destroyLeaveBlockOnTrack(next);
-		this.destroyLeaveBlockOnTrack(next.up());
+		this.destroyLeaveBlockOnTrack(world, next);
+		this.destroyLeaveBlockOnTrack(world, next.up());
 		for (int i = -size; i <= size; ++i) {
 			if (i != 0) {
 				int i2 = i;
@@ -137,7 +140,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			for (int i = -1; i <= 1; ++i) {
 				for (int j = -1; j <= 1; ++j) {
 					BlockPos farm = next.add(i, -1, j);
-					if (this.farm(farm)) {
+					if (this.farm(world, farm)) {
 						this.setCutting(true);
 						return true;
 					}
@@ -183,13 +186,13 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return false;
 	}
 
-	private boolean farm(BlockPos pos) {
+	private boolean farm(World world, BlockPos pos) {
 		if (!this.isBroken()) {
 			pos = pos.up();
-			IBlockState state = getCart().worldObj.getBlockState(pos);
+			IBlockState state = world.getBlockState(pos);
 			if (state != null && this.isWoodHandler(state, pos)) {
 				final ArrayList<BlockPos> checked = new ArrayList<>();
-				if (this.removeAt(pos, checked)) {
+				if (this.removeAt(world, pos, checked)) {
 					return true;
 				}
 				this.stopWorking();
@@ -198,9 +201,9 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return false;
 	}
 
-	private boolean removeAt(BlockPos here, final ArrayList<BlockPos> checked) {
+	private boolean removeAt(World world, BlockPos here, final ArrayList<BlockPos> checked) {
 		checked.add(here);
-		IBlockState blockState = getCart().worldObj.getBlockState(here);
+		IBlockState blockState = world.getBlockState(here);
 		final Block block = blockState.getBlock();
 		if (block == null) {
 			return false;
@@ -217,7 +220,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 					for (int y = 1; y >= 0; --y) {
 						for (int z = -1; z <= 1; ++z) {
 							BlockPos pos = here.add(x, y, z);
-							IBlockState currentState = this.getCart().worldObj.getBlockState(pos);
+							IBlockState currentState = world.getBlockState(pos);
 							if (currentState != null) {
 								if (hitWood) {
 									if (!this.isWoodHandler(currentState, pos)) {
@@ -227,7 +230,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 									continue;
 								}
 								if (!checked.contains(pos)) {
-									return this.removeAt(pos, checked);
+									return this.removeAt(world, pos, checked);
 								}
 							}
 						}
@@ -235,7 +238,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				}
 			}
 		}
-		ArrayList<ItemStack> stuff;
+		List<ItemStack> stuff;
 		if (shouldSilkTouch(blockState, here)) {
 			stuff = new ArrayList<>();
 			final ItemStack stack = this.getSilkTouchedItem(blockState);
@@ -244,7 +247,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			}
 		} else {
 			final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
-			stuff = (ArrayList<ItemStack>) block.getDrops(getCart().worldObj, here, blockState, fortune);
+			stuff = block.getDrops(world, here, blockState, fortune);
 			int applerand = 200;
 			if (fortune > 0) {
 				applerand -= 10 << fortune;
@@ -252,11 +255,11 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 					applerand = 40;
 				}
 			}
-			if (/*(m & 0x3) == 0x0 &&*/ block == Blocks.LEAVES && blockState.getValue(BlockOldLeaf.VARIANT) == EnumType.OAK && this.getCart().rand.nextInt(applerand) == 0) {
+			if (block == Blocks.LEAVES && blockState.getValue(BlockOldLeaf.VARIANT) == EnumType.OAK && this.getCart().rand.nextInt(applerand) == 0) {
 				stuff.add(new ItemStack(Items.APPLE, 1, 0));
 			}
 		}
-		final ArrayList<ItemStack> nerfedstuff = this.getTierDrop(stuff);
+		List<ItemStack> nerfedstuff = this.getTierDrop(stuff);
 		boolean first = true;
 		for (final ItemStack iStack : nerfedstuff) {
 			this.getCart().addItemToChest(iStack, Slot.class, SlotFuel.class);
@@ -264,15 +267,15 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				if (first) {
 					return false;
 				}
-				final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+				final EntityItem entityitem = new EntityItem(world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
 				entityitem.motionX = (here.getX() - this.getCart().x()) / 10.0f;
 				entityitem.motionY = 0.15000000596046448;
 				entityitem.motionZ = (here.getZ() - this.getCart().z()) / 10.0f;
-				this.getCart().worldObj.spawnEntityInWorld(entityitem);
+				world.spawnEntityInWorld(entityitem);
 			}
 			first = false;
 		}
-		this.getCart().worldObj.setBlockToAir(here);
+		world.setBlockToAir(here);
 		int basetime;
 		if (this.isLeavesHandler(blockState, here)) {
 			basetime = 2;
@@ -386,10 +389,10 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return 1;
 	}
 
-	private void destroyLeaveBlockOnTrack(BlockPos pos) {
-		IBlockState state = getCart().worldObj.getBlockState(pos);
+	private void destroyLeaveBlockOnTrack(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
 		if (state != null && this.isLeavesHandler(state, pos)) {
-			getCart().worldObj.setBlockToAir(pos);
+			world.setBlockToAir(pos);
 		}
 	}
 }

@@ -1,19 +1,22 @@
 package vswe.stevescarts.modules.workers;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public class ModuleRemover extends ModuleWorker {
-	private int removeX;
-	private int removeY;
-	private int removeZ;
+	@Nonnull
+	private BlockPos remove;
 
 	public ModuleRemover(final EntityMinecartModular cart) {
 		super(cart);
-		this.removeY = -1;
+		remove = new BlockPos(0, -1, 0);
 	}
 
 	@Override
@@ -28,33 +31,36 @@ public class ModuleRemover extends ModuleWorker {
 
 	@Override
 	public boolean work() {
-		if (this.removeY != -1 && (this.removeX != this.getCart().x() || this.removeZ != this.getCart().z()) && this.removeRail(this.removeX, this.removeY, this.removeZ, true)) {
+		EntityMinecartModular cart = getCart();
+		World world = cart.worldObj;
+		if (remove.getY() != -1 && (remove.getX() != cart.x() || remove.getZ() != cart.z()) && this.removeRail(world, remove, true)) {
 			return false;
 		}
 		BlockPos next = this.getNextblock();
 		BlockPos last = this.getLastblock();
-		final boolean front = this.isRailAtCoords(next);
-		final boolean back = this.isRailAtCoords(last);
+		final boolean front = this.isRailAtCoords(world, next);
+		final boolean back = this.isRailAtCoords(world, last);
 		if (!front) {
 			if (back) {
 				this.turnback();
-				if (this.removeRail(this.getCart().x(), this.getCart().y(), this.getCart().z(), false)) {
+				if (this.removeRail(world, cart.getPosition(), false)) {
 					return true;
 				}
 			}
-		} else if (!back && this.removeRail(this.getCart().x(), this.getCart().y(), this.getCart().z(), false)) {
+		} else if (!back && this.removeRail(world, cart.getPosition(), false)) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean isRailAtCoords(BlockPos coords) {
-		return BlockRailBase.isRailBlock(this.getCart().worldObj, coords.up()) || BlockRailBase.isRailBlock(this.getCart().worldObj, coords) || BlockRailBase.isRailBlock(this.getCart().worldObj, coords.down());
+	private boolean isRailAtCoords(World world, BlockPos coords) {
+		return BlockRailBase.isRailBlock(world, coords.up()) || BlockRailBase.isRailBlock(this.getCart().worldObj, coords) || BlockRailBase.isRailBlock(this.getCart().worldObj, coords.down());
 	}
 
-	private boolean removeRail(final int x, final int y, final int z, final boolean flag) {
+	private boolean removeRail(World world, BlockPos pos, final boolean flag) {
 		if (flag) {
-			if (BlockRailBase.isRailBlock(this.getCart().worldObj, new BlockPos(x, y, z)) && this.getCart().worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.RAIL) {
+			IBlockState blockState = world.getBlockState(pos);
+			if (BlockRailBase.isRailBlock(blockState) && blockState.getBlock() == Blocks.RAIL) {
 				if (this.doPreWork()) {
 					this.startWorking(12);
 					return true;
@@ -63,24 +69,18 @@ public class ModuleRemover extends ModuleWorker {
 				final ItemStack iStack = new ItemStack(Blocks.RAIL, 1, 0);
 				this.getCart().addItemToChest(iStack);
 				if (iStack.stackSize == 0) {
-					this.getCart().worldObj.setBlockToAir(new BlockPos(x, y, z));
+					world.setBlockToAir(pos);
 				}
-				this.removeY = -1;
+				remove = new BlockPos(pos.getX(), -1, pos.getZ());
 			} else {
-				this.removeY = -1;
+				remove = new BlockPos(pos.getX(), -1, pos.getZ());
 			}
-		} else if (BlockRailBase.isRailBlock(this.getCart().worldObj, new BlockPos(x, y - 1, z))) {
-			this.removeX = x;
-			this.removeY = y - 1;
-			this.removeZ = z;
-		} else if (BlockRailBase.isRailBlock(this.getCart().worldObj, new BlockPos(x, y, z))) {
-			this.removeX = x;
-			this.removeY = y;
-			this.removeZ = z;
-		} else if (BlockRailBase.isRailBlock(this.getCart().worldObj, new BlockPos(x, y, z))) {
-			this.removeX = x;
-			this.removeY = y + 1;
-			this.removeZ = z;
+		} else if (BlockRailBase.isRailBlock(world, pos.down())) {
+			remove = pos.down();
+		} else if (BlockRailBase.isRailBlock(world, pos)) {
+			remove = pos;
+		} else if (BlockRailBase.isRailBlock(world, pos.up())) {
+			remove = pos.up();
 		}
 		this.stopWorking();
 		return false;

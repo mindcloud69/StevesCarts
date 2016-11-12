@@ -17,6 +17,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.ModBlocks;
@@ -72,6 +73,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 
 	@Override
 	public boolean work() {
+		World world = getCart().worldObj;
 		if (!this.isDrillEnabled()) {
 			this.stopDrill();
 			this.stopWorking();
@@ -89,14 +91,14 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		for (int holeY = range[1]; holeY >= range[0]; --holeY) {
 			for (int holeX = -this.blocksOnSide(); holeX <= this.blocksOnSide(); ++holeX) {
 				if (this.intelligence == null || this.intelligence.isActive(holeX + this.blocksOnSide(), holeY, range[2], next.getX() > this.getCart().x() || next.getZ() < this.getCart().z())) {
-					if (this.mineBlockAndRevive(next.add(((this.getCart().z() != next.getZ()) ? holeX : 0), holeY,  ((this.getCart().x() != next.getX()) ? holeX : 0)), next, holeX, holeY)) {
+					if (this.mineBlockAndRevive(world, next.add(((this.getCart().z() != next.getZ()) ? holeX : 0), holeY,  ((this.getCart().x() != next.getX()) ? holeX : 0)), next, holeX, holeY)) {
 						return true;
 					}
 				}
 			}
 		}
 		BlockPos pos = next.add(0, range[0], 0);
-		if (this.countsAsAir(pos) && !this.isValidForTrack(pos, true) && this.mineBlockAndRevive(pos.down(), next, 0, range[0] - 1)) {
+		if (this.countsAsAir(pos) && !this.isValidForTrack(world, pos, true) && this.mineBlockAndRevive(world, pos.down(), next, 0, range[0] - 1)) {
 			return true;
 		}
 		this.stopWorking();
@@ -131,8 +133,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		return this.blocksOnTop();
 	}
 
-	private boolean mineBlockAndRevive(BlockPos coord, BlockPos next, final int holeX, final int holeY) {
-		if (this.mineBlock(coord, next, holeX, holeY, false)) {
+	private boolean mineBlockAndRevive(World world, BlockPos coord, BlockPos next, final int holeX, final int holeY) {
+		if (this.mineBlock(world, coord, next, holeX, holeY, false)) {
 			return true;
 		}
 		if (this.isDead()) {
@@ -142,23 +144,23 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		return false;
 	}
 
-	protected boolean mineBlock(BlockPos coord, BlockPos next, final int holeX, final int holeY, final boolean flag) {
+	protected boolean mineBlock(World world, BlockPos coord, BlockPos next, final int holeX, final int holeY, final boolean flag) {
 		if (this.tracker != null) {
 			final BlockPos target = this.tracker.findBlockToMine(this, coord);
 			if (target != null) {
 				coord = target;
 			}
 		}
-		final Object valid = this.isValidBlock(coord, holeX, holeY, flag);
+		final Object valid = this.isValidBlock(world, coord, holeX, holeY, flag);
 		TileEntity storage = null;
 		if (valid instanceof TileEntity) {
 			storage = (TileEntity) valid;
 		} else if (valid == null) {
 			return false;
 		}
-		IBlockState blockState = getCart().worldObj.getBlockState(coord);
+		IBlockState blockState = world.getBlockState(coord);
 		final Block block = blockState.getBlock();
-		float h = blockState.getBlockHardness(getCart().worldObj, coord);
+		float h = blockState.getBlockHardness(world, coord);
 		if (h < 0.0f) {
 			h = 0.0f;
 		}
@@ -166,7 +168,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			for (int i = 0; i < ((IInventory) storage).getSizeInventory(); ++i) {
 				final ItemStack iStack = ((IInventory) storage).getStackInSlot(i);
 				if (iStack != null) {
-					if (!this.minedItem(iStack, next)) {
+					if (!this.minedItem(world, iStack, next)) {
 						return false;
 					}
 					((IInventory) storage).setInventorySlotContents(i, null);
@@ -176,24 +178,24 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
 		if (this.shouldSilkTouch(blockState, coord)) {
 			final ItemStack item = this.getSilkTouchedItem(blockState);
-			if (item != null && !this.minedItem(item, next)) {
+			if (item != null && !this.minedItem(world, item, next)) {
 				return false;
 			}
-			this.getCart().worldObj.setBlockToAir(coord);
-		} else if (block.getDrops(this.getCart().worldObj, coord, blockState, fortune).size() != 0) {
-			List<ItemStack> stacks = block.getDrops(this.getCart().worldObj, coord, blockState, fortune);
+			world.setBlockToAir(coord);
+		} else if (block.getDrops(world, coord, blockState, fortune).size() != 0) {
+			List<ItemStack> stacks = block.getDrops(world, coord, blockState, fortune);
 			boolean shouldRemove = false;
 			for (int j = 0; j < stacks.size(); ++j) {
-				if (!this.minedItem(stacks.get(j), next)) {
+				if (!this.minedItem(world, stacks.get(j), next)) {
 					return false;
 				}
 				shouldRemove = true;
 			}
 			if (shouldRemove) {
-				this.getCart().worldObj.setBlockToAir(coord);
+				world.setBlockToAir(coord);
 			}
 		} else {
-			this.getCart().worldObj.setBlockToAir(coord);
+			world.setBlockToAir(coord);
 		}
 		this.damageTool(1 + (int) h);
 		this.startWorking(this.getTimeToMine(h));
@@ -201,7 +203,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		return true;
 	}
 
-	protected boolean minedItem(final ItemStack iStack, BlockPos Coords) {
+	protected boolean minedItem(World world, final ItemStack iStack, BlockPos Coords) {
 		if (iStack == null || iStack.stackSize <= 0) {
 			return true;
 		}
@@ -227,19 +229,19 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			}
 		}
 		if (!hasChest) {
-			final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+			final EntityItem entityitem = new EntityItem(world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
 			entityitem.motionX = (this.getCart().x() - Coords.getX()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
 			entityitem.motionZ = (this.getCart().z() - Coords.getZ()) / 10.0f;
-			this.getCart().worldObj.spawnEntityInWorld(entityitem);
+			world.spawnEntityInWorld(entityitem);
 			return true;
 		}
 		if (iStack.stackSize != size) {
-			final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+			final EntityItem entityitem = new EntityItem(world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
 			entityitem.motionX = (this.getCart().z() - Coords.getZ()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
 			entityitem.motionZ = (this.getCart().x() - Coords.getX()) / 10.0f;
-			this.getCart().worldObj.spawnEntityInWorld(entityitem);
+			world.spawnEntityInWorld(entityitem);
 			return true;
 		}
 		return false;
@@ -252,11 +254,11 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 
 	protected abstract float getTimeMult();
 
-	public Object isValidBlock(BlockPos pos, final int holeX, final int holeY, final boolean flag) {
-		if ((!flag && BlockRailBase.isRailBlock(this.getCart().worldObj, pos)) || BlockRailBase.isRailBlock(this.getCart().worldObj, pos.up())) {
+	public Object isValidBlock(World world, BlockPos pos, final int holeX, final int holeY, final boolean flag) {
+		if ((!flag && BlockRailBase.isRailBlock(world, pos)) || BlockRailBase.isRailBlock(world, pos.up())) {
 			return null;
 		}
-		IBlockState blockState = getCart().worldObj.getBlockState(pos);
+		IBlockState blockState = world.getBlockState(pos);
 		final Block block = blockState.getBlock();
 		if (block == null) {
 			return null;
@@ -270,14 +272,14 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		if (block instanceof BlockLiquid) {
 			return null;
 		}
-		if (blockState.getBlockHardness(this.getCart().worldObj, pos) < 0.0f) {
+		if (blockState.getBlockHardness(world, pos) < 0.0f) {
 			return null;
 		}
 		if ((holeX != 0 || holeY > 0) && (block == Blocks.TORCH || block == Blocks.REDSTONE_WIRE || block == Blocks.REDSTONE_TORCH || block == Blocks.UNLIT_REDSTONE_TORCH || block == Blocks.POWERED_REPEATER || block == Blocks.UNPOWERED_REPEATER || block == Blocks.POWERED_COMPARATOR || block == Blocks.UNPOWERED_COMPARATOR || block == ModBlocks.MODULE_TOGGLER.getBlock())) {
 			return null;
 		}
 		if (block instanceof BlockContainer) {
-			final TileEntity tileentity = this.getCart().worldObj.getTileEntity(pos);
+			final TileEntity tileentity = world.getTileEntity(pos);
 			if (tileentity != null && IInventory.class.isInstance(tileentity)) {
 				if (holeX != 0 || holeY > 0) {
 					return null;

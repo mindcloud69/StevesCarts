@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotBridge;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -47,20 +48,21 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
+		World world = getCart().worldObj;
 		BlockPos next = this.getNextblock();
 		if (this.getCart().getYTarget() < next.getY()) {
 			next = next.down(2);
 		} else {
 			next = next.down(1);
 		}
-		if (!BlockRailBase.isRailBlock(this.getCart().worldObj, next) && !BlockRailBase.isRailBlock(this.getCart().worldObj, next.down())) {
+		if (!BlockRailBase.isRailBlock(world, next) && !BlockRailBase.isRailBlock(world, next.down())) {
 			if (this.doPreWork()) {
-				if (this.tryBuildBridge(next, false)) {
+				if (this.tryBuildBridge(world, next, false)) {
 					this.startWorking(22);
 					this.setBridge(true);
 					return true;
 				}
-			} else if (this.tryBuildBridge(next, true)) {
+			} else if (this.tryBuildBridge(world, next, true)) {
 				this.stopWorking();
 			}
 		}
@@ -68,13 +70,13 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 		return false;
 	}
 
-	private boolean tryBuildBridge(BlockPos pos, final boolean flag) {
-		final Block b = this.getCart().worldObj.getBlockState(pos).getBlock();
+	private boolean tryBuildBridge(World world, BlockPos pos, final boolean flag) {
+		final Block b = world.getBlockState(pos).getBlock();
 		if ((this.countsAsAir(pos) || b instanceof BlockLiquid) && this.isValidForTrack(pos.up(), false)) {
 			for (int m = 0; m < this.getInventorySize(); ++m) {
 				if (this.getStack(m) != null && SlotBridge.isBridgeMaterial(this.getStack(m))) {
 					if (flag) {
-						this.getCart().worldObj.setBlockState(pos, Block.getBlockFromItem(this.getStack(m).getItem()).getStateFromMeta(getStack(m).getItemDamage()), 3);
+						world.setBlockState(pos, Block.getBlockFromItem(this.getStack(m).getItem()).getStateFromMeta(getStack(m).getItemDamage()), 3);
 						if (!this.getCart().hasCreativeSupplies()) {
 							final ItemStack stack = this.getStack(m);
 							--stack.stackSize;

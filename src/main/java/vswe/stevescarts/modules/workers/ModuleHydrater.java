@@ -4,6 +4,7 @@ import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
@@ -35,10 +36,11 @@ public class ModuleHydrater extends ModuleWorker {
 
 	@Override
 	public boolean work() {
+		World world = getCart().worldObj;
 		BlockPos next = this.getNextblock();
 		for (int i = -this.range; i <= this.range; ++i) {
 			for (int j = -this.range; j <= this.range; ++j) {
-				if (this.hydrate(next.add(i, -1, j))) {
+				if (this.hydrate(world, next.add(i, -1, j))) {
 					return true;
 				}
 			}
@@ -46,8 +48,8 @@ public class ModuleHydrater extends ModuleWorker {
 		return false;
 	}
 
-	private boolean hydrate(BlockPos pos) {
-		IBlockState state = getCart().worldObj.getBlockState(pos);
+	private boolean hydrate(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock() == Blocks.FARMLAND){ 
 			int moisture = state.getValue(BlockFarmland.MOISTURE);
 			if(moisture != 7) {
@@ -60,7 +62,7 @@ public class ModuleHydrater extends ModuleWorker {
 					}
 					this.stopWorking();
 					this.getCart().drain(FluidRegistry.WATER, waterCost, true);
-					getCart().worldObj.setBlockState(pos, state.getBlock().getStateFromMeta(moisture + waterCost), 3);
+					world.setBlockState(pos, state.withProperty(BlockFarmland.MOISTURE, moisture + waterCost), 3);
 				}
 			}
 		}

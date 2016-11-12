@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotBuilder;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -50,6 +51,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
+		World world = getCart().worldObj;
 		BlockPos next = this.getNextblock();
 		final int x = next.getX();
 		final int y = next.getY();
@@ -58,7 +60,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 		if (this.doPreWork()) {
 			boolean valid = false;
 			for (int i = 0; i < pos.size(); ++i) {
-				if (this.tryPlaceTrack(pos.get(i)[0], pos.get(i)[1], pos.get(i)[2], false)) {
+				if (this.tryPlaceTrack(world, pos.get(i)[0], pos.get(i)[1], pos.get(i)[2], false)) {
 					valid = true;
 					break;
 				}
@@ -68,7 +70,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 			} else {
 				boolean front = false;
 				for (int j = 0; j < pos.size(); ++j) {
-					if (BlockRailBase.isRailBlock(this.getCart().worldObj, new BlockPos(pos.get(j)[0], pos.get(j)[1], pos.get(j)[2]))) {
+					if (BlockRailBase.isRailBlock(world, new BlockPos(pos.get(j)[0], pos.get(j)[1], pos.get(j)[2]))) {
 						front = true;
 						break;
 					}
@@ -80,7 +82,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 			return true;
 		}
 		this.stopWorking();
-		for (int k = 0; k < pos.size() && !this.tryPlaceTrack(pos.get(k)[0], pos.get(k)[1], pos.get(k)[2], true); ++k) {}
+		for (int k = 0; k < pos.size() && !this.tryPlaceTrack(world, pos.get(k)[0], pos.get(k)[1], pos.get(k)[2], true); ++k) {}
 		return false;
 	}
 
@@ -98,8 +100,8 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 		return Block.getBlockFromItem(item) == Blocks.RAIL;
 	}
 
-	private boolean tryPlaceTrack(final int i, final int j, final int k, final boolean flag) {
-		if (this.isValidForTrack(new BlockPos(i, j, k), true)) {
+	private boolean tryPlaceTrack(World world, final int i, final int j, final int k, final boolean flag) {
+		if (this.isValidForTrack(world, new BlockPos(i, j, k), true)) {
 			for (int l = 0; l < this.getInventorySize(); ++l) {
 				if (this.getStack(l) != null && this.validRail(this.getStack(l).getItem())) {
 					if (flag) {

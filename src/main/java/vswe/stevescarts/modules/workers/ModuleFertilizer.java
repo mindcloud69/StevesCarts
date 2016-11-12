@@ -7,6 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFertilizer;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -95,17 +96,18 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
+		World world = getCart().worldObj;
 		BlockPos next = this.getNextblock();
 		for (int i = -this.range; i <= this.range; ++i) {
 			for (int j = -this.range; j <= this.range; ++j) {
-				this.fertilize(next.add(i, -1, j));
+				this.fertilize(world, next.add(i, -1, j));
 			}
 		}
 		return false;
 	}
 
-	private void fertilize(BlockPos pos) {
-		IBlockState stateOfTopBlock = getCart().worldObj.getBlockState(pos.up());
+	private void fertilize(World world, BlockPos pos) {
+		IBlockState stateOfTopBlock = world.getBlockState(pos.up());
 		Block blockTop = stateOfTopBlock.getBlock();
 		if (this.fert > 0) {
 			/*if (blockTop instanceof BlockCrops && stateOfTopBlock.getValue(BlockCrops.AGE) == 7) {
@@ -124,9 +126,9 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 			// I thinks that make the module more useful
 			if(blockTop instanceof IGrowable){
 				IGrowable growable = (IGrowable) blockTop;
-				if(growable.canGrow(getCart().worldObj, pos, stateOfTopBlock, false)){
-					if(growable.canUseBonemeal(getCart().worldObj, this.getCart().rand, pos, stateOfTopBlock)){
-						growable.grow(getCart().worldObj, this.getCart().rand, pos, stateOfTopBlock);
+				if(growable.canGrow(world, pos, stateOfTopBlock, false)){
+					if(growable.canUseBonemeal(world, this.getCart().rand, pos, stateOfTopBlock)){
+						growable.grow(world, this.getCart().rand, pos, stateOfTopBlock);
 						--this.fert;
 					}
 				}
