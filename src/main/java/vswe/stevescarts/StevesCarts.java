@@ -1,5 +1,6 @@
 package vswe.stevescarts;
 
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.Logger;
@@ -16,8 +17,10 @@ import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import vswe.stevescarts.arcade.tracks.Cart;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
+import vswe.stevescarts.entitys.CartDataSerializers;
 import vswe.stevescarts.entitys.EntityCake;
 import vswe.stevescarts.entitys.EntityEasterEgg;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -90,6 +93,7 @@ public class StevesCarts {
 		TileEntityCargo.loadSelectionSettings();
 		ModItems.addRecipes();
 		ModBlocks.addRecipes();
+		CartDataSerializers.init();
 	}
 
 	@Mod.EventHandler
