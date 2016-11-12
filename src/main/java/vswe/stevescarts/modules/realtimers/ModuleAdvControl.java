@@ -1,5 +1,9 @@
 package vswe.stevescarts.modules.realtimers;
 
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -17,6 +21,7 @@ import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ILeverModule;
 import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.engines.ModuleEngine;
 
 public class ModuleAdvControl extends ModuleBase implements ILeverModule {
@@ -99,10 +104,16 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		minecraft.fontRendererObj.drawString(this.distToString(this.odo), 7, enginesEndAt + 52 + 11, 4210752);
 		minecraft.fontRendererObj.drawString(Localization.MODULES.ATTACHMENTS.TRIP.translate(), 7, enginesEndAt + 52 + 22, 4210752);
 		minecraft.fontRendererObj.drawString(this.distToString(this.trip), 7, enginesEndAt + 52 + 31, 4210752);
-		//TODO
-		//final RenderItem itemRenderer = new RenderItem();
-		//	itemRenderer.renderItemIntoGUI(minecraft.fontRendererObj, minecraft.renderEngine, new ItemStack(Items.CLOCK, 1), 5, enginesEndAt + 32 + 3);
-		//	itemRenderer.renderItemIntoGUI(minecraft.fontRendererObj, minecraft.renderEngine, new ItemStack(Items.COMPASS, 1), 21, enginesEndAt + 32 + 3);
+		drawItem(new ItemStack(Items.CLOCK, 1), 5, enginesEndAt + 32 + 3);
+		drawItem(new ItemStack(Items.COMPASS, 1), 21, enginesEndAt + 32 + 3);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void drawItem(ItemStack icon, final int targetX, final int targetY) {
+		RenderHelper.enableGUIStandardItemLighting();
+		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+		itemRenderer.renderItemAndEffectIntoGUI(icon, targetX, targetY);
+
 	}
 
 	private String distToString(double dist) {
