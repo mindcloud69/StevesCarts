@@ -4,7 +4,12 @@ import java.util.Comparator;
 
 import vswe.stevescarts.guis.buttons.ButtonBase;
 
-public class CompButtons implements Comparator {
+public class ButtonComparator implements Comparator {
+	public static final ButtonComparator INSTANCE = new ButtonComparator();
+	
+	private ButtonComparator() {
+	}
+	
 	@Override
 	public int compare(final Object obj1, final Object obj2) {
 		final ButtonBase button1 = (ButtonBase) obj1;
