@@ -1604,4 +1604,10 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public Entity getRider(){
 		return this.getControllingPassenger();
 	}
+
+	@Nullable
+	@Override
+	public Entity getControllingPassenger() {
+		return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+	}
 }

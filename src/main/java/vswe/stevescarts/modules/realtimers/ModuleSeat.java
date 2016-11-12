@@ -69,10 +69,10 @@ public class ModuleSeat extends ModuleBase {
 	}
 
 	private int getState() {
-		if (this.getCart().getRidingEntity() == null) {
+		if (this.getCart().getControllingPassenger() == null) {
 			return 1;
 		}
-		if (this.getCart().getRidingEntity() == this.getClientPlayer()) {
+		if (this.getCart().getControllingPassenger() == this.getClientPlayer()) {
 			return 2;
 		}
 		return 0;
@@ -92,9 +92,9 @@ public class ModuleSeat extends ModuleBase {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0 && player != null) {
-			if (this.getCart().getRidingEntity() == null) {
+			if (this.getCart().getControllingPassenger() == null) {
 				player.startRiding(this.getCart());
-			} else if (this.getCart().getRidingEntity() == player) {
+			} else if (this.getCart().getControllingPassenger() == player) {
 				player.dismountRidingEntity();
 			}
 		}
@@ -108,9 +108,9 @@ public class ModuleSeat extends ModuleBase {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().getRidingEntity() != null) {
+		if (this.getCart().getControllingPassenger() != null) {
 			this.relative = false;
-			this.chairAngle = (float) (3.141592653589793 + 3.141592653589793 * this.getCart().getRidingEntity().rotationYaw / 180.0);
+			this.chairAngle = (float) (3.141592653589793 + 3.141592653589793 * this.getCart().getControllingPassenger().rotationYaw / 180.0);
 		} else {
 			this.relative = true;
 			this.chairAngle = 1.5707964f;

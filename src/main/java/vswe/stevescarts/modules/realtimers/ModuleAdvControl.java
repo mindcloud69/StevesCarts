@@ -86,11 +86,11 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		}
 		final int enginesEndAt = this.getCart().getEngines().size() * 15;
 		this.drawImage(5, enginesEndAt, 0, 15, 32, 32);
-		if (minecraft.gameSettings.keyBindForward.isPressed()) {
+		if (minecraft.gameSettings.keyBindForward.isKeyDown()) {
 			this.drawImage(15, enginesEndAt + 5, 42, 20, 12, 6);
-		} else if (minecraft.gameSettings.keyBindLeft.isPressed()) {
+		} else if (minecraft.gameSettings.keyBindLeft.isKeyDown()) {
 			this.drawImage(7, enginesEndAt + 13, 34, 28, 6, 12);
-		} else if (minecraft.gameSettings.keyBindRight.isPressed()) {
+		} else if (minecraft.gameSettings.keyBindRight.isKeyDown()) {
 			this.drawImage(29, enginesEndAt + 13, 56, 28, 6, 12);
 		}
 		final int speedGraphicHeight = this.getSpeedSetting() * 2;
@@ -164,7 +164,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		if (id == 0) {
 			this.engineInformation = data;
 		} else if (id == 1) {
-			if (this.getCart().getRidingEntity() != null && this.getCart().getRidingEntity() instanceof EntityPlayer && this.getCart().getRidingEntity() == player) {
+			if (this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer && this.getCart().getControllingPassenger() == player) {
 				this.keyinformation = data[0];
 				this.getCart().resetRailDirection();
 			}
@@ -194,15 +194,15 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote && this.getCart().getRidingEntity() != null && this.getCart().getRidingEntity() instanceof EntityPlayer) {
+		if (!this.getCart().worldObj.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer) {
 			if (this.enginePacketTimer == 0) {
-				this.sendEnginePacket((EntityPlayer) this.getCart().getRidingEntity());
+				this.sendEnginePacket((EntityPlayer) this.getCart().getControllingPassenger());
 				this.enginePacketTimer = 15;
 			} else {
 				--this.enginePacketTimer;
 			}
 			if (this.tripPacketTimer == 0) {
-				this.sendTripPacket((EntityPlayer) this.getCart().getRidingEntity());
+				this.sendTripPacket((EntityPlayer) this.getCart().getControllingPassenger());
 				this.tripPacketTimer = 500;
 			} else {
 				--this.tripPacketTimer;
@@ -220,11 +220,11 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		this.lastBackKey = this.isBackKeyDown();
 		if (!this.getCart().worldObj.isRemote) {
 			if (this.speedChangeCooldown == 0) {
-				if (!this.isJumpKeyDown() || !this.isSneakKeyDown()) {
+				if (!this.isJumpKeyDown() || !this.isBackKeyDown()) {
 					if (this.isJumpKeyDown()) {
 						this.setSpeedSetting(this.getSpeedSetting() + 1);
 						this.speedChangeCooldown = 8;
-					} else if (this.isSneakKeyDown()) {
+					} else if (this.isBackKeyDown()) {
 						this.setSpeedSetting(this.getSpeedSetting() - 1);
 						this.speedChangeCooldown = 8;
 					} else {
@@ -234,8 +234,8 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 			} else {
 				--this.speedChangeCooldown;
 			}
-			if (this.isForwardKeyDown() && this.isLeftKeyDown() && this.isRightKeyDown() && this.getCart().getRidingEntity() != null && this.getCart().getRidingEntity() instanceof EntityPlayer) {
-				this.getCart().getRidingEntity().startRiding(getCart());
+			if (this.isForwardKeyDown() && this.isLeftKeyDown() && this.isRightKeyDown() && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer) {
+				this.getCart().getControllingPassenger().startRiding(getCart());
 				this.keyinformation = 0;
 			}
 		}
@@ -282,16 +282,16 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	}
 
 	private void encodeKeys() {
-		if (this.getCart().getRidingEntity() != null && this.getCart().getRidingEntity() instanceof EntityPlayer && this.getCart().getRidingEntity() == this.getClientPlayer()) {
+		if (this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer && this.getCart().getControllingPassenger() == this.getClientPlayer()) {
 			final Minecraft minecraft = Minecraft.getMinecraft();
 			final byte oldVal = this.keyinformation;
 			this.keyinformation = 0;
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindForward.isPressed() ? 1 : 0) << 0);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindLeft.isPressed() ? 1 : 0) << 1);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindRight.isPressed() ? 1 : 0) << 2);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isPressed() ? 1 : 0) << 3);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindJump.isPressed() ? 1 : 0) << 4);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindSneak.isPressed() ? 1 : 0) << 5);
+			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindForward.isKeyDown() ? 1 : 0) << 0);
+			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindLeft.isKeyDown() ? 1 : 0) << 1);
+			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindRight.isKeyDown() ? 1 : 0) << 2);
+			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 3);
+			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindJump.isKeyDown() ? 1 : 0) << 4);
+			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 5);
 			if (oldVal != this.keyinformation) {
 				PacketHandler.sendPacket(this.getCart(), 1 + this.getPacketStart(), new byte[] { this.keyinformation });
 			}
@@ -472,8 +472,17 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	@Override
 	public void postUpdate() {
-		if (this.getCart().worldObj.isRemote && this.getCart().getRidingEntity() != null && this.getCart().getRidingEntity() instanceof EntityPlayer && this.getCart().getRidingEntity() == this.getClientPlayer()) {
-			KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
+//		if (this.getCart().worldObj.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer && this.getCart().getControllingPassenger() == this.getClientPlayer()) {
+//			KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
+//		}
+	}
+
+	@Override
+	public boolean onInteractFirst(EntityPlayer entityplayer) {
+		if(entityplayer == getCart().getControllingPassenger()){
+			entityplayer.dismountRidingEntity();
+			return true;
 		}
+		return super.onInteractFirst(entityplayer);
 	}
 }
