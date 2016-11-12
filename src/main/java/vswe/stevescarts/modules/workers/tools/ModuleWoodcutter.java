@@ -19,6 +19,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFuel;
 import vswe.stevescarts.containers.slots.SlotSapling;
@@ -248,6 +250,15 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		} else {
 			final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
 			stuff = block.getDrops(world, here, blockState, fortune);
+			List<ItemStack> dropList = new ArrayList<>();
+			BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(world, here, blockState, fortune, 1, dropList, getFakePlayer(), false);
+			MinecraftForge.EVENT_BUS.post(event);
+			for(ItemStack drop : dropList){ //Here to filter out any bad itemstacks, the mod I was testing with returned stacks with a size of 0
+				if(drop.getItem() != null && drop.stackSize > 0){
+					stuff.add(drop);
+				}
+			}
+
 			int applerand = 200;
 			if (fortune > 0) {
 				applerand -= 10 << fortune;
