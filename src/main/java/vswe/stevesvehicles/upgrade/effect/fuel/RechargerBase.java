@@ -14,7 +14,7 @@ public abstract class RechargerBase extends BaseEffect {
 
 	@Override
 	public void update() {
-		if (!upgrade.getWorldObj().isRemote && canGenerate()) {
+		if (!upgrade.getWorld().isRemote && canGenerate()) {
 			if (cooldown >= 1200 / getAmount()) {
 				cooldown = 0;
 				upgrade.getMaster().increaseFuel(1);

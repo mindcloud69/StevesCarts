@@ -6,6 +6,8 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
@@ -16,7 +18,7 @@ import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 public class Upgrade implements IRecipeOutput {
 
 
-	private static HashMap<Byte, IIcon> sides;
+	//private static HashMap<Byte, IIcon> sides;
 	private static HashMap<Class<? extends BaseEffect>, IEffectInfo> effectInfo;
 
 
@@ -40,13 +42,13 @@ public class Upgrade implements IRecipeOutput {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	/*@SideOnly(Side.CLIENT)
 	private static IIcon standardSideIcon;
 
 	//used to fix the destroy animation
 	public static IIcon getStandardIcon() {
 		return standardSideIcon;
-	}
+	}*/
 
 
 	private String fullUnlocalizedName;
@@ -73,7 +75,7 @@ public class Upgrade implements IRecipeOutput {
 	}
 
 	public String getName() {
-		return StatCollector.translateToLocal(getUnlocalizedName());
+		return I18n.translateToLocal(getUnlocalizedName());
 	}
 
 	public Upgrade addEffect(Class <? extends BaseEffect> effect, Object ... params) {
@@ -126,7 +128,7 @@ public class Upgrade implements IRecipeOutput {
 		return unlocalizedName;
 	}
 
-	private IIcon icon;
+	/*private IIcon icon;
 
 	@SideOnly(Side.CLIENT)
 	protected void createIcon(IIconRegister register) {
@@ -148,16 +150,15 @@ public class Upgrade implements IRecipeOutput {
 		return standardSideIcon;
 	}
 
-
-	public boolean connectToRedstone() {
-		return false;
-	}
-
 	public static void registerIcons(IIconRegister register) {
 		standardSideIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":upgrades/sides/default");
 
 		for (Upgrade upgrade : UpgradeRegistry.getAllUpgrades()) {
 			upgrade.createIcon(register);
 		}
+	}*/
+	
+	public boolean connectToRedstone() {
+		return false;
 	}
 }

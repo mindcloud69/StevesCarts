@@ -42,7 +42,7 @@ public class InputChest extends SimpleInventoryEffect {
 
 	@Override
 	public void update() {
-		if (!upgrade.getWorldObj().isRemote && upgrade.getMaster() != null) {
+		if (!upgrade.getWorld().isRemote && upgrade.getMaster() != null) {
 
 			if (cooldown > 0) {
 				cooldown--;

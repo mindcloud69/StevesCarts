@@ -76,7 +76,7 @@ public class Disassemble extends InventoryEffect {
 			}
 
 			if (needsToPuke) {
-				if ( !upgrade.getWorldObj().isRemote) {
+				if ( !upgrade.getWorld().isRemote) {
 					upgrade.getMaster().puke(upgrade.getStackInSlot(0).copy());
 				}
 				upgrade.setInventorySlotContents(0, null);
@@ -97,7 +97,7 @@ public class Disassemble extends InventoryEffect {
 				if (master.getStackInSlot(i).stackSize <= 0) {
 					master.setInventorySlotContents(i, null);
 				}else if(full) {
-					if (!master.getWorldObj().isRemote) {
+					if (!master.getWorld().isRemote) {
 						master.puke(master.getStackInSlot(i).copy());
 					}
 					master.setInventorySlotContents(i, null);

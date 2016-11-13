@@ -12,7 +12,7 @@ public class Redstone extends BaseEffect {
 
 	@Override
 	public void update() {
-		if (upgrade.getWorldObj().isBlockIndirectlyGettingPowered(upgrade.xCoord, upgrade.yCoord, upgrade.zCoord)) {
+		if (upgrade.getWorld().isBlockIndirectlyGettingPowered(upgrade.getPos()) > 0) {
 			if (upgrade.getMaster() != null) {
 				upgrade.getMaster().doAssemble();
 			}

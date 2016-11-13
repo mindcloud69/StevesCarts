@@ -24,7 +24,7 @@ public class ThermalFuel extends TankEffect {
 	public void update() {
 		super.update();
 
-		if (!upgrade.getWorldObj().isRemote && upgrade.getMaster() != null) {
+		if (!upgrade.getWorld().isRemote && upgrade.getMaster() != null) {
 			if (upgrade.getFluid() != null && upgrade.getFluid().getFluid().equals(FluidRegistry.LAVA)) {
 				int fuelspace = upgrade.getMaster().getMaxFuelLevel() - upgrade.getMaster().getFuelLevel();				
 				int unitspace = Math.min(fuelspace / LAVA_EFFICIENCY, 200);

@@ -27,9 +27,9 @@ public class UpgradeRegistryProduction extends UpgradeRegistry {
 		knowledge.addEffect(TimeFlat.class, -750);
 		knowledge.addEffect(TimeFlatCart.class, -5000);
 
-		knowledge.addShapedRecipe(  Items.book,         Blocks.bookshelf,           Items.book,
-				Blocks.bookshelf,   Blocks.enchanting_table,    Blocks.bookshelf,
-				Items.iron_ingot,   BLANK_UPGRADE,              Items.iron_ingot);
+		knowledge.addShapedRecipe(  Items.BOOK,         Blocks.BOOKSHELF,           Items.BOOK,
+				Blocks.BOOKSHELF,   Blocks.ENCHANTING_TABLE,    Blocks.BOOKSHELF,
+				Items.IRON_INGOT,   BLANK_UPGRADE,              Items.IRON_INGOT);
 
 		register(knowledge);
 
@@ -39,8 +39,8 @@ public class UpgradeRegistryProduction extends UpgradeRegistry {
 		espionage.addEffect(TimeFlat.class, -2500);
 		espionage.addEffect(TimeFlatCart.class, -14000);
 
-		espionage.addShapedRecipe(  Blocks.bookshelf,       Items.iron_ingot,   Blocks.bookshelf,
-				Items.glowstone_dust,   REINFORCED_METAL,   Items.glowstone_dust,
+		espionage.addShapedRecipe(  Blocks.BOOKSHELF,       Items.IRON_INGOT,   Blocks.BOOKSHELF,
+				Items.GLOWSTONE_DUST,   REINFORCED_METAL,   Items.GLOWSTONE_DUST,
 				REINFORCED_METAL,       knowledge,          REINFORCED_METAL);
 
 		register(espionage);
@@ -51,9 +51,9 @@ public class UpgradeRegistryProduction extends UpgradeRegistry {
 		experienced.addEffect(WorkEfficiency.class, 1.0F);
 		experienced.addEffect(FuelCost.class, 2F);
 
-		experienced.addShapedRecipe(    SIMPLE_PCB,             Items.book,         SIMPLE_PCB,
-				Items.iron_ingot,       ADVANCED_PCB,       Items.iron_ingot,
-				Items.iron_ingot,       BLANK_UPGRADE,      Items.iron_ingot);
+		experienced.addShapedRecipe(    SIMPLE_PCB,             Items.BOOK,         SIMPLE_PCB,
+				Items.IRON_INGOT,       ADVANCED_PCB,       Items.IRON_INGOT,
+				Items.IRON_INGOT,       BLANK_UPGRADE,      Items.IRON_INGOT);
 
 		register(experienced);
 
@@ -63,8 +63,8 @@ public class UpgradeRegistryProduction extends UpgradeRegistry {
 		era.addEffect(WorkEfficiency.class, 2.5F);
 		era.addEffect(FuelCost.class, 6F);
 
-		era.addShapedRecipe(    EYE_OF_GALGADOR,    Items.book,     EYE_OF_GALGADOR,
-				Items.iron_ingot,    SIMPLE_PCB,    Items.iron_ingot,
+		era.addShapedRecipe(    EYE_OF_GALGADOR,    Items.BOOK,     EYE_OF_GALGADOR,
+				Items.IRON_INGOT,    SIMPLE_PCB,    Items.IRON_INGOT,
 				EYE_OF_GALGADOR,    experienced,    EYE_OF_GALGADOR);
 
 		register(era);
@@ -74,9 +74,9 @@ public class UpgradeRegistryProduction extends UpgradeRegistry {
 		Upgrade demolisher = new Upgrade("quick_demolisher");
 		demolisher.addEffect(TimeFlatRemoved.class, -8000);
 
-		demolisher.addShapedRecipe(     Blocks.obsidian,    Items.iron_ingot,       Blocks.obsidian,
-				Items.iron_ingot,   Blocks.iron_block,      Items.iron_ingot,
-				Blocks.obsidian,    BLANK_UPGRADE,          Blocks.obsidian);
+		demolisher.addShapedRecipe(     Blocks.OBSIDIAN,    Items.IRON_INGOT,       Blocks.OBSIDIAN,
+				Items.IRON_INGOT,   Blocks.IRON_BLOCK,      Items.IRON_INGOT,
+				Blocks.OBSIDIAN,    BLANK_UPGRADE,          Blocks.OBSIDIAN);
 
 		register(demolisher);
 
@@ -86,9 +86,9 @@ public class UpgradeRegistryProduction extends UpgradeRegistry {
 		entropy.addEffect(TimeFlatRemoved.class, -32000);
 		entropy.addEffect(TimeFlat.class, 500);
 
-		entropy.addShapedRecipe(Blocks.lapis_block,     Items.iron_ingot,       null,
-				Items.redstone,         EYE_OF_GALGADOR,        Items.redstone,
-				null,                   demolisher,             Blocks.lapis_block);
+		entropy.addShapedRecipe(Blocks.LAPIS_BLOCK,     Items.IRON_INGOT,       null,
+				Items.REDSTONE,         EYE_OF_GALGADOR,        Items.REDSTONE,
+				null,                   demolisher,             Blocks.LAPIS_BLOCK);
 
 		register(entropy);
 

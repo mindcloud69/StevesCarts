@@ -1,11 +1,14 @@
 package vswe.stevesvehicles.upgrade.effect.util;
 
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.client.gui.screen.GuiUpgrade;
@@ -88,7 +91,7 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 
 	// TODO synchronize the tag somehow :S
 	@Override
-	public void checkGuiData(ContainerUpgrade con, ICrafting crafting, boolean isNew) {
+	public void checkGuiData(ContainerUpgrade con, IContainerListener crafting, boolean isNew) {
 
 		boolean changed = false;
 		int id = 0;
@@ -103,14 +106,14 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 			changed = true;
 		}else if(tank.getFluid() != null) {
 			if (isNew || oldFluid == null) {
-				upgrade.updateGuiData(con, crafting, id, (short)tank.getFluid().fluidID);
+				upgrade.updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tank.getFluid().getFluid()));
 				upgrade.updateGuiData(con, crafting, amount1, upgrade.getShortFromInt(true, tank.getFluid().amount));
 				upgrade.updateGuiData(con, crafting, amount2, upgrade.getShortFromInt(false, tank.getFluid().amount));
 				changed = true;
 			}else{
 
-				if (oldFluid.fluidID != tank.getFluid().fluidID) {
-					upgrade.updateGuiData(con, crafting, id, (short)tank.getFluid().fluidID);
+				if (!oldFluid.getFluid().getName().equals(tank.getFluid().getFluid().getName())) {
+					upgrade.updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tank.getFluid().getFluid()));
 					changed = true;
 				}
 				if (oldFluid.amount != tank.getFluid().amount) {
@@ -140,7 +143,7 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 			if (data == -1) {
 				tank.setFluid(null);
 			}else if (tank.getFluid() == null){
-				tank.setFluid(new FluidStack(data, 0));
+				tank.setFluid(new FluidStack(FluidRegistry.getFluid(data), 0));
 			}
 		}else if(tank.getFluid() != null) {
 			tank.getFluid().amount = upgrade.getIntFromShort(id == 1, tank.getFluid().amount, data);
@@ -168,7 +171,7 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 			return;
 		}
 
-		if (!upgrade.getWorldObj().isRemote && slots != null && slots.size() >= 2) {
+		if (!upgrade.getWorld().isRemote && slots != null && slots.size() >= 2) {
 			tank.containerTransfer();
 		}
 	}
@@ -208,9 +211,9 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void drawImage(int tankId, GuiBase gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
 		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F);
-	}
+	}*/
 }

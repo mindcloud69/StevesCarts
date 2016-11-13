@@ -1,5 +1,8 @@
 package vswe.stevesvehicles.upgrade.effect.fuel;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 public class Solar extends RechargerBase {
@@ -10,9 +13,11 @@ public class Solar extends RechargerBase {
 
 	@Override
 	protected int getAmount() {
-		if (upgrade.yCoord > upgrade.getMaster().yCoord) {
+		BlockPos masterPos = upgrade.getMaster().getPos();
+		BlockPos pos = upgrade.getPos();
+		if (pos.getY() > masterPos.getY()) {
 			return 400;
-		}else if(upgrade.yCoord < upgrade.getMaster().yCoord) {
+		}else if(pos.getY() < masterPos.getY()) {
 			return 0;
 		}else{
 			return 240;
@@ -21,8 +26,10 @@ public class Solar extends RechargerBase {
 
 	@Override
 	protected boolean canGenerate() {
-		return upgrade.getWorldObj().getBlockLightValue(upgrade.xCoord, upgrade.yCoord, upgrade.zCoord) == 15 &&
-				upgrade.getWorldObj().canBlockSeeTheSky(upgrade.xCoord, upgrade.yCoord+1, upgrade.zCoord);
+		World world = upgrade.getWorld();
+		BlockPos pos = upgrade.getPos();
+		return world.getLightFor(EnumSkyBlock.BLOCK, pos) == 15 &&
+				world.canBlockSeeSky(pos);
 	}
 
 

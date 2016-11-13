@@ -27,9 +27,9 @@ public class UpgradeRegistryPower extends UpgradeRegistry {
 		battery.addEffect(FuelCapacity.class, 5000);
 		battery.addEffect(Recharger.class, 40);
 
-		battery.addShapedRecipe(    Items.redstone,     Items.redstone,                     Items.redstone,
-				Items.redstone,     new ItemStack(Items.dye, 1, 4),     Items.redstone,
-				Items.redstone,     BLANK_UPGRADE,                      Items.redstone);
+		battery.addShapedRecipe(    Items.REDSTONE,     Items.REDSTONE,                     Items.REDSTONE,
+				Items.REDSTONE,     new ItemStack(Items.DYE, 1, 4),     Items.REDSTONE,
+				Items.REDSTONE,     BLANK_UPGRADE,                      Items.REDSTONE);
 
 		register(battery);
 
@@ -39,9 +39,9 @@ public class UpgradeRegistryPower extends UpgradeRegistry {
 		crystal.addEffect(FuelCapacity.class, 15000);
 		crystal.addEffect(Recharger.class, 150);
 
-		crystal.addShapedRecipe(    Items.redstone,         Items.glowstone_dust,       Items.redstone,
-				Items.glowstone_dust,   Blocks.lapis_block,         Items.glowstone_dust,
-				Items.diamond,          battery,                    Items.diamond);
+		crystal.addShapedRecipe(    Items.REDSTONE,         Items.GLOWSTONE_DUST,       Items.REDSTONE,
+				Items.GLOWSTONE_DUST,   Blocks.LAPIS_BLOCK,         Items.GLOWSTONE_DUST,
+				Items.DIAMOND,          battery,                    Items.DIAMOND);
 
 		register(crystal);
 
@@ -50,8 +50,8 @@ public class UpgradeRegistryPower extends UpgradeRegistry {
 		Upgrade co2 = new Upgrade("co2_friendly");
 		co2.addEffect(FuelCost.class, 0.5F);
 
-		co2.addShapedRecipe(    null,           Blocks.piston,      null,
-				SIMPLE_PCB,     Blocks.iron_bars,   SIMPLE_PCB,
+		co2.addShapedRecipe(    null,           Blocks.PISTON,      null,
+				SIMPLE_PCB,     Blocks.IRON_BARS,   SIMPLE_PCB,
 				CLEANING_FAN,   BLANK_UPGRADE,      CLEANING_FAN);
 
 		register(co2);
@@ -63,8 +63,8 @@ public class UpgradeRegistryPower extends UpgradeRegistry {
 		engine.addEffect(FuelCost.class, 1.03F);
 
 		engine.addShapedRecipe( null,               SIMPLE_PCB,         null,
-				Blocks.piston,      Blocks.furnace,     Blocks.piston,
-				Items.iron_ingot,   BLANK_UPGRADE,      Items.iron_ingot);
+				Blocks.PISTON,      Blocks.FURNACE,     Blocks.PISTON,
+				Items.IRON_INGOT,   BLANK_UPGRADE,      Items.IRON_INGOT);
 
 		register(engine);
 
@@ -74,9 +74,9 @@ public class UpgradeRegistryPower extends UpgradeRegistry {
 		thermal.addEffect(ThermalFuel.class);
 		thermal.addEffect(FuelCost.class, 1.03F);
 
-		thermal.addShapedRecipe(    Blocks.nether_brick,    ADVANCED_PCB,       Blocks.nether_brick,
-				Blocks.piston,          Blocks.furnace,     Blocks.piston,
-				Blocks.obsidian,        BLANK_UPGRADE,      Blocks.obsidian);
+		thermal.addShapedRecipe(    Blocks.NETHER_BRICK,    ADVANCED_PCB,       Blocks.NETHER_BRICK,
+				Blocks.PISTON,          Blocks.FURNACE,     Blocks.PISTON,
+				Blocks.OBSIDIAN,        BLANK_UPGRADE,      Blocks.OBSIDIAN);
 		register(thermal);
 
 
@@ -85,8 +85,8 @@ public class UpgradeRegistryPower extends UpgradeRegistry {
 		solar.addEffect(Solar.class);
 
 		solar.addShapedRecipe(  SOLAR_PANEL,        SOLAR_PANEL,        SOLAR_PANEL,
-				Items.redstone,     Items.diamond,      Items.redstone,
-				Items.redstone,     BLANK_UPGRADE,      Items.redstone);
+				Items.REDSTONE,     Items.DIAMOND,      Items.REDSTONE,
+				Items.REDSTONE,     BLANK_UPGRADE,      Items.REDSTONE);
 
 		register(solar);
 	}
