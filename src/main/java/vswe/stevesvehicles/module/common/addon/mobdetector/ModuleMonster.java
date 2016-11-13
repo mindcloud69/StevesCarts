@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon.mobdetector;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -20,28 +21,12 @@ public class ModuleMonster extends ModuleEntityDetector {
 	public String getName() {
 		return LocalizationShooter.MONSTER_TITLE.translate();
 	}
+
 	@Override
 	public boolean isValidTarget(Entity target) {
-		return
-				(
-						target instanceof EntityMob
-						||
-						target instanceof EntityDragon
-						||
-						target instanceof EntityGhast
-						||
-						target instanceof EntitySlime
-						||
-						target instanceof EntityEnderCrystal
-						||
-						(
-								(target instanceof EntityWolf)
-								&&
-								((EntityWolf)target).isAngry()
-								)
-						)
-				&&
-				!(target instanceof EntityEnderman)	//projectiles can't hit them anyways
+		return (target instanceof EntityMob || target instanceof EntityDragon || target instanceof EntityGhast || target instanceof EntitySlime || target instanceof EntityEnderCrystal || ((target instanceof EntityWolf) && ((EntityWolf) target).isAngry()))
+				&& !(target instanceof EntityEnderman) // projectiles can't hit
+				// them anyways
 				;
 	}
 }

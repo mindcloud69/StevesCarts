@@ -6,13 +6,10 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.ForgeHooks;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
-
 public abstract class ModuleRecipe implements IRecipe {
-
 	private IRecipeOutput result;
 	private int count;
 	protected RecipeItem[] recipe;
-
 	protected static final int GRID_WIDTH = 3;
 	protected static final int GRID_HEIGHT = 3;
 

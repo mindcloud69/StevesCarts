@@ -8,8 +8,9 @@ import vswe.stevesvehicles.tileentity.TileEntityManager;
  */
 class DistributorSettingColor extends DistributorSetting {
 	private int color;
+
 	public DistributorSettingColor(int id, boolean top, ILocalizedText name, int color) {
-		super(id,top,name);
+		super(id, top, name);
 		this.color = color;
 	}
 
@@ -17,7 +18,7 @@ class DistributorSettingColor extends DistributorSetting {
 	public boolean isValid(TileEntityManager manager, int chunkId, boolean top) {
 		if (manager.layoutType == 0) {
 			return super.isValid(manager, chunkId, top);
-		}else{
+		} else {
 			return super.isValid(manager, chunkId, top) && manager.color[chunkId] == color;
 		}
 	}

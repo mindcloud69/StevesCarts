@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon.mobdetector;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.passive.EntityVillager;
@@ -15,14 +16,9 @@ public class ModuleVillager extends ModuleEntityDetector {
 	public String getName() {
 		return LocalizationShooter.VILLAGER_TITLE.translate();
 	}
+
 	@Override
 	public boolean isValidTarget(Entity target) {
-		return
-				(
-						target instanceof EntityGolem
-						||
-						target instanceof EntityVillager
-						)
-				;
+		return (target instanceof EntityGolem || target instanceof EntityVillager);
 	}
 }

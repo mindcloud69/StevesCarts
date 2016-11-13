@@ -20,16 +20,15 @@ public class ModuleEggBasket extends ModuleChest {
 	@Override
 	protected boolean playChestSound() {
 		return false;
-	}	
+	}
 
 	@Override
 	protected float getLidSpeed() {
-		return (float)(Math.PI / 150);
-	}	
+		return (float) (Math.PI / 150);
+	}
 
 	@Override
 	protected float chestFullyOpenAngle() {
-		return (float)Math.PI / 8F;
-	}	
-
+		return (float) Math.PI / 8F;
+	}
 }

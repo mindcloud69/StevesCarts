@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.client.rendering.models.common;
+
 import net.minecraft.client.model.ModelRenderer;
 
 import vswe.stevesvehicles.module.ModuleBase;
@@ -12,13 +13,12 @@ public class ModelSniperRifle extends ModelGun {
 	public ModelSniperRifle() {
 		anchor = new ModelRenderer(this);
 		addRenderer(anchor);
-
 		gun = createGun(anchor);
 	}
 
 	@Override
-	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {	
-		gun.rotateAngleZ = module == null ? 0 : ((ModuleShooterAdvanced)module).getPipeRotation(0);
-		anchor.rotateAngleY = module == null ? 0 : (float)Math.PI + ((ModuleShooterAdvanced)module).getRifleDirection() + yaw;
+	public void applyEffects(ModuleBase module, float yaw, float pitch, float roll) {
+		gun.rotateAngleZ = module == null ? 0 : ((ModuleShooterAdvanced) module).getPipeRotation(0);
+		anchor.rotateAngleY = module == null ? 0 : (float) Math.PI + ((ModuleShooterAdvanced) module).getRifleDirection() + yaw;
 	}
 }

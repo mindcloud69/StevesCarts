@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.block;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,6 @@ import vswe.stevesvehicles.upgrade.effect.external.Transposer;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
-
 	private IIcon normalIcon;
 	private IIcon cornerIcon;
 
@@ -36,111 +36,79 @@ public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
 		return meta >= 6 ? cornerIcon : normalIcon;
 	}
 
-
-
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
 		normalIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector");
 		cornerIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector_corner");
-	}	
-
+	}
 
 	@Override
 	public boolean canMakeSlopes(IBlockAccess world, int x, int y, int z) {
 		return false;
 	}
 
-
 	@Override
 	public void onMinecartPass(World world, EntityMinecart Minecart, int x, int y, int z) {
 		if (world.isRemote || !(Minecart instanceof EntityModularCart)) {
 			return;
 		}
-
-
-		EntityModularCart cart = (EntityModularCart)Minecart;
-
-
-
-		if (world.getBlock(x, y - 1, z) == ModBlocks.DETECTOR_UNIT.getBlock() && DetectorType.getTypeFromMeta(world.getBlockMetadata(x, y-1, z)).canInteractWithCart()) {
-
+		EntityModularCart cart = (EntityModularCart) Minecart;
+		if (world.getBlock(x, y - 1, z) == ModBlocks.DETECTOR_UNIT.getBlock() && DetectorType.getTypeFromMeta(world.getBlockMetadata(x, y - 1, z)).canInteractWithCart()) {
 			TileEntity tileentity = world.getTileEntity(x, y - 1, z);
-
 			if (tileentity != null && tileentity instanceof TileEntityDetector) {
-				TileEntityDetector detector = (TileEntityDetector)tileentity;
-
+				TileEntityDetector detector = (TileEntityDetector) tileentity;
 				detector.handleCart(cart.getVehicle());
 			}
-			return;				
-		}
-
-		if (!isCartReadyForAction(cart,x,y,z)) {
 			return;
 		}
-
-
+		if (!isCartReadyForAction(cart, x, y, z)) {
+			return;
+		}
 		int side = 0;
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (Math.abs(i) != Math.abs(j)) {
-
 					Block block = world.getBlock(x + i, y, z + j);
-					if (block == ModBlocks.CARGO_MANAGER.getBlock() || block == ModBlocks.LIQUID_MANAGER.getBlock())
-					{
-						TileEntity tileentity = world.getTileEntity(x+i, y, z+j);
-
+					if (block == ModBlocks.CARGO_MANAGER.getBlock() || block == ModBlocks.LIQUID_MANAGER.getBlock()) {
+						TileEntity tileentity = world.getTileEntity(x + i, y, z + j);
 						if (tileentity != null && tileentity instanceof TileEntityManager) {
-							TileEntityManager manager = (TileEntityManager)tileentity;
+							TileEntityManager manager = (TileEntityManager) tileentity;
 							if (manager.getCart() == null) {
 								manager.setCart(cart);
 								manager.setSide(side);
-							}	
+							}
 						}
-
-						return;						
-					}else if(block == ModBlocks.MODULE_TOGGLER.getBlock()) {
-						TileEntity tileentity = world.getTileEntity(x+i, y, z+j);
-
+						return;
+					} else if (block == ModBlocks.MODULE_TOGGLER.getBlock()) {
+						TileEntity tileentity = world.getTileEntity(x + i, y, z + j);
 						if (tileentity != null && tileentity instanceof TileEntityActivator) {
-							TileEntityActivator activator = (TileEntityActivator)tileentity;
-
-
-
+							TileEntityActivator activator = (TileEntityActivator) tileentity;
 							boolean isOrange = false;
-
 							if ((cart.temppushX == 0) == (cart.temppushZ == 0)) {
 								continue;
 							}
-
 							if (i == 0) {
 								if (j == -1) {
 									isOrange = cart.temppushX < 0;
-								}else{
+								} else {
 									isOrange = cart.temppushX > 0;
 								}
-
-							}else if(j == 0) {
+							} else if (j == 0) {
 								if (i == -1) {
 									isOrange = cart.temppushZ > 0;
-								}else{
+								} else {
 									isOrange = cart.temppushZ < 0;
-								}						
+								}
 							}
-
 							activator.handleCart(cart, isOrange);
-							cart.releaseCart();							
+							cart.releaseCart();
 						}
-
-
 						return;
-
-					}else if(block == ModBlocks.UPGRADE.getBlock()) {
-						TileEntity tileentity = world.getTileEntity(x+i, y, z+j);
-
-						TileEntityUpgrade upgrade = (TileEntityUpgrade)tileentity;
-						if(upgrade != null && upgrade.getEffects() != null) {
+					} else if (block == ModBlocks.UPGRADE.getBlock()) {
+						TileEntity tileentity = world.getTileEntity(x + i, y, z + j);
+						TileEntityUpgrade upgrade = (TileEntityUpgrade) tileentity;
+						if (upgrade != null && upgrade.getEffects() != null) {
 							for (BaseEffect effect : upgrade.getEffects()) {
 								if (effect instanceof Transposer) {
 									if (upgrade.getMaster() != null) {
@@ -156,7 +124,7 @@ public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
 																if (item != null) {
 																	upgrade.getMaster().puke(item);
 																}
-															}															
+															}
 															cart.setDead();
 															return;
 														}
@@ -164,46 +132,37 @@ public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
 												}
 											}
 										}
-									}									
+									}
 								}
-							}							
+							}
 						}
 					}
-
 					side++;
 				}
-			}			
+			}
 		}
-
-
-
-		boolean receivesPower = world.isBlockIndirectlyGettingPowered(x, y, z);			
-		if(receivesPower){
+		boolean receivesPower = world.isBlockIndirectlyGettingPowered(x, y, z);
+		if (receivesPower) {
 			cart.releaseCart();
-		}			
-
+		}
 	}
 
 	@Override
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
-		//check if any block is using this detector for something else
-
-		if (world.getBlock(x, y-1, z) == ModBlocks.DETECTOR_UNIT.getBlock() && DetectorType.getTypeFromMeta(world.getBlockMetadata(x, y-1, z)).canInteractWithCart()) {
+		// check if any block is using this detector for something else
+		if (world.getBlock(x, y - 1, z) == ModBlocks.DETECTOR_UNIT.getBlock() && DetectorType.getTypeFromMeta(world.getBlockMetadata(x, y - 1, z)).canInteractWithCart()) {
 			return false;
 		}
-
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (Math.abs(i) != Math.abs(j)) {
-
-					Block block = world.getBlock(x+i, y, z+j);
+					Block block = world.getBlock(x + i, y, z + j);
 					if (block == ModBlocks.CARGO_MANAGER.getBlock() || block == ModBlocks.LIQUID_MANAGER.getBlock() || block == ModBlocks.MODULE_TOGGLER.getBlock()) {
 						return false;
-					}else if(block == ModBlocks.UPGRADE.getBlock()) {
-						TileEntity tileentity = world.getTileEntity(x+i, y, z+j);
-
-						TileEntityUpgrade upgrade = (TileEntityUpgrade)tileentity;
-						if(upgrade != null && upgrade.getEffects() != null) {
+					} else if (block == ModBlocks.UPGRADE.getBlock()) {
+						TileEntity tileentity = world.getTileEntity(x + i, y, z + j);
+						TileEntityUpgrade upgrade = (TileEntityUpgrade) tileentity;
+						if (upgrade != null && upgrade.getEffects() != null) {
 							for (BaseEffect effect : upgrade.getEffects()) {
 								if (effect instanceof Transposer) {
 									if (upgrade.getMaster() != null) {
@@ -224,22 +183,18 @@ public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
 				}
 			}
 		}
-
-		//if nothing else used this activator it can be controlled by redstone
+		// if nothing else used this activator it can be controlled by redstone
 		return true;
 	}
 
 	private boolean isCartReadyForAction(EntityModularCart cart, int x, int y, int z) {
 		return (cart.disabledX == x || cart.disabledY == y || cart.disabledZ == z) && cart.getVehicle().isDisabled();
-
 	}
-
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		return world.getBlock(x, y - 1, z) == ModBlocks.DETECTOR_UNIT.getBlock() && ModBlocks.DETECTOR_UNIT.getBlock().onBlockActivated(world, x, y - 1, z, player, side, hitX, hitY, hitZ);
 	}
-
 
 	public void refreshState(World world, BlockPos pos, boolean flag) {
 		new Rail(world, pos, world.getBlockState(pos)).place(flag, false);

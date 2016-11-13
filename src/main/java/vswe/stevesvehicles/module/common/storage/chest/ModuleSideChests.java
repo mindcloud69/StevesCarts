@@ -16,6 +16,4 @@ public class ModuleSideChests extends ModuleChest {
 	protected int getInventoryHeight() {
 		return 3;
 	}
-
-
 }

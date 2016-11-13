@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 
 import vswe.stevesvehicles.StevesVehicles;
 
-
 public abstract class BlockContainerBase extends BlockContainer implements IBlockBase {
 	private String unlocalizedName;
+
 	protected BlockContainerBase(Material p_i45386_1_) {
 		super(p_i45386_1_);
 	}
@@ -38,29 +38,24 @@ public abstract class BlockContainerBase extends BlockContainer implements IBloc
 		if (!world.isRemote) {
 			player.openGui(StevesVehicles.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
 		}
-
 		return true;
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
-
 		if (te instanceof IInventory) {
-			IInventory inventory = (IInventory)te;
+			IInventory inventory = (IInventory) te;
 			for (int i = 0; i < inventory.getSizeInventory(); ++i) {
 				ItemStack item = inventory.removeStackFromSlot(i);
-
 				if (item != null) {
 					float offsetX = world.rand.nextFloat() * 0.8F + 0.1F;
 					float offsetY = world.rand.nextFloat() * 0.8F + 0.1F;
 					float offsetZ = world.rand.nextFloat() * 0.8F + 0.1F;
-
 					EntityItem entityItem = new EntityItem(world, pos.getX() + offsetX, pos.getY() + offsetY, pos.getZ() + offsetZ, item.copy());
 					entityItem.motionX = world.rand.nextGaussian() * 0.05F;
 					entityItem.motionY = world.rand.nextGaussian() * 0.05F + 0.2F;
 					entityItem.motionZ = world.rand.nextGaussian() * 0.05F;
-
 					world.spawnEntityInWorld(entityItem);
 				}
 			}

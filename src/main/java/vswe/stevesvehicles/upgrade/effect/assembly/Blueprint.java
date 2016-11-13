@@ -13,7 +13,6 @@ import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.effect.util.SimpleInventoryEffect;
 
 public class Blueprint extends SimpleInventoryEffect {
-
 	public Blueprint(TileEntityUpgrade upgrade) {
 		super(upgrade, 1, 1);
 	}
@@ -27,27 +26,22 @@ public class Blueprint extends SimpleInventoryEffect {
 		ItemStack blueprint = upgrade.getStackInSlot(0);
 		if (blueprint != null) {
 			List<ModuleData> blueprintModules = ModuleDataItemHandler.getModulesFromItem(blueprint);
-
 			if (blueprintModules == null) {
 				return false;
 			}
-
 			ArrayList<ModuleData> missing = new ArrayList<>();
-
 			for (ModuleData blueprintModule : blueprintModules) {
 				int index = modules.indexOf(blueprintModule);
 				if (index != -1) {
 					modules.remove(index);
-				}else{
+				} else {
 					missing.add(blueprintModule);
 				}
 			}
-
 			return missing.contains(module);
-		}else{
-			//depends on setting, will return false for now
+		} else {
+			// depends on setting, will return false for now
 			return false;
 		}
 	}
-
 }

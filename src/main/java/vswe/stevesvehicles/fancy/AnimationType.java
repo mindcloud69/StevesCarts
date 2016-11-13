@@ -5,11 +5,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public enum AnimationType {
-	STILL("Still"),
-	ANIMATION("Loop"),
-	PAUSE("Pause"),
-	RANDOM("Random");
-
+	STILL("Still"), ANIMATION("Loop"), PAUSE("Pause"), RANDOM("Random");
 	private String code;
 
 	AnimationType(String code) {

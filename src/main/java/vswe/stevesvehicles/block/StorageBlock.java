@@ -7,10 +7,10 @@ import vswe.stevesvehicles.recipe.IRecipeOutput;
 import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
 
 public class StorageBlock implements IRecipeOutput {
-
 	private int id;
 	private String name;
 	private ItemStack item;
+
 	public StorageBlock(int id, String name, ItemStack item) {
 		this.id = id;
 		this.name = name;
@@ -22,14 +22,13 @@ public class StorageBlock implements IRecipeOutput {
 	}
 
 	public void loadRecipe() {
-		//compress
+		// compress
 		Object[] items = new ItemStack[9];
 		for (int i = 0; i < items.length; i++) {
 			items[i] = item;
 		}
 		GameRegistry.addRecipe(new ModuleRecipeShaped(this, 3, 3, items));
-
-		//restore
+		// restore
 		GameRegistry.addRecipe(new ModuleRecipeShaped(new IRecipeOutput() {
 			@Override
 			public ItemStack getItemStack() {
@@ -37,7 +36,7 @@ public class StorageBlock implements IRecipeOutput {
 				result.stackSize = 9;
 				return result;
 			}
-		}, 1, 1, new Object[] {getItemStack()}));
+		}, 1, 1, new Object[] { getItemStack() }));
 	}
 
 	@Override

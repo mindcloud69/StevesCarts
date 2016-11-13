@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.recipe.item;
 
-
 import java.util.List;
 
 import net.minecraft.item.ItemStack;

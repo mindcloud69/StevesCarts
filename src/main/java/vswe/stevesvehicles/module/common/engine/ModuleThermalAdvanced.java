@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.engine;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleThermalAdvanced extends ModuleThermalBase {
@@ -15,5 +16,4 @@ public class ModuleThermalAdvanced extends ModuleThermalBase {
 	protected int getCoolantEfficiency() {
 		return 150;
 	}
-
 }

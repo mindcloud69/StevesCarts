@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.block;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -7,9 +8,7 @@ import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityActivator;
 
-
 public class BlockActivator extends BlockContainerBase {
-
 	public BlockActivator() {
 		super(Material.rock);
 		setCreativeTab(CreativeTabLoader.blocks);
@@ -24,9 +23,9 @@ public class BlockActivator extends BlockContainerBase {
 	public IIcon getIcon(int side, int meta) {
 		if (side == 0) {
 			return botIcon;
-		}else if(side == 1) {
+		} else if (side == 1) {
 			return topIcon;
-		}else {
+		} else {
 			return sideIcon;
 		}
 	}
@@ -37,8 +36,7 @@ public class BlockActivator extends BlockContainerBase {
 		topIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":toggler/top");
 		botIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":toggler/bot");
 		sideIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":toggler/side");
-	}	
-
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

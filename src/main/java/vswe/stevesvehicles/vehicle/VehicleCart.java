@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.vehicle;
 
-
 import net.minecraft.nbt.NBTTagCompound;
 
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
@@ -15,21 +14,20 @@ public class VehicleCart extends vswe.stevesvehicles.vehicle.VehicleBase {
 	}
 
 	private EntityModularCart getCart() {
-		return (EntityModularCart)getEntity();
+		return (EntityModularCart) getEntity();
 	}
 
 	@Override
 	public void updateFuel() {
 		super.updateFuel();
-		//if a cart is not moving but has fuel for it, start it
+		// if a cart is not moving but has fuel for it, start it
 		if (hasFuel()) {
 			if (!engineFlag) {
 				getCart().pushX = getCart().temppushX;
 				getCart().pushZ = getCart().temppushZ;
 			}
-
-			//if the cart doesn't have fuel but is moving, stop it
-		}else if(engineFlag){
+			// if the cart doesn't have fuel but is moving, stop it
+		} else if (engineFlag) {
 			getCart().temppushX = getCart().pushX;
 			getCart().temppushZ = getCart().pushZ;
 			getCart().pushX = getCart().pushZ = 0.0D;

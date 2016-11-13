@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 
@@ -14,12 +15,12 @@ public abstract class ContainerManager extends ContainerBase {
 	@Override
 	public TileEntityBase getTileEntity() {
 		return manager;
-	}		
-
+	}
 
 	private TileEntityManager manager;
+
 	public ContainerManager(TileEntityManager manager) {
-		this.manager = manager;		
+		this.manager = manager;
 	}
 
 	protected void addPlayer(IInventory invPlayer) {
@@ -28,10 +29,9 @@ public abstract class ContainerManager extends ContainerBase {
 				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, j * 18 + offsetX(), 104 + i * 18 + 36));
 			}
 		}
-
 		for (int i = 0; i < 9; i++) {
 			addSlotToContainer(new Slot(invPlayer, i, i * 18 + offsetX(), 162 + 36));
-		}	
+		}
 	}
 
 	public short lastHeader;

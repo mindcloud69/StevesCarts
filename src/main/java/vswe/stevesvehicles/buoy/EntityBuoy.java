@@ -17,7 +17,6 @@ import io.netty.buffer.ByteBuf;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ModItems;
 
-
 public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	private int renderTick;
 	private float renderMultiplier;
@@ -27,14 +26,13 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 		super(world);
 		preventEntitySpawning = true;
 		setSize(1, 2);
-
 		renderMultiplier = 0.8F + rand.nextFloat() * 0.4F;
 	}
 
 	public EntityBuoy(World world, BlockPos pos, BuoyType buoyType) {
 		this(world);
 		this.posX = pos.getX() + 0.5;
-		this.posY = pos.getY() ;
+		this.posY = pos.getY();
 		this.posZ = pos.getZ() + 0.5;
 		this.buoyType = buoyType;
 	}
@@ -44,10 +42,10 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 		return !isDead;
 	}
 
-	//TODO write a proper one
+	// TODO write a proper one
 	@Override
 	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
-		if (!worldObj.isRemote && !isDead){
+		if (!worldObj.isRemote && !isDead) {
 			setDead();
 		}
 		return true;
@@ -86,27 +84,30 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	private static final String NBT_NEXT = "Next";
 	private static final String NBT_PREV = "Prev";
 
-
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		buoyType = BuoyType.getType(compound.getByte(NBT_TYPE));
-
 		readBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
 		readBuoy(compound, NBT_PREV, DW_PREV_BUOY);
 	}
 
-
 	private void readBuoy(NBTTagCompound compound, String nbt, int id) {
-		//TODO entity ids aren't persistent from load to load so that can't be saved, however there may only be one buoy per block so that can be used to save and load. Can't probably look for the other buoys at this point (probably has to wait for the first tick or something).
+		// TODO entity ids aren't persistent from load to load so that can't be
+		// saved, however there may only be one buoy per block so that can be
+		// used to save and load. Can't probably look for the other buoys at
+		// this point (probably has to wait for the first tick or something).
 	}
 
 	private void writeBuoy(NBTTagCompound compound, String nbt, int id) {
-		//TODO entity ids aren't persistent from load to load so that can't be saved, however there may only be one buoy per block so that can be used to save and load. Can't probably look for the other buoys at this point (probably has to wait for the first tick or something).
+		// TODO entity ids aren't persistent from load to load so that can't be
+		// saved, however there may only be one buoy per block so that can be
+		// used to save and load. Can't probably look for the other buoys at
+		// this point (probably has to wait for the first tick or something).
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setByte(NBT_TYPE, (byte)buoyType.getMeta());
+		compound.setByte(NBT_TYPE, (byte) buoyType.getMeta());
 		writeBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
 		writeBuoy(compound, NBT_PREV, DW_PREV_BUOY);
 	}
@@ -114,7 +115,6 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
 		if (worldObj.isRemote) {
 			renderTick++;
 		}
@@ -158,9 +158,8 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 		int entityId = dataWatcher.getWatchableObjectInt(id);
 		Entity entity = worldObj.getEntityByID(entityId);
 		if (entity instanceof EntityBuoy && !entity.isDead) {
-			return (EntityBuoy)entity;
+			return (EntityBuoy) entity;
 		}
-
 		return null;
 	}
 
@@ -192,12 +191,12 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	public void setBuoy(EntityBuoy buoy, boolean next) {
 		if (next) {
 			setNextBuoy(buoy);
-		}else{
+		} else {
 			setPrevBuoy(buoy);
 		}
 	}
 
-	public EntityBuoy getBuoy( boolean next) {
+	public EntityBuoy getBuoy(boolean next) {
 		return next ? getNextBuoy() : getPrevBuoy();
 	}
 }

@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.attachment;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -6,8 +7,13 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -21,6 +27,9 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleShooterAdvanced extends ModuleShooter {
+	private static DataParameter<Byte> OPTION;
+	private static DataParameter<Byte> RIFLE_DIRECTION;
+
 	public ModuleShooterAdvanced(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -31,18 +40,17 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	}
 
 	private ArrayList<ModuleEntityDetector> detectors;
+
 	@Override
 	public void preInit() {
 		super.preInit();
 		detectors = new ArrayList<>();
-
 		for (ModuleBase module : getVehicle().getModules()) {
 			if (module instanceof ModuleEntityDetector) {
-				detectors.add((ModuleEntityDetector)module);
+				detectors.add((ModuleEntityDetector) module);
 			}
 		}
-	}		
-
+	}
 
 	@Override
 	protected void generatePipes(ArrayList<Integer> list) {
@@ -60,19 +68,19 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	}
 
 	private int[] getSelectionBox(int id) {
-		return new int[] {90, id * 10 +  (guiHeight() - 10 * detectors.size()) / 2,8,8};
+		return new int[] { 90, id * 10 + (guiHeight() - 10 * detectors.size()) / 2, 8, 8 };
 	}
 
 	@Override
-	protected void generateInterfaceRegions() {}
+	protected void generateInterfaceRegions() {
+	}
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
 		drawString(gui, LocalizationShooter.SHOOTER_TITLE.translate(), 8, 6, 0x404040);
-
 		for (int i = 0; i < detectors.size(); i++) {
 			int[] box = getSelectionBox(i);
-			drawString(gui,detectors.get(i).getName(), box[0] + 12, box[1], 0x404040);
+			drawString(gui, detectors.get(i).getName(), box[0] + 12, box[1], 0x404040);
 		}
 	}
 
@@ -81,10 +89,9 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		for (int i = 0; i < detectors.size(); i++) {
 			int srcX = isOptionActive(i) ? 1 : 10;
-			int srcY = inRect(x,y,getSelectionBox(i)) ? 10 : 1;
+			int srcY = inRect(x, y, getSelectionBox(i)) ? 10 : 1;
 			drawImage(gui, getSelectionBox(i), srcX, srcY);
 		}
 	}
@@ -93,7 +100,7 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
 			for (int i = 0; i < detectors.size(); i++) {
-				if (inRect(x,y,getSelectionBox(i))) {
+				if (inRect(x, y, getSelectionBox(i))) {
 					DataWriter dw = getDataWriter();
 					dw.writeByte(i);
 					sendPacketToServer(dw);
@@ -104,33 +111,30 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	}
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
 	}
-
 
 	@Override
 	public int numberOfGuiData() {
 		return 0;
 	}
+
 	@Override
 	protected void checkGuiData(Object[] info) {
-
-	}	
+	}
 
 	@Override
 	protected void shoot() {
 		setTimeToNext(15);
-		if (!getVehicle().hasFuel())
-		{
+		if (!getVehicle().hasFuel()) {
 			return;
 		}
 		Entity target = getTarget();
-
 		if (target != null) {
 			if (hasProjectileItem()) {
 				shootAtTarget(target);
-			}else{
-				getVehicle().getWorld().playAuxSFX(1001, getVehicle().x(), getVehicle().y(), getVehicle().z(), 0);
+			} else {
+				getVehicle().getWorld().playEvent(1001, getVehicle().pos(), 0);
 			}
 		}
 	}
@@ -139,39 +143,26 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 		if (target == null) {
 			return;
 		}
-
-
 		Entity projectile = getProjectile(target, getProjectileItem(true));
-
-
 		projectile.posY = getVehicle().getEntity().posY + getVehicle().getEntity().getEyeHeight() - 0.10000000149011612D;
-
 		double disX = target.posX - getVehicle().getEntity().posX;
 		double disY = target.posY + target.getEyeHeight() - 0.699999988079071D - projectile.posY;
 		double disZ = target.posZ - getVehicle().getEntity().posZ;
-
-		double dis = (double)MathHelper.sqrt_double(disX * disX + disZ * disZ);
-
-		if (dis >= 1.0E-7D){
-			float theta = (float)(Math.atan2(disZ, disX) * 180.0D / Math.PI) - 90.0F;
-			float phi = (float)(-(Math.atan2(disY, dis) * 180.0D / Math.PI));
-
-			setRifleDirection((float)Math.atan2(disZ, disX));
-
+		double dis = MathHelper.sqrt_double(disX * disX + disZ * disZ);
+		if (dis >= 1.0E-7D) {
+			float theta = (float) (Math.atan2(disZ, disX) * 180.0D / Math.PI) - 90.0F;
+			float phi = (float) (-(Math.atan2(disY, dis) * 180.0D / Math.PI));
+			setRifleDirection((float) Math.atan2(disZ, disX));
 			double disPX = disX / dis;
 			double disPZ = disZ / dis;
-
 			projectile.setLocationAndAngles(getVehicle().getEntity().posX + disPX * 1.5F, projectile.posY, getVehicle().getEntity().posZ + disPZ * 1.5, theta, phi);
-
-			projectile.yOffset = 0.0F;
-			float disD5 = (float)dis * 0.2F;
-			setHeading(projectile, disX, disY + disD5, disZ, 1.6F, 0/*12.0F*/);
+			projectile.setRenderYawOffset(0.0F);
+			float disD5 = (float) dis * 0.2F;
+			setHeading(projectile, disX, disY + disD5, disZ, 1.6F, 0/* 12.0F */);
 		}
-
-		getVehicle().getWorld().playSoundAtEntity(getVehicle().getEntity(), "random.bow", 1.0F, 1.0F / (getVehicle().getRandom().nextFloat() * 0.4F + 0.8F));
-
+		getVehicle().getEntity().playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0f, 1.0f / (getVehicle().getWorld().rand.nextFloat() * 0.4f + 0.8f));
 		setProjectileDamage(projectile);
-		setProjectileOnFire(projectile);	
+		setProjectileOnFire(projectile);
 		setProjectileKnockBack(projectile);
 		getVehicle().getWorld().spawnEntityInWorld(projectile);
 		damageEnchant();
@@ -182,13 +173,12 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	}
 
 	private EntityNearestTarget sorter = new EntityNearestTarget(getVehicle().getEntity());
-	private Entity getTarget() {
-		List entities = getVehicle().getWorld().getEntitiesWithinAABB(Entity.class, getVehicle().getEntity().boundingBox.expand(getTargetDistance(), 4.0D, getTargetDistance()));
-		Collections.sort(entities, sorter);
 
+	private Entity getTarget() {
+		List entities = getVehicle().getWorld().getEntitiesWithinAABB(Entity.class, getVehicle().getEntity().getEntityBoundingBox().expand(getTargetDistance(), 4.0D, getTargetDistance()));
+		Collections.sort(entities, sorter);
 		for (Object entity : entities) {
 			Entity target = (Entity) entity;
-
 			if (target != getVehicle().getEntity() && canSee(target)) {
 				for (int i = 0; i < detectors.size(); i++) {
 					if (isOptionActive(i)) {
@@ -200,19 +190,18 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 				}
 			}
 		}
-
 		return null;
 	}
 
 	private boolean canSee(Entity target) {
-		return target != null && getVehicle().getWorld().rayTraceBlocks(Vec3.createVectorHelper(getVehicle().getEntity().posX, getVehicle().getEntity().posY + getVehicle().getEntity().getEyeHeight(), getVehicle().getEntity().posZ), Vec3.createVectorHelper(target.posX, target.posY + target.getEyeHeight(), target.posZ)) == null;
+		return target != null && getVehicle().getWorld().rayTraceBlocks(new Vec3d(getVehicle().getEntity().posX, getVehicle().getEntity().posY + getVehicle().getEntity().getEyeHeight(), getVehicle().getEntity().posZ),
+				new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ)) == null;
 	}
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
 		switchOption(dr.readByte());
 	}
-
 
 	@Override
 	public int numberOfDataWatchers() {
@@ -221,22 +210,24 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
-		addDw(1,0);
+		OPTION = createDw(DataSerializers.BYTE);
+		RIFLE_DIRECTION = createDw(DataSerializers.BYTE);
+		registerDw(OPTION, (byte) 0);
+		registerDw(RIFLE_DIRECTION, (byte) 0);
 	}
 
 	private void switchOption(int id) {
-		byte val = getDw(0);
+		byte val = getDw(OPTION);
 		val ^= 1 << id;
-		updateDw(0, val);
+		updateDw(OPTION, val);
 	}
 
 	public void setOptions(byte val) {
-		updateDw(0,val);
-	}	
+		updateDw(OPTION, val);
+	}
 
 	public byte selectedOptions() {
-		return getDw(0);
+		return getDw(OPTION);
 	}
 
 	private boolean isOptionActive(int id) {
@@ -247,12 +238,13 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	protected boolean isPipeActive(int id) {
 		if (isPlaceholder()) {
 			return getBooleanSimulationInfo();
-		}else{
+		} else {
 			return selectedOptions() != 0;
 		}
 	}
 
 	private float detectorAngle;
+
 	public float getDetectorAngle() {
 		return detectorAngle;
 	}
@@ -260,30 +252,30 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	@Override
 	public void update() {
 		super.update();
-
 		if (isPipeActive(0)) {
-			detectorAngle = (float)((detectorAngle + 0.1F) % (Math.PI * 2));
+			detectorAngle = (float) ((detectorAngle + 0.1F) % (Math.PI * 2));
 		}
 	}
 
-	private	void setRifleDirection(float val) {
-		val /= 2 * (float)Math.PI;
+	private void setRifleDirection(float val) {
+		val /= 2 * (float) Math.PI;
 		val *= 256;
 		val %= 256;
 		if (val < 0) {
 			val += 256;
 		}
-		updateDw(1,(byte)val);
+		updateDw(RIFLE_DIRECTION, (byte) val);
 	}
+
 	public float getRifleDirection() {
 		float val;
 		if (isPlaceholder()) {
 			val = 0F;
-		}else{
-			val = getDw(1);
+		} else {
+			val = getDw(RIFLE_DIRECTION);
 		}
 		val /= 256F;
-		val *= (float)Math.PI * 2;
+		val *= (float) Math.PI * 2;
 		return val;
 	}
 
@@ -314,7 +306,7 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 
 		@Override
 		public int compare(Object obj1, Object obj2) {
-			return this.compareDistanceSq((Entity)obj1, (Entity)obj2);
+			return this.compareDistanceSq((Entity) obj1, (Entity) obj2);
 		}
 	}
 }

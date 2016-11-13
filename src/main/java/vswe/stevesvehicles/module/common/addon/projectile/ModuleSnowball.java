@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon.projectile;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Items;
@@ -11,14 +12,13 @@ public class ModuleSnowball extends ModuleProjectile {
 		super(vehicleBase);
 	}
 
-
 	@Override
 	public boolean isValidProjectile(ItemStack item) {
 		return item.getItem() == Items.snowball;
 	}
+
 	@Override
 	public Entity createProjectile(Entity target, ItemStack item) {
 		return new EntitySnowball(getVehicle().getWorld());
 	}
-
 }

@@ -8,11 +8,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 
-
 public class CreativeTabCustom extends CreativeTabs {
 	private static final ILocalizedText title = new LocalizedTextAdvanced("steves_vehicles:gui.tab:base");
 	private ILocalizedText localizedText;
 	private ItemStack item;
+
 	public CreativeTabCustom(ILocalizedText localizedText) {
 		super("steves_vehicles:gui.tab:ignored");
 		this.localizedText = localizedText;
@@ -20,11 +20,9 @@ public class CreativeTabCustom extends CreativeTabs {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public ItemStack getIconItemStack()
-	{
+	public ItemStack getIconItemStack() {
 		return item;
 	}
-
 
 	public void setIcon(ItemStack item) {
 		this.item = item;
@@ -32,7 +30,9 @@ public class CreativeTabCustom extends CreativeTabs {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Item getTabIconItem() {return null;}
+	public Item getTabIconItem() {
+		return null;
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

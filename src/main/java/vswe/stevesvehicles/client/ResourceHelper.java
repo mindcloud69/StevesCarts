@@ -4,8 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 public class ResourceHelper {
-
-
 	@SuppressWarnings("SpellCheckingInspection")
 	public static ResourceLocation getResource(String path) {
 		return new ResourceLocation("stevescarts", "textures" + path);
@@ -18,6 +16,4 @@ public class ResourceHelper {
 	public static void bindResource(ResourceLocation resource) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
 	}
-
-
 }

@@ -1,8 +1,10 @@
 package vswe.stevesvehicles.module.common.attachment;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.LocalizationTravel;
@@ -21,7 +23,7 @@ public class ModuleSeat extends ModuleAttachment {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -37,7 +39,7 @@ public class ModuleSeat extends ModuleAttachment {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-		drawString(gui,getModuleName(), 8, 6, 0x404040);
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
 	}
 
 	private static final int TEXTURE_SPACING = 1;
@@ -47,36 +49,33 @@ public class ModuleSeat extends ModuleAttachment {
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		int imageID = getState();
 		int borderID = 0;
-		if (inRect(x,y, BUTTON_RECT)) {
+		if (inRect(x, y, BUTTON_RECT)) {
 			if (imageID == 0) {
 				borderID = 2;
-			}else{
+			} else {
 				borderID = 1;
 			}
 		}
-
 		drawImage(gui, BUTTON_RECT, TEXTURE_SPACING, TEXTURE_SPACING + (TEXTURE_SPACING + BUTTON_RECT[3]) * borderID);
-
 		int srcY = TEXTURE_SPACING + (TEXTURE_SPACING + BUTTON_RECT[3]) * 3 + imageID * (TEXTURE_SPACING + BUTTON_RECT[3] - 2);
 		drawImage(gui, BUTTON_RECT[0] + 1, BUTTON_RECT[1] + 1, TEXTURE_SPACING, srcY, BUTTON_RECT[2] - 2, BUTTON_RECT[3] - 2);
 	}
 
-	private static final int[] BUTTON_RECT = new int[] {20,20, 24, 12};
+	private static final int[] BUTTON_RECT = new int[] { 20, 20, 24, 12 };
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		drawStringOnMouseOver(gui, getStateName(), x,y, BUTTON_RECT);
+		drawStringOnMouseOver(gui, getStateName(), x, y, BUTTON_RECT);
 	}
 
 	private int getState() {
-		if (getVehicle().getEntity().riddenByEntity == null) {
+		if (getVehicle().getEntity().getControllingPassenger() == null) {
 			return 1;
-		}else if(getVehicle().getEntity().riddenByEntity == getClientPlayer()) {
+		} else if (getVehicle().getEntity().getControllingPassenger() == getClientPlayer()) {
 			return 2;
-		}else {
+		} else {
 			return 0;
 		}
 	}
@@ -88,7 +87,7 @@ public class ModuleSeat extends ModuleAttachment {
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
-			if (inRect(x,y, BUTTON_RECT)) {
+			if (inRect(x, y, BUTTON_RECT)) {
 				sendPacketToServer(getDataWriter());
 			}
 		}
@@ -97,10 +96,10 @@ public class ModuleSeat extends ModuleAttachment {
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
 		if (player != null) {
-			if (getVehicle().getEntity().riddenByEntity == null) {
-				player.mountEntity(getVehicle().getEntity());
-			}else if (getVehicle().getEntity().riddenByEntity == player){
-				player.mountEntity(null);
+			if (getVehicle().getEntity().getControllingPassenger() == null) {
+				player.startRiding(getVehicle().getEntity());
+			} else if (getVehicle().getEntity().getControllingPassenger() == player) {
+				player.dismountRidingEntity();
 			}
 		}
 	}
@@ -108,13 +107,12 @@ public class ModuleSeat extends ModuleAttachment {
 	@Override
 	public void update() {
 		super.update();
-
-		if (getVehicle().getEntity().riddenByEntity != null) {
+		if (getVehicle().getEntity().getControllingPassenger() != null) {
 			relative = false;
-			chairAngle = (float)(Math.PI + Math.PI * getVehicle().getEntity().riddenByEntity.rotationYaw / 180F);
-		}else{
+			chairAngle = (float) (Math.PI + Math.PI * getVehicle().getEntity().getControllingPassenger().rotationYaw / 180F);
+		} else {
 			relative = true;
-			chairAngle = (float)Math.PI / 2;
+			chairAngle = (float) Math.PI / 2;
 		}
 	}
 
@@ -133,8 +131,4 @@ public class ModuleSeat extends ModuleAttachment {
 	public float mountedOffset(Entity rider) {
 		return -0.1F;
 	}
-
-
-
-
 }

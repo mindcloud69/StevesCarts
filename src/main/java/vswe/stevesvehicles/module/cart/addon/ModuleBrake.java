@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.cart.addon;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	private DataParameter<Boolean> FORGE_STOPPING;
+
 	public ModuleBrake(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -37,7 +39,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -56,7 +58,6 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 		drawString(gui, LocalizationCartTravel.LEVER_TITLE.translate(), 8, 6, 0x404040);
 	}
 
-
 	private static final int TEXTURE_SPACING = 1;
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/lever.png");
 
@@ -64,24 +65,22 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		drawButton(gui, x, y, START_STOP_RECT, isForceStopping() ? 2 : 1);
 		drawButton(gui, x, y, TURN_BACK_RECT, 0);
 	}
 
 	private void drawButton(GuiVehicle gui, int x, int y, int[] coordinates, int imageId) {
-		if (inRect(x,y, coordinates)) {
-			drawImage(gui ,coordinates, TEXTURE_SPACING, TEXTURE_SPACING * 2 + coordinates[3]);
-		}else{
+		if (inRect(x, y, coordinates)) {
+			drawImage(gui, coordinates, TEXTURE_SPACING, TEXTURE_SPACING * 2 + coordinates[3]);
+		} else {
 			drawImage(gui, coordinates, TEXTURE_SPACING, TEXTURE_SPACING);
 		}
-
 		int srcY = TEXTURE_SPACING + (TEXTURE_SPACING + coordinates[3]) * 2 + imageId * (TEXTURE_SPACING + coordinates[3] - 2);
 		drawImage(gui, coordinates[0] + 1, coordinates[1] + 1, 0, srcY, coordinates[2] - 2, coordinates[3] - 2);
 	}
 
-	private static final int[] START_STOP_RECT = new int[] {15,20, 24, 12};
-	private static final int[] TURN_BACK_RECT = new int[] {START_STOP_RECT[0] + START_STOP_RECT[2] + 5, START_STOP_RECT[1], START_STOP_RECT[2], START_STOP_RECT[3]};
+	private static final int[] START_STOP_RECT = new int[] { 15, 20, 24, 12 };
+	private static final int[] TURN_BACK_RECT = new int[] { START_STOP_RECT[0] + START_STOP_RECT[2] + 5, START_STOP_RECT[1], START_STOP_RECT[2], START_STOP_RECT[3] };
 
 	@Override
 	public boolean stopEngines() {
@@ -89,9 +88,9 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	}
 
 	private boolean isForceStopping() {
-		if (isPlaceholder())  {
+		if (isPlaceholder()) {
 			return getBooleanSimulationInfo();
-		}else{
+		} else {
 			return getDw(FORGE_STOPPING);
 		}
 	}
@@ -102,18 +101,18 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		drawStringOnMouseOver(gui, isForceStopping() ? LocalizationCartTravel.LEVER_START.translate() : LocalizationCartTravel.LEVER_STOP.translate(), x,y, START_STOP_RECT);
-		drawStringOnMouseOver(gui, LocalizationCartTravel.LEVER_TURN_BACK.translate(), x,y, TURN_BACK_RECT);
+		drawStringOnMouseOver(gui, isForceStopping() ? LocalizationCartTravel.LEVER_START.translate() : LocalizationCartTravel.LEVER_STOP.translate(), x, y, START_STOP_RECT);
+		drawStringOnMouseOver(gui, LocalizationCartTravel.LEVER_TURN_BACK.translate(), x, y, TURN_BACK_RECT);
 	}
 
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
-			if (inRect(x,y, START_STOP_RECT)) {
+			if (inRect(x, y, START_STOP_RECT)) {
 				DataWriter dw = getDataWriter();
 				dw.writeBoolean(true);
 				sendPacketToServer(dw);
-			}else if (inRect(x,y, TURN_BACK_RECT)) {
+			} else if (inRect(x, y, TURN_BACK_RECT)) {
 				DataWriter dw = getDataWriter();
 				dw.writeBoolean(false);
 				sendPacketToServer(dw);
@@ -125,21 +124,19 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
 		if (dr.readBoolean()) {
 			setForceStopping(!isForceStopping());
-		}else{
+		} else {
 			turnback();
 		}
 	}
-
 
 	@Override
 	public float getLeverState() {
 		if (isForceStopping()) {
 			return 0;
-		}else{
+		} else {
 			return 1;
 		}
 	}
-
 
 	@Override
 	public int numberOfDataWatchers() {
@@ -152,8 +149,6 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 		this.registerDw(FORGE_STOPPING, false);
 	}
 
-
-
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setBoolean("ForceStop", isForceStopping());
@@ -162,5 +157,5 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setForceStopping(tagCompound.getBoolean("ForceStop"));
-	}		
+	}
 }

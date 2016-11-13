@@ -1,9 +1,7 @@
 package vswe.stevesvehicles.localization.entry.info;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
-
 
 public class LocalizationGroup {
 	public static final ILocalizedText ENGINE = createAdvanced("engine");
@@ -17,11 +15,12 @@ public class LocalizationGroup {
 	public static final ILocalizedText TOOL_SHOOTER = createAdvanced("tool_shooter");
 	public static final ILocalizedText SEAT = createAdvanced("seat");
 	public static final ILocalizedText CAGE = createAdvanced("cage");
-
 	private static final String HEADER = "steves_vehicles:gui.info.group:";
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationGroup() {}
+	private LocalizationGroup() {
+	}
 }

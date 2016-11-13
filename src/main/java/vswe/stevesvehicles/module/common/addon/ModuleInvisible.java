@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,18 +30,14 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
-
-
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
 		drawString(gui, getModuleName(), 8, 6, 0x404040);
 	}
-
-
 
 	@Override
 	public int guiWidth() {
@@ -52,22 +49,18 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 		return 40;
 	}
 
-
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		drawToggleBox(gui, "invisible", !isVisible(), x, y);
 	}
 
-
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		drawStringOnMouseOver(gui, getStateName(), x,y, TOGGLE_IMAGE_RECT);
+		drawStringOnMouseOver(gui, getStateName(), x, y, TOGGLE_IMAGE_RECT);
 	}
 
-
-	@Override 
+	@Override
 	public void update() {
 		super.update();
 		if (!isVisible() && !getVehicle().hasFuelForModule() && !getVehicle().getWorld().isRemote) {
@@ -78,7 +71,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	private boolean isVisible() {
 		if (isPlaceholder()) {
 			return !getBooleanSimulationInfo();
-		}else{
+		} else {
 			return getDw(0) != 0;
 		}
 	}
@@ -90,7 +83,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
-			if (inRect(x,y, TOGGLE_BOX_RECT)) {
+			if (inRect(x, y, TOGGLE_BOX_RECT)) {
 				sendPacketToServer(getDataWriter());
 			}
 		}
@@ -105,7 +98,6 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 		updateDw(0, val ? 1 : 0);
 	}
 
-
 	@Override
 	public boolean shouldVehicleRender() {
 		return isVisible();
@@ -118,10 +110,8 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		addDw(0,(byte)1);
+		addDw(0, (byte) 1);
 	}
-
-
 
 	@Override
 	public int getConsumption(boolean isMoving) {
@@ -136,16 +126,18 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setIsVisible(!tagCompound.getBoolean("Invisible"));
-	}	
+	}
 
 	@Override
 	public void doActivate(int id) {
 		setIsVisible(false);
 	}
+
 	@Override
 	public void doDeActivate(int id) {
 		setIsVisible(true);
 	}
+
 	@Override
 	public boolean isActive(int id) {
 		return !isVisible();

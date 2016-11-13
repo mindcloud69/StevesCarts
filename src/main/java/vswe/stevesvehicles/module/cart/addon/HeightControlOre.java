@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.cart.addon;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +15,10 @@ public class HeightControlOre {
 	public final int spanLowest;
 	public final int bestHighest;
 	public final int bestLowest;
-
 	public static final List<HeightControlOre> ores = new ArrayList<>();
-
 	static {
 		new HeightControlOre("diamond", 0, 15, 12, 5);
-		new HeightControlOre("redstone", 1, 16 ,13, 5);
+		new HeightControlOre("redstone", 1, 16, 13, 5);
 		new HeightControlOre("gold", 2, 33, 30, 5);
 		new HeightControlOre("lapis_lazuli", 3, 32, 18, 11);
 		new HeightControlOre("iron", 4, 67, 41, 5);
@@ -37,7 +36,6 @@ public class HeightControlOre {
 		this.bestLowest = bestLowest;
 		this.srcX = 1;
 		this.srcY = 1 + (textureId * 2 + 1) * 5;
-
 		ores.add(this);
 	}
 
@@ -52,7 +50,6 @@ public class HeightControlOre {
 		this.bestLowest = bestLowest;
 		this.srcX = srcX;
 		this.srcY = srcY;
-
 		ores.add(this);
 	}
 }

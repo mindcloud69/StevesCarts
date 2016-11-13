@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon.chunk;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 
@@ -10,10 +11,9 @@ public class ChunkListener {
 	}
 
 	@SubscribeEvent
-	public void invoke(EntityEvent.EnteringChunk event) {	
+	public void invoke(EntityEvent.EnteringChunk event) {
 		if (!event.entity.isDead && event.entity instanceof IVehicleEntity) {
-			((IVehicleEntity)event.entity).getVehicle().loadChunks(event.newChunkX,event.newChunkZ);
+			((IVehicleEntity) event.entity).getVehicle().loadChunks(event.newChunkX, event.newChunkZ);
 		}
-
 	}
 }

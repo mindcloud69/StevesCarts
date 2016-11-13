@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.module.data.registry.cart;
 
-
 import static vswe.stevesvehicles.item.ComponentTypes.GALGADORIAN_METAL;
 import static vswe.stevesvehicles.item.ComponentTypes.GALGADORIAN_WHEELS;
 import static vswe.stevesvehicles.item.ComponentTypes.IRON_WHEELS;
@@ -39,7 +38,6 @@ import vswe.stevesvehicles.vehicle.VehicleRegistry;
 public class ModuleRegistryCartHulls extends ModuleRegistry {
 	public ModuleRegistryCartHulls() {
 		super("cart.hulls");
-
 		ModuleData wood = new ModuleDataHull("wooden_hull", HullWood.class, 50, 1, 2, 0, 15) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -48,16 +46,9 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelWoodenTop.png")));
 			}
 		};
-
-		wood.addShapedRecipe(   "plankWood",        null,               "plankWood",
-				"plankWood",        "plankWood",        "plankWood",
-				WOODEN_WHEELS,      null,               WOODEN_WHEELS   );
-
+		wood.addShapedRecipe("plankWood", null, "plankWood", "plankWood", "plankWood", "plankWood", WOODEN_WHEELS, null, WOODEN_WHEELS);
 		wood.addVehicles(VehicleRegistry.CART);
 		register(wood);
-
-
-
 		ModuleData standard = new ModuleDataHull("standard_hull", HullStandard.class, 200, 3, 4, 6, 50) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -66,16 +57,9 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelStandardTop.png")));
 			}
 		};
-
-		standard.addShapedRecipe(   Items.IRON_INGOT,   null,               Items.IRON_INGOT,
-				Items.IRON_INGOT,   Items.IRON_INGOT,   Items.IRON_INGOT,
-				IRON_WHEELS,        null,               IRON_WHEELS);
-
+		standard.addShapedRecipe(Items.IRON_INGOT, null, Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, IRON_WHEELS, null, IRON_WHEELS);
 		standard.addVehicles(VehicleRegistry.CART);
 		register(standard);
-
-
-
 		ModuleData reinforced = new ModuleDataHull("reinforced_hull", HullReinforced.class, 500, 5, 6, 12, 150) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -84,17 +68,10 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelLargeTop.png")));
 			}
 		};
-
-		reinforced.addShapedRecipe( REINFORCED_METAL,   null,               REINFORCED_METAL,
-				REINFORCED_METAL,   REINFORCED_METAL,   REINFORCED_METAL,
-				REINFORCED_WHEELS,  null,               REINFORCED_WHEELS);
-
+		reinforced.addShapedRecipe(REINFORCED_METAL, null, REINFORCED_METAL, REINFORCED_METAL, REINFORCED_METAL, REINFORCED_METAL, REINFORCED_WHEELS, null, REINFORCED_WHEELS);
 		reinforced.addVehicles(VehicleRegistry.CART);
 		register(reinforced);
-
-
-
-		ModuleData galgadorian = new ModuleDataHull("galgadorian_hull", HullGalgadorian.class, 1000, 5,  6, 12, 150) {
+		ModuleData galgadorian = new ModuleDataHull("galgadorian_hull", HullGalgadorian.class, 1000, 5, 6, 12, 150) {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
@@ -102,16 +79,9 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelGalgadorianTop.png")));
 			}
 		};
-
-		galgadorian.addShapedRecipe(    GALGADORIAN_METAL,      null,                   GALGADORIAN_METAL,
-				GALGADORIAN_METAL,      GALGADORIAN_METAL,      GALGADORIAN_METAL,
-				GALGADORIAN_WHEELS,     null,                   GALGADORIAN_WHEELS);
-
+		galgadorian.addShapedRecipe(GALGADORIAN_METAL, null, GALGADORIAN_METAL, GALGADORIAN_METAL, GALGADORIAN_METAL, GALGADORIAN_METAL, GALGADORIAN_WHEELS, null, GALGADORIAN_WHEELS);
 		galgadorian.addVehicles(VehicleRegistry.CART);
 		register(galgadorian);
-
-
-
 		ModuleData pumpkin = new ModuleDataHull("pumpkin_chariot", HullPumpkin.class, 40, 1, 2, 0, 15) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -120,18 +90,12 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 				addModel("Top", new ModelPumpkinHullTop(ResourceHelper.getResource("/models/cart/hullModelPumpkinTop.png"), ResourceHelper.getResource("/models/cart/hullModelWoodenTop.png")));
 			}
 		};
-
-		pumpkin.addShapedRecipe(    "plankWood",        null,               "plankWood",
-				"plankWood",        Blocks.PUMPKIN,     "plankWood",
-				WOODEN_WHEELS,      null,               WOODEN_WHEELS);
-
+		pumpkin.addShapedRecipe("plankWood", null, "plankWood", "plankWood", Blocks.PUMPKIN, "plankWood", WOODEN_WHEELS, null, WOODEN_WHEELS);
 		if (!StevesVehicles.holidays.contains(HolidayType.HALLOWEEN)) {
 			pumpkin.lock();
 		}
-
 		pumpkin.addVehicles(VehicleRegistry.CART);
 		register(pumpkin);
-
 		ModuleData pig = new ModuleDataHull("mechanical_pig", HullPig.class, 150, 2, 4, 4, 50) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -144,18 +108,11 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 				addModel("Helmet_Overlay", new ModelPigHelmet(true));
 			}
 		};
-
 		pig.addSides(ModuleSide.FRONT);
 		pig.addMessage(LocalizationMessage.THUNDER_PIG);
-
-		pig.addShapedRecipe(    Items.PORKCHOP,     null,               Items.PORKCHOP,
-				Items.PORKCHOP,     Items.PORKCHOP,     Items.PORKCHOP,
-				IRON_WHEELS,        null,               IRON_WHEELS);
-
+		pig.addShapedRecipe(Items.PORKCHOP, null, Items.PORKCHOP, Items.PORKCHOP, Items.PORKCHOP, Items.PORKCHOP, IRON_WHEELS, null, IRON_WHEELS);
 		pig.addVehicles(VehicleRegistry.CART);
 		register(pig);
-
-
 		ModuleData creative = new ModuleDataHull("creative_hull", HullCreative.class, 10000, 5, 6, 12, 150) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -164,11 +121,7 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/hullModelCreativeTop.png")));
 			}
 		};
-
 		creative.addVehicles(VehicleRegistry.CART);
 		register(creative);
 	}
-
-
-
 }

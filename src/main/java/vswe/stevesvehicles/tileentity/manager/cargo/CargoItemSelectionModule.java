@@ -5,9 +5,9 @@ import net.minecraft.item.ItemStack;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.module.data.ModuleData;
 
-
 public class CargoItemSelectionModule extends CargoItemSelection {
 	private ModuleData module;
+
 	public CargoItemSelectionModule(ILocalizedText name, Class validSlot, ModuleData module) {
 		super(name, validSlot, null);
 		this.module = module;

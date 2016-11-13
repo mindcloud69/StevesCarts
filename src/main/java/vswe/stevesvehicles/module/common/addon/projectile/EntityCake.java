@@ -6,6 +6,7 @@ import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+
 public class EntityCake extends EntityEgg {
 	public EntityCake(World world) {
 		super(world);
@@ -15,8 +16,7 @@ public class EntityCake extends EntityEgg {
 		super(world, thrower);
 	}
 
-	public EntityCake(World world, double x, double y, double z)
-	{
+	public EntityCake(World world, double x, double y, double z) {
 		super(world, x, y, z);
 	}
 
@@ -25,28 +25,20 @@ public class EntityCake extends EntityEgg {
 		if (data.entityHit != null) {
 			data.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 0);
 			if (data.entityHit instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer)data.entityHit;
-
+				EntityPlayer player = (EntityPlayer) data.entityHit;
 				player.getFoodStats().addStats(14, 0.7F);
 			}
-		}else{
-			if (worldObj.isAirBlock((int)posX, (int)posY, (int)posZ) && worldObj.isSideSolid((int)posX, (int)posY - 1, (int) posZ, ForgeDirection.UP)) {
-				worldObj.setBlock((int)posX, (int)posY, (int)posZ, Blocks.cake);
+		} else {
+			if (worldObj.isAirBlock((int) posX, (int) posY, (int) posZ) && worldObj.isSideSolid((int) posX, (int) posY - 1, (int) posZ, ForgeDirection.UP)) {
+				worldObj.setBlock((int) posX, (int) posY, (int) posZ, Blocks.cake);
 			}
 		}
-
-
-
-
 		for (int i = 0; i < 8; i++) {
-			//noinspection SpellCheckingInspection
+			// noinspection SpellCheckingInspection
 			worldObj.spawnParticle("snowballpoof", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
 		}
-
 		if (!worldObj.isRemote) {
 			setDead();
 		}
 	}
-
-
 }

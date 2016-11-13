@@ -16,5 +16,4 @@ public class ModuleTopChest extends ModuleChest {
 	protected int getInventoryHeight() {
 		return 3;
 	}
-
 }

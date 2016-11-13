@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,6 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	public SlotFake(IInventory inventory, int id, int x, int y) {
 		super(inventory, id, x, y);
 	}
-
 
 	@Override
 	public int getSlotStackLimit() {
@@ -28,5 +28,4 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	public boolean isItemValidForTransfer(ItemStack item, TransferHandler.TransferType type) {
 		return false;
 	}
-
 }

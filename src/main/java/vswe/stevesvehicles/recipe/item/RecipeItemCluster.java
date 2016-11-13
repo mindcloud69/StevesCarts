@@ -1,13 +1,11 @@
 package vswe.stevesvehicles.recipe.item;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
 public class RecipeItemCluster extends RecipeItem {
-
 	private RecipeItem[] elements;
 
 	public RecipeItemCluster(Object[] elements) {
@@ -24,7 +22,6 @@ public class RecipeItemCluster extends RecipeItem {
 				return true;
 			}
 		}
-
 		return false;
 	}
 

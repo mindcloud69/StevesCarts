@@ -1,11 +1,12 @@
 package vswe.stevesvehicles.client.rendering.models.cart;
+
 import net.minecraft.util.ResourceLocation;
 
 import vswe.stevesvehicles.client.rendering.models.common.ModelHullTop;
 import vswe.stevesvehicles.module.ModuleBase;
+
 @SideOnly(Side.CLIENT)
 public class ModelPumpkinHullTop extends ModelHullTop {
-
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {
 		return (module == null || isActive(module)) ? resourceActive : resourceIdle;
@@ -13,6 +14,7 @@ public class ModelPumpkinHullTop extends ModelHullTop {
 
 	private final ResourceLocation resourceActive;
 	private final ResourceLocation resourceIdle;
+
 	public ModelPumpkinHullTop(ResourceLocation resourceActive, ResourceLocation resourceIdle) {
 		super(resourceActive);
 		this.resourceActive = resourceActive;

@@ -7,13 +7,14 @@ public class ModuleDrillHardened extends ModuleDrill {
 		super(vehicleBase);
 	}
 
-	//returns how far the drill should drill above itself, i.e. how tall is the  hole
+	// returns how far the drill should drill above itself, i.e. how tall is the
+	// hole
 	@Override
 	protected int blocksOnTop() {
 		return 5;
 	}
 
-	//returns how far the drill should drill on each side
+	// returns how far the drill should drill on each side
 	@Override
 	protected int blocksOnSide() {
 		return 2;
@@ -23,5 +24,4 @@ public class ModuleDrillHardened extends ModuleDrill {
 	protected float getTimeMultiplier() {
 		return 4;
 	}
-
 }

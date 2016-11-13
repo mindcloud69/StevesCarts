@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.storage.chest;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleInternalStorage extends ModuleChest {
@@ -24,5 +25,5 @@ public class ModuleInternalStorage extends ModuleChest {
 	@Override
 	public int guiWidth() {
 		return super.guiWidth() + 30;
-	}	
+	}
 }

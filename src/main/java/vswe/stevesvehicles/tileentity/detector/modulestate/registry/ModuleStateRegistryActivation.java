@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.tileentity.detector.modulestate.registry;
 
-
 import vswe.stevesvehicles.module.IActivatorModule;
 import vswe.stevesvehicles.module.cart.tool.ModuleDrill;
 import vswe.stevesvehicles.module.common.addon.ModuleInvisible;
@@ -13,7 +12,6 @@ import vswe.stevesvehicles.tileentity.detector.modulestate.ModuleStateActivation
 public class ModuleStateRegistryActivation extends ModuleStateRegistry {
 	public ModuleStateRegistryActivation() {
 		super("activation");
-
 		createAndRegisterActivation("shield", ModuleShield.class);
 		createAndRegisterActivation("chunk", ModuleChunkLoader.class);
 		createAndRegisterActivation("invisibility", ModuleInvisible.class);

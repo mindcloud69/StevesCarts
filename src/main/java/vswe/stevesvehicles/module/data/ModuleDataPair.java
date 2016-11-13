@@ -4,7 +4,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
 
 public class ModuleDataPair {
-
 	private ModuleData data;
 	private int count;
 	private String name;
@@ -14,7 +13,6 @@ public class ModuleDataPair {
 		this.data = data;
 		count = 1;
 		name = data.getUnlocalizedName();
-
 	}
 
 	public int getCount() {

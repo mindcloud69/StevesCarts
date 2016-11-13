@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.arcade.stories;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 
@@ -30,12 +29,12 @@ public final class LocalizationTheBeginning {
 	public static final ILocalizedText LEVEL_7 = createSimple("level_7");
 	public static final ILocalizedText LEVEL_8 = createSimple("level_8");
 	public static final ILocalizedText LEVEL_9 = createSimple("level_9");
-
-
 	private static final String HEADER = "steves_vehicles:gui.arcade.track.stories:beginning.";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
 
-	private LocalizationTheBeginning() {}
+	private LocalizationTheBeginning() {
+	}
 }

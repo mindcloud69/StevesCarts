@@ -1,8 +1,8 @@
 package vswe.stevesvehicles.module.common.storage.tank;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
-
-public class ModuleInternalTank extends ModuleTank{
+public class ModuleInternalTank extends ModuleTank {
 	public ModuleInternalTank(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -16,5 +16,4 @@ public class ModuleInternalTank extends ModuleTank{
 	public boolean hasVisualTank() {
 		return false;
 	}
-
 }

@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.vehicle.entity;
 
-
 import net.minecraft.inventory.IInventory;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;

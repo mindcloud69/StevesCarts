@@ -5,7 +5,6 @@ import vswe.stevesvehicles.client.rendering.AnimationRigPart;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleShooterAdvancedSide extends ModuleShooterAdvanced {
-
 	private AnimationRig rig;
 	private AnimationRigPart handlePos;
 	private AnimationRigPart basePos;
@@ -30,31 +29,27 @@ public class ModuleShooterAdvancedSide extends ModuleShooterAdvanced {
 
 	public ModuleShooterAdvancedSide(VehicleBase vehicleBase) {
 		super(vehicleBase);
-
 		rig = new AnimationRig();
-
 		handlePos = new AnimationRigPart(rig, 8.55F, 9.4F, 0);
 		basePos = new AnimationRigPart(rig, 1.05F, 4F, 0.05F);
-		handleRot = new AnimationRigPart(rig, (float)Math.PI, (float)Math.PI * 3 / 2, 0.075F);
-		gunRot = new AnimationRigPart(rig, 0, -(float)Math.PI / 2, 0);
+		handleRot = new AnimationRigPart(rig, (float) Math.PI, (float) Math.PI * 3 / 2, 0.075F);
+		gunRot = new AnimationRigPart(rig, 0, -(float) Math.PI / 2, 0);
 		backPos = new AnimationRigPart(rig, 4.5F, -3F, 0.3F);
-		backRot = new AnimationRigPart(rig, 0, -(float)Math.PI / 2, 0.2F);
-		attacherRot = new AnimationRigPart(rig, 0, -(float)Math.PI, 0.2F);
+		backRot = new AnimationRigPart(rig, 0, -(float) Math.PI / 2, 0.2F);
+		attacherRot = new AnimationRigPart(rig, 0, -(float) Math.PI, 0.2F);
 		stabalizerOut = new AnimationRigPart(rig, 0.001F, 0.8F, 0.1F);
 		stabalizerDown = new AnimationRigPart(rig, 0, -2, 0.1F);
 		standOut = new AnimationRigPart(rig, 0.001F, 0.8F, 0.1F);
 		standUp = new AnimationRigPart(rig, 0, 2, 0.1F);
 		standSlide = new AnimationRigPart(rig, 0, 0.25F, 0.01F);
-		armBasePos  = new AnimationRigPart(rig, 0.5F, 10F, 0.3F);
+		armBasePos = new AnimationRigPart(rig, 0.5F, 10F, 0.3F);
 		armPos = new AnimationRigPart(rig, -2.25F, 2.5F, 0);
-		armRot  = new AnimationRigPart(rig, 0, (float)Math.PI / 2, 0.2F);
+		armRot = new AnimationRigPart(rig, 0, (float) Math.PI / 2, 0.2F);
 		missilePos = new AnimationRigPart(rig, 0, 3, 0.1F);
 		missileRot = new AnimationRigPart(rig, 0, -0.2F, 0F);
-		armRot2  = new AnimationRigPart(rig, 0, (float)Math.PI / 2, 0.2F);
-		armBasePos2  = new AnimationRigPart(rig, 0, 9.5F, 0.3F);
+		armRot2 = new AnimationRigPart(rig, 0, (float) Math.PI / 2, 0.2F);
+		armBasePos2 = new AnimationRigPart(rig, 0, 9.5F, 0.3F);
 		armPos2 = new AnimationRigPart(rig, 0, 5F, 0);
-
-
 		handlePos.setUpAndDown(basePos);
 		handlePos.setSpeedToSync(basePos, false);
 		handleRot.setUpAndDown(gunRot);
@@ -64,13 +59,12 @@ public class ModuleShooterAdvancedSide extends ModuleShooterAdvanced {
 		missilePos.setUpAndDown(missileRot);
 		missileRot.setSpeedToSync(missilePos, true);
 		armPos2.setSpeedToSync(armBasePos2, false);
-		armBasePos2.setUpAndDown(armPos2);		
+		armBasePos2.setUpAndDown(armPos2);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-
 		rig.update(!isPipeActive(0));
 	}
 
@@ -120,11 +114,11 @@ public class ModuleShooterAdvancedSide extends ModuleShooterAdvanced {
 
 	public float getArmBasePos(int multiplier, boolean fake) {
 		return armBasePos.getVal() - (!fake ? armBasePos2.getVal() : 0);
-	}	
+	}
 
 	public float getArmRot(int multiplier, boolean fake) {
 		return (armRot.getVal() - (!fake ? armRot2.getVal() : 0)) * multiplier;
-	}	
+	}
 
 	public float getArmPos(int multiplier, boolean fake) {
 		return armPos.getVal() - (!fake ? armPos2.getVal() : 0);

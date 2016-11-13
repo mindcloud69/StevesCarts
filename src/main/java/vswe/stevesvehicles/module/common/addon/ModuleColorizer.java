@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,15 +18,15 @@ public class ModuleColorizer extends ModuleAddon {
 		super(vehicleBase);
 	}
 
-	@Override 
+	@Override
 	public boolean hasGui() {
 		return true;
 	}
 
-	@Override 
+	@Override
 	public boolean hasSlots() {
 		return false;
-	}	
+	}
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
@@ -40,36 +41,34 @@ public class ModuleColorizer extends ModuleAddon {
 	@Override
 	public int guiHeight() {
 		return 75;
-	}	
+	}
 
 	private static final int MARKER_OFFSET_X = 10;
 	private static final int SCROLL_WIDTH = 64;
+
 	private int[] getMovableMarker(int i) {
-		return new int[] {MARKER_OFFSET_X + (int)(SCROLL_WIDTH *  (getColorVal(i) / 255F)) - 2, 17 + i * 20, 4, 13};
+		return new int[] { MARKER_OFFSET_X + (int) (SCROLL_WIDTH * (getColorVal(i) / 255F)) - 2, 17 + i * 20, 4, 13 };
 	}
+
 	private int[] getArea(int i) {
-		return new int[] {MARKER_OFFSET_X, 20 + i * 20, SCROLL_WIDTH,7};
-	}	
+		return new int[] { MARKER_OFFSET_X, 20 + i * 20, SCROLL_WIDTH, 7 };
+	}
+
 	private int markerMoving = -1;
-
-
 	private static final int BOX_SRC_X = 6;
 	private static final int BOX_SRC_Y = 9;
 	private static final int BAR_SRC_X = 1;
 	private static final int BAR_SRC_Y = 1;
 	private static final int MARKER_SRC_X = 1;
 	private static final int MARKER_SRC_Y = 9;
-
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/color.png");
 
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		for (int i = 0; i < 3; i++) {
 			drawMarker(gui, i);
 		}
-
 		float[] color = getColor();
 		GL11.glColor4f(color[0], color[1], color[2], 1.0F);
 		drawImage(gui, SCROLL_WIDTH + 25, 29, BOX_SRC_X, BOX_SRC_Y, 28, 28);
@@ -78,14 +77,13 @@ public class ModuleColorizer extends ModuleAddon {
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		String[] colorNames = new String[] {LocalizationVisual.RED.translate(), LocalizationVisual.GREEN.translate(), LocalizationVisual.BLUE.translate()};
+		String[] colorNames = new String[] { LocalizationVisual.RED.translate(), LocalizationVisual.GREEN.translate(), LocalizationVisual.BLUE.translate() };
 		for (int i = 0; i < 3; i++) {
 			if (markerMoving == i || (markerMoving == -1 && inRect(x, y, getArea(i)))) {
-				drawStringOnMouseOver(gui, colorNames[i]  + ": " + getColorVal(i), x, y);
+				drawStringOnMouseOver(gui, colorNames[i] + ": " + getColorVal(i), x, y);
 			}
 		}
 	}
-
 
 	private void drawMarker(GuiVehicle gui, int id) {
 		float[] colorArea = new float[3];
@@ -94,7 +92,7 @@ public class ModuleColorizer extends ModuleAddon {
 			if (i == id) {
 				colorArea[i] = 0.7F;
 				colorMarker[i] = 1F;
-			}else{
+			} else {
 				colorArea[i] = 0.2F;
 				colorMarker[i] = 0F;
 			}
@@ -110,7 +108,7 @@ public class ModuleColorizer extends ModuleAddon {
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
 			for (int i = 0; i < 3; i++) {
-				if (inRect(x,y, getMovableMarker(i)) || inRect(x, y ,getArea(i))) {
+				if (inRect(x, y, getMovableMarker(i)) || inRect(x, y, getArea(i))) {
 					markerMoving = i;
 					moveMarker(x);
 				}
@@ -119,31 +117,27 @@ public class ModuleColorizer extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {
-		if(markerMoving != -1){
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+		if (markerMoving != -1) {
 			moveMarker(x);
 		}
-
 		if (button != -1) {
 			markerMoving = -1;
 		}
 	}
 
 	private void moveMarker(int x) {
-		int tempColor = (int)((x - MARKER_OFFSET_X)/(SCROLL_WIDTH /255F));
-
+		int tempColor = (int) ((x - MARKER_OFFSET_X) / (SCROLL_WIDTH / 255F));
 		if (tempColor < 0) {
 			tempColor = 0;
-		}else if (tempColor > 255) {
+		} else if (tempColor > 255) {
 			tempColor = 255;
 		}
-
 		DataWriter dw = getDataWriter();
 		dw.writeByte(markerMoving);
 		dw.writeByte(tempColor);
 		sendPacketToServer(dw);
 	}
-
 
 	@Override
 	public int numberOfDataWatchers() {
@@ -152,11 +146,10 @@ public class ModuleColorizer extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0,255);
-		addDw(1,255);
-		addDw(2,255);
+		addDw(0, 255);
+		addDw(1, 255);
+		addDw(2, 255);
 	}
-
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
@@ -170,7 +163,6 @@ public class ModuleColorizer extends ModuleAddon {
 		if (isPlaceholder()) {
 			return 255;
 		}
-
 		int tempVal = getDw(i);
 		if (tempVal < 0) {
 			tempVal += 256;
@@ -188,14 +180,14 @@ public class ModuleColorizer extends ModuleAddon {
 
 	@Override
 	public float[] getColor() {
-		return new float[] {getColorComponent(0), getColorComponent(1), getColorComponent(2)};
+		return new float[] { getColorComponent(0), getColorComponent(1), getColorComponent(2) };
 	}
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		tagCompound.setByte("Red", (byte)getColorVal(0));
-		tagCompound.setByte("Green", (byte)getColorVal(1));
-		tagCompound.setByte("Blue", (byte)getColorVal(2));
+		tagCompound.setByte("Red", (byte) getColorVal(0));
+		tagCompound.setByte("Green", (byte) getColorVal(1));
+		tagCompound.setByte("Blue", (byte) getColorVal(2));
 	}
 
 	@Override
@@ -203,6 +195,5 @@ public class ModuleColorizer extends ModuleAddon {
 		setColorVal(0, tagCompound.getByte("Red"));
 		setColorVal(1, tagCompound.getByte("Green"));
 		setColorVal(2, tagCompound.getByte("Blue"));
-	}	
-
+	}
 }

@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container;
+
 import java.util.Iterator;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,45 +16,45 @@ import vswe.stevesvehicles.transfer.TransferHandler;
 public abstract class ContainerBase extends Container {
 	/**
 	 * The inventory associated with this container
+	 * 
 	 * @return The IInventory or null if no inventory exists.
 	 */
 	public abstract IInventory getMyInventory();
 
 	/**
 	 * The tile entity this container is associated with
+	 * 
 	 * @return The Tile Entity or null if none exits.
 	 */
 	public abstract TileEntityBase getTileEntity();
-
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
 		if (getMyInventory() == null) {
 			return null;
 		}
-
 		ItemStack itemstack = null;
 		Slot slot = inventorySlots.get(i);
-		if(slot != null && slot.getHasStack()) {
+		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
-			if(i < getMyInventory().getSizeInventory()) {
-				if(!mergeItemStack(itemstack1, getMyInventory().getSizeInventory()+28, getMyInventory().getSizeInventory()+36, false)) {
-					if(!mergeItemStack(itemstack1, getMyInventory().getSizeInventory(), getMyInventory().getSizeInventory()+28, false)) {
+			if (i < getMyInventory().getSizeInventory()) {
+				if (!mergeItemStack(itemstack1, getMyInventory().getSizeInventory() + 28, getMyInventory().getSizeInventory() + 36, false)) {
+					if (!mergeItemStack(itemstack1, getMyInventory().getSizeInventory(), getMyInventory().getSizeInventory() + 28, false)) {
 						return null;
 					}
 				}
-			}else if(!mergeItemStack(itemstack1, 0, getMyInventory().getSizeInventory(), false)){
+			} else if (!mergeItemStack(itemstack1, 0, getMyInventory().getSizeInventory(), false)) {
 				return null;
 			}
-			if(itemstack1.stackSize == 0){
+			if (itemstack1.stackSize == 0) {
 				slot.putStack(null);
-			}else{
+			} else {
 				slot.onSlotChanged();
 			}
-			if(itemstack1.stackSize != itemstack.stackSize){
-				slot.onPickupFromSlot(player,itemstack1);
-			}else{
+			if (itemstack1.stackSize != itemstack.stackSize) {
+				slot.onPickupFromSlot(player, itemstack1);
+			} else {
 				return null;
 			}
 		}
@@ -61,62 +62,52 @@ public abstract class ContainerBase extends Container {
 	}
 
 	@Override
-	protected boolean mergeItemStack(ItemStack item, int start, int end, boolean invert){
+	protected boolean mergeItemStack(ItemStack item, int start, int end, boolean invert) {
 		if (getMyInventory() == null) {
 			return false;
-		}		
-
+		}
 		boolean result = false;
 		int id = start;
-
 		if (invert) {
 			id = end - 1;
 		}
-
 		Slot slot;
 		ItemStack slotItem;
-
 		if (item.isStackable()) {
 			while (item.stackSize > 0 && (!invert && id < end || invert && id >= start)) {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
-
 				if (slotItem != null && slotItem.stackSize > 0 && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
 					int size = slotItem.stackSize + item.stackSize;
-
 					int maxLimit = Math.min(item.getMaxStackSize(), slot.getSlotStackLimit());
 					if (size <= maxLimit) {
 						item.stackSize = 0;
 						slotItem.stackSize = size;
 						slot.onSlotChanged();
 						result = true;
-					}else if (slotItem.stackSize < maxLimit) {
+					} else if (slotItem.stackSize < maxLimit) {
 						item.stackSize -= maxLimit - slotItem.stackSize;
 						slotItem.stackSize = maxLimit;
 						slot.onSlotChanged();
 						result = true;
 					}
 				}
-
 				if (invert) {
 					--id;
-				}else{
+				} else {
 					++id;
 				}
 			}
 		}
-
-		if (item.stackSize > 0){
-			if (invert){
+		if (item.stackSize > 0) {
+			if (invert) {
 				id = end - 1;
-			}else{
+			} else {
 				id = start;
 			}
-
-			while (!invert && id < end || invert && id >= start){
+			while (!invert && id < end || invert && id >= start) {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
-
 				if (slotItem == null && TransferHandler.isItemValidForTransfer(slot, item, TransferHandler.TransferType.SHIFT)) {
 					int stackSize = Math.min(slot.getSlotStackLimit(), item.stackSize);
 					ItemStack newItem = item.copy();
@@ -124,22 +115,18 @@ public abstract class ContainerBase extends Container {
 					item.stackSize -= stackSize;
 					slot.putStack(newItem);
 					slot.onSlotChanged();
-
 					result = item.stackSize == 0;
 					break;
 				}
-
-				if (invert){
+				if (invert) {
 					--id;
-				}else{
+				} else {
 					++id;
 				}
 			}
 		}
-
 		return result;
 	}
-
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
@@ -149,7 +136,6 @@ public abstract class ContainerBase extends Container {
 	@Override
 	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
-
 		if (getTileEntity() != null) {
 			getTileEntity().initGuiData(this, listener);
 		}
@@ -157,11 +143,10 @@ public abstract class ContainerBase extends Container {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int id, int val){
+	public void updateProgressBar(int id, int val) {
 		val &= 65535;
-
 		if (getTileEntity() != null) {
-			getTileEntity().receiveGuiData(id, (short)val);
+			getTileEntity().receiveGuiData(id, (short) val);
 		}
 	}
 
@@ -170,14 +155,10 @@ public abstract class ContainerBase extends Container {
 		super.detectAndSendChanges();
 		if (getTileEntity() != null) {
 			Iterator<IContainerListener> playerIterator = this.listeners.iterator();
-
-			while (playerIterator.hasNext()){
+			while (playerIterator.hasNext()) {
 				IContainerListener player = playerIterator.next();
-
-				getTileEntity().checkGuiData(this,player);
+				getTileEntity().checkGuiData(this, player);
 			}
 		}
-	}	
-
-
+	}
 }

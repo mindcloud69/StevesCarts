@@ -14,20 +14,19 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModulePowerObserver extends ModuleAddon {
-
 	public ModulePowerObserver(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-	@Override 
+	@Override
 	public boolean hasGui() {
 		return true;
 	}
 
-	@Override 
+	@Override
 	public boolean hasSlots() {
 		return false;
-	}	
+	}
 
 	@Override
 	public int guiWidth() {
@@ -37,15 +36,13 @@ public class ModulePowerObserver extends ModuleAddon {
 	@Override
 	public int guiHeight() {
 		return 150;
-	}		
+	}
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-		drawString(gui,getModuleName(), 8, 6, 0x404040);
-
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
 		for (int i = 0; i < 4; i++) {
 			int[] rect = getPowerRect(i);
-
 			drawString(gui, powerLevel[i] + LocalizationUtility.THOUSAND_SUFFIX.translate(), rect, 0x404040);
 		}
 	}
@@ -57,27 +54,21 @@ public class ModulePowerObserver extends ModuleAddon {
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/observer.png");
 	private static final ResourceLocation ITEM_TEXTURE = ResourceHelper.getResourceFromPath("/atlas/items.png");
 
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
-		for (int i  = 0; i < getVehicle().getEngines().size(); i++) {
+		for (int i = 0; i < getVehicle().getEngines().size(); i++) {
 			if (!removeOnPickup() || currentEngine != i) {
 				drawEngine(gui, i, getEngineRect(i));
 			}
 		}
-
 		ResourceHelper.bindResource(TEXTURE);
-
 		for (int i = 0; i < 4; i++) {
 			int[] rect = getAreaRect(i);
-
 			drawImage(gui, rect, 20, 1 + 23 * i);
 			if (inRect(x, y, rect)) {
 				drawImage(gui, rect, 20, 1 + 23 * (i + 4));
 			}
-
-
 			int count = 0;
 			for (int j = 0; j < getVehicle().getEngines().size(); j++) {
 				if ((areaData[i] & (1 << j)) != 0) {
@@ -85,93 +76,78 @@ public class ModulePowerObserver extends ModuleAddon {
 					count++;
 				}
 			}
-
 			ResourceHelper.bindResource(TEXTURE);
-
 			rect = getPowerRect(i);
 			if (isAreaActive(i)) {
 				drawImage(gui, rect, 125, 1);
-			}else{
+			} else {
 				drawImage(gui, rect, 125 + (rect[2] + 1), 1);
 			}
-
-			if (inRect(x,y,rect)) {
+			if (inRect(x, y, rect)) {
 				drawImage(gui, rect, 125 + (rect[2] + 1) * 2, 1);
 			}
 		}
-
-
-
 		if (currentEngine != -1) {
 			drawEngine(gui, currentEngine, getEngineRectMouse(x, y + getVehicle().getRealScrollY()));
 		}
-	}	
+	}
 
-
-	private void drawEngine(GuiVehicle gui, int id, int [] rect) {
+	private void drawEngine(GuiVehicle gui, int id, int[] rect) {
 		ModuleEngine engine = getVehicle().getEngines().get(id);
-
 		ResourceHelper.bindResource(ITEM_TEXTURE);
-
 		drawImage(gui, engine.getModuleData().getIcon(), rect, 0, 0);
 	}
 
 	private int[] getAreaRect(int id) {
-		return new int[] {10, 40 + 25 * id, 104, 22};
+		return new int[] { 10, 40 + 25 * id, 104, 22 };
 	}
 
 	private int[] getEngineRect(int id) {
-		return new int[] {11 + id * 20, 21, 16, 16};
+		return new int[] { 11 + id * 20, 21, 16, 16 };
 	}
 
 	private int[] getEngineRectMouse(int x, int y) {
-		return new int[] {x - 8, y - 8, 16, 16};
+		return new int[] { x - 8, y - 8, 16, 16 };
 	}
 
 	private int[] getEngineRectInArea(int areaId, int number) {
 		int[] area = getAreaRect(areaId);
-
-		return new int[] {area[0] + 4 + number * 20, area[1] + 3, 16, 16};
+		return new int[] { area[0] + 4 + number * 20, area[1] + 3, 16, 16 };
 	}
 
 	private int[] getPowerRect(int areaId) {
 		int[] area = getAreaRect(areaId);
-
-		return new int[] {area[0] + area[2] + 10, area[1] + 2, 35, 18};
-	}	
+		return new int[] { area[0] + area[2] + 10, area[1] + 2, 35, 18 };
+	}
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		for (int i  = 0; i < getVehicle().getEngines().size(); i++) {
+		for (int i = 0; i < getVehicle().getEngines().size(); i++) {
 			if (!removeOnPickup() || currentEngine != i) {
 				ModuleEngine engine = getVehicle().getEngines().get(i);
-
 				drawStringOnMouseOver(gui, engine.getModuleData().getName() + "\n" + LocalizationUtility.OBSERVER_INSTRUCTION.translate(), x, y, getEngineRect(i));
 			}
 		}
-
 		for (int i = 0; i < 4; i++) {
 			int count = 0;
 			for (int j = 0; j < getVehicle().getEngines().size(); j++) {
 				if ((areaData[i] & (1 << j)) != 0) {
 					ModuleEngine engine = getVehicle().getEngines().get(j);
-
 					drawStringOnMouseOver(gui, engine.getModuleData().getName() + "\n" + LocalizationUtility.OBSERVER_REMOVE_INSTRUCTION.translate(), x, y, getEngineRectInArea(i, count));
 					count++;
 				}
-			}	
-
+			}
 			if (currentEngine != -1) {
 				drawStringOnMouseOver(gui, LocalizationUtility.OBSERVER_DROP_INSTRUCTION.translate(), x, y, getAreaRect(i));
 			}
 			drawStringOnMouseOver(gui, LocalizationUtility.OBSERVER_CHANGE_INSTRUCTION.translate() + "\n" + LocalizationUtility.OBSERVER_CHANGE_INSTRUCTION_TEN.translate(), x, y, getPowerRect(i));
 		}
-	}	
+	}
 
 	@Override
 	public int numberOfGuiData() {
 		return 8;
-	}	
+	}
 
 	@Override
 	protected void checkGuiData(Object[] info) {
@@ -179,19 +155,18 @@ public class ModulePowerObserver extends ModuleAddon {
 			updateGuiData(info, i, areaData[i]);
 		}
 		for (int i = 0; i < 4; i++) {
-			updateGuiData(info, i+4, powerLevel[i]);
-		}		
+			updateGuiData(info, i + 4, powerLevel[i]);
+		}
 	}
 
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id >= 0 && id < 4) {
 			areaData[id] = data;
-		}else if(id >= 4 && id < 8) {
+		} else if (id >= 4 && id < 8) {
 			powerLevel[id - 4] = data;
 		}
-	}	
-
+	}
 
 	private short[] areaData = new short[4];
 	private short[] powerLevel = new short[4];
@@ -203,9 +178,7 @@ public class ModulePowerObserver extends ModuleAddon {
 	}
 
 	public enum PacketId {
-		ADD,
-		REMOVE,
-		AMOUNT
+		ADD, REMOVE, AMOUNT
 	}
 
 	@Override
@@ -213,7 +186,6 @@ public class ModulePowerObserver extends ModuleAddon {
 		PacketId id = dr.readEnum(PacketId.class);
 		int area = dr.readByte();
 		int engine;
-
 		switch (id) {
 			case ADD:
 				engine = dr.readByte();
@@ -226,35 +198,29 @@ public class ModulePowerObserver extends ModuleAddon {
 			case AMOUNT:
 				int change = dr.readBoolean() ? 1 : -1;
 				boolean shift = dr.readBoolean();
-
 				if (shift) {
 					change *= 10;
 				}
-
 				short value = powerLevel[area];
 				value += change;
 				if (value < 0) {
 					value = 0;
-				}else if(value > 999){
+				} else if (value > 999) {
 					value = 999;
 				}
-
 				powerLevel[area] = value;
 				break;
 		}
-
-
-	}	
+	}
 
 	private int currentEngine = -1;
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui,  int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
 		if (button != -1) {
 			if (button == 0) {
 				for (int i = 0; i < 4; i++) {
 					int[] rect = getAreaRect(i);
-
 					if (inRect(x, y, rect)) {
 						DataWriter dw = getDataWriter(PacketId.ADD);
 						dw.writeByte(i);
@@ -264,16 +230,14 @@ public class ModulePowerObserver extends ModuleAddon {
 					}
 				}
 			}
-			currentEngine = -1;		
+			currentEngine = -1;
 		}
 	}
 
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
-
-		for (int i  = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			int[] rect = getPowerRect(i);
-
 			if (inRect(x, y, rect)) {
 				DataWriter dw = getDataWriter(PacketId.AMOUNT);
 				dw.writeByte(i);
@@ -281,25 +245,21 @@ public class ModulePowerObserver extends ModuleAddon {
 				dw.writeBoolean(GuiScreen.isShiftKeyDown());
 				break;
 			}
-		}				
-
-		if (button == 0){	
-			for (int i  = 0; i < getVehicle().getEngines().size(); i++) {
+		}
+		if (button == 0) {
+			for (int i = 0; i < getVehicle().getEngines().size(); i++) {
 				int[] rect = getEngineRect(i);
-
 				if (inRect(x, y, rect)) {
-					currentEngine = i; 
+					currentEngine = i;
 					break;
 				}
 			}
-
-		}else if(button == 1) {
+		} else if (button == 1) {
 			for (int i = 0; i < 4; i++) {
 				int count = 0;
 				for (int j = 0; j < getVehicle().getEngines().size(); j++) {
 					if ((areaData[i] & (1 << j)) != 0) {
 						int[] rect = getEngineRectInArea(i, count);
-
 						if (inRect(x, y, rect)) {
 							DataWriter dw = getDataWriter(PacketId.REMOVE);
 							dw.writeByte(i);
@@ -312,17 +272,15 @@ public class ModulePowerObserver extends ModuleAddon {
 				}
 			}
 		}
-
 	}
-
 
 	public boolean isAreaActive(int area) {
 		int power = 0;
-		for (int i  = 0; i < getVehicle().getEngines().size(); i++) {
+		for (int i = 0; i < getVehicle().getEngines().size(); i++) {
 			ModuleEngine engine = getVehicle().getEngines().get(i);
 			if ((areaData[area] & (1 << i)) != 0) {
 				power += engine.getTotalFuel();
-			}	
+			}
 		}
 		return power > powerLevel[area] * 1000;
 	}
@@ -333,7 +291,7 @@ public class ModulePowerObserver extends ModuleAddon {
 			tagCompound.setShort("AreaData" + i, areaData[i]);
 			tagCompound.setShort("PowerLevel" + i, powerLevel[i]);
 		}
-	}	
+	}
 
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
@@ -341,6 +299,5 @@ public class ModulePowerObserver extends ModuleAddon {
 			areaData[i] = tagCompound.getShort("AreaData" + i);
 			powerLevel[i] = tagCompound.getShort("PowerLevel" + i);
 		}
-	}	
-
+	}
 }

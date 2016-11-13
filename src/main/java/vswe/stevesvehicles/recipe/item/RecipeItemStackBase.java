@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-
 public abstract class RecipeItemStackBase extends RecipeItem {
 	protected abstract ItemStack getItemStack();
 

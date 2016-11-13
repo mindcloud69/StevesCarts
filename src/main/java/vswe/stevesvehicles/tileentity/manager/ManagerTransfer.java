@@ -27,15 +27,13 @@ public class ManagerTransfer {
 		fromCartEnabled = true;
 	}
 
-
-
 	public int getSetting() {
 		return setting;
 	}
 
 	public void setSetting(int val) {
 		setting = val;
-	}   
+	}
 
 	public int getSide() {
 		return side;
@@ -43,31 +41,31 @@ public class ManagerTransfer {
 
 	public void setSide(int val) {
 		side = val;
-	}    
+	}
 
 	public int getLastSetting() {
 		return lastSetting;
-	}    
+	}
 
 	public void setLastSetting(int val) {
 		lastSetting = val;
-	}   
+	}
 
 	public int getLowestSetting() {
 		return lowestSetting;
-	}    
+	}
 
 	public void setLowestSetting(int val) {
 		lowestSetting = val;
-	}    
+	}
 
 	public int getWorkload() {
 		return workload;
-	}    
+	}
 
 	public void setWorkload(int val) {
 		workload = val;
-	}      
+	}
 
 	public EntityModularCart getCart() {
 		return cart;
@@ -83,7 +81,7 @@ public class ManagerTransfer {
 
 	public void setFromCartEnabled(boolean val) {
 		fromCartEnabled = val;
-	}	
+	}
 
 	public boolean getToCartEnabled() {
 		return toCartEnabled;
@@ -92,5 +90,4 @@ public class ManagerTransfer {
 	public void setToCartEnabled(boolean val) {
 		toCartEnabled = val;
 	}
-
 }

@@ -1,12 +1,15 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import vswe.stevesvehicles.tank.Tank;
+
 public class SlotLiquidInput extends SlotBase {
 	private Tank tank;
 	private int maxsize;
+
 	public SlotLiquidInput(IInventory inventory, Tank tank, int maxsize, int id, int x, int y) {
 		super(inventory, id, x, y);
 		this.tank = tank;
@@ -17,20 +20,14 @@ public class SlotLiquidInput extends SlotBase {
 	public int getSlotStackLimit() {
 		if (maxsize != -1) {
 			return maxsize;
-		}else{
+		} else {
 			return Math.min(8, tank.getCapacity() / FluidContainerRegistry.BUCKET_VOLUME);
 		}
 	}
 
 	@Override
 	public boolean isItemValid(ItemStack itemstack) {
-		return 
-				(FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null) ||
-				(FluidContainerRegistry.isFilledContainer(itemstack) && (
-						tank.getFluid() == null ||
-						tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))
-						));
-
-
+		return (FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null)
+				|| (FluidContainerRegistry.isFilledContainer(itemstack) && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))));
 	}
 }

@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 public class Solar extends RechargerBase {
-
 	public Solar(TileEntityUpgrade upgrade) {
 		super(upgrade);
 	}
@@ -17,9 +16,9 @@ public class Solar extends RechargerBase {
 		BlockPos pos = upgrade.getPos();
 		if (pos.getY() > masterPos.getY()) {
 			return 400;
-		}else if(pos.getY() < masterPos.getY()) {
+		} else if (pos.getY() < masterPos.getY()) {
 			return 0;
-		}else{
+		} else {
 			return 240;
 		}
 	}
@@ -28,9 +27,6 @@ public class Solar extends RechargerBase {
 	protected boolean canGenerate() {
 		World world = upgrade.getWorld();
 		BlockPos pos = upgrade.getPos();
-		return world.getLightFor(EnumSkyBlock.BLOCK, pos) == 15 &&
-				world.canBlockSeeSky(pos);
+		return world.getLightFor(EnumSkyBlock.BLOCK, pos) == 15 && world.canBlockSeeSky(pos);
 	}
-
-
 }

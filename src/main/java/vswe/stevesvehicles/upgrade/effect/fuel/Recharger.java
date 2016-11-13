@@ -3,7 +3,6 @@ package vswe.stevesvehicles.upgrade.effect.fuel;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 public class Recharger extends RechargerBase {
-
 	protected int amount;
 
 	public Recharger(TileEntityUpgrade upgrade, Integer amount) {
@@ -20,7 +19,4 @@ public class Recharger extends RechargerBase {
 	protected boolean canGenerate() {
 		return true;
 	}
-
-
-
 }

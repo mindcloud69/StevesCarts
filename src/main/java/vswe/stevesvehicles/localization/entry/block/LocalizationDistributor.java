@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.block;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -27,15 +26,16 @@ public final class LocalizationDistributor {
 	public static final ILocalizedText ORANGE = createSimple("orange");
 	public static final ILocalizedText PURPLE = createSimple("purple");
 	public static final ILocalizedText SIDE_TOOLTIP = createAdvanced("side_tooltip");
-
-
 	private static final String HEADER = "steves_vehicles:gui.distributor:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationDistributor() {}
+	private LocalizationDistributor() {
+	}
 }

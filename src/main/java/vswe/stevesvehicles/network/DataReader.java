@@ -8,9 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import io.netty.buffer.ByteBuf;
 
-
 public class DataReader {
-
 	private ByteBuf stream;
 	private int byteBuffer;
 	private int bitCountBuffer;
@@ -26,26 +24,21 @@ public class DataReader {
 	public int readData(int bitCount) {
 		int data = 0;
 		int readBits = 0;
-
 		while (true) {
 			int bitsLeft = bitCount - readBits;
 			if (bitCountBuffer >= bitsLeft) {
-				data |= (byteBuffer & ((int)Math.pow(2, bitsLeft) - 1)) << readBits;
+				data |= (byteBuffer & ((int) Math.pow(2, bitsLeft) - 1)) << readBits;
 				byteBuffer >>>= bitsLeft;
 				bitCountBuffer -= bitsLeft;
 				readBits += bitsLeft;
 				break;
-			}else{
+			} else {
 				data |= byteBuffer << readBits;
 				readBits += bitCountBuffer;
-
 				byteBuffer = stream.readUnsignedByte();
 				bitCountBuffer = 8;
 			}
 		}
-
-
-
 		return data;
 	}
 
@@ -53,16 +46,13 @@ public class DataReader {
 		return readSignedData(count.getBitCount());
 	}
 
-
 	public int readSignedData(int bitCount) {
 		int data = readData(bitCount);
-		int threshold = (int)Math.pow(2, bitCount - 1);
-		int max = (int)Math.pow(2, bitCount) - 1;
-
+		int threshold = (int) Math.pow(2, bitCount - 1);
+		int max = (int) Math.pow(2, bitCount) - 1;
 		if (data >= threshold) {
 			data = max - data;
 		}
-
 		return data;
 	}
 
@@ -74,37 +64,34 @@ public class DataReader {
 		int length = readData(bits);
 		if (length == 0) {
 			return null;
-		}else{
+		} else {
 			byte[] bytes = new byte[length];
 			for (int i = 0; i < bytes.length; i++) {
-				bytes[i] = (byte)readByte();
+				bytes[i] = (byte) readByte();
 			}
 			return new String(bytes);
 		}
 	}
 
-	public NBTTagCompound readNBT(){
+	public NBTTagCompound readNBT() {
 		if (readBoolean()) {
 			byte[] bytes = new byte[readData(DataBitHelper.NBT_LENGTH)];
 			for (int i = 0; i < bytes.length; i++) {
-				bytes[i] = (byte)readByte();
+				bytes[i] = (byte) readByte();
 			}
-
 			try {
 				return CompressedStreamTools.func_152457_a(bytes, new NBTSizeTracker(2097152L));
-			}catch (IOException ex) {
+			} catch (IOException ex) {
 				return null;
 			}
-		}else{
+		} else {
 			return null;
 		}
 	}
 
-
 	/**
 	 * Easy access methods
 	 */
-
 	public boolean readBoolean() {
 		return readData(DataBitHelper.BOOLEAN) != 0;
 	}
@@ -131,24 +118,24 @@ public class DataReader {
 	}
 
 	public int readSignedInteger() {
-		return readData(DataBitHelper.INTEGER); //will automatically be signed due to the return value being an integer
+		return readData(DataBitHelper.INTEGER); // will automatically be signed
+		// due to the return value being
+		// an integer
 	}
 
 	public <T extends Enum> T readEnum(Class<T> clazz) {
 		try {
-			Object[] values = (Object[] )clazz.getMethod("values").invoke(null);
+			Object[] values = (Object[]) clazz.getMethod("values").invoke(null);
 			int length = values.length;
 			if (length == 0) {
 				return null;
 			}
-			int bitCount = (int)(Math.log10(length) / Math.log10(2)) + 1;
-
+			int bitCount = (int) (Math.log10(length) / Math.log10(2)) + 1;
 			int val = readData(bitCount);
-			return (T)values[val];
-		}catch (Exception ex) {
+			return (T) values[val];
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 		return null;
 	}
 }

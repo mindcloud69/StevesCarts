@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.tileentity.detector.modulestate.registry;
 
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -33,7 +32,6 @@ import vswe.stevesvehicles.tileentity.detector.modulestate.ModuleStatePassenger;
 public class ModuleStateRegistryPassenger extends ModuleStateRegistry {
 	public ModuleStateRegistryPassenger() {
 		super("passenger");
-
 		createAndRegisterSimplePassenger("passenger", EntityLiving.class);
 		createAndRegisterSimplePassenger("animal", IAnimals.class);
 		createAndRegisterSimplePassenger("tameable", EntityTameable.class);
@@ -58,27 +56,24 @@ public class ModuleStateRegistryPassenger extends ModuleStateRegistry {
 		createAndRegisterSimplePassenger("ocelot", EntityOcelot.class);
 		createAndRegisterSimplePassenger("villager", EntityVillager.class);
 		createAndRegisterSimplePassenger("steve", EntityPlayer.class);
-
 		ModuleState zombieVillager = new ModuleStatePassenger("zombie_villager", EntityZombie.class) {
 			@Override
 			public boolean isPassengerValid(Entity passenger) {
-				return ((EntityZombie)passenger).isVillager();
+				return ((EntityZombie) passenger).isVillager();
 			}
 		};
 		register(zombieVillager);
-
 		ModuleState child = new ModuleStatePassenger("child", EntityAgeable.class) {
 			@Override
 			public boolean isPassengerValid(Entity passenger) {
-				return ((EntityAgeable)passenger).isChild();
+				return ((EntityAgeable) passenger).isChild();
 			}
 		};
 		register(child);
-
 		ModuleState tamed = new ModuleStatePassenger("tamed", EntityTameable.class) {
 			@Override
 			public boolean isPassengerValid(Entity passenger) {
-				return ((EntityTameable)passenger).isTamed();
+				return ((EntityTameable) passenger).isTamed();
 			}
 		};
 		register(tamed);

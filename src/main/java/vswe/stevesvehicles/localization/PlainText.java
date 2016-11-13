@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization;
 
-
 public class PlainText implements ILocalizedText {
 	private String text;
 

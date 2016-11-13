@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.util;
 
-
 public class Tuple<T, S> {
 	private T firstObject;
 	private S secondObject;

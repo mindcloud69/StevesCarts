@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.cart;
+
 import java.util.Comparator;
 
 public class ComparatorWorkModule implements Comparator<ModuleWorker> {

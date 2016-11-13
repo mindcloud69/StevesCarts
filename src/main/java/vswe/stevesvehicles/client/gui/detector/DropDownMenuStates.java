@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.client.gui.detector;
 
-
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiDetector;
 import vswe.stevesvehicles.tileentity.detector.LogicObjectState;
@@ -15,12 +14,10 @@ public class DropDownMenuStates extends DropDownMenuPages {
 	@Override
 	public void drawMain(GuiDetector gui, int x, int y) {
 		super.drawMain(gui, x, y);
-
 		int statePosId = 0;
 		for (ModuleState state : ModuleStateRegistry.getAllStates()) {
 			ResourceHelper.bindResource(state.getTexture());
 			drawContent(gui, statePosId);
-
 			statePosId++;
 		}
 	}
@@ -33,7 +30,6 @@ public class DropDownMenuStates extends DropDownMenuPages {
 			if (gui.drawMouseOver(state.getName(), x, y, target)) {
 				break;
 			}
-
 			statesPosId++;
 		}
 	}
@@ -41,14 +37,12 @@ public class DropDownMenuStates extends DropDownMenuPages {
 	@Override
 	public void onClick(GuiDetector gui, int x, int y) {
 		super.onClick(gui, x, y);
-
 		if (getScroll() != 0) {
 			int statePosId = 0;
 			for (ModuleState state : ModuleStateRegistry.getAllStates()) {
 				int[] target = getContentRect(statePosId);
 				if (gui.inRect(x, y, target)) {
-					gui.currentObject = new LogicObjectState((byte)0, state);
-
+					gui.currentObject = new LogicObjectState((byte) 0, state);
 					return;
 				}
 				statePosId++;
@@ -62,6 +56,6 @@ public class DropDownMenuStates extends DropDownMenuPages {
 
 	@Override
 	protected int getPageCount() {
-		return (int)Math.ceil(ModuleStateRegistry.getAllStates().size() / (float)getObjectsPerPage());
+		return (int) Math.ceil(ModuleStateRegistry.getAllStates().size() / (float) getObjectsPerPage());
 	}
 }

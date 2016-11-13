@@ -5,7 +5,6 @@ import vswe.stevesvehicles.arcade.ArcadeGame;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class TetrisPiece {
-
 	private TetrisPiecePart[] parts;
 	private int x;
 	private int y;
@@ -21,7 +20,6 @@ public class TetrisPiece {
 
 	public static TetrisPiece createPiece(int type) {
 		TetrisPiecePart[] parts;
-
 		String sound = null;
 		float volume = 0.5F;
 		int rotationOffset = 0;
@@ -39,15 +37,15 @@ public class TetrisPiece {
 				parts = createWitherParts();
 				sound = "mob.wither.hurt";
 				volume = 0.25F;
-				break;	
+				break;
 			case 3:
 				parts = createWitchParts();
 				sound = "mob.cat.hitt";
-				break;	
+				break;
 			case 4:
 				parts = createPigParts();
 				sound = "mob.pig.say";
-				break;	
+				break;
 			case 5:
 				parts = createSteveParts();
 				sound = "damage.hit";
@@ -59,8 +57,6 @@ public class TetrisPiece {
 			default:
 				return null;
 		}
-
-
 		TetrisPiece piece = new TetrisPiece(parts);
 		piece.sound = sound;
 		piece.rotationOffset = rotationOffset;
@@ -68,90 +64,75 @@ public class TetrisPiece {
 		return piece;
 	}
 
-	//4x1 piece
+	// 4x1 piece
 	private static TetrisPiecePart[] createEndermanParts() {
 		TetrisPiecePart[] parts = new TetrisPiecePart[4];
-
-		parts[0] = new TetrisPiecePart(new TetrisBlock(0,0), 0, -1);
-		parts[1] = new TetrisPiecePart(new TetrisBlock(0,10), 0, 0);
-		parts[2] = new TetrisPiecePart(new TetrisBlock(0,20), 0, 1);
-		parts[3] = new TetrisPiecePart(new TetrisBlock(0,30), 0, 2);
-
+		parts[0] = new TetrisPiecePart(new TetrisBlock(0, 0), 0, -1);
+		parts[1] = new TetrisPiecePart(new TetrisBlock(0, 10), 0, 0);
+		parts[2] = new TetrisPiecePart(new TetrisBlock(0, 20), 0, 1);
+		parts[3] = new TetrisPiecePart(new TetrisBlock(0, 30), 0, 2);
 		return parts;
 	}
 
-	//2x2 piece
+	// 2x2 piece
 	private static TetrisPiecePart[] createSlimeParts() {
 		TetrisPiecePart[] parts = new TetrisPiecePart[4];
-
-		parts[0] = new TetrisPiecePart(new TetrisBlock(10,0), 0, 0);
-		parts[1] = new TetrisPiecePart(new TetrisBlock(20,0), 1, 0);
-		parts[2] = new TetrisPiecePart(new TetrisBlock(10,10), 0, 1);
-		parts[3] = new TetrisPiecePart(new TetrisBlock(20,10), 1, 1);
-
+		parts[0] = new TetrisPiecePart(new TetrisBlock(10, 0), 0, 0);
+		parts[1] = new TetrisPiecePart(new TetrisBlock(20, 0), 1, 0);
+		parts[2] = new TetrisPiecePart(new TetrisBlock(10, 10), 0, 1);
+		parts[3] = new TetrisPiecePart(new TetrisBlock(20, 10), 1, 1);
 		return parts;
 	}
 
-	//T-piece
+	// T-piece
 	private static TetrisPiecePart[] createWitherParts() {
 		TetrisPiecePart[] parts = new TetrisPiecePart[4];
-
-		parts[0] = new TetrisPiecePart(new TetrisBlock(30,0), -1, 0);
-		parts[1] = new TetrisPiecePart(new TetrisBlock(40,0), 0, 0);
-		parts[2] = new TetrisPiecePart(new TetrisBlock(50,0), 1, 0);
-		parts[3] = new TetrisPiecePart(new TetrisBlock(40,10), 0, 1);
-
+		parts[0] = new TetrisPiecePart(new TetrisBlock(30, 0), -1, 0);
+		parts[1] = new TetrisPiecePart(new TetrisBlock(40, 0), 0, 0);
+		parts[2] = new TetrisPiecePart(new TetrisBlock(50, 0), 1, 0);
+		parts[3] = new TetrisPiecePart(new TetrisBlock(40, 10), 0, 1);
 		return parts;
 	}
 
-	//Inverted L-piece
+	// Inverted L-piece
 	private static TetrisPiecePart[] createWitchParts() {
 		TetrisPiecePart[] parts = new TetrisPiecePart[4];
-
-		parts[0] = new TetrisPiecePart(new TetrisBlock(70,0), 0, -1);
-		parts[1] = new TetrisPiecePart(new TetrisBlock(70,10), 0, 0);
-		parts[2] = new TetrisPiecePart(new TetrisBlock(70,20), 0, 1);
-		parts[3] = new TetrisPiecePart(new TetrisBlock(60,20), -1, 1);
-
+		parts[0] = new TetrisPiecePart(new TetrisBlock(70, 0), 0, -1);
+		parts[1] = new TetrisPiecePart(new TetrisBlock(70, 10), 0, 0);
+		parts[2] = new TetrisPiecePart(new TetrisBlock(70, 20), 0, 1);
+		parts[3] = new TetrisPiecePart(new TetrisBlock(60, 20), -1, 1);
 		return parts;
-	}		
+	}
 
-	//L-piece
+	// L-piece
 	private static TetrisPiecePart[] createPigParts() {
 		TetrisPiecePart[] parts = new TetrisPiecePart[4];
-
-		parts[0] = new TetrisPiecePart(new TetrisBlock(80,0), 0, -1);
-		parts[1] = new TetrisPiecePart(new TetrisBlock(80,10), 0, 0);
-		parts[2] = new TetrisPiecePart(new TetrisBlock(80,20), 0, 1);
-		parts[3] = new TetrisPiecePart(new TetrisBlock(90,20), 1, 1);
-
+		parts[0] = new TetrisPiecePart(new TetrisBlock(80, 0), 0, -1);
+		parts[1] = new TetrisPiecePart(new TetrisBlock(80, 10), 0, 0);
+		parts[2] = new TetrisPiecePart(new TetrisBlock(80, 20), 0, 1);
+		parts[3] = new TetrisPiecePart(new TetrisBlock(90, 20), 1, 1);
 		return parts;
-	}		
+	}
 
-	//z-piece
+	// z-piece
 	private static TetrisPiecePart[] createSteveParts() {
 		TetrisPiecePart[] parts = new TetrisPiecePart[4];
-
-		parts[0] = new TetrisPiecePart(new TetrisBlock(100,0), -1, -1);
-		parts[1] = new TetrisPiecePart(new TetrisBlock(110,0), 0, -1);
-		parts[2] = new TetrisPiecePart(new TetrisBlock(110,10), 0, 0);
-		parts[3] = new TetrisPiecePart(new TetrisBlock(120,10), 1, 0);
-
+		parts[0] = new TetrisPiecePart(new TetrisBlock(100, 0), -1, -1);
+		parts[1] = new TetrisPiecePart(new TetrisBlock(110, 0), 0, -1);
+		parts[2] = new TetrisPiecePart(new TetrisBlock(110, 10), 0, 0);
+		parts[3] = new TetrisPiecePart(new TetrisBlock(120, 10), 1, 0);
 		return parts;
-	}	
+	}
 
-	//s-piece
+	// s-piece
 	private static TetrisPiecePart[] createSheepParts() {
 		TetrisPiecePart[] parts = new TetrisPiecePart[4];
-
-		parts[0] = new TetrisPiecePart(new TetrisBlock(130,10), -1, 1);
-		parts[1] = new TetrisPiecePart(new TetrisBlock(140,10), 0, 1);
-		parts[2] = new TetrisPiecePart(new TetrisBlock(140,0), 0, 0);
-		parts[3] = new TetrisPiecePart(new TetrisBlock(150,0), 1, 0);
-
+		parts[0] = new TetrisPiecePart(new TetrisBlock(130, 10), -1, 1);
+		parts[1] = new TetrisPiecePart(new TetrisBlock(140, 10), 0, 1);
+		parts[2] = new TetrisPiecePart(new TetrisBlock(140, 0), 0, 0);
+		parts[3] = new TetrisPiecePart(new TetrisBlock(150, 0), 1, 0);
 		return parts;
-	}		
-
+	}
 
 	public void render(ArcadeTetris game, GuiVehicle gui) {
 		for (TetrisPiecePart part : parts) {
@@ -165,7 +146,6 @@ public class TetrisPiece {
 				return;
 			}
 		}
-
 		for (TetrisPiecePart part : parts) {
 			part.rotate(rotationOffset);
 		}
@@ -194,18 +174,12 @@ public class TetrisPiece {
 				return isGameOver ? MoveResult.GAME_OVER : MoveResult.FAIL;
 			}
 		}
-
 		x += offX;
 		y += offY;
 		return MoveResult.SUCCESS;
-
 	}
-
 
 	public static enum MoveResult {
-		SUCCESS,
-		FAIL,
-		GAME_OVER
+		SUCCESS, FAIL, GAME_OVER
 	}
-
 }

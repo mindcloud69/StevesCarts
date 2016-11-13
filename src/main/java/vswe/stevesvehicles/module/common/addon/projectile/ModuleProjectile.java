@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon.projectile;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
@@ -10,8 +11,7 @@ public abstract class ModuleProjectile extends ModuleAddon {
 		super(vehicleBase);
 	}
 
-
 	public abstract boolean isValidProjectile(ItemStack item);
-	public abstract Entity createProjectile(Entity target, ItemStack item);	
 
+	public abstract Entity createProjectile(Entity target, ItemStack item);
 }

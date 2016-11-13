@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.arcade;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -17,14 +16,16 @@ public final class LocalizationSweeper {
 	public static final ILocalizedText HIGH_SCORE_TITLE = createSimple("high_score_title");
 	public static final ILocalizedText HIGH_SCORE_ENTRY = createAdvanced("high_score_entry");
 	public static final ILocalizedText RESTART = createSimple("restart");
-
 	private static final String HEADER = "steves_vehicles:gui.arcade.sweeper:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationSweeper() {}
+	private LocalizationSweeper() {
+	}
 }

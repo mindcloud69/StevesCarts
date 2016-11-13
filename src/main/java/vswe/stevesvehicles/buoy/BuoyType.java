@@ -1,14 +1,10 @@
 package vswe.stevesvehicles.buoy;
 
-
 import net.minecraft.util.ResourceLocation;
 import vswe.stevesvehicles.client.ResourceHelper;
 
 public enum BuoyType {
-	NORMAL(0xE25B00),
-	OTHER(0x06477C);
-
-
+	NORMAL(0xE25B00), OTHER(0x06477C);
 	BuoyType(int color) {
 		this.color = color;
 		this.texture = ResourceHelper.getResource("/models/buoy/" + this.toString().toLowerCase() + ".png");

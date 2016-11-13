@@ -1,7 +1,6 @@
 package vswe.stevesvehicles.arcade.monopoly;
 
 public abstract class CardPlace extends Place {
-
 	public CardPlace(ArcadeMonopoly game) {
 		super(game);
 	}
@@ -12,5 +11,4 @@ public abstract class CardPlace extends Place {
 	public boolean onPieceStop(Piece piece) {
 		return false;
 	}
-
 }

@@ -19,18 +19,14 @@ import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.network.PacketHandler;
 
-
 public abstract class ArcadeGame {
-
 	private ModuleArcade module;
 	private ILocalizedText name;
-
 
 	public ArcadeGame(ModuleArcade module, ILocalizedText name) {
 		this.name = name;
 		this.module = module;
 	}
-
 
 	public String getName() {
 		return name.translate();
@@ -43,35 +39,49 @@ public abstract class ArcadeGame {
 	@SideOnly(Side.CLIENT)
 	public void update() {
 		if (StevesVehicles.instance.useArcadeSounds) {
-			//((EntityModularCart)getModule().getVehicle().getEntity()).silent(); //TODO
+			// ((EntityModularCart)getModule().getVehicle().getEntity()).silent();
+			// //TODO
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	public void drawForeground(GuiVehicle gui) {
+	}
 
 	@SideOnly(Side.CLIENT)
-	public void drawForeground(GuiVehicle gui) {}
+	public void drawBackground(GuiVehicle gui, int x, int y) {
+	}
 
 	@SideOnly(Side.CLIENT)
-	public void drawBackground(GuiVehicle gui, int x, int y) {}
+	public void drawMouseOver(GuiVehicle gui, int x, int y) {
+	}
 
 	@SideOnly(Side.CLIENT)
-	public void drawMouseOver(GuiVehicle gui, int x, int y) {}
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	}
 
 	@SideOnly(Side.CLIENT)
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {}
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+	}
 
 	@SideOnly(Side.CLIENT)
-	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {}
+	public void keyPress(GuiVehicle gui, char character, int extraInformation) {
+	}
 
-	@SideOnly(Side.CLIENT)
-	public void keyPress(GuiVehicle gui, char character, int extraInformation) {}
+	public void save(NBTTagCompound tagCompound) {
+	}
 
-	public void save(NBTTagCompound tagCompound) {}
-	public void load(NBTTagCompound tagCompound) {}
-	public void receivePacket(DataReader dr, EntityPlayer player) {}
-	public void checkGuiData(Object[] info) {}
-	public void receiveGuiData(int id, short data) {}
+	public void load(NBTTagCompound tagCompound) {
+	}
 
+	public void receivePacket(DataReader dr, EntityPlayer player) {
+	}
+
+	public void checkGuiData(Object[] info) {
+	}
+
+	public void receiveGuiData(int id, short data) {
+	}
 
 	public boolean disableStandardKeyFunctionality() {
 		return false;
@@ -89,12 +99,11 @@ public abstract class ArcadeGame {
 		if (StevesVehicles.instance.useArcadeSounds && sound != null) {
 			SoundHandler.playDefaultSound(sound, SoundCategory.AMBIENT, volume, pitch);
 		}
-	}	
+	}
 
 	public boolean allowKeyRepeat() {
 		return false;
 	}
-
 
 	public void load(GuiVehicle gui) {
 		gui.enableKeyRepeat(allowKeyRepeat());
@@ -104,10 +113,10 @@ public abstract class ArcadeGame {
 		if (allowKeyRepeat()) {
 			gui.enableKeyRepeat(false);
 		}
-	}	
+	}
 
 	public void drawImageInArea(GuiVehicle gui, int x, int y, int u, int v, int w, int h) {
-		drawImageInArea(gui, x, y, u, v, w, h, 5, 4, vswe.stevesvehicles.vehicle.VehicleBase.MODULAR_SPACE_WIDTH,  vswe.stevesvehicles.vehicle.VehicleBase.MODULAR_SPACE_HEIGHT);
+		drawImageInArea(gui, x, y, u, v, w, h, 5, 4, vswe.stevesvehicles.vehicle.VehicleBase.MODULAR_SPACE_WIDTH, vswe.stevesvehicles.vehicle.VehicleBase.MODULAR_SPACE_HEIGHT);
 	}
 
 	public void drawImageInArea(GuiVehicle gui, int x, int y, int u, int v, int w, int h, int x1, int y1, int x2, int y2) {
@@ -115,46 +124,37 @@ public abstract class ArcadeGame {
 			w -= x1 - x;
 			u += x1 - x;
 			x = x1;
-		}else if(x + w > x2) {
+		} else if (x + w > x2) {
 			w = x2 - x;
 		}
-
 		if (y < y1) {
 			h -= y1 - y;
 			v += y1 - y;
 			y = y1;
-		}else if(y + h > y2) {
+		} else if (y + h > y2) {
 			h = y2 - y;
 		}
-
-
-		if (w > 0 && h > 0) {		
-			getModule().drawImage(gui, 
-					x, 
-					y, 
-					u,
-					v,
-					w,
-					h
-					);	
-		}		
+		if (w > 0 && h > 0) {
+			getModule().drawImage(gui, x, y, u, v, w, h);
+		}
 	}
 
 	private int id;
+
 	public static void createGame(ModuleArcade module, Class<? extends ArcadeGame> gameType, ArrayList<ArcadeGame> games) {
 		try {
 			Constructor<? extends ArcadeGame> constructor = gameType.getConstructor(ModuleArcade.class);
 			Object obj = constructor.newInstance(module);
-			ArcadeGame game = (ArcadeGame)obj;
+			ArcadeGame game = (ArcadeGame) obj;
 			game.id = games.size();
 			games.add(game);
-		}catch (Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-
 	private int guiDataOffset;
+
 	public int numberOfGuiData() {
 		return 0;
 	}
@@ -168,11 +168,11 @@ public abstract class ArcadeGame {
 	}
 
 	public static void delegateReceivedGuiData(ArrayList<ArcadeGame> games, int id, short data) {
-		for(ArcadeGame game : games) {
+		for (ArcadeGame game : games) {
 			if (id < game.numberOfGuiData()) {
 				game.receiveGuiData(id, data);
 				break;
-			}else{
+			} else {
 				id -= game.numberOfGuiData();
 			}
 		}
@@ -198,6 +198,7 @@ public abstract class ArcadeGame {
 	}
 
 	private ResourceLocation texture;
+
 	public ResourceLocation getIconResource() {
 		if (texture == null) {
 			texture = ResourceHelper.getResource("/gui/arcade/" + getModule().getGameName(this) + ".png");

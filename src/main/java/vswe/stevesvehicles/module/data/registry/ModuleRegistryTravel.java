@@ -20,12 +20,11 @@ import vswe.stevesvehicles.vehicle.VehicleRegistry;
 public class ModuleRegistryTravel extends ModuleRegistry {
 	public static final String SEAT_KEY = "Seats";
 	public static final String CAGE_KEY = "Cages";
+
 	public ModuleRegistryTravel() {
 		super("common.travel");
-
 		ModuleDataGroup seats = ModuleDataGroup.createGroup(SEAT_KEY, LocalizationGroup.SEAT);
 		ModuleDataGroup cages = ModuleDataGroup.createGroup(CAGE_KEY, LocalizationGroup.CAGE);
-
 		ModuleData seat = new ModuleData("seat", ModuleSeat.class, 3) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -34,32 +33,16 @@ public class ModuleRegistryTravel extends ModuleRegistry {
 				addModel("Chair", new ModelSeat());
 			}
 		};
-
-		seat.addShapedRecipeWithSize(2, 3,
-				null,           "plankWood",
-				null,           "plankWood",
-				"slabWood",     "plankWood");
-
+		seat.addShapedRecipeWithSize(2, 3, null, "plankWood", null, "plankWood", "slabWood", "plankWood");
 		seat.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		seat.addSides(ModuleSide.CENTER, ModuleSide.TOP);
 		seats.add(seat);
 		register(seat);
-
-
-
 		ModuleData arcade = new ModuleData("steves_arcade", ModuleArcade.class, 10);
-
-		arcade.addShapedRecipe( null,                   Blocks.GLASS_PANE,          null,
-				"plankWood",            SIMPLE_PCB,                 "plankWood",
-				Items.REDSTONE,         "plankWood",                Items.REDSTONE);
-
+		arcade.addShapedRecipe(null, Blocks.GLASS_PANE, null, "plankWood", SIMPLE_PCB, "plankWood", Items.REDSTONE, "plankWood", Items.REDSTONE);
 		arcade.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		arcade.addRequirement(seats);
 		register(arcade);
-
-
-
-
 		ModuleData cage = new ModuleData("cage", ModuleCage.class, 7) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -70,11 +53,7 @@ public class ModuleRegistryTravel extends ModuleRegistry {
 				setModelMultiplier(0.65F);
 			}
 		};
-
-		cage.addShapedRecipe(   Blocks.IRON_BARS,     Blocks.IRON_BARS,     Blocks.IRON_BARS,
-				Blocks.IRON_BARS,     SIMPLE_PCB,           Blocks.IRON_BARS,
-				Blocks.IRON_BARS,     Blocks.IRON_BARS,     Blocks.IRON_BARS);
-
+		cage.addShapedRecipe(Blocks.IRON_BARS, Blocks.IRON_BARS, Blocks.IRON_BARS, Blocks.IRON_BARS, SIMPLE_PCB, Blocks.IRON_BARS, Blocks.IRON_BARS, Blocks.IRON_BARS, Blocks.IRON_BARS);
 		cage.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		cage.addSides(ModuleSide.CENTER, ModuleSide.TOP);
 		cages.add(cage);

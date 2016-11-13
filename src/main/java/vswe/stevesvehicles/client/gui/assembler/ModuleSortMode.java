@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.client.gui.assembler;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,6 @@ public enum ModuleSortMode {
 			if (module.getCost() > hull.getComplexityMax()) {
 				return false;
 			}
-
 			if (hull.getSides() != null && module.getSides() != null) {
 				for (ModuleSide side : hull.getSides()) {
 					if (module.getSides().contains(side)) {
@@ -44,35 +42,30 @@ public enum ModuleSortMode {
 					}
 				}
 			}
-
 			try {
 				if (moduleRecursiveCache.contains(module)) {
 					return true;
 				}
 				moduleRecursiveCache.add(module);
-
-				if (module.getParent() != null && ! isModuleValid(hull, module.getParent())) {
+				if (module.getParent() != null && !isModuleValid(hull, module.getParent())) {
 					return false;
-				}else if(module.getRequirement() != null) {
+				} else if (module.getRequirement() != null) {
 					for (ModuleDataGroup moduleDataGroup : module.getRequirement()) {
 						boolean isAnyValid = false;
-
 						for (ModuleData moduleData : moduleDataGroup.getModules()) {
 							if (isModuleValid(hull, moduleData)) {
 								isAnyValid = true;
 								break;
 							}
 						}
-
 						if (!isAnyValid) {
 							return false;
 						}
 					}
 				}
-
 				return true;
-			}finally {
-				moduleRecursiveCache.remove(module) ;
+			} finally {
+				moduleRecursiveCache.remove(module);
 			}
 		}
 	},
@@ -82,15 +75,12 @@ public enum ModuleSortMode {
 			if (!doesModuleDataFit(assembler, moduleData)) {
 				return false;
 			}
-
 			List<ModuleData> modules = new ArrayList<>();
 			modules.addAll(assembler.getModules(false));
 			modules.add(moduleData);
 			return ModuleDataItemHandler.checkForErrors(hull.getVehicle(), hull, modules) == null;
 		}
 	};
-
-
 	private static boolean doesModuleDataFit(TileEntityCartAssembler assembler, ModuleData module) {
 		ItemStack item = module.getItemStack();
 		for (SlotAssembler slot : assembler.getSlots()) {
@@ -100,7 +90,6 @@ public enum ModuleSortMode {
 		}
 		return false;
 	}
-
 
 	private ILocalizedText name;
 
@@ -114,6 +103,4 @@ public enum ModuleSortMode {
 	}
 
 	public abstract boolean isValid(TileEntityCartAssembler assembler, ModuleDataHull hull, ModuleData moduleData);
-
-
 }

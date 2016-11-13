@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.item;
 
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.holiday.HolidayType;
@@ -142,7 +141,6 @@ public enum ComponentTypes implements IRecipeOutput {
 	GALGADORIAN_WHEELS,
 	IRON_BLADE,
 	BLADE_ARM;
-
 	private int id;
 	private String unlocalizedName;
 
@@ -150,7 +148,7 @@ public enum ComponentTypes implements IRecipeOutput {
 		if (invalid) {
 			id = 0;
 			unlocalizedName = null;
-		}else{
+		} else {
 			this.id = ordinal();
 			this.unlocalizedName = toString().toLowerCase();
 		}
@@ -185,27 +183,27 @@ public enum ComponentTypes implements IRecipeOutput {
 		return null;
 	}
 
-	public void addShapedRecipeWithSizeAndCount(int width, int height, int count, Object ... recipe) {
+	public void addShapedRecipeWithSizeAndCount(int width, int height, int count, Object... recipe) {
 		if (ModItems.component.isValid(getItemStack())) {
 			GameRegistry.addRecipe(new ModuleRecipeShaped(this, count, width, height, recipe));
 		}
 	}
 
-	public void addShapedRecipeWithSize(int width, int height, Object ... recipe) {
+	public void addShapedRecipeWithSize(int width, int height, Object... recipe) {
 		addShapedRecipeWithSizeAndCount(width, height, 1, recipe);
 	}
 
-	public void addShapedRecipe(Object ... recipe) {
+	public void addShapedRecipe(Object... recipe) {
 		addShapedRecipeWithSizeAndCount(3, 3, 1, recipe);
 	}
 
-	public void addShapelessRecipeWithCount(int count, Object ... recipe) {
+	public void addShapelessRecipeWithCount(int count, Object... recipe) {
 		if (ModItems.component.isValid(getItemStack())) {
 			GameRegistry.addRecipe(new ModuleRecipeShapeless(this, count, recipe));
 		}
 	}
 
-	public void addShapelessRecipe(Object ... recipe) {
+	public void addShapelessRecipe(Object... recipe) {
 		addShapelessRecipeWithCount(1, recipe);
 	}
 }

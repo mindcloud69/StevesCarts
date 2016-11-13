@@ -3,9 +3,9 @@ package vswe.stevesvehicles.upgrade.effect.util;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 public abstract class SimpleInventoryEffect extends InventoryEffect {
-
 	private int inventoryWidth;
 	private int inventoryHeight;
+
 	public SimpleInventoryEffect(TileEntityUpgrade upgrade, Integer inventoryWidth, Integer inventoryHeight) {
 		super(upgrade);
 		this.inventoryWidth = inventoryWidth;
@@ -19,12 +19,11 @@ public abstract class SimpleInventoryEffect extends InventoryEffect {
 
 	@Override
 	public int getSlotX(int id) {
-		return (256 - 18 * inventoryWidth) / 2 + (id % inventoryWidth)* 18;
+		return (256 - 18 * inventoryWidth) / 2 + (id % inventoryWidth) * 18;
 	}
 
-	@Override	
+	@Override
 	public int getSlotY(int id) {
 		return (107 - 18 * inventoryHeight) / 2 + (id / inventoryWidth) * 18;
 	}
-
 }

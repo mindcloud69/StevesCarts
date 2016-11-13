@@ -16,6 +16,4 @@ public class ModuleGiftStorage extends ModuleChest {
 	protected int getInventoryHeight() {
 		return 4;
 	}
-
-
 }

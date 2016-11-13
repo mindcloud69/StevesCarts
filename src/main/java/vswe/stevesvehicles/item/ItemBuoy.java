@@ -23,21 +23,18 @@ import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 
 public class ItemBuoy extends Item {
-
 	public ItemBuoy() {
 		setHasSubtypes(true);
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 		if (item != null && item.getItemDamage() >= 0 && item.getItemDamage() < BuoyType.values().length) {
 			BuoyType buoy = BuoyType.getType(item.getItemDamage());
 			return buoy.getUnlocalizedName();
-		}	
-
+		}
 		return "item.unknown";
 	}
 
@@ -57,37 +54,28 @@ public class ItemBuoy extends Item {
 		double y = player.posY + 1.62D - player.getYOffset();
 		double z = player.posZ;
 		Vec3d camera = new Vec3d(x, y, z);
-
 		Vec3d look = player.getLook(1.0F);
 		look = new Vec3d(look.xCoord * VIEW_MULTIPLIER, look.yCoord * VIEW_MULTIPLIER, look.zCoord * VIEW_MULTIPLIER);
-
 		Vec3d target = camera.addVector(look.xCoord, look.yCoord, look.zCoord);
 		RayTraceResult object = world.rayTraceBlocks(camera, target, true);
-
 		if (object != null && object.typeOfHit == RayTraceResult.Type.BLOCK) {
-			//noinspection unchecked
+			// noinspection unchecked
 			List<Entity> list = world.getEntitiesWithinAABB(Entity.class, player.getEntityBoundingBox().addCoord(look.xCoord, look.yCoord, look.zCoord).expand(AREA_EXPANSION, AREA_EXPANSION, AREA_EXPANSION));
-
 			boolean valid = true;
 			for (Entity entity : list) {
 				if (entity.canBeCollidedWith()) {
 					float borderSize = entity.getCollisionBorderSize();
 					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand(borderSize, borderSize, borderSize);
-
 					if (axisalignedbb.isVecInside(camera)) {
 						valid = false;
 						break;
 					}
 				}
 			}
-
 			if (valid) {
 				IBlockState state = world.getBlockState(object.getBlockPos());
-
-				if (state.getMaterial() == Material.WATER) { //TODO allow lava?
+				if (state.getMaterial() == Material.WATER) { // TODO allow lava?
 					BlockPos pos = object.getBlockPos().add(0, 1, 0);
-
-
 					if (world.isAirBlock(pos)) {
 						if (!world.isRemote) {
 							EntityBuoy buoy = new EntityBuoy(world, pos, BuoyType.getType(itemStack.getItemDamage()));
@@ -97,12 +85,9 @@ public class ItemBuoy extends Item {
 							itemStack.stackSize--;
 						}
 					}
-
 				}
-
 			}
 		}
-
 		return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 	}
 }

@@ -1,8 +1,6 @@
 package vswe.stevesvehicles.arcade.monopoly;
 
-
 public class Villager extends CardPlace {
-
 	public Villager(ArcadeMonopoly game) {
 		super(game);
 	}
@@ -16,5 +14,4 @@ public class Villager extends CardPlace {
 	public Card getCard() {
 		return CardVillager.cards.get(game.getModule().getVehicle().getRandom().nextInt(CardVillager.cards.size()));
 	}
-
 }

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
-
 public class ModuleRecipeShapeless extends ModuleRecipe {
 	public ModuleRecipeShapeless(IRecipeOutput result, int count, Object[] recipe) {
 		super(result, count, recipe);
@@ -23,7 +22,6 @@ public class ModuleRecipeShapeless extends ModuleRecipe {
 	public boolean matches(InventoryCrafting crafting, World world) {
 		List<RecipeItem> remainingRecipe = new ArrayList<>();
 		Collections.addAll(remainingRecipe, recipe);
-
 		for (int i = 0; i < GRID_WIDTH; i++) {
 			for (int j = 0; j < GRID_HEIGHT; j++) {
 				ItemStack item = crafting.getStackInRowAndColumn(i, j);
@@ -36,14 +34,12 @@ public class ModuleRecipeShapeless extends ModuleRecipe {
 							break;
 						}
 					}
-
 					if (!foundMatch) {
 						return false;
 					}
 				}
 			}
 		}
-
 		return remainingRecipe.isEmpty();
 	}
 }

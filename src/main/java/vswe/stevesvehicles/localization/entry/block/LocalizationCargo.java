@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.block;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -33,16 +32,16 @@ public final class LocalizationCargo {
 	public static final ILocalizedText SLOT_FIREWORK = createSimple("slot_firework");
 	public static final ILocalizedText SLOT_BUCKET = createSimple("slot_bucket");
 	public static final ILocalizedText SLOT_CAKE = createSimple("slot_cake");
-
-
-
 	private static final String HEADER = "steves_vehicles:gui.cargo:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationCargo() {}
+	private LocalizationCargo() {
+	}
 }

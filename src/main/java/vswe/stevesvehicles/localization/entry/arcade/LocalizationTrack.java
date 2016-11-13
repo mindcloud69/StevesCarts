@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.arcade;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 
@@ -38,11 +37,12 @@ public final class LocalizationTrack {
 	public static final ILocalizedText SAVE_AS = createSimple("save_as");
 	public static final ILocalizedText CANCEL = createSimple("cancel");
 	public static final ILocalizedText EDITOR_TITLE = createSimple("editor_title");
-
 	private static final String HEADER = "steves_vehicles:gui.arcade.track:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
 
-	private LocalizationTrack() {}
+	private LocalizationTrack() {
+	}
 }

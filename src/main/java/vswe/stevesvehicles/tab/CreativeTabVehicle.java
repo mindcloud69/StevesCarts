@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.tab;
 
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,7 +26,7 @@ public class CreativeTabVehicle extends CreativeTabCustom {
 		int id = VehicleRegistry.getInstance().getIdFromType(vehicleType);
 		if (id >= 0) {
 			return new ItemStack(ModItems.vehicles, 1, id);
-		}else{
+		} else {
 			return null;
 		}
 	}

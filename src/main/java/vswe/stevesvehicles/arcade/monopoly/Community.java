@@ -4,9 +4,7 @@ import java.util.EnumSet;
 
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
-
 public class Community extends CardPlace {
-
 	public Community(ArcadeMonopoly game) {
 		super(game);
 	}
@@ -25,5 +23,4 @@ public class Community extends CardPlace {
 	public Card getCard() {
 		return CardCommunity.cards.get(game.getModule().getVehicle().getRandom().nextInt(CardCommunity.cards.size()));
 	}
-
 }

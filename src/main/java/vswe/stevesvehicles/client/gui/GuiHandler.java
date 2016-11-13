@@ -21,18 +21,17 @@ public class GuiHandler implements IGuiHandler {
 			if (vehicle != null) {
 				return vehicle.getGui(player);
 			}
-		}else if (id == 1){
+		} else if (id == 1) {
 			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity instanceof TileEntityBase) {
-				return ((TileEntityBase)tileentity).getGui(player.inventory);
+				return ((TileEntityBase) tileentity).getGui(player.inventory);
 			}
-		}else if(id == 2) {
+		} else if (id == 2) {
 			Entity entity = world.getEntityByID(x);
 			if (entity instanceof EntityBuoy) {
-				return new GuiBuoy((EntityBuoy)entity);
+				return new GuiBuoy((EntityBuoy) entity);
 			}
 		}
-
 		return null;
 	}
 
@@ -43,27 +42,25 @@ public class GuiHandler implements IGuiHandler {
 			if (vehicle != null) {
 				return vehicle.getCon(player.inventory);
 			}
-		}else if (id == 1){
+		} else if (id == 1) {
 			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity instanceof TileEntityBase) {
-				return ((TileEntityBase)tileentity).getContainer(player.inventory);
+				return ((TileEntityBase) tileentity).getContainer(player.inventory);
 			}
-		}else if(id == 2) {
+		} else if (id == 2) {
 			Entity entity = world.getEntityByID(x);
 			if (entity instanceof EntityBuoy) {
-				return new ContainerBuoy((EntityBuoy)entity);
+				return new ContainerBuoy((EntityBuoy) entity);
 			}
 		}
-
 		return null;
 	}
 
 	private VehicleBase getVehicle(int id, World world) {
 		Entity entity = world.getEntityByID(id);
 		if (entity instanceof IVehicleEntity) {
-			return ((IVehicleEntity)entity).getVehicle();
+			return ((IVehicleEntity) entity).getVehicle();
 		}
 		return null;
 	}
-
 }

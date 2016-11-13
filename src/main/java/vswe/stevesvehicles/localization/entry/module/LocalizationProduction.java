@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.module;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -17,15 +16,16 @@ public final class LocalizationProduction {
 	public static final ILocalizedText CHANGE_LIMIT_TEN = createSimple("change_limit_ten");
 	public static final ILocalizedText CHANGE_LIMIT_STACK = createSimple("change_limit_stack");
 	public static final ILocalizedText INFINITE = createSimple("infinite");
-
 	private static final String HEADER = "steves_vehicles:gui.common.production:common.";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationProduction() {}
+	private LocalizationProduction() {
+	}
 }
-

@@ -3,7 +3,6 @@ package vswe.stevesvehicles.arcade.tetris;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class TetrisPiecePart {
-
 	private TetrisBlock block;
 	private int offX;
 	private int offY;
@@ -20,15 +19,13 @@ public class TetrisPiecePart {
 
 	public void rotate(int offSet) {
 		block.rotate();
-
 		int temp = offX;
 		offX = -offY + offSet;
 		offY = temp;
 	}
 
-
 	public void placeInBoard(TetrisBlock[][] board, int x, int y) {
-		board[x+offX][y+offY] = block;
+		board[x + offX][y + offY] = block;
 	}
 
 	public boolean canMoveTo(TetrisBlock[][] board, int x, int y) {
@@ -36,12 +33,11 @@ public class TetrisPiecePart {
 	}
 
 	public boolean isValidAt(TetrisBlock[][] board, int x, int y) {
-		if (x < 0 || x  >= board.length || y  >= board[0].length) {
+		if (x < 0 || x >= board.length || y >= board[0].length) {
 			return false;
-		}else if (y < 0){
+		} else if (y < 0) {
 			return true;
 		}
-
 		return board[x][y] == null;
 	}
 
@@ -52,6 +48,4 @@ public class TetrisPiecePart {
 	public boolean canPlaceInBoard(int y) {
 		return y + offY >= 0;
 	}
-
-
 }

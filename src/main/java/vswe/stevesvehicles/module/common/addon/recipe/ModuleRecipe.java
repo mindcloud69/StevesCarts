@@ -23,7 +23,6 @@ import vswe.stevesvehicles.tileentity.TileEntityCargo;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public abstract class ModuleRecipe extends ModuleAddon {
-
 	public ModuleRecipe(VehicleBase vehicleBase) {
 		super(vehicleBase);
 		target = 3;
@@ -32,47 +31,41 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		outputSlots = new ArrayList<>();
 	}
 
-
 	private int target;
 	protected boolean dirty;
 
 	protected abstract int getLimitStartX();
+
 	protected abstract int getLimitStartY();
 
 	protected static final int WORK_COOL_DOWN = 40;
-
-
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/recipe.png");
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		if (canUseAdvancedFeatures()) {
-			int [] area = getArea();		
-
+			int[] area = getArea();
 			ResourceHelper.bindResource(TEXTURE);
-
 			drawImage(gui, area[0] - 2, area[1] - 2, 1, 1, 20, 20);
-
 			if (mode == 1) {
 				for (int i = 0; i < 3; i++) {
 					drawControlRect(gui, x, y, i);
 				}
-			}else{
+			} else {
 				drawControlRect(gui, x, y, 1);
 			}
-		}	
+		}
 	}
 
 	private void drawControlRect(GuiVehicle gui, int x, int y, int i) {
 		int v = 1 + i * 12;
 		int[] rect = getControlRect(i);
-
 		drawImage(gui, rect, 20 + (inRect(x, y, rect) ? 25 : 2), v);
 	}
 
 	private int[] getControlRect(int i) {
-		return new int[] {getLimitStartX(), getLimitStartY() + 12 * i, 22, 11};		
+		return new int[] { getLimitStartX(), getLimitStartY() + 12 * i, 22, 11 };
 	}
 
 	@Override
@@ -80,8 +73,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	public void drawForeground(GuiVehicle gui) {
 		if (canUseAdvancedFeatures()) {
 			String str;
-
-			switch(mode) {
+			switch (mode) {
 				case 0:
 					str = LocalizationProduction.INFINITE.translate();
 					break;
@@ -90,8 +82,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 					break;
 				default:
 					str = "X";
-			}	
-
+			}
 			drawString(gui, str, getControlRect(1), 0x404040);
 		}
 	}
@@ -103,17 +94,16 @@ public abstract class ModuleRecipe extends ModuleAddon {
 			ItemStack icon;
 			if (isTargetInvalid()) {
 				icon = new ItemStack(Items.minecart, 1);
-			}else{
+			} else {
 				icon = TileEntityCargo.itemSelections.get(target).getIcon();
 			}
-			int [] area = getArea();
-
+			int[] area = getArea();
 			drawItemInInterface(gui, icon, area[0], area[1]);
-		}	
+		}
 	}
 
 	private boolean isTargetInvalid() {
-		return target < 0 || target >= TileEntityCargo.itemSelections.size() ||  TileEntityCargo.itemSelections.get(target).getValidSlot() == null;
+		return target < 0 || target >= TileEntityCargo.itemSelections.size() || TileEntityCargo.itemSelections.get(target).getValidSlot() == null;
 	}
 
 	@Override
@@ -123,14 +113,11 @@ public abstract class ModuleRecipe extends ModuleAddon {
 			String str = LocalizationProduction.OUTPUT.translate() + "\n" + LocalizationProduction.SELECTION.translate() + ": ";
 			if (isTargetInvalid()) {
 				str += LocalizationProduction.INVALID.translate();
-			}else{
+			} else {
 				str += TileEntityCargo.itemSelections.get(target).getName();
 			}
 			drawStringOnMouseOver(gui, str, x, y, getArea());
-
 			for (int i = 0; i < 3; i++) {
-
-
 				if (i == 1) {
 					str = LocalizationProduction.CHANGE_MODE.translate() + "\n" + LocalizationProduction.SELECTION.translate() + ": ";
 					switch (mode) {
@@ -143,21 +130,19 @@ public abstract class ModuleRecipe extends ModuleAddon {
 						default:
 							str += LocalizationProduction.DISABLED.translate();
 					}
-				}else if (mode != 1){
+				} else if (mode != 1) {
 					str = null;
-				}else{
+				} else {
 					str = LocalizationProduction.CHANGE_LIMIT.translate(i == 0 ? "0" : "1") + "\n" + LocalizationProduction.CHANGE_LIMIT_TEN.translate() + "\n" + LocalizationProduction.CHANGE_LIMIT_STACK.translate();
 				}
-
 				if (str != null) {
 					drawStringOnMouseOver(gui, str, x, y, getControlRect(i));
 				}
-			}	
+			}
 		}
 	}
 
 	protected abstract int[] getArea();
-
 
 	@Override
 	public int numberOfGuiData() {
@@ -167,9 +152,9 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	@Override
 	protected void checkGuiData(Object[] info) {
 		if (canUseAdvancedFeatures()) {
-			updateGuiData(info, 0, (short)target);
-			updateGuiData(info, 1, (short)mode);
-			updateGuiData(info, 2, (short)maxItemCount);
+			updateGuiData(info, 0, (short) target);
+			updateGuiData(info, 1, (short) mode);
+			updateGuiData(info, 2, (short) maxItemCount);
 		}
 	}
 
@@ -178,10 +163,10 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		if (canUseAdvancedFeatures()) {
 			if (id == 0) {
 				target = data;
-			}else if (id == 1) {
+			} else if (id == 1) {
 				mode = data;
-			}else if(id == 2) {
-				maxItemCount =  data;
+			} else if (id == 2) {
+				maxItemCount = data;
 			}
 		}
 	}
@@ -195,7 +180,6 @@ public abstract class ModuleRecipe extends ModuleAddon {
 				dw.writeBoolean(button == 0);
 				sendPacketToServer(dw);
 			}
-
 			for (int i = 0; i < 3; i++) {
 				if (mode == 1 || i == 1) {
 					if (inRect(x, y, getControlRect(i))) {
@@ -203,7 +187,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 							DataWriter dw = getDataWriter(PacketId.MODE);
 							dw.writeBoolean(button == 0);
 							sendPacketToServer(dw);
-						}else{
+						} else {
 							DataWriter dw = getDataWriter(PacketId.MAX_COUNT);
 							dw.writeBoolean(i == 0);
 							dw.writeBoolean(GuiScreen.isCtrlKeyDown());
@@ -224,9 +208,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	}
 
 	public enum PacketId {
-		TARGET,
-		MODE,
-		MAX_COUNT
+		TARGET, MODE, MAX_COUNT
 	}
 
 	@Override
@@ -243,7 +225,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 						if (++mode > 2) {
 							mode = 0;
 						}
-					}else{
+					} else {
 						if (--mode < 0) {
 							mode = 2;
 						}
@@ -251,13 +233,11 @@ public abstract class ModuleRecipe extends ModuleAddon {
 					break;
 				case MAX_COUNT:
 					int dif = dr.readBoolean() ? 1 : -1;
-
 					if (dr.readBoolean()) {
 						dif *= 64;
-					}else if(dr.readBoolean()) {
+					} else if (dr.readBoolean()) {
 						dif *= 10;
 					}
-
 					maxItemCount = Math.min(Math.max(1, maxItemCount + dif), 999);
 					break;
 			}
@@ -269,10 +249,9 @@ public abstract class ModuleRecipe extends ModuleAddon {
 			if (--target < 0) {
 				target = TileEntityCargo.itemSelections.size() - 1;
 			}
-		}else if (++target >= TileEntityCargo.itemSelections.size()) {
+		} else if (++target >= TileEntityCargo.itemSelections.size()) {
 			target = 0;
-		}	
-
+		}
 		if (isTargetInvalid()) {
 			changeTarget(up);
 		}
@@ -283,7 +262,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	protected Class getValidSlot() {
 		if (isTargetInvalid()) {
 			return null;
-		}else{
+		} else {
 			return TileEntityCargo.itemSelections.get(target).getValidSlot();
 		}
 	}
@@ -297,80 +276,71 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		}
 	}
 
-
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		if (canUseAdvancedFeatures()) {
-			tagCompound.setByte("Target", (byte)target);
-			tagCompound.setByte("Mode", (byte)mode);
-			tagCompound.setShort("MaxItems", (short)maxItemCount);
+			tagCompound.setByte("Target", (byte) target);
+			tagCompound.setByte("Mode", (byte) mode);
+			tagCompound.setShort("MaxItems", (short) maxItemCount);
 		}
 	}
 
 	protected ArrayList<SlotBase> inputSlots;
-	protected ArrayList<SlotBase> outputSlots;	
-	protected ArrayList<SlotBase> allTheSlots;	
+	protected ArrayList<SlotBase> outputSlots;
+	protected ArrayList<SlotBase> allTheSlots;
 
 	protected void prepareLists() {
 		if (inputSlots == null) {
 			inputSlots = new ArrayList<>();
-
-			for(ModuleBase module : getVehicle().getModules()) {
+			for (ModuleBase module : getVehicle().getModules()) {
 				if (module.getSlots() != null) {
-
 					for (SlotBase slot : module.getSlots()) {
 						if (slot instanceof SlotChest) {
 							inputSlots.add(slot);
 						}
 					}
 				}
-			}						
+			}
 		}
-
 		if (dirty) {
 			allTheSlots.clear();
 			outputSlots.clear();
 			Class validSlot = getValidSlot();
-			for(ModuleBase module : getVehicle().getModules()) {
+			for (ModuleBase module : getVehicle().getModules()) {
 				if (module.getSlots() != null) {
-
 					for (SlotBase slot : module.getSlots()) {
-
 						if (validSlot.isInstance(slot)) {
 							outputSlots.add(slot);
 							allTheSlots.add(slot);
-						}else if (slot instanceof SlotChest) {
+						} else if (slot instanceof SlotChest) {
 							allTheSlots.add(slot);
 						}
 					}
 				}
-			}						
+			}
 			dirty = false;
-		}		
+		}
 	}
 
 	private int maxItemCount = 1;
 	private int mode;
-	//0 - infinite
-	//1 - limit
-	//2 - disabled
-
-
-
+	// 0 - infinite
+	// 1 - limit
+	// 2 - disabled
 
 	protected boolean canCraftMoreOfResult(ItemStack result) {
 		if (mode == 0) {
 			return true;
-		}else if(mode == 2) {
+		} else if (mode == 2) {
 			return false;
-		}else{
+		} else {
 			int count = 0;
 			for (SlotBase outputSlot : outputSlots) {
 				ItemStack item = outputSlot.getStack();
 				if (item != null && item.isItemEqual(result) && ItemStack.areItemStackTagsEqual(item, result)) {
 					if (outputSlot instanceof ISpecialSlotSize) {
-						count += ((ISpecialSlotSize)outputSlot).getItemSize();
-					}else{
+						count += ((ISpecialSlotSize) outputSlot).getItemSize();
+					} else {
 						count += item.stackSize;
 					}
 					if (count >= maxItemCount) {
@@ -379,6 +349,6 @@ public abstract class ModuleRecipe extends ModuleAddon {
 				}
 			}
 			return true;
-		}		
-	}	
+		}
+	}
 }

@@ -6,8 +6,6 @@ import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class Note {
-
-
 	public static final ArrayList<Note> notes = new ArrayList<>();
 	public static final Note COAL = new Note(0, 1, 0, 0);
 	public static final Note IRON = new Note(1, 5, 1, 0);
@@ -16,7 +14,6 @@ public class Note {
 	public static final Note LAPIS = new Note(4, 50, 0, 1);
 	public static final Note DIAMOND = new Note(5, 100, 1, 1);
 	public static final Note EMERALD = new Note(6, 500, 2, 1);
-
 	private int units;
 	private int u;
 	private int v;
@@ -27,7 +24,6 @@ public class Note {
 		this.units = units;
 		this.u = u;
 		this.v = v;
-
 		notes.add(this);
 	}
 
@@ -37,7 +33,7 @@ public class Note {
 
 	public void draw(ArcadeMonopoly game, GuiVehicle gui, int x, int y) {
 		game.loadTexture(gui, 1);
-		game.getModule().drawImage(gui, x, y, ArcadeMonopoly.PLACE_WIDTH + u * 16, 22 + 16 + v * 16, 16, 16);		
+		game.getModule().drawImage(gui, x, y, ArcadeMonopoly.PLACE_WIDTH + u * 16, 22 + 16 + v * 16, 16, 16);
 	}
 
 	public void draw(ArcadeMonopoly game, GuiVehicle gui, int x, int y, int amount) {
@@ -46,7 +42,7 @@ public class Note {
 
 	public void draw(ArcadeMonopoly game, GuiVehicle gui, int x, int y, int amount, int color) {
 		draw(game, gui, x + 10, y);
-		game.getModule().drawString(gui, amount + "x ", new int[] {x + gui.getGuiLeft(), y + gui.getGuiTop(), 10, 16}, color);		
+		game.getModule().drawString(gui, amount + "x ", new int[] { x + gui.getGuiLeft(), y + gui.getGuiTop(), 10, 16 }, color);
 	}
 
 	public void drawPlayer(ArcadeMonopoly game, GuiVehicle gui, int x, int y, int amount) {
@@ -55,7 +51,7 @@ public class Note {
 		if (x + 16 < VehicleBase.MODULAR_SPACE_WIDTH) {
 			game.getModule().drawString(gui, String.valueOf(amount), x + gui.getGuiLeft(), y + 17 + gui.getGuiTop(), 16, true, 0x404040);
 		}
-	}	
+	}
 
 	public static int drawValue(ArcadeMonopoly game, GuiVehicle gui, int x, int y, int maxNoteCount, int value) {
 		int id = 0;
@@ -72,12 +68,10 @@ public class Note {
 	}
 
 	public static void drawPlayerValue(ArcadeMonopoly game, GuiVehicle gui, int x, int y, int[] values) {
-
 		for (int i = 0; i < notes.size(); i++) {
 			notes.get(i).drawPlayer(game, gui, x + (6 - i) * 20, y, values[i]);
 		}
-	}	
-
+	}
 
 	public int getUnits() {
 		return units;

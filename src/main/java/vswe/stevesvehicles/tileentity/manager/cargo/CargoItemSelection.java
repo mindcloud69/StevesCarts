@@ -1,10 +1,10 @@
 package vswe.stevesvehicles.tileentity.manager.cargo;
+
 import net.minecraft.item.ItemStack;
 
 import vswe.stevesvehicles.localization.ILocalizedText;
 
 public class CargoItemSelection {
-
 	private Class validSlot;
 	private ItemStack icon;
 	private ILocalizedText name;
@@ -26,9 +26,8 @@ public class CargoItemSelection {
 	public String getName() {
 		if (name == null) {
 			return null;
-		}else{
-			return	name.translate();
+		} else {
+			return name.translate();
 		}
 	}
-
 }

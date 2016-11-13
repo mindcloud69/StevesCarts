@@ -25,7 +25,4 @@ public class TradeHandler implements ITradeList {
 	public void modifyMerchantRecipeList(MerchantRecipeList recipeList, Random random) {
 		recipeList.add(new MerchantRecipe(ComponentTypes.STOLEN_PRESENT.getItemStack(3), ComponentTypes.GREEN_WRAPPING_PAPER.getItemStack()));
 	}
-
-
-
 }

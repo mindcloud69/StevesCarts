@@ -45,15 +45,12 @@ import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.ModuleSide;
 import vswe.stevesvehicles.vehicle.VehicleRegistry;
 
-
 public class ModuleRegistryChests extends ModuleRegistry {
-
 	private static final String PLANK = "plankWood";
 	private static final String SLAB = "slabWood";
 
 	public ModuleRegistryChests() {
 		super("common.chests");
-
 		ModuleData side = new ModuleData("side_chests", ModuleSideChests.class, 3) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -61,18 +58,10 @@ public class ModuleRegistryChests extends ModuleRegistry {
 				addModel("SideChest", new ModelSideChests());
 			}
 		};
-
-		side.addShapedRecipe(   PLANK,       SLAB,          PLANK,
-				PLANK,       CHEST_LOCK,    PLANK,
-				PLANK,       SLAB,          PLANK);
-
-
+		side.addShapedRecipe(PLANK, SLAB, PLANK, PLANK, CHEST_LOCK, PLANK, PLANK, SLAB, PLANK);
 		side.addSides(ModuleSide.LEFT, ModuleSide.RIGHT);
 		side.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(side);
-
-
-
 		ModuleData top = new ModuleData("top_chest", ModuleTopChest.class, 6) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -81,18 +70,10 @@ public class ModuleRegistryChests extends ModuleRegistry {
 				addModel("TopChest", new ModelTopChest());
 			}
 		};
-
-		top.addShapedRecipe(    SLAB,       SLAB,           SLAB,
-				SLAB,       CHEST_LOCK,     SLAB,
-				PLANK,      PLANK,          PLANK);
-
-
+		top.addShapedRecipe(SLAB, SLAB, SLAB, SLAB, CHEST_LOCK, SLAB, PLANK, PLANK, PLANK);
 		top.addSides(ModuleSide.TOP);
 		top.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(top);
-
-
-
 		ModuleData front = new ModuleData("front_chest", ModuleFrontChest.class, 5) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -101,28 +82,15 @@ public class ModuleRegistryChests extends ModuleRegistry {
 				setModelMultiplier(0.68F);
 			}
 		};
-
-		front.addShapedRecipe(  null,        PLANK,           null,
-				SLAB,        CHEST_LOCK,      SLAB,
-				PLANK,       PLANK,           PLANK);
-
-
+		front.addShapedRecipe(null, PLANK, null, SLAB, CHEST_LOCK, SLAB, PLANK, PLANK, PLANK);
 		front.addSides(ModuleSide.FRONT);
 		front.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(front);
-
-
 		ModuleData internal = new ModuleData("internal_storage", ModuleFrontChest.class, 25);
-		internal.addShapedRecipe(   SLAB,       SLAB,           SLAB,
-				SLAB,       CHEST_LOCK,     SLAB,
-				SLAB,       SLAB,           SLAB);
-
-
+		internal.addShapedRecipe(SLAB, SLAB, SLAB, SLAB, CHEST_LOCK, SLAB, SLAB, SLAB, SLAB);
 		internal.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		internal.setAllowDuplicate(true);
 		register(internal);
-
-
 		ModuleData extracting = new ModuleData("extracting_chests", ModuleExtractingChests.class, 75) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -130,18 +98,10 @@ public class ModuleRegistryChests extends ModuleRegistry {
 				addModel("SideChest", new ModelExtractingChests());
 			}
 		};
-
-		extracting.addShapedRecipe(     Items.IRON_INGOT,     SIMPLE_PCB,       Items.IRON_INGOT,
-				Items.IRON_INGOT,     CHEST_LOCK,       Items.IRON_INGOT,
-				Items.IRON_INGOT,     SIMPLE_PCB,       Items.IRON_INGOT);
-
-
+		extracting.addShapedRecipe(Items.IRON_INGOT, SIMPLE_PCB, Items.IRON_INGOT, Items.IRON_INGOT, CHEST_LOCK, Items.IRON_INGOT, Items.IRON_INGOT, SIMPLE_PCB, Items.IRON_INGOT);
 		extracting.addSides(ModuleSide.LEFT, ModuleSide.RIGHT, ModuleSide.CENTER);
 		extracting.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(extracting);
-
-
-
 		ModuleData basket = new ModuleDataTreatStorage("egg_basket", ModuleEggBasket.class, 14, LocalizationMessage.EGG) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -157,21 +117,13 @@ public class ModuleRegistryChests extends ModuleRegistry {
 				module.setStack(0, easterEgg);
 			}
 		};
-
-		basket.addShapedRecipe(     new ItemStack(Blocks.WOOL, 1, 4),       new ItemStack(Blocks.WOOL, 1, 4),           new ItemStack(Blocks.WOOL, 1, 4),
-				EXPLOSIVE_EASTER_EGG,                   CHEST_LOCK,                                 BURNING_EASTER_EGG,
-				GLISTERING_EASTER_EGG,                  BASKET,                                     CHOCOLATE_EASTER_EGG);
-
-
+		basket.addShapedRecipe(new ItemStack(Blocks.WOOL, 1, 4), new ItemStack(Blocks.WOOL, 1, 4), new ItemStack(Blocks.WOOL, 1, 4), EXPLOSIVE_EASTER_EGG, CHEST_LOCK, BURNING_EASTER_EGG, GLISTERING_EASTER_EGG, BASKET, CHOCOLATE_EASTER_EGG);
 		basket.addSides(ModuleSide.TOP);
 		basket.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(basket);
-
 		if (!StevesVehicles.holidays.contains(HolidayType.EASTER)) {
 			basket.lock();
 		}
-
-
 		ModuleData gift = new ModuleDataTreatStorage("gift_storage", ModuleGiftStorage.class, 12, LocalizationMessage.GIFT) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -188,25 +140,20 @@ public class ModuleRegistryChests extends ModuleRegistry {
 				}
 			}
 		};
-
-		gift.addShapedRecipe(   YELLOW_GIFT_RIBBON,       null,             RED_GIFT_RIBBON,
-				RED_WRAPPING_PAPER,       CHEST_LOCK,       GREEN_WRAPPING_PAPER,
-				RED_WRAPPING_PAPER,      STUFFED_SOCK,      GREEN_WRAPPING_PAPER);
-
-
+		gift.addShapedRecipe(YELLOW_GIFT_RIBBON, null, RED_GIFT_RIBBON, RED_WRAPPING_PAPER, CHEST_LOCK, GREEN_WRAPPING_PAPER, RED_WRAPPING_PAPER, STUFFED_SOCK, GREEN_WRAPPING_PAPER);
 		gift.addSides(ModuleSide.LEFT, ModuleSide.RIGHT);
 		gift.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(gift);
-
 		if (!StevesVehicles.holidays.contains(HolidayType.CHRISTMAS)) {
 			gift.lock();
 		}
-
 	}
 
 	private static final String STORAGE_OPENED = "Opened";
+
 	private static abstract class ModuleDataTreatStorage extends ModuleData {
 		private ILocalizedText fullText;
+
 		public ModuleDataTreatStorage(String unlocalizedName, Class<? extends ModuleBase> moduleClass, int modularCost, ILocalizedText fullText) {
 			super(unlocalizedName, moduleClass, modularCost);
 			setHasExtraData(true);
@@ -234,7 +181,7 @@ public class ModuleRegistryChests extends ModuleRegistry {
 		public String getCartInfoText(String name, NBTTagCompound compound) {
 			if (compound.getBoolean(STORAGE_OPENED)) {
 				return LocalizationMessage.EMPTY_STORAGE.translate() + " " + name;
-			}else{
+			} else {
 				return LocalizationMessage.FULL_STORAGE.translate() + " " + name;
 			}
 		}
@@ -243,7 +190,7 @@ public class ModuleRegistryChests extends ModuleRegistry {
 		public String getModuleInfoText(NBTTagCompound compound) {
 			if (compound.getBoolean(STORAGE_OPENED)) {
 				return LocalizationMessage.EMPTY_STORAGE.translate();
-			}else{
+			} else {
 				return fullText.translate();
 			}
 		}

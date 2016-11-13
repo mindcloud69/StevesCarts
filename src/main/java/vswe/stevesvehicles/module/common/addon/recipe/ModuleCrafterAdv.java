@@ -3,7 +3,6 @@ package vswe.stevesvehicles.module.common.addon.recipe;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleCrafterAdv extends ModuleCrafter {
-
 	public ModuleCrafterAdv(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -12,5 +11,4 @@ public class ModuleCrafterAdv extends ModuleCrafter {
 	protected boolean canUseAdvancedFeatures() {
 		return true;
 	}
-
 }

@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.module.data.registry;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +19,6 @@ import vswe.stevesvehicles.registry.IRegistry;
 import vswe.stevesvehicles.registry.RegistryLoader;
 
 public class ModuleRegistry implements IRegistry<ModuleData> {
-
 	private static void preInit() {
 		loader = new RegistryLoader<>();
 		allModules = new ArrayList<>();
@@ -47,14 +45,11 @@ public class ModuleRegistry implements IRegistry<ModuleData> {
 		add(new ModuleRegistryCake());
 		add(new ModuleRegistryIndependence());
 		add(new ModuleRegistryProduction());
-
-
 	}
 
 	private static List<ModuleData> allModules;
 	private static RegistryLoader<ModuleRegistry, ModuleData> loader;
 	private Map<String, ModuleData> modules;
-
 	private final String code;
 
 	public ModuleRegistry(String code) {
@@ -71,10 +66,9 @@ public class ModuleRegistry implements IRegistry<ModuleData> {
 	}
 
 	public static void add(ModuleRegistry registry) {
-		if(loader == null) {
+		if (loader == null) {
 			preInit();
 		}
-
 		loader.add(registry);
 	}
 
@@ -82,10 +76,9 @@ public class ModuleRegistry implements IRegistry<ModuleData> {
 		if (loader == null) {
 			preInit();
 		}
-
 		if (modules.containsKey(moduleData.getRawUnlocalizedName())) {
 			System.err.println("A module with this raw name has already been registered in this registry. Failed to register a second module with the raw name " + moduleData.getRawUnlocalizedName() + " in registry with code " + getCode());
-		}else{
+		} else {
 			modules.put(moduleData.getRawUnlocalizedName(), moduleData);
 			allModules.add(moduleData);
 			moduleData.setFullRawUnlocalizedName(getFullCode(moduleData));
@@ -101,7 +94,6 @@ public class ModuleRegistry implements IRegistry<ModuleData> {
 	public Collection<ModuleData> getElements() {
 		return modules.values();
 	}
-
 
 	public static ModuleData getModuleFromId(int id) {
 		return loader.getObjectFromId(id);

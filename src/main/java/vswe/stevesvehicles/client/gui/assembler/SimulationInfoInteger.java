@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.client.gui.assembler;
 
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiCartAssembler;
@@ -10,6 +9,7 @@ public class SimulationInfoInteger extends SimulationInfo {
 	private int maxValue;
 	private int minValue;
 	private int value;
+
 	public SimulationInfoInteger(ILocalizedText name, String texture, int maxValue) {
 		this(name, texture, 0, maxValue, 0);
 	}
@@ -30,10 +30,8 @@ public class SimulationInfoInteger extends SimulationInfo {
 	@Override
 	public void draw(GuiCartAssembler gui, int i, int x, int y) {
 		super.draw(gui, i, x, y);
-
 		int rect[] = getRect(gui.getDropDownX(), gui.getDropDownY(), i);
 		int subRect[] = getSubRect(gui.getDropDownX(), gui.getDropDownY(), i);
-
 		if (getIsSubMenuOpen()) {
 			drawIncrementBox(gui, x, y, getOffSetXForSubMenuBox(0, 2) + subRect[0], 3 + subRect[1]);
 			drawDecrementBox(gui, x, y, getOffSetXForSubMenuBox(1, 2) + subRect[0], 3 + subRect[1]);
@@ -50,6 +48,7 @@ public class SimulationInfoInteger extends SimulationInfo {
 	private void drawIncrementBox(GuiCartAssembler gui, int mouseX, int mouseY, int x, int y) {
 		drawStandardBox(gui, mouseX, mouseY, x, y, STANDARD_BOX_INCREASE_SRC_X);
 	}
+
 	@SideOnly(Side.CLIENT)
 	private void drawDecrementBox(GuiCartAssembler gui, int mouseX, int mouseY, int x, int y) {
 		drawStandardBox(gui, mouseX, mouseY, x, y, STANDARD_BOX_DECREASE_SRC_X);
@@ -60,10 +59,9 @@ public class SimulationInfoInteger extends SimulationInfo {
 	public void onMouseClick(GuiCartAssembler gui, int i, int x, int y) {
 		if (getIsSubMenuOpen()) {
 			int[] subRect = getSubRect(gui.getDropDownX(), gui.getDropDownY(), i);
-
-			if (clickBox(gui, x,y, getOffSetXForSubMenuBox(0,2) + subRect[0],3 + subRect[1])) {
+			if (clickBox(gui, x, y, getOffSetXForSubMenuBox(0, 2) + subRect[0], 3 + subRect[1])) {
 				value = Math.min(maxValue, value + 1);
-			}else if (clickBox(gui, x, y, getOffSetXForSubMenuBox(1,2) + subRect[0],3 + subRect[1])) {
+			} else if (clickBox(gui, x, y, getOffSetXForSubMenuBox(1, 2) + subRect[0], 3 + subRect[1])) {
 				value = Math.max(minValue, value - 1);
 			}
 		}

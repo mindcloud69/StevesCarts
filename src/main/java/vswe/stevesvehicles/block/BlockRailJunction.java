@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.block;
+
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.IBlockAccess;
 
@@ -7,7 +8,6 @@ import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class BlockRailJunction extends BlockSpecialRailBase {
-
 	private IIcon normalIcon;
 	private IIcon cornerIcon;
 
@@ -20,7 +20,6 @@ public class BlockRailJunction extends BlockSpecialRailBase {
 	public IIcon getIcon(int side, int meta) {
 		return meta >= 6 ? cornerIcon : normalIcon;
 	}
-
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -37,16 +36,12 @@ public class BlockRailJunction extends BlockSpecialRailBase {
 	@Override
 	public int getBasicRailMetadata(IBlockAccess world, EntityMinecart cart, int x, int y, int z) {
 		if (cart instanceof EntityModularCart) {
-			EntityModularCart modularCart = (EntityModularCart)cart;
-
+			EntityModularCart modularCart = (EntityModularCart) cart;
 			int meta = modularCart.getRailMeta(x, y, z);
-
 			if (meta != -1) {
 				return meta;
 			}
 		}
-
-
 		return world.getBlockMetadata(x, y, z);
 	}
 }

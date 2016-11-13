@@ -7,13 +7,14 @@ public class ModuleDrillGalgadorian extends ModuleDrill {
 		super(vehicleBase);
 	}
 
-	//returns how far the drill should drill above itself, i.e. how tall is the  hole
+	// returns how far the drill should drill above itself, i.e. how tall is the
+	// hole
 	@Override
-	protected int blocksOnTop(){
+	protected int blocksOnTop() {
 		return 9;
 	}
 
-	//returns how far the drill should drill on each side
+	// returns how far the drill should drill on each side
 	@Override
 	protected int blocksOnSide() {
 		return 4;
@@ -23,6 +24,4 @@ public class ModuleDrillGalgadorian extends ModuleDrill {
 	protected float getTimeMultiplier() {
 		return 0;
 	}
-
-
 }

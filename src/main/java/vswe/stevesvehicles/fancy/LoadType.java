@@ -5,10 +5,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public enum LoadType {
-	KEEP("Keep"),
-	OVERRIDE("Override"),
-	REQUIRE("Require");
-
+	KEEP("Keep"), OVERRIDE("Override"), REQUIRE("Require");
 	private String code;
 
 	LoadType(String code) {

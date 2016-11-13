@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.info;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -25,14 +24,16 @@ public final class LocalizationUpgrade {
 	public static final ILocalizedText TRANSPOSER = createSimple("transposer");
 	public static final ILocalizedText EFFICIENCY = createAdvanced("efficiency");
 	public static final ILocalizedText FREE_MODULES = createSimple("free_modules");
-
 	private static final String HEADER = "steves_vehicles:gui.info.upgrade:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationUpgrade() {}
+	private LocalizationUpgrade() {
+	}
 }

@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.module.data.registry.boat;
 
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
@@ -16,12 +15,9 @@ import vswe.stevesvehicles.module.data.ModuleDataHull;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.vehicle.VehicleRegistry;
 
-
-
 public class ModuleRegistryBoatHulls extends ModuleRegistry {
 	public ModuleRegistryBoatHulls() {
 		super("boat.hulls");
-
 		ModuleData wood = new ModuleDataHull("wooden_hull", HullWood.class, 50, 1, 2, 0, 15) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -30,13 +26,8 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelWoodenTop.png")));
 			}
 		};
-
-
 		wood.addVehicles(VehicleRegistry.BOAT);
 		register(wood);
-
-
-
 		ModuleData standard = new ModuleDataHull("standard_hull", HullStandard.class, 200, 3, 4, 6, 50) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -45,13 +36,8 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelStandardTop.png")));
 			}
 		};
-
-
 		standard.addVehicles(VehicleRegistry.BOAT);
 		register(standard);
-
-
-
 		ModuleData reinforced = new ModuleDataHull("reinforced_hull", HullReinforced.class, 500, 5, 6, 12, 150) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -60,14 +46,9 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelLargeTop.png")));
 			}
 		};
-
-
 		reinforced.addVehicles(VehicleRegistry.BOAT);
 		register(reinforced);
-
-
-
-		ModuleData galgadorian = new ModuleDataHull("galgadorian_hull", HullGalgadorian.class, 1000, 5,  6, 12, 150) {
+		ModuleData galgadorian = new ModuleDataHull("galgadorian_hull", HullGalgadorian.class, 1000, 5, 6, 12, 150) {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
@@ -75,11 +56,8 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelGalgadorianTop.png")));
 			}
 		};
-
 		galgadorian.addVehicles(VehicleRegistry.BOAT);
 		register(galgadorian);
-
-
 		ModuleData creative = new ModuleDataHull("creative_hull", HullCreative.class, 10000, 5, 6, 12, 150) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -88,13 +66,8 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelCreativeTop.png")));
 			}
 		};
-
 		creative.addVehicles(VehicleRegistry.BOAT);
 		register(creative);
-
-		//TODO add recipes
+		// TODO add recipes
 	}
-
-
-
 }

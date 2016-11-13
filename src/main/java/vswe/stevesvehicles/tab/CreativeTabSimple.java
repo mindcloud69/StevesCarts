@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.tab;
 
-
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 
 public class CreativeTabSimple extends CreativeTabCustom {

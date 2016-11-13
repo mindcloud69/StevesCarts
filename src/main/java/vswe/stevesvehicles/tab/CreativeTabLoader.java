@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.tab;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +27,11 @@ public final class CreativeTabLoader {
 			vehicleList[i] = tab;
 			vehicles.put(vehicleType, tab);
 		}
-
-
-
 		components = new CreativeTabSimple("items");
 		blocks = new CreativeTabSimple("blocks");
 	}
 
 	public static void postInit() {
-
-
 		components.setIcon(ComponentTypes.REINFORCED_WHEELS.getItemStack());
 		blocks.setIcon(new ItemStack(ModBlocks.CART_ASSEMBLER.getBlock()));
 	}
@@ -50,5 +44,6 @@ public final class CreativeTabLoader {
 		return vehicleList;
 	}
 
-	private CreativeTabLoader(){}
+	private CreativeTabLoader() {
+	}
 }

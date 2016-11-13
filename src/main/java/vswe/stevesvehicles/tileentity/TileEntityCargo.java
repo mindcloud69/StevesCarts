@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.tileentity;
+
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -43,7 +44,6 @@ import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelectionModule;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public class TileEntityCargo extends TileEntityManager {
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
@@ -52,14 +52,12 @@ public class TileEntityCargo extends TileEntityManager {
 
 	@Override
 	public ContainerBase getContainer(InventoryPlayer inv) {
-		return new ContainerCargo(inv, this);		
+		return new ContainerCargo(inv, this);
 	}
-
-
 
 	public static ArrayList<CargoItemSelection> itemSelections;
 
-	//TODO add a registry so ids are preserved?
+	// TODO add a registry so ids are preserved?
 	public static void loadSelectionSettings() {
 		itemSelections = new ArrayList<>();
 		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_ALL, Slot.class, new ItemStack(ModItems.vehicles, 1, 0)));
@@ -78,7 +76,6 @@ public class TileEntityCargo extends TileEntityManager {
 		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_CAKE, SlotCake.class, new ItemStack(Items.CAKE, 1)));
 	}
 
-
 	@Override
 	public int getSizeInventory() {
 		return 60;
@@ -89,7 +86,7 @@ public class TileEntityCargo extends TileEntityManager {
 		return "container.cargo_manager";
 	}
 
-	public int target[] = new int[] {0, 0, 0, 0};
+	public int target[] = new int[] { 0, 0, 0, 0 };
 	public ArrayList<SlotCargo> cargoSlots;
 	public int lastLayout = -1;
 
@@ -100,8 +97,8 @@ public class TileEntityCargo extends TileEntityManager {
 				slot.updatePosition();
 			}
 			lastLayout = layoutType;
-		}		
-	}	
+		}
+	}
 
 	@Override
 	protected boolean isTargetValid(ManagerTransfer transfer) {
@@ -113,103 +110,85 @@ public class TileEntityCargo extends TileEntityManager {
 		if (id == PacketId.VEHICLE_PART) {
 			int railId = dr.readByte();
 			int dif = dr.readBoolean() ? 1 : -1;
-
 			do {
 				target[railId] += dif;
-
 				if (target[railId] >= itemSelections.size()) {
 					target[railId] = 0;
-				}else if (target[railId] < 0) {
+				} else if (target[railId] < 0) {
 					target[railId] = itemSelections.size() - 1;
 				}
-			}while (itemSelections.get(target[railId]).getValidSlot() == null);
-
+			} while (itemSelections.get(target[railId]).getValidSlot() == null);
 			if (color[railId] - 1 == getSide()) {
 				reset();
 			}
-		}else{
+		} else {
 			super.receivePacket(id, dr);
 		}
 	}
 
-
 	@Override
 	public void checkGuiData(ContainerManager conManager, IContainerListener crafting, boolean isNew) {
 		super.checkGuiData(conManager, crafting, isNew);
-
-		ContainerCargo con = (ContainerCargo)conManager;
-
-		short targetShort = (short)0;
+		ContainerCargo con = (ContainerCargo) conManager;
+		short targetShort = (short) 0;
 		for (int i = 0; i < 4; i++) {
-			targetShort |= (target[i] & 15) << (i*4);
+			targetShort |= (target[i] & 15) << (i * 4);
 		}
 		if (isNew || con.lastTarget != targetShort) {
 			updateGuiData(con, crafting, 2, targetShort);
 			con.lastTarget = targetShort;
-		}	
+		}
 	}
 
 	@Override
 	public void receiveGuiData(int id, short data) {
-		if(id == 2) {
+		if (id == 2) {
 			for (int i = 0; i < 4; i++) {
-				target[i] = (data & (15 << (i*4))) >> (i*4);
+				target[i] = (data & (15 << (i * 4))) >> (i * 4);
 			}
-		}else{
+		} else {
 			super.receiveGuiData(id, data);
 		}
 	}
 
 	public int getAmount(int id) {
 		int val = getAmountId(id);
-
 		switch (val) {
 			case 1:
 				return 1;
-
 			case 2:
 				return 3;
-
 			case 3:
 				return 8;
-
 			case 4:
 				return 16;
-
 			case 5:
 				return 32;
-
 			case 6:
 				return 64;
-
 			case 7:
 				return 1;
-
 			case 8:
 				return 2;
-
 			case 9:
 				return 3;
-
 			case 10:
 				return 5;
-
 			default:
 				return 0;
 		}
 	}
 
-	//0 - MAX
-	//1 - Items
-	//2 - Stacks
+	// 0 - MAX
+	// 1 - Items
+	// 2 - Stacks
 	public int getAmountType(int id) {
 		int val = getAmountId(id);
-
 		if (val == 0) {
 			return 0;
-		}else if (val <= 6) {
+		} else if (val <= 6) {
 			return 1;
-		}else {
+		} else {
 			return 2;
 		}
 	}
@@ -222,7 +201,7 @@ public class TileEntityCargo extends TileEntityManager {
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		setWorkload(nbttagcompound.getByte("workload"));		
+		setWorkload(nbttagcompound.getByte("workload"));
 		for (int i = 0; i < 4; i++) {
 			target[i] = nbttagcompound.getByte("target" + i);
 		}
@@ -231,10 +210,10 @@ public class TileEntityCargo extends TileEntityManager {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setByte("workload", (byte)getWorkload());
+		nbttagcompound.setByte("workload", (byte) getWorkload());
 		for (int i = 0; i < 4; i++) {
-			nbttagcompound.setByte("target" + i, (byte)target[i]);
-		}	
+			nbttagcompound.setByte("target" + i, (byte) target[i]);
+		}
 		return nbttagcompound;
 	}
 
@@ -246,15 +225,12 @@ public class TileEntityCargo extends TileEntityManager {
 			return true;
 		}
 		Class slotCargo = SlotCargo.class;
-
-
 		IInventory fromInv;
 		Container fromCont;
 		Class fromValid;
 		IInventory toInv;
 		Container toCont;
 		Class toValid;
-
 		if (toCart[transfer.getSetting()]) {
 			fromInv = this;
 			fromCont = new ContainerCargo(null, this);
@@ -262,7 +238,7 @@ public class TileEntityCargo extends TileEntityManager {
 			toInv = transfer.getCart();
 			toCont = transfer.getCart().getVehicle().getCon(null);
 			toValid = slotCart;
-		}else {
+		} else {
 			fromInv = transfer.getCart();
 			fromCont = transfer.getCart().getVehicle().getCon(null);
 			fromValid = slotCart;
@@ -270,40 +246,36 @@ public class TileEntityCargo extends TileEntityManager {
 			toCont = new ContainerCargo(null, this);
 			toValid = slotCargo;
 		}
-
 		latestTransferToBeUsed = transfer;
 		for (int i = 0; i < fromInv.getSizeInventory(); i++) {
 			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
 				ItemStack iStack = fromInv.getStackInSlot(i);
 				int stackSize = iStack.stackSize;
 				int maxNumber;
-
 				if (getAmountType(transfer.getSetting()) == 1) {
 					maxNumber = getAmount(transfer.getSetting()) - transfer.getWorkload();
-				}else {
+				} else {
 					maxNumber = -1;
 				}
-
 				TransferHandler.TransferItem(iStack, toInv, toCont, toValid, maxNumber, TransferHandler.TransferType.MANAGER);
-
 				if (iStack.stackSize != stackSize) {
 					if (getAmountType(transfer.getSetting()) == 1) {
 						transfer.setWorkload(transfer.getWorkload() + stackSize - iStack.stackSize);
-					}else if (getAmountType(transfer.getSetting()) == 2) {
+					} else if (getAmountType(transfer.getSetting()) == 2) {
 						transfer.setWorkload(transfer.getWorkload() + 1);
 					}
-
 					markDirty();
 					transfer.getCart().markDirty();
-
 					if (iStack.stackSize == 0) {
 						fromInv.setInventorySlotContents(i, null);
 					}
-
 					if (transfer.getWorkload() >= getAmount(transfer.getSetting()) && getAmountType(transfer.getSetting()) != 0) {
-						transfer.setLowestSetting(transfer.getSetting() + 1); //this is not available anymore
+						transfer.setLowestSetting(transfer.getSetting() + 1); // this
+						// is
+						// not
+						// available
+						// anymore
 					}
-
 					return true;
 				}
 			}
@@ -317,8 +289,8 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	private ManagerTransfer latestTransferToBeUsed;
+
 	public ManagerTransfer getCurrentTransferForSlots() {
 		return latestTransferToBeUsed;
-	}	
-
+	}
 }

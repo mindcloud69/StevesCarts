@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;

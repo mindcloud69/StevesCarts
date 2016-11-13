@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.module.data;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,17 +44,17 @@ public class ModuleData implements IRecipeOutput {
 	private ArrayList<IRecipe> recipes;
 	private ArrayList<VehicleType> validVehicles;
 	private boolean extraData;
-
 	@SideOnly(Side.CLIENT)
-	private HashMap<String,ModelVehicle> models;
+	private HashMap<String, ModelVehicle> models;
 	@SideOnly(Side.CLIENT)
-	private HashMap<String,ModelVehicle> modelsPlaceholder;
+	private HashMap<String, ModelVehicle> modelsPlaceholder;
 	@SideOnly(Side.CLIENT)
 	private ArrayList<String> removedModels;
 	@SideOnly(Side.CLIENT)
 	private float modelMultiplier;
-	/*@SideOnly(Side.CLIENT)
-	private IIcon icon;*/
+	/*
+	 * @SideOnly(Side.CLIENT) private IIcon icon;
+	 */
 
 	public ModuleData(String unlocalizedName, Class<? extends ModuleBase> moduleClass, int modularCost) {
 		this.moduleClass = moduleClass;
@@ -64,7 +63,6 @@ public class ModuleData implements IRecipeOutput {
 		}
 		this.unlocalizedName = unlocalizedName.replace(":", "_");
 		this.modularCost = modularCost;
-
 		ModuleType moduleType = ModuleType.INVALID;
 		for (ModuleType type : ModuleType.values()) {
 			if (type.getClazz().isAssignableFrom(moduleClass)) {
@@ -88,7 +86,9 @@ public class ModuleData implements IRecipeOutput {
 		return fullUnlocalizedName;
 	}
 
-	public final void setFullRawUnlocalizedName(String val) {fullUnlocalizedName = val;}
+	public final void setFullRawUnlocalizedName(String val) {
+		fullUnlocalizedName = val;
+	}
 
 	public final int getCost() {
 		return modularCost;
@@ -108,7 +108,6 @@ public class ModuleData implements IRecipeOutput {
 
 	public ModuleData lock() {
 		isLocked = true;
-
 		return this;
 	}
 
@@ -118,13 +117,11 @@ public class ModuleData implements IRecipeOutput {
 
 	public ModuleData lockByDefault() {
 		defaultLock = true;
-
 		return this;
 	}
 
 	public ModuleData setAllowDuplicate(boolean b) {
 		allowDuplicate = b;
-
 		return this;
 	}
 
@@ -132,11 +129,8 @@ public class ModuleData implements IRecipeOutput {
 		return allowDuplicate;
 	}
 
-
-
 	public ModuleData setHasExtraData(boolean val) {
 		extraData = val;
-
 		return this;
 	}
 
@@ -144,9 +138,14 @@ public class ModuleData implements IRecipeOutput {
 		return extraData;
 	}
 
-	public void addDefaultExtraData(NBTTagCompound compound) {}
-	public void addExtraData(NBTTagCompound compound, ModuleBase module) {}
-	public void readExtraData(NBTTagCompound compound, ModuleBase moduleBase) {}
+	public void addDefaultExtraData(NBTTagCompound compound) {
+	}
+
+	public void addExtraData(NBTTagCompound compound, ModuleBase module) {
+	}
+
+	public void readExtraData(NBTTagCompound compound, ModuleBase moduleBase) {
+	}
 
 	public String getModuleInfoText(NBTTagCompound compound) {
 		return null;
@@ -156,26 +155,20 @@ public class ModuleData implements IRecipeOutput {
 		return name;
 	}
 
-
-
-
 	public ArrayList<ModuleSide> getSides() {
 		return sides;
 	}
 
-
-	public ModuleData addSides(ModuleSide ... sides) {
+	public ModuleData addSides(ModuleSide... sides) {
 		if (this.sides == null) {
 			this.sides = new ArrayList<>();
 		}
 		Collections.addAll(this.sides, sides);
-
 		return this;
 	}
 
 	public ModuleData addParent(ModuleData parent) {
 		this.parent = parent;
-
 		return this;
 	}
 
@@ -184,7 +177,6 @@ public class ModuleData implements IRecipeOutput {
 			message = new ArrayList<>();
 		}
 		message.add(s);
-
 		return this;
 	}
 
@@ -200,7 +192,6 @@ public class ModuleData implements IRecipeOutput {
 			this.requirement = new ArrayList<>();
 		}
 		this.requirement.add(requirement);
-
 		return this;
 	}
 
@@ -217,7 +208,6 @@ public class ModuleData implements IRecipeOutput {
 	@SideOnly(Side.CLIENT)
 	public ModuleData setModelMultiplier(float val) {
 		modelMultiplier = val;
-
 		return this;
 	}
 
@@ -227,30 +217,28 @@ public class ModuleData implements IRecipeOutput {
 		addModel(tag, model, true);
 		return this;
 	}
+
 	@SideOnly(Side.CLIENT)
 	public ModuleData addModel(String tag, ModelVehicle model, boolean placeholder) {
 		if (placeholder) {
 			if (modelsPlaceholder == null) {
 				modelsPlaceholder = new HashMap<>();
 			}
-
 			modelsPlaceholder.put(tag, model);
-		}else{
+		} else {
 			if (models == null) {
 				models = new HashMap<>();
 			}
-
 			models.put(tag, model);
 		}
-
 		return this;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public HashMap<String,ModelVehicle> getModels(boolean placeholder) {
+	public HashMap<String, ModelVehicle> getModels(boolean placeholder) {
 		if (placeholder) {
 			return modelsPlaceholder;
-		}else{
+		} else {
 			return models;
 		}
 	}
@@ -259,7 +247,7 @@ public class ModuleData implements IRecipeOutput {
 	public boolean haveModels(boolean placeholder) {
 		if (placeholder) {
 			return modelsPlaceholder != null;
-		}else{
+		} else {
 			return models != null;
 		}
 	}
@@ -269,8 +257,7 @@ public class ModuleData implements IRecipeOutput {
 		if (removedModels == null) {
 			removedModels = new ArrayList<>();
 		}
-
-		if(!removedModels.contains(tag)) {
+		if (!removedModels.contains(tag)) {
 			removedModels.add(tag);
 		}
 		return this;
@@ -314,12 +301,12 @@ public class ModuleData implements IRecipeOutput {
 		return hasRecipe;
 	}
 
-
 	public void addSpecificInformation(List<String> list) {
 		list.add(ColorHelper.LIGHT_GRAY + LocalizationLabel.MODULAR_COST.translate() + ": " + modularCost);
 	}
 
 	public static final String NBT_MODULE_EXTRA_DATA = "ExtraData";
+
 	public final void addInformation(List<String> list, NBTTagCompound compound) {
 		addSpecificInformation(list);
 		if (compound != null && compound.hasKey(NBT_MODULE_EXTRA_DATA)) {
@@ -331,82 +318,67 @@ public class ModuleData implements IRecipeOutput {
 				}
 			}
 		}
-
-
 		if (GuiScreen.isShiftKeyDown()) {
-
 			if (sides == null || sides.size() == 0) {
 				list.add(ColorHelper.CYAN + LocalizationLabel.NO_SIDES.translate());
-			}else{
+			} else {
 				String sidesText = "";
 				for (int i = 0; i < sides.size(); i++) {
 					ModuleSide side = sides.get(i);
-
-					if(i == 0) {
+					if (i == 0) {
 						sidesText += side.toString();
-					}else if (i == sides.size() - 1) {
+					} else if (i == sides.size() - 1) {
 						sidesText += " " + LocalizationLabel.AND.translate() + " " + side.toString();
-					}else{
+					} else {
 						sidesText += ", " + side.toString();
 					}
 				}
-
-
 				list.add(ColorHelper.CYAN + LocalizationLabel.SIDES.translate(sidesText, String.valueOf(sides.size())));
 			}
-
 			if (getNemesis() != null && getNemesis().size() != 0) {
 				if (sides == null || sides.size() == 0) {
 					list.add(ColorHelper.RED + LocalizationLabel.MODULE_CONFLICT_HOWEVER.translate() + ":");
-				}else{
+				} else {
 					list.add(ColorHelper.RED + LocalizationLabel.MODULE_CONFLICT_ALSO.translate() + ":");
 				}
 				for (ModuleData module : getNemesis()) {
 					list.add(ColorHelper.RED + module.getName());
 				}
 			}
-
 			if (parent != null) {
 				list.add(ColorHelper.YELLOW + LocalizationLabel.REQUIRES.translate() + " " + parent.getName());
 			}
-
 			if (getRequirement() != null && getRequirement().size() != 0) {
 				for (ModuleDataGroup group : getRequirement()) {
 					list.add(ColorHelper.YELLOW + LocalizationLabel.REQUIRES.translate() + " " + group.getCountName() + " " + group.getName());
 				}
 			}
-
 			if (getAllowDuplicate()) {
 				list.add(ColorHelper.LIME + LocalizationLabel.DUPLICATES.translate());
 			}
-
 			if (validVehicles == null || validVehicles.isEmpty()) {
 				list.add(ColorHelper.RED + LocalizationLabel.MISSING_VEHICLE_ERROR.translate());
-			}else{
+			} else {
 				String vehicleText = "";
 				for (int i = 0; i < validVehicles.size(); i++) {
 					VehicleType vehicle = validVehicles.get(i);
-
-					if(i == 0) {
+					if (i == 0) {
 						vehicleText += vehicle.getName();
-					}else if (i == validVehicles.size() - 1) {
+					} else if (i == validVehicles.size() - 1) {
 						vehicleText += " " + LocalizationLabel.AND.translate() + " " + vehicle.getName();
-					}else{
+					} else {
 						vehicleText += ", " + vehicle.getName();
 					}
 				}
-
-
 				list.add(ColorHelper.MAGENTA + LocalizationLabel.VEHICLE_TYPES.translate(vehicleText, String.valueOf(validVehicles.size())));
 			}
 		}
-
 		list.add(ColorHelper.LIGHT_BLUE + LocalizationLabel.TYPE.translate() + ": " + moduleType.getName());
 		addExtraMessage(list);
 	}
 
-
 	private static final int MAX_MESSAGE_ROW_LENGTH = 30;
+
 	public void addExtraMessage(List<String> list) {
 		if (message != null) {
 			list.add("");
@@ -414,14 +386,14 @@ public class ModuleData implements IRecipeOutput {
 				String str = m.translate();
 				if (str.length() <= MAX_MESSAGE_ROW_LENGTH) {
 					addExtraMessage(list, str);
-				}else{
+				} else {
 					String[] words = str.split(" ");
 					String row = "";
 					for (String word : words) {
 						String next = (row + " " + word).trim();
 						if (next.length() <= MAX_MESSAGE_ROW_LENGTH) {
 							row = next;
-						}else{
+						} else {
 							addExtraMessage(list, row);
 							row = word;
 						}
@@ -439,7 +411,7 @@ public class ModuleData implements IRecipeOutput {
 	public void loadRecipes() {
 		if (!isLocked) {
 			isValid = true;
-			if(recipes != null) {
+			if (recipes != null) {
 				hasRecipe = true;
 				for (IRecipe recipe : recipes) {
 					GameRegistry.addRecipe(recipe);
@@ -449,42 +421,36 @@ public class ModuleData implements IRecipeOutput {
 	}
 
 	public ModuleData addRecipe(IRecipe recipe) {
-		if(this.recipes == null) {
+		if (this.recipes == null) {
 			this.recipes = new ArrayList<>();
 		}
-
 		this.recipes.add(recipe);
-
 		return this;
 	}
 
-	public ModuleData addShapedRecipeWithSize(int width, int height, Object ... recipe) {
+	public ModuleData addShapedRecipeWithSize(int width, int height, Object... recipe) {
 		addRecipe(new ModuleRecipeShaped(this, width, height, recipe));
-
 		return this;
 	}
 
-	public ModuleData addShapedRecipe(Object ... recipe) {
+	public ModuleData addShapedRecipe(Object... recipe) {
 		if (recipe.length == 9) {
 			addShapedRecipeWithSize(3, 3, recipe);
-		}else if(recipe.length == 4) {
+		} else if (recipe.length == 4) {
 			addShapedRecipeWithSize(2, 2, recipe);
 		}
-
 		return this;
 	}
 
-	public ModuleData addShapelessRecipe(Object ... recipe) {
+	public ModuleData addShapelessRecipe(Object... recipe) {
 		addRecipe(new ModuleRecipeShapeless(this, recipe));
-
 		return this;
 	}
 
-	public ModuleData addVehicles(VehicleType ... types) {
+	public ModuleData addVehicles(VehicleType... types) {
 		if (validVehicles == null) {
 			validVehicles = new ArrayList<>();
 		}
-
 		for (VehicleType type : types) {
 			if (validVehicles.size() > 0 && moduleType == ModuleType.HULL) {
 				System.err.println("You can't add more than one vehicle type to a hull module. Failed to add type " + type.getUnlocalizedName() + " to " + getRawUnlocalizedName());
@@ -492,7 +458,6 @@ public class ModuleData implements IRecipeOutput {
 			}
 			validVehicles.add(type);
 		}
-
 		return this;
 	}
 
@@ -501,30 +466,26 @@ public class ModuleData implements IRecipeOutput {
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected void loadModels() {}
+	protected void loadModels() {
+	}
 
 	@SideOnly(Side.CLIENT)
 	public void loadClientValues() {
 		modelMultiplier = 0.75F;
 		loadModels();
-
-		//TODO do this in a nicer way
+		// TODO do this in a nicer way
 		if (sides != null && sides.contains(ModuleSide.TOP)) {
 			removeModel("Rails");
 		}
 	}
 
-
-	/*@SideOnly(Side.CLIENT)
-	public void createIcon(IIconRegister register) {
-		icon = register.registerIcon(StevesVehicles.instance.textureHeader + ":modules/" + getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
-	}
-
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon() {
-		return icon;
-	}*/
-
+	/*
+	 * @SideOnly(Side.CLIENT) public void createIcon(IIconRegister register) {
+	 * icon = register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":modules/" + getFullRawUnlocalizedName().replace(".", "/").replace(":",
+	 * "/")); }
+	 * @SideOnly(Side.CLIENT) public IIcon getIcon() { return icon; }
+	 */
 	public ItemStack getItemStack(int count) {
 		int id = ModuleRegistry.getIdFromModule(this);
 		if (id >= 0) {
@@ -537,7 +498,7 @@ public class ModuleData implements IRecipeOutput {
 				item.setTagCompound(compound);
 			}
 			return item;
-		}else{
+		} else {
 			return null;
 		}
 	}
@@ -546,7 +507,4 @@ public class ModuleData implements IRecipeOutput {
 	public ItemStack getItemStack() {
 		return getItemStack(1);
 	}
-
-
-
 }

@@ -11,31 +11,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public class OverlayRenderer {
-
 	public OverlayRenderer() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@SubscribeEvent
 	public void onRenderTick(TickEvent.RenderTickEvent event) {
-
 		if (event.phase == TickEvent.Phase.END) {
 			renderOverlay();
 		}
 	}
 
-
 	@SideOnly(Side.CLIENT)
 	private void renderOverlay() {
-		Minecraft minecraft = Minecraft.getMinecraft();		
+		Minecraft minecraft = Minecraft.getMinecraft();
 		EntityPlayer player = minecraft.thePlayer;
 		Entity ridingEntity = player.getRidingEntity();
-
-		if (minecraft.currentScreen == null && ridingEntity instanceof IVehicleEntity)
-		{
-			((IVehicleEntity)ridingEntity).getVehicle().renderOverlay(minecraft);
+		if (minecraft.currentScreen == null && ridingEntity instanceof IVehicleEntity) {
+			((IVehicleEntity) ridingEntity).getVehicle().renderOverlay(minecraft);
 		}
 	}
-
-
 }

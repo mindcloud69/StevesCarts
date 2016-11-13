@@ -12,7 +12,7 @@ public class HullStandard extends ModuleHull {
 		if (!isMoving) {
 			return super.getConsumption(false);
 		} else {
-			//ToDo: Keep energy consumption as constants
+			// ToDo: Keep energy consumption as constants
 			return 1;
 		}
 	}

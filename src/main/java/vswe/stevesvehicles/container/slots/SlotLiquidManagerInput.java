@@ -1,15 +1,16 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import vswe.stevesvehicles.tank.Tank;
 import vswe.stevesvehicles.tileentity.TileEntityLiquid;
-public class SlotLiquidManagerInput extends SlotBase
-{
+
+public class SlotLiquidManagerInput extends SlotBase {
 	private TileEntityLiquid manager;
 	private int tankId;
-	public SlotLiquidManagerInput(TileEntityLiquid manager, int tankId, int id, int x, int y)
-	{
+
+	public SlotLiquidManagerInput(TileEntityLiquid manager, int tankId, int id, int x, int y) {
 		super(manager, id, x, y);
 		this.manager = manager;
 		this.tankId = tankId;
@@ -24,16 +25,8 @@ public class SlotLiquidManagerInput extends SlotBase
 		if (tankId < 0 || tankId >= 4) {
 			return FluidContainerRegistry.isContainer(itemstack);
 		}
-
 		Tank tank = manager.getTanks()[tankId];
-
-		return 
-				(FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null) ||
-				(FluidContainerRegistry.isFilledContainer(itemstack) && (
-						tank.getFluid() == null ||
-						tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))
-						));
-
-
-	}   
+		return (FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null)
+				|| (FluidContainerRegistry.isFilledContainer(itemstack) && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))));
+	}
 }

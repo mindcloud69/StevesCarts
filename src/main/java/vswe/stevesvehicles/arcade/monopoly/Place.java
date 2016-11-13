@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class Place {
-
 	protected ArcadeMonopoly game;
 
 	public Place(ArcadeMonopoly game) {
@@ -22,68 +21,57 @@ public class Place {
 		int t;
 		int u;
 		int v;
-
 		if (getTextureId() == -1) {
 			t = 1;
 			u = 0;
 			v = 0;
-		}else{
+		} else {
 			t = 3 + getTextureId() / 6;
 			u = getTextureId() % 3;
 			v = (getTextureId() % 6) / 3;
 		}
-
-
 		game.loadTexture(gui, t);
-
 		applyColorFilter(gui, states);
-
-		game.getModule().drawImage(gui, 0, 0, ArcadeMonopoly.PLACE_WIDTH * u, ArcadeMonopoly.PLACE_HEIGHT * v, ArcadeMonopoly.PLACE_WIDTH, ArcadeMonopoly.PLACE_HEIGHT);	
-
+		game.getModule().drawImage(gui, 0, 0, ArcadeMonopoly.PLACE_WIDTH * u, ArcadeMonopoly.PLACE_HEIGHT * v, ArcadeMonopoly.PLACE_WIDTH, ArcadeMonopoly.PLACE_HEIGHT);
 	}
 
 	public void applyColorFilter(GuiVehicle gui, EnumSet<PlaceState> states) {
 		if (states.contains(PlaceState.SELECTED)) {
 			if (states.contains(PlaceState.HOVER)) {
 				GL11.glColor4f(1F, 0.8F, 0.5F, 1.0F);
-			}else{
+			} else {
 				GL11.glColor4f(1F, 1F, 0.75F, 1.0F);
 			}
-		}else if (states.contains(PlaceState.MARKED)) {
+		} else if (states.contains(PlaceState.MARKED)) {
 			if (states.contains(PlaceState.HOVER)) {
 				GL11.glColor4f(1F, 0.75F, 1F, 1.0F);
-			}else{
+			} else {
 				GL11.glColor4f(1F, 0.85F, 0.85F, 1.0F);
-			}			
-		}else if (states.contains(PlaceState.HOVER)) {
-			GL11.glColor4f(0.9F, 0.9F, 1F, 1.0F);		
-		}		
+			}
+		} else if (states.contains(PlaceState.HOVER)) {
+			GL11.glColor4f(0.9F, 0.9F, 1F, 1.0F);
+		}
 	}
 
 	public void drawText(GuiVehicle gui, EnumSet<PlaceState> states) {
-
 	}
-
 
 	public void drawPiece(GuiVehicle gui, Piece piece, int total, int pos, int area, EnumSet<PlaceState> states) {
 		final int SIZE = 24;
 		final int PADDING = 5;
 		final int MARGIN = 2;
-
 		int allowedWidth = getAllowedWidth(area) - PADDING * 2;
 		int fullWidth = total * (SIZE + MARGIN) - MARGIN;
-
 		int startX;
 		int offSet;
 		if (allowedWidth < fullWidth && total > 1) {
 			startX = PADDING;
 			offSet = ((allowedWidth - SIZE) / (total - 1));
-		}else{
+		} else {
 			startX = PADDING + (allowedWidth - fullWidth) / 2;
 			offSet = SIZE + MARGIN;
 		}
-
-		game.getModule().drawImage(gui,  startX + offSet * pos, getPieceYPosition(area), 256 - SIZE,  piece.getV() * SIZE, SIZE, SIZE);
+		game.getModule().drawImage(gui, startX + offSet * pos, getPieceYPosition(area), 256 - SIZE, piece.getV() * SIZE, SIZE, SIZE);
 	}
 
 	protected int getPieceYPosition(int area) {
@@ -94,24 +82,18 @@ public class Place {
 		return ArcadeMonopoly.PLACE_WIDTH;
 	}
 
-
 	public void onPiecePass(Piece piece) {
-
 	}
 
 	public boolean onPieceStop(Piece piece) {
 		return true;
-	}	
+	}
 
 	public static enum PlaceState {
-		HOVER,
-		SELECTED,
-		MARKED,
-		ZOOMED
+		HOVER, SELECTED, MARKED, ZOOMED
 	}
 
 	public void onClick() {
-
 	}
 
 	public int getPieceAreaCount() {
@@ -121,6 +103,4 @@ public class Place {
 	public int getPieceAreaForPiece(Piece piece) {
 		return 0;
 	}
-
-
 }

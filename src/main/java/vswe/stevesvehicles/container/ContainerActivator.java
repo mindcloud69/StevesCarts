@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container;
+
 import java.util.ArrayList;
 
 import net.minecraft.inventory.IInventory;
@@ -8,8 +9,6 @@ import vswe.stevesvehicles.tileentity.TileEntityBase;
 import vswe.stevesvehicles.tileentity.toggler.TogglerOption;
 
 public class ContainerActivator extends ContainerBase {
-
-
 	@Override
 	public IInventory getMyInventory() {
 		return null;
@@ -21,9 +20,9 @@ public class ContainerActivator extends ContainerBase {
 	}
 
 	private TileEntityActivator activator;
+
 	public ContainerActivator(TileEntityActivator activator) {
 		this.activator = activator;
-
 		lastOptions = new ArrayList<>();
 		for (TogglerOption option : activator.getOptions()) {
 			lastOptions.add(option.getOption());
@@ -31,5 +30,4 @@ public class ContainerActivator extends ContainerBase {
 	}
 
 	public ArrayList<Integer> lastOptions;
-
 }

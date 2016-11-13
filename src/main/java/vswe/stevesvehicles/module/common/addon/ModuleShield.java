@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,40 +37,33 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 		return shield;
 	}
 
-
 	private static final int MAX_SHIELD_DISTANCE = 18;
 	private static final int MIN_SHIELD_DISTANCE = 0;
 	private static final float SHIED_DISTANCE_SPEED = 0.25F;
-
 	private boolean shield = true;
 	private float shieldDistance = MAX_SHIELD_DISTANCE;
 	private float shieldAngle;
 
-
 	@Override
 	public void update() {
 		super.update();
-
-		if (hasShield() &&  !getVehicle().hasFuelForModule() && !getVehicle().getWorld().isRemote) {
+		if (hasShield() && !getVehicle().hasFuelForModule() && !getVehicle().getWorld().isRemote) {
 			setShieldStatus(false);
 		}
-
 		if (shield) {
 			getVehicle().getEntity().extinguish();
 		}
-
 		if (!getShieldStatus() && shieldDistance > MIN_SHIELD_DISTANCE) {
 			shieldDistance -= SHIED_DISTANCE_SPEED;
 			if (shieldDistance <= MIN_SHIELD_DISTANCE) {
 				shield = false;
 			}
-		}else if (getShieldStatus()  && shieldDistance < MAX_SHIELD_DISTANCE) {
+		} else if (getShieldStatus() && shieldDistance < MAX_SHIELD_DISTANCE) {
 			shieldDistance += SHIED_DISTANCE_SPEED;
 			shield = true;
 		}
-
 		if (shield) {
-			shieldAngle = (float)((shieldAngle + 0.125F) % (Math.PI * 100));
+			shieldAngle = (float) ((shieldAngle + 0.125F) % (Math.PI * 100));
 		}
 	}
 
@@ -84,27 +78,25 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
-
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-		drawString(gui,getModuleName(), 8, 6, 0x404040);
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
 	}
 
 	public void setShieldStatus(boolean val) {
 		if (!isPlaceholder()) {
-			updateDw(0, (byte)(val ? 1 : 0));
+			updateDw(0, (byte) (val ? 1 : 0));
 		}
 	}
-
 
 	private boolean getShieldStatus() {
 		if (isPlaceholder()) {
 			return getBooleanSimulationInfo();
-		}else{		
+		} else {
 			return getDw(0) != 0;
 		}
 	}
@@ -119,20 +111,16 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 		return 40;
 	}
 
-
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		drawToggleBox(gui, "shield", getShieldStatus(), x, y);
 	}
 
-
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		drawStringOnMouseOver(gui, getStateName(), x,y, TOGGLE_IMAGE_RECT);
+		drawStringOnMouseOver(gui, getStateName(), x, y, TOGGLE_IMAGE_RECT);
 	}
-
 
 	private String getStateName() {
 		return LocalizationIndependence.SHIELD_TOGGLE.translate(getShieldStatus() ? "1" : "0");
@@ -141,7 +129,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
-			if (inRect(x,y, TOGGLE_BOX_RECT)) {
+			if (inRect(x, y, TOGGLE_BOX_RECT)) {
 				sendPacketToServer(getDataWriter());
 			}
 		}
@@ -152,8 +140,6 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 		updateDw(0, getShieldStatus() ? 0 : 1);
 	}
 
-
-
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
@@ -161,13 +147,13 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		addDw(0,(byte)0);
-	}	
+		addDw(0, (byte) 0);
+	}
 
 	@Override
 	public int getConsumption(boolean isMoving) {
 		return hasShield() ? 20 : super.getConsumption(isMoving);
-	}	
+	}
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
@@ -177,19 +163,20 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setShieldStatus(tagCompound.getBoolean("Shield"));
-	}		
+	}
 
 	@Override
 	public void doActivate(int id) {
 		setShieldStatus(true);
 	}
+
 	@Override
 	public void doDeActivate(int id) {
 		setShieldStatus(false);
 	}
+
 	@Override
 	public boolean isActive(int id) {
 		return getShieldStatus();
-	}		
-
+	}
 }

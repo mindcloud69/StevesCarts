@@ -25,4 +25,3 @@ public class RecipeItemStandard extends RecipeItemStackBase {
 		return itemStack;
 	}
 }
-

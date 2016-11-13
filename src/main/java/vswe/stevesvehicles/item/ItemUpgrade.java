@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.item;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -20,40 +21,30 @@ import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
 public class ItemUpgrade extends ItemBlock {
-
 	public ItemUpgrade(Block block) {
 		super(block);
 		setHasSubtypes(true);
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
-
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int dmg){
-		Upgrade upgrade = UpgradeRegistry.getUpgradeFromId(dmg);
-		if (upgrade != null) {
-			return upgrade.getIcon();
-		}
-		return null;
-	}	
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register) {
-		Upgrade.registerIcons(register);
-	}	*/
-
+	/*
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int dmg){ Upgrade
+	 * upgrade = UpgradeRegistry.getUpgradeFromId(dmg); if (upgrade != null) {
+	 * return upgrade.getIcon(); } return null; }
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void registerIcons(IIconRegister register)
+	 * { Upgrade.registerIcons(register); }
+	 */
 
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 		Upgrade upgrade = UpgradeRegistry.getUpgradeFromId(item.getItemDamage());
 		if (upgrade != null) {
 			return upgrade.getUnlocalizedNameForItem();
-		}	
-
+		}
 		return "item.unknown";
-	}	
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -65,16 +56,15 @@ public class ItemUpgrade extends ItemBlock {
 
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-		if (super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)){
+		if (super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)) {
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof TileEntityUpgrade) {
-				TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
+				TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 				upgrade.setType(stack.getItemDamage());
 				if (upgrade.getMaster() != null) {
 					upgrade.getMaster().onUpgradeUpdate();
 				}
 			}
-
 			return true;
 		}
 		return false;
@@ -87,6 +77,5 @@ public class ItemUpgrade extends ItemBlock {
 		if (upgrade != null) {
 			upgrade.addInfo(lst);
 		}
-	}		
-
+	}
 }

@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.tileentity;
+
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,11 +25,11 @@ import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 /**
  * The tile entity used by the Module Toggler
+ * 
  * @author Vswe
  *
  */
 public class TileEntityActivator extends TileEntityBase {
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
@@ -49,9 +50,10 @@ public class TileEntityActivator extends TileEntityBase {
 		loadOptions();
 	}
 
-	//TODO let mods register these?
+	// TODO let mods register these?
 	/**
-	 * Load the different settings the player can toggle and change. For example the drill.
+	 * Load the different settings the player can toggle and change. For example
+	 * the drill.
 	 */
 	private void loadOptions() {
 		options = new ArrayList<>();
@@ -65,6 +67,7 @@ public class TileEntityActivator extends TileEntityBase {
 
 	/**
 	 * Get the different settings the toggler can toggle
+	 * 
 	 * @return A list of the settings
 	 */
 	public ArrayList<TogglerOption> getOptions() {
@@ -74,8 +77,7 @@ public class TileEntityActivator extends TileEntityBase {
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-
-		//load all the options
+		// load all the options
 		for (TogglerOption option : options) {
 			option.setOption(nbttagcompound.getByte(option.getName()));
 		}
@@ -84,16 +86,12 @@ public class TileEntityActivator extends TileEntityBase {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-
-		//save all the options
+		// save all the options
 		for (TogglerOption option : options) {
-			nbttagcompound.setByte(option.getName(), (byte)option.getOption());
+			nbttagcompound.setByte(option.getName(), (byte) option.getOption());
 		}
 		return nbttagcompound;
 	}
-
-
-
 
 	@Override
 	public void receivePacket(DataReader dr, EntityPlayer player) {
@@ -102,58 +100,51 @@ public class TileEntityActivator extends TileEntityBase {
 		if (optionId >= 0 && optionId < options.size()) {
 			options.get(optionId).changeOption(leftClick);
 		}
-
 	}
-
-
-
 
 	@Override
 	public void initGuiData(Container con, IContainerListener crafting) {
 		for (int i = 0; i < options.size(); i++) {
-			updateGuiData(con, crafting, i, (short)options.get(i).getOption());
+			updateGuiData(con, crafting, i, (short) options.get(i).getOption());
 		}
 	}
-
 
 	@Override
 	public void checkGuiData(Container con, IContainerListener crafting) {
 		for (int i = 0; i < options.size(); i++) {
 			int option = options.get(i).getOption();
-			int lastOption = ((ContainerActivator)con).lastOptions.get(i);
-
-			//if an update has been made, send the new data
+			int lastOption = ((ContainerActivator) con).lastOptions.get(i);
+			// if an update has been made, send the new data
 			if (option != lastOption) {
-				updateGuiData(con, crafting, i, (short)option);
-				((ContainerActivator)con).lastOptions.set(i, option);
+				updateGuiData(con, crafting, i, (short) option);
+				((ContainerActivator) con).lastOptions.set(i, option);
 			}
 		}
 	}
 
-
 	@Override
 	public void receiveGuiData(int id, short data) {
-		//if it's a valid id, update the option associated with that id
+		// if it's a valid id, update the option associated with that id
 		if (id >= 0 && id < options.size()) {
 			options.get(id).setOption(data);
-		}	
+		}
 	}
 
 	/**
-	 * Handles a cart that is passing an advanced detector rail "in front" of this toggler
-	 * @param cart The cart that is passing
-	 * @param isOrange Whether the cart is passing in the orange direction or not
+	 * Handles a cart that is passing an advanced detector rail "in front" of
+	 * this toggler
+	 * 
+	 * @param cart
+	 *            The cart that is passing
+	 * @param isOrange
+	 *            Whether the cart is passing in the orange direction or not
 	 */
 	public void handleCart(EntityModularCart cart, boolean isOrange) {
-
-		//tell the cart to update with any option that is not disabled
+		// tell the cart to update with any option that is not disabled
 		for (TogglerOption option : options) {
 			if (!option.isDisabled()) {
 				cart.getVehicle().handleActivator(option, isOrange);
 			}
 		}
 	}
-
-
-
 }

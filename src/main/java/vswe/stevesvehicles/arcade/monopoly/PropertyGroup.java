@@ -3,7 +3,6 @@ package vswe.stevesvehicles.arcade.monopoly;
 import java.util.ArrayList;
 
 public class PropertyGroup {
-
 	private ArrayList<Property> properties;
 
 	public PropertyGroup() {
@@ -17,6 +16,4 @@ public class PropertyGroup {
 	public void add(Property property) {
 		properties.add(property);
 	}
-
-
 }

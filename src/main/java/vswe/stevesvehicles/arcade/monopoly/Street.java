@@ -7,46 +7,40 @@ import org.lwjgl.opengl.GL11;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class Street extends Property {
-
-	private float[] color;	
+	private float[] color;
 	private int structures;
 	private int baseRent;
 
 	public Street(ArcadeMonopoly game, StreetGroup group, String name, int cost, int baseRent) {
 		super(game, group, name, cost);
-		this.color = group.getColor(); 
+		this.color = group.getColor();
 		this.baseRent = baseRent;
 	}
 
 	@Override
 	public void draw(GuiVehicle gui, EnumSet<PlaceState> states) {
 		super.draw(gui, states);
-
-		GL11.glColor4f(color[0], color[1], color[2], 1.0F);		
+		GL11.glColor4f(color[0], color[1], color[2], 1.0F);
 		game.getModule().drawImage(gui, 0, 0, ArcadeMonopoly.PLACE_WIDTH, 0, ArcadeMonopoly.PLACE_WIDTH, 22);
-
-
 		GL11.glColor4f(1F, 1F, 1F, 1F);
-		if (structures > 0 && structures < 5) {	
+		if (structures > 0 && structures < 5) {
 			for (int i = 0; i < structures; i++) {
 				game.getModule().drawImage(gui, 3 + i * 18, 3, 76, 22, 16, 16);
 			}
-		}else if(structures == 5) {
+		} else if (structures == 5) {
 			game.getModule().drawImage(gui, 3, 3, 92, 22, 16, 16);
-		}	
-
+		}
 		drawValue(gui);
 	}
 
 	public void increaseStructure() {
-		structures++;	
+		structures++;
 	}
 
 	@Override
 	protected int getTextY() {
 		return 30;
 	}
-
 
 	public int getRentCost(int structureCount) {
 		switch (structureCount) {
@@ -61,23 +55,23 @@ public class Street extends Property {
 			case 4:
 				return baseRent * 70;
 			case 5:
-				return baseRent * 100;	
+				return baseRent * 100;
 		}
 	}
 
 	public int getRentCost(boolean ownsAll) {
 		if (ownsAll) {
 			return baseRent * 2;
-		}else{
+		} else {
 			return baseRent;
 		}
-	}	
+	}
 
 	@Override
 	public int getRentCost() {
 		if (structures == 0) {
 			return getRentCost(ownsAllInGroup(getOwner()));
-		}else{
+		} else {
 			return getRentCost(structures);
 		}
 	}
@@ -87,7 +81,7 @@ public class Street extends Property {
 	}
 
 	public int getStructureCost() {
-		return ((StreetGroup)getGroup()).getStructureCost();
+		return ((StreetGroup) getGroup()).getStructureCost();
 	}
 
 	public boolean ownsAllInGroup(Piece currentPiece) {
@@ -111,5 +105,4 @@ public class Street extends Property {
 	public void decreaseStructures() {
 		--structures;
 	}
-
 }

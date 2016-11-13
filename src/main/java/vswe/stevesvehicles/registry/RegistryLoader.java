@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.registry;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,13 +9,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class RegistryLoader<R extends IRegistry<E>, E> {
-
 	static List<RegistryLoader> registryLoaderList = new ArrayList<>();
 
 	public RegistryLoader() {
 		registryLoaderList.add(this);
 	}
-
 
 	private Map<E, Integer> objectToIdMapping = new HashMap<>();
 	private Map<Integer, E> idToObjectMapping = new HashMap<>();
@@ -26,7 +23,8 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 
 	public E getObjectFromName(String name) {
 		if (nameToIdMapping.isEmpty()) {
-			//if the mapping hasn't been loaded yet, improvise. Once the mapping has been loaded this look up will go faster.
+			// if the mapping hasn't been loaded yet, improvise. Once the
+			// mapping has been loaded this look up will go faster.
 			String[] split = name.split(":");
 			if (split.length == 2) {
 				R registry = registries.get(split[0]);
@@ -38,13 +36,12 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 					}
 				}
 			}
-		}else{
+		} else {
 			int id = getIdFromName(name);
 			if (id != -1) {
 				return getObjectFromId(id);
 			}
 		}
-
 		return null;
 	}
 
@@ -61,7 +58,6 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 		Integer result = nameToIdMapping.get(name);
 		return result == null ? -1 : result;
 	}
-
 
 	private static final String NBT_REGISTRIES = "Registries";
 	private static final String NBT_NEXT_ID = "NextModuleId";
@@ -83,20 +79,17 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 	private static final boolean REGISTRY_FILE_CLEANUP = false;
 
 	private void writeRegistryData(NBTTagCompound compound) {
-		compound.setShort(NBT_NEXT_ID, (short)nextId);
+		compound.setShort(NBT_NEXT_ID, (short) nextId);
 		NBTTagList list = new NBTTagList();
-
-
 		for (Map.Entry<String, Integer> entry : nameToIdMapping.entrySet()) {
-			//noinspection PointlessBooleanExpression, ConstantConditions
+			// noinspection PointlessBooleanExpression, ConstantConditions
 			if (!REGISTRY_FILE_CLEANUP || idToObjectMapping.containsKey(entry.getValue())) {
 				NBTTagCompound moduleCompound = new NBTTagCompound();
 				moduleCompound.setString(NBT_KEY, entry.getKey());
-				moduleCompound.setShort(NBT_VALUE, (short)(int)entry.getValue());
+				moduleCompound.setShort(NBT_VALUE, (short) (int) entry.getValue());
 				list.appendTag(moduleCompound);
 			}
 		}
-
 		compound.setTag(NBT_MODULES, list);
 	}
 
@@ -107,7 +100,7 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 				NBTTagCompound registryCompound = registriesList.getCompoundTagAt(i);
 				registryLoaderList.get(i).readRegistryData(registryCompound);
 			}
-		}else{
+		} else {
 			for (RegistryLoader registryLoader : registryLoaderList) {
 				registryLoader.readRegistryData(null);
 			}
@@ -116,7 +109,6 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 
 	private void readRegistryData(NBTTagCompound compound) {
 		clearLoadedRegistryData();
-
 		if (compound != null && compound.hasKey(NBT_NEXT_ID)) {
 			nextId = compound.getShort(NBT_NEXT_ID);
 			NBTTagList tags = compound.getTagList(NBT_MODULES, NBT_COMPOUND_TYPE_ID);
@@ -124,11 +116,15 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 				NBTTagCompound moduleCompound = tags.getCompoundTagAt(i);
 				String key = moduleCompound.getString(NBT_KEY);
 				int value = moduleCompound.getShort(NBT_VALUE);
-				System.out.println("Loaded name to id mapping. (K = " + key + ", V = " + value + ")"); //TODO Move to a log file?
+				System.out.println("Loaded name to id mapping. (K = " + key + ", V = " + value + ")"); // TODO
+				// Move
+				// to
+				// a
+				// log
+				// file?
 				nameToIdMapping.put(key, value);
 			}
 		}
-
 		loadFromRegistries();
 	}
 
@@ -147,9 +143,13 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 				if (id == null) {
 					id = nextId++;
 					nameToIdMapping.put(code, id);
-					System.out.println("Added new name to id mapping. (K = " + code + ", V = " + id + ")"); //TODO Move to a log file?
+					System.out.println("Added new name to id mapping. (K = " + code + ", V = " + id + ")"); // TODO
+					// Move
+					// to
+					// a
+					// log
+					// file?
 				}
-
 				idToObjectMapping.put(id, module);
 				objectToIdMapping.put(module, id);
 			}
@@ -159,7 +159,7 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 	public void add(R registry) {
 		if (registries.containsKey(registry.getCode())) {
 			System.err.println("A registry with this code has already been registered. Failed to register a second registry with code " + registry.getCode());
-		}else{
+		} else {
 			registries.put(registry.getCode(), registry);
 		}
 	}
@@ -169,6 +169,4 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 			registryLoader.clearLoadedRegistryData();
 		}
 	}
-
-
 }

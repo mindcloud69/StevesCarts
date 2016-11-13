@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.addon.projectile;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Items;
@@ -12,14 +13,13 @@ public class ModulePotion extends ModuleProjectile {
 		super(vehicleBase);
 	}
 
-
 	@Override
 	public boolean isValidProjectile(ItemStack item) {
 		return item.getItem() == Items.potionitem && ItemPotion.isSplash(item.getItemDamage());
 	}
+
 	@Override
 	public Entity createProjectile(Entity target, ItemStack item) {
 		return new EntityPotion(getVehicle().getWorld(), 0, 0, 0, item);
 	}
-
 }

@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.block;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 
@@ -22,13 +21,12 @@ public final class LocalizationManager {
 	public static final ILocalizedText YELLOW_SIDE = createSimple("yellow_side");
 	public static final ILocalizedText GREEN_SIDE = createSimple("green_side");
 	public static final ILocalizedText DISABLED_SIDE = createSimple("disabled_side");
-
-
-
 	private static final String HEADER = "steves_vehicles:gui.manager:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
 
-	private LocalizationManager() {}
+	private LocalizationManager() {
+	}
 }

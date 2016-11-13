@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.module.cart;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -15,14 +14,16 @@ public final class LocalizationCartTravel {
 	public static final ILocalizedText CONTROL_ODO = createSimple("advanced_control_system.odo");
 	public static final ILocalizedText CONTROL_TRIP = createSimple("advanced_control_system.trip");
 	public static final ILocalizedText CONTROL_RESET_TRIP = createSimple("advanced_control_system.reset_trip");
-
 	private static final String HEADER = "steves_vehicles:gui.cart.travel:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationCartTravel() {}
+	private LocalizationCartTravel() {
+	}
 }

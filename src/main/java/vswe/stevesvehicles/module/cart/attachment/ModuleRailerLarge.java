@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.cart.attachment;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleRailerLarge extends ModuleRailer {

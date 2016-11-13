@@ -1,7 +1,5 @@
 package vswe.stevesvehicles.upgrade.registry;
 
-
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,7 +12,6 @@ import vswe.stevesvehicles.upgrade.EffectNameLoader;
 import vswe.stevesvehicles.upgrade.Upgrade;
 
 public class UpgradeRegistry implements IRegistry<Upgrade> {
-
 	private static void preInit() {
 		loader = new RegistryLoader<>();
 		allUpgrades = new ArrayList<>();
@@ -30,7 +27,6 @@ public class UpgradeRegistry implements IRegistry<Upgrade> {
 	private static List<Upgrade> allUpgrades;
 	private static RegistryLoader<UpgradeRegistry, Upgrade> loader;
 	private Map<String, Upgrade> upgrades;
-
 	private final String code;
 
 	public UpgradeRegistry(String code) {
@@ -47,10 +43,9 @@ public class UpgradeRegistry implements IRegistry<Upgrade> {
 	}
 
 	public static void add(UpgradeRegistry registry) {
-		if(loader == null) {
+		if (loader == null) {
 			preInit();
 		}
-
 		loader.add(registry);
 	}
 
@@ -58,10 +53,9 @@ public class UpgradeRegistry implements IRegistry<Upgrade> {
 		if (loader == null) {
 			preInit();
 		}
-
 		if (upgrades.containsKey(upgrade.getRawUnlocalizedName())) {
 			System.err.println("An upgrade with this raw name has already been registered in this registry. Failed to register a second upgrade with the raw name " + upgrade.getRawUnlocalizedName() + " in registry with code " + getCode());
-		}else{
+		} else {
 			upgrades.put(upgrade.getRawUnlocalizedName(), upgrade);
 			allUpgrades.add(upgrade);
 			upgrade.setFullRawUnlocalizedName(getFullCode(upgrade));
@@ -77,7 +71,6 @@ public class UpgradeRegistry implements IRegistry<Upgrade> {
 	public Collection<Upgrade> getElements() {
 		return upgrades.values();
 	}
-
 
 	public static List<Upgrade> getAllUpgrades() {
 		return allUpgrades;

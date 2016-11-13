@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -12,5 +13,4 @@ public class SlotFurnaceInput extends SlotFake {
 	public boolean isItemValid(ItemStack itemstack) {
 		return FurnaceRecipes.instance().getSmeltingResult(itemstack) != null;
 	}
-
 }

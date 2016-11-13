@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.fancy;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,10 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class OverheadHandler extends FancyPancyHandler {
-
 	private ModelRenderer model;
-
-
 	private Map<String, OverheadData> dataObjects;
 
 	private class OverheadData {
@@ -48,8 +44,8 @@ public class OverheadHandler extends FancyPancyHandler {
 		super("Overhead");
 		MinecraftForge.EVENT_BUS.register(this);
 		dataObjects = new HashMap<>();
-
-		ModelBase base = new ModelBase() {};
+		ModelBase base = new ModelBase() {
+		};
 		model = new ModelRenderer(base, 0, 0);
 		model.addBox(-16, 0, 0, 32, 23, 0);
 	}
@@ -59,7 +55,6 @@ public class OverheadHandler extends FancyPancyHandler {
 		if (data == null) {
 			data = new OverheadData(player);
 		}
-
 		return data;
 	}
 
@@ -86,7 +81,6 @@ public class OverheadHandler extends FancyPancyHandler {
 	@Override
 	public void setCurrentResource(AbstractClientPlayer player, ResourceLocation resource, String url) {
 		OverheadData data = getData(player);
-
 		data.resourceLocation = resource;
 		data.image = tryToDownloadFancy(resource, url);
 	}
@@ -105,25 +99,21 @@ public class OverheadHandler extends FancyPancyHandler {
 	public void render(RenderLivingEvent.Specials.Post event) {
 		Entity entity = event.getEntity();
 		RenderLivingBase livingBase = event.getRenderer();
-
 		if (entity instanceof AbstractClientPlayer && livingBase instanceof RenderPlayer) {
-			AbstractClientPlayer player = (AbstractClientPlayer)entity;
+			AbstractClientPlayer player = (AbstractClientPlayer) entity;
 			if (!player.isInvisible()) {
-				RenderPlayer render = (RenderPlayer)livingBase;
+				RenderPlayer render = (RenderPlayer) livingBase;
 				EntityPlayer observer = Minecraft.getMinecraft().thePlayer;
 				boolean isObserver = player == observer;
-
 				double distanceSq = player.getDistanceSqToEntity(observer);
 				double distanceLimit = player.isSneaking() ? RenderLivingBase.NAME_TAG_RANGE_SNEAK : RenderLivingBase.NAME_TAG_RANGE;
-
 				if (distanceSq < distanceLimit * distanceLimit) {
 					if (player.isPlayerSleeping()) {
 						renderOverHead(render, player, event.getX(), event.getY() - 1.5D, event.getZ(), isObserver);
-					}else{
+					} else {
 						renderOverHead(render, player, event.getX(), event.getY(), event.getZ(), isObserver);
 					}
 				}
-
 			}
 		}
 	}
@@ -132,38 +122,33 @@ public class OverheadHandler extends FancyPancyHandler {
 		OverheadData data = getData(player);
 		if (FancyPancyLoader.isImageReady(data.image)) {
 			RenderManager renderManager = ReflectionHelper.getPrivateValue(Render.class, renderer, 1);
-			//check if it's in an inventory
-			if (isObserver && player.openContainer != null && renderManager.playerViewY == 180 /* set to 180 when rendering, it might be 180 at other points but won't be the end of the world*/) {
+			// check if it's in an inventory
+			if (isObserver && player.openContainer != null
+					&& renderManager.playerViewY == 180 /*
+					 * set to 180 when
+					 * rendering, it might
+					 * be 180 at other
+					 * points but won't be
+					 * the end of the world
+					 */) {
 				return;
 			}
 			renderManager.renderEngine.bindTexture(data.resourceLocation);
-
-
-
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)x, (float)y + player.height + (isObserver ? 0.8F : 1.1F), (float)z);
+			GL11.glTranslatef((float) x, (float) y + player.height + (isObserver ? 0.8F : 1.1F), (float) z);
 			GL11.glNormal3f(0, 1, 0);
 			GL11.glRotatef(-renderManager.playerViewY, 0, 1, 0);
 			GL11.glRotatef(renderManager.playerViewX, 1, 0, 0);
-
 			GL11.glScalef(-1, -1, 1);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glEnable(GL11.GL_BLEND);
-
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.8F);
 			model.render(0.015F);
-
-
-
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
 			GL11.glPopMatrix();
 		}
 	}
-
-
-
 }

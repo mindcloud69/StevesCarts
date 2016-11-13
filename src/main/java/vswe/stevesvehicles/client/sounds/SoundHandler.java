@@ -11,12 +11,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SoundHandler {
-
 	public static void playDefaultSound(String name, SoundCategory category, float volume, float pitch) {
 		ISound soundObj = new PlayerSound(Minecraft.getMinecraft().thePlayer, category, name, volume, pitch);
 		Minecraft.getMinecraft().getSoundHandler().playSound(soundObj);
 	}
-
 
 	@SuppressWarnings("SpellCheckingInspection")
 	public static void playSound(String name, SoundCategory category, float volume, float pitch) {
@@ -24,24 +22,20 @@ public class SoundHandler {
 	}
 
 	private static class PlayerSound extends PositionedSound {
-
 		private EntityPlayer player;
+
 		protected PlayerSound(EntityPlayer player, SoundCategory category, String name, float volume, float pitch) {
 			super(new ResourceLocation(name), category);
-
 			this.player = player;
 			this.volume = volume;
 			this.pitch = pitch;
 			update();
 		}
 
-
 		private void update() {
-			xPosF = (float)player.posX;
-			yPosF = (float)player.posY;
-			zPosF = (float)player.posZ;
+			xPosF = (float) player.posX;
+			yPosF = (float) player.posY;
+			zPosF = (float) player.posZ;
 		}
-
 	}
 }
-

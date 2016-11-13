@@ -8,7 +8,7 @@ public class ModuleSolarStandard extends ModuleSolarTop {
 	}
 
 	@Override
-	protected int getMaxCapacity(){
+	protected int getMaxCapacity() {
 		return 800000;
 	}
 
@@ -16,5 +16,4 @@ public class ModuleSolarStandard extends ModuleSolarTop {
 	protected int getGenSpeed() {
 		return 5;
 	}
-
 }

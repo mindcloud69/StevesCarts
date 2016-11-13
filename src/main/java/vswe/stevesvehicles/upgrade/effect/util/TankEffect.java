@@ -20,7 +20,6 @@ import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public abstract class TankEffect extends InventoryEffect implements ITankHolder {
-
 	public TankEffect(TileEntityUpgrade upgrade) {
 		super(upgrade);
 	}
@@ -31,17 +30,16 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 
 	public abstract int getTankSize();
 
-
 	@Override
 	public Class<? extends Slot> getSlot(int id) {
-		return SlotLiquidOutput.class;		
+		return SlotLiquidOutput.class;
 	}
 
 	@Override
 	public Slot createSlot(int id) {
 		if (id == 0) {
 			return new SlotLiquidUpgradeInput(upgrade, tank, 16, id, getSlotX(id), getSlotY(id));
-		}else{
+		} else {
 			return super.createSlot(id);
 		}
 	}
@@ -59,58 +57,49 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 	@Override
 	public int getSlotY(int id) {
 		return 24 * (id + 1);
-	}	
-
-
+	}
 
 	private static final int tankInterfaceX = 35;
-	private static final int tankInterfaceY = 20;	
-
-	@SideOnly(Side.CLIENT) 
+	private static final int tankInterfaceY = 20;
+	@SideOnly(Side.CLIENT)
 	private static ResourceLocation texture;
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiUpgrade gui, int x, int y) {
 		if (texture == null) {
 			texture = ResourceHelper.getResource("/gui/tank.png");
 		}
-
 		tank.drawFluid(gui, tankInterfaceX, tankInterfaceY);
-		ResourceHelper.bindResource(texture);	
+		ResourceHelper.bindResource(texture);
 		gui.drawTexturedModalRect(gui.getGuiLeft() + tankInterfaceX, gui.getGuiTop() + tankInterfaceY, 1, 1, 36, 51);
 	}
-
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawMouseOver(GuiUpgrade gui, int x, int y) {
-		drawMouseOver(gui, tank.getMouseOver(), x,y, new int[] {tankInterfaceX, tankInterfaceY, 36, 51});
+		drawMouseOver(gui, tank.getMouseOver(), x, y, new int[] { tankInterfaceX, tankInterfaceY, 36, 51 });
 	}
-
 
 	// TODO synchronize the tag somehow :S
 	@Override
 	public void checkGuiData(ContainerUpgrade con, IContainerListener crafting, boolean isNew) {
-
 		boolean changed = false;
 		int id = 0;
 		int amount1 = 1;
 		int amount2 = 2;
 		int meta = 3;
-
-		FluidStack oldFluid = (FluidStack)con.olddata;
-
+		FluidStack oldFluid = (FluidStack) con.olddata;
 		if ((isNew || oldFluid != null) && tank.getFluid() == null) {
-			upgrade.updateGuiData(con, crafting, id, (short)-1);
+			upgrade.updateGuiData(con, crafting, id, (short) -1);
 			changed = true;
-		}else if(tank.getFluid() != null) {
+		} else if (tank.getFluid() != null) {
 			if (isNew || oldFluid == null) {
 				upgrade.updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tank.getFluid().getFluid()));
 				upgrade.updateGuiData(con, crafting, amount1, upgrade.getShortFromInt(true, tank.getFluid().amount));
 				upgrade.updateGuiData(con, crafting, amount2, upgrade.getShortFromInt(false, tank.getFluid().amount));
 				changed = true;
-			}else{
-
+			} else {
 				if (!oldFluid.getFluid().getName().equals(tank.getFluid().getFluid().getName())) {
 					upgrade.updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tank.getFluid().getFluid()));
 					changed = true;
@@ -119,21 +108,17 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 					upgrade.updateGuiData(con, crafting, amount1, upgrade.getShortFromInt(true, tank.getFluid().amount));
 					upgrade.updateGuiData(con, crafting, amount2, upgrade.getShortFromInt(false, tank.getFluid().amount));
 					changed = true;
-				}					
-
+				}
 			}
-
 		}
-
 		if (changed) {
 			if (tank.getFluid() == null) {
 				con.olddata = null;
-			}else{
+			} else {
 				con.olddata = tank.getFluid().copy();
 			}
 		}
 	}
-
 
 	// TODO Synchronize the tag somehow :S
 	@Override
@@ -141,15 +126,13 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 		if (id == 0) {
 			if (data == -1) {
 				tank.setFluid(null);
-			}else if (tank.getFluid() == null){
+			} else if (tank.getFluid() == null) {
 				tank.setFluid(new FluidStack(FluidRegistry.getFluid(data), 0));
 			}
-		}else if(tank.getFluid() != null) {
+		} else if (tank.getFluid() != null) {
 			tank.getFluid().amount = upgrade.getIntFromShort(id == 1, tank.getFluid().amount, data);
 		}
-
-	}		
-
+	}
 
 	private int tick;
 	private Tank tank;
@@ -159,23 +142,18 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 		tank = new Tank(this, getTankSize(), 0);
 	}
 
-
 	@Override
 	public void update() {
 		super.update();
-
 		if (--tick <= 0) {
 			tick = 5;
-		}else{
+		} else {
 			return;
 		}
-
 		if (!upgrade.getWorld().isRemote && slots != null && slots.size() >= 2) {
 			tank.containerTransfer();
 		}
 	}
-
-
 
 	@Override
 	public void load(NBTTagCompound compound) {
@@ -188,7 +166,6 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 			tank.getFluid().writeToNBT(compound);
 		}
 	}
-
 
 	@Override
 	public ItemStack getInputContainer(int tankId) {
@@ -207,12 +184,12 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 
 	@Override
 	public void onFluidUpdated(int tankId) {
-
 	}
-
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public void drawImage(int tankId, GuiBase gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
-		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F);
-	}*/
+	/*
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void drawImage(int tankId, GuiBase gui,
+	 * IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int
+	 * sizeY) { gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() +
+	 * targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F); }
+	 */
 }

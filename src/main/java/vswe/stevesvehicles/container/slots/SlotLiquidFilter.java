@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -6,7 +7,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public class SlotLiquidFilter extends SlotBase implements ISpecialItemTransferValidator {
-
 	public SlotLiquidFilter(IInventory inventory, int id, int x, int y) {
 		super(inventory, id, x, y);
 	}

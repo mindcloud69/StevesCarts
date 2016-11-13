@@ -16,5 +16,4 @@ public class ModuleCoalTiny extends ModuleCoalBase {
 	public double getFuelMultiplier() {
 		return 1.5;
 	}
-
 }

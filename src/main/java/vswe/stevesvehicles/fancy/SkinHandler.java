@@ -16,19 +16,21 @@ public class SkinHandler extends FancyPancyHandler {
 	@Override
 	public String getDefaultUrl(AbstractClientPlayer player) {
 		return null;
-		//return AbstractClientPlayer.getSkinUrl(StringUtils.stripControlCodes(player.getDisplayName()));
+		// return
+		// AbstractClientPlayer.getSkinUrl(StringUtils.stripControlCodes(player.getDisplayName()));
 	}
 
 	@Override
 	public ResourceLocation getDefaultResource(AbstractClientPlayer player) {
 		return null;
-		//return AbstractClientPlayer.getLocationSkin(StringUtils.stripControlCodes(player.getDisplayName()));
+		// return
+		// AbstractClientPlayer.getLocationSkin(StringUtils.stripControlCodes(player.getDisplayName()));
 	}
 
 	@Override
 	public ThreadDownloadImageData getCurrentTexture(AbstractClientPlayer player) {
 		return null;
-		//return player.getTextureSkin();
+		// return player.getTextureSkin();
 	}
 
 	@Override
@@ -39,8 +41,11 @@ public class SkinHandler extends FancyPancyHandler {
 	@Override
 	public void setCurrentResource(AbstractClientPlayer player, ResourceLocation resource, String url) {
 		ReflectionHelper.setPrivateValue(AbstractClientPlayer.class, player, resource, 3);
-		//TODO: Fix
-		//ReflectionHelper.setPrivateValue(AbstractClientPlayer.class, player, tryToDownloadFancy(resource, url, AbstractClientPlayer.locationStevePng, new ImageBufferDownload()), 1);
+		// TODO: Fix
+		// ReflectionHelper.setPrivateValue(AbstractClientPlayer.class, player,
+		// tryToDownloadFancy(resource, url,
+		// AbstractClientPlayer.locationStevePng, new ImageBufferDownload()),
+		// 1);
 	}
 
 	@Override
@@ -52,6 +57,4 @@ public class SkinHandler extends FancyPancyHandler {
 	public String getDefaultUrl() {
 		return "http://skins.minecraft.net/MinecraftSkins/";
 	}
-
-
 }

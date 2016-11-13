@@ -7,15 +7,12 @@ import vswe.stevesvehicles.localization.entry.info.LocalizationLabel;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.vehicle.VehicleType;
 
-
 public class ModuleDataHull extends ModuleData {
-
 	private int modularCapacity;
 	private int engineMaxCount;
 	private int addonMaxCount;
 	private int storageMaxCount;
 	private int complexityMax;
-
 
 	public ModuleDataHull(String unlocalizedName, Class<? extends ModuleBase> moduleClass, int modularCapacity, int engineMaxCount, int storageMaxCount, int addonMaxCount, int complexityMax) {
 		super(unlocalizedName, moduleClass, 0);
@@ -29,17 +26,22 @@ public class ModuleDataHull extends ModuleData {
 	public int getModularCapacity() {
 		return modularCapacity;
 	}
+
 	public int getEngineMaxCount() {
 		return engineMaxCount;
 	}
-	public int getStorageMaxCount() {return storageMaxCount;}
+
+	public int getStorageMaxCount() {
+		return storageMaxCount;
+	}
+
 	public int getAddonMaxCount() {
 		return addonMaxCount;
 	}
+
 	public int getComplexityMax() {
 		return complexityMax;
 	}
-
 
 	@Override
 	public void addSpecificInformation(List<String> list) {
@@ -50,7 +52,6 @@ public class ModuleDataHull extends ModuleData {
 		list.add(ColorHelper.GREEN + LocalizationLabel.MAX_ADDONS.translate(String.valueOf(addonMaxCount)));
 	}
 
-
 	public VehicleType getVehicle() {
 		return getValidVehicles() == null || getValidVehicles().isEmpty() ? null : getValidVehicles().get(0);
 	}
@@ -59,21 +60,16 @@ public class ModuleDataHull extends ModuleData {
 		if (!data.getValidVehicles().contains(getVehicle())) {
 			return false;
 		}
-
 		if (data.getCost() > getComplexityMax()) {
 			return false;
 		}
-
-		if (data.getSides() != null && !data.getSides().isEmpty() && getSides() != null && !getSides().isEmpty()  ) {
+		if (data.getSides() != null && !data.getSides().isEmpty() && getSides() != null && !getSides().isEmpty()) {
 			for (ModuleSide moduleSide : getSides()) {
 				if (data.getSides().contains(moduleSide)) {
 					return false;
 				}
 			}
 		}
-
 		return true;
-
-
 	}
 }

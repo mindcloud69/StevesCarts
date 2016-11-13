@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
-
 public class ModuleRecipeShaped extends ModuleRecipe {
 	private int width;
 	private int height;
@@ -20,7 +19,6 @@ public class ModuleRecipeShaped extends ModuleRecipe {
 
 	public ModuleRecipeShaped(IRecipeOutput result, int count, int width, int height, Object[] recipe) {
 		super(result, count, recipe);
-
 		recipeStartX = width;
 		recipeStartY = height;
 		for (int i = 0; i < width; i++) {
@@ -36,10 +34,8 @@ public class ModuleRecipeShaped extends ModuleRecipe {
 				}
 			}
 		}
-
 		this.width = width - recipeStartX;
 		this.height = height - recipeStartY;
-
 		this.fullWidth = width;
 		this.fulLHeight = height;
 	}
@@ -49,7 +45,6 @@ public class ModuleRecipeShaped extends ModuleRecipe {
 		if (width == 0 || height == 0) {
 			return false;
 		}
-
 		int gridStartX = GRID_WIDTH;
 		int gridStartY = GRID_HEIGHT;
 		for (int i = 0; i < GRID_WIDTH; i++) {
@@ -65,18 +60,15 @@ public class ModuleRecipeShaped extends ModuleRecipe {
 				}
 			}
 		}
-
 		return gridStartX != GRID_WIDTH && matches(crafting, gridStartX, gridStartY, recipeStartX, recipeStartY);
 	}
 
 	private boolean matches(InventoryCrafting crafting, int gridStartX, int gridStartY, int recipeStartX, int recipeStartY) {
 		int gridWidth = GRID_WIDTH - gridStartX;
 		int gridHeight = GRID_HEIGHT - gridStartY;
-
 		if (gridWidth < width || gridHeight < height) {
 			return false;
 		}
-
 		for (int i = 0; i < gridWidth; i++) {
 			for (int j = 0; j < gridHeight; j++) {
 				ItemStack item = crafting.getStackInRowAndColumn(i + gridStartX, j + gridStartY);
@@ -84,12 +76,11 @@ public class ModuleRecipeShaped extends ModuleRecipe {
 					if (item != null) {
 						return false;
 					}
-				}else if(!recipe[i + recipeStartX + (j + recipeStartY) * this.width].matches(item)) {
+				} else if (!recipe[i + recipeStartX + (j + recipeStartY) * this.width].matches(item)) {
 					return false;
 				}
 			}
 		}
-
 		return true;
 	}
 

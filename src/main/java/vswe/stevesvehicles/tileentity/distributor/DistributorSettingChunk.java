@@ -8,8 +8,9 @@ import vswe.stevesvehicles.tileentity.TileEntityManager;
  */
 class DistributorSettingChunk extends DistributorSetting {
 	private int chunk;
+
 	public DistributorSettingChunk(int id, boolean top, ILocalizedText name, int chunk) {
-		super(id,top,name);
+		super(id, top, name);
 		this.chunk = chunk;
 	}
 
@@ -17,7 +18,7 @@ class DistributorSettingChunk extends DistributorSetting {
 	public boolean isValid(TileEntityManager manager, int chunkId, boolean top) {
 		if (manager.layoutType == 0) {
 			return super.isValid(manager, chunkId, top);
-		}else{
+		} else {
 			return super.isValid(manager, chunkId, top) && chunk == chunkId;
 		}
 	}

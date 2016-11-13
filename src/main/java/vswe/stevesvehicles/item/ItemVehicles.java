@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.item;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,47 +36,37 @@ import vswe.stevesvehicles.vehicle.VehicleType;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 import vswe.stevesvehicles.vehicle.version.VehicleVersion;
 
-
 public class ItemVehicles extends Item {
-
 	public ItemVehicles() {
 		super();
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
-		setCreativeTab(null);	
+		setCreativeTab(null);
 	}
 
-
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register) {
-		for (VehicleType vehicleType : VehicleRegistry.getInstance().getAllVehicles()) {
-			vehicleType.registerIcons(register);
-		}
-		fallbackFallbackIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":unknown");
-	}
-
-	@SideOnly(Side.CLIENT)
-	private IIcon fallbackFallbackIcon; //if it fails to use a fallback icon :P
-
-	//this will only be used if the 3d rendering fails for some reason
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int dmg) {
-		VehicleType type = VehicleRegistry.getInstance().getTypeFromId(dmg);
-		if (type != null) {
-			return type.getFallbackIcon();
-		}else{
-			return fallbackFallbackIcon;
-		}
-	}*/
-
+	/*
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void registerIcons(IIconRegister register)
+	 * { for (VehicleType vehicleType :
+	 * VehicleRegistry.getInstance().getAllVehicles()) {
+	 * vehicleType.registerIcons(register); } fallbackFallbackIcon =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":unknown"); }
+	 * @SideOnly(Side.CLIENT) private IIcon fallbackFallbackIcon; //if it fails
+	 * to use a fallback icon :P //this will only be used if the 3d rendering
+	 * fails for some reason
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int dmg) {
+	 * VehicleType type = VehicleRegistry.getInstance().getTypeFromId(dmg); if
+	 * (type != null) { return type.getFallbackIcon(); }else{ return
+	 * fallbackFallbackIcon; } }
+	 */
 	private VehicleType getVehicleType(ItemStack item) {
 		VehicleVersion.updateItemStack(item);
 		return VehicleRegistry.getInstance().getTypeFromId(item.getItemDamage());
 	}
 
-	//TODO let the registered elements decide when they should be placed
+	// TODO let the registered elements decide when they should be placed
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		VehicleType vehicle = getVehicleType(stack);
@@ -87,9 +78,8 @@ public class ItemVehicles extends Item {
 		return EnumActionResult.FAIL;
 	}
 
-	//TODO let the registered elements decide when they should be placed
-	//TODO clean this up
-
+	// TODO let the registered elements decide when they should be placed
+	// TODO clean this up
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		VehicleType vehicle = getVehicleType(itemStack);
@@ -100,9 +90,9 @@ public class ItemVehicles extends Item {
 			double d0 = player.prevPosX + (player.posX - player.prevPosX) * f;
 			double d1 = player.prevPosY + (player.posY - player.prevPosY) * f + 1.62D - player.getYOffset();
 			double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
-			Vec3d vec3 =new Vec3d(d0, d1, d2);
+			Vec3d vec3 = new Vec3d(d0, d1, d2);
 			float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
-			float f4 = MathHelper.sin(-f2 * 0.017453292F - (float)Math.PI);
+			float f4 = MathHelper.sin(-f2 * 0.017453292F - (float) Math.PI);
 			float f5 = -MathHelper.cos(-f1 * 0.017453292F);
 			float f6 = MathHelper.sin(-f1 * 0.017453292F);
 			float f7 = f4 * f5;
@@ -110,52 +100,40 @@ public class ItemVehicles extends Item {
 			double d3 = 5.0D;
 			Vec3d vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
 			RayTraceResult result = world.rayTraceBlocks(vec3, vec31, true);
-
 			if (result != null) {
-
 				Vec3d vec32 = player.getLook(f);
 				boolean flag = false;
 				float f9 = 1.0F;
 				List list = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().addCoord(vec32.xCoord * d3, vec32.yCoord * d3, vec32.zCoord * d3).expand(f9, f9, f9));
 				int i;
-
 				for (i = 0; i < list.size(); ++i) {
-					Entity entity = (Entity)list.get(i);
-
+					Entity entity = (Entity) list.get(i);
 					if (entity.canBeCollidedWith()) {
 						float f10 = entity.getCollisionBorderSize();
 						AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand(f10, f10, f10);
-
 						if (axisalignedbb.isVecInside(vec3)) {
 							flag = true;
 						}
 					}
 				}
-
 				if (!flag) {
-
 					if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
 						BlockPos pos = result.getBlockPos();
-
 						if (world.getBlockState(pos).getBlock() == Blocks.SNOW_LAYER) {
 							pos = pos.down();
 						}
-
 						Entity boat = placeVehicle(vehicle, player, itemStack, world, pos.getX() + 0.5F, pos.getY() + 1.0F, pos.getZ() + 0.5F);
 						if (boat != null) {
 							boat.rotationYaw = ((MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3) - 1) * 90;
-
 							if (!world.getCollisionBoxes(boat, boat.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty()) {
 								boat.setDead();
 							}
 						}
 					}
-
 				}
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 		}
-
 		return ActionResult.newResult(EnumActionResult.PASS, itemStack);
 	}
 
@@ -168,20 +146,19 @@ public class ItemVehicles extends Item {
 						Class<? extends IVehicleEntity> clazz = vehicle.getClazz();
 						Constructor<? extends IVehicleEntity> constructor = clazz.getConstructor(World.class, double.class, double.class, double.class, NBTTagCompound.class, String.class);
 						Object obj = constructor.newInstance(world, x, y, z, info, item.hasDisplayName() ? item.getDisplayName() : null);
-						world.spawnEntityInWorld((Entity)obj);
+						world.spawnEntityInWorld((Entity) obj);
 						if (!player.capabilities.isCreativeMode) {
 							--item.stackSize;
 						}
-						return (Entity)obj;
+						return (Entity) obj;
 					}
 				}
-
 				return null;
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
-		}else{
+		} else {
 			if (!player.capabilities.isCreativeMode) {
 				--item.stackSize;
 			}
@@ -189,21 +166,18 @@ public class ItemVehicles extends Item {
 		}
 	}
 
-
 	/**
-	 * allows items to add custom lines of information to the mouse over description
+	 * allows items to add custom lines of information to the mouse over
+	 * description
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack item, EntityPlayer player, List list, boolean useExtraInfo) {
 		VehicleVersion.updateItemStack(item);
-
 		NBTTagCompound info = item.getTagCompound();
-
 		if (info != null) {
 			addInfo(ModuleDataItemHandler.getModulesAndCompoundsFromItem(item), list, null);
 			addInfo(ModuleDataItemHandler.getSpareModulesAndCompoundsFromItem(item), list, ColorHelper.ORANGE);
-
 			if (info.hasKey(VehicleBase.NBT_INTERRUPT_MAX_TIME)) {
 				list.add(ColorHelper.RED + LocalizationLabel.INCOMPLETE.translate());
 				list.add(ColorHelper.RED + LocalizationLabel.INTERRUPT_INSTRUCTION.translate());
@@ -211,23 +185,19 @@ public class ItemVehicles extends Item {
 				int currentTime = info.getInteger(VehicleBase.NBT_INTERRUPT_TIME);
 				int timeLeft = maxTime - currentTime;
 				list.add(ColorHelper.RED + LocalizationLabel.TIME_LEFT.translate() + ": " + formatTime(timeLeft));
-
 			}
-
 			if (GeneratedInfo.inDev) {
-				//dev version only, no localization required
+				// dev version only, no localization required
 				list.add(ColorHelper.WHITE + "Version: " + (info.hasKey("CartVersion") ? info.getByte("CartVersion") : 0));
 			}
-		}else{
+		} else {
 			list.add(LocalizationLabel.NO_MODULES.translate());
 		}
 	}
 
 	private void addInfo(List<Tuple<ModuleData, NBTTagCompound>> modules, List list, ColorHelper color) {
 		if (modules != null) {
-
 			ArrayList<ModuleDataPair> counts = new ArrayList<>();
-
 			for (Tuple<ModuleData, NBTTagCompound> moduleTuple : modules) {
 				ModuleData module = moduleTuple.getFirstObject();
 				NBTTagCompound moduleCompound = moduleTuple.getSecondObject();
@@ -241,7 +211,6 @@ public class ItemVehicles extends Item {
 						}
 					}
 				}
-
 				if (!found) {
 					ModuleDataPair count = new ModuleDataPair(module);
 					if (module.hasExtraData()) {
@@ -250,14 +219,12 @@ public class ItemVehicles extends Item {
 					counts.add(count);
 				}
 			}
-
 			for (ModuleDataPair count : counts) {
 				if (color != null) {
 					list.add(color + count.toString());
-				}else{
+				} else {
 					list.add(count.toString());
 				}
-
 			}
 		}
 	}
@@ -269,10 +236,8 @@ public class ItemVehicles extends Item {
 		seconds -= minutes * 60;
 		int hours = minutes / 60;
 		minutes -= hours * 60;
-
 		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-	}	
-
+	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
@@ -280,7 +245,7 @@ public class ItemVehicles extends Item {
 		VehicleType type = VehicleRegistry.getInstance().getTypeFromId(dmg);
 		if (type != null) {
 			return type.getUnlocalizedNameForItem();
-		}else{
+		} else {
 			return "item.unknown";
 		}
 	}

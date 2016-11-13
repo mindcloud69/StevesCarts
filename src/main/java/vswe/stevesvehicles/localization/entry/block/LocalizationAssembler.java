@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.block;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 
@@ -25,21 +24,18 @@ public final class LocalizationAssembler {
 	public static final ILocalizedText OCCUPIED_DEPARTURE_BAY = createSimple("occupied_departure_bay");
 	public static final ILocalizedText ASSEMBLE = createSimple("assemble");
 	public static final ILocalizedText MODIFY = createSimple("modify");
-
 	public static final ILocalizedText TITLE_ENGINES = createSimple("engines");
 	public static final ILocalizedText TITLE_TOOL = createSimple("tool");
 	public static final ILocalizedText TITLE_ATTACHMENTS = createSimple("attachments");
 	public static final ILocalizedText TITLE_STORAGE = createSimple("storage");
 	public static final ILocalizedText TITLE_ADDONS = createSimple("addons");
 	public static final ILocalizedText TITLE_INFORMATION = createSimple("information");
-
 	public static final ILocalizedText VEHICLE_RECIPE_TITLE = createSimple("recipe.vehicle_title");
 	public static final ILocalizedText SHAPED_RECIPE_TITLE = createSimple("recipe.shaped_title");
 	public static final ILocalizedText SHAPELESS_RECIPE_TITLE = createSimple("recipe.shapeless_title");
 	public static final ILocalizedText FUEL_RECIPE = createSimple("recipe.fuel");
 	public static final ILocalizedText CAPACITY_RECIPE = createSimple("recipe.capacity");
 	public static final ILocalizedText TIME_RECIPE = createSimple("recipe.time");
-
 	public static final ILocalizedText INFO_BACKGROUND = createSimple("info.background");
 	public static final ILocalizedText INFO_CHEST = createSimple("info.chest");
 	public static final ILocalizedText INFO_INVISIBLE = createSimple("info.invisible");
@@ -58,16 +54,16 @@ public final class LocalizationAssembler {
 	public static final ILocalizedText INFO_TORCHES = createSimple("info.torches");
 	public static final ILocalizedText INFO_BARRELS = createSimple("info.barrels");
 	public static final ILocalizedText INFO_BARREL = createSimple("info.barrel");
-
 	public static final ILocalizedText SEARCH_RELAXED = createSimple("search_relaxed");
 	public static final ILocalizedText SEARCH_NORMAL = createSimple("search_normal");
 	public static final ILocalizedText SEARCH_STRICT = createSimple("search_strict");
 	public static final ILocalizedText SEARCH_PAGE = createSimple("search_page");
-
 	private static final String HEADER = "steves_vehicles:gui.assembler:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
 
-	private LocalizationAssembler() {}
+	private LocalizationAssembler() {
+	}
 }

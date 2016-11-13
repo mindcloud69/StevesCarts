@@ -1,6 +1,8 @@
 package vswe.stevesvehicles.module.common.engine;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
 
 import vswe.stevesvehicles.client.ResourceHelper;
@@ -21,17 +23,17 @@ public abstract class ModuleEngine extends ModuleBase {
 	}
 
 	protected void initPriorityButton() {
-		priorityButton = new int[] {78,7,16,16};	
+		priorityButton = new int[] { 78, 7, 16, 16 };
 	}
 
-	//called to update the module's actions. Called by the cart's update code.
+	// called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
 		super.update();
 		loadFuel();
 	}
 
-	//returns if this cart supplies the cart with fuel
+	// returns if this cart supplies the cart with fuel
 	@Override
 	public boolean hasFuel(int consumption) {
 		return getFuelLevel() >= consumption && !isDisabled();
@@ -46,29 +48,29 @@ public abstract class ModuleEngine extends ModuleBase {
 	}
 
 	protected boolean isDisabled() {
-		return getPriority()  >= 3 || getPriority() < 0;
+		return getPriority() >= 3 || getPriority() < 0;
 	}
+
+	protected abstract DataParameter<Integer> getPriorityDw();
 
 	public int getPriority() {
 		if (isPlaceholder()) {
 			return 0;
 		}
-
-		int temp = getDw(0);
+		int temp = getDw(getPriorityDw());
 		if (temp < 0 || temp > 3) {
 			temp = 3;
 		}
 		return temp;
 	}
 
-	private void setPriority(int data) {	
+	private void setPriority(int data) {
 		if (data < 0) {
 			data = 0;
-		}else if (data > 3) {
+		} else if (data > 3) {
 			data = 3;
 		}
-
-		updateDw(0, data);
+		updateDw(getPriorityDw(), data);
 	}
 
 	public void consumeFuel(int consumption) {
@@ -77,15 +79,15 @@ public abstract class ModuleEngine extends ModuleBase {
 
 	protected abstract void loadFuel();
 
-	public void smoke(){}
-
+	public void smoke() {
+	}
 
 	public abstract int getTotalFuel();
+
 	public abstract float[] getGuiBarColor();
 
-
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -105,10 +107,9 @@ public abstract class ModuleEngine extends ModuleBase {
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		int sourceX = TEXTURE_SPACING + (16 + TEXTURE_SPACING) * getPriority();
 		int sourceY = TEXTURE_SPACING;
-		if (inRect(x,y, priorityButton)) {
+		if (inRect(x, y, priorityButton)) {
 			sourceY += 16 + TEXTURE_SPACING;
 		}
 		drawImage(gui, priorityButton, sourceX, sourceY);
@@ -116,20 +117,20 @@ public abstract class ModuleEngine extends ModuleBase {
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		drawStringOnMouseOver(gui, getPriorityText() , x, y , priorityButton);
+		drawStringOnMouseOver(gui, getPriorityText(), x, y, priorityButton);
 	}
 
 	private String getPriorityText() {
 		if (isDisabled()) {
 			return LocalizationEngine.DISABLED.translate();
-		}else{
+		} else {
 			return LocalizationEngine.PRIORITY.translate(String.valueOf(getPriority()));
 		}
 	}
 
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
-		if (inRect(x,y, priorityButton)) {
+		if (inRect(x, y, priorityButton)) {
 			if (button == 0 || button == 1) {
 				DataWriter dw = getDataWriter();
 				dw.writeBoolean(button == 0);
@@ -137,6 +138,7 @@ public abstract class ModuleEngine extends ModuleBase {
 			}
 		}
 	}
+
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
 		int priority = getPriority();
@@ -148,11 +150,11 @@ public abstract class ModuleEngine extends ModuleBase {
 		setPriority(priority);
 	}
 
-
 	@Override
 	public void initDw() {
-		addDw(0,0);
-	}	
+		registerDw(getPriorityDw(), 0);
+	}
+
 	@Override
 	public int numberOfDataWatchers() {
 		return 1;
@@ -160,12 +162,11 @@ public abstract class ModuleEngine extends ModuleBase {
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		tagCompound.setByte("Priority",(byte)getPriority());
+		tagCompound.setByte("Priority", (byte) getPriority());
 	}
 
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setPriority(tagCompound.getByte("Priority"));
 	}
-
 }

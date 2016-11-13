@@ -1,12 +1,11 @@
 package vswe.stevesvehicles.upgrade.effect.time;
 
-
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.effect.BaseEffect;
 
 public class TimeFlat extends BaseEffect {
-
 	private int ticks;
+
 	public TimeFlat(TileEntityUpgrade upgrade, Integer ticks) {
 		super(upgrade);
 		this.ticks = ticks;
@@ -19,6 +18,4 @@ public class TimeFlat extends BaseEffect {
 	public int getTicks() {
 		return ticks;
 	}
-
-
 }

@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.recipe.item;
 
-
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,6 @@ import vswe.stevesvehicles.util.Tuple;
 public abstract class RecipeItem {
 	private static Map<Class, Class<? extends RecipeItem>> registry = new HashMap<>();
 	private static RecipeItem empty = new RecipeItemEmpty();
-
 	static {
 		register(RecipeItemStandard.class, ItemStack.class);
 		register(RecipeItemStandard.class, Block.class);
@@ -33,20 +31,18 @@ public abstract class RecipeItem {
 	public static RecipeItem createRecipeItem(Object data) {
 		if (data != null) {
 			Class dataClass = data.getClass();
-			Tuple<Class<? extends RecipeItem>, Class>  recipeItemClasses = getRecipeClassFromClass(dataClass);
+			Tuple<Class<? extends RecipeItem>, Class> recipeItemClasses = getRecipeClassFromClass(dataClass);
 			if (recipeItemClasses != null) {
 				try {
 					Constructor<? extends RecipeItem> constructor = recipeItemClasses.getFirstObject().getConstructor(recipeItemClasses.getSecondObject());
 					Object obj = constructor.newInstance(data);
-					return (RecipeItem)obj;
-				}catch (Exception e) {
+					return (RecipeItem) obj;
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-
 			System.err.println("Failed to create a RecipeItem for the given data. The given data was " + data.toString() + "with the class " + data.getClass().getName());
 		}
-
 		return empty;
 	}
 
@@ -54,12 +50,12 @@ public abstract class RecipeItem {
 		Class<? extends RecipeItem> recipeItemClass = registry.get(dataClass);
 		if (recipeItemClass != null) {
 			return new Tuple<>(recipeItemClass, dataClass);
-		}else{
+		} else {
 			Class dataSuperClass = dataClass.getSuperclass();
 			Tuple<Class<? extends RecipeItem>, Class> result = dataSuperClass == null ? null : getRecipeClassFromClass(dataSuperClass);
 			if (result != null) {
 				return result;
-			}else{
+			} else {
 				for (Class dataInterfaceClass : dataClass.getInterfaces()) {
 					result = getRecipeClassFromClass(dataInterfaceClass);
 					if (result != null) {
@@ -68,7 +64,6 @@ public abstract class RecipeItem {
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -77,5 +72,6 @@ public abstract class RecipeItem {
 	}
 
 	public abstract boolean matches(ItemStack other);
+
 	public abstract List<ItemStack> getVisualStacks();
 }

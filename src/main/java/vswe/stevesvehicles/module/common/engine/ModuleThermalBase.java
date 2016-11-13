@@ -1,5 +1,8 @@
 package vswe.stevesvehicles.module.common.engine;
+
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -11,6 +14,19 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 		super(vehicleBase);
 	}
 
+	private DataParameter<Integer> PRIORITY;
+
+	@Override
+	public void initDw() {
+		PRIORITY = createDw(DataSerializers.VARINT);
+		super.initDw();
+	}
+
+	@Override
+	protected DataParameter<Integer> getPriorityDw() {
+		return PRIORITY;
+	}
+
 	private short coolantLevel;
 
 	private int getCoolantLevel() {
@@ -18,17 +34,18 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 	}
 
 	private void setCoolantLevel(int val) {
-		coolantLevel = (short)val;
+		coolantLevel = (short) val;
 	}
 
 	@Override
 	protected void initPriorityButton() {
-		priorityButton = new int[] {72,17,16,16};	
+		priorityButton = new int[] { 72, 17, 16, 16 };
 	}
 
 	private static final int RELOAD_LIQUID_SIZE = 1;
 
 	protected abstract int getEfficiency();
+
 	protected abstract int getCoolantEfficiency();
 
 	private boolean requiresCoolant() {
@@ -38,7 +55,7 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 	@Override
 	public int guiHeight() {
 		return 40;
-	}	
+	}
 
 	@Override
 	public boolean hasFuel(int consumption) {
@@ -52,59 +69,53 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 	}
 
 	/**
-    Load new fuel, this is called all the time but has an if statement checking if it's necessary to re-fill fuel.
+	 * Load new fuel, this is called all the time but has an if statement
+	 * checking if it's necessary to re-fill fuel.
 	 **/
 	@Override
 	protected void loadFuel() {
-		int consumption =  getVehicle().getConsumption(true) * 2;
-
-		//if there's no fuel left it's time to re-fill
+		int consumption = getVehicle().getConsumption(true) * 2;
+		// if there's no fuel left it's time to re-fill
 		while (getFuelLevel() <= consumption) {
 			int amount = getVehicle().drain(FluidRegistry.LAVA, RELOAD_LIQUID_SIZE, false);
 			if (amount > 0) {
 				getVehicle().drain(FluidRegistry.LAVA, amount, true);
 				setFuelLevel(getFuelLevel() + amount * getEfficiency());
-			}else{
+			} else {
 				break;
 			}
 		}
-
-		//if there's no coolant left it's time to re-fill
+		// if there's no coolant left it's time to re-fill
 		while (requiresCoolant() && getCoolantLevel() <= consumption) {
 			int amount = getVehicle().drain(FluidRegistry.WATER, RELOAD_LIQUID_SIZE, false);
 			if (amount > 0) {
 				getVehicle().drain(FluidRegistry.WATER, amount, true);
 				setCoolantLevel(getCoolantLevel() + amount * getCoolantEfficiency());
-			}else{
+			} else {
 				break;
 			}
-		}		
+		}
 	}
 
 	@Override
 	public int getTotalFuel() {
 		int totalFuel = getFuelLevel() + getVehicle().drain(FluidRegistry.LAVA, Integer.MAX_VALUE, false) * getEfficiency();
-
 		if (requiresCoolant()) {
 			int totalCoolant = getCoolantLevel() + getVehicle().drain(FluidRegistry.WATER, Integer.MAX_VALUE, false) * getCoolantEfficiency();
 			return Math.min(totalCoolant, totalFuel);
-		}else{
+		} else {
 			return totalFuel;
 		}
 	}
 
 	@Override
 	public float[] getGuiBarColor() {
-		return new float[] {1F,0F,0F};
-	}	
-
-
-
-	@Override
-	public void smoke(){
-
+		return new float[] { 1F, 0F, 0F };
 	}
 
+	@Override
+	public void smoke() {
+	}
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
@@ -114,15 +125,13 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 		if (consumption == 0) {
 			consumption = 1;
 		}
-
 		if (getFuelLevel() >= consumption && (!requiresCoolant() || getCoolantLevel() >= consumption)) {
 			str = LocalizationEngine.THERMAL_POWERED.translate();
-		}else if (getFuelLevel() >= consumption){
+		} else if (getFuelLevel() >= consumption) {
 			str = LocalizationEngine.THERMAL_NO_WATER.translate();
-		}else{
+		} else {
 			str = LocalizationEngine.THERMAL_NO_LAVA.translate();
 		}
-
 		drawString(gui, str, 8, 22, 0x404040);
 	}
 
@@ -138,9 +147,9 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 
 	@Override
 	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0, (short)getFuelLevel());
+		updateGuiData(info, 0, (short) getFuelLevel());
 		if (requiresCoolant()) {
-			updateGuiData(info, 1, (short)getCoolantLevel());
+			updateGuiData(info, 1, (short) getCoolantLevel());
 		}
 	}
 
@@ -148,20 +157,18 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {
 			setFuelLevel(data);
-		}else if(id == 1) {
+		} else if (id == 1) {
 			setCoolantLevel(data);
 		}
 	}
 
-
-
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		super.save(tagCompound);
-		tagCompound.setShort("Fuel", (short)getFuelLevel());
+		tagCompound.setShort("Fuel", (short) getFuelLevel());
 		if (requiresCoolant()) {
-			tagCompound.setShort("Coolant", (short)getCoolantLevel());
-		}	
+			tagCompound.setShort("Coolant", (short) getCoolantLevel());
+		}
 	}
 
 	@Override
@@ -171,7 +178,5 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 		if (requiresCoolant()) {
 			setCoolantLevel(tagCompound.getShort("Coolant"));
 		}
-	}	
-
-
+	}
 }

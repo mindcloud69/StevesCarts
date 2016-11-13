@@ -1,6 +1,5 @@
 package util;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,9 +11,9 @@ import java.util.List;
 
 public class Localization {
 	public static void main(String[] args) {
-		//this code is just for moving stuff around during development, doesn't really matter that it's using absolute paths
+		// this code is just for moving stuff around during development, doesn't
+		// really matter that it's using absolute paths
 		File langDir = new File("C:\\Users\\Vswe\\Dropbox\\Minecraft Modding\\SC2\\src\\main\\resources\\assets\\stevescarts\\lang");
-
 		File change = new File(langDir, "change.txt");
 		for (File child : langDir.listFiles(new FilenameFilter() {
 			@Override
@@ -26,37 +25,28 @@ public class Localization {
 		}
 	}
 
-
 	private static List<String> getUpdatedData(File change, File target) {
 		List<String> changeData = readFile(change);
 		List<String> targetData = readFile(target);
-
 		List<String> result = new ArrayList<>();
 		int missingEntries = 0;
 		for (String line : changeData) {
 			if (line.startsWith("#") || line.startsWith(" ") || line.isEmpty()) {
 				result.add(line);
-			}else if(!line.startsWith("--") && line.contains("=")) {
+			} else if (!line.startsWith("--") && line.contains("=")) {
 				String oldKey = line.split("=")[0];
 				String newKey = line.split("=")[1];
 				String value = getValueFromKey(targetData, oldKey);
 				if (value == null) {
 					missingEntries++;
-				}else{
+				} else {
 					result.add(newKey + "=" + value);
 				}
-
-
 			}
 		}
-
-
 		if (missingEntries > 0) {
 			System.err.println("Found " + missingEntries + " missing entries for " + target.getName());
 		}
-
-
-
 		return result;
 	}
 
@@ -67,18 +57,17 @@ public class Localization {
 			for (String line : data) {
 				fileWriter.write(line + "\n");
 			}
-		}catch (IOException ex) {
+		} catch (IOException ex) {
 			ex.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				if (fileWriter != null) {
 					fileWriter.close();
 				}
-			}catch (IOException ex) {
+			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 		}
-
 	}
 
 	private static String getValueFromKey(List<String> data, String key) {
@@ -99,18 +88,16 @@ public class Localization {
 			while ((line = br.readLine()) != null) {
 				data.add(line);
 			}
-
-		}catch (IOException ex) {
+		} catch (IOException ex) {
 			ex.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				if (br != null) {
 					br.close();
 				}
-			}catch (IOException ex) {
+			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
-
 		}
 		return data;
 	}

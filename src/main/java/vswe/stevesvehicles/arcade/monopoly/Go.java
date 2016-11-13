@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class Go extends CornerPlace {
-
 	public Go(ArcadeMonopoly game) {
 		super(game, 0);
 	}
@@ -13,7 +12,6 @@ public class Go extends CornerPlace {
 	@Override
 	public void draw(GuiVehicle gui, EnumSet<PlaceState> states) {
 		super.draw(gui, states);
-
 		Note.DIAMOND.draw(game, gui, 45, 5, 2);
 	}
 
@@ -27,5 +25,4 @@ public class Go extends CornerPlace {
 	public void onPiecePass(Piece piece) {
 		piece.addMoney(Note.DIAMOND, 2, true);
 	}
-
 }

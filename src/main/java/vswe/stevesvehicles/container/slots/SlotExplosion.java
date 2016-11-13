@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -11,8 +12,7 @@ public class SlotExplosion extends SlotBase implements ISlotExplosions {
 	}
 
 	@Override
-	public int getSlotStackLimit()
-	{
+	public int getSlotStackLimit() {
 		return StevesVehicles.instance.maxDynamites;
 	}
 

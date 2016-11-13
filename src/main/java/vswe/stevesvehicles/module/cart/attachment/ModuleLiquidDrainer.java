@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.cart.attachment;
+
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -13,18 +14,20 @@ import vswe.stevesvehicles.block.BlockCoordinate;
 import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.module.cart.tool.ModuleDrill;
 import vswe.stevesvehicles.vehicle.VehicleBase;
+
 public class ModuleLiquidDrainer extends ModuleWorker {
 	public ModuleLiquidDrainer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-	//lower numbers are prioritized
+	// lower numbers are prioritized
 	@Override
 	public byte getWorkPriority() {
-		return (byte)0;
+		return (byte) 0;
 	}
 
-	//return true when the work is done, false allow other modules to continue the work
+	// return true when the work is done, false allow other modules to continue
+	// the work
 	@Override
 	public boolean work() {
 		return false;
@@ -35,12 +38,11 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		int result = drainAt(drill, checked, traget, 0);
 		if (result > 0 && doPreWork()) {
 			drill.kill();
-			startWorking((int)(2.5F * result));
-		}else{
+			startWorking((int) (2.5F * result));
+		} else {
 			stopWorking();
 		}
-	}	
-
+	}
 
 	@Override
 	public boolean preventAutoShutdown() {
@@ -54,7 +56,6 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 			return 0;
 		}
 		int meta = getVehicle().getWorld().getBlockMetadata(here.getX(), here.getY(), here.getZ());
-
 		FluidStack liquid = getFluidStack(b, here.getX(), here.getY(), here.getZ(), !doPreWork());
 		if (liquid != null) {
 			if (doPreWork()) {
@@ -73,32 +74,25 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 				buckets += canDrain ? 1 : 0;
 			}
 		}
-
 		checked.add(here);
-
-
 		if (checked.size() < 100 && here.getHorizontalDistToVehicleSquared(getVehicle()) < 200) {
 			for (int y = 1; y >= 0; y--) {
 				for (int x = -1; x <= 1; x++) {
-					for (int z = -1; z <= 1; z++) {	
+					for (int z = -1; z <= 1; z++) {
 						if (Math.abs(x) + Math.abs(y) + Math.abs(z) == 1) {
-
-							BlockCoordinate next = new BlockCoordinate(here.getX()+x,here.getY()+y,here.getZ()+z);
+							BlockCoordinate next = new BlockCoordinate(here.getX() + x, here.getY() + y, here.getZ() + z);
 							if (!checked.contains(next)) {
 								drained += drainAt(drill, checked, next, buckets);
 							}
-
 						}
 					}
 				}
 			}
 		}
-
 		return drained;
-	}		
+	}
 
 	private boolean isLiquid(Block b) {
-
 		boolean isWater = b == Blocks.water || b == Blocks.flowing_water || b == Blocks.ice;
 		boolean isLava = b == Blocks.lava || b == Blocks.flowing_lava;
 		boolean isOther = b != null && b instanceof IFluidBlock;
@@ -108,18 +102,13 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 	private FluidStack getFluidStack(Block b, int x, int y, int z, boolean doDrain) {
 		if (b == Blocks.water || b == Blocks.flowing_water) {
 			return new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
-
-		}else if (b == Blocks.lava || b == Blocks.flowing_lava) {
+		} else if (b == Blocks.lava || b == Blocks.flowing_lava) {
 			return new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-
-		}else if (b instanceof IFluidBlock) {
-			IFluidBlock liquid = (IFluidBlock)b;
-
+		} else if (b instanceof IFluidBlock) {
+			IFluidBlock liquid = (IFluidBlock) b;
 			return liquid.drain(getVehicle().getWorld(), x, y, z, doDrain);
-		}else {
+		} else {
 			return null;
 		}
-	}	
-
-
+	}
 }

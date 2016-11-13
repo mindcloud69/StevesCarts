@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.inventory.IInventory;
 
 public class SlotChest extends SlotBase {

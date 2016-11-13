@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class Station extends Property {
-
 	private String name;
 	private int stationId;
 
@@ -18,11 +17,11 @@ public class Station extends Property {
 	@Override
 	protected int getTextureId() {
 		return 1 + stationId;
-	}	
+	}
 
 	@Override
 	public void draw(GuiVehicle gui, EnumSet<PlaceState> states) {
-		super.draw(gui,states);
+		super.draw(gui, states);
 		drawValue(gui);
 	}
 
@@ -31,16 +30,12 @@ public class Station extends Property {
 		return 10;
 	}
 
-
 	public int getRentCost(int ownedStations) {
-		return 25 * (int)Math.pow(2, (ownedStations - 1));
+		return 25 * (int) Math.pow(2, (ownedStations - 1));
 	}
 
 	@Override
 	public int getRentCost() {
 		return getRentCost(getOwnedInGroup());
 	}
-
-
-
 }

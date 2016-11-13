@@ -14,13 +14,12 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModulePlantSize extends ModuleAddon {
-
 	public ModulePlantSize(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-
 	private int size = 1;
+
 	public int getSize() {
 		return size;
 	}
@@ -31,7 +30,7 @@ public class ModulePlantSize extends ModuleAddon {
 	}
 
 	@Override
-	public boolean hasGui(){
+	public boolean hasGui() {
 		return true;
 	}
 
@@ -56,35 +55,31 @@ public class ModulePlantSize extends ModuleAddon {
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		int srcX = 1 + ((size - 1) % 5) * 45;
 		int srcY = 1 + ((size - 1) / 5 + 1) * 45;
 		drawImage(gui, box, srcX, srcY);
-
-		if (inRect(x,y, box)) {
+		if (inRect(x, y, box)) {
 			drawImage(gui, box, 1, 1);
 		}
-
 	}
 
-	private int[] box = new int[] {10,18, 44, 44};
+	private int[] box = new int[] { 10, 18, 44, 44 };
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-		drawStringOnMouseOver(gui, LocalizationCartCultivationUtil.PLANTER_RANGE_SIZE.translate() + ": " + size + "x" + size, x,y, box);
+		drawStringOnMouseOver(gui, LocalizationCartCultivationUtil.PLANTER_RANGE_SIZE.translate() + ": " + size + "x" + size, x, y, box);
 	}
 
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0 || button == 1) {
-			if (inRect(x,y, box)) {
+			if (inRect(x, y, box)) {
 				DataWriter dw = getDataWriter();
 				dw.writeBoolean(button == 0);
 				sendPacketToServer(dw);
 			}
 		}
 	}
-
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
@@ -93,14 +88,13 @@ public class ModulePlantSize extends ModuleAddon {
 			if (size < 1) {
 				size = 7;
 			}
-		}else{
+		} else {
 			size++;
 			if (size > 7) {
 				size = 1;
 			}
 		}
 	}
-
 
 	@Override
 	public int numberOfGuiData() {
@@ -109,8 +103,9 @@ public class ModulePlantSize extends ModuleAddon {
 
 	@Override
 	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0, (short)size);
+		updateGuiData(info, 0, (short) size);
 	}
+
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {
@@ -120,12 +115,11 @@ public class ModulePlantSize extends ModuleAddon {
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		tagCompound.setByte("size", (byte)size);
-	}	
+		tagCompound.setByte("size", (byte) size);
+	}
 
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		size = tagCompound.getByte("size");
-	}		
-
+	}
 }

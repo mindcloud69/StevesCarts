@@ -1,7 +1,6 @@
 package vswe.stevesvehicles.arcade.monopoly;
 
 public class Jail extends CornerPlace {
-
 	public Jail(ArcadeMonopoly game) {
 		super(game, 1);
 	}
@@ -14,7 +13,7 @@ public class Jail extends CornerPlace {
 	@Override
 	protected int getAllowedWidth(int area) {
 		return area == 1 ? 90 : ArcadeMonopoly.PLACE_HEIGHT;
-	}	
+	}
 
 	@Override
 	public int getPieceAreaCount() {
@@ -24,6 +23,5 @@ public class Jail extends CornerPlace {
 	@Override
 	public int getPieceAreaForPiece(Piece piece) {
 		return piece.isInJail() ? 1 : 0;
-	}	
-
+	}
 }

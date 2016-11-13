@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.item;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,10 +25,10 @@ import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 
 public class ItemCartComponent extends Item {
-
-	/*private IIcon icons[];
-	private IIcon unknownIcon;*/
-	public static int size () {
+	/*
+	 * private IIcon icons[]; private IIcon unknownIcon;
+	 */
+	public static int size() {
 		return ComponentTypes.values().length;
 	}
 
@@ -42,34 +43,25 @@ public class ItemCartComponent extends Item {
 		return ComponentTypes.values()[dmg].getUnlocalizedName();
 	}
 
-
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int dmg) {
-		if (dmg < 0 || dmg >= icons.length || icons[dmg] == null) {
-			return unknownIcon;
-		}else{
-			return icons[dmg];
-		}
-	}	
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register) {
-		icons = new IIcon[size()];
-		for (int i = 0; i < icons.length; i++) {
-			if (getName(i) != null) {
-				icons[i] = register.registerIcon(StevesVehicles.instance.textureHeader + ":components/" + getName(i));
-			}
-		}
-		unknownIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":unknown");
-	}*/
-
+	/*
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int dmg) { if (dmg
+	 * < 0 || dmg >= icons.length || icons[dmg] == null) { return unknownIcon;
+	 * }else{ return icons[dmg]; } }
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void registerIcons(IIconRegister register)
+	 * { icons = new IIcon[size()]; for (int i = 0; i < icons.length; i++) { if
+	 * (getName(i) != null) { icons[i] =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":components/" + getName(i)); } } unknownIcon =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":unknown"); }
+	 */
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || getName(item.getItemDamage()) == null) {
 			return getUnlocalizedName();
-		}else{
+		} else {
 			return "steves_vehicles:item.component:" + getName(item.getItemDamage());
 		}
 	}
@@ -79,7 +71,6 @@ public class ItemCartComponent extends Item {
 		return "steves_vehicles:item.component:unknown_component.name";
 	}
 
-
 	private static final ILocalizedText UNKNOWN_MODULE = new LocalizedTextAdvanced("steves_vehicles:item.component:unknown_component");
 	private static final ILocalizedText UNKNOWN_MODULE_ID = new LocalizedTextAdvanced("steves_vehicles:item.component:unknown_component_id");
 
@@ -88,9 +79,9 @@ public class ItemCartComponent extends Item {
 	@Override
 	public void addInformation(ItemStack item, EntityPlayer player, List lst, boolean useExtraInfo) {
 		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || getName(item.getItemDamage()) == null) {
-			if (item != null && item.getItem() instanceof ItemCartComponent){
+			if (item != null && item.getItem() instanceof ItemCartComponent) {
 				lst.add(UNKNOWN_MODULE.translate(String.valueOf(item.getItemDamage())));
-			}else{
+			} else {
 				lst.add(UNKNOWN_MODULE_ID.translate());
 			}
 		}
@@ -108,28 +99,19 @@ public class ItemCartComponent extends Item {
 		}
 	}
 
-
 	public boolean isValid(ItemStack item) {
 		if (item == null || !(item.getItem() instanceof ItemCartComponent) || getName(item.getItemDamage()) == null) {
 			return false;
 		}
-
 		ComponentTypes type = ComponentTypes.values()[item.getItemDamage()];
 		return type.getRequiredHoliday() == null || StevesVehicles.holidays.contains(type.getRequiredHoliday());
 	}
 
-
-
-
-	//EASTER STUFF
+	// EASTER STUFF
 	private boolean isEdibleEgg(ItemStack item) {
-		return item != null && (
-				item.getItemDamage() == ComponentTypes.EXPLOSIVE_EASTER_EGG.getId() ||
-				item.getItemDamage() == ComponentTypes.BURNING_EASTER_EGG.getId() ||
-				item.getItemDamage() == ComponentTypes.GLISTERING_EASTER_EGG.getId() ||
-				item.getItemDamage() == ComponentTypes.CHOCOLATE_EASTER_EGG.getId()
-				);
-	}	
+		return item != null && (item.getItemDamage() == ComponentTypes.EXPLOSIVE_EASTER_EGG.getId() || item.getItemDamage() == ComponentTypes.BURNING_EASTER_EGG.getId() || item.getItemDamage() == ComponentTypes.GLISTERING_EASTER_EGG.getId()
+				|| item.getItemDamage() == ComponentTypes.CHOCOLATE_EASTER_EGG.getId());
+	}
 
 	private boolean isThrowableEgg(ItemStack item) {
 		return item != null && item.getItemDamage() == ComponentTypes.PAINTED_EASTER_EGG.getId();
@@ -140,71 +122,62 @@ public class ItemCartComponent extends Item {
 		if (isEdibleEgg(stack) && entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (stack.getItemDamage() == ComponentTypes.EXPLOSIVE_EASTER_EGG.getId()) {
-				//Explosive Easter Egg
-
-				world.createExplosion(null, entity.posX, entity.posY, entity.posZ, 0.1F, false);		
-			}else if (stack.getItemDamage() == ComponentTypes.BURNING_EASTER_EGG.getId()) {
-				//Burning Easter Egg
-
+				// Explosive Easter Egg
+				world.createExplosion(null, entity.posX, entity.posY, entity.posZ, 0.1F, false);
+			} else if (stack.getItemDamage() == ComponentTypes.BURNING_EASTER_EGG.getId()) {
+				// Burning Easter Egg
 				entity.setFire(5);
-
 				if (!world.isRemote) {
 					entity.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 600, 0));
-				}					
-			}else if (stack.getItemDamage() == ComponentTypes.GLISTERING_EASTER_EGG.getId()) {
-				//Glistering Easter Egg
-
+				}
+			} else if (stack.getItemDamage() == ComponentTypes.GLISTERING_EASTER_EGG.getId()) {
+				// Glistering Easter Egg
 				if (!world.isRemote) {
 					entity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 50, 2));
-				}	
-			}else if (stack.getItemDamage() == ComponentTypes.CHOCOLATE_EASTER_EGG.getId()) {
-				//Chocolate Easter Egg
-
+				}
+			} else if (stack.getItemDamage() == ComponentTypes.CHOCOLATE_EASTER_EGG.getId()) {
+				// Chocolate Easter Egg
 				if (!world.isRemote) {
 					entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, 300, 4));
-				}								
+				}
 			}
-
-
-
 			if (!player.capabilities.isCreativeMode) {
 				--stack.stackSize;
 			}
-			world.playSound((EntityPlayer)entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound((EntityPlayer) entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 			player.getFoodStats().addStats(2, 0);
 			return stack;
-		}else{
+		} else {
 			return super.onItemUseFinish(stack, world, entity);
 		}
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack item)  {
+	public int getMaxItemUseDuration(ItemStack item) {
 		return isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
 	}
 
 	@Override
 	public EnumAction getItemUseAction(ItemStack item) {
 		return isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
-	}		
+	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		if (isEdibleEgg(itemStack)) {
 			player.setActiveHand(hand);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
-		}else if(isThrowableEgg(itemStack)) {
+		} else if (isThrowableEgg(itemStack)) {
 			if (!player.capabilities.isCreativeMode) {
 				--itemStack.stackSize;
 			}
-			world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
 				world.spawnEntityInWorld(new EntityEasterEgg(world, player));
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
-		}else{
+		} else {
 			return super.onItemRightClick(itemStack, world, player, hand);
 		}
 	}
-
 }

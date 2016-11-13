@@ -13,32 +13,25 @@ import vswe.stevesvehicles.container.slots.SlotFurnaceInput;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleSmelter extends ModuleRecipe {
-
 	public ModuleSmelter(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-
 	private int energyBuffer;
 	private int cooldown = 0;
 	private static final int ENERGY_BUFFER_SIZE = 10;
-
 
 	@Override
 	public void update() {
 		if (getVehicle().getWorld().isRemote) {
 			return;
 		}
-
 		if (getVehicle().hasFuelForModule() && energyBuffer < ENERGY_BUFFER_SIZE) {
 			energyBuffer++;
 		}
-
 		if (cooldown <= 0) {
-
 			if (energyBuffer == ENERGY_BUFFER_SIZE) {
 				ItemStack recipe = getStack(0);
-
 				ItemStack result = null;
 				if (recipe != null) {
 					result = FurnaceRecipes.smelting().getSmeltingResult(recipe);
@@ -46,58 +39,45 @@ public class ModuleSmelter extends ModuleRecipe {
 				if (result != null) {
 					result = result.copy();
 				}
-
 				if (result != null && getVehicle().getModules() != null) {
-
 					prepareLists();
-
 					if (canCraftMoreOfResult(result)) {
-
 						ArrayList<ItemStack> originals = new ArrayList<>();
 						for (SlotBase slot : allTheSlots) {
 							ItemStack item = slot.getStack();
 							originals.add(item == null ? null : item.copy());
 						}
-
-
 						for (SlotBase inputSlot : inputSlots) {
 							ItemStack item = inputSlot.getStack();
-
 							if (item != null && item.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item, recipe)) {
 								if (--item.stackSize <= 0) {
 									inputSlot.putStack(null);
 								}
-
 								getVehicle().addItemToChest(result, getValidSlot(), null);
-
 								if (result.stackSize != 0) {
 									for (int j = 0; j < allTheSlots.size(); j++) {
 										allTheSlots.get(j).putStack(originals.get(j));
 									}
-								}else {
+								} else {
 									energyBuffer = 0;
 								}
 								break;
 							}
 						}
 					}
-
 				}
 			}
-
 			cooldown = WORK_COOL_DOWN;
-		}else{
+		} else {
 			--cooldown;
 		}
 	}
-
-
 
 	@Override
 	public int getConsumption(boolean isMoving) {
 		if (energyBuffer < ENERGY_BUFFER_SIZE) {
 			return 15;
-		}else{
+		} else {
 			return super.getConsumption(isMoving);
 		}
 	}
@@ -115,13 +95,13 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	protected int getInventoryHeight() {
 		return 2;
-	}	
+	}
 
 	@Override
 	protected SlotBase getSlot(int slotId, int x, int y) {
 		if (y == 0) {
 			return new SlotFurnaceInput(getVehicle().getVehicleEntity(), slotId, 10 + 18 * x, 15 + 18 * y);
-		}else{
+		} else {
 			return new SlotCartCrafterResult(getVehicle().getVehicleEntity(), slotId, 10 + 18 * x, 15 + 18 * y);
 		}
 	}
@@ -134,8 +114,9 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	protected void checkGuiData(Object[] info) {
 		super.checkGuiData(info);
-		updateGuiData(info, super.numberOfGuiData(), (short)energyBuffer);
+		updateGuiData(info, super.numberOfGuiData(), (short) energyBuffer);
 	}
+
 	@Override
 	public void receiveGuiData(int id, short data) {
 		super.receiveGuiData(id, data);
@@ -143,7 +124,6 @@ public class ModuleSmelter extends ModuleRecipe {
 			energyBuffer = data;
 		}
 	}
-
 
 	@Override
 	public void onInventoryChanged() {
@@ -159,15 +139,16 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	public void drawForeground(GuiVehicle gui) {
 		super.drawForeground(gui);
-		drawString(gui,getModuleName(), 8, 6, 0x404040);
-	}		
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
+	}
 
 	@Override
 	public int guiWidth() {
 		return canUseAdvancedFeatures() ? 100 : 45;
 	}
 
-	private static final int[] AREA = new int[] {32, 25, 16, 16};
+	private static final int[] AREA = new int[] { 32, 25, 16, 16 };
+
 	@Override
 	protected int[] getArea() {
 		return AREA;
@@ -187,7 +168,7 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		super.save(tagCompound);
-		tagCompound.setByte("Buffer", (byte)energyBuffer);
+		tagCompound.setByte("Buffer", (byte) energyBuffer);
 	}
 
 	@Override
@@ -198,7 +179,5 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	protected int getLimitStartY() {
 		return 15;
-	}	
-
+	}
 }
-

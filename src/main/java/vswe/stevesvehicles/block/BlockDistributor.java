@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.block;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -8,13 +9,10 @@ import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityDistributor;
 
 public class BlockDistributor extends BlockContainerBase {
-
-
 	public BlockDistributor() {
 		super(Material.rock);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
-
 
 	private IIcon purpleIcon;
 	private IIcon orangeIcon;
@@ -28,15 +26,15 @@ public class BlockDistributor extends BlockContainerBase {
 	public IIcon getIcon(int side, int meta) {
 		if (side == 0) {
 			return purpleIcon;
-		}else if(side == 1) {
+		} else if (side == 1) {
 			return orangeIcon;
-		}else if(side == 2){
+		} else if (side == 2) {
 			return yellowIcon;
-		}else if(side == 3){
+		} else if (side == 3) {
 			return blueIcon;
-		}else if(side == 4){
+		} else if (side == 4) {
 			return greenIcon;
-		}else{
+		} else {
 			return redIcon;
 		}
 	}
@@ -50,8 +48,7 @@ public class BlockDistributor extends BlockContainerBase {
 		blueIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/blue");
 		greenIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/green");
 		yellowIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/yellow");
-	}	
-
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

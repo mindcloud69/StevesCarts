@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.module.data;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,31 +19,24 @@ import vswe.stevesvehicles.vehicle.VehicleType;
 import vswe.stevesvehicles.vehicle.version.VehicleVersion;
 
 public final class ModuleDataItemHandler {
-
 	public static String checkForErrors(ModuleDataHull hull, ArrayList<ModuleData> modules) {
 		if (hull.getValidVehicles() == null || hull.getValidVehicles().isEmpty()) {
 			return LocalizationLabel.NO_VEHICLE_TYPE.translate();
 		}
-
 		VehicleType vehicleType = hull.getValidVehicles().get(0);
 		return checkForErrors(vehicleType, hull, modules);
-
 	}
 
 	public static String checkForErrors(VehicleType vehicle, ModuleDataHull hull, List<ModuleData> modules) {
-		//Normal errors here
+		// Normal errors here
 		if (getTotalCost(modules) > hull.getModularCapacity()) {
 			return LocalizationLabel.CAPACITY_ERROR.translate();
 		}
-
-
 		for (int i = 0; i < modules.size(); i++) {
 			ModuleData mod1 = modules.get(i);
-
 			if (mod1.getValidVehicles() == null || !mod1.getValidVehicles().contains(vehicle)) {
 				return LocalizationLabel.INVALID_VEHICLE_TYPE.translate(mod1.getName(), vehicle.getName());
 			}
-
 			if (mod1.getCost() > hull.getComplexityMax()) {
 				return LocalizationLabel.COMPLEXITY_ERROR.translate(mod1.getName());
 			}
@@ -58,7 +50,7 @@ public final class ModuleDataItemHandler {
 					}
 				}
 			}
-			if (mod1.getRequirement() != null){
+			if (mod1.getRequirement() != null) {
 				for (ModuleDataGroup group : mod1.getRequirement()) {
 					int count = 0;
 					for (ModuleData mod2 : group.getModules()) {
@@ -73,15 +65,13 @@ public final class ModuleDataItemHandler {
 					}
 				}
 			}
-
-			for (int j = i+1; j < modules.size(); j++) {
+			for (int j = i + 1; j < modules.size(); j++) {
 				ModuleData mod2 = modules.get(j);
-
 				if (mod1 == mod2) {
 					if (!mod1.getAllowDuplicate()) {
 						return LocalizationLabel.DUPLICATE_ERROR.translate(mod1.getName());
 					}
-				}else if (mod1.getSides() != null && mod2.getSides() != null) {
+				} else if (mod1.getSides() != null && mod2.getSides() != null) {
 					ModuleSide clash = null;
 					for (ModuleSide side1 : mod1.getSides()) {
 						for (ModuleSide side2 : mod2.getSides()) {
@@ -100,7 +90,6 @@ public final class ModuleDataItemHandler {
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -111,7 +100,6 @@ public final class ModuleDataItemHandler {
 		}
 		return currentCost;
 	}
-
 
 	public static boolean isValidModuleItem(ModuleType type, ItemStack itemstack) {
 		ModuleData module = ModItems.modules.getModuleData(itemstack);
@@ -131,7 +119,6 @@ public final class ModuleDataItemHandler {
 				}
 			}
 		}
-
 		return false;
 	}
 
@@ -156,35 +143,26 @@ public final class ModuleDataItemHandler {
 				}
 			}
 		}
-
 		if (vehicleType != null) {
 			return createModularVehicle(vehicleType, modules, null, moduleCompounds);
-		}else{
+		} else {
 			return null;
 		}
 	}
-
-
-
 
 	public static ItemStack createModularVehicle(VehicleType vehicle, List<ModuleData> moduleDataList, List<ModuleBase> modules, List<NBTTagCompound> moduleSourceCompounds) {
 		if (vehicle == null) {
 			return null;
 		}
-
 		int vehicleId = VehicleRegistry.getInstance().getIdFromType(vehicle);
 		if (vehicleId < 0) {
 			return null;
 		}
-
 		NBTTagCompound data = new NBTTagCompound();
-
 		data.setTag(VehicleBase.NBT_MODULES, getModuleList(moduleDataList, modules, moduleSourceCompounds));
-
 		ItemStack vehicleItem = new ItemStack(ModItems.vehicles, 1, vehicleId);
 		vehicleItem.setTagCompound(data);
 		VehicleVersion.addVersion(vehicleItem);
-
 		return vehicleItem;
 	}
 
@@ -194,23 +172,20 @@ public final class ModuleDataItemHandler {
 			ModuleData moduleData = moduleDataList.get(i);
 			ModuleBase module = modules != null ? modules.get(i) : null;
 			NBTTagCompound moduleSourceCompound = moduleSourceCompounds != null ? moduleSourceCompounds.get(i) : null;
-			NBTTagCompound moduleCompound = moduleSourceCompound == null ? new NBTTagCompound() : (NBTTagCompound)moduleSourceCompound.copy();
+			NBTTagCompound moduleCompound = moduleSourceCompound == null ? new NBTTagCompound() : (NBTTagCompound) moduleSourceCompound.copy();
 			int id = ModuleRegistry.getIdFromModule(moduleData);
 			if (id >= 0) {
 				moduleCompound.setShort(VehicleBase.NBT_ID, (short) id);
-
 				if (module != null) {
 					moduleData.addExtraData(moduleCompound, module);
-				}else if (moduleSourceCompound == null){
+				} else if (moduleSourceCompound == null) {
 					moduleData.addDefaultExtraData(moduleCompound);
 				}
-
 				modulesCompoundList.appendTag(moduleCompound);
 			}
 		}
 		return modulesCompoundList;
 	}
-
 
 	public static void addSparesToVehicleItems(ItemStack vehicle, List<ItemStack> spares) {
 		List<ModuleData> modules = new ArrayList<>();
@@ -224,10 +199,8 @@ public final class ModuleDataItemHandler {
 					moduleCompound = moduleItem.getTagCompound().getCompoundTag(ModuleData.NBT_MODULE_EXTRA_DATA);
 				}
 				moduleCompounds.add(moduleCompound);
-
 			}
 		}
-
 		vehicle.getTagCompound().setTag(VehicleBase.NBT_SPARES, getModuleList(modules, null, moduleCompounds));
 	}
 
@@ -284,11 +257,10 @@ public final class ModuleDataItemHandler {
 			return modules;
 		}
 		return null;
-
 	}
 
-
-	private ModuleDataItemHandler(){}
+	private ModuleDataItemHandler() {
+	}
 
 	public static List<ItemStack> getModularItems(ItemStack vehicle) {
 		return getModularItemsFromData(getModulesAndCompoundsFromItem(vehicle));
@@ -298,13 +270,11 @@ public final class ModuleDataItemHandler {
 		return getModularItemsFromData(getSpareModulesAndCompoundsFromItem(vehicle));
 	}
 
-
 	private static List<ItemStack> getModularItemsFromData(List<Tuple<ModuleData, NBTTagCompound>> modules) {
 		List<ItemStack> items = new ArrayList<>();
 		for (Tuple<ModuleData, NBTTagCompound> module : modules) {
 			ModuleData moduleData = module.getFirstObject();
 			NBTTagCompound compound = module.getSecondObject();
-
 			ItemStack item = new ItemStack(ModItems.modules, 1, ModuleRegistry.getIdFromModule(moduleData));
 			if (moduleData.hasExtraData() && compound != null) {
 				NBTTagCompound moduleCompound = compound.copy();
@@ -313,10 +283,8 @@ public final class ModuleDataItemHandler {
 				item.setTagCompound(itemCompound);
 				itemCompound.setTag(ModuleData.NBT_MODULE_EXTRA_DATA, moduleCompound);
 			}
-
 			items.add(item);
 		}
-
 		return items;
 	}
 

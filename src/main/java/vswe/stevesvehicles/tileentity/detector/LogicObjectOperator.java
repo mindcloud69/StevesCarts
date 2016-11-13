@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.tileentity.detector;
 
-
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.detector.DropDownMenuFlow;
 import vswe.stevesvehicles.client.gui.screen.GuiDetector;
@@ -9,6 +8,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class LogicObjectOperator extends LogicObject {
 	private OperatorObject operator;
+
 	public LogicObjectOperator(byte id, OperatorObject operator) {
 		super(id, operator.getId());
 		this.operator = operator;
@@ -50,23 +50,19 @@ public class LogicObjectOperator extends LogicObject {
 	@Override
 	public void draw(GuiDetector gui, int mouseX, int mouseY) {
 		ResourceHelper.bindResource(GuiDetector.TEXTURE);
-
 		int[] src = DropDownMenuFlow.getSource(gui, data);
 		gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y, src[0], src[1], getWidth(), getHeight());
-
 		if (gui.inRect(mouseX, mouseY, getRect())) {
 			int overlayIndex;
 			if (gui.currentObject == null) {
 				overlayIndex = 2;
-			}else if(hasRoomForChild() && isChildValid(gui.currentObject)) {
+			} else if (hasRoomForChild() && isChildValid(gui.currentObject)) {
 				overlayIndex = 0;
-			}else{
+			} else {
 				overlayIndex = 1;
 			}
-
-			gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y , 35 + overlayIndex * 21, 203, getWidth(), getHeight());
+			gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y, 35 + overlayIndex * 21, 203, getWidth(), getHeight());
 		}
-
 		super.draw(gui, mouseX, mouseY);
 	}
 
@@ -75,10 +71,8 @@ public class LogicObjectOperator extends LogicObject {
 		if (!super.evaluateLogicTree(detector, vehicle, depth) || getChildren().size() != getMaxChildCount()) {
 			return false;
 		}
-
 		LogicObject childA = operator.getChildCount() > 0 ? getChildren().get(0) : null;
 		LogicObject childB = operator.getChildCount() > 1 ? getChildren().get(1) : null;
-
 		return operator.evaluate(detector, vehicle, depth + 1, childA, childB);
 	}
 

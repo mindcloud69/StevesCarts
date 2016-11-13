@@ -7,17 +7,16 @@ public class TrackHeavy extends Track {
 
 	@Override
 	public void onClick(ArcadeTracks game) {
-		//do nothing
+		// do nothing
 	}
 
 	@Override
 	public Track copy() {
 		return new TrackHeavy(getX(), getY(), getOrientation());
-	}		
+	}
 
 	@Override
 	public int getU() {
 		return 2;
 	}
-
 }

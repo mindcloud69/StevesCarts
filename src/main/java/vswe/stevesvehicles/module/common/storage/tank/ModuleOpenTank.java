@@ -1,14 +1,15 @@
 package vswe.stevesvehicles.module.common.storage.tank;
+
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
-public class ModuleOpenTank extends ModuleTank{
+public class ModuleOpenTank extends ModuleTank {
 	public ModuleOpenTank(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
-
 
 	@Override
 	protected int getTankSize() {
@@ -23,20 +24,14 @@ public class ModuleOpenTank extends ModuleTank{
 	@Override
 	public void update() {
 		super.update();
-
+		World world = getVehicle().getWorld();
 		if (cooldown > 0) {
 			cooldown--;
-		}else{
+		} else {
 			cooldown = RAIN_UPDATE_COOLDOWN;
-
-			if (
-					getVehicle().getWorld().isRaining() &&
-					getVehicle().getWorld().canBlockSeeTheSky(getVehicle().x(), getVehicle().y() + 1, getVehicle().z()) &&
-					getVehicle().getWorld().getPrecipitationHeight(getVehicle().x(), getVehicle().z()) < getVehicle().y() + 1
-					) {
-				fill(new FluidStack(FluidRegistry.WATER, getVehicle().getWorld().getBiomeGenForCoords(getVehicle().x(), getVehicle().z()).getEnableSnow() ? SNOW_INCREASE : RAIN_INCREASE), true);
+			if (world.isRaining() && world.canBlockSeeSky(getVehicle().pos().up()) && world.getPrecipitationHeight(getVehicle().pos()).getY() < getVehicle().pos().up().getY()) {
+				fill(new FluidStack(FluidRegistry.WATER, getVehicle().getWorld().getBiome(getVehicle().pos()).getEnableSnow() ? SNOW_INCREASE : RAIN_INCREASE), true);
 			}
 		}
 	}
-
 }

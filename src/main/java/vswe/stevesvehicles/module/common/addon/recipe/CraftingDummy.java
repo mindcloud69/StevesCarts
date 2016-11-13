@@ -6,15 +6,12 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
 public class CraftingDummy extends InventoryCrafting {
-
 	private int inventoryWidth;
-
 	private ModuleCrafter module;
 
 	public CraftingDummy(ModuleCrafter module) {
 		super(null, 3, 3);
 		inventoryWidth = 3;
-
 		this.module = module;
 	}
 
@@ -28,18 +25,15 @@ public class CraftingDummy extends InventoryCrafting {
 		return id >= this.getSizeInventory() ? null : module.getStack(id);
 	}
 
-
 	@Override
-	public ItemStack getStackInRowAndColumn(int par1, int par2)
-	{
-		if (par1 >= 0 && par1 < this.inventoryWidth){
+	public ItemStack getStackInRowAndColumn(int par1, int par2) {
+		if (par1 >= 0 && par1 < this.inventoryWidth) {
 			int k = par1 + par2 * this.inventoryWidth;
 			return this.getStackInSlot(k);
-		}else{
+		} else {
 			return null;
 		}
 	}
-
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int id) {
@@ -47,17 +41,15 @@ public class CraftingDummy extends InventoryCrafting {
 	}
 
 	@Override
-	public ItemStack decrStackSize(int id, int count){
+	public ItemStack decrStackSize(int id, int count) {
 		return null;
 	}
 
-
 	@Override
 	public void setInventorySlotContents(int id, ItemStack item) {
-
 	}
 
-	public void update() {		
+	public void update() {
 		module.setStack(9, getResult());
 	}
 
@@ -68,13 +60,10 @@ public class CraftingDummy extends InventoryCrafting {
 	public IRecipe getRecipe() {
 		for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); ++i) {
 			IRecipe irecipe = CraftingManager.getInstance().getRecipeList().get(i);
-
 			if (irecipe.matches(this, module.getVehicle().getWorld())) {
 				return irecipe;
 			}
 		}
-
-		return null;		
+		return null;
 	}
-
 }

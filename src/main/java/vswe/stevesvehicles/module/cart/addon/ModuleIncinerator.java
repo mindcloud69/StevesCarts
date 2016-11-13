@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.cart.addon;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -13,7 +14,6 @@ public class ModuleIncinerator extends ModuleAddon {
 		super(vehicleBase);
 	}
 
-
 	public void incinerate(ItemStack item) {
 		if (isItemValid(item)) {
 			if (getIncinerationCost() != 0) {
@@ -22,7 +22,7 @@ public class ModuleIncinerator extends ModuleAddon {
 				int incinerated = amount / getIncinerationCost();
 				getVehicle().drain(FluidRegistry.LAVA, incinerated * getIncinerationCost(), true);
 				item.stackSize -= incinerated;
-			}else{
+			} else {
 				item.stackSize = 0;
 			}
 		}
@@ -34,20 +34,19 @@ public class ModuleIncinerator extends ModuleAddon {
 
 	protected boolean isItemValid(ItemStack item) {
 		if (item != null) {
-			for(int i = 0; i < getInventorySize(); i++) {
+			for (int i = 0; i < getInventorySize(); i++) {
 				if (getStack(i) != null && item.isItemEqual(getStack(i))) {
 					return true;
 				}
 			}
 		}
-
 		return false;
 	}
 
 	@Override
 	public boolean hasGui() {
 		return true;
-	}	
+	}
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
@@ -57,11 +56,10 @@ public class ModuleIncinerator extends ModuleAddon {
 	@Override
 	protected int getInventoryWidth() {
 		return 4;
-	}	
+	}
 
 	@Override
 	protected SlotBase getSlot(int slotId, int x, int y) {
 		return new SlotIncinerator(getVehicle().getVehicleEntity(), slotId, 8 + x * 18, 23 + y * 18);
-	}	
-
+	}
 }

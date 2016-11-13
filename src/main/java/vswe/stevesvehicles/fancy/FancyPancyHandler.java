@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.fancy;
 
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -23,11 +22,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 
-
-
 @SideOnly(Side.CLIENT)
 public abstract class FancyPancyHandler {
-
 	public HashMap<String, ServerFancy> getServerFancies() {
 		return serverFancies;
 	}
@@ -41,6 +37,7 @@ public abstract class FancyPancyHandler {
 	}
 
 	private final String code;
+
 	public FancyPancyHandler(String code) {
 		this.code = code;
 		MinecraftForge.EVENT_BUS.register(this);
@@ -48,13 +45,9 @@ public abstract class FancyPancyHandler {
 		serverFancies = new HashMap<>();
 	}
 
-
 	private static final int PROTOCOL_VERSION = 0;
-
-
-
-	private HashMap<String,UserFancy> fancies;
-	private HashMap<String,ServerFancy> serverFancies;
+	private HashMap<String, UserFancy> fancies;
+	private HashMap<String, ServerFancy> serverFancies;
 	private boolean ready = false;
 	private String serverHash;
 	private int serverReHash;
@@ -69,15 +62,14 @@ public abstract class FancyPancyHandler {
 		if (data != null) {
 			if (data.serverIP.equals("127.0.0.1")) {
 				ip = "localhost";
-			}else{
+			} else {
 				ip = data.serverIP;
 			}
-		}else if (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic()){
+		} else if (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic()) {
 			ip = "localhost";
-		}else{
+		} else {
 			ip = "single player";
 		}
-
 		serverHash = md5(ip.toLowerCase());
 		serverReHash = 100;
 	}
@@ -86,24 +78,21 @@ public abstract class FancyPancyHandler {
 		if (serverReHash == 0) {
 			generateServerHash();
 		}
-
 		return serverHash;
 	}
 
 	private String md5(String str) {
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
-
 			md5.update(str.getBytes());
 			byte[] bytes = md5.digest();
 			String result = "";
-
 			for (byte b : bytes) {
 				result += Integer.toString((b & 0xff) + 0x100, 16).substring(1);
 			}
 			return result;
-		}catch (NoSuchAlgorithmException ignored) {}
-
+		} catch (NoSuchAlgorithmException ignored) {
+		}
 		return null;
 	}
 
@@ -115,33 +104,22 @@ public abstract class FancyPancyHandler {
 		if (serverReHash > 0) {
 			serverReHash--;
 		}
-
-
 		EntityPlayer player = event.player;
-
-
 		if (player instanceof AbstractClientPlayer) {
 			loadNewFancy((AbstractClientPlayer) player);
 		}
-
 	}
-
-
 
 	private void loadNewFancy(AbstractClientPlayer player) {
 		if (player != null) {
-
 			String username = StringUtils.stripControlCodes(player.getName());
 			UserFancy fancyObj = fancies.get(username);
-
 			if (fancyObj == null && serverFancies.size() > 0 && serverFancies.containsKey(getServerHash())) {
 				fancyObj = new UserFancy(this);
 				fancies.put(username, fancyObj);
 			}
-
 			if (fancyObj != null) {
 				fancyObj.update(player);
-
 				String fancy = fancyObj.getImage(player);
 				if (fancy != null) {
 					ResourceLocation loc = ResourceHelper.getResourceFromPath(fancy);
@@ -150,7 +128,7 @@ public abstract class FancyPancyHandler {
 					}
 				}
 			}
-		}		
+		}
 	}
 
 	public ThreadDownloadImageData tryToDownloadFancy(ResourceLocation fancy, String fancyUrl) {
@@ -160,21 +138,25 @@ public abstract class FancyPancyHandler {
 	public ThreadDownloadImageData tryToDownloadFancy(ResourceLocation fancy, String fancyUrl, ResourceLocation fallbackResource, IImageBuffer optionalBuffer) {
 		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 		ITextureObject object = texturemanager.getTexture(fancy);
-
-		//no need to download the fancy if we have it already
+		// no need to download the fancy if we have it already
 		if (object == null) {
 			object = new ThreadDownloadImageData(null, fancyUrl, fallbackResource, optionalBuffer);
 			texturemanager.loadTexture(fancy, object);
 		}
-
-		return (ThreadDownloadImageData)object;
+		return (ThreadDownloadImageData) object;
 	}
 
 	public abstract String getDefaultUrl(AbstractClientPlayer player);
+
 	public abstract ResourceLocation getDefaultResource(AbstractClientPlayer player);
+
 	public abstract ThreadDownloadImageData getCurrentTexture(AbstractClientPlayer player);
+
 	public abstract ResourceLocation getCurrentResource(AbstractClientPlayer player);
+
 	public abstract void setCurrentResource(AbstractClientPlayer player, ResourceLocation resource, String url);
+
 	public abstract LoadType getDefaultLoadType();
+
 	public abstract String getDefaultUrl();
 }

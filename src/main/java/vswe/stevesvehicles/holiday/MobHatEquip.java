@@ -14,7 +14,6 @@ import vswe.stevesvehicles.item.ComponentTypes;
 import vswe.stevesvehicles.item.ModItems;
 
 public class MobHatEquip {
-
 	public MobHatEquip() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -48,5 +47,4 @@ public class MobHatEquip {
 			}
 		}
 	}
-
 }

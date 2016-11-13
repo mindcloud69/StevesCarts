@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.module;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 
@@ -14,11 +13,12 @@ public final class LocalizationShooter {
 	public static final ILocalizedText SHOOTER_FREQUENCY = createSimple("shooter.frequency");
 	public static final ILocalizedText SHOOTER_SECONDS = createSimple("shooter.seconds");
 	public static final ILocalizedText SHOOTER_DELAY = createSimple("shooter.delay");
-
 	private static final String HEADER = "steves_vehicles:gui.common.shooters:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
 
-	private LocalizationShooter() {}
+	private LocalizationShooter() {
+	}
 }

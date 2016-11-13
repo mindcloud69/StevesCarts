@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -14,6 +15,4 @@ public class SlotCakeDynamite extends SlotCake implements ISlotExplosions {
 	public boolean isItemValid(ItemStack itemstack) {
 		return super.isItemValid(itemstack) || (itemstack != null && itemstack.getItem() == ModItems.component && itemstack.getItemDamage() == ComponentTypes.DYNAMITE.getId());
 	}
-
-
 }

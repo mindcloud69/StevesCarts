@@ -2,6 +2,7 @@ package vswe.stevesvehicles.arcade.monopoly;
 
 public class Utility extends Property {
 	private int utilId;
+
 	public Utility(ArcadeMonopoly game, PropertyGroup group, int utilId, String name) {
 		super(game, group, name, 150);
 		this.utilId = utilId;
@@ -21,7 +22,6 @@ public class Utility extends Property {
 	public int getRentCost() {
 		return getRentCost(getOwnedInGroup());
 	}
-
 
 	public int getId() {
 		return utilId;
@@ -43,6 +43,4 @@ public class Utility extends Property {
 				return 50;
 		}
 	}
-
-
 }

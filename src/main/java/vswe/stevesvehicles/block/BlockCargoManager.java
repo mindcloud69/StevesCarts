@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.block;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -8,13 +9,10 @@ import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityCargo;
 
 public class BlockCargoManager extends BlockContainerBase {
-
-
 	public BlockCargoManager() {
 		super(Material.rock);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
-
 
 	private IIcon topIcon;
 	private IIcon botIcon;
@@ -28,15 +26,15 @@ public class BlockCargoManager extends BlockContainerBase {
 	public IIcon getIcon(int side, int meta) {
 		if (side == 0) {
 			return botIcon;
-		}else if(side == 1) {
+		} else if (side == 1) {
 			return topIcon;
-		}else if(side == 2){
+		} else if (side == 2) {
 			return yellowIcon;
-		}else if(side == 3){
+		} else if (side == 3) {
 			return blueIcon;
-		}else if(side == 4){
+		} else if (side == 4) {
 			return greenIcon;
-		}else{
+		} else {
 			return redIcon;
 		}
 	}
@@ -50,12 +48,7 @@ public class BlockCargoManager extends BlockContainerBase {
 		blueIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/blue");
 		greenIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/green");
 		yellowIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/yellow");
-	}	
-
-
-
-
-
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

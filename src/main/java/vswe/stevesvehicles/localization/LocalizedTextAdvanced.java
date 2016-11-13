@@ -20,17 +20,15 @@ public class LocalizedTextAdvanced implements ILocalizedText {
 				if (endIndex != -1) {
 					String optionsStr = result.substring(index + pluralCheck.length(), endIndex);
 					String options[] = optionsStr.split("\\|");
-
 					int optionId = (params[i].equals("1") || params[i].equals("-1")) ? 0 : 1;
 					if (optionId >= 0 && optionId < options.length) {
 						String option = options[optionId];
 						result = result.substring(0, index) + option + result.substring(endIndex + 1);
-
-						//restart
+						// restart
 						i--;
 					}
 				}
-			}else{
+			} else {
 				String listCheck = "[%" + (i + 1) + "->";
 				int index2 = result.indexOf(listCheck);
 				if (index2 != -1) {
@@ -38,17 +36,15 @@ public class LocalizedTextAdvanced implements ILocalizedText {
 					if (endIndex != -1) {
 						String optionsStr = result.substring(index2 + listCheck.length(), endIndex);
 						String options[] = optionsStr.split("\\|");
-
 						int optionId = Integer.parseInt(params[i]);
 						if (optionId >= 0 && optionId < options.length) {
 							String option = options[optionId];
 							result = result.substring(0, index2) + option + result.substring(endIndex + 1);
-
-							//restart
+							// restart
 							i--;
 						}
 					}
-				}else{
+				} else {
 					result = result.replace("[%" + (i + 1) + "]", params[i]);
 				}
 			}

@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.block;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 
@@ -23,11 +22,12 @@ public final class LocalizationDetector {
 	public static final ILocalizedText WEST_REDSTONE = createSimple("west_redstone");
 	public static final ILocalizedText SOUTH_REDSTONE = createSimple("south_redstone");
 	public static final ILocalizedText EAST_REDSTONE = createSimple("east_redstone");
-
 	private static final String HEADER = "steves_vehicles:gui.detector:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
 
-	private LocalizationDetector() {}
+	private LocalizationDetector() {
+	}
 }

@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -18,17 +19,12 @@ public class SlotBridge extends SlotBase implements ISpecialItemTransferValidato
 
 	public static boolean isBridgeMaterial(ItemStack itemstack) {
 		Block b = Block.getBlockFromItem(itemstack.getItem());
-		return  b == Blocks.PLANKS ||
-				b == Blocks.BRICK_BLOCK ||
-				b == Blocks.STONE ||
-				(b == Blocks.STONEBRICK && itemstack.getItemDamage() == 0);
+		return b == Blocks.PLANKS || b == Blocks.BRICK_BLOCK || b == Blocks.STONE || (b == Blocks.STONEBRICK && itemstack.getItemDamage() == 0);
 	}
 
-
-	//don't allow the bridge builder to use picked up materials
+	// don't allow the bridge builder to use picked up materials
 	@Override
 	public boolean isItemValidForTransfer(ItemStack item, TransferHandler.TransferType type) {
 		return isItemValid(item) && type != TransferHandler.TransferType.OTHER;
 	}
-
 }

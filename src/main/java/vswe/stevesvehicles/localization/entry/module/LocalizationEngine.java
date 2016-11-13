@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.module;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -19,14 +18,16 @@ public final class LocalizationEngine {
 	public static final ILocalizedText THERMAL_NO_LAVA = createSimple("thermal_engine.no_lava");
 	public static final ILocalizedText DISABLED = createSimple("common.disabled");
 	public static final ILocalizedText PRIORITY = createAdvanced("common.priority");
-
 	private static final String HEADER = "steves_vehicles:gui.common.engines:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationEngine() {}
+	private LocalizationEngine() {
+	}
 }

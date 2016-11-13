@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.block;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -13,21 +14,16 @@ import vswe.stevesvehicles.tileentity.TileEntityDetector;
 import vswe.stevesvehicles.tileentity.detector.DetectorType;
 
 public class BlockDetector extends BlockContainerBase {
-
 	public BlockDetector() {
 		super(Material.circuits);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
-
-
-
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIcon(int side, int meta) {
 		return DetectorType.getTypeFromMeta(meta).getIcon(side);
 	}
-
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -37,14 +33,12 @@ public class BlockDetector extends BlockContainerBase {
 		}
 	}
 
-
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 		for (DetectorType type : DetectorType.values()) {
 			list.add(new ItemStack(item, 1, type.getMeta()));
 		}
 	}
-
 
 	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
@@ -60,7 +54,6 @@ public class BlockDetector extends BlockContainerBase {
 	public boolean isBlockSolid(IBlockAccess world, int x, int y, int z, int side) {
 		return true;
 	}
-
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
@@ -82,9 +75,8 @@ public class BlockDetector extends BlockContainerBase {
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
 		if (side == -1) {
 			return false;
-		}else{
+		} else {
 			DetectorType type = DetectorType.getTypeFromMeta(world.getBlockMetadata(x, y, z));
-
 			return type.shouldEmitRedstone() || type == DetectorType.REDSTONE;
 		}
 	}
@@ -97,6 +89,5 @@ public class BlockDetector extends BlockContainerBase {
 	@Override
 	public int damageDropped(int meta) {
 		return meta;
-	}   
-
+	}
 }

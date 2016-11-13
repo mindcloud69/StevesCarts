@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleCreativeIncinerator extends ModuleIncinerator {
-
 	public ModuleCreativeIncinerator(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -18,11 +17,10 @@ public class ModuleCreativeIncinerator extends ModuleIncinerator {
 	@Override
 	protected boolean isItemValid(ItemStack item) {
 		return item != null && item.getItem() != null;
-	}	
+	}
 
 	@Override
 	public boolean hasGui() {
 		return false;
-	}		
-
+	}
 }

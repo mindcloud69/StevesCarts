@@ -5,9 +5,6 @@ import java.util.EnumSet;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public abstract class Property extends Place {
-
-
-
 	private String name;
 	private int cost;
 	private Piece owner;
@@ -21,7 +18,6 @@ public abstract class Property extends Place {
 		this.name = name;
 		this.cost = cost;
 	}
-
 
 	public void drawValue(GuiVehicle gui) {
 		Note.drawValue(game, gui, 10, 103, 2, cost);
@@ -63,7 +59,7 @@ public abstract class Property extends Place {
 
 	public int getMortgageValue() {
 		return getCost() / 2;
-	}	
+	}
 
 	public int getOwnedInGroup() {
 		int owned = 0;
@@ -71,29 +67,25 @@ public abstract class Property extends Place {
 			if (property.getOwner() == getOwner() && !property.isMortgaged()) {
 				++owned;
 			}
-		}	
+		}
 		return owned;
-	}	
+	}
 
 	public boolean isMortgaged() {
 		return mortgaged;
 	}
 
-
 	public boolean canMortgage() {
 		return true;
 	}
-
 
 	public void mortgage() {
 		mortgaged = true;
 	}
 
-
 	public int getUnMortgagePrice() {
-		return (int)(getMortgageValue() * 1.1F);
+		return (int) (getMortgageValue() * 1.1F);
 	}
-
 
 	public void unMortgage() {
 		mortgaged = false;

@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.tileentity;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,189 +66,151 @@ import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 /**
  * The tile entity used by the Cart Assembler
+ * 
  * @author Vswe
  *
  */
-public class TileEntityCartAssembler extends TileEntityBase
-implements IInventory, ISidedInventory {
-
+public class TileEntityCartAssembler extends TileEntityBase implements IInventory, ISidedInventory {
 	/**
 	 * ASSEMBLING VARIABLES
 	 */
-
 	/**
-	 * When this time is reached the cart is finished and will be placed in the output slot
+	 * When this time is reached the cart is finished and will be placed in the
+	 * output slot
 	 */
 	private int maxAssemblingTime;
-
 	/**
 	 * The time the cart has been assembled
 	 */
 	private float currentAssemblingTime = -1;
-
 	/**
-	 * The item that will appear in the output slot when the assembling is done, i.e. the cart being assembled
+	 * The item that will appear in the output slot when the assembling is done,
+	 * i.e. the cart being assembled
 	 */
 	protected ItemStack outputItem;
-
 	/**
 	 * Modules that are being removed by the assembler, used when modifying cart
 	 */
 	protected List<ItemStack> spareModules;
-
 	/**
 	 * Defines if the Cart Assembler is busy
 	 */
 	private boolean isAssembling;
-
-
-
-
-
 	/**
 	 * GRAPHICAL VARIABLES
-	 */	
-
+	 */
 	/**
 	 * Whether the cached error list needs to be recalculated or not
 	 */
 	public boolean isErrorListOutdated;
-
 	public boolean isFreeModulesOutdated;
-
 	/**
 	 * The graphical boxes drawn as module headers
 	 */
 	private List<TitleBox> titleBoxes;
-
 	/**
 	 * The graphical menus drawn in the dropdown menu at the simulated cart
 	 */
 	private List<SimulationInfo> dropDownItems;
-
-
 	/**
-	 * If the simulated cart should spin or not, this is false if the player is holding the cart with the mouse.
+	 * If the simulated cart should spin or not, this is false if the player is
+	 * holding the cart with the mouse.
 	 */
 	private boolean shouldSpin = true;
-
 	/**
 	 * The simulated cart, this cart will only exist on the client side
 	 */
 	private VehicleBase placeholder;
-
 	/**
 	 * The current yaw (rotation) of the simulated cart
 	 */
 	private float yaw = 0F;
-
 	/**
 	 * The current roll (rotation) of the simulated cart
 	 */
 	private float roll = 0F;
-
 	/**
 	 * Whether the simulated cart is current rolling up or down.
 	 */
 	private boolean rollDown = false;
-
 	/**
-	 * Which tab is selected in the interface (this is here to prevent reset on reopening the interface)
+	 * Which tab is selected in the interface (this is here to prevent reset on
+	 * reopening the interface)
 	 */
 	public int selectedTab;
-
 	public ModuleSortMode sortMode = ModuleSortMode.NORMAL;
-
-
 	/**
 	 * SLOT VARIABLES
 	 */
-
-
 	/**
 	 * All the slots this tile entity is using
 	 */
 	private List<SlotAssembler> slots;
-
 	/**
 	 * All the engine slots this tile entity is using
 	 */
 	private List<SlotAssembler> engineSlots;
-
 	/**
 	 * All the addon slots this tile entity is using
 	 */
 	private List<SlotAssembler> addonSlots;
-
 	/**
 	 * All storage slots this tile entity is using
 	 */
 	private List<SlotAssembler> chestSlots;
-
 	/**
 	 * All the attachment slots this tile entity is using
 	 */
 	private List<SlotAssembler> attachmentSlots;
-
 	/**
-	 * The hull slot of this tile entity, this is where the user puts the hull to start designing the cart.
+	 * The hull slot of this tile entity, this is where the user puts the hull
+	 * to start designing the cart.
 	 */
 	private SlotHull hullSlot;
-
 	/**
 	 * The tool slot of this tile entity
 	 */
 	private SlotAssembler toolSlot;
-
 	/**
 	 * The slot where the finished cart will be placed.
 	 */
 	private SlotOutput outputSlot;
-
 	/**
 	 * The slot where the user puts any fuel to power the cart assembler
 	 */
 	private SlotAssemblerFuel fuelSlot;
-
 	/**
-	 * All the slot indices that should be accessed from the top or the bottom of the Cart Assembler block
+	 * All the slot indices that should be accessed from the top or the bottom
+	 * of the Cart Assembler block
 	 */
 	private final int[] topBotSlots;
-
 	/**
-	 * All the slot indices that should be accessed from the sides of the Cart Assembler block
+	 * All the slot indices that should be accessed from the sides of the Cart
+	 * Assembler block
 	 */
-	private final int[] sideSlots;		
-
-
-
-
-
+	private final int[] sideSlots;
 	/**
 	 * OTHER VARIABLES
 	 */
-
 	/**
-	 * The hull that was the active one the last time the hull was checked. This is used to handle the change or removal of hulls.
+	 * The hull that was the active one the last time the hull was checked. This
+	 * is used to handle the change or removal of hulls.
 	 */
 	private ItemStack lastHull;
-
 	/**
-	 * The current loaded level of fuel. This is the level of the turquoise bar, not how much coal is in the slot.
+	 * The current loaded level of fuel. This is the level of the turquoise bar,
+	 * not how much coal is in the slot.
 	 */
-	private float fuelLevel;	
-
+	private float fuelLevel;
 	/**
 	 * A list of all the upgrades currently attached to this Cart Assembler
 	 */
 	private List<TileEntityUpgrade> upgrades;
-
 	/**
-	 * Used to properly detach any upgrades when the Cart Assembler block is broken
+	 * Used to properly detach any upgrades when the Cart Assembler block is
+	 * broken
 	 */
 	public boolean isDead;
-
-
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -257,16 +220,14 @@ implements IInventory, ISidedInventory {
 
 	@Override
 	public ContainerBase getContainer(InventoryPlayer inv) {
-		return new ContainerCartAssembler(inv, this);		
+		return new ContainerCartAssembler(inv, this);
 	}
-
 
 	public static final int MAX_ENGINE_SLOTS = 5;
 	public static final int MAX_TOOL_SLOTS = 1;
 	public static final int MAX_ATTACHMENT_SLOTS = 6;
 	public static final int MAX_STORAGE_SLOTS = 6;
 	public static final int MAX_ADDON_SLOTS = 12;
-
 	public static final TitleBox ENGINE_BOX = new TitleBox(LocalizationAssembler.TITLE_ENGINES, 65, 0xF7941D);
 	public static final TitleBox TOOL_BOX = new TitleBox(LocalizationAssembler.TITLE_TOOL, 100, 0x662D91);
 	public static final TitleBox ATTACH_BOX = new TitleBox(LocalizationAssembler.TITLE_ATTACHMENTS, 135, 0x005B7F);
@@ -274,11 +235,10 @@ implements IInventory, ISidedInventory {
 	public static final TitleBox ADDON_BOX = new TitleBox(LocalizationAssembler.TITLE_ADDONS, 205, 0x005826);
 	public static final TitleBox INFO_BOX = new TitleBox(LocalizationAssembler.TITLE_INFORMATION, 375, 30, 0xCCBE00);
 
-
 	public TileEntityCartAssembler() {
-		//create all the lists for everything
+		// create all the lists for everything
 		upgrades = new ArrayList<>();
-		spareModules = new ArrayList<>(); 		
+		spareModules = new ArrayList<>();
 		dropDownItems = new ArrayList<>();
 		slots = new ArrayList<>();
 		engineSlots = new ArrayList<>();
@@ -286,82 +246,67 @@ implements IInventory, ISidedInventory {
 		chestSlots = new ArrayList<>();
 		attachmentSlots = new ArrayList<>();
 		titleBoxes = new ArrayList<>();
-
 		int slotID = 0;
-
-		//create the hull slot
-		hullSlot = new SlotHull(this, slotID++, 18,25);
+		// create the hull slot
+		hullSlot = new SlotHull(this, slotID++, 18, 25);
 		slots.add(hullSlot);
-
-
-
-		//create the title boxes at certain positions with certain colors
+		// create the title boxes at certain positions with certain colors
 		titleBoxes.add(ENGINE_BOX);
 		titleBoxes.add(TOOL_BOX);
 		titleBoxes.add(ATTACH_BOX);
 		titleBoxes.add(STORAGE_BOX);
 		titleBoxes.add(ADDON_BOX);
 		titleBoxes.add(INFO_BOX);
-
-		///create the engine slots
+		/// create the engine slots
 		for (int i = 0; i < MAX_ENGINE_SLOTS; i++) {
-			SlotAssembler slot = new SlotAssembler(this, slotID++, ENGINE_BOX.getX() + 2 + 18*i, ENGINE_BOX.getY(), ModuleType.ENGINE, false,i);
+			SlotAssembler slot = new SlotAssembler(this, slotID++, ENGINE_BOX.getX() + 2 + 18 * i, ENGINE_BOX.getY(), ModuleType.ENGINE, false, i);
 			slot.invalidate();
 			slots.add(slot);
 			engineSlots.add(slot);
 		}
-
-
-		//create the tool slot
+		// create the tool slot
 		for (int i = 0; i < MAX_TOOL_SLOTS; i++) {
-			toolSlot = new SlotAssembler(this, slotID++, TOOL_BOX.getX() + 2, TOOL_BOX.getY(), ModuleType.TOOL, false,i);
+			toolSlot = new SlotAssembler(this, slotID++, TOOL_BOX.getX() + 2, TOOL_BOX.getY(), ModuleType.TOOL, false, i);
 			slots.add(toolSlot);
 			toolSlot.invalidate();
 		}
-
-		//create the attachment slots
+		// create the attachment slots
 		for (int i = 0; i < MAX_ATTACHMENT_SLOTS; i++) {
-			SlotAssembler slot = new SlotAssembler(this, slotID++, ATTACH_BOX.getX() + 2 + 18*i, ATTACH_BOX.getY(), ModuleType.ATTACHMENT, false,i);
+			SlotAssembler slot = new SlotAssembler(this, slotID++, ATTACH_BOX.getX() + 2 + 18 * i, ATTACH_BOX.getY(), ModuleType.ATTACHMENT, false, i);
 			slot.invalidate();
 			slots.add(slot);
 			attachmentSlots.add(slot);
-		}		
-
-		//create the storage slots
+		}
+		// create the storage slots
 		for (int i = 0; i < MAX_STORAGE_SLOTS; i++) {
-			SlotAssembler slot = new SlotAssembler(this, slotID++, STORAGE_BOX.getX() + 2 + 18*i, STORAGE_BOX.getY(), ModuleType.STORAGE, false,i);
+			SlotAssembler slot = new SlotAssembler(this, slotID++, STORAGE_BOX.getX() + 2 + 18 * i, STORAGE_BOX.getY(), ModuleType.STORAGE, false, i);
 			slot.invalidate();
 			slots.add(slot);
 			chestSlots.add(slot);
 		}
-
-		//create the addon slots
+		// create the addon slots
 		for (int i = 0; i < MAX_ADDON_SLOTS; i++) {
-			SlotAssembler slot = new SlotAssembler(this, slotID++, ADDON_BOX.getX() + 2 + 18*(i%6), ADDON_BOX.getY() + 18 * (i/6), ModuleType.ADDON, false, i);
+			SlotAssembler slot = new SlotAssembler(this, slotID++, ADDON_BOX.getX() + 2 + 18 * (i % 6), ADDON_BOX.getY() + 18 * (i / 6), ModuleType.ADDON, false, i);
 			slot.invalidate();
 			slots.add(slot);
 			addonSlots.add(slot);
-		}	
-
-		//create the fuel and output slots
-		fuelSlot = new SlotAssemblerFuel(this, slotID++, 395,220);
+		}
+		// create the fuel and output slots
+		fuelSlot = new SlotAssemblerFuel(this, slotID++, 395, 220);
 		slots.add(fuelSlot);
-		outputSlot = new SlotOutput(this, slotID, 450,220);
+		outputSlot = new SlotOutput(this, slotID, 450, 220);
 		slots.add(outputSlot);
-
-		//create the place to store all the items for the slots
+		// create the place to store all the items for the slots
 		inventoryStacks = new ItemStack[slots.size()];
-
-		//create the arrays used by ISidedInventory
-		topBotSlots = new int[] {getSizeInventory() - nonModularSlots()};
-		sideSlots = new int[] {getSizeInventory() - nonModularSlots() + 1};
-
+		// create the arrays used by ISidedInventory
+		topBotSlots = new int[] { getSizeInventory() - nonModularSlots() };
+		sideSlots = new int[] { getSizeInventory() - nonModularSlots() + 1 };
 		updateRenderMenu();
 	}
 
-
 	/**
-	 * Clears the list of upgrades, used before refilling it again to keep it up to date
+	 * Clears the list of upgrades, used before refilling it again to keep it up
+	 * to date
 	 */
 	public void clearUpgrades() {
 		upgrades.clear();
@@ -369,7 +314,9 @@ implements IInventory, ISidedInventory {
 
 	/**
 	 * Add an upgrade to the list of upgrades for this Cart Assembler
-	 * @param upgrade The upgrade to be added
+	 * 
+	 * @param upgrade
+	 *            The upgrade to be added
 	 */
 	public void addUpgrade(TileEntityUpgrade upgrade) {
 		upgrades.add(upgrade);
@@ -377,29 +324,33 @@ implements IInventory, ISidedInventory {
 
 	/**
 	 * Remove an upgrade from the list of upgrades for this Cart Assembler
-	 * @param upgrade The upgrade to be removed
+	 * 
+	 * @param upgrade
+	 *            The upgrade to be removed
 	 */
 	public void removeUpgrade(TileEntityUpgrade upgrade) {
 		upgrades.remove(upgrade);
 	}
 
 	/**
-	 * Get a list of all the upgrades. This is not the upgrades themselves, but rather the tile entities holding the upgrades
+	 * Get a list of all the upgrades. This is not the upgrades themselves, but
+	 * rather the tile entities holding the upgrades
+	 * 
 	 * @return A list of the tile entities
 	 */
 	public List<TileEntityUpgrade> getUpgradeTiles() {
 		return upgrades;
 	}
 
-
 	/**
-	 * Get a list of all the upgrade effects of this Cart Assembler. This is every effect on the upgrade on every tile entity upgrade.
+	 * Get a list of all the upgrade effects of this Cart Assembler. This is
+	 * every effect on the upgrade on every tile entity upgrade.
+	 * 
 	 * @return A list of all the effects.
 	 */
 	public ArrayList<BaseEffect> getEffects() {
 		ArrayList<BaseEffect> lst = new ArrayList<>();
-
-		//go through all the upgrades attached to the cart assembler
+		// go through all the upgrades attached to the cart assembler
 		for (TileEntityUpgrade tile : upgrades) {
 			List<BaseEffect> effects = tile.getEffects();
 			if (effects != null) {
@@ -407,20 +358,22 @@ implements IInventory, ISidedInventory {
 			}
 		}
 		return lst;
-	}	
-
-
+	}
 
 	/**
-	 * Get the menu items in the drop down menu used by the player to change the simulation of the cart being designed
+	 * Get the menu items in the drop down menu used by the player to change the
+	 * simulation of the cart being designed
+	 * 
 	 * @return The drop down menus
 	 */
 	public List<SimulationInfo> getDropDown() {
 		return dropDownItems;
-	}	
+	}
 
 	/**
-	 * Get the title boxes used for rendering titles for the different module groups
+	 * Get the title boxes used for rendering titles for the different module
+	 * groups
+	 * 
 	 * @return The list of title boxes
 	 */
 	public List<TitleBox> getTitleBoxes() {
@@ -428,7 +381,9 @@ implements IInventory, ISidedInventory {
 	}
 
 	/**
-	 * Get the ItemStack size that is representing that a module is marked for removal
+	 * Get the ItemStack size that is representing that a module is marked for
+	 * removal
+	 * 
 	 * @return The size value
 	 */
 	public static int getRemovedSize() {
@@ -436,7 +391,9 @@ implements IInventory, ISidedInventory {
 	}
 
 	/**
-	 * Get the ItemStack size that is representing that a module is marked to be kept
+	 * Get the ItemStack size that is representing that a module is marked to be
+	 * kept
+	 * 
 	 * @return The size value
 	 */
 	public static int getKeepSize() {
@@ -445,6 +402,7 @@ implements IInventory, ISidedInventory {
 
 	/**
 	 * Get all the slots used by this Cart Assembler
+	 * 
 	 * @return All the slots this tile entity is using
 	 */
 	public List<SlotAssembler> getSlots() {
@@ -453,6 +411,7 @@ implements IInventory, ISidedInventory {
 
 	/**
 	 * Get all the engine slots used by this Cart Assembler
+	 * 
 	 * @return All the engine slots this tile entity is using
 	 */
 	public List<SlotAssembler> getEngines() {
@@ -461,30 +420,34 @@ implements IInventory, ISidedInventory {
 
 	/**
 	 * Get all the storage slots used by this Cart Assembler
+	 * 
 	 * @return All the storage slots this tile entity is using
 	 */
 	public List<SlotAssembler> getChests() {
 		return chestSlots;
-	}	
+	}
 
 	/**
 	 * Get all the addon slots used by this Cart Assembler
+	 * 
 	 * @return All the addon slots this tile entity is using
-	 */	
+	 */
 	public List<SlotAssembler> getAddons() {
 		return addonSlots;
 	}
 
 	/**
 	 * Get all the attachment slots used by this Cart Assembler
+	 * 
 	 * @return All the attachment slots this tile entity is using
-	 */	
+	 */
 	public List<SlotAssembler> getAttachments() {
 		return attachmentSlots;
-	}			
+	}
 
 	/**
 	 * Get the tool slot that is used by this Cart Assembler
+	 * 
 	 * @return The tool slot of this tile entity
 	 */
 	public SlotAssembler getToolSlot() {
@@ -492,7 +455,9 @@ implements IInventory, ISidedInventory {
 	}
 
 	/**
-	 * Get the full time it takes to complete assembling the cart. Doesn't take into account the time it has been worked on or how fast it is working.
+	 * Get the full time it takes to complete assembling the cart. Doesn't take
+	 * into account the time it has been worked on or how fast it is working.
+	 * 
 	 * @return The total time in ticks
 	 */
 	public int getMaxAssemblingTime() {
@@ -500,16 +465,20 @@ implements IInventory, ISidedInventory {
 	}
 
 	/**
-	 * Get the time the assembler has been working on the cart. This time is increased faster if the assembler is working faster.
+	 * Get the time the assembler has been working on the cart. This time is
+	 * increased faster if the assembler is working faster.
+	 * 
 	 * @return The current time in ticks
 	 */
 	public int getAssemblingTime() {
-		return (int)currentAssemblingTime;
+		return (int) currentAssemblingTime;
 	}
 
 	/**
 	 * Set the amount of ticks the assembler has been working on the cart.
-	 * @param val The amount of ticks
+	 * 
+	 * @param val
+	 *            The amount of ticks
 	 */
 	private void setAssemblingTime(int val) {
 		currentAssemblingTime = val;
@@ -517,6 +486,7 @@ implements IInventory, ISidedInventory {
 
 	/**
 	 * Get if the Cart Assembler is busy working or not
+	 * 
 	 * @return If it's busy
 	 */
 	public boolean getIsAssembling() {
@@ -527,37 +497,35 @@ implements IInventory, ISidedInventory {
 	 * Starts the assembling process of the cart in the designer if possible
 	 */
 	public void doAssemble() {
-		//a cart is only allowed to be created if there's no errors
-		if (!hasErrors()) {			
-			//calculate the time it will take to create the cart and save that
+		// a cart is only allowed to be created if there's no errors
+		if (!hasErrors()) {
+			// calculate the time it will take to create the cart and save that
 			maxAssemblingTime = generateAssemblingTime();
-
-			//create the cart, it will save the created cart, any spare modules as well as clearing the design area
-			createCartFromModules();				
-
-			//mark that the assembler is busy
+			// create the cart, it will save the created cart, any spare modules
+			// as well as clearing the design area
+			createCartFromModules();
+			// mark that the assembler is busy
 			isAssembling = true;
-
-			//remove the cart being edited, if any
+			// remove the cart being edited, if any
 			for (BaseEffect effect : getEffects()) {
 				if (effect instanceof Disassemble) {
-					Disassemble disassemble = (Disassemble)effect;
+					Disassemble disassemble = (Disassemble) effect;
 					disassemble.onVehicleCreation(outputItem);
 				}
 			}
-
-		}	
+		}
 	}
 
 	@Override
 	public void receivePacket(DataReader dr, EntityPlayer player) {
 		int id = dr.readByte();
 		if (id == 0) {
-			//if a player clicked the assemble button, try to assemble the cart
+			// if a player clicked the assemble button, try to assemble the cart
 			doAssemble();
-		}else if(id == 1) {
-
-			//if a slot was clicked with a module of an already existing cart, mark it for removal or to keep it depending on what it already is. This is also used to remove modules in free mode.
+		} else if (id == 1) {
+			// if a slot was clicked with a module of an already existing cart,
+			// mark it for removal or to keep it depending on what it already
+			// is. This is also used to remove modules in free mode.
 			int slotId = dr.readByte();
 			if (slotId >= 0 && slotId < getSlots().size()) {
 				SlotAssembler slot = getSlots().get(slotId);
@@ -572,38 +540,34 @@ implements IInventory, ISidedInventory {
 								}
 							}
 						}
-
 						if (canRemove) {
 							slot.putStack(null);
 						}
-					}else if (slotId != 0) {
+					} else if (slotId != 0) {
 						if (slot.getStack().stackSize == getKeepSize()) {
 							slot.getStack().stackSize = getRemovedSize();
-						}else{
+						} else {
 							slot.getStack().stackSize = getKeepSize();
 						}
 					}
 				}
 			}
-		}else if(id == 2) {
+		} else if (id == 2) {
 			int val = dr.readShort();
 			ModuleData moduleData = ModuleRegistry.getModuleFromId(val);
 			if (moduleData != null) {
 				if (moduleData instanceof ModuleDataHull && getHullModule() != null) {
 					ItemStack item = moduleData.getItemStack();
 					hullSlot.putStack(item);
-
 					invalidateAll();
 					validateAll();
-
 					for (SlotAssembler slotAssembler : getSlots()) {
 						if (!slotAssembler.isValid()) {
 							slotAssembler.putStack(null);
 						}
 					}
-
 					lastHull = item;
-				}else{
+				} else {
 					ItemStack item = moduleData.getItemStack();
 					for (SlotAssembler slot : slots) {
 						if (!slot.getHasStack() && slot.isItemValid(item)) {
@@ -616,26 +580,21 @@ implements IInventory, ISidedInventory {
 		}
 	}
 
-
-
 	/**
 	 * Called when a upgrade is removed or added to this Cart Assembler
 	 */
 	public void onUpgradeUpdate() {
-
-		//will also get modules that is just kept when modifying a cart, this is a huge problem (and the reason why this code isn't used)
+		// will also get modules that is just kept when modifying a cart, this
+		// is a huge problem (and the reason why this code isn't used)
 		/*
-		ArrayList<ModuleData> modules = ModuleData.getModulesFromItems(ModuleData.getModularItems(outputItem)); 
-		ArrayList<ModuleData> removed = new ArrayList<ModuleData>(); 
-		for (ItemStack item : spareModules) {
-			ModuleData module = StevesCarts.instance.modules.getModuleData(item);
-			if (module != null) {
-				removed.add(module);
-			}	
-		}		
-		maxAssemblingTime = generateAssemblingTime(modules, removed);
+		 * ArrayList<ModuleData> modules =
+		 * ModuleData.getModulesFromItems(ModuleData.getModularItems(outputItem)
+		 * ); ArrayList<ModuleData> removed = new ArrayList<ModuleData>(); for
+		 * (ItemStack item : spareModules) { ModuleData module =
+		 * StevesCarts.instance.modules.getModuleData(item); if (module != null)
+		 * { removed.add(module); } } maxAssemblingTime =
+		 * generateAssemblingTime(modules, removed);
 		 */
-
 		freeMode = false;
 		for (BaseEffect baseEffect : getEffects()) {
 			if (baseEffect instanceof FreeModules) {
@@ -646,46 +605,49 @@ implements IInventory, ISidedInventory {
 	}
 
 	/**
-	 * Generate the time it takes to assemble the cart in the designer, note that this is not the full time of the cart
-	 * currently being assembled. That can however be retrieved with getMaxAssemblingTime()
+	 * Generate the time it takes to assemble the cart in the designer, note
+	 * that this is not the full time of the cart currently being assembled.
+	 * That can however be retrieved with getMaxAssemblingTime()
+	 * 
 	 * @return The time it takes to make the cart
 	 */
 	public int generateAssemblingTime() {
-		return generateAssemblingTime(
-				getModules(true, new int[] {getKeepSize(), getRemovedSize()}),
-				getModules(true, new int[] {getKeepSize(), 1})
-				);
+		return generateAssemblingTime(getModules(true, new int[] { getKeepSize(), getRemovedSize() }), getModules(true, new int[] { getKeepSize(), 1 }));
 	}
 
 	/**
 	 * Generate the time it takes to assemble a bunch of modules
-	 * @param modules A list of modules to assemble
-	 * @param removed A list of module to disassemble
+	 * 
+	 * @param modules
+	 *            A list of modules to assemble
+	 * @param removed
+	 *            A list of module to disassemble
 	 * @return The time it takes
 	 */
 	private int generateAssemblingTime(ArrayList<ModuleData> modules, ArrayList<ModuleData> removed) {
 		int timeRequired = FLAT_VEHICLE_BASE_TIME;
-
 		for (ModuleData module : modules) {
 			timeRequired += getAssemblingTime(module, false);
 		}
 		for (ModuleData module : removed) {
 			timeRequired += getAssemblingTime(module, true);
-		}		
-
+		}
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof TimeFlatCart) {
-				timeRequired += ((TimeFlatCart)effect).getTicks();
+				timeRequired += ((TimeFlatCart) effect).getTicks();
 			}
-		}		
-
+		}
 		return Math.max(0, timeRequired);
 	}
 
 	/**
 	 * Get assembling or disassembling time for a specific module
-	 * @param module The module to assemble
-	 * @param isRemoved If the module is being added(assembled) or removed(disassembled)
+	 * 
+	 * @param module
+	 *            The module to assemble
+	 * @param isRemoved
+	 *            If the module is being added(assembled) or
+	 *            removed(disassembled)
 	 * @return The time it takes
 	 */
 	private int getAssemblingTime(ModuleData module, boolean isRemoved) {
@@ -694,18 +656,21 @@ implements IInventory, ISidedInventory {
 			time /= 4;
 		}
 		time += getTimeDecreased(isRemoved);
-
 		return Math.max(0, time);
 	}
 
 	public static int FLAT_VEHICLE_BASE_TIME = 100;
+
 	public static int getAssemblingTime(ModuleData data) {
-		return (int)(4 * Math.pow(data.getCost(), 2));
+		return (int) (4 * Math.pow(data.getCost(), 2));
 	}
 
 	/**
-	 * Get the cart that is the result of the modules in the design view. All the modules will however be left where they are.
-	 * @param isSimulated If this is just a simulation
+	 * Get the cart that is the result of the modules in the design view. All
+	 * the modules will however be left where they are.
+	 * 
+	 * @param isSimulated
+	 *            If this is just a simulation
 	 * @return An assembled cart
 	 */
 	public ItemStack getCartFromModules(boolean isSimulated) {
@@ -715,7 +680,7 @@ implements IInventory, ISidedInventory {
 			if (item != null) {
 				if (item.stackSize != getRemovedSize()) {
 					items.add(item);
-				}else if (!isSimulated){
+				} else if (!isSimulated) {
 					ItemStack spare = item.copy();
 					spare.stackSize = 1;
 					spareModules.add(spare);
@@ -726,25 +691,23 @@ implements IInventory, ISidedInventory {
 	}
 
 	/**
-	 * Create a cart and store it to be put in the output slot when the Cart Assembler is done. Will also clear all the modules from the design view.
+	 * Create a cart and store it to be put in the output slot when the Cart
+	 * Assembler is done. Will also clear all the modules from the design view.
 	 */
 	private void createCartFromModules() {
 		spareModules.clear();
-
-		//create the cart
+		// create the cart
 		outputItem = getCartFromModules(false);
-
-
 		if (outputItem != null) {
-			//if a cart was properly made, remove all the modules
+			// if a cart was properly made, remove all the modules
 			for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
 				setInventorySlotContents(i, null);
 			}
-		}else{
-			//if something went wrong, clear the spare modules, no free modules here.
+		} else {
+			// if something went wrong, clear the spare modules, no free modules
+			// here.
 			spareModules.clear();
 		}
-
 	}
 
 	public ArrayList<ModuleData> getNonHullModules() {
@@ -752,16 +715,14 @@ implements IInventory, ISidedInventory {
 	}
 
 	public ArrayList<ModuleData> getModules(boolean includeHull) {
-		return getModules(includeHull, new int[] {getRemovedSize()});
+		return getModules(includeHull, new int[] { getRemovedSize() });
 	}
 
 	public ArrayList<ModuleData> getModules(boolean includeHull, int[] invalid) {
 		ArrayList<ModuleData> modules = new ArrayList<>();
 		for (int i = includeHull ? 0 : 1; i < getSizeInventory() - nonModularSlots(); i++) {
 			ItemStack item = getStackInSlot(i);
-
 			if (item != null) {
-
 				boolean validSize = true;
 				for (int invalidItem : invalid) {
 					if (invalidItem == item.stackSize || (invalidItem > 0 && item.stackSize > 0)) {
@@ -769,7 +730,6 @@ implements IInventory, ISidedInventory {
 						break;
 					}
 				}
-
 				if (validSize) {
 					ModuleData module = ModItems.modules.getModuleData(item);
 					if (module != null) {
@@ -779,42 +739,36 @@ implements IInventory, ISidedInventory {
 			}
 		}
 		return modules;
-	}	
+	}
 
 	public ModuleDataHull getHullModule() {
 		if (getStackInSlot(0) != null) {
 			ModuleData hullData = ModItems.modules.getModuleData(getStackInSlot(0));
-			if(hullData instanceof ModuleDataHull) {
-				return (ModuleDataHull)hullData;
+			if (hullData instanceof ModuleDataHull) {
+				return (ModuleDataHull) hullData;
 			}
 		}
 		return null;
 	}
 
-
 	private boolean hasErrors() {
 		return getErrors().size() > 0;
 	}
 
-	public ArrayList<String> getErrors() {	
+	public ArrayList<String> getErrors() {
 		ArrayList<String> errors = new ArrayList<>();
-
 		if (hullSlot.getStack() == null) {
 			errors.add(LocalizationAssembler.NO_HULL.translate());
-		}else{
+		} else {
 			ModuleData hullData = ModItems.modules.getModuleData(getStackInSlot(0));
 			if (hullData == null || !(hullData instanceof ModuleDataHull)) {
 				errors.add(LocalizationAssembler.INVALID_HULL_SHORT.translate());
-			}else{
+			} else {
 				if (isAssembling) {
 					errors.add(LocalizationAssembler.BUSY_ASSEMBLER.translate());
-				}else if (outputSlot != null && outputSlot.getStack() != null) {
+				} else if (outputSlot != null && outputSlot.getStack() != null) {
 					errors.add(LocalizationAssembler.OCCUPIED_DEPARTURE_BAY.translate());
 				}
-
-
-
-
 				ArrayList<ModuleData> modules = new ArrayList<>();
 				for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
 					if (getStackInSlot(i) != null) {
@@ -822,17 +776,14 @@ implements IInventory, ISidedInventory {
 						if (data != null && getStackInSlot(i).stackSize != getRemovedSize()) {
 							modules.add(data);
 						}
-					}				
+					}
 				}
-
-				String error = ModuleDataItemHandler.checkForErrors((ModuleDataHull)hullData, modules);
+				String error = ModuleDataItemHandler.checkForErrors((ModuleDataHull) hullData, modules);
 				if (error != null) {
 					errors.add(error);
 				}
 			}
-		}		
-
-
+		}
 		return errors;
 	}
 
@@ -844,12 +795,10 @@ implements IInventory, ISidedInventory {
 				if (data != null) {
 					modules.add(data);
 				}
-			}				
+			}
 		}
 		return ModuleDataItemHandler.getTotalCost(modules);
-	}	
-
-
+	}
 
 	@Override
 	public void initGuiData(Container con, IContainerListener crafting) {
@@ -857,50 +806,51 @@ implements IInventory, ISidedInventory {
 		updateGuiData(con, crafting, 1, getShortFromInt(false, maxAssemblingTime));
 		updateGuiData(con, crafting, 2, getShortFromInt(true, getAssemblingTime()));
 		updateGuiData(con, crafting, 3, getShortFromInt(false, getAssemblingTime()));
-		updateGuiData(con, crafting, 4, (short)(isAssembling ? 1 : 0));
+		updateGuiData(con, crafting, 4, (short) (isAssembling ? 1 : 0));
 		updateGuiData(con, crafting, 5, getShortFromInt(true, getFuelLevel()));
 		updateGuiData(con, crafting, 6, getShortFromInt(false, getFuelLevel()));
 	}
+
 	@Override
 	public void checkGuiData(Container container, IContainerListener crafting) {
-		ContainerCartAssembler con = (ContainerCartAssembler)container;
+		ContainerCartAssembler con = (ContainerCartAssembler) container;
 		if (con.lastMaxAssemblingTime != maxAssemblingTime) {
-			updateGuiData(con, crafting, 0, getShortFromInt(true,maxAssemblingTime));	
-			updateGuiData(con, crafting, 1, getShortFromInt(false,maxAssemblingTime));	
-			con.lastMaxAssemblingTime = maxAssemblingTime;	
-		}		
+			updateGuiData(con, crafting, 0, getShortFromInt(true, maxAssemblingTime));
+			updateGuiData(con, crafting, 1, getShortFromInt(false, maxAssemblingTime));
+			con.lastMaxAssemblingTime = maxAssemblingTime;
+		}
 		if (con.lastIsAssembling != isAssembling) {
-			updateGuiData(con, crafting, 4, (short)(isAssembling ? 1 : 0));	
-			con.lastIsAssembling = isAssembling;	
-		}	
+			updateGuiData(con, crafting, 4, (short) (isAssembling ? 1 : 0));
+			con.lastIsAssembling = isAssembling;
+		}
 		if (con.lastFuelLevel != getFuelLevel()) {
 			updateGuiData(con, crafting, 5, getShortFromInt(true, getFuelLevel()));
 			updateGuiData(con, crafting, 6, getShortFromInt(false, getFuelLevel()));
-			con.lastFuelLevel = getFuelLevel();	
-		}		
+			con.lastFuelLevel = getFuelLevel();
+		}
 	}
+
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {
-			maxAssemblingTime =getIntFromShort(true, maxAssemblingTime, data);
-		}else if (id == 1) {
-			maxAssemblingTime =getIntFromShort(false, maxAssemblingTime, data);
-		}else if (id == 2) {
+			maxAssemblingTime = getIntFromShort(true, maxAssemblingTime, data);
+		} else if (id == 1) {
+			maxAssemblingTime = getIntFromShort(false, maxAssemblingTime, data);
+		} else if (id == 2) {
 			setAssemblingTime(getIntFromShort(true, getAssemblingTime(), data));
-		}else if (id == 3) {
-			setAssemblingTime(getIntFromShort(false, getAssemblingTime(), data));		
-		}else if(id == 4) {	
+		} else if (id == 3) {
+			setAssemblingTime(getIntFromShort(false, getAssemblingTime(), data));
+		} else if (id == 4) {
 			isAssembling = data != 0;
 			if (!isAssembling) {
 				setAssemblingTime(0);
 			}
-		}else if(id == 5) {
+		} else if (id == 5) {
 			setFuelLevel(getIntFromShort(true, getFuelLevel(), data));
-		}else if(id == 6) {
-			setFuelLevel(getIntFromShort(false, getFuelLevel(), data));			
+		} else if (id == 6) {
+			setFuelLevel(getIntFromShort(false, getFuelLevel(), data));
 		}
 	}
-
 
 	private void invalidateAll() {
 		for (int i = 0; i < getEngines().size(); i++) {
@@ -911,71 +861,64 @@ implements IInventory, ISidedInventory {
 		}
 		for (int i = 0; i < getChests().size(); i++) {
 			getChests().get(i).invalidate();
-		}	
+		}
 		for (int i = 0; i < getAttachments().size(); i++) {
 			getAttachments().get(i).invalidate();
-		}			
-		getToolSlot().invalidate();		
+		}
+		getToolSlot().invalidate();
 	}
 
 	private void validateAll() {
 		if (hullSlot == null) {
 			return;
 		}
-
 		ArrayList<SlotAssembler> slots = getValidSlotFromHullItem(hullSlot.getStack());
 		if (slots != null) {
 			for (SlotAssembler slot : slots) {
 				slot.validate();
 			}
 		}
-	}		
+	}
 
 	public ArrayList<SlotAssembler> getValidSlotFromHullItem(ItemStack hullItem) {
-
 		if (hullItem != null) {
 			ModuleData data = ModItems.modules.getModuleData(hullItem);
 			if (data != null && data instanceof ModuleDataHull) {
-				ModuleDataHull hull = (ModuleDataHull)data;
+				ModuleDataHull hull = (ModuleDataHull) data;
 				return getValidSlotFromHull(hull);
 			}
 		}
-
 		return null;
-	}	
+	}
 
 	private ArrayList<SlotAssembler> getValidSlotFromHull(ModuleDataHull hull) {
 		ArrayList<SlotAssembler> slots = new ArrayList<>();
-
 		for (int i = 0; i < hull.getEngineMaxCount(); i++) {
 			slots.add(getEngines().get(i));
 		}
 		for (int i = 0; i < hull.getAddonMaxCount(); i++) {
 			slots.add(getAddons().get(i));
-		}	
+		}
 		for (int i = 0; i < hull.getStorageMaxCount(); i++) {
 			slots.add(getChests().get(i));
-		}	
+		}
 		for (int i = 0; i < getAttachments().size(); i++) {
 			slots.add(getAttachments().get(i));
-		}				
+		}
 		slots.add(getToolSlot());
-
 		return slots;
 	}
-
 
 	public int getMaxFuelLevel() {
 		int capacity = 4000;
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof FuelCapacity) {
-				capacity += ((FuelCapacity)effect).getFuelCapacity();
+				capacity += ((FuelCapacity) effect).getFuelCapacity();
 			}
 		}
-
 		if (capacity > 200000) {
 			capacity = 200000;
-		}else if(capacity < 1) {
+		} else if (capacity < 1) {
 			capacity = 1;
 		}
 		return capacity;
@@ -986,58 +929,52 @@ implements IInventory, ISidedInventory {
 			if (effect instanceof CombustionFuel) {
 				return true;
 			}
-		}	
+		}
 		return false;
 	}
 
 	public int getFuelLevel() {
-		return (int)fuelLevel;
-	}	
+		return (int) fuelLevel;
+	}
 
 	public void setFuelLevel(int val) {
 		fuelLevel = val;
-	}	
+	}
 
 	private int getTimeDecreased(boolean isRemoved) {
 		int timeDecrement = 0;
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof TimeFlat && !(effect instanceof TimeFlatRemoved)) {
-				timeDecrement += ((TimeFlat)effect).getTicks();
+				timeDecrement += ((TimeFlat) effect).getTicks();
 			}
 		}
-
 		if (isRemoved) {
 			for (BaseEffect effect : getEffects()) {
 				if (effect instanceof TimeFlatRemoved) {
-					timeDecrement += ((TimeFlat)effect).getTicks();
+					timeDecrement += ((TimeFlat) effect).getTicks();
 				}
-			}		
+			}
 		}
-
 		return timeDecrement;
 	}
 
 	private float getFuelCost() {
 		float cost = 1.0F;
-
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof FuelCost) {
-				cost *= ((FuelCost)effect).getCost();
+				cost *= ((FuelCost) effect).getCost();
 			}
 		}
-
 		return cost;
 	}
 
 	public float getEfficiency() {
 		float efficiency = 1.0F;
-
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof WorkEfficiency) {
-				efficiency += ((WorkEfficiency)effect).getEfficiency();
+				efficiency += ((WorkEfficiency) effect).getEfficiency();
 			}
 		}
-
 		return efficiency;
 	}
 
@@ -1048,34 +985,26 @@ implements IInventory, ISidedInventory {
 				int x = 2 * tile.xCoord - xCoord;
 				int y = 2 * tile.yCoord - yCoord;
 				int z = 2 * tile.zCoord - zCoord;
-
 				if (tile.yCoord > yCoord) {
 					y += 1;
 				}
-
 				if (BlockRailBase.func_150049_b_(worldObj, x, y, z)) {
 					try {
 						NBTTagCompound info = outputItem.getTagCompound();
 						if (info != null) {
 							EntityModularCart cart = new EntityModularCart(worldObj, x + 0.5F, y + 0.5F, z + 0.5F, info, outputItem.hasDisplayName() ? outputItem.getDisplayName() : null);
-
-
 							worldObj.spawnEntityInWorld(cart);
 							cart.temppushX = tile.xCoord - xCoord;
 							cart.temppushZ = tile.zCoord - zCoord;
 							managerInteract(cart, true);
-
 							return;
 						}
-					}catch(Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
 				}
 			}
 		}
-
-
 		outputSlot.putStack(outputItem);
 	}
 
@@ -1086,61 +1015,48 @@ implements IInventory, ISidedInventory {
 				int x2 = 2 * tile.xCoord - xCoord;
 				int y2 = 2 * tile.yCoord - yCoord;
 				int z2 = 2 * tile.zCoord - zCoord;
-
 				if (tile.yCoord > yCoord) {
 					y2 += 1;
 				}
-
 				TileEntity managerTile = worldObj.getTileEntity(x2, y2, z2);
 				if (managerTile != null && managerTile instanceof TileEntityManager) {
 					ManagerTransfer transfer = new ManagerTransfer();
-
 					transfer.setCart(cart);
 					if (tile.yCoord != yCoord) {
 						transfer.setSide(-1);
-					}else if(tile.xCoord < xCoord) {
-						//red
+					} else if (tile.xCoord < xCoord) {
+						// red
 						transfer.setSide(0);
-					}else if(tile.xCoord > xCoord) {
-						//green
+					} else if (tile.xCoord > xCoord) {
+						// green
 						transfer.setSide(3);
-					}else if(tile.zCoord < zCoord) {
-						//blue
+					} else if (tile.zCoord < zCoord) {
+						// blue
 						transfer.setSide(1);
-					}else if(tile.zCoord > zCoord) {
-						//yellow
+					} else if (tile.zCoord > zCoord) {
+						// yellow
 						transfer.setSide(2);
 					}
-
 					if (toCart) {
 						transfer.setFromCartEnabled(false);
-					}else{
+					} else {
 						transfer.setToCartEnabled(false);
 					}
-
-
-					TileEntityManager manager = ((TileEntityManager)managerTile);
-
-					//noinspection StatementWithEmptyBody
+					TileEntityManager manager = ((TileEntityManager) managerTile);
+					// noinspection StatementWithEmptyBody
 					while (manager.exchangeItems(transfer)) {
 						;
 					}
 				}
 			}
-
-		}		
+		}
 	}
 
 	private void deploySpares() {
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof Disassemble) {
-				for (ItemStack item : spareModules)  {
-					TransferHandler.TransferItem(
-							item,
-							effect.getUpgrade(),
-							new ContainerUpgrade(null, effect.getUpgrade()),
-							1
-							);
+				for (ItemStack item : spareModules) {
+					TransferHandler.TransferItem(item, effect.getUpgrade(), new ContainerUpgrade(null, effect.getUpgrade()), 1);
 					if (item.stackSize > 0) {
 						puke(item);
 					}
@@ -1154,110 +1070,93 @@ implements IInventory, ISidedInventory {
 	}
 
 	public void puke(ItemStack item) {
-		EntityItem entityitem = new EntityItem(worldObj, pos.getX(), pos.getY() + 0.25, pos.getZ() , item);
+		EntityItem entityitem = new EntityItem(worldObj, pos.getX(), pos.getY() + 0.25, pos.getZ(), item);
 		entityitem.motionX = (0.5F - worldObj.rand.nextFloat()) / 10;
 		entityitem.motionY = 0.15F;
 		entityitem.motionZ = (0.5F - worldObj.rand.nextFloat()) / 10;
-		worldObj.spawnEntityInWorld(entityitem);		
+		worldObj.spawnEntityInWorld(entityitem);
 	}
 
 	private boolean loaded;
+
 	public void updateEntity() {
 		if (!loaded) {
 			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(worldObj, pos);
 			loaded = true;
 		}
-
 		if (!isAssembling && outputSlot != null) {
 			ItemStack itemInSlot = outputSlot.getStack();
 			if (itemInSlot != null && itemInSlot.getItem() == ModItems.vehicles) {
-
 				NBTTagCompound info = itemInSlot.getTagCompound();
 				if (info != null && info.hasKey(VehicleBase.NBT_INTERRUPT_MAX_TIME)) {
 					ItemStack newItem = ModuleDataItemHandler.createModularVehicle(ModuleDataItemHandler.getModularItems(itemInSlot));
 					spareModules = ModuleDataItemHandler.getSpareItems(itemInSlot);
-
 					maxAssemblingTime = info.getInteger(VehicleBase.NBT_INTERRUPT_MAX_TIME);
 					setAssemblingTime(info.getInteger(VehicleBase.NBT_INTERRUPT_TIME));
-
 					if (itemInSlot.hasDisplayName()) {
 						newItem.setStackDisplayName(itemInSlot.getDisplayName());
 					}
-
-					isAssembling = true;					
+					isAssembling = true;
 					outputItem = newItem;
 					outputSlot.putStack(null);
-
-				}		
-			}	
+				}
+			}
 		}
-
 		if (getFuelLevel() > getMaxFuelLevel()) {
 			setFuelLevel(getMaxFuelLevel());
-		}	
-
+		}
 		if (isAssembling && outputSlot != null) {
 			if (getFuelLevel() >= getFuelCost()) {
 				currentAssemblingTime += getEfficiency();
-				fuelLevel-= getFuelCost();
+				fuelLevel -= getFuelCost();
 				if (getFuelLevel() <= 0) {
 					setFuelLevel(0);
 				}
 				if (getAssemblingTime() >= maxAssemblingTime) {
 					isAssembling = false;
-					setAssemblingTime(0);	
+					setAssemblingTime(0);
 					if (!worldObj.isRemote) {
-						deployCart();						
+						deployCart();
 						outputItem = null;
 						deploySpares();
 						spareModules.clear();
 					}
 				}
 			}
-
 		}
-
 		if (!worldObj.isRemote && fuelSlot != null && fuelSlot.getStack() != null) {
 			int fuel = fuelSlot.getFuelLevel(fuelSlot.getStack());
-
 			if (fuel > 0 && getFuelLevel() + fuel <= getMaxFuelLevel()) {
-				setFuelLevel(getFuelLevel() + fuel);			
+				setFuelLevel(getFuelLevel() + fuel);
 				if (fuelSlot.getStack().getItem().hasContainerItem(fuelSlot.getStack())) {
 					fuelSlot.putStack(new ItemStack(fuelSlot.getStack().getItem().getContainerItem()));
-				} else{
+				} else {
 					fuelSlot.getStack().stackSize--;
-				}						
+				}
 				if (fuelSlot.getStack().stackSize <= 0) {
 					fuelSlot.putStack(null);
 				}
 			}
 		}
-
 		updateSlots();
-
 		handlePlaceholder();
-
 	}
 
 	public void updateSlots() {
 		if (hullSlot != null) {
 			if (lastHull != null && hullSlot.getStack() == null) {
 				invalidateAll();
-			}else if (lastHull == null && hullSlot.getStack() != null) {
+			} else if (lastHull == null && hullSlot.getStack() != null) {
 				validateAll();
-			}else if (lastHull != hullSlot.getStack()) {
+			} else if (lastHull != hullSlot.getStack()) {
 				invalidateAll();
 				validateAll();
 			}
-
-
 			lastHull = hullSlot.getStack();
 		}
-
 		for (SlotAssembler slot : slots) {
 			slot.update();
 		}
-
 	}
 
 	public void resetPlaceholder() {
@@ -1282,7 +1181,7 @@ implements IInventory, ISidedInventory {
 
 	public void setRoll(float val) {
 		roll = val;
-	}	
+	}
 
 	public void setSpinning(boolean val) {
 		shouldSpin = val;
@@ -1297,43 +1196,39 @@ implements IInventory, ISidedInventory {
 			if (placeholder == null) {
 				return;
 			}
-
 			if (!StevesVehicles.freezeCartSimulation) {
 				int minRoll = -5;
-				int maxRoll = 25;			
+				int maxRoll = 25;
 				if (shouldSpin) {
-					yaw += 2F;	
+					yaw += 2F;
 					roll = roll % 360;
 					if (!rollDown) {
 						if (roll < minRoll - 3) {
 							roll += 5;
-						}else{
+						} else {
 							roll += 0.2F;
 						}
-
 						if (roll > maxRoll) {
 							rollDown = true;
 						}
-					}else{
+					} else {
 						if (roll > maxRoll + 3) {
 							roll -= 5;
-						}else{
+						} else {
 							roll -= 0.2F;
 						}
-
 						if (roll < minRoll) {
 							rollDown = false;
 						}
 					}
 				}
 			}
-
 			placeholder.onUpdate();
 			if (placeholder == null) {
 				return;
 			}
 			placeholder.updateFuel();
-		}	
+		}
 	}
 
 	public boolean createPlaceholder() {
@@ -1343,18 +1238,16 @@ implements IInventory, ISidedInventory {
 				try {
 					Constructor<? extends IVehicleEntity> constructor = hull.getValidVehicles().get(0).getClazz().getConstructor(World.class);
 					Object obj = constructor.newInstance(worldObj);
-					placeholder = ((IVehicleEntity)obj).getVehicle();
-				}catch (Exception ex) {
+					placeholder = ((IVehicleEntity) obj).getVehicle();
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-
 				if (placeholder != null) {
 					placeholder.setPlaceholder(this);
 					updatePlaceholder();
 				}
 			}
 		}
-
 		return placeholder != null;
 	}
 
@@ -1363,23 +1256,20 @@ implements IInventory, ISidedInventory {
 			ModuleDataHull hull = getHullModule();
 			if (hull == null || hull.getValidVehicles() == null || hull.getValidVehicles().isEmpty()) {
 				resetPlaceholder();
-			}else{
+			} else {
 				Class<? extends IVehicleEntity> placeHolderClass = placeholder.getVehicleEntity().getClass();
 				Class<? extends IVehicleEntity> hullClass = hull.getValidVehicles().get(0).getClazz();
-
 				if (!placeHolderClass.equals(hullClass)) {
 					resetPlaceholder();
 				}
 			}
 		}
-
 		if (placeholder != null) {
 			placeholder.loadPlaceholderModules(getModularInfoIds());
 			updateRenderMenu();
 		}
 		isErrorListOutdated = true;
 	}
-
 
 	private void updateRenderMenu() {
 		dropDownItems = new ArrayList<>();
@@ -1403,7 +1293,6 @@ implements IInventory, ISidedInventory {
 				}
 			}
 		}
-
 		int[] ids = new int[dataList.size()];
 		for (int i = 0; i < dataList.size(); i++) {
 			ids[i] = dataList.get(i);
@@ -1416,24 +1305,21 @@ implements IInventory, ISidedInventory {
 			if (getStackInSlot(i) != null && getStackInSlot(i).stackSize <= 0) {
 				return true;
 			}
-		}	
+		}
 		return false;
 	}
 
 	ItemStack[] inventoryStacks;
 
-
-
 	@Override
-	public int getSizeInventory()
-	{
+	public int getSizeInventory() {
 		return inventoryStacks.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventoryStacks[i];
-	}	
+	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
@@ -1444,36 +1330,30 @@ implements IInventory, ISidedInventory {
 				markDirty();
 				return itemstack;
 			}
-
 			ItemStack result = inventoryStacks[i].splitStack(j);
-
 			if (inventoryStacks[i].stackSize == 0) {
 				inventoryStacks[i] = null;
 			}
-
 			markDirty();
 			return result;
-		}else {
+		} else {
 			return null;
 		}
-
-	}	
+	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventoryStacks[i] = itemstack;
-
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
-
 		markDirty();
 	}
 
 	@Override
 	public String getName() {
 		return "container.vehicle_assembler";
-	}	
+	}
 
 	@Override
 	public boolean hasCustomName() {
@@ -1483,11 +1363,12 @@ implements IInventory, ISidedInventory {
 	@Override
 	public int getInventoryStackLimit() {
 		return 64;
-	}	
+	}
 
 	@Override
 	public void closeInventory(EntityPlayer player) {
 	}
+
 	@Override
 	public void openInventory(EntityPlayer player) {
 	}
@@ -1495,14 +1376,13 @@ implements IInventory, ISidedInventory {
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack item = getStackInSlot(index);
-
 		if (item != null) {
 			setInventorySlotContents(index, null);
 			if (item.stackSize == 0) {
 				return null;
 			}
 			return item;
-		}else{
+		} else {
 			return null;
 		}
 	}
@@ -1513,46 +1393,35 @@ implements IInventory, ISidedInventory {
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-
 		NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-
 		for (int i = 0; i < items.tagCount(); ++i) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
 			int slot = item.getByte("Slot") & 255;
-
 			ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
-
 			if (slot >= 0 && slot < getSizeInventory()) {
 				setInventorySlotContents(slot, iStack);
 			}
 		}
-
 		NBTTagList spares = tagCompound.getTagList("Spares", NBTHelper.COMPOUND.getId());
 		spareModules.clear();
 		for (int i = 0; i < spares.tagCount(); ++i) {
 			NBTTagCompound item = spares.getCompoundTagAt(i);
 			ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
 			spareModules.add(iStack);
-		}		
-
-		NBTTagCompound outputTag = (NBTTagCompound)tagCompound.getTag("Output");
+		}
+		NBTTagCompound outputTag = (NBTTagCompound) tagCompound.getTag("Output");
 		if (outputTag != null) {
 			outputItem = ItemStack.loadItemStackFromNBT(outputTag);
 		}
-
-
-		//Backwards comparability
+		// Backwards comparability
 		if (tagCompound.hasKey("Fuel")) {
 			setFuelLevel(tagCompound.getShort("Fuel"));
-		}else{
+		} else {
 			setFuelLevel(tagCompound.getInteger("IntFuel"));
 		}
-
 		maxAssemblingTime = tagCompound.getInteger("maxTime");
-		setAssemblingTime(tagCompound.getInteger("currentTime"));	
+		setAssemblingTime(tagCompound.getInteger("currentTime"));
 		isAssembling = tagCompound.getBoolean("isAssembling");
-
-
 	}
 
 	/**
@@ -1561,41 +1430,32 @@ implements IInventory, ISidedInventory {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-
 		NBTTagList items = new NBTTagList();
-
 		for (int i = 0; i < getSizeInventory(); ++i) {
 			ItemStack iStack = getStackInSlot(i);
-
 			if (iStack != null) {
 				NBTTagCompound item = new NBTTagCompound();
-				item.setByte("Slot", (byte)i);
+				item.setByte("Slot", (byte) i);
 				iStack.writeToNBT(item);
 				items.appendTag(item);
 			}
 		}
-
 		tagCompound.setTag("Items", items);
-
-
 		NBTTagList spares = new NBTTagList();
 		for (ItemStack iStack : spareModules) {
 			if (iStack != null) {
 				NBTTagCompound item = new NBTTagCompound();
-				//item.setByte("Slot", (byte)i);
+				// item.setByte("Slot", (byte)i);
 				iStack.writeToNBT(item);
 				spares.appendTag(item);
 			}
 		}
-
 		tagCompound.setTag("Spares", spares);
-
 		if (outputItem != null) {
 			NBTTagCompound outputTag = new NBTTagCompound();
 			outputItem.writeToNBT(outputTag);
-			tagCompound.setTag("Output", outputTag);						
-		}		
-
+			tagCompound.setTag("Output", outputTag);
+		}
 		tagCompound.setInteger("IntFuel", getFuelLevel());
 		tagCompound.setInteger("maxTime", maxAssemblingTime);
 		tagCompound.setInteger("currentTime", getAssemblingTime());
@@ -1603,23 +1463,16 @@ implements IInventory, ISidedInventory {
 		return tagCompound;
 	}
 
-
-
-
 	public ItemStack getOutputOnInterrupt() {
 		if (outputItem == null) {
 			return null;
-		}else if (!outputItem.hasTagCompound()) {
+		} else if (!outputItem.hasTagCompound()) {
 			return null;
-		}else {
+		} else {
 			NBTTagCompound info = outputItem.getTagCompound();
-
 			info.setInteger(VehicleBase.NBT_INTERRUPT_TIME, getAssemblingTime());
 			info.setInteger(VehicleBase.NBT_INTERRUPT_MAX_TIME, maxAssemblingTime);
-
 			ModuleDataItemHandler.addSparesToVehicleItems(outputItem, spareModules);
-
-
 			return outputItem;
 		}
 	}
@@ -1627,23 +1480,21 @@ implements IInventory, ISidedInventory {
 	@Override
 	public boolean isItemValidForSlot(int slotId, ItemStack item) {
 		return slotId >= 0 && slotId < slots.size() && slots.get(slotId).isItemValid(item);
-	}	
+	}
 
-
-	//slots
-
+	// slots
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 		return side == EnumFacing.UP || side == EnumFacing.DOWN ? topBotSlots : sideSlots;
 	}
 
-	//in
+	// in
 	@Override
 	public boolean canInsertItem(int slot, ItemStack item, EnumFacing side) {
 		return (side == EnumFacing.UP || side == EnumFacing.DOWN) && this.isItemValidForSlot(slot, item);
 	}
 
-	//out
+	// out
 	@Override
 	public boolean canExtractItem(int slot, ItemStack item, EnumFacing side) {
 		return true;
@@ -1654,17 +1505,18 @@ implements IInventory, ISidedInventory {
 		if (fuelLevel > getMaxFuelLevel()) {
 			fuelLevel = getMaxFuelLevel();
 		}
-	}    
+	}
 
 	private boolean freeMode;
+
 	public boolean isInFreeMode() {
 		return freeMode;
 	}
 
 	public int getBackground() {
 		if (StevesVehicles.hasGreenScreen) {
-			return ((SimulationInfoInteger)getDropDown().get(0)).getValue();
-		}else{
+			return ((SimulationInfoInteger) getDropDown().get(0)).getValue();
+		} else {
 			return 1;
 		}
 	}

@@ -1,7 +1,8 @@
 package vswe.stevesvehicles.module.common.storage.tank;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
-public class ModuleAdvancedTank extends ModuleTank{
+public class ModuleAdvancedTank extends ModuleTank {
 	public ModuleAdvancedTank(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -10,6 +11,4 @@ public class ModuleAdvancedTank extends ModuleTank{
 	protected int getTankSize() {
 		return 32000;
 	}
-
-
 }

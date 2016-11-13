@@ -4,11 +4,9 @@ import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.effect.BaseEffect;
 
 public class Redstone extends BaseEffect {
-
 	public Redstone(TileEntityUpgrade upgrade) {
 		super(upgrade);
 	}
-
 
 	@Override
 	public void update() {
@@ -18,6 +16,4 @@ public class Redstone extends BaseEffect {
 			}
 		}
 	}
-
-
 }

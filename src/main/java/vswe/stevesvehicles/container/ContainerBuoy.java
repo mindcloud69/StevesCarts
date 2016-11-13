@@ -14,7 +14,6 @@ import vswe.stevesvehicles.network.PacketHandler;
 import vswe.stevesvehicles.network.PacketType;
 import vswe.stevesvehicles.tileentity.TileEntityBase;
 
-
 public class ContainerBuoy extends ContainerBase {
 	private EntityBuoy entityBuoy;
 
@@ -42,8 +41,7 @@ public class ContainerBuoy extends ContainerBase {
 		super.addListener(listener);
 		if (listener instanceof EntityPlayer) {
 			DataWriter dw = PacketHandler.getDataWriter(PacketType.BUOY);
-
-			PacketHandler.sendPacketToPlayer(dw, (EntityPlayer)listener);
+			PacketHandler.sendPacketToPlayer(dw, (EntityPlayer) listener);
 		}
 	}
 
@@ -56,18 +54,14 @@ public class ContainerBuoy extends ContainerBase {
 			Entity entity = entityBuoy.worldObj.getEntityByID(entityId);
 			EntityBuoy otherBuoy = null;
 			if (entity instanceof EntityBuoy && !entity.isDead) {
-				otherBuoy = (EntityBuoy)entity;
+				otherBuoy = (EntityBuoy) entity;
 			}
-
 			boolean next = dr.readBoolean();
-
-
 			EntityBuoy oldNext = entityBuoy.getBuoy(next);
 			if (oldNext != null) {
 				oldNext.setBuoy(null, !next);
 			}
 			entityBuoy.setBuoy(otherBuoy, next);
-
 			if (otherBuoy != null) {
 				EntityBuoy oldPrev = otherBuoy.getBuoy(!next);
 				if (oldPrev != null) {
@@ -75,8 +69,6 @@ public class ContainerBuoy extends ContainerBase {
 				}
 				otherBuoy.setBuoy(entityBuoy, !next);
 			}
-
-
 		}
 	}
 }

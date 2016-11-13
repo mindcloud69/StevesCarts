@@ -5,7 +5,6 @@ public class TrackEditor extends Track {
 		super(0, 0, orientation);
 	}
 
-
 	private int type = 0;
 
 	@Override
@@ -14,7 +13,6 @@ public class TrackEditor extends Track {
 		newTrack.type = type;
 		return newTrack;
 	}
-
 
 	public Track getRealTrack(int x, int y) {
 		return getRealTrack(x, y, type, getOrientation());
@@ -29,14 +27,12 @@ public class TrackEditor extends Track {
 			default:
 				return new Track(x, y, orientation);
 		}
-	}	
-
+	}
 
 	@Override
 	public int getU() {
 		return type;
 	}
-
 
 	public int getType() {
 		return type;
@@ -49,5 +45,4 @@ public class TrackEditor extends Track {
 	public void nextType() {
 		type = (type + 1) % 3;
 	}
-
 }

@@ -1,9 +1,14 @@
 package vswe.stevesvehicles.module.common.engine;
+
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -18,6 +23,9 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private int panelCoolDown;
 	private boolean down = true;
 	private boolean upState;
+	private DataParameter<Integer> LIGHT;
+	private DataParameter<Boolean> UP_STATE;
+	private DataParameter<Integer> PRIORITY;
 
 	public ModuleSolarBase(VehicleBase vehicleBase) {
 		super(vehicleBase);
@@ -33,7 +41,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		return false;
 	}
 
-	//called to update the module's actions. Called by the cart's update code.
+	// called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
 		super.update();
@@ -41,7 +49,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	@Override
-	protected void loadFuel(){
+	protected void loadFuel() {
 		updateLight();
 		updateDataForModel();
 		chargeSolar();
@@ -50,18 +58,16 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	@Override
 	public int getTotalFuel() {
 		return getFuelLevel();
-	}	
-	@Override
-	public float[] getGuiBarColor() {
-		return new float[] {1F,1F,0F};
 	}
 
+	@Override
+	public float[] getGuiBarColor() {
+		return new float[] { 1F, 1F, 0F };
+	}
 
 	private void updateLight() {
-		light = getVehicle().getWorld().getBlockLightValue(getVehicle().x(), getVehicle().y(), getVehicle().z());
-
-		if (light == 15 && !getVehicle().getWorld().canBlockSeeTheSky(getVehicle().x(), getVehicle().y() + 1, getVehicle().z()))
-		{
+		light = getVehicle().getWorld().getLightFor(EnumSkyBlock.BLOCK, getVehicle().pos());
+		if (light == 15 && !getVehicle().getWorld().canBlockSeeSky(getVehicle().pos().up())) {
 			light = 14;
 		}
 	}
@@ -69,14 +75,13 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private void updateDataForModel() {
 		if (isPlaceholder()) {
 			light = getBooleanSimulationInfo() ? 15 : 14;
-		}else{				
+		} else {
 			if (getVehicle().getWorld().isRemote) {
-				light = getDw(1);
-			}else{
-				updateDw(1,(byte)light);
+				light = getDw(LIGHT);
+			} else {
+				updateDw(LIGHT, light);
 			}
 		}
-
 		maxLight = light == 15;
 		if (!upState && light == 15) {
 			light = 14;
@@ -86,30 +91,24 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private void chargeSolar() {
 		if (light == 15 && getVehicle().getRandom().nextInt(8) < 4) {
 			setFuelLevel(getFuelLevel() + getGenSpeed());
-
 			if (getFuelLevel() > getMaxCapacity()) {
 				setFuelLevel(getMaxCapacity());
 			}
 		}
 	}
 
-
 	public int getLight() {
 		return light;
 	}
-
-
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
 		drawString(gui, LocalizationEngine.SOLAR_TITLE.translate(), 8, 6, 0x404040);
 		String str = LocalizationEngine.SOLAR_NO_POWER.translate();
-
 		if (getFuelLevel() > 0) {
 			str = LocalizationEngine.SOLAR_POWER.translate(String.valueOf(getFuelLevel()));
 		}
-
-		drawString(gui,str, 8, 42, 0x404040);
+		drawString(gui, str, 8, 42, 0x404040);
 	}
 
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/solar.png");
@@ -117,18 +116,14 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
-		super.drawBackground(gui,x,y);
-
+		super.drawBackground(gui, x, y);
 		ResourceHelper.bindResource(TEXTURE);
-
 		int lightWidth = light * 3;
-
 		if (light == 15) {
 			lightWidth += 2;
 		}
-
-		drawImage(gui, 9, 20, 1, 1, 54 , 18);
-		drawImage(gui, 9+6, 20 + 1, 1, 20, lightWidth , 16);
+		drawImage(gui, 9, 20, 1, 1, 54, 18);
+		drawImage(gui, 9 + 6, 20 + 1, 1, 20, lightWidth, 16);
 	}
 
 	@Override
@@ -136,41 +131,41 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		return super.numberOfDataWatchers() + 2;
 	}
 
-
-
 	@Override
 	public void initDw() {
+		PRIORITY = createDw(DataSerializers.VARINT);
 		super.initDw();
-		addDw(1,(byte)0);
-		addDw(2,(byte)0);
+		LIGHT = createDw(DataSerializers.VARINT);
+		UP_STATE = createDw(DataSerializers.BOOLEAN);
+		registerDw(LIGHT, 0);
+		registerDw(UP_STATE, false);
+	}
 
-
+	@Override
+	protected DataParameter<Integer> getPriorityDw() {
+		return PRIORITY;
 	}
 
 	protected boolean isGoingDown() {
 		return down;
 	}
 
-	public void updateSolarModel()
-	{
+	public void updateSolarModel() {
 		if (getVehicle().getWorld().isRemote) {
 			updateDataForModel();
 		}
-
 		panelCoolDown += maxLight ? 1 : -1;
 		if (down && panelCoolDown < 0) {
 			panelCoolDown = 0;
-		}else if(!down && panelCoolDown > 0) {
+		} else if (!down && panelCoolDown > 0) {
 			panelCoolDown = 0;
-		}else if(Math.abs(panelCoolDown) > 20) {
+		} else if (Math.abs(panelCoolDown) > 20) {
 			panelCoolDown = 0;
 			down = !down;
-		}		
-
+		}
 		upState = updatePanels();
-
 		if (!getVehicle().getWorld().isRemote) {
-			updateDw(2, upState ? 1 : 0);
+			updateDw(UP_STATE, upState);
 		}
 	}
 
@@ -181,30 +176,28 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 
 	@Override
 	protected void checkGuiData(Object[] info) {
-		updateGuiData(info, 0, (short)(getFuelLevel() & 65535));
-		updateGuiData(info, 1,(short)((getFuelLevel() >> 16) & 65535));
+		updateGuiData(info, 0, (short) (getFuelLevel() & 65535));
+		updateGuiData(info, 1, (short) ((getFuelLevel() >> 16) & 65535));
 	}
+
 	@Override
 	public void receiveGuiData(int id, short data) {
-
 		if (id == 0) {
 			int dataInt = data;
 			if (dataInt < 0) {
 				dataInt += 65536;
 			}
 			setFuelLevel((getFuelLevel() & -65536) | dataInt);
-		}else if (id == 1) {
+		} else if (id == 1) {
 			setFuelLevel((getFuelLevel() & 65535) | (data << 16));
 		}
-
 	}
 
-
 	protected abstract int getMaxCapacity();
+
 	protected abstract int getGenSpeed();
+
 	protected abstract boolean updatePanels();
-
-
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
@@ -219,5 +212,4 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		setFuelLevel(tagCompound.getInteger("Fuel"));
 		upState = tagCompound.getBoolean("Up");
 	}
-
 }

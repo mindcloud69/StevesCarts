@@ -3,7 +3,6 @@ package vswe.stevesvehicles.arcade.monopoly;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class Die {
-
 	private ArcadeMonopoly game;
 	private int number;
 	private int graphicalId;
@@ -16,11 +15,10 @@ public class Die {
 
 	public void draw(GuiVehicle gui, int x, int y) {
 		game.getModule().drawImage(gui, x, y, 256 - 24 * (graphicalId + 1), 256 - 24, 24, 24);
-
 		switch (number) {
 			case 5:
 				drawEye(gui, x + 15, y + 3);
-				drawEye(gui, x + 3, y + 15);				
+				drawEye(gui, x + 3, y + 15);
 			case 3:
 				drawEye(gui, x + 3, y + 3);
 				drawEye(gui, x + 15, y + 15);
@@ -35,11 +33,11 @@ public class Die {
 				drawEye(gui, x + 3, y + 15);
 				break;
 			case 6:
-				drawEye(gui, x + 3, y + 2);		
-				drawEye(gui, x + 3, y + 9);	
-				drawEye(gui, x + 3, y + 16);	
-				drawEye(gui, x + 15, y + 2);		
-				drawEye(gui, x + 15, y + 9);	
+				drawEye(gui, x + 3, y + 2);
+				drawEye(gui, x + 3, y + 9);
+				drawEye(gui, x + 3, y + 16);
+				drawEye(gui, x + 15, y + 2);
+				drawEye(gui, x + 15, y + 9);
 				drawEye(gui, x + 15, y + 16);
 				break;
 		}
@@ -56,5 +54,4 @@ public class Die {
 	public void randomize() {
 		number = game.getModule().getVehicle().getRandom().nextInt(6) + 1;
 	}
-
 }

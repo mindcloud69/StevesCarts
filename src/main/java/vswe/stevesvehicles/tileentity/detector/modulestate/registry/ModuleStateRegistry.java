@@ -1,7 +1,5 @@
 package vswe.stevesvehicles.tileentity.detector.modulestate.registry;
 
-
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,7 +11,6 @@ import vswe.stevesvehicles.registry.RegistryLoader;
 import vswe.stevesvehicles.tileentity.detector.modulestate.ModuleState;
 
 public class ModuleStateRegistry implements IRegistry<ModuleState> {
-
 	private static void preInit() {
 		loader = new RegistryLoader<>();
 		allStates = new ArrayList<>();
@@ -30,7 +27,6 @@ public class ModuleStateRegistry implements IRegistry<ModuleState> {
 	private static List<ModuleState> allStates;
 	private static RegistryLoader<ModuleStateRegistry, ModuleState> loader;
 	private Map<String, ModuleState> states;
-
 	private final String code;
 
 	public ModuleStateRegistry(String code) {
@@ -47,10 +43,9 @@ public class ModuleStateRegistry implements IRegistry<ModuleState> {
 	}
 
 	public static void add(ModuleStateRegistry registry) {
-		if(loader == null) {
+		if (loader == null) {
 			preInit();
 		}
-
 		loader.add(registry);
 	}
 
@@ -58,10 +53,9 @@ public class ModuleStateRegistry implements IRegistry<ModuleState> {
 		if (loader == null) {
 			preInit();
 		}
-
 		if (states.containsKey(state.getRawUnlocalizedName())) {
 			System.err.println("A module state with this raw name has already been registered in this registry. Failed to register a second module state with the raw name " + state.getRawUnlocalizedName() + " in registry with code " + getCode());
-		}else{
+		} else {
 			states.put(state.getRawUnlocalizedName(), state);
 			allStates.add(state);
 			state.setFullUnlocalizedName(getFullCode(state));
@@ -77,7 +71,6 @@ public class ModuleStateRegistry implements IRegistry<ModuleState> {
 	public Collection<ModuleState> getElements() {
 		return states.values();
 	}
-
 
 	public static ModuleState getStateFromId(int id) {
 		return loader.getObjectFromId(id);

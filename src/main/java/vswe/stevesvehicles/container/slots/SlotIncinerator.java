@@ -1,8 +1,8 @@
 package vswe.stevesvehicles.container.slots;
+
 import net.minecraft.inventory.IInventory;
 
 public class SlotIncinerator extends SlotBase implements ISpecialSlotValidator {
-
 	public SlotIncinerator(IInventory inventory, int id, int x, int y) {
 		super(inventory, id, x, y);
 	}
@@ -16,5 +16,4 @@ public class SlotIncinerator extends SlotBase implements ISpecialSlotValidator {
 	public int getSlotStackLimit() {
 		return 1;
 	}
-
 }

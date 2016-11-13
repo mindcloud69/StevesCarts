@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.common.attachment;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,25 +60,19 @@ public class ModuleDynamite extends ModuleAttachment {
 		}
 	}
 
-
-
 	@Override
 	public void update() {
 		super.update();
-
 		if (isPlaceholder()) {
-			boolean shouldExplode = ((SimulationInfoBoolean)getSimulationInfo(2)).getValue();
+			boolean shouldExplode = ((SimulationInfoBoolean) getSimulationInfo(2)).getValue();
 			if (getFuse() == 0 && shouldExplode) {
 				setFuse(1);
-			}else if(getFuse() != 0 && !shouldExplode) {
+			} else if (getFuse() != 0 && !shouldExplode) {
 				setFuse(0);
 			}
 		}
-
-
 		if (getFuse() > 0) {
-			setFuse(getFuse()+1);
-
+			setFuse(getFuse() + 1);
 			if (getFuse() == getFuseLength()) {
 				explode();
 				if (!isPlaceholder()) {
@@ -95,10 +90,10 @@ public class ModuleDynamite extends ModuleAttachment {
 	private boolean markerMoving;
 	private static final int FUSE_START_X = 30;
 	private static final int FUSE_START_Y = 27;
-	private static final int[] FUSE_AREA = {FUSE_START_X, FUSE_START_Y + 3, 105, 4};
+	private static final int[] FUSE_AREA = { FUSE_START_X, FUSE_START_Y + 3, 105, 4 };
 
 	private int[] getMovableMarker() {
-		return new int[] {FUSE_START_X + (int)(105 *  (1F - getFuseLength() / (float) MAX_FUSE_LENGTH)), FUSE_START_Y, 4, 10};
+		return new int[] { FUSE_START_X + (int) (105 * (1F - getFuseLength() / (float) MAX_FUSE_LENGTH)), FUSE_START_Y, 4, 10 };
 	}
 
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/explosions.png");
@@ -106,10 +101,9 @@ public class ModuleDynamite extends ModuleAttachment {
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		drawImage(gui, FUSE_AREA, 16, 1);
-		drawImage(gui, FUSE_START_X + 105, FUSE_START_Y - 4, 1, 12 , 16, 16);
-		drawImage(gui, FUSE_START_X + (int)(105 *  (1F - (getFuseLength()-getFuse()) / (float) MAX_FUSE_LENGTH)), FUSE_START_Y,  (isPrimed() ? 11 : 6), 1, 4, 10);
+		drawImage(gui, FUSE_START_X + 105, FUSE_START_Y - 4, 1, 12, 16, 16);
+		drawImage(gui, FUSE_START_X + (int) (105 * (1F - (getFuseLength() - getFuse()) / (float) MAX_FUSE_LENGTH)), FUSE_START_Y, (isPrimed() ? 11 : 6), 1, 4, 10);
 		drawImage(gui, getMovableMarker(), 1, 1);
 	}
 
@@ -118,7 +112,7 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (markerMoving || inRect(x, y, FUSE_AREA) || inRect(x, y, getMovableMarker())) {
 			if (getFuse() != 0) {
 				drawStringOnMouseOver(gui, LocalizationIndependence.EXPLODING.translate(String.valueOf(getFuseLength() - getFuse()), String.valueOf(getFuseLength())), x, y);
-			}else{
+			} else {
 				drawStringOnMouseOver(gui, LocalizationIndependence.FUSE_LENGTH.translate(String.valueOf(getFuseLength())), x, y);
 			}
 		}
@@ -127,7 +121,7 @@ public class ModuleDynamite extends ModuleAttachment {
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
-			if (getFuse() == 0 && (inRect(x,y, getMovableMarker()) || inRect(x, y, FUSE_AREA))) {
+			if (getFuse() == 0 && (inRect(x, y, getMovableMarker()) || inRect(x, y, FUSE_AREA))) {
 				markerMoving = true;
 				moveMarker(x);
 			}
@@ -135,27 +129,24 @@ public class ModuleDynamite extends ModuleAttachment {
 	}
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
 		if (getFuse() != 0) {
 			markerMoving = false;
-		}else if(markerMoving){
+		} else if (markerMoving) {
 			moveMarker(x);
 		}
-
 		if (button != -1) {
 			markerMoving = false;
 		}
 	}
 
 	private void moveMarker(int x) {
-		int tempFuse = MAX_FUSE_LENGTH - (int)((x - FUSE_START_X)/(105F/ MAX_FUSE_LENGTH));
-
+		int tempFuse = MAX_FUSE_LENGTH - (int) ((x - FUSE_START_X) / (105F / MAX_FUSE_LENGTH));
 		if (tempFuse < 2) {
 			tempFuse = 2;
-		}else if (tempFuse > MAX_FUSE_LENGTH) {
+		} else if (tempFuse > MAX_FUSE_LENGTH) {
 			tempFuse = MAX_FUSE_LENGTH;
 		}
-
 		DataWriter dw = getDataWriter();
 		dw.writeByte(tempFuse);
 		sendPacketToServer(dw);
@@ -168,18 +159,17 @@ public class ModuleDynamite extends ModuleAttachment {
 	private void explode() {
 		if (isPlaceholder()) {
 			setFuse(1);
-		}else{
+		} else {
 			float f = explosionSize();
-			setStack(0,null);
-
-			getVehicle().getWorld().createExplosion(null, getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ, f, true/*true means real, false otherwise*/);
+			setStack(0, null);
+			getVehicle().getWorld().createExplosion(null, getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ, f,
+					true/* true means real, false otherwise */);
 		}
 	}
 
 	@Override
 	public void onInventoryChanged() {
 		super.onInventoryChanged();
-
 		createExplosives();
 	}
 
@@ -197,8 +187,8 @@ public class ModuleDynamite extends ModuleAttachment {
 
 	public float explosionSize() {
 		if (isPlaceholder()) {
-			return ((SimulationInfoInteger)getSimulationInfo(1)).getValue() / 2.5F;
-		}else{
+			return ((SimulationInfoInteger) getSimulationInfo(1)).getValue() / 2.5F;
+		} else {
 			return getDw(2) / 2.5F;
 		}
 	}
@@ -207,14 +197,11 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (isPlaceholder() || getVehicle().getWorld().isRemote) {
 			return;
 		}
-
 		int f = 8;
 		if (ComponentTypes.DYNAMITE.isStackOfType(getStack(0))) {
 			f += getStack(0).stackSize * 2;
 		}
-
-
-		updateDw(2, (byte)f);
+		updateDw(2, (byte) f);
 	}
 
 	@Override
@@ -224,20 +211,21 @@ public class ModuleDynamite extends ModuleAttachment {
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
-		addDw(1,70);
-		addDw(2,8);
+		addDw(0, 0);
+		addDw(1, 70);
+		addDw(2, 8);
 	}
 
 	private int simulationFuse;
+
 	public int getFuse() {
 		if (isPlaceholder()) {
 			return simulationFuse;
-		}else{
+		} else {
 			int val = getDw(0);
 			if (val < 0) {
 				return val + 256;
-			}else{
+			} else {
 				return val;
 			}
 		}
@@ -246,8 +234,8 @@ public class ModuleDynamite extends ModuleAttachment {
 	private void setFuse(int val) {
 		if (isPlaceholder()) {
 			simulationFuse = val;
-		}else{
-			updateDw(0, (byte)val);
+		} else {
+			updateDw(0, (byte) val);
 		}
 	}
 
@@ -255,18 +243,17 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (val > MAX_FUSE_LENGTH) {
 			val = MAX_FUSE_LENGTH;
 		}
-
-		updateDw(1, (byte)val);
+		updateDw(1, (byte) val);
 	}
 
 	public int getFuseLength() {
 		if (isPlaceholder()) {
-			return ((SimulationInfoInteger)getSimulationInfo(0)).getValue();
-		}else{	
+			return ((SimulationInfoInteger) getSimulationInfo(0)).getValue();
+		} else {
 			int val = getDw(1);
 			if (val < 0) {
 				return val + 256;
-			}else{
+			} else {
 				return val;
 			}
 		}
@@ -283,18 +270,16 @@ public class ModuleDynamite extends ModuleAttachment {
 		setFuseLength(dr.readByte());
 	}
 
-
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		tagCompound.setShort("FuseLength", (short)getFuseLength());
-		tagCompound.setShort("Fuse", (short)getFuse());
+		tagCompound.setShort("FuseLength", (short) getFuseLength());
+		tagCompound.setShort("Fuse", (short) getFuse());
 	}
 
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setFuseLength(tagCompound.getShort("FuseLength"));
 		setFuse(tagCompound.getShort("Fuse"));
-
-		createExplosives();		
-	}		
+		createExplosives();
+	}
 }

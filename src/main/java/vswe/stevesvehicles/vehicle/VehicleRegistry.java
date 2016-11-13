@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.vehicle;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ public class VehicleRegistry implements IRegistry<VehicleType> {
 		loader = new RegistryLoader<>();
 		instance = new VehicleRegistry();
 		loader.add(instance);
-
 		instance.register(CART);
 		instance.register(BOAT);
 	}
@@ -51,10 +49,10 @@ public class VehicleRegistry implements IRegistry<VehicleType> {
 	public void register(VehicleType vehicleType) {
 		if (vehicles.containsKey(vehicleType.getUnlocalizedName())) {
 			System.err.println("A vehicle with this raw name has already been registered. Failed to register a second module with the raw name " + vehicleType.getUnlocalizedName() + ".");
-		}else{
+		} else {
 			vehicles.put(vehicleType.getUnlocalizedName(), vehicleType);
 			allVehicles.add(vehicleType);
-			EntityRegistry.registerModEntity((Class<? extends Entity>)vehicleType.getClazz(), vehicleType.getRawUnlocalizedName(), allVehicles.size(), StevesVehicles.instance, 80, 3, true);
+			EntityRegistry.registerModEntity((Class<? extends Entity>) vehicleType.getClazz(), vehicleType.getRawUnlocalizedName(), allVehicles.size(), StevesVehicles.instance, 80, 3, true);
 		}
 	}
 

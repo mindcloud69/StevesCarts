@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.module.data;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,12 +14,12 @@ public class ModuleDataGroup {
 	private int count;
 	private List<ModuleDataGroup> clones;
 	private List<ModuleDataGroup> nameClones;
+
 	private ModuleDataGroup(ILocalizedText name) {
 		this.name = name;
 		count = 1;
 		modules = new ArrayList<>();
 	}
-
 
 	public String getName() {
 		return name == null ? null : name.translate(String.valueOf(getCount()));
@@ -26,7 +27,7 @@ public class ModuleDataGroup {
 
 	public List<ModuleData> getModules() {
 		return modules;
-	}	
+	}
 
 	public int getCount() {
 		return count;
@@ -41,15 +42,13 @@ public class ModuleDataGroup {
 				clone.add(module);
 			}
 		}
-
 		return this;
 	}
 
 	public ModuleDataGroup setCount(int count) {
 		this.count = count;
-
 		return this;
-	}	
+	}
 
 	public ModuleDataGroup copy(String key) {
 		return copy(key, getCount());
@@ -75,31 +74,26 @@ public class ModuleDataGroup {
 		return newObj;
 	}
 
-
-
 	public String getCountName() {
 		switch (count) {
 			case 1:
 				return LocalizationLabel.COUNT_ONE.translate();
 			case 2:
-				return  LocalizationLabel.COUNT_TWO.translate();
+				return LocalizationLabel.COUNT_TWO.translate();
 			case 3:
-				return  LocalizationLabel.COUNT_THREE.translate();
+				return LocalizationLabel.COUNT_THREE.translate();
 			default:
 				return "???";
 		}
 	}
 
-	public static ModuleDataGroup getCombinedGroup(String key, ILocalizedText name,  ModuleDataGroup mainGroup, ModuleDataGroup ... extraGroups) {
+	public static ModuleDataGroup getCombinedGroup(String key, ILocalizedText name, ModuleDataGroup mainGroup, ModuleDataGroup... extraGroups) {
 		ModuleDataGroup newGroup = mainGroup.copy(key);
 		mainGroup.addClone(newGroup);
-
 		for (ModuleDataGroup extraGroup : extraGroups) {
 			newGroup.add(extraGroup);
 			extraGroup.addClone(newGroup);
 		}
-
-
 		newGroup.name = name;
 		return newGroup;
 	}
@@ -108,7 +102,6 @@ public class ModuleDataGroup {
 		if (clones == null) {
 			clones = new ArrayList<>();
 		}
-
 		if (!clones.contains(group)) {
 			clones.add(group);
 		}
@@ -118,7 +111,6 @@ public class ModuleDataGroup {
 		if (nameClones == null) {
 			nameClones = new ArrayList<>();
 		}
-
 		if (!nameClones.contains(group)) {
 			nameClones.add(group);
 		}
@@ -126,7 +118,6 @@ public class ModuleDataGroup {
 
 	public void add(ModuleDataGroup group) {
 		group.addClone(this);
-
 		for (ModuleData obj : group.getModules()) {
 			add(obj);
 		}
@@ -142,6 +133,7 @@ public class ModuleDataGroup {
 	}
 
 	private static Map<String, ModuleDataGroup> groups = new HashMap<>();
+
 	public static ModuleDataGroup createGroup(String key, ILocalizedText name) {
 		if (groups.containsKey(key)) {
 			ModuleDataGroup group = groups.get(key);
@@ -149,7 +141,7 @@ public class ModuleDataGroup {
 				group.setName(name);
 			}
 			return group;
-		}else{
+		} else {
 			ModuleDataGroup group = new ModuleDataGroup(name);
 			groups.put(key, group);
 			return group;
@@ -159,5 +151,4 @@ public class ModuleDataGroup {
 	public static ModuleDataGroup getGroup(String key) {
 		return createGroup(key, null);
 	}
-
 }

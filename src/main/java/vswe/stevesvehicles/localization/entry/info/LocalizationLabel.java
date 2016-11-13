@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.localization.entry.info;
 
-
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
@@ -43,18 +42,18 @@ public final class LocalizationLabel {
 	public static final ILocalizedText INCOMPLETE = createSimple("incomplete");
 	public static final ILocalizedText TIME_LEFT = createSimple("time_left");
 	public static final ILocalizedText INTERRUPT_INSTRUCTION = createSimple("interrupt_instruction");
-
-
 	public static final ILocalizedText NO_VEHICLE_TYPE = createSimple("no_vehicle_type");
 	public static final ILocalizedText INVALID_VEHICLE_TYPE = createAdvanced("invalid_vehicle_type");
-
 	private static final String HEADER = "steves_vehicles:gui.info.label:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationLabel() {}
+	private LocalizationLabel() {
+	}
 }

@@ -27,9 +27,8 @@ public class LockableEntityDataManager extends EntityDataManager {
 	public void setEntryValues(List<DataEntry<?>> entries) {
 		if (isLocked) {
 			lockedList = entries;
-		}else{
+		} else {
 			super.setEntryValues(entries);
 		}
 	}
-
 }

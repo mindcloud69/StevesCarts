@@ -10,7 +10,6 @@ import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleCakeServerDynamite extends ModuleCakeServer {
-
 	private int dynamiteCount;
 
 	private int getMaxDynamiteCount() {
@@ -21,11 +20,10 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 		super(vehicleBase);
 	}
 
-
 	@Override
 	protected SlotBase getSlot(int slotId, int x, int y) {
 		return new SlotCakeDynamite(getVehicle().getVehicleEntity(), slotId, 8 + x * 18, 38 + y * 18);
-	}	
+	}
 
 	@Override
 	public boolean dropOnDeath() {
@@ -39,14 +37,13 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 		}
 	}
 
-	private void explode() {		
+	private void explode() {
 		getVehicle().getWorld().createExplosion(null, getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ, dynamiteCount * 0.8F, true);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-
 		if (!getVehicle().getWorld().isRemote) {
 			ItemStack item = getStack(0);
 			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && dynamiteCount < getMaxDynamiteCount()) {
@@ -66,7 +63,7 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 			explode();
 			getVehicle().getEntity().setDead();
 			return true;
-		}else{
+		} else {
 			return super.onInteractFirst(entityplayer);
 		}
 	}

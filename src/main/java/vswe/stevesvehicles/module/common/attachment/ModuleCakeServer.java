@@ -4,8 +4,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
@@ -16,12 +19,11 @@ import vswe.stevesvehicles.module.cart.attachment.ModuleAttachment;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModule {
+	private DataParameter<Integer> BUFFER;
 
 	public ModuleCakeServer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
-
-
 
 	private int cooldown = 0;
 	private static final int MAX_CAKES = 10;
@@ -32,41 +34,35 @@ public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModul
 	@Override
 	public void update() {
 		super.update();
-
 		if (!getVehicle().getWorld().isRemote) {
 			if (getVehicle().hasCreativeSupplies()) {
 				if (cooldown >= REFILL_CHEAT_COOLDOWN) {
 					if (getCakeBuffer() < MAX_TOTAL_SLICES) {
 						setCakeBuffer(getCakeBuffer() + 1);
 					}
-
 					cooldown = 0;
-				}else{
+				} else {
 					++cooldown;
 				}
 			}
-
 			ItemStack item = getStack(0);
-			if (item != null && item.getItem().equals(Items.cake) && getCakeBuffer() + SLICES_PER_CAKE <= MAX_TOTAL_SLICES) {
+			if (item != null && item.getItem().equals(Items.CAKE) && getCakeBuffer() + SLICES_PER_CAKE <= MAX_TOTAL_SLICES) {
 				setCakeBuffer(getCakeBuffer() + SLICES_PER_CAKE);
 				setStack(0, null);
 			}
 		}
 	}
 
-
 	private void setCakeBuffer(int i) {
-		updateShortDw(0, i);
+		updateDw(BUFFER, i);
 	}
-
 
 	private int getCakeBuffer() {
 		if (isPlaceholder()) {
 			return 6;
 		}
-		return getShortDw(0);
+		return getDw(BUFFER);
 	}
-
 
 	@Override
 	public int numberOfDataWatchers() {
@@ -75,9 +71,9 @@ public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModul
 
 	@Override
 	public void initDw() {
-		addShortDw(0,0);	
+		BUFFER = createDw(DataSerializers.VARINT);
+		registerDw(BUFFER, 0);
 	}
-
 
 	@Override
 	public boolean hasGui() {
@@ -92,22 +88,22 @@ public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModul
 	@Override
 	protected SlotBase getSlot(int slotId, int x, int y) {
 		return new SlotCake(getVehicle().getVehicleEntity(), slotId, 8 + x * 18, 38 + y * 18);
-	}	
+	}
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
 		drawString(gui, LocalizationCake.TITLE.translate(), 8, 6, 0x404040);
-	}	
+	}
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		tagCompound.setShort("Cake", (short)getCakeBuffer());
+		tagCompound.setShort("Cake", (short) getCakeBuffer());
 	}
 
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setCakeBuffer(tagCompound.getShort("Cake"));
-	}	
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -119,7 +115,6 @@ public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModul
 		if (getCakeBuffer() == MAX_TOTAL_SLICES) {
 			return MAX_CAKES;
 		}
-
 		return getCakeBuffer() / SLICES_PER_CAKE;
 	}
 
@@ -127,30 +122,27 @@ public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModul
 		if (getCakeBuffer() == MAX_TOTAL_SLICES) {
 			return SLICES_PER_CAKE;
 		}
-
 		return getCakeBuffer() % SLICES_PER_CAKE;
 	}
 
 	private static final int TEXTURE_SPACING = 1;
-	private static final int[] RECT = {40, 20, 13, 36};
+	private static final int[] RECT = { 40, 20, 13, 36 };
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/cake.png");
-
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		drawImage(gui, RECT, TEXTURE_SPACING, TEXTURE_SPACING + (inRect(x, y, RECT) ? RECT[3] + TEXTURE_SPACING : 0));
 		int maxHeight = RECT[3] - 2;
-		int height = (int)((getCakes() / (float)MAX_CAKES) * maxHeight);
+		int height = (int) ((getCakes() / (float) MAX_CAKES) * maxHeight);
 		if (height > 0) {
 			drawImage(gui, RECT[0] + 1, RECT[1] + 1 + maxHeight - height, TEXTURE_SPACING * 2 + RECT[2], TEXTURE_SPACING + maxHeight - height, 7, height);
 		}
-		height = (int)((getSlices() / (float)SLICES_PER_CAKE) * maxHeight);
+		height = (int) ((getSlices() / (float) SLICES_PER_CAKE) * maxHeight);
 		if (height > 0) {
 			drawImage(gui, RECT[0] + 9, RECT[1] + 1 + maxHeight - height, TEXTURE_SPACING * 3 + RECT[2] + 7, TEXTURE_SPACING + maxHeight - height, 3, height);
-		}		
+		}
 	}
 
 	@Override
@@ -170,13 +162,11 @@ public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModul
 				setCakeBuffer(getCakeBuffer() - 1);
 				entityplayer.getFoodStats().addStats(2, 0.1F);
 			}
-
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
-
 
 	public int getRenderSliceCount() {
 		int count = getSlices();
@@ -191,4 +181,3 @@ public class ModuleCakeServer extends ModuleAttachment implements ISuppliesModul
 		return getCakeBuffer() > 0;
 	}
 }
-

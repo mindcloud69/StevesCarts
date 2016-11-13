@@ -1,12 +1,11 @@
 package vswe.stevesvehicles.upgrade.effect.fuel;
 
-
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.effect.BaseEffect;
 
 public class FuelCost extends BaseEffect {
-
 	private float cost;
+
 	public FuelCost(TileEntityUpgrade upgrade, Float cost) {
 		super(upgrade);
 		this.cost = cost;
@@ -15,6 +14,4 @@ public class FuelCost extends BaseEffect {
 	public float getCost() {
 		return cost;
 	}
-
-
 }

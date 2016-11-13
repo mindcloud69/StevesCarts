@@ -5,7 +5,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiCartAssembler;
 import vswe.stevesvehicles.localization.ILocalizedText;
 
-
 public class SimulationInfoMultiBoolean extends SimulationInfo {
 	private boolean[] values;
 
@@ -30,11 +29,10 @@ public class SimulationInfoMultiBoolean extends SimulationInfo {
 	@Override
 	public void draw(GuiCartAssembler gui, int i, int x, int y) {
 		super.draw(gui, i, x, y);
-
 		if (getIsSubMenuOpen()) {
-			int [] subRect = getSubRect(gui.getDropDownX(), gui.getDropDownY(), i);
+			int[] subRect = getSubRect(gui.getDropDownX(), gui.getDropDownY(), i);
 			for (int j = 0; j < values.length; j++) {
-				drawBooleanBox(gui, x, y, subRect[0] + getOffSetXForSubMenuBox(j, values.length),subRect[1] + 3, values[j]);
+				drawBooleanBox(gui, x, y, subRect[0] + getOffSetXForSubMenuBox(j, values.length), subRect[1] + 3, values[j]);
 			}
 		}
 	}
@@ -44,8 +42,6 @@ public class SimulationInfoMultiBoolean extends SimulationInfo {
 	public void onMouseClick(GuiCartAssembler gui, int i, int x, int y) {
 		if (getIsSubMenuOpen()) {
 			int[] subRect = getSubRect(gui.getDropDownX(), gui.getDropDownY(), i);
-
-
 			for (int j = 0; j < values.length; j++) {
 				if (clickBox(gui, x, y, subRect[0] + getOffSetXForSubMenuBox(j, values.length), subRect[1] + 3)) {
 					values[j] = !values[j];
@@ -53,7 +49,6 @@ public class SimulationInfoMultiBoolean extends SimulationInfo {
 				}
 			}
 		}
-
 	}
 
 	public int getIntegerValue() {

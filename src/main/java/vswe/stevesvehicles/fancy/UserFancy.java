@@ -25,14 +25,11 @@ public class UserFancy {
 
 	public void update(AbstractClientPlayer player) {
 		updateMojangFancyState(player);
-
 		if (activeFancyPancy != null) {
 			activeFancyPancy.update();
 		}
-
 		if (++activeCheck >= 100 || (activeCheck >= 20 && player.equals(Minecraft.getMinecraft().thePlayer))) {
 			activeCheck = 0;
-
 			updateActive(player);
 		}
 	}
@@ -43,15 +40,14 @@ public class UserFancy {
 			if (fancyData != null) {
 				Thread thread = ReflectionHelper.getPrivateValue(ThreadDownloadImageData.class, fancyData, 5);
 				if (thread != null && !thread.isAlive()) {
-					//1 finished looking for fancy
-					//2 managed to download a fancy
-					//3 has Mojang fancy path
-
+					// 1 finished looking for fancy
+					// 2 managed to download a fancy
+					// 3 has Mojang fancy path
 					hasMojangFancy = FancyPancyLoader.isImageReady(fancyData);
 					doneMojangFancyCheck = true;
 					updateActive(player);
 				}
-			}else{
+			} else {
 				doneMojangFancyCheck = true;
 				updateActive(player);
 			}
@@ -60,13 +56,9 @@ public class UserFancy {
 
 	private void updateActive(AbstractClientPlayer player) {
 		activeFancyPancy = null;
-
 		if (!doneMojangFancyCheck) {
 			return;
 		}
-
-
-
 		int highest = Integer.MIN_VALUE;
 		for (FancyPancy fancyPancy : fancies) {
 			highest = findHighPriorityFancy(player, fancyPancy, highest);
@@ -77,7 +69,6 @@ public class UserFancy {
 				highest = findHighPriorityFancy(player, fancyPancy, highest);
 			}
 		}
-
 	}
 
 	private int findHighPriorityFancy(AbstractClientPlayer player, FancyPancy fancyPancy, int highest) {
@@ -101,8 +92,8 @@ public class UserFancy {
 	public String getImage(AbstractClientPlayer player) {
 		if (activeFancyPancy != null) {
 			return activeFancyPancy.getImage();
-		}else {
-			//always go back to the default fancy (even if it doesn't exist)
+		} else {
+			// always go back to the default fancy (even if it doesn't exist)
 			return fancyPancyHandler.getDefaultUrl(player);
 		}
 	}

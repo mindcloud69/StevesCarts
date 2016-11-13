@@ -1,3 +1,4 @@
 package vswe.stevesvehicles.container.slots;
 
-public interface ISlotExplosions {}
+public interface ISlotExplosions {
+}

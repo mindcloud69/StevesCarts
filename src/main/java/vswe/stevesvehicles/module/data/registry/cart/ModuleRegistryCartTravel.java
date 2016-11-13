@@ -23,9 +23,7 @@ import vswe.stevesvehicles.vehicle.VehicleRegistry;
 public class ModuleRegistryCartTravel extends ModuleRegistry {
 	public ModuleRegistryCartTravel() {
 		super("cart.travel");
-
 		ModuleDataGroup seats = ModuleDataGroup.getGroup(ModuleRegistryTravel.SEAT_KEY);
-
 		ModuleData brake = new ModuleData("brake_handle", ModuleBrake.class, 12) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -33,19 +31,11 @@ public class ModuleRegistryCartTravel extends ModuleRegistry {
 				addModel("Lever", new ModelLever(ResourceHelper.getResource("/models/leverModel.png")));
 			}
 		};
-
-		brake.addShapedRecipe(  null,                   null,                   "dyeRed",
-				Items.IRON_INGOT,       REFINED_HANDLE,         null,
-				Items.REDSTONE,         Items.IRON_INGOT,       null);
-
-
+		brake.addShapedRecipe(null, null, "dyeRed", Items.IRON_INGOT, REFINED_HANDLE, null, Items.REDSTONE, Items.IRON_INGOT, null);
 		brake.addVehicles(VehicleRegistry.CART);
 		brake.addSides(ModuleSide.RIGHT);
 		brake.addRequirement(seats);
 		register(brake);
-
-
-
 		ModuleData controller = new ModuleData("advanced_control_system", ModuleAdvancedControl.class, 38) {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -54,12 +44,7 @@ public class ModuleRegistryCartTravel extends ModuleRegistry {
 				addModel("Wheel", new ModelWheel());
 			}
 		};
-
-		controller.addShapedRecipe(null, GRAPHICAL_INTERFACE, null,
-				Items.REDSTONE, WHEEL, Items.REDSTONE,
-				Items.IRON_INGOT, Items.IRON_INGOT, SPEED_HANDLE);
-
-
+		controller.addShapedRecipe(null, GRAPHICAL_INTERFACE, null, Items.REDSTONE, WHEEL, Items.REDSTONE, Items.IRON_INGOT, Items.IRON_INGOT, SPEED_HANDLE);
 		controller.addVehicles(VehicleRegistry.CART);
 		controller.addSides(ModuleSide.RIGHT);
 		controller.addRequirement(seats);

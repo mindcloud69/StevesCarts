@@ -13,14 +13,16 @@ public final class LocalizationTank {
 	public static final ILocalizedText UNLOCK = createSimple("common.unlock");
 	public static final ILocalizedText EMPTY = createSimple("common.empty");
 	public static final ILocalizedText INVALID_FLUID = createSimple("common.invalid_fluid");
-
 	private static final String HEADER = "steves_vehicles:gui.common.tank:";
+
 	private static ILocalizedText createSimple(String code) {
 		return new LocalizedTextSimple(HEADER + code);
 	}
+
 	private static ILocalizedText createAdvanced(String code) {
 		return new LocalizedTextAdvanced(HEADER + code);
 	}
 
-	private LocalizationTank() {}
+	private LocalizationTank() {
+	}
 }

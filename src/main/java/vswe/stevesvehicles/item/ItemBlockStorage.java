@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.item;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -12,15 +13,11 @@ import vswe.stevesvehicles.block.StorageBlock;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 
 public class ItemBlockStorage extends ItemBlock {
-
 	public static StorageBlock[] blocks;
 
 	public static void init() {
-		blocks = new StorageBlock[] {
-				new StorageBlock(0, "reinforced_metal", ComponentTypes.REINFORCED_METAL.getItemStack()),
-				new StorageBlock(1, "galgadorian", ComponentTypes.GALGADORIAN_METAL.getItemStack()),
-				new StorageBlock(2, "enhanced_galgadorian", ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack()),
-		};		
+		blocks = new StorageBlock[] { new StorageBlock(0, "reinforced_metal", ComponentTypes.REINFORCED_METAL.getItemStack()), new StorageBlock(1, "galgadorian", ComponentTypes.GALGADORIAN_METAL.getItemStack()),
+				new StorageBlock(2, "enhanced_galgadorian", ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack()), };
 	}
 
 	public static void loadRecipes() {
@@ -29,8 +26,7 @@ public class ItemBlockStorage extends ItemBlock {
 		}
 	}
 
-	//public IIcon[] icons;
-
+	// public IIcon[] icons;
 	public ItemBlockStorage(Block block) {
 		super(block);
 		setHasSubtypes(true);
@@ -38,27 +34,21 @@ public class ItemBlockStorage extends ItemBlock {
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int dmg) {
-		dmg %= icons.length;
-
-		return icons[dmg];
-	}	
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register) {
-		icons = new IIcon[blocks.length];
-		for (int i = 0; i < icons.length; i++) {
-			icons[i] = register.registerIcon(StevesVehicles.instance.textureHeader + ":storage/" + blocks[i].getName());
-		}
-	}	*/
-
+	/*
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int dmg) { dmg %=
+	 * icons.length; return icons[dmg]; }
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void registerIcons(IIconRegister register)
+	 * { icons = new IIcon[blocks.length]; for (int i = 0; i < icons.length;
+	 * i++) { icons[i] =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader + ":storage/"
+	 * + blocks[i].getName()); } }
+	 */
 	public String getName(ItemStack item) {
 		if (item == null) {
 			return "Unknown";
-		}else{
+		} else {
 			int dmg = item.getItemDamage();
 			dmg %= blocks.length;
 			return blocks[dmg].getName();
@@ -67,14 +57,12 @@ public class ItemBlockStorage extends ItemBlock {
 
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
-
 		if (item != null && item.getItemDamage() >= 0 && item.getItemDamage() < blocks.length) {
 			StorageBlock block = blocks[item.getItemDamage()];
 			return "steves_vehicles:tile.metal_storage:" + block.getName();
-		}	
-
+		}
 		return "item.unknown";
-	}	
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -87,7 +75,5 @@ public class ItemBlockStorage extends ItemBlock {
 	@Override
 	public int getMetadata(int dmg) {
 		return dmg;
-	}   
-
-
+	}
 }

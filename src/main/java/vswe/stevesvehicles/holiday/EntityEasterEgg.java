@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+
 public class EntityEasterEgg extends EntityEgg {
 	public EntityEasterEgg(World world) {
 		super(world);
@@ -30,9 +31,6 @@ public class EntityEasterEgg extends EntityEgg {
 		if (data.entityHit != null) {
 			data.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 0);
 		}
-
-
-
 		if (!this.worldObj.isRemote) {
 			if (this.rand.nextInt(8) == 0) {
 				if (rand.nextInt(32) == 0) {
@@ -40,13 +38,13 @@ public class EntityEasterEgg extends EntityEgg {
 					entitypig.setGrowingAge(-24000);
 					entitypig.setLocationAndAngles(posX, posY, posZ, this.rotationYaw, 0.0F);
 					worldObj.spawnEntityInWorld(entitypig);
-				}else {
+				} else {
 					EntityChicken entitychicken = new EntityChicken(worldObj);
 					entitychicken.setGrowingAge(-24000);
 					entitychicken.setLocationAndAngles(posX, posY, posZ, this.rotationYaw, 0.0F);
 					worldObj.spawnEntityInWorld(entitychicken);
 				}
-			}else{
+			} else {
 				List<ItemStack> items = GiftItem.generateItems(rand, GiftItem.EasterList, 25 + rand.nextInt(300), 1);
 				for (ItemStack item : items) {
 					EntityItem eItem = new EntityItem(worldObj, posX, posY, posZ, item);
@@ -54,21 +52,15 @@ public class EntityEasterEgg extends EntityEgg {
 					eItem.motionY = rand.nextGaussian() * 0.25F;
 					eItem.motionZ = rand.nextGaussian() * 0.05F;
 					worldObj.spawnEntityInWorld(eItem);
-				}			
-
+				}
 			}
-
 		}
-
 		for (int i = 0; i < 8; i++) {
-			//noinspection SpellCheckingInspection
+			// noinspection SpellCheckingInspection
 			worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
 		}
-
 		if (!worldObj.isRemote) {
 			setDead();
 		}
 	}
-
-
 }

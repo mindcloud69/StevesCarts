@@ -12,9 +12,8 @@ import vswe.stevesvehicles.localization.entry.module.LocalizationVisual;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
-
 public class ModuleColorRandomizer extends ModuleAddon {
-	private static final int[] BUTTON = new int[] {10, 26, 16, 16};
+	private static final int[] BUTTON = new int[] { 10, 26, 16, 16 };
 	private int cooldown;
 
 	public ModuleColorRandomizer(VehicleBase vehicleBase) {
@@ -51,18 +50,16 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
-
 		float[] color = getColor();
 		GL11.glColor4f(color[0], color[1], color[2], 1.0F);
 		drawImage(gui, 50, 20, 1, 18, 28, 28);
-
 		GL11.glColor4f(1, 1, 1, 1);
 		if (inRect(x, y, BUTTON)) {
 			drawImage(gui, 10, 26, 35, 1, 16, 16);
 		} else {
 			drawImage(gui, 10, 26, 18, 1, 16, 16);
 		}
-		drawImage(gui, 10, 26, 1, 1 ,16, 16);
+		drawImage(gui, 10, 26, 1, 1, 16, 16);
 	}
 
 	@Override
@@ -76,7 +73,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
-			if (inRect(x,y, BUTTON)) {
+			if (inRect(x, y, BUTTON)) {
 				sendPacketToServer(getDataWriter());
 			}
 		}
@@ -101,7 +98,6 @@ public class ModuleColorRandomizer extends ModuleAddon {
 		int red = getVehicle().getRandom().nextInt(256);
 		int green = getVehicle().getRandom().nextInt(256);
 		int blue = getVehicle().getRandom().nextInt(256);
-
 		setColorVal(0, (byte) red);
 		setColorVal(1, (byte) green);
 		setColorVal(2, (byte) blue);
@@ -114,12 +110,10 @@ public class ModuleColorRandomizer extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0,255);
-		addDw(1,255);
-		addDw(2,255);
+		addDw(0, 255);
+		addDw(1, 255);
+		addDw(2, 255);
 	}
-
-
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
@@ -130,7 +124,6 @@ public class ModuleColorRandomizer extends ModuleAddon {
 		if (isPlaceholder()) {
 			return 255;
 		}
-
 		int tempVal = getDw(i);
 		if (tempVal < 0) {
 			tempVal += 256;
@@ -148,21 +141,20 @@ public class ModuleColorRandomizer extends ModuleAddon {
 
 	@Override
 	public float[] getColor() {
-		return new float[] {getColorComponent(0), getColorComponent(1), getColorComponent(2)};
+		return new float[] { getColorComponent(0), getColorComponent(1), getColorComponent(2) };
 	}
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		tagCompound.setByte("Red", (byte)getColorVal(0));
-		tagCompound.setByte("Green", (byte)getColorVal(1));
-		tagCompound.setByte("Blue", (byte)getColorVal(2));
+		tagCompound.setByte("Red", (byte) getColorVal(0));
+		tagCompound.setByte("Green", (byte) getColorVal(1));
+		tagCompound.setByte("Blue", (byte) getColorVal(2));
 	}
 
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
-		setColorVal(0,tagCompound.getByte("Red"));
-		setColorVal(1,tagCompound.getByte("Green"));
-		setColorVal(2,tagCompound.getByte("Blue"));
+		setColorVal(0, tagCompound.getByte("Red"));
+		setColorVal(1, tagCompound.getByte("Green"));
+		setColorVal(2, tagCompound.getByte("Blue"));
 	}
-
 }
