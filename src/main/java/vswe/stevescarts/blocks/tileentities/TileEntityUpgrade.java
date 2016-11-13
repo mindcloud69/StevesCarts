@@ -49,7 +49,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	ItemStack[] inventoryStacks;
 	private int[] slotsForSide;
 	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
-	boolean shouldSetType;
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -64,12 +63,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public void setMaster(final TileEntityCartAssembler master, EnumFacing side) {
 		this.master = master;
-		if(side != null){
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
-		} else {
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
-		}
-
 	}
 
 	public EnumFacing getSide() {
@@ -80,15 +73,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return this.master;
 	}
 
-	public void setType(final int type){
-		setType(type, true);
-	}
-
-	public void setType(final int type, boolean setBlockState) {
+	public void setType(final int type) {
 		this.type = type;
-		if(setBlockState){
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
-		}
 		if (!this.initialized) {
 			this.initialized = true;
 			final AssemblerUpgrade upgrade = this.getUpgrade();
@@ -120,13 +106,18 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		final NBTTagCompound var1 = new NBTTagCompound();
-		this.writeToNBT(var1);
-		return new SPacketUpdateTileEntity(this.pos, 1, var1);
+		writeToNBT(var1);
+		return new SPacketUpdateTileEntity(this.pos, 0, var1);
 	}
 
 	@Override
 	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return writeToNBT(super.getUpdateTag());
 	}
 
 	public AssemblerUpgrade getUpgrade() {
@@ -140,8 +131,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		this.setType(tagCompound.getByte("Type"), false);
-		shouldSetType = true;
+		this.setType(tagCompound.getInteger("Type"));
 		final NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
 		for (int i = 0; i < items.tagCount(); ++i) {
 			final NBTTagCompound item = items.getCompoundTagAt(i);
@@ -173,7 +163,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 		}
 		tagCompound.setTag("Items", items);
-		tagCompound.setByte("Type", (byte) this.type);
+		tagCompound.setInteger("Type", this.type);
 		final AssemblerUpgrade upgrade = this.getUpgrade();
 		if (upgrade != null) {
 			upgrade.save(this, tagCompound);
@@ -559,9 +549,5 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public void update() {
 		super.update();
-		if(shouldSetType){
-			worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
-			shouldSetType = false;
-		}
 	}
 }

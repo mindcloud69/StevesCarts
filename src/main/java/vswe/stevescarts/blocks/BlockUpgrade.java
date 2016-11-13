@@ -250,4 +250,9 @@ public class BlockUpgrade extends BlockContainerBase {
 		return new TileEntityUpgrade();
 	}
 
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		TileEntityUpgrade upgrade = (TileEntityUpgrade) worldIn.getTileEntity(pos);
+		return state.withProperty(TYPE, upgrade.getType());
+	}
 }
