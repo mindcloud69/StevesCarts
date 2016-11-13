@@ -5,11 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+
 import vswe.stevesvehicles.arcade.ArcadeGame;
 import vswe.stevesvehicles.arcade.invader.ArcadeInvaders;
 import vswe.stevesvehicles.arcade.sweeper.ArcadeSweeper;

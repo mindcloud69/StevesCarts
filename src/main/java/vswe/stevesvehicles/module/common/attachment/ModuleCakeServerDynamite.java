@@ -2,6 +2,7 @@ package vswe.stevesvehicles.module.common.attachment;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.container.slots.SlotCakeDynamite;

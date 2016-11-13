@@ -9,6 +9,7 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.effect.assembly.FreeModules;
 import vswe.stevesvehicles.upgrade.effect.assembly.WorkEfficiency;

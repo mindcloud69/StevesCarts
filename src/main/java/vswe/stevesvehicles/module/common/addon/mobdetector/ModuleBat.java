@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.module.common.addon.mobdetector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityBat;
+
 import vswe.stevesvehicles.localization.entry.module.LocalizationShooter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 

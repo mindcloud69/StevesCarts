@@ -3,10 +3,9 @@ package vswe.stevesvehicles.module.data.registry.cart;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 import static vswe.stevesvehicles.item.ComponentTypes.TRI_TORCH;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.client.rendering.models.cart.ModelBridge;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelRailer;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelToolPlate;

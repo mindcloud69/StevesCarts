@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.item.ComponentTypes;
 import vswe.stevesvehicles.vehicle.VehicleRegistry;

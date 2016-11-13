@@ -5,9 +5,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.REFINED_HANDLE;
 import static vswe.stevesvehicles.item.ComponentTypes.SPEED_HANDLE;
 import static vswe.stevesvehicles.item.ComponentTypes.WHEEL;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelLever;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelWheel;

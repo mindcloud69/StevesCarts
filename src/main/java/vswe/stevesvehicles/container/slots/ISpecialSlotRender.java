@@ -1,8 +1,6 @@
 package vswe.stevesvehicles.container.slots;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 
 public interface ISpecialSlotRender {

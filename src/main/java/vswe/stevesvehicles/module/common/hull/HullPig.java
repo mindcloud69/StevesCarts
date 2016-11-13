@@ -1,13 +1,12 @@
 package vswe.stevesvehicles.module.common.hull;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class HullPig extends ModuleHull {

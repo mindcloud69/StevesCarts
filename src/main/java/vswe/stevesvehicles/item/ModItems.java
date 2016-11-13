@@ -62,12 +62,12 @@ import static vswe.stevesvehicles.item.ComponentTypes.YELLOW_GIFT_RIBBON;
 
 import java.util.HashMap;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.config.Configuration;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.module.data.ModuleData;

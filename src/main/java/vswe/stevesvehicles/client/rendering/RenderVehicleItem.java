@@ -6,8 +6,8 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.module.data.ModuleData;

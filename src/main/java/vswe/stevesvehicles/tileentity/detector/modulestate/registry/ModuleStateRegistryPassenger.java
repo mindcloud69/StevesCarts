@@ -26,6 +26,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
+
 import vswe.stevesvehicles.tileentity.detector.modulestate.ModuleState;
 import vswe.stevesvehicles.tileentity.detector.modulestate.ModuleStatePassenger;
 

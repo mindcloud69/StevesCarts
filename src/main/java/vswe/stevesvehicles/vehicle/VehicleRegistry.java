@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.entity.Entity;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.registry.IRegistry;
 import vswe.stevesvehicles.registry.RegistryLoader;

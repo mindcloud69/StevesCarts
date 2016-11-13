@@ -4,14 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.recipe.IRecipeOutput;

@@ -3,6 +3,7 @@ package vswe.stevesvehicles.module.common.addon.recipe;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.container.slots.SlotCartCrafter;

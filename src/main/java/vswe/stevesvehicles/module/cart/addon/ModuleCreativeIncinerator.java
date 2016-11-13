@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.module.cart.addon;
 
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleCreativeIncinerator extends ModuleIncinerator {

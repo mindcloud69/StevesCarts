@@ -6,11 +6,10 @@ import static vswe.stevesvehicles.item.ComponentTypes.BLADE_ARM;
 import static vswe.stevesvehicles.item.ComponentTypes.EMPTY_DISK;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.client.rendering.models.cart.ModelLawnMower;
 import vswe.stevesvehicles.module.cart.addon.cultivation.ModuleModTrees;
 import vswe.stevesvehicles.module.cart.addon.cultivation.ModuleNetherWart;

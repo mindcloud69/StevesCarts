@@ -6,6 +6,7 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.module.common.storage.barrel.ModuleBarrelBasic;
 import vswe.stevesvehicles.module.common.storage.barrel.ModuleBarrelBig;
 import vswe.stevesvehicles.module.common.storage.barrel.ModuleBarrelMedium;

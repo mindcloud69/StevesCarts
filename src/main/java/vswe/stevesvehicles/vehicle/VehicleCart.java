@@ -2,6 +2,7 @@ package vswe.stevesvehicles.vehicle;
 
 
 import net.minecraft.nbt.NBTTagCompound;
+
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class VehicleCart extends vswe.stevesvehicles.vehicle.VehicleBase {

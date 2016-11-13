@@ -2,10 +2,9 @@ package vswe.stevesvehicles.module.data.registry;
 
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.client.rendering.models.common.ModelCage;
 import vswe.stevesvehicles.client.rendering.models.common.ModelSeat;
 import vswe.stevesvehicles.localization.entry.info.LocalizationGroup;

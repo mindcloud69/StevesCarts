@@ -3,12 +3,11 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import vswe.stevesvehicles.GeneratedInfo;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.slots.ISpecialSlotRender;

@@ -3,6 +3,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public class SlotBridge extends SlotBase implements ISpecialItemTransferValidator {

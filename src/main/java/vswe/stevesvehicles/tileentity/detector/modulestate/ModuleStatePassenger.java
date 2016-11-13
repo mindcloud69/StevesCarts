@@ -2,6 +2,7 @@ package vswe.stevesvehicles.tileentity.detector.modulestate;
 
 
 import net.minecraft.entity.Entity;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleStatePassenger extends ModuleState {

@@ -2,8 +2,6 @@ package vswe.stevesvehicles.module.cart.tool;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockLiquid;
@@ -15,7 +13,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3;
 import vswe.stevesvehicles.block.BlockCoordinate;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;

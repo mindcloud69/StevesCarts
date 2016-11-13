@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IShearable;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleFlowerRemover extends ModuleAttachment {

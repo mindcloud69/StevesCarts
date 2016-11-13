@@ -1,7 +1,6 @@
 package vswe.stevesvehicles.client.rendering.models.common;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelRenderer;
+
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.module.common.attachment.ModuleShooterAdvanced;
 

@@ -2,7 +2,6 @@ package vswe.stevesvehicles.buoy;
 
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import vswe.stevesvehicles.client.ResourceHelper;
 
 public enum BuoyType {

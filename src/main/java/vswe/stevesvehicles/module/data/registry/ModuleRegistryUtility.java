@@ -5,6 +5,7 @@ import static vswe.stevesvehicles.item.ComponentTypes.GALGADORIAN_METAL;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.localization.entry.info.LocalizationGroup;
 import vswe.stevesvehicles.module.common.addon.ModuleCreativeSupplies;
 import vswe.stevesvehicles.module.common.addon.ModulePowerObserver;

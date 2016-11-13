@@ -8,9 +8,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 
 

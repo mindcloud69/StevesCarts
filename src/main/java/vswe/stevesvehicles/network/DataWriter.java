@@ -6,15 +6,14 @@ import static vswe.stevesvehicles.StevesVehicles.packetHandler;
 
 import java.io.IOException;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 public class DataWriter {
 	private ByteBuf stream;
@@ -133,7 +132,7 @@ public class DataWriter {
 	 * Easy access methods
 	 */
 
-	 public void writeBoolean(boolean data) {
+	public void writeBoolean(boolean data) {
 		writeData(data ? 1 : 0, DataBitHelper.BOOLEAN);
 	}
 

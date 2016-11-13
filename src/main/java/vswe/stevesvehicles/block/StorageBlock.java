@@ -1,7 +1,7 @@
 package vswe.stevesvehicles.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
 import vswe.stevesvehicles.recipe.ModuleRecipeShaped;

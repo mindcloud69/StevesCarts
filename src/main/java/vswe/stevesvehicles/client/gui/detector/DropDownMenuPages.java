@@ -1,7 +1,5 @@
 package vswe.stevesvehicles.client.gui.detector;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiDetector;
 
 @SideOnly(Side.CLIENT)

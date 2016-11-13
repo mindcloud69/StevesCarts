@@ -1,14 +1,12 @@
 package vswe.stevesvehicles.container;
 import java.util.Iterator;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.tileentity.TileEntityBase;
 import vswe.stevesvehicles.transfer.TransferHandler;
 

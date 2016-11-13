@@ -11,10 +11,9 @@ import static vswe.stevesvehicles.item.ComponentTypes.SAW_BLADE;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 import static vswe.stevesvehicles.item.ComponentTypes.WOOD_CUTTING_CORE;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelDrill;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelFarmer;

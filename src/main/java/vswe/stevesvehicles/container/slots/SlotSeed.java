@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.container.slots;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.module.cart.tool.ModuleFarmer;
 
 public class SlotSeed extends SlotBase {

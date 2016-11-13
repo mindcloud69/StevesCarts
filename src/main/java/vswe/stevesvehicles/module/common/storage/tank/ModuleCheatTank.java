@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.module.common.storage.tank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+
 import vswe.stevesvehicles.client.gui.ColorHelper;
 import vswe.stevesvehicles.localization.entry.module.LocalizationTank;
 import vswe.stevesvehicles.network.DataReader;

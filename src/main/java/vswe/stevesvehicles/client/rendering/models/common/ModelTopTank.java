@@ -1,9 +1,8 @@
 package vswe.stevesvehicles.client.rendering.models.common;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.RendererVehicle;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;

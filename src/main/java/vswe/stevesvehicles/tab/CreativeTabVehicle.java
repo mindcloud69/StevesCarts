@@ -1,9 +1,8 @@
 package vswe.stevesvehicles.tab;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.localization.LocalizedTextSimple;
 import vswe.stevesvehicles.vehicle.VehicleRegistry;

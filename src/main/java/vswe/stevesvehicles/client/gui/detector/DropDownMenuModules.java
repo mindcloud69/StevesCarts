@@ -1,7 +1,6 @@
 package vswe.stevesvehicles.client.gui.detector;
 
 
-import net.minecraft.util.IIcon;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiDetector;
 import vswe.stevesvehicles.module.data.ModuleData;

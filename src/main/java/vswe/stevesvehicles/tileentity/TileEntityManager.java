@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import util.Textures;
+
 import vswe.stevesvehicles.container.ContainerManager;
 import vswe.stevesvehicles.nbt.NBTHelper;
 import vswe.stevesvehicles.network.DataReader;
@@ -63,17 +63,17 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 		markDirty();
 	}
-	
+
 	@Override
 	public String getName() {
 		return "container.manager";
 	}
-	
+
 	@Override
 	public boolean hasCustomName() {
 		return false;
 	}
-	
+
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString(getName());

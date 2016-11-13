@@ -1,11 +1,9 @@
 package vswe.stevesvehicles.client.rendering;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+
 import vswe.stevesvehicles.block.BlockUpgrade;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 

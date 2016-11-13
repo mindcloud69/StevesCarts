@@ -2,10 +2,11 @@ package vswe.stevesvehicles.network;
 
 import java.io.IOException;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
+
+import io.netty.buffer.ByteBuf;
 
 
 public class DataReader {
@@ -104,7 +105,7 @@ public class DataReader {
 	 * Easy access methods
 	 */
 
-	 public boolean readBoolean() {
+	public boolean readBoolean() {
 		return readData(DataBitHelper.BOOLEAN) != 0;
 	}
 

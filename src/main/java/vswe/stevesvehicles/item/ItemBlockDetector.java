@@ -3,6 +3,7 @@ package vswe.stevesvehicles.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.detector.DetectorType;
 

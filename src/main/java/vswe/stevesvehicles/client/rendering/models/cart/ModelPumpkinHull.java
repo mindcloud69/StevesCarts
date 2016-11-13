@@ -1,7 +1,6 @@
 package vswe.stevesvehicles.client.rendering.models.cart;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
+
 import vswe.stevesvehicles.module.ModuleBase;
 @SideOnly(Side.CLIENT)
 public class ModelPumpkinHull extends ModelHull {

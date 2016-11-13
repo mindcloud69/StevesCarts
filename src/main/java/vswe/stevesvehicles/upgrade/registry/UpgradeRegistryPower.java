@@ -9,6 +9,7 @@ import static vswe.stevesvehicles.item.ComponentTypes.SOLAR_PANEL;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.effect.fuel.CombustionFuel;
 import vswe.stevesvehicles.upgrade.effect.fuel.FuelCapacity;

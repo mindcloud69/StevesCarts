@@ -2,6 +2,7 @@ package vswe.stevesvehicles.container.slots;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 

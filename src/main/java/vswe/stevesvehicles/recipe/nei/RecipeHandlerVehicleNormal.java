@@ -3,8 +3,8 @@ package vswe.stevesvehicles.recipe.nei;
 
 import java.util.List;
 
-import codechicken.nei.PositionedStack;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.ModuleDataHull;

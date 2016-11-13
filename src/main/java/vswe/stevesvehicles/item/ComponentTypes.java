@@ -1,8 +1,8 @@
 package vswe.stevesvehicles.item;
 
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.holiday.HolidayType;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
 import vswe.stevesvehicles.recipe.ModuleRecipeShaped;

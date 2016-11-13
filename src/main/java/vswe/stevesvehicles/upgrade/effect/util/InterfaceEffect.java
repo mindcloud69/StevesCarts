@@ -1,8 +1,8 @@
 package vswe.stevesvehicles.upgrade.effect.util;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiUpgrade;
 import vswe.stevesvehicles.container.ContainerUpgrade;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
@@ -25,7 +25,7 @@ public abstract class InterfaceEffect extends BaseEffect {
 	@SideOnly(Side.CLIENT)
 	public void drawMouseOver(GuiUpgrade gui, int x, int y) {}
 
-	public void checkGuiData(ContainerUpgrade con, ICrafting crafting, boolean isNew) {}
+	public void checkGuiData(ContainerUpgrade con, IContainerListener crafting, boolean isNew) {}
 
 	public void receiveGuiData(int id, short data) {}
 

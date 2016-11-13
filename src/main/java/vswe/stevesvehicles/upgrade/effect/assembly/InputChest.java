@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.container.ContainerCartAssembler;
 import vswe.stevesvehicles.container.slots.SlotAssemblerFuel;
 import vswe.stevesvehicles.container.slots.SlotModule;

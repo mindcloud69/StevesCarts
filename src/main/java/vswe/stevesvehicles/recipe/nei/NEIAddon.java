@@ -1,12 +1,5 @@
 package vswe.stevesvehicles.recipe.nei;
 
-import codechicken.nei.api.API;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.GeneratedInfo;
 
 

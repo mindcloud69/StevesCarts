@@ -1,7 +1,5 @@
 package vswe.stevesvehicles.client.rendering;
 
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 

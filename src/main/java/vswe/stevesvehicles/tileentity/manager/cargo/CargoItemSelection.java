@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.tileentity.manager.cargo;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.localization.ILocalizedText;
 
 public class CargoItemSelection {

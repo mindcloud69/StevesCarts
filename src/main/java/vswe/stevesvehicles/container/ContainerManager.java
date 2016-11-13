@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+
 import vswe.stevesvehicles.tileentity.TileEntityBase;
 import vswe.stevesvehicles.tileentity.TileEntityManager;
 

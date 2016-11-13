@@ -1,13 +1,11 @@
 package vswe.stevesvehicles.tileentity;
 import java.util.ArrayList;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
+
 import vswe.stevesvehicles.client.gui.screen.GuiActivator;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.container.ContainerActivator;

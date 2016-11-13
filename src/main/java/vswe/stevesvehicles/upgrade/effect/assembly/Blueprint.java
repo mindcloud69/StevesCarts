@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.container.slots.SlotCart;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.ModuleDataItemHandler;
@@ -45,7 +46,7 @@ public class Blueprint extends SimpleInventoryEffect {
 			return missing.contains(module);
 		}else{
 			//depends on setting, will return false for now
-					return false;
+			return false;
 		}
 	}
 

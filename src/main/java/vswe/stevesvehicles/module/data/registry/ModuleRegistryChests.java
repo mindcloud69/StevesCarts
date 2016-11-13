@@ -17,12 +17,11 @@ import static vswe.stevesvehicles.item.ComponentTypes.YELLOW_GIFT_RIBBON;
 import java.util.ArrayList;
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.rendering.models.common.ModelEggBasket;
 import vswe.stevesvehicles.client.rendering.models.common.ModelExtractingChests;

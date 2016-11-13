@@ -8,10 +8,9 @@ import static vswe.stevesvehicles.item.ComponentTypes.REINFORCED_METAL;
 import static vswe.stevesvehicles.item.ComponentTypes.REINFORCED_WHEELS;
 import static vswe.stevesvehicles.item.ComponentTypes.WOODEN_WHEELS;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelHull;

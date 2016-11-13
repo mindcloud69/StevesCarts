@@ -1,11 +1,6 @@
 package vswe.stevesvehicles.vehicle;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 

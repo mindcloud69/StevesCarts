@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.container.slots;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+
 import vswe.stevesvehicles.tank.Tank;
 import vswe.stevesvehicles.tileentity.TileEntityLiquid;
 public class SlotLiquidManagerInput extends SlotBase

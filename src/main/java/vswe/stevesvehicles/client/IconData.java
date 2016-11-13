@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.client;
 
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 public class IconData {

@@ -3,14 +3,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.container.slots.SlotAssembler;
 import vswe.stevesvehicles.container.slots.SlotHull;
 import vswe.stevesvehicles.tileentity.TileEntityBase;

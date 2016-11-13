@@ -3,6 +3,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleFireball extends ModuleProjectile {

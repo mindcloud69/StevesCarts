@@ -6,9 +6,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.LIQUID_CLEANING_CORE;
 import static vswe.stevesvehicles.item.ComponentTypes.LIQUID_CLEANING_TUBE;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelCleaner;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelLiquidDrainer;

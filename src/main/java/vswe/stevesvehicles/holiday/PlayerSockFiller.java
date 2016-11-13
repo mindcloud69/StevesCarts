@@ -1,11 +1,8 @@
 package vswe.stevesvehicles.holiday;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ComponentTypes;
 

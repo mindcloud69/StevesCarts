@@ -1,7 +1,6 @@
 package vswe.stevesvehicles.module.data;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 public class ModuleDataPair {
 

@@ -4,18 +4,12 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import codechicken.nei.PositionedStack;
-import codechicken.nei.api.DefaultOverlayRenderer;
-import codechicken.nei.api.IOverlayHandler;
-import codechicken.nei.api.IRecipeOverlayRenderer;
-import codechicken.nei.api.IStackPositioner;
-import codechicken.nei.recipe.RecipeInfo;
-import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+
 import vswe.stevesvehicles.recipe.ModuleRecipe;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 

@@ -2,8 +2,6 @@ package vswe.stevesvehicles.module.data.registry;
 
 import static vswe.stevesvehicles.item.ComponentTypes.TANK_VALVE;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.common.ModelAdvancedTank;
 import vswe.stevesvehicles.client.rendering.models.common.ModelFrontTank;
 import vswe.stevesvehicles.client.rendering.models.common.ModelSideTanks;

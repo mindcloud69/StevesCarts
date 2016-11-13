@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.tileentity.manager.cargo;
 
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.module.data.ModuleData;
 

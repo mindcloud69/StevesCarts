@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.container;
 import net.minecraft.inventory.IInventory;
+
 import vswe.stevesvehicles.tileentity.TileEntityBase;
 import vswe.stevesvehicles.tileentity.TileEntityDetector;
 import vswe.stevesvehicles.tileentity.detector.LogicObject;

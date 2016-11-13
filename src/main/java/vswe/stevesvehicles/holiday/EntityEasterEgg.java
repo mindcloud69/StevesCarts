@@ -9,7 +9,6 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 public class EntityEasterEgg extends EntityEgg {
 	public EntityEasterEgg(World world) {

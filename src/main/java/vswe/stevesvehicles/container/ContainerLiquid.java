@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.container;
 import net.minecraft.inventory.IInventory;
 import net.minecraftforge.fluids.FluidStack;
+
 import vswe.stevesvehicles.container.slots.SlotLiquidFilter;
 import vswe.stevesvehicles.container.slots.SlotLiquidManagerInput;
 import vswe.stevesvehicles.container.slots.SlotLiquidOutput;

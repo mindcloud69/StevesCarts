@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.container.slots;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ComponentTypes;
 

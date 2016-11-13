@@ -2,6 +2,7 @@ package vswe.stevesvehicles.vehicle;
 
 
 import net.minecraft.nbt.NBTTagCompound;
+
 import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 
 public class VehicleBoat extends VehicleBase {

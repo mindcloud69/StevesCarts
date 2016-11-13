@@ -3,6 +3,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+
 import vswe.stevesvehicles.module.data.ModuleType;
 import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
 

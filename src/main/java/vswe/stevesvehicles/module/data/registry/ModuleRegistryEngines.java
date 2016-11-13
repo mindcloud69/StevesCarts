@@ -6,10 +6,9 @@ import static vswe.stevesvehicles.item.ComponentTypes.REINFORCED_METAL;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 import static vswe.stevesvehicles.item.ComponentTypes.SOLAR_PANEL;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.client.rendering.models.common.ModelCompactSolarPanel;
 import vswe.stevesvehicles.client.rendering.models.common.ModelEngineFrame;
 import vswe.stevesvehicles.client.rendering.models.common.ModelEngineInside;

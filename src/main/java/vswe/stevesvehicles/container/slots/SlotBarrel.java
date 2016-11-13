@@ -1,11 +1,10 @@
 package vswe.stevesvehicles.container.slots;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.module.common.storage.barrel.ModuleBarrel;
 
 public class SlotBarrel extends SlotChest implements ISpecialSlotRender, ISpecialSlotSize {

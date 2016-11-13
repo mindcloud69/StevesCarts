@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.client.rendering;
 
-import net.minecraft.util.MathHelper;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 

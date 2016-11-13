@@ -1,10 +1,9 @@
 package vswe.stevesvehicles.arcade.sweeper;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+
 import vswe.stevesvehicles.arcade.ArcadeGame;
 import vswe.stevesvehicles.arcade.sweeper.Tile.TILE_STATE;
 import vswe.stevesvehicles.client.ResourceHelper;

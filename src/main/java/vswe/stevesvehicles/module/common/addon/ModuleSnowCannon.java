@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.module.common.addon;
 import net.minecraft.init.Blocks;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleSnowCannon extends ModuleAddon {

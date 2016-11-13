@@ -8,10 +8,9 @@ import static vswe.stevesvehicles.item.ComponentTypes.SHOOTING_STATION;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.rendering.models.common.ModelGun;
 import vswe.stevesvehicles.client.rendering.models.common.ModelMobDetector;

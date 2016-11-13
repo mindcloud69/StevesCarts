@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.module.common.addon.mobdetector;
 import net.minecraft.entity.Entity;
+
 import vswe.stevesvehicles.module.common.addon.ModuleAddon;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 

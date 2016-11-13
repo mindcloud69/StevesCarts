@@ -9,15 +9,13 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.GuiRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.ResourceLocation;
+
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.module.data.ModuleData;
@@ -387,7 +385,7 @@ public class RecipeHandlerVehicleModuleUsage extends RecipeHandlerVehicle {
         ============ METHODS TO GET RID OF THE PAGE TEXT ===========
 	 */
 
-	 private static final ResourceLocation BUTTON_TEXTURE = new ResourceLocation("textures/gui/widgets.png");
+	private static final ResourceLocation BUTTON_TEXTURE = new ResourceLocation("textures/gui/widgets.png");
 
 	@Override
 	protected void repairRemovedTitle() {

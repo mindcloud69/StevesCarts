@@ -2,6 +2,7 @@ package vswe.stevesvehicles.container;
 import java.util.ArrayList;
 
 import net.minecraft.inventory.IInventory;
+
 import vswe.stevesvehicles.container.slots.SlotCargo;
 import vswe.stevesvehicles.tileentity.TileEntityCargo;
 

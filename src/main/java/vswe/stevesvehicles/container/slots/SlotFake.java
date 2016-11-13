@@ -2,6 +2,7 @@ package vswe.stevesvehicles.container.slots;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public abstract class SlotFake extends SlotBase implements ISpecialItemTransferValidator {

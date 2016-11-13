@@ -4,12 +4,8 @@ package vswe.stevesvehicles.upgrade.registry;
 import static vswe.stevesvehicles.item.ComponentTypes.BLANK_UPGRADE;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.util.IIcon;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.effect.assembly.Blueprint;

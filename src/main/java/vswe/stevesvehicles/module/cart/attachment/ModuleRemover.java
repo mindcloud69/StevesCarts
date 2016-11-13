@@ -3,7 +3,6 @@ package vswe.stevesvehicles.module.cart.attachment;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
 import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 

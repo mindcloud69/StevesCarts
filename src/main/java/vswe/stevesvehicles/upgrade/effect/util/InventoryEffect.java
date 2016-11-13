@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 public abstract class InventoryEffect extends InterfaceEffect {

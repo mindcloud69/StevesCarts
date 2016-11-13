@@ -3,12 +3,10 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -16,14 +14,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.client.gui.screen.GuiUpgrade;
 import vswe.stevesvehicles.container.ContainerBase;
@@ -38,8 +41,7 @@ import vswe.stevesvehicles.upgrade.effect.util.InventoryEffect;
 import vswe.stevesvehicles.upgrade.effect.util.TankEffect;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
-public class TileEntityUpgrade extends TileEntityBase
-implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
+public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITickable {
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -133,17 +135,17 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 			}
 		}
 	}
-
+	
 	@Override
-	public Packet getDescriptionPacket() {
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound var1 = new NBTTagCompound();
 		this.writeToNBT(var1);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, var1);
-	}	
-
+		return new SPacketUpdateTileEntity(getPos(), 1, var1);
+	}
+	
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g());
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
 	}
 
 	public Upgrade getUpgrade() {
@@ -195,7 +197,7 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound tagCompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 
 		NBTTagList items = new NBTTagList();
@@ -221,30 +223,19 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 
 		if (effects != null) {
 			save(tagCompound);
-		}		
-	}	
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
-		return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && entityPlayer.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+		}
+		return tagCompound;
 	}
 
 	@Override
-	public void updateEntity() {
-		if (effects != null && getMaster() != null) {
-			update();
-		}
-	}	
-
-	@Override
-	public void initGuiData(Container con, ICrafting crafting) {
+	public void initGuiData(Container con, IContainerListener crafting) {
 		if (effects != null && interfaceEffect != null) {
 			interfaceEffect.checkGuiData((ContainerUpgrade)con, crafting, true);
 		}
 	}
 
 	@Override
-	public void checkGuiData(Container con, ICrafting crafting) {
+	public void checkGuiData(Container con, IContainerListener crafting) {
 		if (effects != null && interfaceEffect != null) {
 			interfaceEffect.checkGuiData((ContainerUpgrade)con, crafting, false);
 		}
@@ -341,14 +332,14 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "container.assembler_upgrade";
 	}
-
+	
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
-	}	
+	}
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -356,30 +347,30 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 	}	
 
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 
 	}
 
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 
 	}
-
+	
 	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
+	public ItemStack removeStackFromSlot(int index) {
 		if (!hasInventory()) {
 			return null;
 		}else{
-			ItemStack item = getStackInSlot(i);
+			ItemStack item = getStackInSlot(index);
 
 			if (item != null) {
-				setInventorySlotContents(i, null);
+				setInventorySlotContents(index, null);
 				return item;
 			}else {
 				return null;
 			}
 		}	
-	}		
+	}	
 
 
 	@Override
@@ -401,12 +392,11 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 
 	//slots
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-
+	public int[] getSlotsForFace(EnumFacing side) {
 		if (effects != null && inventoryEffect != null) {
 			return slotsForSide;
 		}else if (getMaster() != null) {
-			return getMaster().getAccessibleSlotsFromSide(side);
+			return getMaster().getSlotsForFace(side);
 		}else{
 			return new int[0];
 		}
@@ -414,7 +404,7 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 
 	//in
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side) {
+	public boolean canInsertItem(int slot, ItemStack item, EnumFacing side) {
 		if (effects != null && inventoryEffect != null) {
 			return isItemValidForSlot(slot, item);
 		}
@@ -424,46 +414,21 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 
 	//out
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side) {
+	public boolean canExtractItem(int slot, ItemStack item, EnumFacing side) {
 		return effects != null && inventoryEffect != null || getMaster() != null && getMaster().canExtractItem(slot, item, side);
 	}
 
 
 	//tank stuff
 
-	/**
-	 * Fills fluid into internal tanks, distribution is left to the ITankContainer.
-	 * @param from Orientation the fluid is pumped in from.
-	 * @param resource FluidStack representing the maximum amount of fluid filled into the ITankContainer
-	 * @param doFill If false filling will only be simulated.
-	 * @return Amount of resource that was filled into internal tanks.
-	 */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		return this.fill(resource, doFill);		
-	}
-
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		if (resource != null && resource.isFluidEqual(getFluid())) {
-			return drain(from, resource.amount, doDrain);			
+			return drain(resource.amount, doDrain);			
 		}else{
 			return null;
 		}
 	}		
-
-	/**
-	 * Drains fluid out of internal tanks, distribution is left to the ITankContainer.
-	 * @param from Orientation the fluid is drained to.
-	 * @param maxDrain Maximum amount of fluid to drain.
-	 * @param doDrain If false draining will only be simulated.
-	 * @return FluidStack representing the fluid and amount actually drained from the ITankContainer
-	 */
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return this.drain(maxDrain, doDrain);
-	}
 
 
 	@Override
@@ -484,6 +449,13 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 		}
 	}
 
+	/**
+	 * Fills fluid into internal tanks, distribution is left to the ITankContainer.
+	 * @param from Orientation the fluid is pumped in from.
+	 * @param resource FluidStack representing the maximum amount of fluid filled into the ITankContainer
+	 * @param doFill If false filling will only be simulated.
+	 * @return Amount of resource that was filled into internal tanks.
+	 */
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
 		if (getTank() == null) {
@@ -493,6 +465,13 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 		}		
 	}
 
+	/**
+	 * Drains fluid out of internal tanks, distribution is left to the ITankContainer.
+	 * @param from Orientation the fluid is drained to.
+	 * @param maxDrain Maximum amount of fluid to drain.
+	 * @param doDrain If false draining will only be simulated.
+	 * @return FluidStack representing the fluid and amount actually drained from the ITankContainer
+	 */
 	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if (getTank() == null) {
@@ -515,20 +494,11 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 	private Tank getTank() {
 		return tankEffect != null ? tankEffect.getTank() : null;
 	}
-
+	
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		return new FluidTankInfo[] {getInfo()};
+	public IFluidTankProperties[] getTankProperties() {
+		IFluidTank tank = getTank();
+		return new FluidTankProperties[] {new FluidTankProperties(tank.getFluid(), tank.getCapacity())};
 	}
 
 
@@ -560,9 +530,11 @@ implements IInventory, ISidedInventory, IFluidHandler, IFluidTank {
 		compound.setTag(NBT_EFFECT, list);
 	}
 
-	private void update() {
-		for (BaseEffect effect : effects) {
-			effect.update();
+	public void update() {
+		if(effects != null && getMaster() != null) {
+			for (BaseEffect effect : effects) {
+				effect.update();
+			}
 		}
 	}
 

@@ -1,8 +1,6 @@
 package vswe.stevesvehicles.module.data.registry.boat;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.boat.ModelHull;
 import vswe.stevesvehicles.client.rendering.models.common.ModelHullTop;

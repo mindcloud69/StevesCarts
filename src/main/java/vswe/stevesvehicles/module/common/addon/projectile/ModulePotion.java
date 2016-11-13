@@ -4,6 +4,7 @@ import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModulePotion extends ModuleProjectile {

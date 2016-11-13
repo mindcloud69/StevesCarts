@@ -4,6 +4,7 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.module.common.addon.recipe.ModuleCrafter;
 import vswe.stevesvehicles.module.common.addon.recipe.ModuleCrafterAdv;
 import vswe.stevesvehicles.module.common.addon.recipe.ModuleSmelter;

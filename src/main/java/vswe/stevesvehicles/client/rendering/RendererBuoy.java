@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.rendering.models.ModelBuoy;
 

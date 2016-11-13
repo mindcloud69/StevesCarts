@@ -2,11 +2,10 @@ package vswe.stevesvehicles.container;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.tileentity.TileEntityBase;

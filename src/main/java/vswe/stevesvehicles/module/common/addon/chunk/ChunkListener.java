@@ -1,7 +1,7 @@
 package vswe.stevesvehicles.module.common.addon.chunk;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
+
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public class ChunkListener {

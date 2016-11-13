@@ -1,8 +1,5 @@
 package vswe.stevesvehicles.localization;
 
-
-import net.minecraft.util.StatCollector;
-
 public class LocalizedTextSimple implements ILocalizedText {
 	private String unlocalizedText;
 

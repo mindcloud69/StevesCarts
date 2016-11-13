@@ -2,10 +2,10 @@ package vswe.stevesvehicles.holiday;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.item.ComponentTypes;
 

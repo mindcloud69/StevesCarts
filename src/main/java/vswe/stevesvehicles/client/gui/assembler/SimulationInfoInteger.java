@@ -1,8 +1,6 @@
 package vswe.stevesvehicles.client.gui.assembler;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiCartAssembler;
 import vswe.stevesvehicles.localization.ILocalizedText;
 

@@ -8,10 +8,9 @@ import static vswe.stevesvehicles.item.ComponentTypes.GREEN_PIGMENT;
 import static vswe.stevesvehicles.item.ComponentTypes.RED_PIGMENT;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+
 import vswe.stevesvehicles.client.rendering.models.common.ModelNote;
 import vswe.stevesvehicles.module.common.addon.ModuleColorRandomizer;
 import vswe.stevesvehicles.module.common.addon.ModuleColorizer;

@@ -1,10 +1,5 @@
 package vswe.stevesvehicles.network;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,6 +7,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
+
 import vswe.stevesvehicles.block.BlockCartAssembler;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.container.ContainerBase;

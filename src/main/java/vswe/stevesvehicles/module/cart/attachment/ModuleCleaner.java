@@ -5,6 +5,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class ModuleCleaner extends ModuleAttachment {

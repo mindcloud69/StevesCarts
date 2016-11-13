@@ -1,14 +1,12 @@
 package vswe.stevesvehicles.client.sounds;
 
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.MovingSoundMinecart;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.MinecraftForge;
+
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class MinecartSoundMuter {

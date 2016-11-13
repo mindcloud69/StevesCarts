@@ -2,11 +2,7 @@ package vswe.stevesvehicles.tileentity.detector;
 
 import java.util.HashMap;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.BlockRailAdvancedDetector;
 import vswe.stevesvehicles.block.ModBlocks;

@@ -1,7 +1,6 @@
 package vswe.stevesvehicles.tileentity.detector.modulestate;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 

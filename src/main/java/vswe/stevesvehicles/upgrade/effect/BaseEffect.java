@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.upgrade.effect;
 
 import net.minecraft.nbt.NBTTagCompound;
+
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 
