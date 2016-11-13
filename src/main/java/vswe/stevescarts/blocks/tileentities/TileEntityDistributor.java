@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -19,6 +20,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDistributor;
@@ -454,5 +458,25 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	@Override
 	public void clear() {
 
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return true;
+		}
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return (T) new SidedInvWrapper(this, facing);
+		}
+		return super.getCapability(capability, facing);
 	}
 }
