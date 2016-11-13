@@ -18,7 +18,7 @@ public class ModuleRocket extends ModuleBase {
 	private double landY;
 	private double groundY;
 	//TODO: Find a name
-	private static DataParameter<Integer> UNKNOWN = createDw(DataSerializers.VARINT);
+	private DataParameter<Integer> UNKNOWN;
 
 	public ModuleRocket(final EntityMinecartModular cart) {
 		super(cart);
@@ -100,6 +100,7 @@ public class ModuleRocket extends ModuleBase {
 
 	@Override
 	public void initDw() {
+		UNKNOWN = createDw(DataSerializers.VARINT);
 		registerDw(UNKNOWN, 0);
 	}
 

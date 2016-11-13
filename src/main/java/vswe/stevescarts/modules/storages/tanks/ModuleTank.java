@@ -29,8 +29,8 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	protected Tank tank;
 	private int tick;
 	protected int[] tankBounds;
-	private static DataParameter<String> FLUID_NAME = createDw(DataSerializers.STRING);
-	private static DataParameter<Integer> FLUID_AMOUNT = createDw(DataSerializers.VARINT);
+	private DataParameter<String> FLUID_NAME;
+	private DataParameter<Integer> FLUID_AMOUNT;
 
 	public ModuleTank(final EntityMinecartModular cart) {
 		super(cart);
@@ -201,6 +201,8 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 
 	@Override
 	public void initDw() {
+		FLUID_NAME = createDw(DataSerializers.STRING);
+		FLUID_AMOUNT = createDw(DataSerializers.VARINT);
 		registerDw(FLUID_NAME, (this.tank.getFluid() == null) ? "" : this.tank.getFluid().getFluid().getName());
 		registerDw(FLUID_AMOUNT, (this.tank.getFluid() == null) ? -1 : this.tank.getFluid().amount);
 	}

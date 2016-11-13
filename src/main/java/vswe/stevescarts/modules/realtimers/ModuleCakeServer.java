@@ -23,7 +23,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 	private static final int SLICES_PER_CAKE = 6;
 	private static final int MAX_TOTAL_SLICES = 66;
 	private int[] rect;
-	private static DataParameter<Integer> BUFFER = createDw(DataSerializers.VARINT);
+	private DataParameter<Integer> BUFFER;
 
 	public ModuleCakeServer(final EntityMinecartModular cart) {
 		super(cart);
@@ -71,6 +71,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
+		BUFFER = createDw(DataSerializers.VARINT);
 		registerDw(BUFFER, 0);
 	}
 
