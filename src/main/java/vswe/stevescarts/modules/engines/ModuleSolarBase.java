@@ -127,10 +127,10 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 
 	@Override
 	public void initDw() {
+		PRIORITY = createDw(DataSerializers.VARINT);
 		super.initDw();
 		LIGHT = createDw(DataSerializers.VARINT);
 		UP_STATE = createDw(DataSerializers.BOOLEAN);
-		PRIORITY = createDw(DataSerializers.VARINT);
 		registerDw(LIGHT, 0);
 		registerDw(UP_STATE, false);
 	}
