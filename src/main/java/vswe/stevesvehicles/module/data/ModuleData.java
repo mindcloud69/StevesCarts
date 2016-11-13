@@ -10,6 +10,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.gui.ColorHelper;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
@@ -51,8 +55,8 @@ public class ModuleData implements IRecipeOutput {
 	private ArrayList<String> removedModels;
 	@SideOnly(Side.CLIENT)
 	private float modelMultiplier;
-	@SideOnly(Side.CLIENT)
-	private IIcon icon;
+	/*@SideOnly(Side.CLIENT)
+	private IIcon icon;*/
 
 	public ModuleData(String unlocalizedName, Class<? extends ModuleBase> moduleClass, int modularCost) {
 		this.moduleClass = moduleClass;
@@ -284,7 +288,7 @@ public class ModuleData implements IRecipeOutput {
 	}
 
 	public String getName() {
-		return StatCollector.translateToLocal(getUnlocalizedName());
+		return I18n.translateToLocal(getUnlocalizedName());
 	}
 
 	public String getUnlocalizedName() {
@@ -512,7 +516,7 @@ public class ModuleData implements IRecipeOutput {
 	}
 
 
-	@SideOnly(Side.CLIENT)
+	/*@SideOnly(Side.CLIENT)
 	public void createIcon(IIconRegister register) {
 		icon = register.registerIcon(StevesVehicles.instance.textureHeader + ":modules/" + getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
 	}
@@ -520,7 +524,7 @@ public class ModuleData implements IRecipeOutput {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon() {
 		return icon;
-	}
+	}*/
 
 	public ItemStack getItemStack(int count) {
 		int id = ModuleRegistry.getIdFromModule(this);

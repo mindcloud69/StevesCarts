@@ -6,7 +6,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.SPEED_HANDLE;
 import static vswe.stevesvehicles.item.ComponentTypes.WHEEL;
 
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelLever;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelWheel;
@@ -34,8 +35,8 @@ public class ModuleRegistryCartTravel extends ModuleRegistry {
 		};
 
 		brake.addShapedRecipe(  null,                   null,                   "dyeRed",
-				Items.iron_ingot,       REFINED_HANDLE,         null,
-				Items.redstone,         Items.iron_ingot,       null);
+				Items.IRON_INGOT,       REFINED_HANDLE,         null,
+				Items.REDSTONE,         Items.IRON_INGOT,       null);
 
 
 		brake.addVehicles(VehicleRegistry.CART);
@@ -55,8 +56,8 @@ public class ModuleRegistryCartTravel extends ModuleRegistry {
 		};
 
 		controller.addShapedRecipe(null, GRAPHICAL_INTERFACE, null,
-				Items.redstone, WHEEL, Items.redstone,
-				Items.iron_ingot, Items.iron_ingot, SPEED_HANDLE);
+				Items.REDSTONE, WHEEL, Items.REDSTONE,
+				Items.IRON_INGOT, Items.IRON_INGOT, SPEED_HANDLE);
 
 
 		controller.addVehicles(VehicleRegistry.CART);

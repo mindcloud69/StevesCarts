@@ -10,7 +10,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.WOODEN_WHEELS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelHull;
@@ -66,8 +67,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			}
 		};
 
-		standard.addShapedRecipe(   Items.iron_ingot,   null,               Items.iron_ingot,
-				Items.iron_ingot,   Items.iron_ingot,   Items.iron_ingot,
+		standard.addShapedRecipe(   Items.IRON_INGOT,   null,               Items.IRON_INGOT,
+				Items.IRON_INGOT,   Items.IRON_INGOT,   Items.IRON_INGOT,
 				IRON_WHEELS,        null,               IRON_WHEELS);
 
 		standard.addVehicles(VehicleRegistry.CART);
@@ -121,7 +122,7 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 		};
 
 		pumpkin.addShapedRecipe(    "plankWood",        null,               "plankWood",
-				"plankWood",        Blocks.pumpkin,     "plankWood",
+				"plankWood",        Blocks.PUMPKIN,     "plankWood",
 				WOODEN_WHEELS,      null,               WOODEN_WHEELS);
 
 		if (!StevesVehicles.holidays.contains(HolidayType.HALLOWEEN)) {
@@ -147,8 +148,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 		pig.addSides(ModuleSide.FRONT);
 		pig.addMessage(LocalizationMessage.THUNDER_PIG);
 
-		pig.addShapedRecipe(    Items.porkchop,     null,               Items.porkchop,
-				Items.porkchop,     Items.porkchop,     Items.porkchop,
+		pig.addShapedRecipe(    Items.PORKCHOP,     null,               Items.PORKCHOP,
+				Items.PORKCHOP,     Items.PORKCHOP,     Items.PORKCHOP,
 				IRON_WHEELS,        null,               IRON_WHEELS);
 
 		pig.addVehicles(VehicleRegistry.CART);

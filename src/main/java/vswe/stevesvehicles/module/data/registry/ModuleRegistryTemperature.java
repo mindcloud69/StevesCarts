@@ -20,9 +20,9 @@ public class ModuleRegistryTemperature extends ModuleRegistry {
 
 		ModuleData melter = new ModuleData("melter", ModuleMelter.class, 10);
 
-		melter.addShapedRecipe(     Blocks.nether_brick,    Blocks.glowstone,   Blocks.nether_brick,
-				Items.glowstone_dust,   Blocks.furnace,     Items.glowstone_dust,
-				Blocks.nether_brick,    Blocks.glowstone,   Blocks.nether_brick);
+		melter.addShapedRecipe(     Blocks.NETHER_BRICK,    Blocks.GLOWSTONE,   Blocks.NETHER_BRICK,
+				Items.GLOWSTONE_DUST,   Blocks.FURNACE,     Items.GLOWSTONE_DUST,
+				Blocks.NETHER_BRICK,    Blocks.GLOWSTONE,   Blocks.NETHER_BRICK);
 
 		melter.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(melter);
@@ -30,9 +30,9 @@ public class ModuleRegistryTemperature extends ModuleRegistry {
 
 		ModuleData extreme = new ModuleData("extreme_melter", ModuleMelterExtreme.class, 19);
 
-		extreme.addShapedRecipe(    Blocks.nether_brick,    Blocks.obsidian,        Blocks.nether_brick,
-				melter,                 Items.lava_bucket,      melter,
-				Blocks.nether_brick,    Blocks.obsidian,        Blocks.nether_brick);
+		extreme.addShapedRecipe(    Blocks.NETHER_BRICK,    Blocks.OBSIDIAN,        Blocks.NETHER_BRICK,
+				melter,                 Items.LAVA_BUCKET,      melter,
+				Blocks.NETHER_BRICK,    Blocks.OBSIDIAN,        Blocks.NETHER_BRICK);
 
 		extreme.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(extreme);
@@ -42,9 +42,9 @@ public class ModuleRegistryTemperature extends ModuleRegistry {
 
 		ModuleData freezer = new ModuleData("freezer", ModuleSnowCannon.class, 24);
 
-		freezer.addShapedRecipe(    Blocks.snow,            Items.water_bucket,     Blocks.snow,
-				Items.water_bucket,     SIMPLE_PCB,             Items.water_bucket,
-				Blocks.snow,            Items.water_bucket,     Blocks.snow);
+		freezer.addShapedRecipe(    Blocks.SNOW,            Items.WATER_BUCKET,     Blocks.SNOW,
+				Items.WATER_BUCKET,     SIMPLE_PCB,             Items.WATER_BUCKET,
+				Blocks.SNOW,            Items.WATER_BUCKET,     Blocks.SNOW);
 
 		freezer.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(freezer);

@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.module.data;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.translation.I18n;
 
 public class ModuleDataPair {
 
@@ -42,7 +43,7 @@ public class ModuleDataPair {
 
 	@Override
 	public String toString() {
-		String ret = data.getCartInfoText(StatCollector.translateToLocal(name), extraData);
+		String ret = data.getCartInfoText(I18n.translateToLocal(name), extraData);
 		if (count != 1) {
 			ret += " x" + count;
 		}

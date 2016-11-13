@@ -7,7 +7,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.LIQUID_CLEANING_TUBE;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelCleaner;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelLiquidDrainer;
@@ -72,9 +73,9 @@ public class ModuleRegistryCartCleaning extends ModuleRegistry {
 
 
 		ModuleData experience = new ModuleData("experience_bank", ModuleExperience.class, 36);
-		experience.addShapedRecipe( null,                   Items.redstone,     null,
-				Items.glowstone_dust,   Items.emerald,      Items.glowstone_dust,
-				SIMPLE_PCB,             Items.cauldron,    SIMPLE_PCB);
+		experience.addShapedRecipe( null,                   Items.REDSTONE,     null,
+				Items.GLOWSTONE_DUST,   Items.EMERALD,      Items.GLOWSTONE_DUST,
+				SIMPLE_PCB,             Items.CAULDRON,    SIMPLE_PCB);
 
 
 		experience.addVehicles(VehicleRegistry.CART);

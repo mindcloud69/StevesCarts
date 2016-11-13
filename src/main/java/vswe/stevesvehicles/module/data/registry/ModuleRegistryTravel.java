@@ -4,7 +4,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.common.ModelCage;
 import vswe.stevesvehicles.client.rendering.models.common.ModelSeat;
 import vswe.stevesvehicles.localization.entry.info.LocalizationGroup;
@@ -48,9 +49,9 @@ public class ModuleRegistryTravel extends ModuleRegistry {
 
 		ModuleData arcade = new ModuleData("steves_arcade", ModuleArcade.class, 10);
 
-		arcade.addShapedRecipe( null,                   Blocks.glass_pane,          null,
+		arcade.addShapedRecipe( null,                   Blocks.GLASS_PANE,          null,
 				"plankWood",            SIMPLE_PCB,                 "plankWood",
-				Items.redstone,         "plankWood",                Items.redstone);
+				Items.REDSTONE,         "plankWood",                Items.REDSTONE);
 
 		arcade.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		arcade.addRequirement(seats);
@@ -70,9 +71,9 @@ public class ModuleRegistryTravel extends ModuleRegistry {
 			}
 		};
 
-		cage.addShapedRecipe(   Blocks.iron_bars,     Blocks.iron_bars,     Blocks.iron_bars,
-				Blocks.iron_bars,     SIMPLE_PCB,           Blocks.iron_bars,
-				Blocks.iron_bars,     Blocks.iron_bars,     Blocks.iron_bars);
+		cage.addShapedRecipe(   Blocks.IRON_BARS,     Blocks.IRON_BARS,     Blocks.IRON_BARS,
+				Blocks.IRON_BARS,     SIMPLE_PCB,           Blocks.IRON_BARS,
+				Blocks.IRON_BARS,     Blocks.IRON_BARS,     Blocks.IRON_BARS);
 
 		cage.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		cage.addSides(ModuleSide.CENTER, ModuleSide.TOP);

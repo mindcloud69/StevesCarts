@@ -4,7 +4,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.DYNAMITE;
 import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.rendering.models.common.ModelCake;
 import vswe.stevesvehicles.holiday.HolidayType;
@@ -28,7 +29,7 @@ public class ModuleRegistryCake extends ModuleRegistry {
 			}
 		};
 
-		cake.addShapedRecipe(   null,           Items.cake,         null,
+		cake.addShapedRecipe(   null,           Items.CAKE,         null,
 				"slabWood",     "slabWood",         "slabWood",
 				null,           SIMPLE_PCB,         null);
 
@@ -46,7 +47,7 @@ public class ModuleRegistryCake extends ModuleRegistry {
 			}
 		};
 
-		trick.addShapedRecipe(      null,           Items.cake,         null,
+		trick.addShapedRecipe(      null,           Items.CAKE,         null,
 				"slabWood",     "slabWood",         "slabWood",
 				DYNAMITE,       SIMPLE_PCB,         DYNAMITE);
 

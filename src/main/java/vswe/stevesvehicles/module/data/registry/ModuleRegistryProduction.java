@@ -20,7 +20,7 @@ public class ModuleRegistryProduction extends ModuleRegistry {
 		super("common.production");
 
 		ModuleData crafter = new ModuleData("crafter", ModuleCrafter.class, 22);
-		crafter.addShapelessRecipe(SIMPLE_PCB, Blocks.crafting_table);
+		crafter.addShapelessRecipe(SIMPLE_PCB, Blocks.CRAFTING_TABLE);
 
 		crafter.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		crafter.setAllowDuplicate(true);
@@ -28,7 +28,7 @@ public class ModuleRegistryProduction extends ModuleRegistry {
 
 
 		ModuleData smelter = new ModuleData("smelter", ModuleSmelter.class, 22);
-		smelter.addShapelessRecipe(SIMPLE_PCB, Blocks.furnace);
+		smelter.addShapelessRecipe(SIMPLE_PCB, Blocks.FURNACE);
 
 		smelter.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		smelter.setAllowDuplicate(true);
@@ -36,9 +36,9 @@ public class ModuleRegistryProduction extends ModuleRegistry {
 
 
 		ModuleData crafterAdvanced = new ModuleData("advanced_crafter", ModuleCrafterAdv.class, 42);
-		crafterAdvanced.addShapedRecipe(    Items.redstone,         SIMPLE_PCB,       Items.redstone,
+		crafterAdvanced.addShapedRecipe(    Items.REDSTONE,         SIMPLE_PCB,       Items.REDSTONE,
 				SIMPLE_PCB,             crafter,          SIMPLE_PCB,
-				Items.redstone,         SIMPLE_PCB,       Items.redstone);
+				Items.REDSTONE,         SIMPLE_PCB,       Items.REDSTONE);
 
 		crafterAdvanced.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		crafterAdvanced.setAllowDuplicate(true);
@@ -46,9 +46,9 @@ public class ModuleRegistryProduction extends ModuleRegistry {
 
 
 		ModuleData smelterAdvanced = new ModuleData("advanced_smelter", ModuleSmelterAdv.class, 42);
-		smelterAdvanced.addShapedRecipe(    Items.redstone,         SIMPLE_PCB,       Items.redstone,
+		smelterAdvanced.addShapedRecipe(    Items.REDSTONE,         SIMPLE_PCB,       Items.REDSTONE,
 				SIMPLE_PCB,             smelter,          SIMPLE_PCB,
-				Items.redstone,         SIMPLE_PCB,       Items.redstone);
+				Items.REDSTONE,         SIMPLE_PCB,       Items.REDSTONE);
 
 		smelterAdvanced.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		smelterAdvanced.setAllowDuplicate(true);
@@ -56,8 +56,8 @@ public class ModuleRegistryProduction extends ModuleRegistry {
 
 
 		ModuleData milker = new ModuleData("milker", ModuleMilker.class, 26);
-		milker.addShapedRecipe(     Items.wheat,    Items.wheat,    Items.wheat,
-				SIMPLE_PCB,     Items.bucket,   SIMPLE_PCB,
+		milker.addShapedRecipe(     Items.WHEAT,    Items.WHEAT,    Items.WHEAT,
+				SIMPLE_PCB,     Items.BUCKET,   SIMPLE_PCB,
 				null,           SIMPLE_PCB,     null);
 
 		milker.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);

@@ -22,9 +22,9 @@ public class ModuleRegistryUtility extends ModuleRegistry {
 		super("common.util");
 
 		ModuleData observer = new ModuleData("power_observer", ModulePowerObserver.class, 12);
-		observer.addShapedRecipe(   null,               Blocks.piston,      null,
-				Items.iron_ingot,   Items.redstone,     Items.iron_ingot,
-				Items.redstone,     ADVANCED_PCB ,      Items.redstone);
+		observer.addShapedRecipe(   null,               Blocks.PISTON,      null,
+				Items.IRON_INGOT,   Items.REDSTONE,     Items.IRON_INGOT,
+				Items.REDSTONE,     ADVANCED_PCB ,      Items.REDSTONE);
 
 		observer.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		observer.addRequirement(ModuleDataGroup.getGroup(ModuleRegistryEngines.ENGINE_KEY));
@@ -34,8 +34,8 @@ public class ModuleRegistryUtility extends ModuleRegistry {
 
 		ModuleData enchanter = new ModuleData("enchanter", ModuleEnchants.class, 72);
 		enchanter.addShapedRecipe(  null,               GALGADORIAN_METAL,              null,
-				Items.book,         Blocks.enchanting_table,        Items.book,
-				Items.redstone,     ADVANCED_PCB,                   Items.redstone);
+				Items.BOOK,         Blocks.ENCHANTING_TABLE,        Items.BOOK,
+				Items.REDSTONE,     ADVANCED_PCB,                   Items.REDSTONE);
 
 		enchanter.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		enchanter.addRequirement(ModuleDataGroup.getCombinedGroup(ENCHANTABLE_KEY, LocalizationGroup.TOOL_SHOOTER,

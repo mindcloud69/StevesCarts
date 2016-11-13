@@ -21,7 +21,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.rendering.models.common.ModelEggBasket;
 import vswe.stevesvehicles.client.rendering.models.common.ModelExtractingChests;
@@ -130,9 +131,9 @@ public class ModuleRegistryChests extends ModuleRegistry {
 			}
 		};
 
-		extracting.addShapedRecipe(     Items.iron_ingot,     SIMPLE_PCB,       Items.iron_ingot,
-				Items.iron_ingot,     CHEST_LOCK,       Items.iron_ingot,
-				Items.iron_ingot,     SIMPLE_PCB,       Items.iron_ingot);
+		extracting.addShapedRecipe(     Items.IRON_INGOT,     SIMPLE_PCB,       Items.IRON_INGOT,
+				Items.IRON_INGOT,     CHEST_LOCK,       Items.IRON_INGOT,
+				Items.IRON_INGOT,     SIMPLE_PCB,       Items.IRON_INGOT);
 
 
 		extracting.addSides(ModuleSide.LEFT, ModuleSide.RIGHT, ModuleSide.CENTER);
@@ -157,7 +158,7 @@ public class ModuleRegistryChests extends ModuleRegistry {
 			}
 		};
 
-		basket.addShapedRecipe(     new ItemStack(Blocks.wool, 1, 4),       new ItemStack(Blocks.wool, 1, 4),           new ItemStack(Blocks.wool, 1, 4),
+		basket.addShapedRecipe(     new ItemStack(Blocks.WOOL, 1, 4),       new ItemStack(Blocks.WOOL, 1, 4),           new ItemStack(Blocks.WOOL, 1, 4),
 				EXPLOSIVE_EASTER_EGG,                   CHEST_LOCK,                                 BURNING_EASTER_EGG,
 				GLISTERING_EASTER_EGG,                  BASKET,                                     CHOCOLATE_EASTER_EGG);
 

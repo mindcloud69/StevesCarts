@@ -8,7 +8,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.common.ModelDynamite;
 import vswe.stevesvehicles.client.rendering.models.common.ModelShield;
 import vswe.stevesvehicles.module.common.addon.ModuleShield;
@@ -32,7 +33,7 @@ public class ModuleRegistryIndependence extends ModuleRegistry {
 		};
 
 		dynamite.addShapedRecipe(   null,           DYNAMITE,                   null,
-				DYNAMITE,       Items.flint_and_steel,      DYNAMITE,
+				DYNAMITE,       Items.FLINT_AND_STEEL,      DYNAMITE,
 				null,           DYNAMITE,                   null);
 
 		dynamite.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
@@ -50,9 +51,9 @@ public class ModuleRegistryIndependence extends ModuleRegistry {
 			}
 		};
 
-		shield.addShapedRecipe(     Blocks.obsidian,        REFINED_HARDENER,       Blocks.obsidian,
-				REFINED_HARDENER,       Blocks.diamond_block,   REFINED_HARDENER,
-				Blocks.obsidian,        REFINED_HARDENER,       Blocks.obsidian);
+		shield.addShapedRecipe(     Blocks.OBSIDIAN,        REFINED_HARDENER,       Blocks.OBSIDIAN,
+				REFINED_HARDENER,       Blocks.DIAMOND_BLOCK,   REFINED_HARDENER,
+				Blocks.OBSIDIAN,        REFINED_HARDENER,       Blocks.OBSIDIAN);
 
 		shield.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(shield);
@@ -61,8 +62,8 @@ public class ModuleRegistryIndependence extends ModuleRegistry {
 
 		ModuleData chunk = new ModuleData("chunk_loader", ModuleChunkLoader.class, 84);
 
-		chunk.addShapedRecipe(  null,                   Items.ender_pearl,          null,
-				SIMPLE_PCB,             Items.iron_ingot,           SIMPLE_PCB,
+		chunk.addShapedRecipe(  null,                   Items.ENDER_PEARL,          null,
+				SIMPLE_PCB,             Items.IRON_INGOT,           SIMPLE_PCB,
 				REINFORCED_METAL,       ADVANCED_PCB,               REINFORCED_METAL);
 
 		chunk.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);

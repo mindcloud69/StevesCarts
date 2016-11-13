@@ -7,7 +7,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.GALGADORIAN_METAL;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelLiquidSensors;
 import vswe.stevesvehicles.module.cart.addon.ModuleCreativeIncinerator;
 import vswe.stevesvehicles.module.cart.addon.ModuleDrillIntelligence;
@@ -32,9 +33,9 @@ public class ModuleRegistryCartDrillUtility extends ModuleRegistry{
 			}
 		};
 
-		liquidSensors.addShapedRecipe(  Items.redstone,         null,               Items.redstone,
-				Items.lava_bucket,      Items.diamond,      Items.water_bucket,
-				Items.iron_ingot,       ADVANCED_PCB,       Items.iron_ingot);
+		liquidSensors.addShapedRecipe(  Items.REDSTONE,         null,               Items.REDSTONE,
+				Items.LAVA_BUCKET,      Items.DIAMOND,      Items.WATER_BUCKET,
+				Items.IRON_INGOT,       ADVANCED_PCB,       Items.IRON_INGOT);
 
 		liquidSensors.addVehicles(VehicleRegistry.CART);
 		register(liquidSensors);
@@ -42,9 +43,9 @@ public class ModuleRegistryCartDrillUtility extends ModuleRegistry{
 
 		ModuleData incinerator = new ModuleData("incinerator", ModuleIncinerator.class, 23);
 
-		incinerator.addShapedRecipe(    Blocks.nether_brick,    Blocks.nether_brick,    Blocks.nether_brick,
-				Blocks.obsidian,        Blocks.furnace,         Blocks.obsidian,
-				Blocks.nether_brick,    Blocks.nether_brick,    Blocks.nether_brick);
+		incinerator.addShapedRecipe(    Blocks.NETHER_BRICK,    Blocks.NETHER_BRICK,    Blocks.NETHER_BRICK,
+				Blocks.OBSIDIAN,        Blocks.FURNACE,         Blocks.OBSIDIAN,
+				Blocks.NETHER_BRICK,    Blocks.NETHER_BRICK,    Blocks.NETHER_BRICK);
 
 		incinerator.addVehicles(VehicleRegistry.CART);
 		incinerator.addRequirement(ModuleDataGroup.getGroup(ModuleRegistryTanks.TANK_KEY));
@@ -59,9 +60,9 @@ public class ModuleRegistryCartDrillUtility extends ModuleRegistry{
 
 		ModuleData intelligence = new ModuleData("drill_intelligence", ModuleDrillIntelligence.class, 21);
 
-		intelligence.addShapedRecipe(Items.gold_ingot, Items.gold_ingot, Items.gold_ingot,
-				Items.iron_ingot, ADVANCED_PCB, Items.iron_ingot,
-				ADVANCED_PCB, Items.redstone, ADVANCED_PCB);
+		intelligence.addShapedRecipe(Items.GOLD_INGOT, Items.GOLD_INGOT, Items.GOLD_INGOT,
+				Items.IRON_INGOT, ADVANCED_PCB, Items.IRON_INGOT,
+				ADVANCED_PCB, Items.REDSTONE, ADVANCED_PCB);
 
 		intelligence.addVehicles(VehicleRegistry.CART);
 		register(intelligence);
@@ -69,9 +70,9 @@ public class ModuleRegistryCartDrillUtility extends ModuleRegistry{
 
 		ModuleData extractor = new ModuleData("ore_extractor", ModuleOreTracker.class, 80);
 
-		extractor.addShapedRecipe(  Blocks.redstone_torch,      null,                   Blocks.redstone_torch,
+		extractor.addShapedRecipe(  Blocks.REDSTONE_TORCH,      null,                   Blocks.REDSTONE_TORCH,
 				EYE_OF_GALGADOR,            GALGADORIAN_METAL,      EYE_OF_GALGADOR,
-				Items.quartz,               ADVANCED_PCB,           Items.quartz);
+				Items.QUARTZ,               ADVANCED_PCB,           Items.QUARTZ);
 
 		extractor.addVehicles(VehicleRegistry.CART);
 		register(extractor);

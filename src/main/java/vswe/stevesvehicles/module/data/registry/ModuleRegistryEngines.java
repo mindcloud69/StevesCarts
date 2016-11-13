@@ -8,7 +8,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.SOLAR_PANEL;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.common.ModelCompactSolarPanel;
 import vswe.stevesvehicles.client.rendering.models.common.ModelEngineFrame;
 import vswe.stevesvehicles.client.rendering.models.common.ModelEngineInside;
@@ -43,8 +44,8 @@ public class ModuleRegistryEngines extends ModuleRegistry {
 		};
 
 		coalSmall.addShapedRecipeWithSize(3, 2,
-				Items.iron_ingot,   Blocks.furnace,     Items.iron_ingot,
-				null,               Blocks.piston,      null);
+				Items.IRON_INGOT,   Blocks.FURNACE,     Items.IRON_INGOT,
+				null,               Blocks.PISTON,      null);
 
 		coalSmall.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(coalSmall);
@@ -59,9 +60,9 @@ public class ModuleRegistryEngines extends ModuleRegistry {
 			}
 		};
 
-		solarSmall.addShapedRecipe( SOLAR_PANEL,        Items.iron_ingot,       SOLAR_PANEL,
-				Items.iron_ingot,   SIMPLE_PCB,             Items.iron_ingot,
-				null,               Blocks.piston,          null);
+		solarSmall.addShapedRecipe( SOLAR_PANEL,        Items.IRON_INGOT,       SOLAR_PANEL,
+				Items.IRON_INGOT,   SIMPLE_PCB,             Items.IRON_INGOT,
+				null,               Blocks.PISTON,          null);
 
 
 		solarSmall.addSides(ModuleSide.CENTER, ModuleSide.TOP);
@@ -69,9 +70,9 @@ public class ModuleRegistryEngines extends ModuleRegistry {
 		register(solarSmall);
 
 		ModuleData thermalSmall = new ModuleData("thermal_engine", ModuleThermalStandard.class, 28);
-		thermalSmall.addShapedRecipe(   Blocks.nether_brick,        Blocks.nether_brick,       Blocks.nether_brick,
-				Blocks.obsidian,   Blocks.furnace,             Blocks.obsidian,
-				Blocks.piston,               null,          Blocks.piston);
+		thermalSmall.addShapedRecipe(   Blocks.NETHER_BRICK,        Blocks.NETHER_BRICK,       Blocks.NETHER_BRICK,
+				Blocks.OBSIDIAN,   Blocks.FURNACE,             Blocks.OBSIDIAN,
+				Blocks.PISTON,               null,          Blocks.PISTON);
 
 
 		thermalSmall.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
@@ -87,9 +88,9 @@ public class ModuleRegistryEngines extends ModuleRegistry {
 			}
 		};
 
-		coalLarge.addShapedRecipe(  Items.iron_ingot,       Items.iron_ingot,       Items.iron_ingot,
-				Items.iron_ingot,       Blocks.furnace,         Items.iron_ingot,
-				Blocks.piston,          null,                   Blocks.piston);
+		coalLarge.addShapedRecipe(  Items.IRON_INGOT,       Items.IRON_INGOT,       Items.IRON_INGOT,
+				Items.IRON_INGOT,       Blocks.FURNACE,         Items.IRON_INGOT,
+				Blocks.PISTON,          null,                   Blocks.PISTON);
 
 		coalLarge.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(coalLarge);
@@ -106,9 +107,9 @@ public class ModuleRegistryEngines extends ModuleRegistry {
 			}
 		};
 
-		solarLarge.addShapedRecipe( Items.iron_ingot,   SOLAR_PANEL,    Items.iron_ingot,
+		solarLarge.addShapedRecipe( Items.IRON_INGOT,   SOLAR_PANEL,    Items.IRON_INGOT,
 				SOLAR_PANEL,        ADVANCED_PCB,   SOLAR_PANEL,
-				Blocks.piston,      SOLAR_PANEL,    Blocks.piston);
+				Blocks.PISTON,      SOLAR_PANEL,    Blocks.PISTON);
 
 
 		solarLarge.addSides(ModuleSide.CENTER, ModuleSide.TOP);
@@ -119,9 +120,9 @@ public class ModuleRegistryEngines extends ModuleRegistry {
 
 
 		ModuleData thermalLarge = new ModuleData("advanced_thermal_engine", ModuleThermalAdvanced.class, 58);
-		thermalLarge.addShapedRecipe(   Blocks.nether_brick,    Blocks.nether_brick,    Blocks.nether_brick,
+		thermalLarge.addShapedRecipe(   Blocks.NETHER_BRICK,    Blocks.NETHER_BRICK,    Blocks.NETHER_BRICK,
 				REINFORCED_METAL,       thermalSmall,           REINFORCED_METAL,
-				Blocks.piston,          null,                   Blocks.piston);
+				Blocks.PISTON,          null,                   Blocks.PISTON);
 
 
 		thermalLarge.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
@@ -137,9 +138,9 @@ public class ModuleRegistryEngines extends ModuleRegistry {
 			}
 		};
 
-		solarAdvanced.addShapedRecipe(  ADVANCED_SOLAR_PANEL,       Items.iron_ingot,       ADVANCED_SOLAR_PANEL,
-				ADVANCED_PCB,               Items.redstone,         ADVANCED_PCB,
-				Blocks.piston,              Items.iron_ingot,       Blocks.piston);
+		solarAdvanced.addShapedRecipe(  ADVANCED_SOLAR_PANEL,       Items.IRON_INGOT,       ADVANCED_SOLAR_PANEL,
+				ADVANCED_PCB,               Items.REDSTONE,         ADVANCED_PCB,
+				Blocks.PISTON,              Items.IRON_INGOT,       Blocks.PISTON);
 
 
 		solarAdvanced.addSides(ModuleSide.RIGHT, ModuleSide.LEFT);

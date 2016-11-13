@@ -5,7 +5,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.TRI_TORCH;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelBridge;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelRailer;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelToolPlate;
@@ -34,9 +35,9 @@ public class ModuleRegistryCartRails extends ModuleRegistry {
 			}
 		};
 
-		railer.addShapedRecipe( Blocks.stone,       Blocks.stone,       Blocks.stone,
-				Items.iron_ingot,   Blocks.rail,        Items.iron_ingot,
-				Blocks.stone,       Blocks.stone,       Blocks.stone);
+		railer.addShapedRecipe( Blocks.STONE,       Blocks.STONE,       Blocks.STONE,
+				Items.IRON_INGOT,   Blocks.RAIL,        Items.IRON_INGOT,
+				Blocks.STONE,       Blocks.STONE,       Blocks.STONE);
 
 		railer.addVehicles(VehicleRegistry.CART);
 		register(railer);
@@ -51,9 +52,9 @@ public class ModuleRegistryCartRails extends ModuleRegistry {
 			}
 		};
 
-		railerLarge.addShapedRecipe(    Items.iron_ingot,       Items.iron_ingot,       Items.iron_ingot,
-				railer,                 Blocks.rail,            railer,
-				Blocks.stone,           Blocks.stone,           Blocks.stone);
+		railerLarge.addShapedRecipe(    Items.IRON_INGOT,       Items.IRON_INGOT,       Items.IRON_INGOT,
+				railer,                 Blocks.RAIL,            railer,
+				Blocks.STONE,           Blocks.STONE,           Blocks.STONE);
 
 		railerLarge.addVehicles(VehicleRegistry.CART);
 		register(railerLarge);
@@ -70,8 +71,8 @@ public class ModuleRegistryCartRails extends ModuleRegistry {
 		};
 
 		torch.addShapedRecipe(  TRI_TORCH,              null,                   TRI_TORCH,
-				Items.iron_ingot,       null,                   Items.iron_ingot,
-				Items.iron_ingot,       Items.iron_ingot,       Items.iron_ingot);
+				Items.IRON_INGOT,       null,                   Items.IRON_INGOT,
+				Items.IRON_INGOT,       Items.IRON_INGOT,       Items.IRON_INGOT);
 
 		torch.addSides(ModuleSide.RIGHT, ModuleSide.LEFT);
 		torch.addVehicles(VehicleRegistry.CART);
@@ -87,9 +88,9 @@ public class ModuleRegistryCartRails extends ModuleRegistry {
 			}
 		};
 
-		bridge.addShapedRecipe(    null,                   Items.redstone,     null,
-				Blocks.brick_block,     SIMPLE_PCB,         Blocks.brick_block,
-				null,                   Blocks.piston,      null);
+		bridge.addShapedRecipe(    null,                   Items.REDSTONE,     null,
+				Blocks.BRICK_BLOCK,     SIMPLE_PCB,         Blocks.BRICK_BLOCK,
+				null,                   Blocks.PISTON,      null);
 
 		bridge.addVehicles(VehicleRegistry.CART);
 		register(bridge);
@@ -104,9 +105,9 @@ public class ModuleRegistryCartRails extends ModuleRegistry {
 			}
 		};
 
-		remover.addShapedRecipe(    Items.iron_ingot,       Items.iron_ingot,       Items.iron_ingot,
-				Items.iron_ingot,       null,                   Items.iron_ingot,
-				Items.iron_ingot,       null,                   null);
+		remover.addShapedRecipe(    Items.IRON_INGOT,       Items.IRON_INGOT,       Items.IRON_INGOT,
+				Items.IRON_INGOT,       null,                   Items.IRON_INGOT,
+				Items.IRON_INGOT,       null,                   null);
 
 		remover.addVehicles(VehicleRegistry.CART);
 		remover.addSides(ModuleSide.TOP, ModuleSide.BACK);
@@ -114,9 +115,9 @@ public class ModuleRegistryCartRails extends ModuleRegistry {
 
 
 		ModuleData height = new ModuleData("height_controller", ModuleHeightControl.class, 20);
-		height.addShapedRecipe(     null,              Items.compass,       null,
-				Items.paper,       SIMPLE_PCB,          Items.paper,
-				Items.paper,       Items.paper,         Items.paper);
+		height.addShapedRecipe(     null,              Items.COMPASS,       null,
+				Items.PAPER,       SIMPLE_PCB,          Items.PAPER,
+				Items.PAPER,       Items.PAPER,         Items.PAPER);
 
 		height.addVehicles(VehicleRegistry.CART);
 		register(height);

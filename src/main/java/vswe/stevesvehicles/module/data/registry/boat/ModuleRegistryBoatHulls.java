@@ -1,6 +1,8 @@
 package vswe.stevesvehicles.module.data.registry.boat;
 
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.boat.ModelHull;
 import vswe.stevesvehicles.client.rendering.models.common.ModelHullTop;

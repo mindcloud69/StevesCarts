@@ -11,18 +11,26 @@ import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockVine;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -1008,75 +1016,22 @@ public abstract class ModuleBase {
 	 * @return The datawatcher id
 	 */
 	private int getDwId(int id) {
-		id = 2 + getDataWatcherStart() + id;
-		//these ids are already used by EntityMinevehicle
-		if (id >= 16) {
-			id += 7;
-		}
+		id += this.getDataWatcherStart();
 		return id;
 	}
 
 	/**
-	 * Adds a short datawathcer
+	 * Register a data parameter
 	 * @param id The local datawatcher id
 	 * @param val The value to add
 	 */
-	protected final void addIntDw(int id, int val) {
-		getVehicle().getEntity().getDataWatcher().addObject(getDwId(id), (int)val);
-	}
-
-	/**
-	 * Updates a short datawatcher
-	 * @param id The local datawatcher id
-	 * @param val The value to update it to
-	 */
-	protected final void updateIntDw(int id, int val) {
-		getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (int) val);
-	}
-
-	/**
-	 * Get a short datawatcher
-	 * @param id The local datawatcher id
-	 * @return The value of the datawatcher
-	 */
-	protected final int getIntDw(int id) {
-		return getVehicle().getEntity().getDataWatcher().getWatchableObjectInt(getDwId(id));
-	}	
-
-	/**
-	 * Adds a short datawathcer
-	 * @param id The local datawatcher id
-	 * @param val The value to add
-	 */
-	protected final void addShortDw(int id, int val) {
-		getVehicle().getEntity().getDataWatcher().addObject(getDwId(id), (short)val);
-	}
-
-	/**
-	 * Updates a short datawatcher
-	 * @param id The local datawatcher id
-	 * @param val The value to update it to
-	 */
-	protected final void updateShortDw(int id, int val) {
-		getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (short)val);
-	}
-
-	/**
-	 * Get a short datawatcher
-	 * @param id The local datawatcher id
-	 * @return The value of the datawatcher
-	 */
-	protected final short getShortDw(int id) {
-		return getVehicle().getEntity().getDataWatcher().getWatchableObjectShort(getDwId(id));
-	}	
-
-	/**
-	 * Adds a datawathcer
-	 * @param id The local datawatcher id
-	 * @param val The value to add
-	 */
-	protected final void addDw(int id, int val) {
-		getVehicle().getEntity().getDataWatcher().addObject(getDwId(id), (byte)val);
+	protected final <T> void registerDw(DataParameter<T> key, T value){
+		for(DataEntry entry : getVehicle().getEntity().getDataManager().getAll()){
+			if(entry.getKey() == key){
+				return;
+			}
+		}
+		getVehicle().getEntity().getDataManager().register(key, value);
 	}
 
 	/**
@@ -1084,8 +1039,8 @@ public abstract class ModuleBase {
 	 * @param id The local datawatcher id
 	 * @param val The value to update it to
 	 */	
-	protected final void updateDw(int id, int val) {
-		getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (byte)val);
+	protected final <T> void updateDw(DataParameter<T> key, T value){
+		getVehicle().getEntity().getDataManager().set(key, value);
 	}
 
 	/**
@@ -1093,8 +1048,13 @@ public abstract class ModuleBase {
 	 * @param id The local datawatcher id
 	 * @return The value of the datawatcher
 	 */
-	protected final byte getDw(int id) {
-		return getVehicle().getEntity().getDataWatcher().getWatchableObjectByte(getDwId(id));
+	protected <T> T getDw(DataParameter<T> key){
+		return getVehicle().getEntity().getDataManager().get(key);
+	}
+
+	private int ids = 0;
+	protected <T> DataParameter<T> createDw(DataSerializer<T> serializer){
+		return serializer.createKey(getDwId(ids++));
 	}
 
 	/**
@@ -1133,7 +1093,7 @@ public abstract class ModuleBase {
 	private final void updateGuiData(Container con, List players, int id, short data) {
 		Iterator iterator = players.iterator();
 		while (iterator.hasNext()) {
-			ICrafting player = (ICrafting)iterator.next();
+			IContainerListener player = (IContainerListener)iterator.next();
 			player.sendProgressBarUpdate(con, id, data);
 		}		
 	}
@@ -1191,7 +1151,7 @@ public abstract class ModuleBase {
 	 * @param con The container used by the interface
 	 * @param player The player that opened it
 	 */
-	public final void initGuiData(Container con, ICrafting player) {
+	public final void initGuiData(Container con, IContainerListener player) {
 		ArrayList players = new ArrayList();
 		players.add(player);
 
@@ -1334,12 +1294,13 @@ public abstract class ModuleBase {
 	{
 		float var7 = 0.00390625F;
 		float var8 = 0.00390625F;
-		Tessellator tess = Tessellator.instance;
-		tess.startDrawingQuads();
-		tess.addVertexWithUV((double)(targetX + 0), (double)(targetY + height), (double)-90, (double)((sourceX + 0) * var7), (double)((sourceY + height) * var8));
-		tess.addVertexWithUV((double)(targetX + width), (double)(targetY + height), (double)-90, (double)((sourceX + width) * var7), (double)((sourceY + height) * var8));
-		tess.addVertexWithUV((double)(targetX + width), (double)(targetY + 0), (double)-90, (double)((sourceX + width) * var7), (double)((sourceY + 0) * var8));
-		tess.addVertexWithUV((double)(targetX + 0), (double)(targetY + 0), (double)-90, (double)((sourceX + 0) * var7), (double)((sourceY + 0) * var8));
+		final Tessellator tess = Tessellator.getInstance();
+		VertexBuffer vertexbuffer = tess.getBuffer();
+		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		vertexbuffer.pos(targetX + 0, targetY + height, -90.0).tex((sourceX + 0) * var7, (sourceY + height) * var8).endVertex();
+		vertexbuffer.pos(targetX + width, targetY + height, -90.0).tex((sourceX + width) * var7, (sourceY + height) * var8).endVertex();
+		vertexbuffer.pos(targetX + width, targetY + 0, -90.0).tex((sourceX + width) * var7, (sourceY + 0) * var8).endVertex();
+		vertexbuffer.pos(targetX + 0, targetY + 0, -90.0).tex((sourceX + 0) * var7, (sourceY + 0) * var8).endVertex();
 		tess.draw();
 	}	
 
@@ -1407,17 +1368,15 @@ public abstract class ModuleBase {
 
 	/**
 	 * Determines if a block counts as air by the modules, for example a vehicle will count snow as air, or long grass or the like
-	 * @param x The X coordinate of the block
-	 * @param y The Y coordinate of the block
-	 * @param z The Z coordinate of the block
+	 * @param pos The coordinates of the block
 	 * @return If this block counts as air by the modules
 	 */
-	protected boolean countsAsAir(int x, int y, int z) {
-		if (getVehicle().getWorld().isAirBlock(x, y, z)) {
+	protected boolean countsAsAir(BlockPos pos) {
+		if (getVehicle().getWorld().isAirBlock(pos)) {
 			return true;
 		}
 
-		Block b = getVehicle().getWorld().getBlock(x, y, z);
+		Block b = getVehicle().getWorld().getBlockState(pos).getBlock();
 
 		if (b instanceof BlockSnow) {
 			return true;

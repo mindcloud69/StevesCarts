@@ -10,7 +10,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.common.ModelNote;
 import vswe.stevesvehicles.module.common.addon.ModuleColorRandomizer;
 import vswe.stevesvehicles.module.common.addon.ModuleColorizer;
@@ -29,8 +30,8 @@ public class ModuleRegistryVisual extends ModuleRegistry {
 
 		ModuleData colorizer = new ModuleData("colorizer", ModuleColorizer.class, 15);
 		colorizer.addShapedRecipe(    RED_PIGMENT,        GREEN_PIGMENT,      BLUE_PIGMENT,
-				Items.iron_ingot,   Items.redstone,     Items.iron_ingot,
-				null,               Items.iron_ingot,   null);
+				Items.IRON_INGOT,   Items.REDSTONE,     Items.IRON_INGOT,
+				null,               Items.IRON_INGOT,   null);
 
 		colorizer.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(colorizer);
@@ -46,17 +47,17 @@ public class ModuleRegistryVisual extends ModuleRegistry {
 
 		ModuleData invisibility = new ModuleData("invisibility_core", ModuleInvisible.class, 21);
 		invisibility.addShapedRecipe(   null,               GLASS_O_MAGIC,          null,
-				Items.iron_ingot,   Items.redstone,         Items.iron_ingot,
-				null,               Items.iron_ingot,       null);
+				Items.IRON_INGOT,   Items.REDSTONE,         Items.IRON_INGOT,
+				null,               Items.IRON_INGOT,       null);
 
 		invisibility.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(invisibility);
 
 
 		ModuleData firework = new ModuleData("firework_display", ModuleFirework.class, 30);
-		firework.addShapedRecipe(       Blocks.iron_bars,           Blocks.dispenser,           Blocks.iron_bars,
-				Blocks.crafting_table,      FUSE,                       Blocks.crafting_table,
-				SIMPLE_PCB,                 Items.flint_and_steel,      SIMPLE_PCB);
+		firework.addShapedRecipe(       Blocks.IRON_BARS,           Blocks.DISPENSER,           Blocks.IRON_BARS,
+				Blocks.CRAFTING_TABLE,      FUSE,                       Blocks.CRAFTING_TABLE,
+				SIMPLE_PCB,                 Items.FLINT_AND_STEEL,      SIMPLE_PCB);
 
 		firework.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(firework);
@@ -71,9 +72,9 @@ public class ModuleRegistryVisual extends ModuleRegistry {
 			}
 		};
 
-		note.addShapedRecipe(   Blocks.noteblock,      null,                Blocks.noteblock,
-				Blocks.noteblock,      Blocks.jukebox,      Blocks.noteblock,
-				"plankWood",           Items.redstone,      "plankWood");
+		note.addShapedRecipe(   Blocks.NOTEBLOCK,      null,                Blocks.NOTEBLOCK,
+				Blocks.NOTEBLOCK,      Blocks.JUKEBOX,      Blocks.NOTEBLOCK,
+				"plankWood",           Items.REDSTONE,      "plankWood");
 
 		note.addSides(ModuleSide.RIGHT, ModuleSide.LEFT);
 		note.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
@@ -82,9 +83,9 @@ public class ModuleRegistryVisual extends ModuleRegistry {
 
 
 		ModuleData info = new ModuleData("information_provider", ModuleLabel.class, 12);
-		info.addShapedRecipe(   Blocks.glass_pane,      Blocks.glass_pane,          Blocks.glass_pane,
-				Items.iron_ingot,       Items.glowstone_dust,       Items.iron_ingot,
-				SIMPLE_PCB,             Items.sign,                 SIMPLE_PCB);
+		info.addShapedRecipe(   Blocks.GLASS_PANE,      Blocks.GLASS_PANE,          Blocks.GLASS_PANE,
+				Items.IRON_INGOT,       Items.GLOWSTONE_DUST,       Items.IRON_INGOT,
+				SIMPLE_PCB,             Items.SIGN,                 SIMPLE_PCB);
 
 		info.addVehicles(VehicleRegistry.CART, VehicleRegistry.BOAT);
 		register(info);

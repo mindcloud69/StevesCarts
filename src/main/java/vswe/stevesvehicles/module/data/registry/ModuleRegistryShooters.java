@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.rendering.models.common.ModelGun;
 import vswe.stevesvehicles.client.rendering.models.common.ModelMobDetector;
@@ -95,7 +96,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		advanced.addShapedRecipe(   null,                   ENTITY_SCANNER,         null,
 				null,                   SHOOTING_STATION,       PIPE,
-				Items.iron_ingot,       ENTITY_ANALYZER,        Items.iron_ingot);
+				Items.IRON_INGOT,       ENTITY_ANALYZER,        Items.IRON_INGOT);
 
 
 		advanced.addSides(ModuleSide.TOP);
@@ -112,7 +113,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData animal = new ModuleData("entity_detector_animal", ModuleAnimal.class, 1);
 		animal.addShapedRecipeWithSize(1, 2,
-				Items.porkchop,
+				Items.PORKCHOP,
 				EMPTY_DISK);
 
 
@@ -124,7 +125,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData player = new ModuleData("entity_detector_player", ModulePlayer.class, 7);
 		player.addShapedRecipeWithSize(1, 2,
-				Items.diamond,
+				Items.DIAMOND,
 				EMPTY_DISK);
 
 
@@ -136,7 +137,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData villager = new ModuleData("entity_detector_villager", ModuleVillager.class, 1);
 		villager.addShapedRecipeWithSize(1, 2,
-				Items.emerald,
+				Items.EMERALD,
 				EMPTY_DISK);
 
 
@@ -148,7 +149,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData monster = new ModuleData("entity_detector_monster", ModuleMonster.class, 1);
 		monster.addShapedRecipeWithSize(1, 2,
-				Items.rotten_flesh,
+				Items.ROTTEN_FLESH,
 				EMPTY_DISK);
 
 
@@ -160,7 +161,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData bat = new ModuleData("entity_detector_bat", ModuleBat.class, 1);
 		bat.addShapedRecipeWithSize(1, 2,
-				Blocks.pumpkin,
+				Blocks.PUMPKIN,
 				EMPTY_DISK);
 
 
@@ -178,7 +179,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData potion = new ModuleData("projectile_potion", ModulePotion.class, 10);
 		potion.addShapedRecipeWithSize(1, 2,
-				Items.glass_bottle,
+				Items.GLASS_BOTTLE,
 				EMPTY_DISK);
 
 
@@ -189,7 +190,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData fire = new ModuleData("projectile_fire_charge", ModuleFireball.class, 10);
 		fire.addShapedRecipeWithSize(1, 2,
-				Items.fire_charge,
+				Items.FIRE_CHARGE,
 				EMPTY_DISK);
 
 
@@ -201,7 +202,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData egg = new ModuleData("projectile_egg", ModuleEgg.class, 10);
 		egg.addShapedRecipeWithSize(1, 2,
-				Items.egg,
+				Items.EGG,
 				EMPTY_DISK);
 
 
@@ -212,7 +213,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData snowball = new ModuleData("projectile_snowball", ModuleSnowball.class, 10);
 		snowball.addShapedRecipeWithSize(1, 2,
-				Items.snowball,
+				Items.SNOWBALL,
 				EMPTY_DISK);
 
 
@@ -226,7 +227,7 @@ public class ModuleRegistryShooters extends ModuleRegistry {
 
 		ModuleData cake = new ModuleData("projectile_cake", ModuleCake.class, 10);
 		cake.addShapedRecipeWithSize(1, 2,
-				Items.cake,
+				Items.CAKE,
 				EMPTY_DISK);
 
 

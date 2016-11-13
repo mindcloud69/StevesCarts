@@ -9,7 +9,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelLawnMower;
 import vswe.stevesvehicles.module.cart.addon.cultivation.ModuleModTrees;
 import vswe.stevesvehicles.module.cart.addon.cultivation.ModuleNetherWart;
@@ -37,7 +38,7 @@ public class ModuleRegistryCartCultivationUtil extends ModuleRegistry {
 
 		ModuleData netherWart = new ModuleData("crop_nether_wart", ModuleNetherWart.class, 20);
 		netherWart.addShapedRecipeWithSize(1, 2,
-				Items.nether_wart,
+				Items.NETHER_WART,
 				EMPTY_DISK);
 
 
@@ -49,8 +50,8 @@ public class ModuleRegistryCartCultivationUtil extends ModuleRegistry {
 
 		ModuleData hydrator = new ModuleData("hydrator", ModuleHydrater.class, 6);
 		hydrator.addShapedRecipeWithSize(3, 2,
-				Items.iron_ingot,       Items.glass_bottle,         Items.iron_ingot,
-				null,                   Blocks.iron_bars,           null);
+				Items.IRON_INGOT,       Items.GLASS_BOTTLE,         Items.IRON_INGOT,
+				null,                   Blocks.IRON_BARS,           null);
 
 
 		hydrator.addVehicles(VehicleRegistry.CART);
@@ -60,9 +61,9 @@ public class ModuleRegistryCartCultivationUtil extends ModuleRegistry {
 
 
 		ModuleData fertilizer = new ModuleData("fertilizer", ModuleFertilizer.class, 10);
-		fertilizer.addShapedRecipe(     new ItemStack(Items.dye, 1, 15),        null,                   new ItemStack(Items.dye, 1, 15),
-				Items.glass_bottle,                     Items.leather,          Items.glass_bottle,
-				Items.leather,                          SIMPLE_PCB,             Items.leather);
+		fertilizer.addShapedRecipe(     new ItemStack(Items.DYE, 1, 15),        null,                   new ItemStack(Items.DYE, 1, 15),
+				Items.GLASS_BOTTLE,                     Items.LEATHER,          Items.GLASS_BOTTLE,
+				Items.LEATHER,                          SIMPLE_PCB,             Items.LEATHER);
 
 
 		fertilizer.addVehicles(VehicleRegistry.CART);
@@ -94,7 +95,7 @@ public class ModuleRegistryCartCultivationUtil extends ModuleRegistry {
 
 		ModuleData exotic = new ModuleData("tree_exotic", ModuleModTrees.class, 30);
 		exotic.addShapedRecipeWithSize(1, 2,
-				Blocks.sapling,
+				Blocks.SAPLING,
 				EMPTY_DISK);
 
 
@@ -104,9 +105,9 @@ public class ModuleRegistryCartCultivationUtil extends ModuleRegistry {
 
 
 		ModuleData range = new ModuleData("planter_range_extender", ModulePlantSize.class, 20);
-		range.addShapedRecipe(Items.redstone, ADVANCED_PCB, Items.redstone,
-				null, Blocks.sapling, null,
-				SIMPLE_PCB, Blocks.sapling, SIMPLE_PCB);
+		range.addShapedRecipe(Items.REDSTONE, ADVANCED_PCB, Items.REDSTONE,
+				null, Blocks.SAPLING, null,
+				SIMPLE_PCB, Blocks.SAPLING, SIMPLE_PCB);
 
 
 		range.addVehicles(VehicleRegistry.CART);

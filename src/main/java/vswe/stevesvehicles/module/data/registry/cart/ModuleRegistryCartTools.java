@@ -13,7 +13,8 @@ import static vswe.stevesvehicles.item.ComponentTypes.WOOD_CUTTING_CORE;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelDrill;
 import vswe.stevesvehicles.client.rendering.models.cart.ModelFarmer;
@@ -71,9 +72,9 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			}
 		};
 
-		iron.addShapedRecipe(   Items.iron_ingot,   Items.iron_ingot,       null,
-				null,               Items.iron_ingot,       Items.iron_ingot,
-				Items.iron_ingot,   Items.iron_ingot,       null);
+		iron.addShapedRecipe(   Items.IRON_INGOT,   Items.IRON_INGOT,       null,
+				null,               Items.IRON_INGOT,       Items.IRON_INGOT,
+				Items.IRON_INGOT,   Items.IRON_INGOT,       null);
 
 
 		iron.addSides(ModuleSide.FRONT);
@@ -90,9 +91,9 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			}
 		};
 
-		basic.addShapedRecipe(   Items.iron_ingot,   Items.diamond,       null,
-				null,               Items.iron_ingot,    Items.diamond,
-				Items.iron_ingot,   Items.diamond,       null);
+		basic.addShapedRecipe(   Items.IRON_INGOT,   Items.DIAMOND,       null,
+				null,               Items.IRON_INGOT,    Items.DIAMOND,
+				Items.IRON_INGOT,   Items.DIAMOND,       null);
 
 
 		basic.addSides(ModuleSide.FRONT);
@@ -111,7 +112,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 		};
 
 		hardened.addShapedRecipe(   HARDENED_MESH,          REINFORCED_METAL,       null,
-				Blocks.diamond_block,   basic,                  REINFORCED_METAL,
+				Blocks.DIAMOND_BLOCK,   basic,                  REINFORCED_METAL,
 				HARDENED_MESH,          REINFORCED_METAL,       null);
 
 
@@ -131,7 +132,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 		};
 
 		galgadorian.addShapedRecipe(   GALGADORIAN_METAL,           ENHANCED_GALGADORIAN_METAL,         null,
-				Blocks.diamond_block,       hardened,                           ENHANCED_GALGADORIAN_METAL,
+				Blocks.DIAMOND_BLOCK,       hardened,                           ENHANCED_GALGADORIAN_METAL,
 				GALGADORIAN_METAL,          ENHANCED_GALGADORIAN_METAL,         null);
 
 
@@ -154,7 +155,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 		};
 
 		basic.addShapedRecipe(  SAW_BLADE,       SAW_BLADE,             SAW_BLADE,
-				SAW_BLADE,       Items.iron_ingot,      SAW_BLADE,
+				SAW_BLADE,       Items.IRON_INGOT,      SAW_BLADE,
 				null,            WOOD_CUTTING_CORE,     null);
 
 
@@ -174,11 +175,11 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 		};
 
 		hardened.addShapedRecipe(   HARDENED_SAW_BLADE,       HARDENED_SAW_BLADE,       HARDENED_SAW_BLADE,
-				HARDENED_SAW_BLADE,       Items.diamond,            HARDENED_SAW_BLADE,
+				HARDENED_SAW_BLADE,       Items.DIAMOND,            HARDENED_SAW_BLADE,
 				null,                     WOOD_CUTTING_CORE,        null);
 
 		hardened.addShapedRecipe(   REINFORCED_METAL,       REINFORCED_METAL,           REINFORCED_METAL,
-				REINFORCED_METAL,       Items.iron_ingot,           REINFORCED_METAL,
+				REINFORCED_METAL,       Items.IRON_INGOT,           REINFORCED_METAL,
 				null,                   basic,                      null);
 
 		hardened.addSides(ModuleSide.FRONT);
@@ -200,7 +201,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 				null,                        WOOD_CUTTING_CORE,           null);
 
 		galgadorian.addShapedRecipe(    GALGADORIAN_METAL,       GALGADORIAN_METAL,         GALGADORIAN_METAL,
-				GALGADORIAN_METAL,       Items.iron_ingot,          GALGADORIAN_METAL,
+				GALGADORIAN_METAL,       Items.IRON_INGOT,          GALGADORIAN_METAL,
 				null,                    hardened,                  null);
 
 		galgadorian.addSides(ModuleSide.FRONT);
@@ -222,9 +223,9 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			}
 		};
 
-		basic.addShapedRecipe(  Items.diamond,      Items.diamond,          Items.diamond,
-				null,               Items.iron_ingot,       null,
-				SIMPLE_PCB,         Items.gold_ingot,       SIMPLE_PCB);
+		basic.addShapedRecipe(  Items.DIAMOND,      Items.DIAMOND,          Items.DIAMOND,
+				null,               Items.IRON_INGOT,       null,
+				SIMPLE_PCB,         Items.GOLD_INGOT,       SIMPLE_PCB);
 
 
 		basic.addSides(ModuleSide.FRONT);
@@ -244,7 +245,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 
 		galgadorian.addShapedRecipe(    GALGADORIAN_METAL,      GALGADORIAN_METAL,          GALGADORIAN_METAL,
 				null,                   REINFORCED_METAL,           null,
-				ADVANCED_PCB,           Items.gold_ingot,           ADVANCED_PCB);
+				ADVANCED_PCB,           Items.GOLD_INGOT,           ADVANCED_PCB);
 
 		galgadorian.addShapedRecipe(    GALGADORIAN_METAL,      GALGADORIAN_METAL,          GALGADORIAN_METAL,
 				null,                   basic,                      null,
