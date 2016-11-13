@@ -27,7 +27,7 @@ import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.recipe.ModuleRecipe;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
-public class RecipeHandlerVehicleModuleUsage extends RecipeHandlerVehicle {
+/*public class RecipeHandlerVehicleModuleUsage extends RecipeHandlerVehicle {
 
 	private class CachedVehicleRecipeModuleWrapper extends CachedVehicleRecipe {
 		private List<CachedVehicleRecipeModule> recipes = new ArrayList<>();
@@ -381,9 +381,9 @@ public class RecipeHandlerVehicleModuleUsage extends RecipeHandlerVehicle {
 		return (CachedVehicleRecipeModuleWrapper)arecipes.get(0);
 	}
 
-	/*
-        ============ METHODS TO GET RID OF THE PAGE TEXT ===========
-	 */
+	
+     //   ============ METHODS TO GET RID OF THE PAGE TEXT ===========
+	
 
 	private static final ResourceLocation BUTTON_TEXTURE = new ResourceLocation("textures/gui/widgets.png");
 
@@ -458,4 +458,4 @@ public class RecipeHandlerVehicleModuleUsage extends RecipeHandlerVehicle {
 			return true;
 		}
 	}
-}
+}*/

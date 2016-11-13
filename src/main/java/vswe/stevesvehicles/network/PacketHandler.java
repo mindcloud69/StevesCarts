@@ -7,7 +7,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.block.BlockCartAssembler;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.container.ContainerBase;
@@ -28,7 +32,7 @@ public class PacketHandler {
 	public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 		try {
-			DataReader dr = new DataReader(event.packet.payload());
+			DataReader dr = new DataReader(event.getPacket().payload());
 			PacketType type = dr.readEnum(PacketType.class);
 
 			if (type == PacketType.BLOCK) {
@@ -67,9 +71,9 @@ public class PacketHandler {
 
 	@SubscribeEvent
 	public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent event) {
-		EntityPlayer player = ((NetHandlerPlayServer)event.handler).playerEntity;
+		EntityPlayer player = ((NetHandlerPlayServer)event.getHandler()).playerEntity;
 		try {
-			DataReader dr = new DataReader(event.packet.payload());
+			DataReader dr = new DataReader(event.getPacket().payload());
 			PacketType type = dr.readEnum(PacketType.class);
 			World world = player.worldObj;
 
@@ -97,8 +101,8 @@ public class PacketHandler {
 					}
 				}
 			}else if(type == PacketType.BOAT_MOVEMENT) {
-				if (player.ridingEntity instanceof EntityModularBoat) {
-					((EntityModularBoat)player.ridingEntity).onMovementPacket(dr);
+				if (player.getRidingEntity() instanceof EntityModularBoat) {
+					((EntityModularBoat)player.getRidingEntity()).onMovementPacket(dr);
 				}
 			}
 

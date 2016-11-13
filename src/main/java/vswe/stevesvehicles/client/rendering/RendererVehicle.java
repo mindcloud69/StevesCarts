@@ -6,7 +6,10 @@ import org.lwjgl.opengl.GL12;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +23,8 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public abstract class RendererVehicle extends Render {
-	public RendererVehicle() {
+	public RendererVehicle(RenderManager renderManager) {
+		super(renderManager);
 		this.shadowSize = 0.5F;
 	}
 
@@ -93,7 +97,7 @@ public abstract class RendererVehicle extends Render {
 	}
 
 	public static void renderLiquidCuboid(FluidStack liquid, int tankSize, float x, float y, float z, float sizeX, float sizeY, float sizeZ, float multiplier) {
-		IconData data = Tank.getIconAndTexture(liquid);
+		/*IconData data = Tank.getIconAndTexture(liquid);
 
 		if (data == null || data.getIcon() == null) {
 			return;
@@ -119,10 +123,10 @@ public abstract class RendererVehicle extends Render {
 			GL11.glPopMatrix();		
 
 			GL11.glColor4f(1F, 1F, 1F, 1F);
-		}
+		}*/
 	}
 
-	private static void renderCuboid(IIcon icon, double sizeX, double sizeY, double sizeZ) {
+	/*private static void renderCuboid(IIcon icon, double sizeX, double sizeY, double sizeZ) {
 		renderFace(icon, sizeX, sizeZ, 0, 		90F, 	0F, 					-(float)(sizeY / 2),	0F					);
 		renderFace(icon, sizeX, sizeZ, 0, 		-90F, 	0F, 					(float)(sizeY / 2), 	0F					);
 		renderFace(icon, sizeX, sizeY, 0, 		0, 		0F, 					0F, 					(float)(sizeZ / 2)	);
@@ -168,14 +172,14 @@ public abstract class RendererVehicle extends Render {
 			currentTargetX += currentTargetW  - d;
 		}	
 		GL11.glPopMatrix();	
-	}
+	}*/
 
 
 	protected void renderLabel(VehicleBase vehicle, double x, double y, double z) {
 		ArrayList<String> labels = vehicle.getLabel();
 
 		if (labels != null && labels.size() > 0) {
-			float distance = vehicle.getEntity().getDistanceToEntity(this.renderManager.livingPlayer);
+			float distance = vehicle.getEntity().getDistanceToEntity(this.renderManager.renderViewEntity);
 
 			if (distance <= 64F) {
 				//place everything where it belongs
@@ -205,15 +209,15 @@ public abstract class RendererVehicle extends Render {
 				int halfH = boxHeight / 2;
 
 				//background
-				Tessellator tes = Tessellator.instance;
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
-				tes.startDrawingQuads();
-				tes.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-				tes.addVertex((double)(-halfW - 1), (double)(-halfH - 1), 0.0D);
-				tes.addVertex((double)(-halfW - 1), (double)(halfH + 1), 0.0D);
-				tes.addVertex((double)(halfW + 1), (double)(halfH + 1), 0.0D);
-				tes.addVertex((double)(halfW + 1), (double)(-halfH - 1), 0.0D);
-				tes.draw();
+				final Tessellator tes = Tessellator.getInstance();
+				VertexBuffer buffer = tes.getBuffer();
+				GL11.glDisable(3553);
+				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.pos(-halfW - 1, -halfH - 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+				buffer.pos(-halfW - 1, halfH + 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+				buffer.pos(halfW + 1, halfH + 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+				buffer.pos(halfW + 1, -halfH - 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
 
 				//the text
 				GL11.glEnable(GL11.GL_TEXTURE_2D);

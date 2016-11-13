@@ -10,7 +10,7 @@ import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.ModuleDataHull;
 import vswe.stevesvehicles.module.data.ModuleDataItemHandler;
 
-public class RecipeHandlerVehicleNormal extends RecipeHandlerVehicle {
+/*public class RecipeHandlerVehicleNormal extends RecipeHandlerVehicle {
 	private class CachedVehicleRecipeNormal extends CachedVehicleRecipe {
 		private PositionedStack result;
 		private boolean valid;
@@ -76,4 +76,4 @@ public class RecipeHandlerVehicleNormal extends RecipeHandlerVehicle {
 	protected boolean hasButtons() {
 		return false;
 	}
-}
+}*/

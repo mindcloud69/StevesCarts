@@ -5,7 +5,7 @@ import vswe.stevesvehicles.GeneratedInfo;
 
 //TODO make sure nothing goes wrong just because NEI doesn't exist
 
-@Mod(modid = "StevesVehiclesNEIAddon", name = "Steve's Vehicles - NEI Addon", version = GeneratedInfo.version)
+/*@Mod(modid = "StevesVehiclesNEIAddon", name = "Steve's Vehicles - NEI Addon", version = GeneratedInfo.version)
 public class NEIAddon {
 	@Mod.Instance("StevesVehiclesNEIAddon")
 	public static NEIAddon instance;
@@ -36,4 +36,4 @@ public class NEIAddon {
 		API.registerUsageHandler(handler);
 	}
 
-}
+}*/

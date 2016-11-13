@@ -14,7 +14,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
-
+import net.minecraftforge.fml.common.StartupQuery;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.network.PacketHandler;
@@ -23,7 +25,6 @@ import vswe.stevesvehicles.network.PacketType;
 public class RegistrySynchronizer {
 
 	public RegistrySynchronizer() {
-		FMLCommonHandler.instance().bus().register(this);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
@@ -74,12 +75,13 @@ public class RegistrySynchronizer {
 
 	@SubscribeEvent
 	public void onLoad(WorldEvent.Load event) {
-		if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
+		World world = event.getWorld();
+		if (!world.isRemote && world.provider.getDimension() == 0) {
 			RegistryLoader.clearAllRegistryData();
 			boolean success = false;
 			try {
-				File mainFile = getInfoPath(event.world, MAIN_NAME);
-				File oldFile = getInfoPath(event.world, OLD_NAME);
+				File mainFile = getInfoPath(world, MAIN_NAME);
+				File oldFile = getInfoPath(world, OLD_NAME);
 
 				if (mainFile == null || oldFile == null) {
 					System.err.println("Aborted registry reading, failed to locate where to find the files.");
@@ -120,14 +122,15 @@ public class RegistrySynchronizer {
 
 	@SubscribeEvent
 	public void onSave(WorldEvent.Save event) {
-		if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
+		World world = event.getWorld();
+		if (!world.isRemote && world.provider.getDimension() == 0) {
 			boolean success = false;
 			try {
 				NBTTagCompound compound = new NBTTagCompound();
 				RegistryLoader.writeData(compound);
-				File mainFile = getInfoPath(event.world, MAIN_NAME);
-				File oldFile = getInfoPath(event.world, OLD_NAME);
-				File newFile = getInfoPath(event.world, NEW_NAME);
+				File mainFile = getInfoPath(world, MAIN_NAME);
+				File oldFile = getInfoPath(world, OLD_NAME);
+				File newFile = getInfoPath(world, NEW_NAME);
 
 				if (mainFile == null || oldFile == null || newFile == null) {
 					System.err.println("Aborted registry writing, failed to locate where to put the files.");

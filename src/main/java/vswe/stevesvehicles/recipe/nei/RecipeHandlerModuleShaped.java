@@ -5,7 +5,7 @@ import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
 import vswe.stevesvehicles.recipe.ModuleRecipe;
 import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
 
-public class RecipeHandlerModuleShaped extends RecipeHandlerModule {
+/*public class RecipeHandlerModuleShaped extends RecipeHandlerModule {
 
 	protected class CachedModuleRecipeShaped extends CachedModuleRecipe {
 
@@ -57,4 +57,4 @@ public class RecipeHandlerModuleShaped extends RecipeHandlerModule {
 			return null;
 		}
 	}
-}
+}*/

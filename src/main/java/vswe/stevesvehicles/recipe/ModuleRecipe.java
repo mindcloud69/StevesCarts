@@ -3,7 +3,7 @@ package vswe.stevesvehicles.recipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-
+import net.minecraftforge.common.ForgeHooks;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
 
@@ -54,5 +54,10 @@ public abstract class ModuleRecipe implements IRecipe {
 
 	public RecipeItem[] getRecipeItems() {
 		return recipe;
+	}
+	
+	@Override
+	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
 }

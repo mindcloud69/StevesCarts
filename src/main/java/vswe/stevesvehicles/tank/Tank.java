@@ -12,7 +12,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.IconData;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.ColorHelper;
@@ -184,7 +185,7 @@ public class Tank implements IFluidTank {
 		int amount = 0;
 		if (fluid != null) {
 			//different mods store the name in different ways apparently
-			name = fluid.getFluid().getLocalizedName();
+			name = fluid.getLocalizedName();
 			if (name.contains(".")) {
 				name = FluidRegistry.getFluidName(fluid);
 			}
@@ -206,7 +207,7 @@ public class Tank implements IFluidTank {
 		return String.format("%,d", number).replace((char)160,(char)32); 	
 	}	
 
-	public static IconData getIconAndTexture(FluidStack stack) {
+	/*public static IconData getIconAndTexture(FluidStack stack) {
 		IIcon icon = null;
 		String texture = null;
 
@@ -237,7 +238,7 @@ public class Tank implements IFluidTank {
 
 
 		return new IconData (icon, texture);
-	}
+	}*/
 
 	private static float getColorComponent(int color, int id) {
 		return ((color & (255 << (id * 8))) >> (id * 8)) / 255F;	
@@ -250,7 +251,7 @@ public class Tank implements IFluidTank {
 
 	@SideOnly(Side.CLIENT)
 	public void drawFluid(GuiBase gui, int startX, int startY) {
-		if (fluid != null) {
+		/*if (fluid != null) {
 
 
 			int fluidLevel = (int)(48 * (fluid.amount / (float)tankSize));
@@ -281,7 +282,7 @@ public class Tank implements IFluidTank {
 			}		
 			GL11.glColor4f(1F, 1F, 1F, 1F);
 
-		}			
+		}	*/		
 	}
 
 	@Override

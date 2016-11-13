@@ -14,7 +14,7 @@ import vswe.stevesvehicles.recipe.ModuleRecipe;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
 
-public abstract class RecipeHandlerModule extends TemplateRecipeHandler {
+/*public abstract class RecipeHandlerModule extends TemplateRecipeHandler {
 	protected abstract class CachedModuleRecipe extends CachedRecipe {
 		protected List<PositionedStack> ingredients;
 		private PositionedStack result;
@@ -175,4 +175,4 @@ public abstract class RecipeHandlerModule extends TemplateRecipeHandler {
 	}
 
 	protected abstract CachedModuleRecipe createCachedRecipe(ModuleRecipe recipe);
-}
+}*/

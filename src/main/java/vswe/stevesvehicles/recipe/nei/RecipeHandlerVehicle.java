@@ -29,7 +29,7 @@ import vswe.stevesvehicles.module.data.ModuleType;
 import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
 
 
-public abstract class RecipeHandlerVehicle extends TemplateRecipeHandler {
+/*public abstract class RecipeHandlerVehicle extends TemplateRecipeHandler {
 	protected abstract class CachedVehicleRecipe extends CachedRecipe {
 		protected List<PositionedStack> ingredients;
 		private ModuleTypeRow[] rows;
@@ -302,9 +302,9 @@ public abstract class RecipeHandlerVehicle extends TemplateRecipeHandler {
 
 
 
-	/*
-        ============ METHODS TO GET RID OF THE PAGE TEXT ===========
-	 */
+	
+     //   ============ METHODS TO GET RID OF THE PAGE TEXT ===========
+	 
 
 	private static final ResourceLocation EMPTY_RESOURCE = ResourceHelper.getResource("/gui/blank.png");
 	private boolean oldUnicodeFlag;
@@ -405,4 +405,4 @@ public abstract class RecipeHandlerVehicle extends TemplateRecipeHandler {
 		drawTexturedModalRect(-TRANSLATE_X, -TRANSLATE_Y + DISPLAY_HEIGHT - EXTRA_HEIGHT_OVERLAP, 0, DISPLAY_HEIGHT - extraHeight, DISPLAY_WIDTH, extraHeight);
 	}
 
-}
+}*/
