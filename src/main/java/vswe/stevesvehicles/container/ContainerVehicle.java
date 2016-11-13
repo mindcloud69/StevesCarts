@@ -5,7 +5,8 @@ import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.tileentity.TileEntityBase;
@@ -78,7 +79,7 @@ public class ContainerVehicle extends ContainerBase {
 	@Override
 	public void onContainerClosed(EntityPlayer player){
 		super.onContainerClosed(player);
-		vehicle.getVehicleEntity().closeInventory();
+		vehicle.getVehicleEntity().closeInventory(player);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -101,9 +102,9 @@ public class ContainerVehicle extends ContainerBase {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (vehicle.getModules() != null) {
-			if (crafters.size() > 0) {
+			if (listeners.size() > 0) {
 				for (ModuleBase module : vehicle.getModules()) {
-					module.checkGuiData(this,crafters, false);
+					module.checkGuiData(this, listeners, false);
 				}
 			}
 		}

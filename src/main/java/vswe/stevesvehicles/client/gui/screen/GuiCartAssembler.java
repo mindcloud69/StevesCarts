@@ -7,12 +7,15 @@ import org.lwjgl.opengl.GL12;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.ModuleSortMode;
@@ -416,7 +419,7 @@ public class GuiCartAssembler extends GuiBase {
 				drawRect(target, MODULE_BACKGROUND_SRC_X + (target[2] + TEXTURE_SPACING) * backGroundIndex, MODULE_BACKGROUND_SRC_Y);
 
 				ItemStack item = moduleData.getItemStack();
-				renderitem.renderItemIntoGUI(getFontRenderer(), mc.getTextureManager(), item, target[0] + 1, target[1] + 1);
+				renderitem.renderItemIntoGUI(item, target[0] + 1, target[1] + 1);
 
 
 				if (hover) {
@@ -479,7 +482,7 @@ public class GuiCartAssembler extends GuiBase {
 
 
 
-	private final RenderItem renderitem = new RenderItem();
+	private static final RenderItem renderitem = Minecraft.getMinecraft().getRenderItem();
 	private static final int MODULE_X = 156;
 	private static final int MODULE_Y = 25;
 	private static final int MODULE_SPACING = 20;
@@ -586,21 +589,21 @@ public class GuiCartAssembler extends GuiBase {
 
 			GL11.glRotatef(assembler.getRoll(), 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(assembler.getYaw(), 0.0F, 1.0F, 0.0F);
-
-
-			RenderManager.instance.playerViewY = 180.0F;
+			
+			RenderManager manager = Minecraft.getMinecraft().getRenderManager();
+			manager.playerViewY = 180.0F;
 
 			if (StevesVehicles.renderSteve) {
 				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-				ItemStack stack = player.getCurrentEquippedItem();
-				player.setCurrentItemOrArmor(0, assembler.getCartFromModules(true));
+				ItemStack stack = player.getHeldItemMainhand();
+				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));
 				float temp = player.rotationPitch;
 				player.rotationPitch = (float)Math.PI / 4;
-				RenderManager.instance.renderEntityWithPosYaw(player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+				manager.doRenderEntity(player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 				player.rotationPitch = temp;
-				player.setCurrentItemOrArmor(0, stack);
+				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
 			}else{
-				RenderManager.instance.renderEntityWithPosYaw(assembler.getPlaceholder().getEntity(), 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+				manager.doRenderEntity(assembler.getPlaceholder().getEntity(), 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 			}
 			GL11.glPopMatrix();
 			RenderHelper.disableStandardItemLighting();

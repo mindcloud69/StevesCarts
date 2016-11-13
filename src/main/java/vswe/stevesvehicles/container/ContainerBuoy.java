@@ -2,8 +2,10 @@ package vswe.stevesvehicles.container;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.gui.screen.GuiBuoy;
 import vswe.stevesvehicles.network.DataReader;
@@ -34,14 +36,14 @@ public class ContainerBuoy extends ContainerBase {
 	public boolean canInteractWith(EntityPlayer player) {
 		return player.getDistanceSqToEntity(entityBuoy) <= 64;
 	}
-
+	
 	@Override
-	public void addCraftingToCrafters(ICrafting player) {
-		super.addCraftingToCrafters(player);
-		if (player instanceof EntityPlayer) {
+	public void addListener(IContainerListener listener) {
+		super.addListener(listener);
+		if (listener instanceof EntityPlayer) {
 			DataWriter dw = PacketHandler.getDataWriter(PacketType.BUOY);
 
-			PacketHandler.sendPacketToPlayer(dw, (EntityPlayer)player);
+			PacketHandler.sendPacketToPlayer(dw, (EntityPlayer)listener);
 		}
 	}
 

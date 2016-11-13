@@ -1,12 +1,15 @@
 package vswe.stevesvehicles.client.gui.detector;
 
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiDetector;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.tileentity.detector.LogicObjectModule;
 
+@SideOnly(Side.CLIENT)
 public class DropDownMenuModules extends DropDownMenuPages {
 	public DropDownMenuModules(int index) {
 		super(index);

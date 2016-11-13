@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.client.gui.screen;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,18 +10,28 @@ import org.lwjgl.opengl.GL12;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiContainerSpecial extends GuiScreen {
+public abstract class GuiContainerSpecial /*extends GuiScreen*/ extends GuiContainer {
 
-	private static final float BRIGHTNESS_X = 240F;
+	public GuiContainerSpecial(Container inventorySlotsIn) {
+		super(inventorySlotsIn);
+	}
+
+	/*private static final float BRIGHTNESS_X = 240F;
 	private static final float BRIGHTNESS_Y = 240F;
 	private static final int SLOT_SIZE = 16;
 	private static final int SLOT_HOVER_COLOR = 0x80FFFFFF;
@@ -41,8 +52,6 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 
 	private static final int CLICK_MODE_NORMAL = 0;
 	private static final int CLICK_MODE_SHIFT = 1;
-	private static final int CLICK_MODE_KEY = 2;
-	private static final int CLICK_MODE_PICK_ITEM = 3;
 	private static final int CLICK_MODE_OUTSIDE = 4;
 	private static final int CLICK_DRAG_RELEASE = 5;
 	private static final int CLICK_MODE_DOUBLE_CLICK = 6;
@@ -148,7 +157,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 				movingItem.stackSize = remainingDraggedItems;
 
 				if (movingItem.stackSize == 0){
-					itemInfo = EnumChatFormatting.YELLOW + "0";
+					itemInfo = TextFormatting.YELLOW + "0";
 				}
 			}
 
@@ -193,9 +202,9 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 			fontRenderer = fontRendererObj;
 		}
 
-		itemRender.renderItemAndEffectIntoGUI(fontRenderer, mc.getTextureManager(), item, x, y);
+		itemRender.renderItemAndEffectIntoGUI( item, x, y);
 		int textY = y - (useTextOffset ? TOUCHSCREEN_ITEM_TEXT_OFFSET_Y : 0);
-		itemRender.renderItemOverlayIntoGUI(fontRenderer, mc.getTextureManager(), item, x, textY, info);
+		itemRender.renderItemOverlayIntoGUI(fontRendererObj, item, x, textY, info);
 
 		zLevel = 0;
 		itemRender.zLevel = 0;
@@ -203,7 +212,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 
 	protected void drawGuiContainerForegroundLayer(int mX, int mY) {}
 	protected abstract void drawGuiContainerBackgroundLayer(float f, int mX, int mY);
-
+	
 	private void renderSlot(Slot slot, int x, int y) {
 		ItemStack slotItem = slot.getStack();
 		boolean shouldSlotUnderlayBeRendered = false;
@@ -221,14 +230,14 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 				return;
 			}
 
-			if (Container.func_94527_a(slot, movingItem, true) && container.canDragIntoSlot(slot)) {
+			if (Container.canAddItemToSlot(slot, movingItem, true) && container.canDragIntoSlot(slot)) {
 				slotItem = movingItem.copy();
 				shouldSlotUnderlayBeRendered = true;
-				Container.func_94525_a(draggedItemSlots, lastValidDragMouseButton, slotItem, slot.getStack() == null ? 0 : slot.getStack().stackSize);
+				Container.computeStackSize(draggedItemSlots, lastValidDragMouseButton, slotItem, slot.getStack() == null ? 0 : slot.getStack().stackSize);
 
 				int maxStackSize = Math.min(slot.getSlotStackLimit(), slotItem.getMaxStackSize());
 				if (slotItem.stackSize > maxStackSize) {
-					info = EnumChatFormatting.YELLOW + String.valueOf(maxStackSize);
+					info = TextFormatting.YELLOW + String.valueOf(maxStackSize);
 					slotItem.stackSize = maxStackSize;
 				}
 			}else {
@@ -241,18 +250,18 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 		itemRender.zLevel = 100;
 
 		if (slotItem == null) {
-			IIcon icon = slot.getBackgroundIconIndex();
+			TextureAtlasSprite icon = slot.getBackgroundSprite();
 
 			if (icon != null) {
 				GL11.glDisable(GL11.GL_LIGHTING);
-				mc.getTextureManager().bindTexture(TextureMap.locationItemsTexture);
-				drawTexturedModelRectFromIcon(slot.xDisplayPosition, slot.yDisplayPosition, icon, SLOT_SIZE, SLOT_SIZE);
+				mc.getTextureManager().bindTexture(slot.getBackgroundLocation());
+				drawTexturedModalRect(slot.xDisplayPosition, slot.yDisplayPosition, icon, SLOT_SIZE, SLOT_SIZE);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				shouldSlotBeRendered = false;
 			}
 		}
 
-		if (isMouseOverSlot(slot, x, y) && slot.func_111238_b()) {
+		if (isMouseOverSlot(slot, x, y) && slot.canBeHovered()) {
 			selectedSlot = slot;
 			shouldSlotOverlayBeRendered = true;
 		}
@@ -278,8 +287,8 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			if (shouldSlotItemBeRendered && slotItem != null) {
-				itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), slotItem, slot.xDisplayPosition, slot.yDisplayPosition);
-				itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), slotItem, slot.xDisplayPosition, slot.yDisplayPosition, info);
+				itemRender.renderItemAndEffectIntoGUI(slotItem, slot.xDisplayPosition, slot.yDisplayPosition);
+				itemRender.renderItemOverlayIntoGUI(fontRendererObj, slotItem, slot.xDisplayPosition, slot.yDisplayPosition, info);
 			}
 
 			if (shouldSlotOverlayBeRendered) {
@@ -299,7 +308,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 			for (Slot slot : draggedItemSlots) {
 				ItemStack item = movingItem.copy();
 				int slotStackSize = slot.getHasStack() ? slot.getStack().stackSize : 0;
-				Container.func_94525_a(draggedItemSlots, lastValidDragMouseButton, item, slotStackSize);
+				Container.computeStackSize(draggedItemSlots, lastValidDragMouseButton, item, slotStackSize);
 
 				int maxStackSize = Math.min(slot.getSlotStackLimit(), item.getMaxStackSize());
 				if (item.stackSize > maxStackSize) {
@@ -324,7 +333,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int button) {
+	protected void mouseClicked(int x, int y, int button) throws IOException {
 		super.mouseClicked(x, y, button);
 
 		boolean pickItem = button == mc.gameSettings.keyBindPickBlock.getKeyCode() + PICK_BUTTON_OFFSET;
@@ -363,14 +372,14 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 				}else if (!isItemBeingDragged) {
 					if (mc.thePlayer.inventory.getItemStack() == null) {
 						if (pickItem) {
-							handleMouseClick(slot, slotId, button, CLICK_MODE_PICK_ITEM);
+							handleMouseClick(slot, slotId, button, ClickType.CLONE);
 						}else {
 							boolean isShiftClicking = slotId != FAKE_SLOT_ID && isShiftKeyDown();
-							int clickMode = CLICK_MODE_NORMAL;
+							ClickType clickMode = ClickType.PICKUP;
 
 							if (isShiftClicking){
 								doubleClickItem = slot.getHasStack() ? slot.getStack() : null;
-								clickMode = CLICK_MODE_SHIFT;
+								clickMode = ClickType.QUICK_MOVE;
 							}else if (slotId == FAKE_SLOT_ID) {
 								clickMode = CLICK_MODE_OUTSIDE;
 							}
@@ -411,14 +420,14 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 						touchscreenItem = clickedSlot.getStack().copy();
 					}
 
-				}else if (touchscreenItem.stackSize > 1 && slot != null && Container.func_94527_a(slot, touchscreenItem, false)) {
+				}else if (touchscreenItem.stackSize > 1 && slot != null && Container.canAddItemToSlot(slot, touchscreenItem, false)) {
 					long time = Minecraft.getSystemTime();
 
 					if (touchscreenDropSlot == slot) {
 						if (time > touchscreenValidDropTime) {
-							handleMouseClick(clickedSlot, clickedSlot.slotNumber, MOUSE_LEFT_CLICK, CLICK_MODE_NORMAL);
-							handleMouseClick(slot, slot.slotNumber, MOUSE_RIGHT_CLICK, CLICK_MODE_NORMAL);
-							handleMouseClick(clickedSlot, clickedSlot.slotNumber, MOUSE_LEFT_CLICK, CLICK_MODE_NORMAL);
+							handleMouseClick(clickedSlot, clickedSlot.slotNumber, MOUSE_LEFT_CLICK, ClickType.PICKUP);
+							handleMouseClick(slot, slot.slotNumber, MOUSE_RIGHT_CLICK, ClickType.PICKUP);
+							handleMouseClick(clickedSlot, clickedSlot.slotNumber, MOUSE_LEFT_CLICK, ClickType.PICKUP);
 							touchscreenValidDropTime = time + TOUCHSCREEN_DROP_DELAY_OTHER_SLOT;
 							touchscreenItem.stackSize--;
 						}
@@ -437,10 +446,11 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 	}
 
 	@Override
-	protected void mouseMovedOrUp(int x, int y, int button) {
-		Slot slot = getSlotAtPosition(x, y);
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		super.mouseReleased(mouseX, mouseY, state);
+		Slot slot = getSlotAtPosition(mouseX, mouseY);
 
-		boolean inInterface = guiLeft <= x && x < guiLeft + xSize && guiTop <= y && y < guiTop + ySize;
+		boolean inInterface = guiLeft <= mouseX && mouseX < guiLeft + xSize && guiTop <= mouseY && mouseY < guiTop + ySize;
 
 
 		int slotId;
@@ -453,25 +463,25 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 		}
 
 
-		if (isDoubleClicking && slot != null && button == MOUSE_LEFT_CLICK && container.func_94530_a(null, slot)) {
+		if (isDoubleClicking && slot != null && state == MOUSE_LEFT_CLICK && container.canMergeSlot(null, slot)) {
 			if (isShiftKeyDown()) {
 				if (slot.inventory != null && doubleClickItem != null) {
 					for (Object obj : container.inventorySlots) {
 						Slot inventorySlot = (Slot)obj;
-						if (inventorySlot != null && inventorySlot.canTakeStack(mc.thePlayer) && inventorySlot.getHasStack() && inventorySlot.inventory == slot.inventory && Container.func_94527_a(inventorySlot, doubleClickItem, true)) {
-							handleMouseClick(inventorySlot, inventorySlot.slotNumber, button, CLICK_MODE_SHIFT);
+						if (inventorySlot != null && inventorySlot.canTakeStack(mc.thePlayer) && inventorySlot.getHasStack() && inventorySlot.inventory == slot.inventory && Container.canAddItemToSlot(inventorySlot, doubleClickItem, true)) {
+							handleMouseClick(inventorySlot, inventorySlot.slotNumber, state, ClickType.QUICK_MOVE);
 						}
 					}
 				}
 			}else {
-				handleMouseClick(slot, slotId, button, CLICK_MODE_DOUBLE_CLICK);
+				handleMouseClick(slot, slotId, state, CLICK_MODE_DOUBLE_CLICK);
 			}
 
 			isDoubleClicking = false;
 			doubleClickTime = 0L;
 
 		}else {
-			if (isItemBeingDragged && dragMouseButton != button) {
+			if (isItemBeingDragged && dragMouseButton != state) {
 				isItemBeingDragged = false;
 				draggedItemSlots.clear();
 				preventItemRelease = true;
@@ -484,24 +494,24 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 			}
 
 			if (clickedSlot != null && mc.gameSettings.touchscreen) {
-				if (button == MOUSE_LEFT_CLICK || button == MOUSE_RIGHT_CLICK) {
+				if (state == MOUSE_LEFT_CLICK || state == MOUSE_RIGHT_CLICK) {
 					if (touchscreenItem == null && slot != clickedSlot) {
 						touchscreenItem = clickedSlot.getStack();
 					}
 
-					if (slotId != INVALID_SLOT_ID && touchscreenItem != null && Container.func_94527_a(slot, touchscreenItem, false)) {
-						handleMouseClick(clickedSlot, clickedSlot.slotNumber, button, CLICK_MODE_NORMAL);
-						handleMouseClick(slot, slotId, MOUSE_LEFT_CLICK, CLICK_MODE_NORMAL);
+					if (slotId != INVALID_SLOT_ID && touchscreenItem != null && Container.canAddItemToSlot(slot, touchscreenItem, false)) {
+						handleMouseClick(clickedSlot, clickedSlot.slotNumber, state, ClickType.PICKUP);
+						handleMouseClick(slot, slotId, MOUSE_LEFT_CLICK, ClickType.PICKUP);
 
 						if (mc.thePlayer.inventory.getItemStack() != null) {
-							handleMouseClick(clickedSlot, clickedSlot.slotNumber, button, CLICK_MODE_NORMAL);
-							dropTouchscreenItem(x, y);
+							handleMouseClick(clickedSlot, clickedSlot.slotNumber, state, ClickType.PICKUP);
+							dropTouchscreenItem(mouseX, mouseY);
 						}else {
 							touchscreenReturnItem = null;
 						}
 
 					}else if (touchscreenItem != null) {
-						dropTouchscreenItem(x, y);
+						dropTouchscreenItem(mouseX, mouseY);
 					}
 
 					touchscreenItem = null;
@@ -509,15 +519,16 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 				}
 
 			}else if (isItemBeingDragged && !draggedItemSlots.isEmpty()) {
-				handleMouseClick(null, FAKE_SLOT_ID, Container.func_94534_d(CLICK_DRAG_TYPE_PRE, lastValidDragMouseButton), CLICK_DRAG_RELEASE);
+				int quickcraftMask = Container.getQuickcraftMask(CLICK_DRAG_TYPE_PRE, lastValidDragMouseButton);
+				handleMouseClick(null, FAKE_SLOT_ID, quickcraftMask, CLICK_DRAG_RELEASE);
 				for (Slot draggedItemSlot : draggedItemSlots) {
-					handleMouseClick(draggedItemSlot, draggedItemSlot.slotNumber, Container.func_94534_d(CLICK_DRAG_TYPE_SLOT, lastValidDragMouseButton), CLICK_DRAG_RELEASE);
+					handleMouseClick(draggedItemSlot, draggedItemSlot.slotNumber, quickcraftMask, CLICK_DRAG_RELEASE);
 				}
-				handleMouseClick(null, FAKE_SLOT_ID, Container.func_94534_d(CLICK_DRAG_TYPE_POST, lastValidDragMouseButton), CLICK_DRAG_RELEASE);
+				handleMouseClick(null, FAKE_SLOT_ID, quickcraftMask, CLICK_DRAG_RELEASE);
 
 			}else if (mc.thePlayer.inventory.getItemStack() != null) {
-				if (button == mc.gameSettings.keyBindPickBlock.getKeyCode() + PICK_BUTTON_OFFSET) {
-					handleMouseClick(slot, slotId, button, CLICK_MODE_PICK_ITEM);
+				if (state == mc.gameSettings.keyBindPickBlock.getKeyCode() + PICK_BUTTON_OFFSET) {
+					handleMouseClick(slot, slotId, state, ClickType.CLONE);
 
 				}else {
 					boolean isShiftClicking = slotId != FAKE_SLOT_ID && isShiftKeyDown();
@@ -526,7 +537,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 						doubleClickItem = slot != null && slot.getHasStack() ? slot.getStack() : null;
 					}
 
-					handleMouseClick(slot, slotId, button, isShiftClicking ? CLICK_MODE_SHIFT : CLICK_MODE_NORMAL);
+					handleMouseClick(slot, slotId, state, isShiftClicking ? ClickType.QUICK_MOVE : ClickType.PICKUP);
 				}
 			}
 		}
@@ -556,7 +567,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 		return mX >= x - 1 && mX < x + width + 1 && mY >= y - 1 && mY < y + height + 1;
 	}
 
-	protected void handleMouseClick(Slot slot, int slotId, int button, int clickType) {
+	protected void handleMouseClick(Slot slot, int slotId, int button, ClickType clickType) {
 		if (slot != null) {
 			slotId = slot.slotNumber;
 		}
@@ -574,7 +585,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 
 		if (selectedSlot != null && selectedSlot.getHasStack()) {
 			if (key == mc.gameSettings.keyBindPickBlock.getKeyCode()) {
-				handleMouseClick(selectedSlot, selectedSlot.slotNumber, MOUSE_LEFT_CLICK, CLICK_MODE_PICK_ITEM);
+				handleMouseClick(selectedSlot, selectedSlot.slotNumber, MOUSE_LEFT_CLICK, ClickType.CLONE);
 
 			}else if (key == mc.gameSettings.keyBindDrop.getKeyCode()) {
 				handleMouseClick(selectedSlot, selectedSlot.slotNumber, isCtrlKeyDown() ? MOUSE_LEFT_CLICK : MOUSE_RIGHT_CLICK, CLICK_MODE_OUTSIDE);
@@ -586,7 +597,7 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 		if (mc.thePlayer.inventory.getItemStack() == null && selectedSlot != null) {
 			for (int i = 0; i < HOTBAR_SLOTS; i++) {
 				if (key == mc.gameSettings.keyBindsHotbar[i].getKeyCode()) {
-					handleMouseClick(selectedSlot, selectedSlot.slotNumber, i, CLICK_MODE_KEY);
+					handleMouseClick(selectedSlot, selectedSlot.slotNumber, i, ClickType.SWAP);
 					return true;
 				}
 			}
@@ -614,5 +625,5 @@ public abstract class GuiContainerSpecial extends GuiScreen {
 		if (!mc.thePlayer.isEntityAlive() || mc.thePlayer.isDead) {
 			mc.thePlayer.closeScreen();
 		}
-	}
+	}*/
 }

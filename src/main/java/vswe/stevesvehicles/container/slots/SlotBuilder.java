@@ -11,6 +11,6 @@ public class SlotBuilder extends SlotBase {
 
 	@Override
 	public boolean isItemValid(ItemStack itemstack) {
-		return Block.getBlockFromItem(itemstack.getItem()) == Blocks.rail;
+		return Block.getBlockFromItem(itemstack.getItem()) == Blocks.RAIL;
 	}
 }

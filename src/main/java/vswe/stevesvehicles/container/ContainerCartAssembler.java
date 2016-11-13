@@ -5,10 +5,13 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.container.slots.SlotAssembler;
 import vswe.stevesvehicles.container.slots.SlotHull;
 import vswe.stevesvehicles.tileentity.TileEntityBase;
@@ -54,12 +57,12 @@ public class ContainerCartAssembler extends ContainerBase {
 	public boolean canInteractWith(EntityPlayer player) {
 		return assembler.isUseableByPlayer(player);
 	}
-
+	
 	@Override
-	public void addCraftingToCrafters(ICrafting player) {
-		super.addCraftingToCrafters(player);
-
-		assembler.initGuiData(this,player);
+	public void addListener(IContainerListener listener) {
+		super.addListener(listener);
+		
+		assembler.initGuiData(this, listener);
 	}
 
 	@Override
@@ -73,10 +76,10 @@ public class ContainerCartAssembler extends ContainerBase {
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		Iterator players = this.crafters.iterator();
+		Iterator<IContainerListener> players = listeners.iterator();
 
 		while (players.hasNext()) {
-			ICrafting player = (ICrafting)players.next();
+			IContainerListener player = players.next();
 
 			assembler.checkGuiData(this,player);
 		}
@@ -93,9 +96,9 @@ public class ContainerCartAssembler extends ContainerBase {
 	public int lastMaxAssemblingTime;
 	public boolean lastIsAssembling;
 	public int lastFuelLevel;
-
+	
 	@Override
-	public ItemStack slotClick(int slotID, int button, int keyFlag, EntityPlayer player) {
+	public ItemStack slotClick(int slotID, int button, ClickType clickType, EntityPlayer player) {
 		if (slotID >= 0 && slotID < inventorySlots.size()) {
 			Slot hullSlot = inventorySlots.get(slotID);
 
@@ -127,7 +130,7 @@ public class ContainerCartAssembler extends ContainerBase {
 			}
 		}
 
-		return super.slotClick(slotID,button, keyFlag, player);
+		return super.slotClick(slotID,button, clickType, player);
 	}
 
 }

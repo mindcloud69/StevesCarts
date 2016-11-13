@@ -3,7 +3,8 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.ContainerActivator;
 import vswe.stevesvehicles.localization.entry.block.LocalizationToggler;

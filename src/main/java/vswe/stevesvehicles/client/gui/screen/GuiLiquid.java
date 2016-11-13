@@ -2,7 +2,8 @@ package vswe.stevesvehicles.client.gui.screen;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.ContainerLiquid;

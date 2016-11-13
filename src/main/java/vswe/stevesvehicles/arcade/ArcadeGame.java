@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraft.util.SoundCategory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -78,14 +80,14 @@ public abstract class ArcadeGame {
 	@SideOnly(Side.CLIENT)
 	public static void playSound(String sound, float volume, float pitch) {
 		if (StevesVehicles.instance.useArcadeSounds && sound != null) {
-			SoundHandler.playSound(sound, volume, pitch);
+			SoundHandler.playSound(sound, SoundCategory.AMBIENT, volume, pitch);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void playDefaultSound(String sound, float volume, float pitch) {
 		if (StevesVehicles.instance.useArcadeSounds && sound != null) {
-			SoundHandler.playDefaultSound(sound, volume, pitch);
+			SoundHandler.playDefaultSound(sound, SoundCategory.AMBIENT, volume, pitch);
 		}
 	}	
 

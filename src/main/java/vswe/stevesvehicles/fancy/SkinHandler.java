@@ -4,6 +4,9 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SkinHandler extends FancyPancyHandler {
@@ -37,7 +40,8 @@ public class SkinHandler extends FancyPancyHandler {
 	@Override
 	public void setCurrentResource(AbstractClientPlayer player, ResourceLocation resource, String url) {
 		ReflectionHelper.setPrivateValue(AbstractClientPlayer.class, player, resource, 3);
-		ReflectionHelper.setPrivateValue(AbstractClientPlayer.class, player, tryToDownloadFancy(resource, url, AbstractClientPlayer.locationStevePng, new ImageBufferDownload()), 1);
+		//TODO: Fix
+		//ReflectionHelper.setPrivateValue(AbstractClientPlayer.class, player, tryToDownloadFancy(resource, url, AbstractClientPlayer.locationStevePng, new ImageBufferDownload()), 1);
 	}
 
 	@Override

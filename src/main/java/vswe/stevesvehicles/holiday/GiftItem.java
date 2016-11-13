@@ -54,13 +54,13 @@ public class GiftItem {
 	public static ArrayList<GiftItem> EasterList  = new ArrayList<>();
 
 	public static void init() {
-		ChristmasList.add(new GiftItem(new ItemStack(Blocks.dirt, 32), 25, 200000));
-		ChristmasList.add(new GiftItem(new ItemStack(Blocks.stone, 16), 50, 100000));
-		ChristmasList.add(new GiftItem(new ItemStack(Items.coal, 8), 50, 50000));
-		ChristmasList.add(new GiftItem(new ItemStack(Items.redstone, 2), 75, 22000));
-		ChristmasList.add(new GiftItem(new ItemStack(Items.iron_ingot, 4), 75, 25000));
-		ChristmasList.add(new GiftItem(Items.gold_ingot, 80, 17000));
-		ChristmasList.add(new GiftItem(Items.diamond, 250, 5000));
+		ChristmasList.add(new GiftItem(new ItemStack(Blocks.DIRT, 32), 25, 200000));
+		ChristmasList.add(new GiftItem(new ItemStack(Blocks.STONE, 16), 50, 100000));
+		ChristmasList.add(new GiftItem(new ItemStack(Items.COAL, 8), 50, 50000));
+		ChristmasList.add(new GiftItem(new ItemStack(Items.REDSTONE, 2), 75, 22000));
+		ChristmasList.add(new GiftItem(new ItemStack(Items.IRON_INGOT, 4), 75, 25000));
+		ChristmasList.add(new GiftItem(Items.GOLD_INGOT, 80, 17000));
+		ChristmasList.add(new GiftItem(Items.DIAMOND, 250, 5000));
 		GiftItem.addModuleGifts(ChristmasList);
 
 		GiftItem.addModuleGifts(EasterList);		

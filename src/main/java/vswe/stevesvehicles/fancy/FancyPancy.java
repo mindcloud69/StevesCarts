@@ -13,6 +13,9 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.StringUtils;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class FancyPancy {
@@ -275,7 +278,7 @@ public class FancyPancy {
 
 	private boolean isObserverValid() {
 		AbstractClientPlayer observerPlayer = Minecraft.getMinecraft().thePlayer;
-		String observerName = StringUtils.stripControlCodes(observerPlayer.getDisplayName());
+		String observerName = StringUtils.stripControlCodes(observerPlayer.getName());
 
 		if (observers != null && observers.length != 0) {
 			boolean foundObserver = false;
@@ -324,7 +327,7 @@ public class FancyPancy {
 			return false;
 		}
 
-		int id = player.worldObj.provider.dimensionId;
+		int id = player.worldObj.provider.getDimension();
 
 		for (int[] levelRange : dimensions) {
 			if ((levelRange.length == 1 && levelRange[0] == id) || (levelRange.length == 2 && levelRange[0] <= id && id <= levelRange[1])) {

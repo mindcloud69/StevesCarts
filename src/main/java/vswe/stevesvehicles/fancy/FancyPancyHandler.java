@@ -15,7 +15,12 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
-
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 
 
@@ -38,7 +43,7 @@ public abstract class FancyPancyHandler {
 	private final String code;
 	public FancyPancyHandler(String code) {
 		this.code = code;
-		FMLCommonHandler.instance().bus().register(this);
+		MinecraftForge.EVENT_BUS.register(this);
 		fancies = new HashMap<>();
 		serverFancies = new HashMap<>();
 	}
@@ -126,7 +131,7 @@ public abstract class FancyPancyHandler {
 	private void loadNewFancy(AbstractClientPlayer player) {
 		if (player != null) {
 
-			String username = StringUtils.stripControlCodes(player.getDisplayName());
+			String username = StringUtils.stripControlCodes(player.getName());
 			UserFancy fancyObj = fancies.get(username);
 
 			if (fancyObj == null && serverFancies.size() > 0 && serverFancies.containsKey(getServerHash())) {

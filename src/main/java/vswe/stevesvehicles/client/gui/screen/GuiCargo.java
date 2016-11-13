@@ -2,11 +2,13 @@ package vswe.stevesvehicles.client.gui.screen;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.ContainerCargo;
@@ -137,7 +139,7 @@ public class GuiCargo extends GuiManager {
 		ItemStack cartIcon;
 
 		if (getCargo().target[id] < 0 || getCargo().target[id] >= TileEntityCargo.itemSelections.size() ||  TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon() == null) {
-			cartIcon = new ItemStack(Items.minecart);
+			cartIcon = new ItemStack(Items.MINECART);
 		}else{
 			cartIcon = TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon();
 		}
@@ -145,7 +147,7 @@ public class GuiCargo extends GuiManager {
 
 		int[] coordinate = getBoxCoordinate(id);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		renderitem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, cartIcon, left + coordinate[0], top + coordinate[1]);
+		renderitem.renderItemIntoGUI(cartIcon, left + coordinate[0], top + coordinate[1]);
 		GL11.glEnable(GL11.GL_LIGHTING);	
 	}
 

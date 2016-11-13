@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.vehicle;
 
 
+import net.minecraft.util.text.translation.I18n;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
@@ -29,10 +30,10 @@ public class VehicleType {
 	}
 
 	public String getName() {
-		return StatCollector.translateToLocal(getUnlocalizedName());
+		return I18n.translateToLocal(getUnlocalizedName());
 	}
 
-	@SideOnly(Side.CLIENT)
+	/*@SideOnly(Side.CLIENT)
 	private IIcon fallbackIcon;
 
 	@SideOnly(Side.CLIENT)
@@ -43,7 +44,7 @@ public class VehicleType {
 	@SideOnly(Side.CLIENT)
 	public IIcon getFallbackIcon() {
 		return fallbackIcon;
-	}
+	}*/
 
 
 }

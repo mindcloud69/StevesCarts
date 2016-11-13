@@ -5,8 +5,10 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.MovingSoundMinecart;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
-
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class MinecartSoundMuter {
@@ -16,8 +18,8 @@ public class MinecartSoundMuter {
 	}
 
 	@SubscribeEvent
-	public void soundPlay(PlaySoundEvent17 event) {
-		ISound sound = event.sound;
+	public void soundPlay(PlaySoundEvent event) {
+		ISound sound = event.getSound();
 		if (sound instanceof MovingSoundMinecartRiding) {
 			MovingSoundMinecartRiding cartSound = (MovingSoundMinecartRiding)sound;
 			EntityMinecart cart = ReflectionHelper.getPrivateValue(MovingSoundMinecartRiding.class, cartSound, 1);

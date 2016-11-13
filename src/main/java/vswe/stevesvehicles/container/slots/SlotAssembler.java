@@ -64,7 +64,7 @@ public class SlotAssembler extends Slot {
 
 
 	public void update() {
-		if (!assembler.getWorldObj().isRemote) {
+		if (!assembler.getWorld().isRemote) {
 
 			if (!isValid() && getHasStack()) {
 

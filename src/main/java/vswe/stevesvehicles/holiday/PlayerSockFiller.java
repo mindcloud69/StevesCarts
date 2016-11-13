@@ -2,14 +2,17 @@ package vswe.stevesvehicles.holiday;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ComponentTypes;
 
 public class PlayerSockFiller {
 
 	public PlayerSockFiller() {
-		FMLCommonHandler.instance().bus().register(this);
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@SubscribeEvent

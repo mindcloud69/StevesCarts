@@ -6,6 +6,9 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class UserFancy {

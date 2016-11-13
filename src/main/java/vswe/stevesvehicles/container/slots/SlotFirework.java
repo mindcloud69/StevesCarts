@@ -14,16 +14,16 @@ public class SlotFirework extends SlotBase {
 		Item item = itemstack.getItem();
 
 		return 
-				item == Items.fireworks ||
-				item == Items.gunpowder ||
-				item == Items.firework_charge ||
-				item == Items.dye ||
-				item == Items.paper ||
-				item == Items.glowstone_dust ||
-				item == Items.diamond ||
-				item == Items.fire_charge ||
-				item == Items.feather ||
-				item == Items.gold_nugget ||
-				item == Items.skull;
+				item == Items.FIREWORKS ||
+				item == Items.GUNPOWDER ||
+				item == Items.FIREWORK_CHARGE ||
+				item == Items.DYE ||
+				item == Items.PAPER ||
+				item == Items.GLOWSTONE_DUST ||
+				item == Items.DIAMOND ||
+				item == Items.FIRE_CHARGE ||
+				item == Items.FEATHER ||
+				item == Items.GOLD_NUGGET ||
+				item == Items.SKULL;
 	}
 }

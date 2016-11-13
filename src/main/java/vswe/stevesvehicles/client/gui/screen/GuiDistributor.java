@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.ContainerDistributor;
 import vswe.stevesvehicles.localization.entry.block.LocalizationDistributor;

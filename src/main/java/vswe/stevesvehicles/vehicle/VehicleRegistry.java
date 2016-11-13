@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.Entity;
-
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.registry.IRegistry;
 import vswe.stevesvehicles.registry.RegistryLoader;

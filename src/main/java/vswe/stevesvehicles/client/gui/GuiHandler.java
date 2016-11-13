@@ -3,8 +3,9 @@ package vswe.stevesvehicles.client.gui;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.common.network.IGuiHandler;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.gui.screen.GuiBuoy;
 import vswe.stevesvehicles.container.ContainerBuoy;
@@ -21,7 +22,7 @@ public class GuiHandler implements IGuiHandler {
 				return vehicle.getGui(player);
 			}
 		}else if (id == 1){
-			TileEntity tileentity = world.getTileEntity(x, y, z);
+			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity instanceof TileEntityBase) {
 				return ((TileEntityBase)tileentity).getGui(player.inventory);
 			}
@@ -43,7 +44,7 @@ public class GuiHandler implements IGuiHandler {
 				return vehicle.getCon(player.inventory);
 			}
 		}else if (id == 1){
-			TileEntity tileentity = world.getTileEntity(x, y, z);
+			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity instanceof TileEntityBase) {
 				return ((TileEntityBase)tileentity).getContainer(player.inventory);
 			}

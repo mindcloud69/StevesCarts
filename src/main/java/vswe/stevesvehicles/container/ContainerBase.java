@@ -3,10 +3,12 @@ import java.util.Iterator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.tileentity.TileEntityBase;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
@@ -143,13 +145,13 @@ public abstract class ContainerBase extends Container {
 	public boolean canInteractWith(EntityPlayer player) {
 		return getTileEntity() != null && getTileEntity().isUseableByPlayer(player);
 	}
-
+	
 	@Override
-	public void addCraftingToCrafters(ICrafting player) {
-		super.addCraftingToCrafters(player);
+	public void addListener(IContainerListener listener) {
+		super.addListener(listener);
 
 		if (getTileEntity() != null) {
-			getTileEntity().initGuiData(this,player);
+			getTileEntity().initGuiData(this, listener);
 		}
 	}
 
@@ -167,10 +169,10 @@ public abstract class ContainerBase extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (getTileEntity() != null) {
-			Iterator playerIterator = this.crafters.iterator();
+			Iterator<IContainerListener> playerIterator = this.listeners.iterator();
 
 			while (playerIterator.hasNext()){
-				ICrafting player = (ICrafting)playerIterator.next();
+				IContainerListener player = playerIterator.next();
 
 				getTileEntity().checkGuiData(this,player);
 			}

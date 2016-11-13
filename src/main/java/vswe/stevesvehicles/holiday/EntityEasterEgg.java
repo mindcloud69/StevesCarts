@@ -9,6 +9,8 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 public class EntityEasterEgg extends EntityEgg {
 	public EntityEasterEgg(World world) {
@@ -24,7 +26,7 @@ public class EntityEasterEgg extends EntityEgg {
 	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition data) {
+	protected void onImpact(RayTraceResult data) {
 		if (data.entityHit != null) {
 			data.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 0);
 		}
@@ -60,7 +62,7 @@ public class EntityEasterEgg extends EntityEgg {
 
 		for (int i = 0; i < 8; i++) {
 			//noinspection SpellCheckingInspection
-			worldObj.spawnParticle("snowballpoof", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+			worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
 		}
 
 		if (!worldObj.isRemote) {

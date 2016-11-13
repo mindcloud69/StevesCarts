@@ -45,7 +45,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	 */
 	private void overrideDataWatcher() {
 		if (worldObj.isRemote) {
-			this.dataWatcher = new DataWatcherLockable(this);
+			this.dataWatcher = new LockableEntityDataManager(this);
 
 			this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
 			this.dataWatcher.addObject(1, Short.valueOf((short)300));

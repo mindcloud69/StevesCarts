@@ -4,10 +4,24 @@ import java.util.EnumSet;
 
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
 
 import vswe.stevesvehicles.block.ModBlocks;
@@ -68,10 +82,7 @@ public class StevesVehicles {
 
 	@Instance("StevesVehicles")
 	public static StevesVehicles instance;
-
-
-
-	public ISimpleBlockRenderingHandler blockRenderer;
+	//public ISimpleBlockRenderingHandler blockRenderer;
 
 	public int maxDynamites = 50;
 	public boolean useArcadeSounds;
@@ -157,15 +168,19 @@ public class StevesVehicles {
 	private void loadRendering() {
 		new FancyPancyLoader();
 
-
 		//TODO move to the vehicle types?
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, new RendererCart());
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, new RendererBoat());
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, (RenderManager manager) -> new RendererCart());
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, (RenderManager manager) -> new RendererBoat());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityEasterEgg.class, new RenderSnowball(ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
-		StevesVehicles.instance.blockRenderer = new RendererUpgrade();
+		RenderingRegistry.registerEntityRenderingHandler(EntityEasterEgg.class, (RenderManager manager) -> new RenderSnowball(manager, null, Minecraft.getMinecraft().getRenderItem()){
+			@Override
+			public ItemStack getStackToRender(Entity entityIn) {
+				return new ItemStack(ModItems.component, 1, ComponentTypes.PAINTED_EASTER_EGG.getId());
+			}
+		});
+		//StevesVehicles.instance.blockRenderer = new RendererUpgrade();
 		new RenderVehicleItem();
-		RenderingRegistry.registerEntityRenderingHandler(EntityCake.class, new RenderSnowball(Items.cake));
+		RenderingRegistry.registerEntityRenderingHandler(EntityCake.class, (RenderManager manager) -> new RenderSnowball(manager, Items.CAKE, Minecraft.getMinecraft().getRenderItem()));
 
 		if (StevesVehicles.instance.tradeHandler != null) {
 			StevesVehicles.instance.tradeHandler.registerSkin();

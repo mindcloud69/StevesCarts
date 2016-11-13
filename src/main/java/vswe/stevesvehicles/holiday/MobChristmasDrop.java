@@ -7,7 +7,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vswe.stevesvehicles.item.ComponentTypes;
 
 public class MobChristmasDrop {
@@ -18,9 +18,9 @@ public class MobChristmasDrop {
 
 	@SubscribeEvent
 	public void onEntityLivingDeath(LivingDeathEvent event) {
-		EntityLivingBase monster = event.entityLiving;
+		EntityLivingBase monster = event.getEntityLiving();
 
-		if (monster.worldObj.isRemote || !event.source.getDamageType().equals("player")) {
+		if (monster.worldObj.isRemote || !event.getSource().getDamageType().equals("player")) {
 			return;
 		}
 

@@ -18,10 +18,10 @@ public class SlotBridge extends SlotBase implements ISpecialItemTransferValidato
 
 	public static boolean isBridgeMaterial(ItemStack itemstack) {
 		Block b = Block.getBlockFromItem(itemstack.getItem());
-		return  b == Blocks.planks ||
-				b == Blocks.brick_block ||
-				b == Blocks.stone ||
-				(b == Blocks.stonebrick && itemstack.getItemDamage() == 0);
+		return  b == Blocks.PLANKS ||
+				b == Blocks.BRICK_BLOCK ||
+				b == Blocks.STONE ||
+				(b == Blocks.STONEBRICK && itemstack.getItemDamage() == 0);
 	}
 
 

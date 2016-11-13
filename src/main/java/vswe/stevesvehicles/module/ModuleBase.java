@@ -10,6 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockVine;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -548,13 +550,13 @@ public abstract class ModuleBase {
 		int[] rect = new int[] {x, y, 16, 16};
 		int dif = handleScroll(rect);
 		if (rect[3] > 0) {
-			RenderItem renderitem = new RenderItem();
+			final RenderItem renderitem = Minecraft.getMinecraft().getRenderItem();
 			gui.setZLevel(100);
 			renderitem.zLevel = 100;
 			gui.setupAndStartScissor();
 
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			renderitem.renderItemAndEffectIntoGUI(gui.getMinecraft().fontRenderer, gui.getMinecraft().renderEngine, item, rect[0] + getX(), rect[1] + getY() + dif);
+			renderitem.renderItemAndEffectIntoGUI(item, rect[0] + getX(), rect[1] + getY() + dif);
 
 			gui.stopScissor();
 			renderitem.zLevel = 0;

@@ -1,4 +1,5 @@
 package vswe.stevesvehicles.client.gui.screen;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.Container;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiBase extends GuiContainerSpecial {
@@ -186,7 +191,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 
 	protected float getScale() {	
 
-		net.minecraft.client.gui.ScaledResolution scaledresolution = new net.minecraft.client.gui.ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+		net.minecraft.client.gui.ScaledResolution scaledresolution = new ScaledResolution(this.mc);
 		float w = scaledresolution.getScaledWidth() * 0.9F;
 		float h = scaledresolution.getScaledHeight() * 0.9F;
 		float multX = w / getXSize();
@@ -243,7 +248,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	public void drawGuiBackground(float f, int x, int y) {}
 
 	@Override
-	protected final void mouseClicked(int x, int y, int button) {
+	protected final void mouseClicked(int x, int y, int button) throws IOException {
 		x = scaleX(x);
 		y = scaleY(y);
 		super.mouseClicked(x, y, button);
@@ -253,13 +258,12 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	public void mouseClick(int x, int y, int button) {}
 
 	@Override
-	protected final void mouseMovedOrUp(int x, int y, int button) {
-		x = scaleX(x);
-		y = scaleY(y);	
-
-		super.mouseMovedOrUp(x,y,button);
-		this.mouseMoved(x,y,button);
-		this.mouseDragged(x, y, button);
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		mouseX = scaleX(mouseX);
+		mouseY = scaleY(mouseY);	
+		super.mouseReleased(mouseX, mouseY, state);
+		this.mouseMoved(mouseX,mouseY,state);
+		this.mouseDragged(mouseX, mouseY, state);
 	}	
 
 	private int myOwnEventButton = 0;
@@ -268,9 +272,10 @@ public abstract class GuiBase extends GuiContainerSpecial {
 
 	/**
 	 * Handles mouse input.
+	 * @throws IOException 
 	 */
 	@Override
-	public void handleMouseInput() {
+	public void handleMouseInput() throws IOException {
 
 		int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
 		int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
@@ -289,12 +294,12 @@ public abstract class GuiBase extends GuiContainerSpecial {
 			}
 
 			this.myOwnEventButton = -1;
-			this.mouseMovedOrUp(i, j, Mouse.getEventButton());
+			this.mouseReleased(i, j, Mouse.getEventButton());
 		}else if (this.myOwnEventButton != -1 && this.myOwnTimeyWhineyThingy > 0L){
 			long k = Minecraft.getSystemTime() - this.myOwnTimeyWhineyThingy;
 			this.mouseClickMove(i, j, this.myOwnEventButton, k);
 		}else{
-			this.mouseMovedOrUp(i, j, -1);
+			this.mouseReleased(i, j, -1);
 		}
 	}
 
@@ -311,8 +316,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	public void mouseMoved(int x, int y, int button) {}
 	public void mouseDragged(int x, int y, int button) {}
 	@Override
-	protected final void keyTyped(char character, int extraInformation)
-	{
+	protected final void keyTyped(char character, int extraInformation) throws IOException{
 		if (extraInformation == 1 || !disableStandardKeyFunctionality()) {
 			super.keyTyped(character,extraInformation);
 		}
@@ -342,7 +346,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		return zLevel;
 	}
 
-	public void drawIcon(IIcon icon, int targetX, int targetY, float sizeX, float sizeY, float offsetX, float offsetY) {
+	/*public void drawIcon(IIcon icon, int targetX, int targetY, float sizeX, float sizeY, float offsetX, float offsetY) {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 
@@ -356,7 +360,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		tessellator.addVertexWithUV(targetX + 16 * sizeX, 	targetY + 0, 			this.getZLevel(), 	x + width, 		y + 0);
 		tessellator.addVertexWithUV(targetX + 0, 			targetY + 0, 			this.getZLevel(), 	x + 0, 			y + 0);
 		tessellator.draw();	
-	}
+	}*/
 
 
 	@SuppressWarnings("SuspiciousNameCombination")
@@ -520,13 +524,14 @@ public abstract class GuiBase extends GuiContainerSpecial {
 				pt4 = ptD;
 				break;	        	
 		}
-
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV((double)(x + 0), (double)(y + h1), (double)this.zLevel, pt1[0], pt1[1]);
-		tessellator.addVertexWithUV((double)(x + w1), (double)(y + h1), (double)this.zLevel, pt2[0], pt2[1]);
-		tessellator.addVertexWithUV((double)(x + w1), (double)(y + 0), (double)this.zLevel, pt3[0], pt3[1]);
-		tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)this.zLevel, pt4[0], pt4[1]);
+		
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		vertexbuffer.pos((x + 0), y + h1, this.zLevel).tex(pt1[0], pt1[1]).endVertex();
+		vertexbuffer.pos((x + w1), y + h1, this.zLevel).tex(pt2[0], pt2[1]).endVertex();
+		vertexbuffer.pos((x + w1), y + 0, this.zLevel).tex(pt3[0], pt3[1]).endVertex();
+		vertexbuffer.pos((x + 0), y + 0, this.zLevel).tex(pt4[0], pt4[1]).endVertex();
 		tessellator.draw();
 	}
 
@@ -600,7 +605,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		setupScissor(target[0], target[1], target[2], target[3]);
 	}
 	protected void setupScissor(int x, int y, int w, int h) {
-		ScaledResolution scaledresolution = new ScaledResolution(this.mc, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(this.mc);
 
 		float scale = getScale();
 

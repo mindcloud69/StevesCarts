@@ -9,11 +9,12 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraft.util.math.AxisAlignedBB;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.ColorHelper;
@@ -117,7 +118,7 @@ public class GuiBuoy extends GuiBase {
 		mapElements.clear();
 		listElements.clear();
 
-		List list = buoy.worldObj.getEntitiesWithinAABBExcludingEntity(buoy, AxisAlignedBB.getBoundingBox(
+		List list = buoy.worldObj.getEntitiesWithinAABBExcludingEntity(buoy, new AxisAlignedBB(
 				buoy.posX - VISIBLE_BLOCKS / 2, buoy.posY - VISIBLE_Y_OFFSET / 2, buoy.posZ - VISIBLE_BLOCKS / 2,
 				buoy.posX + VISIBLE_BLOCKS / 2, buoy.posY + VISIBLE_Y_OFFSET / 2, buoy.posZ + VISIBLE_BLOCKS / 2
 				));
@@ -230,7 +231,7 @@ public class GuiBuoy extends GuiBase {
 			drawTexturedModalRect(left + target[0], top + target[1], LIST_ELEMENT_SRC_X + textureId * (target[2] + 1), LIST_ELEMENT_SRC_Y, target[2], target[3]);
 
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			renderItem.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, element.item, left + target[0], top + target[1] + 1);
+			renderItem.renderItemAndEffectIntoGUI(element.item, left + target[0], top + target[1] + 1);
 
 			getFontRenderer().drawString(element.distance + "m " + element.direction.translate(), left + target[0] + 20, top + target[1] + 6, 0x404040);
 			ResourceHelper.bindResource(TEXTURE);
@@ -275,7 +276,7 @@ public class GuiBuoy extends GuiBase {
 		if (buoy != null) {
 			int[] target = {buoyInfo.x, buoyInfo.y + BUTTON_Y, 16, 16};
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			renderItem.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, buoy.getBuoyItem(), left + target[0], top + target[1]);
+			renderItem.renderItemAndEffectIntoGUI(buoy.getBuoyItem(), left + target[0], top + target[1]);
 
 			if (inRect(mX, mY, target)) {
 				info = new StaticText(buoy.getBuoyType().getName() + "\n" + ColorHelper.GRAY + (int)buoy.posX + ", " + (int)buoy.posY + ", " + (int)buoy.posZ);
@@ -315,7 +316,7 @@ public class GuiBuoy extends GuiBase {
 		return info;
 	}
 
-	private RenderItem renderItem = new RenderItem();
+	private static final RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 
 	private int[] getListElement(int i) {
 		return new int[] {LIST_X, LIST_Y + i * LIST_ELEMENT_HEIGHT, LIST_ELEMENT_WIDTH, LIST_ELEMENT_HEIGHT};

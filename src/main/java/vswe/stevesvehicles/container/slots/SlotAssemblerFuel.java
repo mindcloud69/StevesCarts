@@ -3,7 +3,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-
+import net.minecraftforge.fluids.FluidUtil;
 import vswe.stevesvehicles.module.data.ModuleType;
 import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
 
@@ -26,7 +26,7 @@ public class SlotAssemblerFuel extends SlotAssembler {
 
 	@Override
 	public boolean isItemValid(ItemStack itemstack) {
-		return itemstack.getItem() == Items.coal || (getAssembler().isCombustionFuelValid() && !FluidContainerRegistry.isFilledContainer(itemstack) && TileEntityFurnace.getItemBurnTime(itemstack) > 0);
+		return itemstack.getItem() == Items.COAL || (getAssembler().isCombustionFuelValid() && FluidUtil.getFluidContained(itemstack) == null && TileEntityFurnace.getItemBurnTime(itemstack) > 0);
 	}	
 
 	public static final float FUEL_MULTIPLIER = 0.25F;

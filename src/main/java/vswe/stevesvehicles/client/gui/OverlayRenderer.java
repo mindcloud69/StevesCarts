@@ -1,13 +1,19 @@
 package vswe.stevesvehicles.client.gui;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public class OverlayRenderer {
 
 	public OverlayRenderer() {
-		FMLCommonHandler.instance().bus().register(this);
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@SubscribeEvent
@@ -21,12 +27,13 @@ public class OverlayRenderer {
 
 	@SideOnly(Side.CLIENT)
 	private void renderOverlay() {
-		net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getMinecraft();		
+		Minecraft minecraft = Minecraft.getMinecraft();		
 		EntityPlayer player = minecraft.thePlayer;
+		Entity ridingEntity = player.getRidingEntity();
 
-		if (minecraft.currentScreen == null && player.ridingEntity != null && player.ridingEntity instanceof IVehicleEntity)
+		if (minecraft.currentScreen == null && ridingEntity instanceof IVehicleEntity)
 		{
-			((IVehicleEntity)player.ridingEntity).getVehicle().renderOverlay(minecraft);
+			((IVehicleEntity)ridingEntity).getVehicle().renderOverlay(minecraft);
 		}
 	}
 

@@ -18,15 +18,24 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-
+import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -48,7 +57,8 @@ import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
 import vswe.stevesvehicles.tileentity.toggler.TogglerOption;
 import vswe.stevesvehicles.transfer.TransferHandler;
-import vswe.stevesvehicles.vehicle.entity.DataWatcherLockable;
+import vswe.stevesvehicles.vehicle.entity.LockableEntityDataManager;
+import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 import vswe.stevesvehicles.vehicle.version.VehicleVersion;
 
@@ -67,6 +77,9 @@ public class VehicleBase {
 
 	public static final int MODULAR_SPACE_WIDTH = 443;
 	public static final int MODULAR_SPACE_HEIGHT = 168;
+	
+	private static final DataParameter<Boolean> IS_BURNING = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
 
 	private static Random rand = new Random();
 
@@ -464,7 +477,7 @@ public class VehicleBase {
 	 * @return If it's disabled
 	 */
 	public boolean isDisabled() {
-		return isCartFlag(1);
+		return entity.getDataManager().get(IS_DISANABLED);
 	}
 
 	/**
@@ -472,7 +485,11 @@ public class VehicleBase {
 	 * @param disabled If it's disabled
 	 */
 	public void setIsDisabled(boolean disabled) {
-		setCartFlag(1, disabled);
+		if (getWorld().isRemote) {
+			return;
+		}
+		
+		entity.getDataManager().set(IS_DISANABLED, disabled);
 	}
 
 
@@ -482,7 +499,7 @@ public class VehicleBase {
 	 * that requires power should run or not.
 	 */
 	public boolean isEngineBurning() {
-		return isCartFlag(0);
+		return entity.getDataManager().get(IS_BURNING);
 	}
 
 	/**
@@ -490,31 +507,11 @@ public class VehicleBase {
 	 * @param on The state of the engine
 	 */
 	public void setEngineBurning(boolean on) {
-		setCartFlag(0, on);
-	}
-
-	/**
-	 * Returns one of up to 8 flags about the cart that is synchronized between the client and the server
-	 * @param id The Flag's id
-	 * @return If the flag is set or not
-	 */
-	private boolean isCartFlag(int id) {
-		return (entity.getDataWatcher().getWatchableObjectByte(16) & (1 << id)) != 0;
-	}
-
-	/**
-	 * Sets one of up to 8 flags about the cart that is synchronized between the client and the server
-	 * @param id The Flag's id
-	 * @param val The new valie pf the flag
-	 */
-	private void setCartFlag(int id, boolean val) {
 		if (getWorld().isRemote) {
 			return;
 		}
-
-		byte data = (byte)((entity.getDataWatcher().getWatchableObjectByte(16) & ~(1 << id)) | ((val ? 1 : 0) << id));
-
-		entity.getDataWatcher().updateObject(16, data);
+		
+		entity.getDataManager().set(IS_BURNING, on);
 	}
 
 	/**
@@ -764,7 +761,7 @@ public class VehicleBase {
 
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(chunkX+i, chunkZ+j));
+				ForgeChunkManager.forceChunk(ticket, new ChunkPos(chunkX+i, chunkZ+j));
 			}
 		}
 
@@ -1070,7 +1067,7 @@ public class VehicleBase {
 			entity.entityDropItem(getVehicleItem(), 0.0F); //TODO prevent this from dropping in creative?
 
 			for (int i = 0; i < vehicleEntity.getSizeInventory(); ++i) {
-				ItemStack itemstack = vehicleEntity.getStackInSlotOnClosing(i);
+				ItemStack itemstack = vehicleEntity.removeStackFromSlot(i);
 
 				if (itemstack != null) {
 					float offsetX = rand.nextFloat() * 0.8F + 0.1F;
@@ -1103,9 +1100,9 @@ public class VehicleBase {
 	}
 
 	public float getMountedYOffset() {
-		if (modules != null && entity.riddenByEntity != null) {
+		if (modules != null && entity.getRidingEntity() != null) {
 			for (ModuleBase module : modules) {
-				float offset = module.mountedOffset(entity.riddenByEntity);
+				float offset = module.mountedOffset(entity.getRidingEntity());
 				if (offset != 0) {
 					return offset;
 				}
@@ -1253,8 +1250,8 @@ public class VehicleBase {
 	}
 
 	public void onInteractWith(EntityPlayer player) {
-		FMLNetworkHandler.openGui(player, StevesVehicles.instance, 0, getWorld(), entity.getEntityId(), 0, 0);
-		vehicleEntity.openInventory();
+		player.openGui(player, 0, getWorld(), entity.getEntityId(), 0, 0);
+		vehicleEntity.openInventory(player);
 	}
 
 	/**
@@ -1401,24 +1398,19 @@ public class VehicleBase {
 			name = new String(nameBytes);
 		}
 
-		if (entity.getDataWatcher() instanceof DataWatcherLockable) {
-			((DataWatcherLockable)entity.getDataWatcher()).release();
+		if (entity.getDataManager() instanceof LockableEntityDataManager) {
+			((LockableEntityDataManager)entity.getDataManager()).release();
 		}
 
 	}
 
-	public int fill(FluidStack resource, boolean doFill) {
-		return fill(ForgeDirection.UNKNOWN, resource, doFill);
-	}
-
 	/**
 	 * Fills fluid into internal tanks, distribution is left to the ITankContainer.
-	 * @param from Orientation the fluid is pumped in from.
 	 * @param resource FluidStack representing the maximum amount of fluid filled into the ITankContainer
 	 * @param doFill If false filling will only be simulated.
 	 * @return Amount of resource that was filled into internal tanks.
 	 */
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		int amount = 0;
 		if (resource != null && resource.amount > 0) {
 			FluidStack fluid = resource.copy();
@@ -1435,16 +1427,7 @@ public class VehicleBase {
 		return amount;
 	}
 
-
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return drain(from, null, maxDrain, doDrain);
-	}
-
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		return drain(from, resource, resource == null ? 0 : resource.amount, doDrain);
-	}
-
-	private FluidStack drain(ForgeDirection from, FluidStack resource, int maxDrain, boolean doDrain) {
+	private FluidStack drain(FluidStack resource, int maxDrain, boolean doDrain) {
 		FluidStack ret = resource;
 		if (ret != null) {
 			ret = ret.copy();
@@ -1493,18 +1476,11 @@ public class VehicleBase {
 		return amount;
 	}
 
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
-
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
-
-	public FluidTankInfo[] getTankInfo(ForgeDirection direction) {
-		FluidTankInfo[] ret = new FluidTankInfo[tankModules.size()];
+	public IFluidTankProperties[] getTankProperties() {
+		IFluidTankProperties[] ret = new IFluidTankProperties[tankModules.size()];
 		for (int i = 0; i < ret.length; i++) {
-			ret[i] = new FluidTankInfo(tankModules.get(i).getFluid(), tankModules.get(i).getCapacity());
+			IFluidTank tank = tankModules.get(i);
+			ret[i] = new FluidTankProperties(tank.getFluid(), tank.getCapacity());
 		}
 		return ret;
 	}

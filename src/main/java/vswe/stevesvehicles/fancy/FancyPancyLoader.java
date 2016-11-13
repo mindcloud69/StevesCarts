@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 @SideOnly(Side.CLIENT)

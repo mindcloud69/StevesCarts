@@ -7,7 +7,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.GeneratedInfo;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.slots.ISpecialSlotRender;
@@ -149,7 +150,8 @@ public class GuiVehicle extends GuiBase {
 			float alpha = inRect(x, y, getModuleDisplayX(i), getModuleDisplayY(i), 16, 16) ? 1 : 0.5F;
 			GL11.glColor4f(1F, 1F, 1F, alpha);
 
-			this.drawIcon(count.getData().getIcon(), getGuiLeft() + getModuleDisplayX(i), getGuiTop() + getModuleDisplayY(i), 1, 1, 0, 0);
+			//TODO: Fix icons
+			//this.drawIcon(count.getData().getIcon(), getGuiLeft() + getModuleDisplayX(i), getGuiTop() + getModuleDisplayY(i), 1, 1, 0, 0);
 		}
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -384,7 +386,7 @@ public class GuiVehicle extends GuiBase {
 	}
 
 	private static final int[] SCROLLABLE_AREA = {5, 4, 438, 164};
-
+	
 	@Override
 	protected void renderSlots(int x, int y) {
 		ModuleBase thief = vehicle.getInterfaceThief();

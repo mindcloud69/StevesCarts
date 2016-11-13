@@ -12,13 +12,19 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class OverheadHandler extends FancyPancyHandler {
@@ -34,7 +40,7 @@ public class OverheadHandler extends FancyPancyHandler {
 
 		private OverheadData(AbstractClientPlayer player) {
 			resourceLocation = getDefaultResource(player);
-			dataObjects.put(StringUtils.stripControlCodes(player.getDisplayName()), this);
+			dataObjects.put(StringUtils.stripControlCodes(player.getName()), this);
 		}
 	}
 
@@ -49,7 +55,7 @@ public class OverheadHandler extends FancyPancyHandler {
 	}
 
 	private OverheadData getData(AbstractClientPlayer player) {
-		OverheadData data = dataObjects.get(StringUtils.stripControlCodes(player.getDisplayName()));
+		OverheadData data = dataObjects.get(StringUtils.stripControlCodes(player.getName()));
 		if (data == null) {
 			data = new OverheadData(player);
 		}
@@ -97,22 +103,24 @@ public class OverheadHandler extends FancyPancyHandler {
 
 	@SubscribeEvent
 	public void render(RenderLivingEvent.Specials.Post event) {
-
-		if (event.entity instanceof AbstractClientPlayer && event.renderer instanceof RenderPlayer) {
-			AbstractClientPlayer player = (AbstractClientPlayer)event.entity;
+		Entity entity = event.getEntity();
+		RenderLivingBase livingBase = event.getRenderer();
+		
+		if (entity instanceof AbstractClientPlayer && livingBase instanceof RenderPlayer) {
+			AbstractClientPlayer player = (AbstractClientPlayer)entity;
 			if (!player.isInvisible()) {
-				RenderPlayer renderer = (RenderPlayer)event.renderer;
+				RenderPlayer render = (RenderPlayer)livingBase;
 				EntityPlayer observer = Minecraft.getMinecraft().thePlayer;
 				boolean isObserver = player == observer;
 
 				double distanceSq = player.getDistanceSqToEntity(observer);
-				double distanceLimit = player.isSneaking() ? RendererLivingEntity.NAME_TAG_RANGE_SNEAK : RendererLivingEntity.NAME_TAG_RANGE;
+				double distanceLimit = player.isSneaking() ? RenderLivingBase.NAME_TAG_RANGE_SNEAK : RenderLivingBase.NAME_TAG_RANGE;
 
 				if (distanceSq < distanceLimit * distanceLimit) {
 					if (player.isPlayerSleeping()) {
-						renderOverHead(renderer, player, event.x, event.y - 1.5D, event.z, isObserver);
+						renderOverHead(render, player, event.getX(), event.getY() - 1.5D, event.getZ(), isObserver);
 					}else{
-						renderOverHead(renderer, player, event.x, event.y, event.z, isObserver);
+						renderOverHead(render, player, event.getX(), event.getY(), event.getZ(), isObserver);
 					}
 				}
 

@@ -2,9 +2,12 @@ package vswe.stevesvehicles.client.gui.screen;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.ContainerManager;
 import vswe.stevesvehicles.localization.entry.block.LocalizationManager;
@@ -80,11 +83,11 @@ public abstract class GuiManager extends GuiBase {
 			drawColors(i, color, left, top);
 		}
 
-		RenderItem renderitem = new RenderItem();
+		RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 		int[] coordinate = getCenterCoordinate();
-		renderitem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(getBlock(), 1), left + coordinate[0], top + coordinate[1]);
+		renderItem.renderItemIntoGUI(new ItemStack(getBlock(), 1), left + coordinate[0], top + coordinate[1]);
 		for (int i = 0; i < 4; i ++) {
-			drawItems(i, renderitem, left, top);
+			drawItems(i, renderItem, left, top);
 		}
 
 
