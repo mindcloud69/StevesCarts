@@ -26,8 +26,8 @@ public class ModuleShooterAdv extends ModuleShooter {
 	private ArrayList<ModuleMobdetector> detectors;
 	private EntityNearestTarget sorter;
 	private float detectorAngle;
-	private DataParameter<Byte> OPTION = createDw(DataSerializers.BYTE);
-	private DataParameter<Byte> RIFLE_DIRECTION = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> OPTION;
+	private DataParameter<Byte> RIFLE_DIRECTION;
 
 	public ModuleShooterAdv(final EntityMinecartModular cart) {
 		super(cart);
@@ -203,6 +203,8 @@ public class ModuleShooterAdv extends ModuleShooter {
 
 	@Override
 	public void initDw() {
+		OPTION = createDw(DataSerializers.BYTE);
+		RIFLE_DIRECTION = createDw(DataSerializers.BYTE);
 		registerDw(OPTION, (byte)0);
 		registerDw(RIFLE_DIRECTION, (byte)0);
 	}

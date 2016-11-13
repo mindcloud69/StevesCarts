@@ -15,7 +15,7 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.modules.ISuppliesModule;
 
 public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
-	private DataParameter<Boolean> BRIDGE = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> BRIDGE;
 
 	public ModuleBridge(final EntityMinecartModular cart) {
 		super(cart);
@@ -97,6 +97,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
+		BRIDGE = createDw(DataSerializers.BOOLEAN);
 		registerDw(BRIDGE, false);
 	}
 

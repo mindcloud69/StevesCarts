@@ -610,10 +610,7 @@ public abstract class ModuleBase {
 	}
 
 	private int getDwId(int id) {
-		id += 2 + this.getDataWatcherStart();
-		if (id >= 16) {
-			id += 7;
-		}
+		id += this.getDataWatcherStart();
 		return id;
 	}
 
@@ -634,7 +631,7 @@ public abstract class ModuleBase {
 		return this.getCart().getDataManager().get(key);
 	}
 
-	private int ids = -1;
+	private int ids = 0;
 	protected <T> DataParameter<T> createDw(DataSerializer<T> serializer){
 		return serializer.createKey(getDwId(ids++));
 	}

@@ -22,7 +22,7 @@ import vswe.stevescarts.modules.ISuppliesModule;
 public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	private boolean hasGeneratedAngles;
 	private float[] railAngles;
-	private DataParameter<Byte> RAILS = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> RAILS;
 
 	public ModuleRailer(final EntityMinecartModular cart) {
 		super(cart);
@@ -126,6 +126,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
+		RAILS = createDw(DataSerializers.BYTE);
 		registerDw(RAILS, (byte)0);
 	}
 

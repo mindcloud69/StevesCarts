@@ -17,9 +17,9 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private boolean down;
 	private boolean upState;
 
-	private DataParameter<Integer> LIGHT = createDw(DataSerializers.VARINT);
-	private DataParameter<Boolean> UP_STATE = createDw(DataSerializers.BOOLEAN);
-	private DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
+	private DataParameter<Integer> LIGHT;
+	private DataParameter<Boolean> UP_STATE;
+	private DataParameter<Integer> PRIORITY;
 
 	public ModuleSolarBase(final EntityMinecartModular cart) {
 		super(cart);
@@ -128,6 +128,9 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	@Override
 	public void initDw() {
 		super.initDw();
+		LIGHT = createDw(DataSerializers.VARINT);
+		UP_STATE = createDw(DataSerializers.BOOLEAN);
+		PRIORITY = createDw(DataSerializers.VARINT);
 		registerDw(LIGHT, 0);
 		registerDw(UP_STATE, false);
 	}

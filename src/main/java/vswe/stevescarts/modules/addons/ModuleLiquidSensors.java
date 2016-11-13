@@ -18,7 +18,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 	private float sensorRotation;
 	private int activetime;
 	private int mult;
-	private DataParameter<Byte> SENSOR_INFO = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> SENSOR_INFO;
 
 	public ModuleLiquidSensors(final EntityMinecartModular cart) {
 		super(cart);
@@ -65,6 +65,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 
 	@Override
 	public void initDw() {
+		SENSOR_INFO = createDw(DataSerializers.BYTE);
 		registerDw(SENSOR_INFO, (byte)1);
 	}
 

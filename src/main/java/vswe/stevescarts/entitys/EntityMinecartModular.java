@@ -289,7 +289,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		final int y = 0;
 		final int maxH = 0;
 		int guidata = 0;
-		int datawatcher = 0;
+		int datawatcher = dataManager.getAll().size();
 		int packets = 0;
 		if (this.worldObj.isRemote) {
 			this.generateModels();

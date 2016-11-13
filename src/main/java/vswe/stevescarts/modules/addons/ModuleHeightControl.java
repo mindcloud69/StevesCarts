@@ -18,7 +18,7 @@ public class ModuleHeightControl extends ModuleAddon {
 	private int[] arrowDown;
 	private int oreMapX;
 	private int oreMapY;
-	private DataParameter<Integer> Y_TARGET = createDw(DataSerializers.VARINT);
+	private DataParameter<Integer> Y_TARGET;
 
 	public ModuleHeightControl(final EntityMinecartModular cart) {
 		super(cart);
@@ -179,6 +179,7 @@ public class ModuleHeightControl extends ModuleAddon {
 
 	@Override
 	public void initDw() {
+		Y_TARGET = createDw(DataSerializers.VARINT);
 		registerDw(Y_TARGET, (int) this.getCart().posY);
 	}
 

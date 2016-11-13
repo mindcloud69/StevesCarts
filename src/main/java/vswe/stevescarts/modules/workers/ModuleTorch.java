@@ -24,7 +24,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	private int lightLimit;
 	private int[] boxRect;
 	boolean markerMoving;
-	private DataParameter<Integer> TORCHES = createDw(DataSerializers.VARINT);
+	private DataParameter<Integer> TORCHES;
 
 	public ModuleTorch(final EntityMinecartModular cart) {
 		super(cart);
@@ -222,6 +222,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
+		TORCHES = createDw(DataSerializers.VARINT);
 		registerDw(TORCHES, 0);
 	}
 

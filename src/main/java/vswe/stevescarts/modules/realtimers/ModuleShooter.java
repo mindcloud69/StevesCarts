@@ -41,7 +41,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	private final int[] AInterval;
 	private int arrowTick;
 	private int arrowInterval;
-	private DataParameter<Byte> ACTIVE_PIPE = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> ACTIVE_PIPE;
 
 	public ModuleShooter(final EntityMinecartModular cart) {
 		super(cart);
@@ -438,6 +438,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
+		ACTIVE_PIPE = createDw(DataSerializers.BYTE);
 		registerDw(ACTIVE_PIPE, (byte)0);
 	}
 

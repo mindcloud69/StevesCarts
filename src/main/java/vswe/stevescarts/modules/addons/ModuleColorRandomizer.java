@@ -18,7 +18,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	private int cooldown;
 	private boolean hover;
 	private Random random;
-	private DataParameter<int[]> COLORS = createDw(CartDataSerializers.VARINT);
+	private DataParameter<int[]> COLORS;
 
 	public ModuleColorRandomizer(final EntityMinecartModular cart) {
 		super(cart);
@@ -112,6 +112,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 
 	@Override
 	public void initDw() {
+		COLORS = createDw(CartDataSerializers.VARINT);
 		registerDw(COLORS, new int[]{255, 255, 255});
 	}
 

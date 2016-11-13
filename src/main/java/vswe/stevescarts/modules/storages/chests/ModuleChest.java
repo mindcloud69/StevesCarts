@@ -10,7 +10,7 @@ import vswe.stevescarts.modules.storages.ModuleStorage;
 
 public abstract class ModuleChest extends ModuleStorage {
 	private float chestAngle;
-	private DataParameter<Boolean> IS_OPEN = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> IS_OPEN;
 
 	public ModuleChest(final EntityMinecartModular cart) {
 		super(cart);
@@ -82,6 +82,7 @@ public abstract class ModuleChest extends ModuleStorage {
 	@Override
 	public void initDw() {
 		if (this.hasVisualChest()) {
+			IS_OPEN = createDw(DataSerializers.BOOLEAN);
 			registerDw(IS_OPEN, false);
 		}
 	}
