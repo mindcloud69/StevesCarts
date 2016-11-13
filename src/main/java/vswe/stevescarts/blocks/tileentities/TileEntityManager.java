@@ -46,22 +46,12 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	@Override
-	public ItemStack decrStackSize(final int i, final int j) {
-		if (this.cargoItemStacks[i] == null) {
-			return null;
-		}
-		if (this.cargoItemStacks[i].stackSize <= j) {
-			final ItemStack itemstack = this.cargoItemStacks[i];
-			this.cargoItemStacks[i] = null;
+	public ItemStack decrStackSize(int index, int count) {
+		ItemStack itemstack = ItemStackHelper.getAndSplit(cargoItemStacks, index, count);
+		if (itemstack != null) {
 			this.markDirty();
-			return itemstack;
 		}
-		final ItemStack itemstack2 = this.cargoItemStacks[i].splitStack(j);
-		if (this.cargoItemStacks[i].stackSize == 0) {
-			this.cargoItemStacks[i] = null;
-		}
-		this.markDirty();
-		return itemstack2;
+		return itemstack;
 	}
 
 	@Override
