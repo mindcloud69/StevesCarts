@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.client.gui;
 
+import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -7,9 +8,8 @@ import net.minecraft.world.World;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.gui.screen.GuiBuoy;
 import vswe.stevesvehicles.container.ContainerBuoy;
-import vswe.stevesvehicles.vehicle.VehicleBase;
-import cpw.mods.fml.common.network.IGuiHandler;
 import vswe.stevesvehicles.tileentity.TileEntityBase;
+import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public class GuiHandler implements IGuiHandler {
@@ -26,20 +26,20 @@ public class GuiHandler implements IGuiHandler {
 				return ((TileEntityBase)tileentity).getGui(player.inventory);
 			}
 		}else if(id == 2) {
-            Entity entity = world.getEntityByID(x);
-            if (entity instanceof EntityBuoy) {
-                return new GuiBuoy((EntityBuoy)entity);
-            }
-        }
-		
+			Entity entity = world.getEntityByID(x);
+			if (entity instanceof EntityBuoy) {
+				return new GuiBuoy((EntityBuoy)entity);
+			}
+		}
+
 		return null;
 	}
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		if (id == 0) {
-            VehicleBase vehicle = getVehicle(x, world);
-            if (vehicle != null) {
+			VehicleBase vehicle = getVehicle(x, world);
+			if (vehicle != null) {
 				return vehicle.getCon(player.inventory);
 			}
 		}else if (id == 1){
@@ -48,20 +48,20 @@ public class GuiHandler implements IGuiHandler {
 				return ((TileEntityBase)tileentity).getContainer(player.inventory);
 			}
 		}else if(id == 2) {
-            Entity entity = world.getEntityByID(x);
-            if (entity instanceof EntityBuoy) {
-                return new ContainerBuoy((EntityBuoy)entity);
-            }
-        }
-		
+			Entity entity = world.getEntityByID(x);
+			if (entity instanceof EntityBuoy) {
+				return new ContainerBuoy((EntityBuoy)entity);
+			}
+		}
+
 		return null;
 	}
-	
+
 	private VehicleBase getVehicle(int id, World world) {
-        Entity entity = world.getEntityByID(id);
-        if (entity instanceof IVehicleEntity) {
-            return ((IVehicleEntity)entity).getVehicle();
-        }
+		Entity entity = world.getEntityByID(id);
+		if (entity instanceof IVehicleEntity) {
+			return ((IVehicleEntity)entity).getVehicle();
+		}
 		return null;
 	}
 

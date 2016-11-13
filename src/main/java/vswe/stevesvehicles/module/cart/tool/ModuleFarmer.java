@@ -9,51 +9,52 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.ForgeDirection;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
-import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
-import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartTool;
-import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.module.cart.ICropModule;
-import vswe.stevesvehicles.module.ISuppliesModule;
-import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.container.slots.SlotSeed;
+import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
+import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartTool;
+import vswe.stevesvehicles.module.ISuppliesModule;
+import vswe.stevesvehicles.module.ModuleBase;
+import vswe.stevesvehicles.module.cart.ICropModule;
+import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule, ICropModule  {
 	public ModuleFarmer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-    @Override
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
-        simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_FARM, "farming"));
-    }
+	@Override
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+		simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_FARM, "farming"));
+	}
 
-    protected abstract int getRange();
-	
+	protected abstract int getRange();
+
 	public int getExternalRange() {
 		return getRange();
 	}
-	
+
 	private ArrayList<ICropModule> plantModules;
 	@Override
 	public void init() {
 		super.init();
-		plantModules = new ArrayList<ICropModule>();
-		
+		plantModules = new ArrayList<>();
+
 		for (ModuleBase module : getVehicle().getModules()) {
 			if (module instanceof ICropModule) {
 				plantModules.add((ICropModule)module);
 			}
 		}
 	}	
-	
-		
+
+
 	//lower numbers are prioritised
+	@Override
 	public byte getWorkPriority() {
 		return 80;
 	}
@@ -65,7 +66,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, LocalizationCartTool.FARMER.translate(), 8, 6, 0x404040);
+		drawString(gui, LocalizationCartTool.FARMER.translate(), 8, 6, 0x404040);
 	}
 
 
@@ -73,62 +74,62 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	protected int getInventoryWidth() {
 		return 3;
 	}
-	
+
 	@Override
 	protected SlotBase getSlot(int slotId, int x, int y) {
-        return new SlotSeed(getVehicle().getVehicleEntity(), this, slotId, 8 + x * 18, 28 + y * 18);
+		return new SlotSeed(getVehicle().getVehicleEntity(), this, slotId, 8 + x * 18, 28 + y * 18);
 	}		
-	
+
 
 	//return true when the work is done, false allow other modules to continue the work
-    @Override
+	@Override
 	public boolean work() {
-       //get the next block so the cart knows where to mine
-        Vec3 next = getNextBlock();
-        //save thee coordinates for easy access
-        int x = (int) next.xCoord;
-        int y = (int) next.yCoord;
-        int z = (int) next.zCoord;
+		//get the next block so the cart knows where to mine
+		Vec3 next = getNextBlock();
+		//save thee coordinates for easy access
+		int x = (int) next.xCoord;
+		int y = (int) next.yCoord;
+		int z = (int) next.zCoord;
 
-        //loop through the blocks in the "hole" in front of the cart
+		//loop through the blocks in the "hole" in front of the cart
 
-        for (int i = -getRange(); i <= getRange(); i++) {
-            for (int j = -getRange(); j <= getRange(); j++) {
-                //calculate the coordinates of this "hole"
-                int targetX = x + i;
-                int targetY = y - 1;
-                int targetZ = z + j;
+		for (int i = -getRange(); i <= getRange(); i++) {
+			for (int j = -getRange(); j <= getRange(); j++) {
+				//calculate the coordinates of this "hole"
+				int targetX = x + i;
+				int targetY = y - 1;
+				int targetZ = z + j;
 
 				if (farm(targetX, targetY, targetZ) || till(targetX, targetY, targetZ) || plant(targetX, targetY, targetZ)) {
-                    return true;
-                }
-            }
-        }
+					return true;
+				}
+			}
+		}
 
 		return false;
-    }
+	}
 
-   protected boolean till(int x, int y, int z) {
-        Block b = getVehicle().getWorld().getBlock(x, y, z);
+	protected boolean till(int x, int y, int z) {
+		Block b = getVehicle().getWorld().getBlock(x, y, z);
 
-        if (getVehicle().getWorld().isAirBlock(x, y + 1, z) && (b == Blocks.grass || b == Blocks.dirt)) {
-            if (doPreWork()) {
+		if (getVehicle().getWorld().isAirBlock(x, y + 1, z) && (b == Blocks.grass || b == Blocks.dirt)) {
+			if (doPreWork()) {
 				startWorking(10);
-                return true;
-            }else {
-                stopWorking();
-                getVehicle().getWorld().setBlock(x, y, z, Blocks.farmland);
-            }
-        }
+				return true;
+			}else {
+				stopWorking();
+				getVehicle().getWorld().setBlock(x, y, z, Blocks.farmland);
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-   protected boolean plant(int x, int y, int z) {
+	protected boolean plant(int x, int y, int z) {
 		int seedSlot = -1;
 
 		Block soil = getVehicle().getWorld().getBlock(x, y, z);
-		
+
 		if (soil != null && soil != Blocks.air) {
 
 			//check if there's any seeds to place
@@ -138,7 +139,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					if (isSeedValidHandler(getStack(id))){
 
 						Block crop = getCropFromSeedHandler(getStack(id));
-						
+
 						if (crop != null && crop instanceof IPlantable && getVehicle().getWorld().isAirBlock(x, y + 1, z)  && soil.canSustainPlant(getVehicle().getWorld(), x, y, z, ForgeDirection.UP, ((IPlantable)crop))) {
 							seedSlot = id;
 							break;							
@@ -147,7 +148,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					}
 				}
 			}
-	
+
 			if (seedSlot != -1) {
 				if (doPreWork()) {
 					startWorking(25);
@@ -155,101 +156,101 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				}else{
 					stopWorking();
 
-                    Block crop = getCropFromSeedHandler(getStack(seedSlot));
-										
+					Block crop = getCropFromSeedHandler(getStack(seedSlot));
+
 					getVehicle().getWorld().setBlock(x, y + 1, z, crop);
 
-                    if (!getVehicle().hasCreativeSupplies()) {
-                        getStack(seedSlot).stackSize--;
+					if (!getVehicle().hasCreativeSupplies()) {
+						getStack(seedSlot).stackSize--;
 
-                        if (getStack(seedSlot).stackSize <= 0){
-                            setStack(seedSlot,null);
-                        }
-                    }
-					
+						if (getStack(seedSlot).stackSize <= 0){
+							setStack(seedSlot,null);
+						}
+					}
+
 				}
 			}
 		}
-        
-
-        return false;
-    }
-
-   protected boolean farm(int x, int y, int z) {
-        Block block = getVehicle().getWorld().getBlock(x, y + 1, z);
-        int m = getVehicle().getWorld().getBlockMetadata(x, y + 1, z);
-
-        if (isReadyToHarvestHandler(x, y + 1, z)){
-            if (doPreWork()){
-                int efficiency = enchanter != null ? enchanter.getEfficiencyLevel() : 0;
-                int workingTime = (int)(getBaseFarmingTime() / Math.pow(1.3F, efficiency));
-                setFarming(workingTime * 4);
-                startWorking(workingTime);
-                return true;
-            }else {
-                stopWorking();
-
-                ArrayList<ItemStack> stuff;
-                if (shouldSilkTouch(block, x, y, z, m)) {
-                    stuff = new ArrayList<ItemStack>();
-                    ItemStack stack = getSilkTouchedItem(block, m);
-                    if (stack != null) {
-                        stuff.add(stack);
-                    }
-                }else{
-                    int fortune = enchanter != null ? enchanter.getFortuneLevel() : 0;
-                    stuff = block.getDrops(getVehicle().getWorld(), x, y + 1, z, m, fortune);
-                }
 
 
-                for (ItemStack item: stuff){
-                    getVehicle().addItemToChest(item);
+		return false;
+	}
 
-                    if (item.stackSize != 0)
-                    {
-                        EntityItem entityitem = new EntityItem(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ , item);
-                        entityitem.motionX = (float)(x - getVehicle().x()) / 10;
-                        entityitem.motionY = 0.15F;
-                        entityitem.motionZ = (float)(z - getVehicle().z()) / 10;
-                        getVehicle().getWorld().spawnEntityInWorld(entityitem);
-                    }
-                }
+	protected boolean farm(int x, int y, int z) {
+		Block block = getVehicle().getWorld().getBlock(x, y + 1, z);
+		int m = getVehicle().getWorld().getBlockMetadata(x, y + 1, z);
 
-                getVehicle().getWorld().setBlockToAir(x, y + 1, z);
-                damageTool(3);
+		if (isReadyToHarvestHandler(x, y + 1, z)){
+			if (doPreWork()){
+				int efficiency = enchanter != null ? enchanter.getEfficiencyLevel() : 0;
+				int workingTime = (int)(getBaseFarmingTime() / Math.pow(1.3F, efficiency));
+				setFarming(workingTime * 4);
+				startWorking(workingTime);
+				return true;
+			}else {
+				stopWorking();
 
-            }
-        }
+				ArrayList<ItemStack> stuff;
+				if (shouldSilkTouch(block, x, y, z, m)) {
+					stuff = new ArrayList<>();
+					ItemStack stack = getSilkTouchedItem(block, m);
+					if (stack != null) {
+						stuff.add(stack);
+					}
+				}else{
+					int fortune = enchanter != null ? enchanter.getFortuneLevel() : 0;
+					stuff = block.getDrops(getVehicle().getWorld(), x, y + 1, z, m, fortune);
+				}
 
 
-        return false;
-    }
+				for (ItemStack item: stuff){
+					getVehicle().addItemToChest(item);
 
- 
-   protected int getBaseFarmingTime() {
-	   return 25;
-   }
-   
+					if (item.stackSize != 0)
+					{
+						EntityItem entityitem = new EntityItem(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ , item);
+						entityitem.motionX = (float)(x - getVehicle().x()) / 10;
+						entityitem.motionY = 0.15F;
+						entityitem.motionZ = (float)(z - getVehicle().z()) / 10;
+						getVehicle().getWorld().spawnEntityInWorld(entityitem);
+					}
+				}
+
+				getVehicle().getWorld().setBlockToAir(x, y + 1, z);
+				damageTool(3);
+
+			}
+		}
+
+
+		return false;
+	}
+
+
+	protected int getBaseFarmingTime() {
+		return 25;
+	}
+
 	public boolean isSeedValidHandler(ItemStack seed) {
 		for (ICropModule module : plantModules) {
 			if (module.isSeedValid(seed)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	protected Block getCropFromSeedHandler(ItemStack seed) {
 		for (ICropModule module : plantModules) {
 			if (module.isSeedValid(seed)) {
 				return module.getCropFromSeed(seed);
 			}
 		}
-		
+
 		return null;
 	}	
-	
+
 
 	protected boolean isReadyToHarvestHandler(int x, int y, int z) {
 		for (ICropModule module : plantModules) {
@@ -257,17 +258,17 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				return true;
 			}
 		}
-		
+
 		return false;
 	}		
 
 	@Override
 	public boolean isSeedValid(ItemStack seed) {
-        return seed.getItem() == Items.wheat_seeds
+		return seed.getItem() == Items.wheat_seeds
 				|| seed.getItem() == Items.potato
 				|| seed.getItem() == Items.carrot;
 	}	
-	
+
 	@Override
 	public Block getCropFromSeed(ItemStack seed) {
 		if (seed.getItem() == Items.carrot) {
@@ -277,19 +278,19 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		}else if(seed.getItem() == Items.wheat_seeds){
 			return Blocks.wheat;
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	@Override
 	public boolean isReadyToHarvest(int x, int y, int z) {
 		Block block = getVehicle().getWorld().getBlock(x, y, z);
-        int m = getVehicle().getWorld().getBlockMetadata(x, y, z);
+		int m = getVehicle().getWorld().getBlockMetadata(x, y, z);
 
-        return block instanceof BlockCrops && m == 7;
-    }
-	
+		return block instanceof BlockCrops && m == 7;
+	}
+
 	private int farming;
 	private float farmAngle;
 	private float rigAngle = -(float)Math.PI * 5 / 4;
@@ -324,12 +325,13 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		}
 	}
 
-    /**
+	/**
      Called every tick, here the necessary actions should be taken
-     **/
-    public void update() {
-        //call the method from the super class, this will do all ordinary things first
-        super.update();
+	 **/
+	@Override
+	public void update() {
+		//call the method from the super class, this will do all ordinary things first
+		super.update();
 
 		if (!getVehicle().getWorld().isRemote) {
 			setFarming(farming-1);
@@ -355,9 +357,9 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				}
 			}
 		}
-    }
+	}
 
-	
+
 	@Override
 	public boolean haveSupplies() {
 		for (int i = 0; i < getInventorySize(); i++) {

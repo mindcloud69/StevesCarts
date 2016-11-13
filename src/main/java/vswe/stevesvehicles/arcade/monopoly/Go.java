@@ -13,10 +13,10 @@ public class Go extends CornerPlace {
 	@Override
 	public void draw(GuiVehicle gui, EnumSet<PlaceState> states) {
 		super.draw(gui, states);
-		
+
 		Note.DIAMOND.draw(game, gui, 45, 5, 2);
 	}
-	
+
 	@Override
 	public void drawText(GuiVehicle gui, EnumSet<PlaceState> states) {
 		game.getModule().drawString(gui, "Collect", 5, 10, 0x404040);
@@ -27,5 +27,5 @@ public class Go extends CornerPlace {
 	public void onPiecePass(Piece piece) {
 		piece.addMoney(Note.DIAMOND, 2, true);
 	}
-	
+
 }

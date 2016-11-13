@@ -22,12 +22,12 @@ public class ModuleEggBasket extends ModuleChest {
 		return false;
 	}	
 
-    @Override
+	@Override
 	protected float getLidSpeed() {
 		return (float)(Math.PI / 150);
 	}	
 
-    @Override
+	@Override
 	protected float chestFullyOpenAngle() {
 		return (float)Math.PI / 8F;
 	}	

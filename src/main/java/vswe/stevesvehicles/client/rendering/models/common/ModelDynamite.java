@@ -1,33 +1,32 @@
 package vswe.stevesvehicles.client.rendering.models.common;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.util.ResourceLocation;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.module.common.attachment.ModuleDynamite;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelDynamite extends ModelVehicle {
 
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/tntModel.png");
-	
+
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {
 		return TEXTURE;
 	}		
-	
-    @Override
+
+	@Override
 	public float extraMultiplier() {
 		return 0.25F;
 	}
 
 	private ModelRenderer anchor;
 	private ModelRenderer[] dynamites;
-    public ModelDynamite() {
+	public ModelDynamite() {
 		anchor = new ModelRenderer(this, 0, 0);
 		addRenderer(anchor);
 
@@ -104,7 +103,7 @@ public class ModelDynamite extends ModelVehicle {
 
 		dynamites[53] = createDynamite(-2F, 2, 1);
 		dynamites[51] = createDynamite(2F, 2, 1);
-    }
+	}
 
 	private ModelRenderer createDynamite(float x, float y, float z) {
 		ModelRenderer dynamite = new ModelRenderer(this, 0, 0);
@@ -112,31 +111,31 @@ public class ModelDynamite extends ModelVehicle {
 		fixSize(dynamite);
 
 		dynamite.addBox(
-			-8, 	    //X
-			-4F, 	    //Y
-			-4,	 	    //Z
-			16,			//Size X
-			8,			//Size Y
-			8,			//Size Z
-			0.0F
-		);
+				-8, 	    //X
+				-4F, 	    //Y
+				-4,	 	    //Z
+				16,			//Size X
+				8,			//Size Y
+				8,			//Size Z
+				0.0F
+				);
 		dynamite.setRotationPoint(
-			x * 10F, 		//X
-			y * -8F,		//Y
-			z * 18F			//Z
-		);
+				x * 10F, 		//X
+				y * -8F,		//Y
+				z * 18F			//Z
+				);
 
 		dynamite.rotateAngleY = (float)Math.PI/ 2;
 
 		return dynamite;
 	}
 
-    @Override
+	@Override
 	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
 		if (module == null) {
-            for (ModelRenderer dynamite : dynamites) {
-                dynamite.isHidden = false;
-            }
+			for (ModelRenderer dynamite : dynamites) {
+				dynamite.isHidden = false;
+			}
 		}else{	
 			float size = ((ModuleDynamite)module).explosionSize();
 			float max = 4F /*base*/ + 0.8F /* how much a tnt is worth */ * 50 /*the number of TNTs possible */;
@@ -147,20 +146,20 @@ public class ModelDynamite extends ModelVehicle {
 		}
 
 		anchor.setRotationPoint(
-			0, 		                //X
-			-24 / sizeMultiplier,			//Y
-			0			            //Z
-		);
+				0, 		                //X
+				-24 / sizeMultiplier,			//Y
+				0			            //Z
+				);
 	}
 
 	private float sizeMultiplier;
-    @Override
+	@Override
 	public void render(ModuleBase module, float yaw, float pitch, float roll, float multiplier, float partialTime) {
 		if (module == null) {
 			sizeMultiplier = 1;
 			super.render(module,yaw,pitch,roll, multiplier, partialTime);
 		}else{
-	
+
 			float fuseMultiplier = (float)Math.abs(Math.sin(((float)((ModuleDynamite)module).getFuse() / ((ModuleDynamite)module).getFuseLength()) * Math.PI * 6));
 
 			sizeMultiplier = fuseMultiplier * 0.5F + 1;
@@ -180,7 +179,7 @@ public class ModelDynamite extends ModelVehicle {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 			GL11.glScalef(1 / sizeMultiplier, 1 / sizeMultiplier, 1 / sizeMultiplier);
-			
+
 		}
-    }
+	}
 }

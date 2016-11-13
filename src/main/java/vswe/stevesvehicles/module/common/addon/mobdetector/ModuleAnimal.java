@@ -10,18 +10,20 @@ public class ModuleAnimal extends ModuleEntityDetector {
 		super(vehicleBase);
 	}
 
+	@Override
 	public String getName() {
 		return LocalizationShooter.ANIMAL_TITLE.translate();
 	}
+	@Override
 	public boolean isValidTarget(Entity target) {
 		return
-		target instanceof EntityAnimal
-		&&
-		(
-			!(target instanceof EntityTameable)
-			||
-			!((EntityTameable)target).isTamed()
-		)
-		;
+				target instanceof EntityAnimal
+				&&
+				(
+						!(target instanceof EntityTameable)
+						||
+						!((EntityTameable)target).isTamed()
+						)
+				;
 	}
 }

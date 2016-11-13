@@ -1,11 +1,11 @@
 package vswe.stevesvehicles.client.rendering.models.cart;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.module.cart.tool.ModuleFarmer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelFarmer extends ModelVehicle {
 	@Override
@@ -13,12 +13,12 @@ public class ModelFarmer extends ModelVehicle {
 		return resource;
 	}
 
-    @Override
+	@Override
 	protected int getTextureWidth() {
 		return 128;
 	}
 
-    @Override
+	@Override
 	public float extraMultiplier() {
 		return 0.5F;
 	}
@@ -27,17 +27,17 @@ public class ModelFarmer extends ModelVehicle {
 	private ModelRenderer anchor;
 	private ModelRenderer[] outers;
 	private ResourceLocation resource;
-    public ModelFarmer(ResourceLocation resource) {
-    	this.resource = resource;
-    	
+	public ModelFarmer(ResourceLocation resource) {
+		this.resource = resource;
+
 		mainAnchor = new ModelRenderer(this);
 		addRenderer(mainAnchor);
 
 		mainAnchor.setRotationPoint(
-			-18, 		//X
-			4,			//Y
-			0			//Z
-		);
+				-18, 		//X
+				4,			//Y
+				0			//Z
+				);
 
 		for (int i = -1; i <= 1; i += 2){
 			ModelRenderer smallArm = new ModelRenderer(this, 26, 23);
@@ -45,19 +45,19 @@ public class ModelFarmer extends ModelVehicle {
 			fixSize(smallArm);
 
 			smallArm.addBox(
-                -1F,        //X
-                -1F,        //Y
-                -1F,        //Z
-                8,          //Size X
-                2,           //Size Y
-                2,           //Size Z
-                0.0F
-            );
+					-1F,        //X
+					-1F,        //Y
+					-1F,        //Z
+					8,          //Size X
+					2,           //Size Y
+					2,           //Size Z
+					0.0F
+					);
 			smallArm.setRotationPoint(
-                0,          //X
-                0,          //Y
-                i * 17      //Z
-            );
+					0,          //X
+					0,          //Y
+					i * 17      //Z
+					);
 		}
 
 		ModelRenderer mainArm = new ModelRenderer(this, 0, 37);
@@ -65,19 +65,19 @@ public class ModelFarmer extends ModelVehicle {
 		fixSize(mainArm);
 
 		mainArm.addBox(
-            -30F,       //X
-            -2F,        //Y
-            -2F,        //Z
-            60,         //Size X
-            4,          //Size Y
-            4,          //Size Z
-            0.0F
-        );
+				-30F,       //X
+				-2F,        //Y
+				-2F,        //Z
+				60,         //Size X
+				4,          //Size Y
+				4,          //Size Z
+				0.0F
+				);
 		mainArm.setRotationPoint(
-            8,          //X
-            0,          //Y
-            0           //Z
-        );
+				8,          //X
+				0,          //Y
+				0           //Z
+				);
 		mainArm.rotateAngleY = (float)Math.PI / 2;
 
 		for (int i =- 1; i <= 1; i += 2){
@@ -86,48 +86,48 @@ public class ModelFarmer extends ModelVehicle {
 			fixSize(extra);
 
 			extra.addBox(
-				-2.5F, 	    //X
-				-2.5F, 	    //Y
-				-1F,	 	//Z
-				5,			//Size X
-				5,			//Size Y
-				2,			//Size Z
-				0.0F
-			);
+					-2.5F, 	    //X
+					-2.5F, 	    //Y
+					-1F,	 	//Z
+					5,			//Size X
+					5,			//Size Y
+					2,			//Size Z
+					0.0F
+					);
 			extra.setRotationPoint(
-				8, 		//X
-				0,		//Y
-				i*30	//Z
-			);
+					8, 		//X
+					0,		//Y
+					i*30	//Z
+					);
 
 			ModelRenderer bigArm = new ModelRenderer(this, 26, 17);
 			mainAnchor.addChild(bigArm);
 			fixSize(bigArm);
 
 			bigArm.addBox(
-                -1F,        //X
-                -2F,        //Y
-                -1F,        //Z
-                16,         //Size X
-                4,          //Size Y
-                2,          //Size Z
-                0.0F
-            );
+					-1F,        //X
+					-2F,        //Y
+					-1F,        //Z
+					16,         //Size X
+					4,          //Size Y
+					2,          //Size Z
+					0.0F
+					);
 			bigArm.setRotationPoint(
-                8,          //X
-                0,          //Y
-                i * 32      //Z
-            );
+					8,          //X
+					0,          //Y
+					i * 32      //Z
+					);
 		}
 
 		anchor = new ModelRenderer(this);
 		mainAnchor.addChild(anchor);
 
 		anchor.setRotationPoint(
-			22, 		//X
-			0,			//Y
-			0			//Z
-		);
+				22, 		//X
+				0,			//Y
+				0			//Z
+				);
 
 		float start = -1.5F;
 		float end = 1.5F;
@@ -138,19 +138,19 @@ public class ModelFarmer extends ModelVehicle {
 				fixSize(side);
 
 				side.addBox(
-					-5F, 	        //X
-					-2F - 6.8F, 	//Y
-					-1F,	 	    //Z
-					10,				//Size X
-					4,				//Size Y
-					2,			    //Size Z
-					0.0F
-				);
+						-5F, 	        //X
+						-2F - 6.8F, 	//Y
+						-1F,	 	    //Z
+						10,				//Size X
+						4,				//Size Y
+						2,			    //Size Z
+						0.0F
+						);
 				side.setRotationPoint(
-					0, 		                        //X
-					0,			                    //Y
-					i * 20 + (j % 2) * 0.005F		//Z
-				);
+						0, 		                        //X
+						0,			                    //Y
+						i * 20 + (j % 2) * 0.005F		//Z
+						);
 				side.rotateAngleZ = j * (float)(Math.PI * 2) / 6;
 			}
 
@@ -160,19 +160,19 @@ public class ModelFarmer extends ModelVehicle {
 				fixSize(sideCenter);
 
 				sideCenter.addBox(
-                    -6F,        //X
-                    -6F,        //Y
-                    -0.5F,      //Z
-                    12,         //Size X
-                    12,         //Size Y
-                    1,          //Size Z
-                    0.0F
-                );
+						-6F,        //X
+						-6F,        //Y
+						-0.5F,      //Z
+						12,         //Size X
+						12,         //Size Y
+						1,          //Size Z
+						0.0F
+						);
 				sideCenter.setRotationPoint(
-                    0,              //X
-                    0,              //Y
-                    i * 20          //Z
-                );
+						0,              //X
+						0,              //Y
+						i * 20          //Z
+						);
 			}else{
 				for (int j=0; j < 3; j++) {
 					ModelRenderer sideCenter = new ModelRenderer(this, 26, 12);
@@ -180,19 +180,19 @@ public class ModelFarmer extends ModelVehicle {
 					fixSize(sideCenter);
 
 					sideCenter.addBox(
-                        -4F + 3,        //X
-                        -2F,            //Y
-                        -0.5F,          //Z
-                        8,              //Size X
-                        4,              //Size Y
-                        1,              //Size Z
-                        0.0F
-                    );
+							-4F + 3,        //X
+							-2F,            //Y
+							-0.5F,          //Z
+							8,              //Size X
+							4,              //Size Y
+							1,              //Size Z
+							0.0F
+							);
 					sideCenter.setRotationPoint(
-                        0,              //X
-                        0,              //Y
-                        i * 20          //Z
-                    );
+							0,              //X
+							0,              //Y
+							i * 20          //Z
+							);
 					sideCenter.rotateAngleZ = (j+0.25F) * (float)(Math.PI * 2) / 3;
 				}
 			}
@@ -204,19 +204,19 @@ public class ModelFarmer extends ModelVehicle {
 			fixSize(middle);
 
 			middle.addBox(
-				-30F, 	        //X
-				-1F - 0.7F, 	//Y
-				-1F,	 	    //Z
-				60,				//Size X
-				2,				//Size Y
-				2,			    //Size Z
-				0.0F
-			);
+					-30F, 	        //X
+					-1F - 0.7F, 	//Y
+					-1F,	 	    //Z
+					60,				//Size X
+					2,				//Size Y
+					2,			    //Size Z
+					0.0F
+					);
 			middle.setRotationPoint(
-				0, 		            //X
-				0,			        //Y
-				(i % 2) * 0.005F	//Z
-			);
+					0, 		            //X
+					0,			        //Y
+					(i % 2) * 0.005F	//Z
+					);
 			middle.rotateAngleX = i * (float)(Math.PI * 2) / 6;
 			middle.rotateAngleY = (float)Math.PI / 2;
 		}
@@ -233,19 +233,19 @@ public class ModelFarmer extends ModelVehicle {
 			fixSize(outer);
 
 			outer.addBox(
-				-30F, 	        //X
-				-0.5F, 	        //Y
-				-0.5F,	 	    //Z
-				60,				//Size X
-				1,				//Size Y
-				1,			    //Size Z
-				0.0F
-			);
+					-30F, 	        //X
+					-0.5F, 	        //Y
+					-0.5F,	 	    //Z
+					60,				//Size X
+					1,				//Size Y
+					1,			    //Size Z
+					0.0F
+					);
 			outer.setRotationPoint(
-				0, 		        //X
-				-8.8F,			//Y
-				0			    //Z
-			);
+					0, 		        //X
+					-8.8F,			//Y
+					0			    //Z
+					);
 			outer.rotateAngleX = (float)Math.PI;
 			outers[i] = outer;
 
@@ -259,24 +259,24 @@ public class ModelFarmer extends ModelVehicle {
 				fixSize(nail);
 
 				nail.addBox(
-					-0.5F, 	    //X
-					-1.5F, 	    //Y
-					-0.5F,	 	//Z
-					1,			//Size X
-					3,			//Size Y
-					1,			//Size Z
-					0.0F
-				);
+						-0.5F, 	    //X
+						-1.5F, 	    //Y
+						-0.5F,	 	//Z
+						1,			//Size X
+						3,			//Size Y
+						1,			//Size Z
+						0.0F
+						);
 				nail.setRotationPoint(
-					j * 2, 		//X
-					-2F,		//Y
-					0			//Z
-				);
+						j * 2, 		//X
+						-2F,		//Y
+						0			//Z
+						);
 			}
 		}
-    }
+	}
 
-    @Override
+	@Override
 	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
 		mainAnchor.rotateAngleZ = module == null ? (float)Math.PI * 5 / 4 : -((ModuleFarmer)module).getRigAngle();
 		float farmAngle = module == null ? 0 : ((ModuleFarmer)module).getFarmAngle();

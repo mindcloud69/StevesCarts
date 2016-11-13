@@ -1,6 +1,8 @@
 package vswe.stevesvehicles.tileentity;
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -10,16 +12,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import vswe.stevesvehicles.item.ComponentTypes;
-import vswe.stevesvehicles.localization.entry.block.LocalizationCargo;
-import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
-import vswe.stevesvehicles.network.DataReader;
-import vswe.stevesvehicles.item.ModItems;
+import vswe.stevesvehicles.client.gui.screen.GuiBase;
+import vswe.stevesvehicles.client.gui.screen.GuiCargo;
 import vswe.stevesvehicles.container.ContainerBase;
 import vswe.stevesvehicles.container.ContainerCargo;
 import vswe.stevesvehicles.container.ContainerManager;
-import vswe.stevesvehicles.client.gui.screen.GuiBase;
-import vswe.stevesvehicles.client.gui.screen.GuiCargo;
 import vswe.stevesvehicles.container.slots.ISlotExplosions;
 import vswe.stevesvehicles.container.slots.SlotArrow;
 import vswe.stevesvehicles.container.slots.SlotBridge;
@@ -34,21 +31,24 @@ import vswe.stevesvehicles.container.slots.SlotMilker;
 import vswe.stevesvehicles.container.slots.SlotSapling;
 import vswe.stevesvehicles.container.slots.SlotSeed;
 import vswe.stevesvehicles.container.slots.SlotTorch;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.item.ComponentTypes;
+import vswe.stevesvehicles.item.ModItems;
+import vswe.stevesvehicles.localization.entry.block.LocalizationCargo;
+import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
+import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.tileentity.manager.ManagerTransfer;
 import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelection;
 import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelectionModule;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public class TileEntityCargo extends TileEntityManager {
-    
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
 		return new GuiCargo(inv, this);
 	}
-	
+
 	@Override
 	public ContainerBase getContainer(InventoryPlayer inv) {
 		return new ContainerCargo(inv, this);		
@@ -58,40 +58,40 @@ public class TileEntityCargo extends TileEntityManager {
 
 	public static ArrayList<CargoItemSelection> itemSelections;
 
-    //TODO add a registry so ids are preserved?
+	//TODO add a registry so ids are preserved?
 	public static void loadSelectionSettings() {
-		itemSelections = new ArrayList<CargoItemSelection>();
+		itemSelections = new ArrayList<>();
 		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_ALL, Slot.class, new ItemStack(ModItems.vehicles, 1, 0)));
 		itemSelections.add(new CargoItemSelectionModule(LocalizationCargo.SLOT_ENGINE, SlotFuel.class, ModuleRegistry.getModuleFromName("common.engines:coal_engine")));
 		itemSelections.add(new CargoItemSelectionModule(LocalizationCargo.SLOT_RAILER, SlotBuilder.class, ModuleRegistry.getModuleFromName("cart.rails:railer")));
-        itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_STORAGE, SlotChest.class, new ItemStack(Blocks.chest, 1)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_TORCH, SlotTorch.class, new ItemStack(Blocks.torch, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_STORAGE, SlotChest.class, new ItemStack(Blocks.CHEST, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_TORCH, SlotTorch.class, new ItemStack(Blocks.TORCH, 1)));
 		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_EXPLOSIVE, ISlotExplosions.class, ComponentTypes.DYNAMITE.getItemStack()));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_ARROW, SlotArrow.class, new ItemStack(Items.arrow, 1)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_BRIDGE, SlotBridge.class, new ItemStack(Blocks.brick_block, 1)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_SEED, SlotSeed.class, new ItemStack(Items.wheat_seeds, 1)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_FERTILIZER, SlotFertilizer.class, new ItemStack(Items.dye, 1, 15)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_SAPLING, SlotSapling.class, new ItemStack(Blocks.sapling, 1)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_FIREWORK, SlotFirework.class, new ItemStack(Items.fireworks, 1)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_BUCKET, SlotMilker.class, new ItemStack(Items.bucket, 1)));
-		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_CAKE, SlotCake.class, new ItemStack(Items.cake, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_ARROW, SlotArrow.class, new ItemStack(Items.ARROW, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_BRIDGE, SlotBridge.class, new ItemStack(Blocks.BRICK_BLOCK, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_SEED, SlotSeed.class, new ItemStack(Items.WHEAT_SEEDS, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_FERTILIZER, SlotFertilizer.class, new ItemStack(Items.DYE, 1, 15)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_SAPLING, SlotSapling.class, new ItemStack(Blocks.SAPLING, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_FIREWORK, SlotFirework.class, new ItemStack(Items.FIREWORKS, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_BUCKET, SlotMilker.class, new ItemStack(Items.BUCKET, 1)));
+		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_CAKE, SlotCake.class, new ItemStack(Items.CAKE, 1)));
 	}
-	
-	
-	@Override
-    public int getSizeInventory() {
-        return 60;
-    }
+
 
 	@Override
-    public String getInventoryName() {
-        return "container.cargo_manager";
-    }
+	public int getSizeInventory() {
+		return 60;
+	}
 
-    public int target[] = new int[] {0, 0, 0, 0};
+	@Override
+	public String getInventoryName() {
+		return "container.cargo_manager";
+	}
+
+	public int target[] = new int[] {0, 0, 0, 0};
 	public ArrayList<SlotCargo> cargoSlots;
 	public int lastLayout = -1;
-	
+
 	@Override
 	protected void updateLayout() {
 		if (cargoSlots != null && lastLayout != layoutType) {
@@ -101,43 +101,43 @@ public class TileEntityCargo extends TileEntityManager {
 			lastLayout = layoutType;
 		}		
 	}	
-	
+
 	@Override
 	protected boolean isTargetValid(ManagerTransfer transfer) {
 		return target[transfer.getSetting()] >= 0 && target[transfer.getSetting()] < itemSelections.size();
 	}
-	
+
 	@Override
 	protected void receivePacket(PacketId id, DataReader dr) {
 		if (id == PacketId.VEHICLE_PART) {
-            int railId = dr.readByte();
-            int dif = dr.readBoolean() ? 1 : -1;
+			int railId = dr.readByte();
+			int dif = dr.readBoolean() ? 1 : -1;
 
 			do {
-                target[railId] += dif;
+				target[railId] += dif;
 
-                if (target[railId] >= itemSelections.size()) {
-                    target[railId] = 0;
-                }else if (target[railId] < 0) {
-                    target[railId] = itemSelections.size() - 1;
-                }
+				if (target[railId] >= itemSelections.size()) {
+					target[railId] = 0;
+				}else if (target[railId] < 0) {
+					target[railId] = itemSelections.size() - 1;
+				}
 			}while (itemSelections.get(target[railId]).getValidSlot() == null);
 
-            if (color[railId] - 1 == getSide()) {
-                reset();
-            }
+			if (color[railId] - 1 == getSide()) {
+				reset();
+			}
 		}else{
-            super.receivePacket(id, dr);
-        }
+			super.receivePacket(id, dr);
+		}
 	}
-	
+
 
 	@Override
 	public void checkGuiData(ContainerManager conManager, ICrafting crafting, boolean isNew) {
 		super.checkGuiData(conManager, crafting, isNew);
-	
+
 		ContainerCargo con = (ContainerCargo)conManager;
-	
+
 		short targetShort = (short)0;
 		for (int i = 0; i < 4; i++) {
 			targetShort |= (target[i] & 15) << (i*4);
@@ -147,7 +147,7 @@ public class TileEntityCargo extends TileEntityManager {
 			con.lastTarget = targetShort;
 		}	
 	}
-	
+
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if(id == 2) {
@@ -159,83 +159,83 @@ public class TileEntityCargo extends TileEntityManager {
 		}
 	}
 
-    public int getAmount(int id) {
-        int val = getAmountId(id);
+	public int getAmount(int id) {
+		int val = getAmountId(id);
 
-        switch (val) {
-            case 1:
-                return 1;
+		switch (val) {
+			case 1:
+				return 1;
 
-            case 2:
-                return 3;
+			case 2:
+				return 3;
 
-            case 3:
-                return 8;
+			case 3:
+				return 8;
 
-            case 4:
-                return 16;
+			case 4:
+				return 16;
 
-            case 5:
-                return 32;
+			case 5:
+				return 32;
 
-            case 6:
-                return 64;
+			case 6:
+				return 64;
 
-            case 7:
-                return 1;
+			case 7:
+				return 1;
 
-            case 8:
-                return 2;
+			case 8:
+				return 2;
 
-            case 9:
-                return 3;
+			case 9:
+				return 3;
 
-            case 10:
-                return 5;
+			case 10:
+				return 5;
 
-            default:
-                return 0;
-        }
-    }
+			default:
+				return 0;
+		}
+	}
 
-    //0 - MAX
-    //1 - Items
-    //2 - Stacks
-    public int getAmountType(int id) {
-        int val = getAmountId(id);
+	//0 - MAX
+	//1 - Items
+	//2 - Stacks
+	public int getAmountType(int id) {
+		int val = getAmountId(id);
 
-        if (val == 0) {
-            return 0;
-        }else if (val <= 6) {
-            return 1;
-        }else {
-            return 2;
-        }
-    }
-	
+		if (val == 0) {
+			return 0;
+		}else if (val <= 6) {
+			return 1;
+		}else {
+			return 2;
+		}
+	}
+
 	@Override
 	public int getAmountCount() {
 		return 11;
 	}
 
 	@Override
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
-        setWorkload(nbttagcompound.getByte("workload"));		
-        for (int i = 0; i < 4; i++) {
-            target[i] = nbttagcompound.getByte("target" + i);
-        }
+	public void readFromNBT(NBTTagCompound nbttagcompound) {
+		super.readFromNBT(nbttagcompound);
+		setWorkload(nbttagcompound.getByte("workload"));		
+		for (int i = 0; i < 4; i++) {
+			target[i] = nbttagcompound.getByte("target" + i);
+		}
 	}
-	
+
 	@Override
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setByte("workload", (byte)getWorkload());
-        for (int i = 0; i < 4; i++) {
-            nbttagcompound.setByte("target" + i, (byte)target[i]);
-        }		
+		for (int i = 0; i < 4; i++) {
+			nbttagcompound.setByte("target" + i, (byte)target[i]);
+		}		
 	}
-	
+
 	@Override
 	protected boolean doTransfer(ManagerTransfer transfer) {
 		Class slotCart = itemSelections.get(target[transfer.getSetting()]).getValidSlot();
@@ -281,7 +281,7 @@ public class TileEntityCargo extends TileEntityManager {
 				}else {
 					maxNumber = -1;
 				}
-				
+
 				TransferHandler.TransferItem(iStack, toInv, toCont, toValid, maxNumber, TransferHandler.TransferType.MANAGER);
 
 				if (iStack.stackSize != stackSize) {
@@ -308,9 +308,9 @@ public class TileEntityCargo extends TileEntityManager {
 		}
 		return false;
 	}
-	
+
 	@Override
-    public boolean isItemValidForSlot(int slotId, ItemStack item) {
+	public boolean isItemValidForSlot(int slotId, ItemStack item) {
 		return true;
 	}
 
@@ -318,5 +318,5 @@ public class TileEntityCargo extends TileEntityManager {
 	public ManagerTransfer getCurrentTransferForSlots() {
 		return latestTransferToBeUsed;
 	}	
-	
+
 }

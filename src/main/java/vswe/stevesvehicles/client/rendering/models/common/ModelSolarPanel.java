@@ -17,7 +17,7 @@ public abstract class ModelSolarPanel extends ModelVehicle {
 
 	private ModelRenderer moving;
 
-    @Override
+	@Override
 	public void applyEffects(ModuleBase module,  float yaw, float pitch, float roll) {
 		moving.rotationPointY = module == null ? -4 : ((ModuleSolarTop)module).getMovingLevel();
 	}

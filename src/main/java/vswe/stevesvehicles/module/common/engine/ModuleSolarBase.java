@@ -1,17 +1,17 @@
 package vswe.stevesvehicles.module.common.engine;
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
 import vswe.stevesvehicles.localization.entry.module.LocalizationEngine;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public abstract class ModuleSolarBase extends ModuleEngine {
 	private int light;
@@ -24,12 +24,12 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		super(vehicleBase);
 	}
 
-    @Override
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
-        simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_LIGHT, "light"));
-    }
+	@Override
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+		simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_LIGHT, "light"));
+	}
 
-    @Override
+	@Override
 	public boolean hasSlots() {
 		return false;
 	}
@@ -42,7 +42,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	@Override
-    protected void loadFuel(){
+	protected void loadFuel(){
 		updateLight();
 		updateDataForModel();
 		chargeSolar();
@@ -56,8 +56,8 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	public float[] getGuiBarColor() {
 		return new float[] {1F,1F,0F};
 	}
-	
-	
+
+
 	private void updateLight() {
 		light = getVehicle().getWorld().getBlockLightValue(getVehicle().x(), getVehicle().y(), getVehicle().z());
 
@@ -77,7 +77,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 				updateDw(1,(byte)light);
 			}
 		}
-		
+
 		maxLight = light == 15;
 		if (!upState && light == 15) {
 			light = 14;
@@ -85,36 +85,36 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	private void chargeSolar() {
-        if (light == 15 && getVehicle().getRandom().nextInt(8) < 4) {
-            setFuelLevel(getFuelLevel() + getGenSpeed());
+		if (light == 15 && getVehicle().getRandom().nextInt(8) < 4) {
+			setFuelLevel(getFuelLevel() + getGenSpeed());
 
-            if (getFuelLevel() > getMaxCapacity()) {
-                setFuelLevel(getMaxCapacity());
-            }
-        }
+			if (getFuelLevel() > getMaxCapacity()) {
+				setFuelLevel(getMaxCapacity());
+			}
+		}
 	}
 
 
 	public int getLight() {
 		return light;
 	}
-	
-	
+
+
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, LocalizationEngine.SOLAR_TITLE.translate(), 8, 6, 0x404040);
-        String str = LocalizationEngine.SOLAR_NO_POWER.translate();
+		drawString(gui, LocalizationEngine.SOLAR_TITLE.translate(), 8, 6, 0x404040);
+		String str = LocalizationEngine.SOLAR_NO_POWER.translate();
 
-        if (getFuelLevel() > 0) {
-            str = LocalizationEngine.SOLAR_POWER.translate(String.valueOf(getFuelLevel()));
-        }
+		if (getFuelLevel() > 0) {
+			str = LocalizationEngine.SOLAR_POWER.translate(String.valueOf(getFuelLevel()));
+		}
 
-        drawString(gui,str, 8, 42, 0x404040);
+		drawString(gui,str, 8, 42, 0x404040);
 	}
 
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/solar.png");
-	
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/solar.png");
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
@@ -122,14 +122,14 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 
 		ResourceHelper.bindResource(TEXTURE);
 
-	    int lightWidth = light * 3;
+		int lightWidth = light * 3;
 
-        if (light == 15) {
-            lightWidth += 2;
-        }
+		if (light == 15) {
+			lightWidth += 2;
+		}
 
 		drawImage(gui, 9, 20, 1, 1, 54 , 18);
-        drawImage(gui, 9+6, 20 + 1, 1, 20, lightWidth , 16);
+		drawImage(gui, 9+6, 20 + 1, 1, 20, lightWidth , 16);
 	}
 
 	@Override
@@ -137,23 +137,23 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		return super.numberOfDataWatchers() + 2;
 	}
 
-	
-	
+
+
 	@Override
 	public void initDw() {
 		super.initDw();
 		addDw(1,(byte)0);
 		addDw(2,(byte)0);
-		
+
 
 	}
 
 	protected boolean isGoingDown() {
 		return down;
 	}
-	
+
 	public void updateSolarModel()
-    {
+	{
 		if (getVehicle().getWorld().isRemote) {
 			updateDataForModel();
 		}
@@ -167,9 +167,9 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 			panelCoolDown = 0;
 			down = !down;
 		}		
-		
+
 		upState = updatePanels();
-		
+
 		if (!getVehicle().getWorld().isRemote) {
 			updateDw(2, upState ? 1 : 0);
 		}
@@ -199,26 +199,26 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 		}
 
 	}
-	
+
 
 	protected abstract int getMaxCapacity();
 	protected abstract int getGenSpeed();
 	protected abstract boolean updatePanels();
-	
 
-	
+
+
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		super.save(tagCompound);
 		tagCompound.setInteger("Fuel", getFuelLevel());
 		tagCompound.setBoolean("Up", upState);
 	}
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		super.load(tagCompound);
 		setFuelLevel(tagCompound.getInteger("Fuel"));
 		upState = tagCompound.getBoolean("Up");
 	}
-	
+
 }

@@ -12,30 +12,30 @@ import vswe.stevesvehicles.item.ComponentTypes;
 
 public class MobChristmasDrop {
 
-    public MobChristmasDrop() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	public MobChristmasDrop() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
 	@SubscribeEvent
 	public void onEntityLivingDeath(LivingDeathEvent event) {
 		EntityLivingBase monster = event.entityLiving;
-		
+
 		if (monster.worldObj.isRemote || !event.source.getDamageType().equals("player")) {
 			return;
 		}
 
-        if (monster instanceof EntityMob) {
-            if (Math.random() < 0.10d) {
-                dropItem(monster, ComponentTypes.STOLEN_PRESENT.getItemStack());
-            }
-        }
-        if(monster instanceof EntityBlaze) {
+		if (monster instanceof EntityMob) {
+			if (Math.random() < 0.10d) {
+				dropItem(monster, ComponentTypes.STOLEN_PRESENT.getItemStack());
+			}
+		}
+		if(monster instanceof EntityBlaze) {
 			if (Math.random() < 0.12) {
 				dropItem(monster, ComponentTypes.RED_WRAPPING_PAPER.getItemStack());
 			}
 		}
 	}
-	
+
 	private void dropItem(EntityLivingBase monster, ItemStack item) {
 		EntityItem obj = new EntityItem(monster.worldObj, monster.posX, monster.posY, monster.posZ, item);
 

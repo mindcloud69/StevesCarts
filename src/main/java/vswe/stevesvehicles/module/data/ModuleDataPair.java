@@ -2,23 +2,21 @@ package vswe.stevesvehicles.module.data;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import vswe.stevesvehicles.module.ModuleBase;
-import vswe.stevesvehicles.module.data.ModuleData;
 
 public class ModuleDataPair {
-	
+
 	private ModuleData data;
 	private int count;
 	private String name;
-    private NBTTagCompound extraData;
-	
+	private NBTTagCompound extraData;
+
 	public ModuleDataPair(ModuleData data) {
 		this.data = data;
 		count = 1;
 		name = data.getUnlocalizedName();
 
 	}
-	
+
 	public int getCount() {
 		return count;
 	}
@@ -26,23 +24,24 @@ public class ModuleDataPair {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public void increase() {
 		count++;
 	}
-	
+
 	public boolean isContainingData(ModuleData data) {
 		return this.data.equals(data);
 	}
-	
+
 	public ModuleData getData() {
 		return data;
 	}
 
-    public void setExtraData(NBTTagCompound compound) {
-        extraData = compound;
-    }
-	
+	public void setExtraData(NBTTagCompound compound) {
+		extraData = compound;
+	}
+
+	@Override
 	public String toString() {
 		String ret = data.getCartInfoText(StatCollector.translateToLocal(name), extraData);
 		if (count != 1) {

@@ -3,6 +3,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.ColorHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartRails;
@@ -10,14 +11,13 @@ import vswe.stevesvehicles.module.common.addon.ModuleAddon;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
 
 public class ModuleHeightControl extends ModuleAddon {
 	public ModuleHeightControl(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-    @Override
+	@Override
 	public boolean hasSlots() {
 		return false;
 	}
@@ -47,26 +47,26 @@ public class ModuleHeightControl extends ModuleAddon {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
 
-        String s = String.valueOf(getYTarget());
-        int x = LEVEL_NUMBER_BOX_X + 6;
-        int color = 0xFFFFFF;
+		String s = String.valueOf(getYTarget());
+		int x = LEVEL_NUMBER_BOX_X + 6;
+		int color = 0xFFFFFF;
 
-        if (getYTarget() >= 100) {
-            x -= 4;
-        }else if (getYTarget() < 10) {
-            x += 3;
+		if (getYTarget() >= 100) {
+			x -= 4;
+		}else if (getYTarget() < 10) {
+			x += 3;
 
-            if (getYTarget() < 5) {
-                color = 0xFF0000;
-            }
-        }
+			if (getYTarget() < 5) {
+				color = 0xFF0000;
+			}
+		}
 
-        drawString(gui,s, x, LEVEL_NUMBER_BOX_Y + 5, color);
+		drawString(gui,s, x, LEVEL_NUMBER_BOX_Y + 5, color);
 	}
 
-		
+
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/height_control.png");
 
 	@Override
@@ -85,22 +85,22 @@ public class ModuleHeightControl extends ModuleAddon {
 		for (int i = 0; i < HeightControlOre.ores.size(); i++) {
 			HeightControlOre ore = HeightControlOre.ores.get(i);
 
-            for (int j = 0; j < 11; j++) {
-                int altitude = getYTarget() - j + 5;
-                boolean empty = !(ore.spanLowest <= altitude && altitude <= ore.spanHighest);
-                boolean high = ore.bestLowest <= altitude && altitude <= ore.bestHighest;
-                int srcY;
+			for (int j = 0; j < 11; j++) {
+				int altitude = getYTarget() - j + 5;
+				boolean empty = !(ore.spanLowest <= altitude && altitude <= ore.spanHighest);
+				boolean high = ore.bestLowest <= altitude && altitude <= ore.bestHighest;
+				int srcY;
 				int srcX;
 
-                if (empty) {
-                    srcY = 1;
+				if (empty) {
+					srcY = 1;
 					srcX = 1;
-                }else{
-                    if (!ore.useDefaultTexture) {
-                        ResourceHelper.bindResource(ore.specialTexture);
-                    }
+				}else{
+					if (!ore.useDefaultTexture) {
+						ResourceHelper.bindResource(ore.specialTexture);
+					}
 					srcX = ore.srcX;
-                    srcY = ore.srcY;
+					srcY = ore.srcY;
 
 					if (high) {
 						srcY += 5;
@@ -108,41 +108,41 @@ public class ModuleHeightControl extends ModuleAddon {
 
 				}
 
-                drawImage(gui, ORE_MAP_X + i * 4, ORE_MAP_Y + j * 4, srcX, srcY, 4, 4);
+				drawImage(gui, ORE_MAP_X + i * 4, ORE_MAP_Y + j * 4, srcX, srcY, 4, 4);
 
-                ResourceHelper.bindResource(TEXTURE);
-            }
-        }
+				ResourceHelper.bindResource(TEXTURE);
+			}
+		}
 
 		//draw the markers
 		if (getYTarget() != getVehicle().y()) {
 			drawMarker(gui, 5, false);
 		}
-        int pos = getYTarget() + 5 - getVehicle().y();
+		int pos = getYTarget() + 5 - getVehicle().y();
 
-        if (pos >= 0 && pos < 11){
+		if (pos >= 0 && pos < 11){
 			drawMarker(gui, pos, true);
-        }
+		}
 	}
 
-    @Override
-    public void drawMouseOver(GuiVehicle gui, int x, int y) {
-        String change = LocalizationCartRails.MOVE_TARGET.translate() + "\n" + ColorHelper.GRAY + LocalizationCartRails.MOVE_TARGET_TEN.translate();
-        drawStringOnMouseOver(gui, change, x, y, ARROW_UP);
-        drawStringOnMouseOver(gui, change, x, y, ARROW_DOWN);
+	@Override
+	public void drawMouseOver(GuiVehicle gui, int x, int y) {
+		String change = LocalizationCartRails.MOVE_TARGET.translate() + "\n" + ColorHelper.GRAY + LocalizationCartRails.MOVE_TARGET_TEN.translate();
+		drawStringOnMouseOver(gui, change, x, y, ARROW_UP);
+		drawStringOnMouseOver(gui, change, x, y, ARROW_DOWN);
 
-        drawStringOnMouseOver(gui, LocalizationCartRails.RESET_TARGET.translate(), x, y, ARROW_MIDDLE);
+		drawStringOnMouseOver(gui, LocalizationCartRails.RESET_TARGET.translate(), x, y, ARROW_MIDDLE);
 
-    }
+	}
 
-    private void drawHoverImage(GuiVehicle gui, int[] bounds, int u, int v, int mX, int mY) {
-        if (inRect(mX, mY, bounds)) {
-            u += bounds[2] + 1;
-        }
-        drawImage(gui, bounds, u, v);
-    }
+	private void drawHoverImage(GuiVehicle gui, int[] bounds, int u, int v, int mX, int mY) {
+		if (inRect(mX, mY, bounds)) {
+			u += bounds[2] + 1;
+		}
+		drawImage(gui, bounds, u, v);
+	}
 
-    private void drawMarker(GuiVehicle gui, int pos, boolean isTargetLevel) {
+	private void drawMarker(GuiVehicle gui, int pos, boolean isTargetLevel) {
 		int srcX = 6;
 		int srcY = isTargetLevel ? 8 : 1;
 
@@ -156,58 +156,58 @@ public class ModuleHeightControl extends ModuleAddon {
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
-            int arrow = -1;
+			int arrow = -1;
 			if (inRect(x,y, ARROW_MIDDLE)) {
-                arrow = 0;
+				arrow = 0;
 			}else if (inRect(x,y, ARROW_UP)) {
-                arrow = 1;
+				arrow = 1;
 			}else if (inRect(x,y, ARROW_DOWN)) {
-                arrow = 2;
+				arrow = 2;
 			}
 
-            if (arrow != -1) {
-                DataWriter dw = getDataWriter();
-                dw.writeByte(arrow);
-                dw.writeBoolean(GuiScreen.isShiftKeyDown());
-                sendPacketToServer(dw);
-            }
+			if (arrow != -1) {
+				DataWriter dw = getDataWriter();
+				dw.writeByte(arrow);
+				dw.writeBoolean(GuiScreen.isShiftKeyDown());
+				sendPacketToServer(dw);
+			}
 
 		}
 	}
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
-        int arrow = dr.readByte();
-        boolean isShift = dr.readBoolean();
+		int arrow = dr.readByte();
+		boolean isShift = dr.readBoolean();
 
-        if (arrow == 0) {
-            setYTarget(getVehicle().y());
-        }else{
-            int multiplier;
-            int dif;
-            if (arrow == 1) {
-                multiplier = 1;
-            }else{
-                multiplier = -1;
-            }
+		if (arrow == 0) {
+			setYTarget(getVehicle().y());
+		}else{
+			int multiplier;
+			int dif;
+			if (arrow == 1) {
+				multiplier = 1;
+			}else{
+				multiplier = -1;
+			}
 
-            if (isShift) {
-                dif = 10;
-            }else{
-                dif = 1;
-            }
+			if (isShift) {
+				dif = 10;
+			}else{
+				dif = 1;
+			}
 
-            int targetY = getYTarget();
+			int targetY = getYTarget();
 
-            targetY += multiplier * dif;
-            if (targetY < 0) {
-                targetY = 0;
-            }else if (targetY > 255) {
-                targetY = 255;
-            }
+			targetY += multiplier * dif;
+			if (targetY < 0) {
+				targetY = 0;
+			}else if (targetY > 255) {
+				targetY = 255;
+			}
 
-            setYTarget(targetY);
-        }
+			setYTarget(targetY);
+		}
 	}
 
 	@Override
@@ -229,19 +229,19 @@ public class ModuleHeightControl extends ModuleAddon {
 		if (isPlaceholder()) {
 			return 64;
 		}
-	
+
 		int data = getDw(0);
 		if (data < 0) {
 			data+=256;
 		}
 		return data;
 	}
-	
+
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setShort("Height", (short)getYTarget());
 	}
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setYTarget(tagCompound.getShort("Height"));

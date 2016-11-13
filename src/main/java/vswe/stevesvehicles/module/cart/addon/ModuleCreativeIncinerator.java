@@ -9,17 +9,19 @@ public class ModuleCreativeIncinerator extends ModuleIncinerator {
 		super(vehicleBase);
 	}
 
+	@Override
 	protected int getIncinerationCost() {
 		return 0;
 	}
-	
+
+	@Override
 	protected boolean isItemValid(ItemStack item) {
 		return item != null && item.getItem() != null;
 	}	
-	
+
 	@Override
 	public boolean hasGui() {
 		return false;
 	}		
-	
+
 }

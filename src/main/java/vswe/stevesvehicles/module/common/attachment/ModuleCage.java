@@ -3,6 +3,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,16 +23,14 @@ import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.LocalizationTravel;
+import vswe.stevesvehicles.module.IActivatorModule;
 import vswe.stevesvehicles.module.cart.attachment.ModuleAttachment;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.module.IActivatorModule;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 	public ModuleCage(VehicleBase vehicleBase) {
@@ -50,22 +50,22 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
 	}
 
-    private static final int TEXTURE_SPACING = 1;
+	private static final int TEXTURE_SPACING = 1;
 
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/cage.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/cage.png");
 
-    @Override
-    public int guiWidth() {
-        return 80;
-    }
+	@Override
+	public int guiWidth() {
+		return 80;
+	}
 
-    @Override
-    public int guiHeight() {
-        return 40;
-    }
+	@Override
+	public int guiHeight() {
+		return 40;
+	}
 
 
 
@@ -73,7 +73,7 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {
-        drawToggleBox(gui, "cage", !disablePickup, x, y);
+		drawToggleBox(gui, "cage", !disablePickup, x, y);
 		ResourceHelper.bindResource(TEXTURE);
 
 		drawButton(gui, x, y, MANUAL_RECT, isCageEmpty() ? 0 : 1);
@@ -95,7 +95,7 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
-        drawStringOnMouseOver(gui, LocalizationTravel.CAGE_AUTO_MESSAGE.translate(disablePickup ? "0" : "1"), x,y, TOGGLE_IMAGE_RECT);
+		drawStringOnMouseOver(gui, LocalizationTravel.CAGE_AUTO_MESSAGE.translate(disablePickup ? "0" : "1"), x,y, TOGGLE_IMAGE_RECT);
 		drawStringOnMouseOver(gui, LocalizationTravel.CAGE_MESSAGE.translate(isCageEmpty() ? "0" : "1"), x, y, MANUAL_RECT);
 	}
 
@@ -108,13 +108,13 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
 			if (inRect(x,y, TOGGLE_BOX_RECT)) {
-                DataWriter dw = getDataWriter();
-                dw.writeBoolean(true);
-                sendPacketToServer(dw);
+				DataWriter dw = getDataWriter();
+				dw.writeBoolean(true);
+				sendPacketToServer(dw);
 			}else if (inRect(x,y, MANUAL_RECT)) {
-                DataWriter dw = getDataWriter();
-                dw.writeBoolean(false);
-                sendPacketToServer(dw);
+				DataWriter dw = getDataWriter();
+				dw.writeBoolean(false);
+				sendPacketToServer(dw);
 			}
 		}
 	}
@@ -133,13 +133,13 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 	}
 
 
-    private int cooldown = 0;
-    private static int PICK_UP_COOLDOWN = 20;
+	private int cooldown = 0;
+	private static int PICK_UP_COOLDOWN = 20;
 
 	@Override
 	public void update() {
 		super.update();
-		
+
 		if (cooldown > 0) {
 			cooldown--;
 		}else if(!disablePickup) {
@@ -154,7 +154,7 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 			cooldown = PICK_UP_COOLDOWN;
 		}
 	}
-	
+
 	private void manualPickUp() {
 		pickUpCreature(5);
 	}
@@ -164,43 +164,43 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 		if (getVehicle().getWorld().isRemote || !isCageEmpty()) {
 			return;
 		}
-		
-		List entities = getVehicle().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, getVehicle().getEntity().boundingBox.expand((double) searchDistance, 4.0D, (double) searchDistance));
+
+		List entities = getVehicle().getWorld().getEntitiesWithinAABB(EntityLivingBase.class, getVehicle().getEntity().boundingBox.expand(searchDistance, 4.0D, searchDistance));
 		Collections.sort(entities, sorter);
 
-        for (Object entity : entities) {
-            EntityLivingBase target = (EntityLivingBase) entity;
+		for (Object entity : entities) {
+			EntityLivingBase target = (EntityLivingBase) entity;
 
 
-            if (target instanceof EntityPlayer ||
-                    target instanceof EntityIronGolem ||
-                    target instanceof EntityDragon ||
-                    target instanceof EntitySlime ||
-                    target instanceof EntityWaterMob ||
-                    target instanceof EntityWither ||
-                    target instanceof EntityEnderman ||
-                    (target instanceof EntitySpider && !(target instanceof EntityCaveSpider)) ||
-                    target instanceof EntityGiantZombie ||
-                    target instanceof EntityFlying ||
-                    (target instanceof EntitySkeleton && ((EntitySkeleton) target).getSkeletonType() == 1)) {
+			if (target instanceof EntityPlayer ||
+					target instanceof EntityIronGolem ||
+					target instanceof EntityDragon ||
+					target instanceof EntitySlime ||
+					target instanceof EntityWaterMob ||
+					target instanceof EntityWither ||
+					target instanceof EntityEnderman ||
+					(target instanceof EntitySpider && !(target instanceof EntityCaveSpider)) ||
+					target instanceof EntityGiantZombie ||
+					target instanceof EntityFlying ||
+					(target instanceof EntitySkeleton && ((EntitySkeleton) target).getSkeletonType() == 1)) {
 
-                continue;
-            }
+				continue;
+			}
 
 
-            if (target.ridingEntity == null) {
-                target.mountEntity(getVehicle().getEntity());
-                return;
-            }
-        }
+			if (target.ridingEntity == null) {
+				target.mountEntity(getVehicle().getEntity());
+				return;
+			}
+		}
 
 	}
 
-	
 
 
 
-	
+
+
 	@Override
 	public float mountedOffset(Entity rider) {
 		if (rider instanceof EntityBat) {
@@ -208,15 +208,15 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 		}else if(rider instanceof EntityZombie || rider instanceof EntitySkeleton) {
 			return -0.75F;
 		}
-		
+
 		return super.mountedOffset(rider);
 	}
-	
+
 	@Override
 	public int numberOfGuiData() {
 		return 1;
 	}
-	
+
 	@Override
 	protected void checkGuiData(Object[] info) {		
 		updateGuiData(info, 0, (byte)(disablePickup ? 1 : 0));
@@ -227,19 +227,19 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 			disablePickup = data != 0;
 		}
 	}	
-	
+
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setBoolean("disablePickup", disablePickup);
 	}	
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		disablePickup = tagCompound.getBoolean("disablePickup");
 	}		
-	
+
 	private boolean disablePickup;
-	
+
 	@Override
 	public boolean isActive(int id) {
 		if (id == 0) {
@@ -265,21 +265,22 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 		}
 	}
 
-    private static class EntityNearestTarget implements Comparator {
-        private Entity entity;
+	private static class EntityNearestTarget implements Comparator {
+		private Entity entity;
 
-        public EntityNearestTarget(Entity entity) {
-            this.entity = entity;
-        }
+		public EntityNearestTarget(Entity entity) {
+			this.entity = entity;
+		}
 
-        public int compareDistanceSq(Entity entity1, Entity entity2) {
-            double distance1 = this.entity.getDistanceSqToEntity(entity1);
-            double distance2 = this.entity.getDistanceSqToEntity(entity2);
-            return distance1 < distance2 ? -1 : distance1 > distance2 ? 1 : 0;
-        }
+		public int compareDistanceSq(Entity entity1, Entity entity2) {
+			double distance1 = this.entity.getDistanceSqToEntity(entity1);
+			double distance2 = this.entity.getDistanceSqToEntity(entity2);
+			return distance1 < distance2 ? -1 : distance1 > distance2 ? 1 : 0;
+		}
 
-        public int compare(Object obj1, Object obj2) {
-            return this.compareDistanceSq((Entity)obj1, (Entity)obj2);
-        }
-    }
+		@Override
+		public int compare(Object obj1, Object obj2) {
+			return this.compareDistanceSq((Entity)obj1, (Entity)obj2);
+		}
+	}
 }

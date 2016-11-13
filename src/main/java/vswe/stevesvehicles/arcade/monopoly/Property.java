@@ -6,14 +6,14 @@ import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public abstract class Property extends Place {
 
-	
+
 
 	private String name;
 	private int cost;
 	private Piece owner;
 	private PropertyGroup group;
 	private boolean mortgaged;
-	
+
 	public Property(ArcadeMonopoly game, PropertyGroup group, String name, int cost) {
 		super(game);
 		this.group = group;
@@ -21,12 +21,12 @@ public abstract class Property extends Place {
 		this.name = name;
 		this.cost = cost;
 	}
-	
+
 
 	public void drawValue(GuiVehicle gui) {
 		Note.drawValue(game, gui, 10, 103, 2, cost);
 	}
-	
+
 	@Override
 	public void drawText(GuiVehicle gui, EnumSet<PlaceState> states) {
 		game.getModule().drawSplitString(gui, name, 3 + gui.getGuiLeft(), getTextY() + gui.getGuiTop(), ArcadeMonopoly.PLACE_WIDTH - 6, true, 0x404040);
@@ -37,19 +37,19 @@ public abstract class Property extends Place {
 	public int getCost() {
 		return cost;
 	}
-	
+
 	public void setOwner(Piece val) {
 		owner = val;
 	}
-	
+
 	public Piece getOwner() {
 		return owner;
 	}
-	
+
 	public boolean hasOwner() {
 		return owner != null;
 	}
-	
+
 	@Override
 	public boolean onPieceStop(Piece piece) {
 		return owner == null || owner == piece || mortgaged;
@@ -58,13 +58,13 @@ public abstract class Property extends Place {
 	public PropertyGroup getGroup() {
 		return group;
 	}
-	
+
 	public abstract int getRentCost();
-	
+
 	public int getMortgageValue() {
 		return getCost() / 2;
 	}	
-	
+
 	public int getOwnedInGroup() {
 		int owned = 0;
 		for (Property property : getGroup().getProperties()) {
@@ -74,7 +74,7 @@ public abstract class Property extends Place {
 		}	
 		return owned;
 	}	
-	
+
 	public boolean isMortgaged() {
 		return mortgaged;
 	}

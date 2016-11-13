@@ -7,7 +7,7 @@ public class ModuleSmelterAdv extends ModuleSmelter {
 	public ModuleSmelterAdv(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
-	
+
 	@Override
 	protected boolean canUseAdvancedFeatures() {
 		return true;

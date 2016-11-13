@@ -6,11 +6,11 @@ public class ModuleFrontTank extends ModuleTank{
 		super(vehicleBase);
 	}
 
-	
+
 	@Override
 	protected int getTankSize() {
 		return 8000;
 	}
 
-	
+
 }

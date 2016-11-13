@@ -1,15 +1,15 @@
 package vswe.stevesvehicles.module.common.attachment;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.LocalizationTravel;
 import vswe.stevesvehicles.module.cart.attachment.ModuleAttachment;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModuleSeat extends ModuleAttachment {
 	public ModuleSeat(VehicleBase vehicleBase) {
@@ -38,11 +38,11 @@ public class ModuleSeat extends ModuleAttachment {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
+		drawString(gui,getModuleName(), 8, 6, 0x404040);
 	}
 
 	private static final int TEXTURE_SPACING = 1;
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/chair.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/chair.png");
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -83,7 +83,7 @@ public class ModuleSeat extends ModuleAttachment {
 	}
 
 	private String getStateName() {
-        return LocalizationTravel.SEAT_MESSAGE.translate(String.valueOf(getState()));
+		return LocalizationTravel.SEAT_MESSAGE.translate(String.valueOf(getState()));
 	}
 
 	@Override
@@ -97,13 +97,13 @@ public class ModuleSeat extends ModuleAttachment {
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
-        if (player != null) {
-            if (getVehicle().getEntity().riddenByEntity == null) {
-                player.mountEntity(getVehicle().getEntity());
-            }else if (getVehicle().getEntity().riddenByEntity == player){
-                player.mountEntity(null);
-            }
-        }
+		if (player != null) {
+			if (getVehicle().getEntity().riddenByEntity == null) {
+				player.mountEntity(getVehicle().getEntity());
+			}else if (getVehicle().getEntity().riddenByEntity == player){
+				player.mountEntity(null);
+			}
+		}
 	}
 
 	@Override
@@ -134,8 +134,8 @@ public class ModuleSeat extends ModuleAttachment {
 	public float mountedOffset(Entity rider) {
 		return -0.1F;
 	}
-	
 
 
-	
+
+
 }

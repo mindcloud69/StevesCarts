@@ -1,34 +1,34 @@
 package vswe.stevesvehicles.module.cart.addon;
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
 import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartTravel;
+import vswe.stevesvehicles.module.cart.ILeverModule;
 import vswe.stevesvehicles.module.common.addon.ModuleAddon;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.module.cart.ILeverModule;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	public ModuleBrake(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-    @Override
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
-        simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_BRAKE, "brake"));
-    }
+	@Override
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+		simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_BRAKE, "brake"));
+	}
 
-    @Override
+	@Override
 	public boolean hasSlots() {
 		return false;
 	}
@@ -50,12 +50,12 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, LocalizationCartTravel.LEVER_TITLE.translate(), 8, 6, 0x404040);
+		drawString(gui, LocalizationCartTravel.LEVER_TITLE.translate(), 8, 6, 0x404040);
 	}
 
 
 	private static final int TEXTURE_SPACING = 1;
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/lever.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/lever.png");
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -107,13 +107,13 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
 			if (inRect(x,y, START_STOP_RECT)) {
-                DataWriter dw = getDataWriter();
-                dw.writeBoolean(true);
+				DataWriter dw = getDataWriter();
+				dw.writeBoolean(true);
 				sendPacketToServer(dw);
 			}else if (inRect(x,y, TURN_BACK_RECT)) {
-                DataWriter dw = getDataWriter();
-                dw.writeBoolean(false);
-                sendPacketToServer(dw);
+				DataWriter dw = getDataWriter();
+				dw.writeBoolean(false);
+				sendPacketToServer(dw);
 			}
 		}
 	}
@@ -136,7 +136,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 			return 1;
 		}
 	}
-	
+
 
 	@Override
 	public int numberOfDataWatchers() {
@@ -148,13 +148,13 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 		addDw(0,0);
 	}
 
-	
-	
+
+
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setBoolean("ForceStop", isForceStopping());
 	}
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setForceStopping(tagCompound.getBoolean("ForceStop"));

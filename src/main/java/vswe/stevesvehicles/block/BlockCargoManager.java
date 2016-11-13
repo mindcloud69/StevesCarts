@@ -1,35 +1,35 @@
 package vswe.stevesvehicles.block;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import vswe.stevesvehicles.StevesVehicles;
-import vswe.stevesvehicles.tileentity.TileEntityCargo;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
+import vswe.stevesvehicles.tileentity.TileEntityCargo;
 
 public class BlockCargoManager extends BlockContainerBase {
 
 
-    public BlockCargoManager() {
-        super(Material.rock);
+	public BlockCargoManager() {
+		super(Material.rock);
 		setCreativeTab(CreativeTabLoader.blocks);
-    }
+	}
 
-	
+
 	private IIcon topIcon;
 	private IIcon botIcon;
 	private IIcon redIcon;
 	private IIcon blueIcon;
 	private IIcon greenIcon;
 	private IIcon yellowIcon;
-	
-    @SideOnly(Side.CLIENT)
+
+	@SideOnly(Side.CLIENT)
 	@Override
-    public IIcon getIcon(int side, int meta) {
-        if (side == 0) {
+	public IIcon getIcon(int side, int meta) {
+		if (side == 0) {
 			return botIcon;
 		}else if(side == 1) {
 			return topIcon;
@@ -42,18 +42,18 @@ public class BlockCargoManager extends BlockContainerBase {
 		}else{
 			return redIcon;
 		}
-    }
-	
-    @SideOnly(Side.CLIENT)
+	}
+
+	@SideOnly(Side.CLIENT)
 	@Override
-    public void registerBlockIcons(IIconRegister register) {
-        topIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/top");
+	public void registerBlockIcons(IIconRegister register) {
+		topIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/top");
 		botIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/bot");
 		redIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/red");
 		blueIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/blue");
 		greenIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/green");
 		yellowIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/yellow");
-    }	
+	}	
 
 
 
@@ -61,7 +61,7 @@ public class BlockCargoManager extends BlockContainerBase {
 
 
 	@Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityCargo();
-    }
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityCargo();
+	}
 }

@@ -3,25 +3,24 @@ import java.util.ArrayList;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
+import vswe.stevesvehicles.client.gui.screen.GuiActivator;
+import vswe.stevesvehicles.client.gui.screen.GuiBase;
+import vswe.stevesvehicles.container.ContainerActivator;
+import vswe.stevesvehicles.container.ContainerBase;
 import vswe.stevesvehicles.localization.entry.block.LocalizationToggler;
+import vswe.stevesvehicles.module.cart.tool.ModuleDrill;
+import vswe.stevesvehicles.module.common.addon.ModuleInvisible;
+import vswe.stevesvehicles.module.common.addon.ModuleShield;
+import vswe.stevesvehicles.module.common.addon.chunk.ModuleChunkLoader;
+import vswe.stevesvehicles.module.common.attachment.ModuleCage;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.tileentity.toggler.TogglerOption;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
-import vswe.stevesvehicles.container.ContainerActivator;
-import vswe.stevesvehicles.container.ContainerBase;
-import vswe.stevesvehicles.client.gui.screen.GuiActivator;
-import vswe.stevesvehicles.client.gui.screen.GuiBase;
-import vswe.stevesvehicles.module.common.addon.chunk.ModuleChunkLoader;
-import vswe.stevesvehicles.module.common.addon.ModuleInvisible;
-import vswe.stevesvehicles.module.common.addon.ModuleShield;
-import vswe.stevesvehicles.module.common.attachment.ModuleCage;
-import vswe.stevesvehicles.module.cart.tool.ModuleDrill;
 
 /**
  * The tile entity used by the Module Toggler
@@ -35,27 +34,27 @@ public class TileEntityActivator extends TileEntityBase {
 	public GuiBase getGui(InventoryPlayer inv) {
 		return new GuiActivator(inv, this);
 	}
-	
+
 	@Override
 	public ContainerBase getContainer(InventoryPlayer inv) {
 		return new ContainerActivator(this);
 	}
-	
+
 	/**
 	 * The different settings the toggler can toggle
 	 */
 	private ArrayList<TogglerOption> options;
 
-    public TileEntityActivator() {
+	public TileEntityActivator() {
 		loadOptions();
-    }
+	}
 
-    //TODO let mods register these?
-    /**
-     * Load the different settings the player can toggle and change. For example the drill.
-     */
+	//TODO let mods register these?
+	/**
+	 * Load the different settings the player can toggle and change. For example the drill.
+	 */
 	private void loadOptions() {
-		options = new ArrayList<TogglerOption>();
+		options = new ArrayList<>();
 		options.add(new TogglerOption(LocalizationToggler.DRILL_OPTION, ModuleDrill.class));
 		options.add(new TogglerOption(LocalizationToggler.SHIELD_OPTION, ModuleShield.class));
 		options.add(new TogglerOption(LocalizationToggler.INVISIBILITY_OPTION, ModuleInvisible.class));
@@ -63,7 +62,7 @@ public class TileEntityActivator extends TileEntityBase {
 		options.add(new TogglerOption(LocalizationToggler.AUTO_CAGE_OPTION, ModuleCage.class, 0));
 		options.add(new TogglerOption(LocalizationToggler.CAGE_OPTION, ModuleCage.class, 1));
 	}
-	
+
 	/**
 	 * Get the different settings the toggler can toggle
 	 * @return A list of the settings
@@ -73,40 +72,40 @@ public class TileEntityActivator extends TileEntityBase {
 	}
 
 	@Override
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
-        
-        //load all the options
- 		for (TogglerOption option : options) {
+	public void readFromNBT(NBTTagCompound nbttagcompound) {
+		super.readFromNBT(nbttagcompound);
+
+		//load all the options
+		for (TogglerOption option : options) {
 			option.setOption(nbttagcompound.getByte(option.getName()));
 		}
-    }
+	}
 
 	@Override
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
-        
-        //save all the options
+	public void writeToNBT(NBTTagCompound nbttagcompound) {
+		super.writeToNBT(nbttagcompound);
+
+		//save all the options
 		for (TogglerOption option : options) {
 			nbttagcompound.setByte(option.getName(), (byte)option.getOption());
 		}
-    }
+	}
 
 
 
 
 	@Override
 	public void receivePacket(DataReader dr, EntityPlayer player) {
-        boolean leftClick = dr.readBoolean();
-        int optionId = dr.readByte();
-        if (optionId >= 0 && optionId < options.size()) {
-            options.get(optionId).changeOption(leftClick);
-        }
+		boolean leftClick = dr.readBoolean();
+		int optionId = dr.readByte();
+		if (optionId >= 0 && optionId < options.size()) {
+			options.get(optionId).changeOption(leftClick);
+		}
 
 	}
-	
 
-	
+
+
 
 	@Override
 	public void initGuiData(Container con, ICrafting crafting) {
@@ -121,7 +120,7 @@ public class TileEntityActivator extends TileEntityBase {
 		for (int i = 0; i < options.size(); i++) {
 			int option = options.get(i).getOption();
 			int lastOption = ((ContainerActivator)con).lastOptions.get(i);
-			
+
 			//if an update has been made, send the new data
 			if (option != lastOption) {
 				updateGuiData(con, crafting, i, (short)option);
@@ -129,7 +128,7 @@ public class TileEntityActivator extends TileEntityBase {
 			}
 		}
 	}
-	
+
 
 	@Override
 	public void receiveGuiData(int id, short data) {
@@ -138,14 +137,14 @@ public class TileEntityActivator extends TileEntityBase {
 			options.get(id).setOption(data);
 		}	
 	}
-	
+
 	/**
 	 * Handles a cart that is passing an advanced detector rail "in front" of this toggler
 	 * @param cart The cart that is passing
 	 * @param isOrange Whether the cart is passing in the orange direction or not
 	 */
 	public void handleCart(EntityModularCart cart, boolean isOrange) {
-		
+
 		//tell the cart to update with any option that is not disabled
 		for (TogglerOption option : options) {
 			if (!option.isDisabled()) {

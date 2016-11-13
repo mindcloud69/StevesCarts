@@ -2,12 +2,12 @@ package vswe.stevesvehicles.module.common.engine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.LocalizationEngine;
+import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public abstract class ModuleEngine extends ModuleBase {
@@ -22,7 +22,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	protected void initPriorityButton() {
 		priorityButton = new int[] {78,7,16,16};	
 	}
-	
+
 	//called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
@@ -31,7 +31,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	}
 
 	//returns if this cart supplies the cart with fuel
-    @Override
+	@Override
 	public boolean hasFuel(int consumption) {
 		return getFuelLevel() >= consumption && !isDisabled();
 	}
@@ -52,7 +52,7 @@ public abstract class ModuleEngine extends ModuleBase {
 		if (isPlaceholder()) {
 			return 0;
 		}
-	
+
 		int temp = getDw(0);
 		if (temp < 0 || temp > 3) {
 			temp = 3;
@@ -74,15 +74,15 @@ public abstract class ModuleEngine extends ModuleBase {
 		setFuelLevel(getFuelLevel() - consumption);
 	}
 
-    protected abstract void loadFuel();
+	protected abstract void loadFuel();
 
 	public void smoke(){}
 
-	
+
 	public abstract int getTotalFuel();
 	public abstract float[] getGuiBarColor();
-	
-	
+
+
 	@Override
 	public boolean hasGui(){
 		return true;
@@ -119,35 +119,35 @@ public abstract class ModuleEngine extends ModuleBase {
 	}
 
 	private String getPriorityText() {
-        if (isDisabled()) {
-            return LocalizationEngine.DISABLED.translate();
-        }else{
-            return LocalizationEngine.PRIORITY.translate(String.valueOf(getPriority()));
-        }
+		if (isDisabled()) {
+			return LocalizationEngine.DISABLED.translate();
+		}else{
+			return LocalizationEngine.PRIORITY.translate(String.valueOf(getPriority()));
+		}
 	}
 
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (inRect(x,y, priorityButton)) {
 			if (button == 0 || button == 1) {
-                DataWriter dw = getDataWriter();
-                dw.writeBoolean(button == 0);
+				DataWriter dw = getDataWriter();
+				dw.writeBoolean(button == 0);
 				sendPacketToServer(dw);
 			}
 		}
 	}
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
-        int priority = getPriority();
-        priority += dr.readBoolean() ? 1 : -1;
-        priority %= 4;
-        if (priority < 0) {
-            priority += 4;
-        }
-        setPriority(priority);
+		int priority = getPriority();
+		priority += dr.readBoolean() ? 1 : -1;
+		priority %= 4;
+		if (priority < 0) {
+			priority += 4;
+		}
+		setPriority(priority);
 	}
 
-	
+
 	@Override
 	public void initDw() {
 		addDw(0,0);
@@ -161,7 +161,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setByte("Priority",(byte)getPriority());
 	}
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setPriority(tagCompound.getByte("Priority"));

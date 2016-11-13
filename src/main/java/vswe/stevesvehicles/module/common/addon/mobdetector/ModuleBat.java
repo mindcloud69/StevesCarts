@@ -9,14 +9,16 @@ public class ModuleBat extends ModuleEntityDetector {
 		super(vehicleBase);
 	}
 
+	@Override
 	public String getName() {
 		return LocalizationShooter.BAT_TITLE.translate();
 	}
+	@Override
 	public boolean isValidTarget(Entity target) {
 		return
-		(
-			target instanceof EntityBat		
-		)
-		;
+				(
+						target instanceof EntityBat		
+						)
+				;
 	}
 }

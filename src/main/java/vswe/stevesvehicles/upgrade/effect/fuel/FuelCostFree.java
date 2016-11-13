@@ -6,7 +6,7 @@ import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 public class FuelCostFree extends FuelCost {
 
-    public FuelCostFree(TileEntityUpgrade upgrade) {
-        super(upgrade, 0F);
-    }
+	public FuelCostFree(TileEntityUpgrade upgrade) {
+		super(upgrade, 0F);
+	}
 }

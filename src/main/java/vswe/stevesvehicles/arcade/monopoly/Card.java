@@ -9,13 +9,13 @@ public abstract class Card {
 		this.message = message;
 	}
 
-	
+
 	public void render(ArcadeMonopoly game, GuiVehicle gui, int[] rect, boolean isFront) {
 		if (isFront) {
 			game.loadTexture(gui, 1);
 			game.getModule().drawImage(gui, rect, 67, 177);
 			game.getModule().drawSplitString(gui, message, rect[0] + gui.getGuiLeft() + 5, rect[1] + gui.getGuiTop() + 5, rect[2] - 10, true, 0x404040);
-			
+
 			if (getNote() != null) {
 				int x = 10;
 				if (!getMoneyPrefix().equals("")) {
@@ -33,28 +33,28 @@ public abstract class Card {
 			game.getModule().drawImage(gui, rect, 0, rect[3] * getBackgroundV());
 		}
 	}
-	
-	
+
+
 	public int getNoteCount() {
 		return 0;
 	}
-	
+
 	public Note getNote() {
 		return null;
 	}	
-	
+
 	public String getMoneyPrefix() {
 		return "";
 	}
-	
+
 	public String getMoneyPostfix() {
 		return "";
 	}
-	
-	
+
+
 
 
 	public abstract void doStuff(ArcadeMonopoly game, Piece piece);
 	public abstract int getBackgroundV();	
-	
+
 }

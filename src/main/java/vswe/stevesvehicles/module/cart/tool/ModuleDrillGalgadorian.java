@@ -8,10 +8,10 @@ public class ModuleDrillGalgadorian extends ModuleDrill {
 	}
 
 	//returns how far the drill should drill above itself, i.e. how tall is the  hole
-    @Override
+	@Override
 	protected int blocksOnTop(){
-        return 9;
-    }
+		return 9;
+	}
 
 	//returns how far the drill should drill on each side
 	@Override
@@ -24,5 +24,5 @@ public class ModuleDrillGalgadorian extends ModuleDrill {
 		return 0;
 	}
 
-	
+
 }

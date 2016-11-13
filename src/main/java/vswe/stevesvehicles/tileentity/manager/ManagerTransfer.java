@@ -11,11 +11,11 @@ public class ManagerTransfer {
 	private EntityModularCart cart;
 	private boolean toCartEnabled;
 	private boolean fromCartEnabled;
-	
+
 	public ManagerTransfer() {
 		reset();
 	}
-	
+
 	public void reset() {
 		side = 0;
 		setting = -1;
@@ -26,71 +26,71 @@ public class ManagerTransfer {
 		toCartEnabled = true;
 		fromCartEnabled = true;
 	}
-	
-	
-	
-    public int getSetting() {
-    	return setting;
-    }
-    
-    public void setSetting(int val) {
-    	setting = val;
-    }   
 
-    public int getSide() {
-    	return side;
-    }
-    
-    public void setSide(int val) {
-    	side = val;
-    }    
-    
-    public int getLastSetting() {
-    	return lastSetting;
-    }    
-    
-    public void setLastSetting(int val) {
-    	lastSetting = val;
-    }   
-    
-    public int getLowestSetting() {
-    	return lowestSetting;
-    }    
-    
-    public void setLowestSetting(int val) {
-    	lowestSetting = val;
-    }    
-    
-    public int getWorkload() {
-    	return workload;
-    }    
-    
-    public void setWorkload(int val) {
-    	workload = val;
-    }      
-    
-    public EntityModularCart getCart() {
-    	return cart;
-    }
-    
-    public void setCart(EntityModularCart val) {
-    	cart = val;
-    }
-	
+
+
+	public int getSetting() {
+		return setting;
+	}
+
+	public void setSetting(int val) {
+		setting = val;
+	}   
+
+	public int getSide() {
+		return side;
+	}
+
+	public void setSide(int val) {
+		side = val;
+	}    
+
+	public int getLastSetting() {
+		return lastSetting;
+	}    
+
+	public void setLastSetting(int val) {
+		lastSetting = val;
+	}   
+
+	public int getLowestSetting() {
+		return lowestSetting;
+	}    
+
+	public void setLowestSetting(int val) {
+		lowestSetting = val;
+	}    
+
+	public int getWorkload() {
+		return workload;
+	}    
+
+	public void setWorkload(int val) {
+		workload = val;
+	}      
+
+	public EntityModularCart getCart() {
+		return cart;
+	}
+
+	public void setCart(EntityModularCart val) {
+		cart = val;
+	}
+
 	public boolean getFromCartEnabled() {
 		return fromCartEnabled;
 	}
-	
+
 	public void setFromCartEnabled(boolean val) {
 		fromCartEnabled = val;
 	}	
-	
+
 	public boolean getToCartEnabled() {
 		return toCartEnabled;
 	}
-	
+
 	public void setToCartEnabled(boolean val) {
 		toCartEnabled = val;
 	}
-        
+
 }

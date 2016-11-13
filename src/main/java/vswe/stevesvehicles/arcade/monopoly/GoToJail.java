@@ -6,11 +6,11 @@ public class GoToJail extends CornerPlace {
 		super(game, 3);
 	}
 
-	
+
 	@Override
 	public boolean onPieceStop(Piece piece) {
 		piece.goToJail();
-		
+
 		return super.onPieceStop(piece);
 	}
 }

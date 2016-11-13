@@ -7,21 +7,21 @@ import vswe.stevesvehicles.tileentity.TileEntityCargo;
 
 public class ContainerCargo extends ContainerManager {
 
-    public ContainerCargo(IInventory invPlayer, TileEntityCargo cargo) {
+	public ContainerCargo(IInventory invPlayer, TileEntityCargo cargo) {
 		super(cargo);
-		
-		cargo.cargoSlots = new ArrayList<SlotCargo>();
+
+		cargo.cargoSlots = new ArrayList<>();
 		cargo.lastLayout = -1;
 		for (int i = 0; i < 60; i++) {
 			SlotCargo slot = new SlotCargo(cargo, i);
 			addSlotToContainer(slot);
 			cargo.cargoSlots.add(slot);
 		}
-		
-		addPlayer(invPlayer);
-    }
 
-    
+		addPlayer(invPlayer);
+	}
+
+
 	public short lastTarget;
 
 	@Override

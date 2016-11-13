@@ -8,34 +8,34 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 
 public abstract class ModuleState {
-    private String fullUnlocalizedName;
-    private final String unlocalizedName;
-    private ResourceLocation texture;
+	private String fullUnlocalizedName;
+	private final String unlocalizedName;
+	private ResourceLocation texture;
 	public ModuleState(String unlocalizedName) {
-        this.unlocalizedName = unlocalizedName;
+		this.unlocalizedName = unlocalizedName;
 	}
 
-    public final String getRawUnlocalizedName() {
-        return unlocalizedName;
-    }
-    public final String getFullRawUnlocalizedName() {return fullUnlocalizedName;}
-    public final void setFullUnlocalizedName(String val) {fullUnlocalizedName = val;}
+	public final String getRawUnlocalizedName() {
+		return unlocalizedName;
+	}
+	public final String getFullRawUnlocalizedName() {return fullUnlocalizedName;}
+	public final void setFullUnlocalizedName(String val) {fullUnlocalizedName = val;}
 
-    public ResourceLocation getTexture() {
-        if (texture == null) {
-            texture = ResourceHelper.getResource("/gui/states/" + fullUnlocalizedName.replace(":", "/") + ".png");
-        }
+	public ResourceLocation getTexture() {
+		if (texture == null) {
+			texture = ResourceHelper.getResource("/gui/states/" + fullUnlocalizedName.replace(":", "/") + ".png");
+		}
 
-        return texture;
-    }
+		return texture;
+	}
 
-    public String getUnlocalizedName() {
-        return "steves_vehicles:gui.state." + fullUnlocalizedName;
-    }
+	public String getUnlocalizedName() {
+		return "steves_vehicles:gui.state." + fullUnlocalizedName;
+	}
 
-    public abstract boolean isValid(VehicleBase vehicle);
+	public abstract boolean isValid(VehicleBase vehicle);
 
-    public String getName() {
-        return StatCollector.translateToLocal(getUnlocalizedName());
-    }
+	public String getName() {
+		return StatCollector.translateToLocal(getUnlocalizedName());
+	}
 }

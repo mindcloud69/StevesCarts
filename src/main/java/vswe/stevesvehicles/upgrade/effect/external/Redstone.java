@@ -9,7 +9,7 @@ public class Redstone extends BaseEffect {
 		super(upgrade);
 	}
 
-	
+
 	@Override
 	public void update() {
 		if (upgrade.getWorldObj().isBlockIndirectlyGettingPowered(upgrade.xCoord, upgrade.yCoord, upgrade.zCoord)) {
@@ -18,6 +18,6 @@ public class Redstone extends BaseEffect {
 			}
 		}
 	}
-	
+
 
 }

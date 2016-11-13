@@ -7,16 +7,16 @@ public class Die {
 	private ArcadeMonopoly game;
 	private int number;
 	private int graphicalId;
-	
+
 	public Die(ArcadeMonopoly game, int graphicalId) {
 		this.game = game;
 		this.graphicalId = graphicalId;
 		randomize();
 	}
-	
+
 	public void draw(GuiVehicle gui, int x, int y) {
 		game.getModule().drawImage(gui, x, y, 256 - 24 * (graphicalId + 1), 256 - 24, 24, 24);
-		
+
 		switch (number) {
 			case 5:
 				drawEye(gui, x + 15, y + 3);
@@ -48,13 +48,13 @@ public class Die {
 	private void drawEye(GuiVehicle gui, int x, int y) {
 		game.getModule().drawImage(gui, x, y, 256 - 6 * (graphicalId + 1), 256 - 24 - 6, 6, 6);
 	}
-	
+
 	public int getNumber() {
 		return number;
 	}
-	
+
 	public void randomize() {
 		number = game.getModule().getVehicle().getRandom().nextInt(6) + 1;
 	}
-	
+
 }

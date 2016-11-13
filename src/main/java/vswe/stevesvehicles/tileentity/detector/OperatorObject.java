@@ -15,42 +15,48 @@ public class OperatorObject {
 	public static final OperatorObject MAIN;
 
 	static {
-		allOperators = new HashMap<Byte, OperatorObject>();
-		HashMap<Byte, OperatorObject> operators = new HashMap<Byte, OperatorObject>();
+		allOperators = new HashMap<>();
+		HashMap<Byte, OperatorObject> operators = new HashMap<>();
 
-        MAIN = new OperatorObject(operators, 0, LocalizationDetector.OUTPUT, 1) {
+		MAIN = new OperatorObject(operators, 0, LocalizationDetector.OUTPUT, 1) {
+			@Override
 			public boolean inTab() {
 				return false;
 			}
-			
+
+			@Override
 			public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth,  LogicObject A, LogicObject B) {
 				return A.evaluateLogicTree(detector, vehicle, depth);
 			}			
 		};
-		
+
 		new OperatorObject(operators, 1, LocalizationDetector.AND, 2) {
+			@Override
 			public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth,  LogicObject A, LogicObject B) {
 				return A.evaluateLogicTree(detector, vehicle, depth) && B.evaluateLogicTree(detector, vehicle, depth);
 			}			
 		};
-		
+
 		new OperatorObject(operators, 2, LocalizationDetector.OR, 2) {
+			@Override
 			public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth,  LogicObject A, LogicObject B) {
 				return A.evaluateLogicTree(detector, vehicle, depth) || B.evaluateLogicTree(detector, vehicle, depth);
 			}	
 		};
 		new OperatorObject(operators, 3, LocalizationDetector.NOT, 1) {
-            @Override
+			@Override
 			public boolean isChildValid(OperatorObject child) {
 				return getId() != child.id;
 			}
-			
+
+			@Override
 			public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth,  LogicObject A, LogicObject B) {
 				return !A.evaluateLogicTree(detector, vehicle, depth);
 			}		
 		};
-		
+
 		new OperatorObject(operators, 4, LocalizationDetector.XOR, 2) {
+			@Override
 			public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth,  LogicObject A, LogicObject B) {
 				return A.evaluateLogicTree(detector, vehicle, depth) != B.evaluateLogicTree(detector, vehicle, depth);
 			}		
@@ -63,63 +69,63 @@ public class OperatorObject {
 		new OperatorObjectRedirection(operators, 10, LocalizationDetector.EAST_UNIT, 1, 0, 0);
 
 		//Note that IDs are also used by the specific types, the next ID here shouldn't be 11, that one is already in use.
-		
+
 		for (DetectorType type : DetectorType.values()) {
-			type.initOperators(new  HashMap<Byte, OperatorObject>(operators));
+			type.initOperators(new  HashMap<>(operators));
 		}
 	}
-	
-	
+
+
 	public static Collection<OperatorObject> getOperatorList(int meta) {
 		return DetectorType.getTypeFromMeta(meta).getOperators().values();
 	}
-	
+
 	public static HashMap<Byte, OperatorObject> getAllOperators() {
 		return allOperators;
 	}	
-	
+
 	public static class OperatorObjectRedirection extends OperatorObject {
 		private int x;
 		private int y;
 		private int z;
 		public OperatorObjectRedirection(HashMap<Byte, OperatorObject> operators, int ID, ILocalizedText name, int x, int y, int z) {
 			super(operators, ID, name, 0);
-			
+
 			this.x = x;
 			this.y = y;
 			this.z = z;			
 		}
-		
+
 		@Override
 		public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth, LogicObject A, LogicObject B) {
 			int x = this.x + detector.xCoord;
 			int y = this.y + detector.yCoord;
 			int z = this.z + detector.zCoord;
-			
+
 			TileEntity tileentity = detector.getWorldObj().getTileEntity(x, y, z);
-            return tileentity != null && tileentity instanceof TileEntityDetector && ((TileEntityDetector) tileentity).evaluate(vehicle, depth);
+			return tileentity != null && tileentity instanceof TileEntityDetector && ((TileEntityDetector) tileentity).evaluate(vehicle, depth);
 		}
 	}
-	
+
 	public static class OperatorObjectRedstone extends OperatorObject {
 		private int x;
 		private int y;
 		private int z;
 		public OperatorObjectRedstone(HashMap<Byte, OperatorObject> operators, int ID, ILocalizedText name, int x, int y, int z) {
 			super(operators, ID, name, 0);
-			
+
 			this.x = x;
 			this.y = y;
 			this.z = z;			
 		}
-		
+
 		@Override
 		public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth, LogicObject A, LogicObject B) {
 			int x = this.x + detector.xCoord;
 			int y = this.y + detector.yCoord;
 			int z = this.z + detector.zCoord;
-			
-			
+
+
 			if (this.x == 0 && this.y == 0 && this.z == 0) {
 				return detector.getWorldObj().isBlockIndirectlyGettingPowered(x, y, z);
 			}else{
@@ -137,50 +143,50 @@ public class OperatorObject {
 				}else{
 					direction = 3;
 				}
-				
-		        return detector.getWorldObj().getIndirectPowerLevelTo(x, y, z, direction) > 0;
+
+				return detector.getWorldObj().getIndirectPowerLevelTo(x, y, z, direction) > 0;
 			}
 		}
 	}	
-	
+
 	private byte id;
 	private ILocalizedText name;
 	private int children;
-	
-	
+
+
 	public OperatorObject(HashMap<Byte, OperatorObject> operators, int id, ILocalizedText name, int children) {
 		this.id = (byte)id;
 		this.name = name;
 		this.children = children;
-		
+
 		operators.put(this.id, this);
 		allOperators.put(this.id, this);
 	}
-	
+
 	public byte getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name.translate();
 	}
-	
+
 	public int getChildCount() {
 		return children;
 	}
-	
+
 	public boolean inTab() {
 		return true;
 	}
 
-    public boolean isChildValid(OperatorObject child) {
-        return true;
-    }
+	public boolean isChildValid(OperatorObject child) {
+		return true;
+	}
 
 	public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth, LogicObject A, LogicObject B) {
 		return false;
 	}
 
 
-	
+
 }

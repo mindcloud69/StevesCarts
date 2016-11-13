@@ -20,10 +20,10 @@ public class TicketListener implements LoadingCallback {
 		for (Ticket ticket : tickets) {
 			Entity entity = ticket.getEntity();
 			if (entity instanceof IVehicleEntity) {
-                IVehicleEntity vehicleEntity = (IVehicleEntity)entity;
-                vehicleEntity.getVehicle().loadChunks(ticket);
+				IVehicleEntity vehicleEntity = (IVehicleEntity)entity;
+				vehicleEntity.getVehicle().loadChunks(ticket);
 			}		
 		}
 	}
-   
+
 }

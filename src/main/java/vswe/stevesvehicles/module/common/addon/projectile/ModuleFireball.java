@@ -11,9 +11,11 @@ public class ModuleFireball extends ModuleProjectile {
 	}
 
 
+	@Override
 	public boolean isValidProjectile(ItemStack item) {
 		return item.getItem() == Items.fire_charge;
 	}
+	@Override
 	public Entity createProjectile(Entity target, ItemStack item) {
 		return new EntitySmallFireball(getVehicle().getWorld());
 	}

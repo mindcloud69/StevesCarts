@@ -1,34 +1,33 @@
 package vswe.stevesvehicles.client.gui.screen;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
-import vswe.stevesvehicles.container.ContainerUpgrade;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 import vswe.stevesvehicles.client.ResourceHelper;
+import vswe.stevesvehicles.container.ContainerUpgrade;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.effect.util.InterfaceEffect;
 import vswe.stevesvehicles.upgrade.effect.util.InventoryEffect;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiUpgrade extends GuiBase {
-    public GuiUpgrade(InventoryPlayer invPlayer, TileEntityUpgrade upgrade) {
-        super(new ContainerUpgrade(invPlayer, upgrade));
-        this.upgrade = upgrade;
+	public GuiUpgrade(InventoryPlayer invPlayer, TileEntityUpgrade upgrade) {
+		super(new ContainerUpgrade(invPlayer, upgrade));
+		this.upgrade = upgrade;
 
-        setXSize(256);
-        setYSize(190);
-    }
+		setXSize(256);
+		setYSize(190);
+	}
 
-    @Override
-    public void drawGuiForeground(int x, int y) {
+	@Override
+	public void drawGuiForeground(int x, int y) {
 		GL11.glDisable(GL11.GL_LIGHTING);
-		
+
 		if (upgrade.getUpgrade() != null) {
 			getFontRenderer().drawString(upgrade.getUpgrade().getName(), 8, 6, 0x404040);
-			
+
 			InterfaceEffect gui = upgrade.getInterfaceEffect();
 			if (gui != null) {
 				gui.drawForeground(this);
@@ -37,22 +36,22 @@ public class GuiUpgrade extends GuiBase {
 		}
 
 		GL11.glEnable(GL11.GL_LIGHTING);
-    }
-	
+	}
 
-    private static final int SLOT_SRC_X = 1;
-    private static final int SLOT_SRC_Y = 191;
-    private static final int SLOT_SIZE = 18;
 
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/upgrade.png");
-    @Override
-    public void drawGuiBackground(float f, int x, int y) {
-        GL11.glColor4f(1F, 1F, 1F, 1F);
+	private static final int SLOT_SRC_X = 1;
+	private static final int SLOT_SRC_Y = 191;
+	private static final int SLOT_SIZE = 18;
 
-        int left = getGuiLeft();
-        int top = getGuiTop();
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/upgrade.png");
+	@Override
+	public void drawGuiBackground(float f, int x, int y) {
+		GL11.glColor4f(1F, 1F, 1F, 1F);
+
+		int left = getGuiLeft();
+		int top = getGuiTop();
 		ResourceHelper.bindResource(TEXTURE);
-        drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
+		drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
 
 		if (upgrade.getUpgrade() != null) {
 			InventoryEffect inventory = upgrade.getInventoryEffect();
@@ -61,8 +60,8 @@ public class GuiUpgrade extends GuiBase {
 					drawTexturedModalRect(left + inventory.getSlotX(i) - 1, top + inventory.getSlotY(i) - 1, SLOT_SRC_X, SLOT_SRC_Y, SLOT_SIZE, SLOT_SIZE);
 				}					
 			}	
-			
-			
+
+
 			InterfaceEffect gui = upgrade.getInterfaceEffect();
 			if (gui != null) {
 				gui.drawBackground(this, x, y);
@@ -70,8 +69,8 @@ public class GuiUpgrade extends GuiBase {
 		}
 
 		GL11.glColor4f(1F, 1F, 1F, 1F);
-    }
+	}
 
- 
-    private TileEntityUpgrade upgrade;
+
+	private TileEntityUpgrade upgrade;
 }

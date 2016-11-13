@@ -44,7 +44,7 @@ public class ModuleMelter extends ModuleAddon {
 		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); x++) {
 			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); z++) {
 				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); y++) {
-                    Block b = getVehicle().getWorld().getBlock(x + getVehicle().x(), y + getVehicle().y(), z + getVehicle().z());
+					Block b = getVehicle().getWorld().getBlock(x + getVehicle().x(), y + getVehicle().y(), z + getVehicle().z());
 					melt(b,x + getVehicle().x(), y + getVehicle().y(), z + getVehicle().z());
 				}
 			}

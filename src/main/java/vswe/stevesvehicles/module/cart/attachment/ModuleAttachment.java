@@ -8,7 +8,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleAttachment extends ModuleBase {
 
-    public ModuleAttachment(VehicleBase vehicle) {
-        super(vehicle);
-    }
+	public ModuleAttachment(VehicleBase vehicle) {
+		super(vehicle);
+	}
 }

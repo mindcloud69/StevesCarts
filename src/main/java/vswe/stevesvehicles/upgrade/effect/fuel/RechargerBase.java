@@ -6,31 +6,31 @@ import vswe.stevesvehicles.upgrade.effect.BaseEffect;
 public abstract class RechargerBase extends BaseEffect {
 
 
-    protected RechargerBase(TileEntityUpgrade upgrade) {
-        super(upgrade);
-    }
+	protected RechargerBase(TileEntityUpgrade upgrade) {
+		super(upgrade);
+	}
 
-    private int cooldown;
+	private int cooldown;
 
-    @Override
+	@Override
 	public void update() {
 		if (!upgrade.getWorldObj().isRemote && canGenerate()) {
 			if (cooldown >= 1200 / getAmount()) {
-                cooldown = 0;
+				cooldown = 0;
 				upgrade.getMaster().increaseFuel(1);
 			}else{
-                cooldown++;
+				cooldown++;
 			}
 		}
 	}
-	
+
 	protected abstract boolean canGenerate();
 	protected abstract int getAmount();
-	
+
 	@Override
 	public void init() {
-        cooldown = 0;
+		cooldown = 0;
 	}
 
-	
+
 }

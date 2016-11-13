@@ -7,7 +7,7 @@ public class TetrisPiecePart {
 	private TetrisBlock block;
 	private int offX;
 	private int offY;
-	
+
 	public TetrisPiecePart(TetrisBlock block, int offX, int offY) {
 		this.block = block;
 		this.offX = offX;
@@ -20,13 +20,13 @@ public class TetrisPiecePart {
 
 	public void rotate(int offSet) {
 		block.rotate();
-		
+
 		int temp = offX;
 		offX = -offY + offSet;
 		offY = temp;
 	}
-	
-	
+
+
 	public void placeInBoard(TetrisBlock[][] board, int x, int y) {
 		board[x+offX][y+offY] = block;
 	}
@@ -34,7 +34,7 @@ public class TetrisPiecePart {
 	public boolean canMoveTo(TetrisBlock[][] board, int x, int y) {
 		return isValidAt(board, x + offX, y + offY);
 	}
-	
+
 	public boolean isValidAt(TetrisBlock[][] board, int x, int y) {
 		if (x < 0 || x  >= board.length || y  >= board[0].length) {
 			return false;
@@ -52,6 +52,6 @@ public class TetrisPiecePart {
 	public boolean canPlaceInBoard(int y) {
 		return y + offY >= 0;
 	}
-	
-	
+
+
 }

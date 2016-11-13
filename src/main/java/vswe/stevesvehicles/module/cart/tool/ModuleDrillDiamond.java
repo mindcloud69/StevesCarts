@@ -23,5 +23,5 @@ public class ModuleDrillDiamond extends ModuleDrill {
 	protected float getTimeMultiplier() {
 		return 8;
 	}
-	
+
 }

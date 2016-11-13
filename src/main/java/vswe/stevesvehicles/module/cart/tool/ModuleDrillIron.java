@@ -8,11 +8,13 @@ public class ModuleDrillIron extends ModuleDrill {
 	}
 
 	//returns how far the drill should drill above itself, i.e. how tall is the  hole
+	@Override
 	protected int blocksOnTop() {
 		return 3;
 	}
 
 	//returns how far the drill should drill on each side
+	@Override
 	protected int blocksOnSide() {
 		return 1;
 	}

@@ -23,19 +23,19 @@ public class Building extends Unit {
 	protected int getHitBoxHeight() {
 		return 16;
 	}
-	
+
 	@Override
 	protected boolean isObstacle() {
 		return true;
 	}
 
-	
+
 	@Override
 	public UpdateResult update() {
 		if (super.update() == UpdateResult.DEAD) {
 			return UpdateResult.DEAD;
 		}
-		
+
 		for (Unit invader : game.invaders) {
 			if (!invader.dead && collidesWith(invader)) {
 				dead = true;
@@ -43,9 +43,9 @@ public class Building extends Unit {
 				return UpdateResult.DEAD;
 			}
 		}
-		
+
 
 		return UpdateResult.DONE;
 	}	
-	
+
 }

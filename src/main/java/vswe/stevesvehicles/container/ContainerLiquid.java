@@ -8,10 +8,10 @@ import vswe.stevesvehicles.tileentity.TileEntityLiquid;
 
 public class ContainerLiquid extends ContainerManager {
 
-    public ContainerLiquid(IInventory invPlayer, TileEntityLiquid liquid) {
-        super(liquid);
+	public ContainerLiquid(IInventory invPlayer, TileEntityLiquid liquid) {
+		super(liquid);
 		oldLiquids = new FluidStack[4];
-		
+
 		for (int i = 0; i < 4; i++) {
 			int x = i % 2;
 			int y = i / 2;
@@ -22,13 +22,13 @@ public class ContainerLiquid extends ContainerManager {
 
 
 		addPlayer(invPlayer);
-    }
+	}
 
-    
- 	@Override
+
+	@Override
 	protected int offsetX() {
 		return 35;
 	}   
-	
+
 	public FluidStack[] oldLiquids;
 }

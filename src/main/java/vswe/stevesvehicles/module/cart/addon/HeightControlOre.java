@@ -1,8 +1,8 @@
 package vswe.stevesvehicles.module.cart.addon;
-import net.minecraft.util.ResourceLocation;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.util.ResourceLocation;
 
 public class HeightControlOre {
 	public final String name;
@@ -15,7 +15,7 @@ public class HeightControlOre {
 	public final int bestHighest;
 	public final int bestLowest;
 
-	public static final List<HeightControlOre> ores = new ArrayList<HeightControlOre>();
+	public static final List<HeightControlOre> ores = new ArrayList<>();
 
 	static {
 		new HeightControlOre("diamond", 0, 15, 12, 5);
@@ -42,7 +42,7 @@ public class HeightControlOre {
 	}
 
 	@SuppressWarnings("UnusedDeclaration")
-    public HeightControlOre(String name, ResourceLocation texture, int srcX, int srcY, int spanHighest, int spanLowest, int bestHighest, int bestLowest) {
+	public HeightControlOre(String name, ResourceLocation texture, int srcX, int srcY, int spanHighest, int spanLowest, int bestHighest, int bestLowest) {
 		this.name = name;
 		this.useDefaultTexture = false;
 		this.specialTexture = texture;

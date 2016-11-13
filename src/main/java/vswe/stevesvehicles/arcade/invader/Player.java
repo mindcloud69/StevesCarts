@@ -8,7 +8,7 @@ public class Player extends Unit {
 	public Player(ArcadeInvaders game, int x, int y) {
 		super(game, x, y);
 	}
-	
+
 	public Player(ArcadeInvaders game) {
 		this(game, 200, 150);
 		ready = true;
@@ -22,7 +22,7 @@ public class Player extends Unit {
 			game.drawImageInArea(gui, x, y, 16, 16, 16, 16, 3, 0, 1000, 1000);
 		}
 	}
-	
+
 	protected boolean ready;
 	private int targetX;
 	private int targetY;
@@ -30,11 +30,11 @@ public class Player extends Unit {
 		targetX = x;
 		targetY = y;
 	}
-	
+
 	@Override
 	public UpdateResult update() {
 		if (!ready) {
-			
+
 			if (targetY == this.y && targetX == this.x) {
 				ready = true;
 			}else if (targetY == this.y) {
@@ -53,7 +53,7 @@ public class Player extends Unit {
 
 		return UpdateResult.DONE;
 	}	
-	
+
 	public void move(int dir) {
 		this.x += dir * 5;
 		if (x < 10) {
@@ -62,7 +62,7 @@ public class Player extends Unit {
 			x = VehicleBase.MODULAR_SPACE_WIDTH - 10 - 16;
 		}
 	}
-	
+
 	@Override
 	protected boolean isPlayer() {
 		return true;

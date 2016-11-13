@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import vswe.stevesvehicles.container.ContainerBase;
-import vswe.stevesvehicles.tileentity.TileEntityBase;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -13,66 +13,68 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vswe.stevesvehicles.container.slots.SlotAssembler;
 import vswe.stevesvehicles.container.slots.SlotHull;
+import vswe.stevesvehicles.tileentity.TileEntityBase;
 import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCartAssembler extends ContainerBase {
 
+	@Override
 	public IInventory getMyInventory() {
 		return assembler;
 	}
-	
+
+	@Override
 	public TileEntityBase getTileEntity() {
 		return assembler;
 	}
 
-    private TileEntityCartAssembler assembler;
-    public ContainerCartAssembler(IInventory invPlayer, TileEntityCartAssembler assembler) {
-        this.assembler = assembler;
-		
+	private TileEntityCartAssembler assembler;
+	public ContainerCartAssembler(IInventory invPlayer, TileEntityCartAssembler assembler) {
+		this.assembler = assembler;
+
 		List<SlotAssembler> slots = assembler.getSlots();
 		for (SlotAssembler slot : slots) {
 			addSlotToContainer(slot);
 		}
-		
-		
-		
+
+
+
 		for (int i = 0; i < 3; i++) {
-            for (int k = 0; k < 9; k++) {
-                addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, offsetX() + k * 18, i * 18 + offsetY()));
-            }
-        }
+			for (int k = 0; k < 9; k++) {
+				addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, offsetX() + k * 18, i * 18 + offsetY()));
+			}
+		}
 
-        for (int j = 0; j < 9; j++)
-        {
-            addSlotToContainer(new Slot(invPlayer, j, offsetX() + j * 18, 58 + offsetY()));
-        }
-    }
+		for (int j = 0; j < 9; j++)
+		{
+			addSlotToContainer(new Slot(invPlayer, j, offsetX() + j * 18, 58 + offsetY()));
+		}
+	}
 
 
-    @Override
-    public boolean canInteractWith(EntityPlayer player) {
-        return assembler.isUseableByPlayer(player);
-    }
+	@Override
+	public boolean canInteractWith(EntityPlayer player) {
+		return assembler.isUseableByPlayer(player);
+	}
 
-    @Override
-    public void addCraftingToCrafters(ICrafting player) {
-        super.addCraftingToCrafters(player);
+	@Override
+	public void addCraftingToCrafters(ICrafting player) {
+		super.addCraftingToCrafters(player);
 
 		assembler.initGuiData(this,player);
-    }
+	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-    public void updateProgressBar(int id, int data) {
+	public void updateProgressBar(int id, int data) {
 		data &= 65535;
 
 		assembler.receiveGuiData(id, (short)data);
-    }
+	}
 
-    @Override
+	@Override
 	public void detectAndSendChanges() {
-        super.detectAndSendChanges();
+		super.detectAndSendChanges();
 		Iterator players = this.crafters.iterator();
 
 		while (players.hasNext()) {
@@ -80,33 +82,33 @@ public class ContainerCartAssembler extends ContainerBase {
 
 			assembler.checkGuiData(this,player);
 		}
-    }
-	
-    protected int offsetX() {
-        return 176;
-    }
+	}
 
-    protected int offsetY() {
-        return 174;
-    }
+	protected int offsetX() {
+		return 176;
+	}
+
+	protected int offsetY() {
+		return 174;
+	}
 
 	public int lastMaxAssemblingTime;
 	public boolean lastIsAssembling;
 	public int lastFuelLevel;
-	
+
 	@Override
 	public ItemStack slotClick(int slotID, int button, int keyFlag, EntityPlayer player) {
 		if (slotID >= 0 && slotID < inventorySlots.size()) {
-			Slot hullSlot = (Slot)inventorySlots.get(slotID);
-			
+			Slot hullSlot = inventorySlots.get(slotID);
+
 			if (hullSlot != null && hullSlot instanceof SlotHull) {
 				InventoryPlayer playerInventory = player.inventory;
 				ItemStack playerItem = playerInventory.getItemStack();
 				ItemStack slotItem = hullSlot.getStack();
-							
+
 				ArrayList<SlotAssembler> newSlots = assembler.getValidSlotFromHullItem(playerItem);
 				ArrayList<SlotAssembler> oldSlots = assembler.getValidSlotFromHullItem(slotItem);
-				
+
 				if (oldSlots != null) {
 					if (newSlots != null) {
 						for(SlotAssembler slot : newSlots) {
@@ -116,18 +118,18 @@ public class ContainerCartAssembler extends ContainerBase {
 							}
 						}
 					}
-					
+
 					for (SlotAssembler slot : oldSlots) {
 						if (slot.getHasStack()) {
 							return null;
 						}
 					}
-					
+
 				}
 			}
 		}
-		
+
 		return super.slotClick(slotID,button, keyFlag, player);
 	}
-	
+
 }

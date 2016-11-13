@@ -12,27 +12,27 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 public class EntityEasterEgg extends EntityEgg {
-    public EntityEasterEgg(World world) {
-        super(world);
-    }
+	public EntityEasterEgg(World world) {
+		super(world);
+	}
 
-    public EntityEasterEgg(World world, EntityLivingBase thrower) {
-        super(world, thrower);
-    }
+	public EntityEasterEgg(World world, EntityLivingBase thrower) {
+		super(world, thrower);
+	}
 
-    public EntityEasterEgg(World world, double x, double y, double z) {
-        super(world, x, y, z);
-    }
+	public EntityEasterEgg(World world, double x, double y, double z) {
+		super(world, x, y, z);
+	}
 
-    @Override
-    protected void onImpact(MovingObjectPosition data) {
-        if (data.entityHit != null) {
-            data.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 0);
-        }
+	@Override
+	protected void onImpact(MovingObjectPosition data) {
+		if (data.entityHit != null) {
+			data.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 0);
+		}
 
 
-		
-        if (!this.worldObj.isRemote) {
+
+		if (!this.worldObj.isRemote) {
 			if (this.rand.nextInt(8) == 0) {
 				if (rand.nextInt(32) == 0) {
 					EntityPig entitypig = new EntityPig(worldObj);
@@ -46,7 +46,7 @@ public class EntityEasterEgg extends EntityEgg {
 					worldObj.spawnEntityInWorld(entitychicken);
 				}
 			}else{
-                List<ItemStack> items = GiftItem.generateItems(rand, GiftItem.EasterList, 25 + rand.nextInt(300), 1);
+				List<ItemStack> items = GiftItem.generateItems(rand, GiftItem.EasterList, 25 + rand.nextInt(300), 1);
 				for (ItemStack item : items) {
 					EntityItem eItem = new EntityItem(worldObj, posX, posY, posZ, item);
 					eItem.motionX = rand.nextGaussian() * 0.05F;
@@ -54,20 +54,20 @@ public class EntityEasterEgg extends EntityEgg {
 					eItem.motionZ = rand.nextGaussian() * 0.05F;
 					worldObj.spawnEntityInWorld(eItem);
 				}			
-				
+
 			}
-		
+
 		}
 
-        for (int i = 0; i < 8; i++) {
-            //noinspection SpellCheckingInspection
-            worldObj.spawnParticle("snowballpoof", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
-        }
+		for (int i = 0; i < 8; i++) {
+			//noinspection SpellCheckingInspection
+			worldObj.spawnParticle("snowballpoof", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+		}
 
-        if (!worldObj.isRemote) {
-            setDead();
-        }
-    }
-	
-	
+		if (!worldObj.isRemote) {
+			setDead();
+		}
+	}
+
+
 }

@@ -1,12 +1,12 @@
 package vswe.stevesvehicles.module.common.attachment;
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.entry.module.LocalizationVisual;
@@ -14,7 +14,6 @@ import vswe.stevesvehicles.module.cart.attachment.ModuleAttachment;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
 
 public class ModuleNote extends ModuleAttachment {
 
@@ -28,24 +27,24 @@ public class ModuleNote extends ModuleAttachment {
 	private static final String[] PITCH_NAMES = new String[] {"F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"};
 	private static final ILocalizedText[] INSTRUMENT_NAMES = new ILocalizedText[] {LocalizationVisual.PIANO, LocalizationVisual.BASS_DRUM, LocalizationVisual.SNARE_DRUM, LocalizationVisual.STICKS, LocalizationVisual.BASS_GUITAR};
 
-	
+
 	private ArrayList<Track> tracks;
-	
+
 	private static final int NOTE_MAP_X = 70;
 	private static final int NOTE_MAP_Y = 40;
 	private static final int TRACK_HEIGHT = 20;
-	
+
 	private ArrayList<Button> buttons;
 	private ArrayList<Button> instrumentButtons;
 	private int currentInstrument = -1;
 	private Button createTrack;
 	private Button removeTrack;
 	private Button speedButton;
-	
+
 	private boolean isScrollingX;
 	private boolean isScrollingXTune;
 	private boolean isScrollingY;
-	
+
 	private int pixelScrollX;
 	private int pixelScrollXTune;
 	private int generatedScrollX;
@@ -53,7 +52,7 @@ public class ModuleNote extends ModuleAttachment {
 	private int generatedScrollY;
 	private static final int[] SCROLL_X_RECT = new int[] {NOTE_MAP_X +120, NOTE_MAP_Y - 20,100,16};
 	private static final int[] SCROLL_Y_RECT = new int[] {NOTE_MAP_X +220, NOTE_MAP_Y,16,100};
-	
+
 	private final int maximumNotesPerTrack;
 	private final int maximumTracksPerModule;	
 
@@ -63,18 +62,18 @@ public class ModuleNote extends ModuleAttachment {
 	private boolean tooTallModule = false;	
 	private boolean veryLongTrack = false;
 	private int speedSetting = 5;
-	
+
 	public ModuleNote(VehicleBase vehicleBase) {
 		super(vehicleBase);
-		
+
 		maximumNotesPerTrack = (int)Math.pow(2, MAXIMUM_NOTES_PER_TRACK_BIT_COUNT) -1;
 		maximumTracksPerModule = (int)Math.pow(2, MAXIMUM_TRACKS_PER_MODULE_BIT_COUNT) -1;
 
 
-		
-		tracks = new ArrayList<Track>();		
+
+		tracks = new ArrayList<>();		
 		if (getVehicle().getWorld().isRemote) {
-			buttons = new ArrayList<Button>();
+			buttons = new ArrayList<>();
 			createTrack = new Button(NOTE_MAP_X -60, NOTE_MAP_Y - 20);
 			createTrack.text = LocalizationVisual.CREATE_TRACK.translate();
 			createTrack.imageID = 0;
@@ -83,7 +82,7 @@ public class ModuleNote extends ModuleAttachment {
 			removeTrack.imageID = 1;
 			speedButton = new Button(NOTE_MAP_X -20, NOTE_MAP_Y - 20);
 			updateSpeedButton();
-			instrumentButtons = new ArrayList<Button>();
+			instrumentButtons = new ArrayList<>();
 			for (int i = 0 ; i < 6; i++) {
 				Button tempButton = new Button(NOTE_MAP_X -20 + (i+1)*20, NOTE_MAP_Y - 20);
 				instrumentButtons.add(tempButton);
@@ -103,18 +102,18 @@ public class ModuleNote extends ModuleAttachment {
 			speedButton.text = LocalizationVisual.DELAY.translate(String.valueOf(getTickDelay()));
 		}
 	}
-	
+
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
-		
-		
+		drawString(gui,getModuleName(), 8, 6, 0x404040);
+
+
 		for(int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + TRACKS_IN_VIEW); i++) {
 			Track track = tracks.get(i);
-			
+
 			for(int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + NOTES_IN_VIEW); j++) {
 				Note note =  track.notes.get(j);
-				
+
 				note.drawText(gui, i - getScrollY(), j - getScrollX());
 			}
 		}
@@ -139,7 +138,7 @@ public class ModuleNote extends ModuleAttachment {
 	}		
 
 
-	
+
 	private int getTickDelay() {
 		switch (speedSetting) {
 			case 6:
@@ -161,14 +160,14 @@ public class ModuleNote extends ModuleAttachment {
 		}
 	}
 
-	
+
 	@Override
 	public void update() {
-        super.update();
+		super.update();
 
-	
+
 		if (getVehicle().getWorld().isRemote) {
-						
+
 			tooLongTrack = false;
 			veryLongTrack = false;
 			for (int i = 0; i < tracks.size(); i++) {
@@ -191,14 +190,14 @@ public class ModuleNote extends ModuleAttachment {
 					trackPacketID = 2;		
 				}
 				if (trackPacketID != -1) {
-                    DataWriter dw = getDataWriter(PacketId.GLOBAL);
-                    dw.writeByte(i);
-                    dw.writeByte(trackPacketID);
-                    sendPacketToServer(dw);
+					DataWriter dw = getDataWriter(PacketId.GLOBAL);
+					dw.writeByte(i);
+					dw.writeByte(trackPacketID);
+					sendPacketToServer(dw);
 				}
-			
+
 			}
-			
+
 			if (!tooLongTrack) {
 				pixelScrollX = 0;
 				isScrollingX = false;
@@ -212,30 +211,30 @@ public class ModuleNote extends ModuleAttachment {
 				pixelScrollY = 0;
 				isScrollingY = false;			
 			}
-			
-			
+
+
 			generateScrollX();
 			generateScrollY();
-			
+
 			if (createTrack.down) {
 				createTrack.down = false;
 				DataWriter dw = getDataWriter(PacketId.GLOBAL);
-                dw.writeByte(0);
-                sendPacketToServer(dw);
+				dw.writeByte(0);
+				sendPacketToServer(dw);
 			}
 			if (removeTrack.down) {
 				removeTrack.down = false;
-                DataWriter dw = getDataWriter(PacketId.GLOBAL);
-                dw.writeByte(1);
-                sendPacketToServer(dw);
+				DataWriter dw = getDataWriter(PacketId.GLOBAL);
+				dw.writeByte(1);
+				sendPacketToServer(dw);
 			}
 			if (speedButton.down) {
 				speedButton.down = false;
-                DataWriter dw = getDataWriter(PacketId.GLOBAL);
-                dw.writeByte(2);
-                sendPacketToServer(dw);
+				DataWriter dw = getDataWriter(PacketId.GLOBAL);
+				dw.writeByte(2);
+				sendPacketToServer(dw);
 			}			
-			
+
 			for (int i = 0; i < instrumentButtons.size(); i++) {
 				if (instrumentButtons.get(i).down && i != currentInstrument) {
 					currentInstrument = i;
@@ -251,10 +250,10 @@ public class ModuleNote extends ModuleAttachment {
 				currentInstrument = -1;
 			}
 		}
-		
+
 		if (isPlaying()){
 			if (currentTick <= 0) {
-			
+
 				boolean found = false;
 				for (Track track : tracks) {
 					if (track.notes.size() > playProgress) {
@@ -281,7 +280,7 @@ public class ModuleNote extends ModuleAttachment {
 					if (!getVehicle().getWorld().isRemote) {
 						setPlaying(false);
 					}
-					
+
 					playProgress = 0;
 				}else {
 					playProgress++;
@@ -290,14 +289,14 @@ public class ModuleNote extends ModuleAttachment {
 			}else{
 				currentTick--;
 			}
-			
-			
+
+
 		}
 
-    }
+	}
 
 
-	
+
 	@Override
 	public int guiWidth() {
 		return 310;
@@ -316,7 +315,8 @@ public class ModuleNote extends ModuleAttachment {
 			this.trackID = trackID;
 			this.x = x;
 		}
-		
+
+		@Override
 		public int[] getRect() {
 			return new int[] {x, NOTE_MAP_Y + (trackID-getScrollY()) * TRACK_HEIGHT, 16,16};
 		}	
@@ -324,34 +324,37 @@ public class ModuleNote extends ModuleAttachment {
 		private boolean isValid() {
 			return getScrollY() <= trackID && trackID < getScrollY() + TRACKS_IN_VIEW;
 		}
-		
+
+		@Override
 		public void draw(GuiVehicle gui, int x, int y) {
 			if (isValid()) {
 				super.draw(gui, x, y);
 			}
 		}	
 
+		@Override
 		public void overlay(GuiVehicle gui, int x, int y) {
 			if (isValid()) {
 				super.overlay(gui, x, y);
 			}
 		}
-		
+
+		@Override
 		public void clicked(int x, int y) {
 			if (isValid()) {
 				super.clicked(x, y);
 			}
 		}
-		
+
 	}
-	
+
 	private class Button {
 		public int [] rect;
 		public boolean down;
 		public String text;
 		public int color;
 		public int imageID;
-		
+
 		public Button(int x, int y) {
 			down = false;
 			this.rect = new int[] {x,y, 16,16};
@@ -359,21 +362,21 @@ public class ModuleNote extends ModuleAttachment {
 			imageID = -1;
 			buttons.add(this);
 		}
-		
+
 		public int[] getRect() {
 			return rect;
 		}
-		
+
 		public void overlay(GuiVehicle gui, int x, int y) {
 			drawStringOnMouseOver(gui, text,x, y, getRect());
 		}
-		
+
 		public void clicked(int x, int y) {
 			if (inRect(x,y, getRect())) {
 				down = !down;
 			}	
 		}
-		
+
 		public void draw(GuiVehicle gui, int x, int y) {
 			int srcX = 1;
 			int srcY = 18;
@@ -382,66 +385,66 @@ public class ModuleNote extends ModuleAttachment {
 			}
 			drawImage(gui, getRect(), srcX, srcY);
 
-            if (!inRect(x, y, getRect())) {
-                GL11.glColor4f((float)(color >> 16) / 255.0F, (float)(color >> 8 & 255) / 255.0F, (float)(color & 255) / 255.0F, 1F);
-            }
-            drawImage(gui, getRect(), 35, 1);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			if (!inRect(x, y, getRect())) {
+				GL11.glColor4f((color >> 16) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1F);
+			}
+			drawImage(gui, getRect(), 35, 1);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 			if (imageID != -1) {
 				drawImage(gui, getRect()[0] + 1, getRect()[1] + 1, 2 + imageID * 16, 35, getRect()[2] - 2, getRect()[3] - 2);
 			}
 		}
-	
+
 	}
-		
+
 	private class Note {
 		public int instrumentId;
 		public int pitch;
 
-		
+
 		public Note(Track track) {
 			track.notes.add(this);
 		}
-		
+
 		public void drawText(GuiVehicle gui, int trackID, int noteID) {
 			if (instrumentId == 0) {
 				return;
 			}
-		
+
 			int rect[] = getBounds(trackID, noteID);
-		
+
 			String str = String.valueOf(pitch);
 			if (str.length() < 2) {
 				str = "0" + str;
 			}
-		
-			
+
+
 			drawString(gui, str, rect[0] + 3, rect[1] +6, INSTRUMENT_COLORS[instrumentId]);
 		}
-		
+
 		public void draw(GuiVehicle gui, int x, int y, int trackID, int noteID) {
 			int srcX = 1;
 			if (instrumentId == 0) {
 				srcX += 17;
 			}
-			
+
 			int rect[] = getBounds(trackID, noteID);
 			if (instrumentId != 0 && playProgress == noteID + getScrollX() && isPlaying()) {
 				GL11.glColor4f(0.3F, 0.3F, 0.3F, 1.0F);
 			}
 			drawImage(gui, rect, srcX, 1);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			
+
 			if (inRect(x,y, rect)) {
 				drawImage(gui, rect, 35, 1);
 			}			
 		}
-		
+
 		public int[] getBounds(int trackID, int noteID) {
 			return new int[] {NOTE_MAP_X + noteID * 16, NOTE_MAP_Y + trackID * TRACK_HEIGHT, 16,16};
 		}
-		
+
 		public short getInfo() {						
 			short info = (short)0;
 			info |= instrumentId;
@@ -449,23 +452,23 @@ public class ModuleNote extends ModuleAttachment {
 
 			return info;
 		}
-		
+
 		public void setInfo(short val) {
 			instrumentId = val & 7;
 			pitch = (val & 248) >> 3;
 		}
-		
-		
+
+
 		public void play(float volume) {
 			if (instrumentId == 0) {
 				return;
 			}
-		
+
 			if (!getVehicle().getWorld().isRemote) {
 				if (volume > 0) {
-					float calculatedPitch = (float)Math.pow(2.0D, (double)(pitch - 12) / 12.0D);
+					float calculatedPitch = (float)Math.pow(2.0D, (pitch - 12) / 12.0D);
 					String instrumentString = "harp";
-					
+
 					if (instrumentId == 2)
 					{
 						instrumentString = "bd";
@@ -480,12 +483,12 @@ public class ModuleNote extends ModuleAttachment {
 						instrumentString = "bassattack";
 					}
 
-					getVehicle().getWorld().playSoundEffect((double) getVehicle().x() + 0.5D, (double) getVehicle().y() + 0.5D, (double) getVehicle().z() + 0.5D, "note." + instrumentString, volume, calculatedPitch);
+					getVehicle().getWorld().playSoundEffect(getVehicle().x() + 0.5D, getVehicle().y() + 0.5D, getVehicle().z() + 0.5D, "note." + instrumentString, volume, calculatedPitch);
 				}
 			}else{
 				double offsetX = 0.0;
 				double offsetZ = 0.0;
-			
+
 				if (getVehicle().getEntity().motionX != 0) {
 					offsetX =  (getVehicle().getEntity().motionX > 0 ? -1 : 1);
 				}
@@ -493,12 +496,13 @@ public class ModuleNote extends ModuleAttachment {
 				if (getVehicle().getEntity().motionZ != 0) {
 					offsetZ =  (getVehicle().getEntity().motionZ > 0 ? -1 : 1);
 				}
-			
-				getVehicle().getWorld().spawnParticle("note", (double) getVehicle().x() + offsetZ * 1 + 0.5D, (double) getVehicle().y() + 1.2D, (double) getVehicle().z() + offsetX * 1 + 0.5D, (double) pitch / 24.0D, 0.0D,0D);
-				getVehicle().getWorld().spawnParticle("note", (double) getVehicle().x() + offsetZ * -1 + 0.5D, (double) getVehicle().y() + 1.2D, (double) getVehicle().z() + offsetX * -1 + 0.5D, (double) pitch / 24.0D, 0.0D, 0.0D);
+
+				getVehicle().getWorld().spawnParticle("note", getVehicle().x() + offsetZ * 1 + 0.5D, getVehicle().y() + 1.2D, getVehicle().z() + offsetX * 1 + 0.5D, pitch / 24.0D, 0.0D,0D);
+				getVehicle().getWorld().spawnParticle("note", getVehicle().x() + offsetZ * -1 + 0.5D, getVehicle().y() + 1.2D, getVehicle().z() + offsetX * -1 + 0.5D, pitch / 24.0D, 0.0D, 0.0D);
 			}
 		}
-		
+
+		@Override
 		public String toString() {			
 			if (instrumentId == 0) {
 				return "Unknown instrument";
@@ -506,11 +510,11 @@ public class ModuleNote extends ModuleAttachment {
 				return INSTRUMENT_NAMES[instrumentId-1].translate() + " " + PITCH_NAMES[pitch];
 			}
 		}
-		
-		
+
+
 
 	}
-	
+
 	private class Track {
 		public ArrayList<Note> notes;
 		public Button addButton;
@@ -520,7 +524,7 @@ public class ModuleNote extends ModuleAttachment {
 
 
 		public Track() {
-			notes = new ArrayList<Note>();
+			notes = new ArrayList<>();
 			volume = 3;
 			if (getVehicle().getWorld().isRemote) {
 				int ID = (tracks.size() + 1);
@@ -537,24 +541,24 @@ public class ModuleNote extends ModuleAttachment {
 			tracks.add(this);			
 		}
 
-		
+
 		private String getVolumeText() {
-            return LocalizationVisual.VOLUME.translate(String.valueOf(volume));
+			return LocalizationVisual.VOLUME.translate(String.valueOf(volume));
 		}
-		
+
 		public void unload() {
 			buttons.remove(addButton);
 			buttons.remove(removeButton);
 			buttons.remove(volumeButton);
 		}
-		
+
 		public short getInfo() {						
 			short info = (short)0;
 			info |= notes.size();
 			info |= volume << MAXIMUM_NOTES_PER_TRACK_BIT_COUNT;
 			return info;
 		}
-		
+
 		public void setInfo(short val) {
 			int numberOfNotes = val & maximumNotesPerTrack;
 			while (notes.size() < numberOfNotes) {
@@ -570,11 +574,11 @@ public class ModuleNote extends ModuleAttachment {
 				volumeButton.text = getVolumeText();
 			}
 		}		
-		
+
 	}
 
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/note.png");
-	
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/note.png");
+
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
@@ -582,18 +586,18 @@ public class ModuleNote extends ModuleAttachment {
 
 		for(int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + TRACKS_IN_VIEW); i++) {
 			Track track = tracks.get(i);
-			
+
 			for(int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + NOTES_IN_VIEW); j++) {
 				Note note =  track.notes.get(j);
-				
+
 				note.draw(gui, x, y, i - getScrollY(), j - getScrollX());
 			}
 		}
-				
+
 		for (Button button : buttons) {
 			button.draw(gui,x,y);
 		}
-		
+
 		if (tooLongTrack) {
 			drawImage(gui, SCROLL_X_RECT, 52, 1);
 			int[] marker = getMarkerX();
@@ -612,9 +616,9 @@ public class ModuleNote extends ModuleAttachment {
 		}else{
 			drawImage(gui, SCROLL_Y_RECT, 18, 50);
 		}		
-		
+
 	}
-	
+
 
 	private int[] getMarkerX() {
 		return generateMarkerX(pixelScrollX);
@@ -625,14 +629,14 @@ public class ModuleNote extends ModuleAttachment {
 	private int[] generateMarkerX(int x) {
 		return new int[] {SCROLL_X_RECT[0] + x, SCROLL_X_RECT[1] + 1 , 5, 14};
 	}	
-	
+
 	private void setMarkerX(int x) {
 		pixelScrollX = generateNewMarkerX(x);
 	}
 	private void setMarkerXTune(int x) {
 		pixelScrollXTune = generateNewMarkerX(x);
 	}	
-	
+
 	private int generateNewMarkerX(int x) {
 		int temp = x - SCROLL_X_RECT[0];
 		if (temp < 0) {
@@ -642,7 +646,7 @@ public class ModuleNote extends ModuleAttachment {
 		}	
 		return temp;
 	}
-	
+
 
 	private int getScrollX() {
 		return generatedScrollX;
@@ -650,9 +654,9 @@ public class ModuleNote extends ModuleAttachment {
 	private void generateScrollX() {
 		if (tooLongTrack) {
 			int maxNotes = -1;
-            for (Track track : tracks) {
-                maxNotes = Math.max(maxNotes, track.notes.size());
-            }
+			for (Track track : tracks) {
+				maxNotes = Math.max(maxNotes, track.notes.size());
+			}
 			maxNotes -= NOTES_IN_VIEW;
 
 			float widthOfBlockInScrollArea = (SCROLL_X_RECT[2] - 5) / (float)maxNotes;
@@ -665,11 +669,11 @@ public class ModuleNote extends ModuleAttachment {
 		}
 	}
 
-	
+
 	private int[] getMarkerY() {
 		return new int[] {SCROLL_Y_RECT[0] + 1, SCROLL_Y_RECT[1] + pixelScrollY ,14, 5};
 	}
-	
+
 	private void setMarkerY(int y) {
 		pixelScrollY = y - SCROLL_Y_RECT[1];
 		if (pixelScrollY < 0) {
@@ -678,7 +682,7 @@ public class ModuleNote extends ModuleAttachment {
 			pixelScrollY = (SCROLL_Y_RECT[3] - 5);
 		}	
 	}
-	
+
 
 
 	private int getScrollY() {
@@ -694,35 +698,35 @@ public class ModuleNote extends ModuleAttachment {
 			generatedScrollY = 0;
 		}
 	}	
-	
-	
+
+
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
 		for(int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + TRACKS_IN_VIEW); i++) {
 			Track track = tracks.get(i);
-			
+
 			for(int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + NOTES_IN_VIEW); j++) {
 				Note note =  track.notes.get(j);
-				
+
 				if (note.instrumentId != 0) {
 					drawStringOnMouseOver(gui, note.toString(),x, y, note.getBounds(i-getScrollY(),j-getScrollX()));
 				}
 			}
 		}	
-		
+
 		for (Button button : buttons) {
 			if (button.text != null && button.text.length() > 0) {
 				button.overlay(gui, x,y);
 			}
 		}		
-		
+
 	}	
-	
+
 	@Override
 	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {
 		if (isScrollingX) {
 			setMarkerX(x);
-				
+
 			if (button != -1)
 			{
 				isScrollingX = false;
@@ -730,7 +734,7 @@ public class ModuleNote extends ModuleAttachment {
 		}
 		if (isScrollingXTune) {
 			setMarkerXTune(x);
-				
+
 			if (button != -1)
 			{
 				isScrollingXTune = false;
@@ -738,21 +742,21 @@ public class ModuleNote extends ModuleAttachment {
 		}		
 		if (isScrollingY) {
 			setMarkerY(y + getVehicle().getRealScrollY());
-				
+
 			if (button != -1)
 			{
 				isScrollingY = false;
 			}	
 		}			
 	}	
-	
+
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int buttonId) {
 		if (buttonId == 0) {
 			for (Button button : buttons) {
 				button.clicked(x,y);
 			}
-			
+
 			if (!isScrollingX && inRect(x,y, SCROLL_X_RECT)) {
 				isScrollingX = true;
 			}else if (!isScrollingY && inRect(x,y, SCROLL_Y_RECT)) {
@@ -763,11 +767,11 @@ public class ModuleNote extends ModuleAttachment {
 				isScrollingXTune = true;
 			}		
 		}
-		
+
 		if (buttonId == 0 || buttonId == 1) {
 			for(int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + TRACKS_IN_VIEW); i++) {
 				Track track = tracks.get(i);
-				
+
 				for(int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + NOTES_IN_VIEW); j++) {
 					Note note =  track.notes.get(j);
 					if (inRect(x,y, note.getBounds(i-getScrollY(),j-getScrollX()))) {
@@ -780,11 +784,11 @@ public class ModuleNote extends ModuleAttachment {
 							}
 						}
 						if (currentInstrument != -1 || note.instrumentId != 0) {
-                            DataWriter dw = getDataWriter(PacketId.NOTE);
-                            dw.writeByte(i);
-                            dw.writeByte(j);
-                            dw.writeByte(instrumentInfo);
-                            sendPacketToServer(dw);
+							DataWriter dw = getDataWriter(PacketId.NOTE);
+							dw.writeByte(i);
+							dw.writeByte(j);
+							dw.writeByte(instrumentInfo);
+							sendPacketToServer(dw);
 						}
 					}
 				}
@@ -794,7 +798,7 @@ public class ModuleNote extends ModuleAttachment {
 
 
 
- 	@Override
+	@Override
 	public int numberOfGuiData() {
 		return 1+(maximumNotesPerTrack+1)*maximumTracksPerModule;
 	}
@@ -805,20 +809,20 @@ public class ModuleNote extends ModuleAttachment {
 		moduleHeader |= (short)(speedSetting << MAXIMUM_TRACKS_PER_MODULE_BIT_COUNT);
 		updateGuiData(info, 0, moduleHeader);	
 
-		
+
 		for (int i = 0; i < tracks.size();i++) {
 			Track track = tracks.get(i);
 			updateGuiData(info, 1+(maximumNotesPerTrack+1)*i,  track.getInfo());
 
-			
+
 			for (int j = 0; j < track.notes.size();j++) {
 				Note note = track.notes.get(j);
 				updateGuiData(info, 1+(maximumNotesPerTrack+1)*i+1+j, note.getInfo());
 			}
 		}			
-	
+
 	}
-	
+
 
 
 	@Override
@@ -843,11 +847,11 @@ public class ModuleNote extends ModuleAttachment {
 				track.setInfo(data);
 			}else{
 				noteId--;
-				
+
 				Note note = track.notes.get(noteId);
 				note.setInfo(data);
 			}
-		
+
 		}
 	}
 
@@ -860,98 +864,98 @@ public class ModuleNote extends ModuleAttachment {
 	public void initDw() {
 		addDw(0,0);
 	}	
-	
+
 	private boolean isPlaying() {
-        return !isPlaceholder() && (getDw(0) != 0 || playProgress > 0);
+		return !isPlaceholder() && (getDw(0) != 0 || playProgress > 0);
 	}
-	
+
 	private void setPlaying(boolean val) {
 		updateDw(0, val ? 1 : 0);
 	}
 
-    private DataWriter getDataWriter(PacketId id) {
-        DataWriter dw = getDataWriter();
-        dw.writeEnum(id);
-        return dw;
-    }
-	
+	private DataWriter getDataWriter(PacketId id) {
+		DataWriter dw = getDataWriter();
+		dw.writeEnum(id);
+		return dw;
+	}
 
-    public enum PacketId {
-        GLOBAL,
-        TRACK,
-        NOTE
-    }
-	
+
+	public enum PacketId {
+		GLOBAL,
+		TRACK,
+		NOTE
+	}
+
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
-        int trackID;
-        PacketId id = dr.readEnum(PacketId.class);
-        switch (id) {
-            case GLOBAL:
-                int subId = dr.readByte();
-                if (subId == 0) {
-                    if (tracks.size() < maximumTracksPerModule) {
-                        new Track();
-                    }
-                }else if(subId == 1) {
-                    if (tracks.size() > 0) {
-                        tracks.remove(tracks.size() -1);
-                    }
-                }else if(subId == 2) {
-                    speedSetting++;
-                    if (speedSetting >= 7) {
-                        speedSetting = 0;
-                    }
-                }
-                break;
-            case TRACK:
-                trackID = dr.readByte();
-                int trackPacketID = dr.readByte();
-                if (trackID < tracks.size()) {
-                    Track track = tracks.get(trackID);
+		int trackID;
+		PacketId id = dr.readEnum(PacketId.class);
+		switch (id) {
+			case GLOBAL:
+				int subId = dr.readByte();
+				if (subId == 0) {
+					if (tracks.size() < maximumTracksPerModule) {
+						new Track();
+					}
+				}else if(subId == 1) {
+					if (tracks.size() > 0) {
+						tracks.remove(tracks.size() -1);
+					}
+				}else if(subId == 2) {
+					speedSetting++;
+					if (speedSetting >= 7) {
+						speedSetting = 0;
+					}
+				}
+				break;
+			case TRACK:
+				trackID = dr.readByte();
+				int trackPacketID = dr.readByte();
+				if (trackID < tracks.size()) {
+					Track track = tracks.get(trackID);
 
-                    if (trackPacketID == 0) {
-                        if (track.notes.size() < maximumNotesPerTrack) {
-                            new Note(track);
-                        }
-                    }else if(trackPacketID == 1){
-                        if (track.notes.size() > 0) {
-                            track.notes.remove(track.notes.size()-1);
-                        }
-                    }else if (trackPacketID == 2) {
-                        track.volume = (track.volume + 1) % 4;
-                    }
-                }
+					if (trackPacketID == 0) {
+						if (track.notes.size() < maximumNotesPerTrack) {
+							new Note(track);
+						}
+					}else if(trackPacketID == 1){
+						if (track.notes.size() > 0) {
+							track.notes.remove(track.notes.size()-1);
+						}
+					}else if (trackPacketID == 2) {
+						track.volume = (track.volume + 1) % 4;
+					}
+				}
 
-                break;
-            case NOTE:
-                trackID = dr.readByte();
-                int noteID = dr.readByte();
-                int instrumentInfo = dr.readByte();
+				break;
+			case NOTE:
+				trackID = dr.readByte();
+				int noteID = dr.readByte();
+				int instrumentInfo = dr.readByte();
 
 
-                if (trackID < tracks.size()) {
-                    Track track = tracks.get(trackID);
-                    if (noteID < track.notes.size()) {
-                        Note note = track.notes.get(noteID);
+				if (trackID < tracks.size()) {
+					Track track = tracks.get(trackID);
+					if (noteID < track.notes.size()) {
+						Note note = track.notes.get(noteID);
 
-                        if (instrumentInfo < 6) {
-                            note.instrumentId = instrumentInfo;
-                        }else if (instrumentInfo == 6){
-                            note.pitch+=1;
-                            if (note.pitch > 24) {
-                                note.pitch = 0;
-                            }
-                        }else{
-                            note.pitch-=1;
-                            if (note.pitch < 0) {
-                                note.pitch = 24;
-                            }
-                        }
-                    }
-                }
-                break;
-        }
+						if (instrumentInfo < 6) {
+							note.instrumentId = instrumentInfo;
+						}else if (instrumentInfo == 6){
+							note.pitch+=1;
+							if (note.pitch > 24) {
+								note.pitch = 0;
+							}
+						}else{
+							note.pitch-=1;
+							if (note.pitch < 0) {
+								note.pitch = 24;
+							}
+						}
+					}
+				}
+				break;
+		}
 	}
 
 
@@ -961,19 +965,19 @@ public class ModuleNote extends ModuleAttachment {
 		headerInfo |= (short)(speedSetting << MAXIMUM_TRACKS_PER_MODULE_BIT_COUNT);
 
 		tagCompound.setShort("Header", headerInfo);
-		
+
 		for (int i = 0; i < tracks.size();i++) {
 			Track track = tracks.get(i);
 			tagCompound.setShort("Track" + i, track.getInfo());
-			
+
 			for (int j = 0; j < track.notes.size();j++) {
 				Note note = track.notes.get(j);
 				tagCompound.setShort("Note" + i + ":" + j, note.getInfo());
 			}
 		}	
-	
+
 	}
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		short headerInfo = tagCompound.getShort("Header");
@@ -984,11 +988,11 @@ public class ModuleNote extends ModuleAttachment {
 			Track track = tracks.get(i);
 			for (int j = 0; j < track.notes.size(); j++) {
 				short noteInfo = tagCompound.getShort("Note" + i + ":" + j);
-				
+
 				receiveGuiData(1+(maximumNotesPerTrack+1)*i+1+j, noteInfo);
 			}
 		}
-		
+
 	}		
 
 }

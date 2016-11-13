@@ -15,7 +15,7 @@ public class TimeFlat extends BaseEffect {
 	protected int getSeconds() {
 		return ticks / 20;
 	}
-	
+
 	public int getTicks() {
 		return ticks;
 	}

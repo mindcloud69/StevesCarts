@@ -7,15 +7,15 @@ public class ModuleSolarBasic extends ModuleSolarTop {
 		super(vehicleBase);
 	}
 
-	
+
 	@Override
 	protected int getMaxCapacity(){
 		return 100000;
 	}
-	
+
 	@Override
 	protected int getGenSpeed() {
 		return 2;
 	}
-	
+
 }

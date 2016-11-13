@@ -2,15 +2,14 @@ package vswe.stevesvehicles.arcade.monopoly;
 
 import java.util.EnumSet;
 
-
 import org.lwjgl.opengl.GL11;
 
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
 public class Place {
-	
+
 	protected ArcadeMonopoly game;
-	
+
 	public Place(ArcadeMonopoly game) {
 		this.game = game;
 	}
@@ -18,12 +17,12 @@ public class Place {
 	protected int getTextureId() {
 		return -1;
 	}
-	
+
 	public void draw(GuiVehicle gui, EnumSet<PlaceState> states) {
 		int t;
 		int u;
 		int v;
-		
+
 		if (getTextureId() == -1) {
 			t = 1;
 			u = 0;
@@ -33,16 +32,16 @@ public class Place {
 			u = getTextureId() % 3;
 			v = (getTextureId() % 6) / 3;
 		}
-			
+
 
 		game.loadTexture(gui, t);
 
 		applyColorFilter(gui, states);
-				
+
 		game.getModule().drawImage(gui, 0, 0, ArcadeMonopoly.PLACE_WIDTH * u, ArcadeMonopoly.PLACE_HEIGHT * v, ArcadeMonopoly.PLACE_WIDTH, ArcadeMonopoly.PLACE_HEIGHT);	
 
 	}
-	
+
 	public void applyColorFilter(GuiVehicle gui, EnumSet<PlaceState> states) {
 		if (states.contains(PlaceState.SELECTED)) {
 			if (states.contains(PlaceState.HOVER)) {
@@ -60,9 +59,9 @@ public class Place {
 			GL11.glColor4f(0.9F, 0.9F, 1F, 1.0F);		
 		}		
 	}
-	
+
 	public void drawText(GuiVehicle gui, EnumSet<PlaceState> states) {
-		
+
 	}
 
 
@@ -70,10 +69,10 @@ public class Place {
 		final int SIZE = 24;
 		final int PADDING = 5;
 		final int MARGIN = 2;
-		
+
 		int allowedWidth = getAllowedWidth(area) - PADDING * 2;
 		int fullWidth = total * (SIZE + MARGIN) - MARGIN;
-		
+
 		int startX;
 		int offSet;
 		if (allowedWidth < fullWidth && total > 1) {
@@ -83,27 +82,27 @@ public class Place {
 			startX = PADDING + (allowedWidth - fullWidth) / 2;
 			offSet = SIZE + MARGIN;
 		}
-		
+
 		game.getModule().drawImage(gui,  startX + offSet * pos, getPieceYPosition(area), 256 - SIZE,  piece.getV() * SIZE, SIZE, SIZE);
 	}
-	
+
 	protected int getPieceYPosition(int area) {
 		return 70;
 	}
-	
+
 	protected int getAllowedWidth(int area) {
 		return ArcadeMonopoly.PLACE_WIDTH;
 	}
-	
-	
+
+
 	public void onPiecePass(Piece piece) {
 
 	}
-	
+
 	public boolean onPieceStop(Piece piece) {
 		return true;
 	}	
-	
+
 	public static enum PlaceState {
 		HOVER,
 		SELECTED,
@@ -122,6 +121,6 @@ public class Place {
 	public int getPieceAreaForPiece(Piece piece) {
 		return 0;
 	}
-	
-	
+
+
 }

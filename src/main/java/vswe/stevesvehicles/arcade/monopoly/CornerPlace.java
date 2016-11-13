@@ -7,12 +7,12 @@ import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 public class CornerPlace extends Place {
 
 	private int texture;
-	
+
 	public CornerPlace(ArcadeMonopoly game, int texture) {
 		super(game);
 		this.texture = texture;
 	}
-	
+
 	@Override
 	public void draw(GuiVehicle gui, EnumSet<PlaceState> states) {
 		game.loadTexture(gui, 2);

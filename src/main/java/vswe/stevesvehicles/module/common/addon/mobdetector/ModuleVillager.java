@@ -10,16 +10,18 @@ public class ModuleVillager extends ModuleEntityDetector {
 		super(vehicleBase);
 	}
 
+	@Override
 	public String getName() {
 		return LocalizationShooter.VILLAGER_TITLE.translate();
 	}
+	@Override
 	public boolean isValidTarget(Entity target) {
 		return
-		(
-			target instanceof EntityGolem
-			||
-			target instanceof EntityVillager
-		)
-		;
+				(
+						target instanceof EntityGolem
+						||
+						target instanceof EntityVillager
+						)
+				;
 	}
 }

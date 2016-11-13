@@ -1,4 +1,6 @@
 package vswe.stevesvehicles.module.cart.attachment;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -6,36 +8,34 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
+import vswe.stevesvehicles.container.slots.SlotBase;
+import vswe.stevesvehicles.container.slots.SlotTorch;
 import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
 import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartRails;
+import vswe.stevesvehicles.module.ISuppliesModule;
 import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.module.ISuppliesModule;
-import vswe.stevesvehicles.container.slots.SlotBase;
-import vswe.stevesvehicles.container.slots.SlotTorch;
-
-import java.util.List;
 
 public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 	public ModuleTorch(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-    @Override
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
-        simulationInfo.add(new SimulationInfoMultiBoolean(LocalizationAssembler.INFO_TORCHES, "torch", 3, true));
-    }
+	@Override
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+		simulationInfo.add(new SimulationInfoMultiBoolean(LocalizationAssembler.INFO_TORCHES, "torch", 3, true));
+	}
 
-    @Override
+	@Override
 	public boolean hasGui(){
-        return true;
-    }
+		return true;
+	}
 
 	@Override
 	public int guiWidth() {
@@ -49,7 +49,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui,getModuleName(), 8, 6, 0x404040);
+		drawString(gui,getModuleName(), 8, 6, 0x404040);
 	}
 
 	//lower numbers are prioritized
@@ -60,65 +60,65 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 
 	@Override
 	public boolean work() {
-        //get the next block
-        Vec3 next = getLastBlock();
-        //save the next block's coordinates for easy access
-        int x = (int) next.xCoord;
-        int y = (int) next.yCoord;
-        int z = (int) next.zCoord;
+		//get the next block
+		Vec3 next = getLastBlock();
+		//save the next block's coordinates for easy access
+		int x = (int) next.xCoord;
+		int y = (int) next.yCoord;
+		int z = (int) next.zCoord;
 
-        //if it's too dark, try to place torches
-        if (light <= lightLimit) {
-            //try to place it at both sides
-            for (int side = -1; side <= 1; side += 2) {
+		//if it's too dark, try to place torches
+		if (light <= lightLimit) {
+			//try to place it at both sides
+			for (int side = -1; side <= 1; side += 2) {
 
-                //calculate the x and z coordinates, this depends on which direction the cart is going
-                int xTorch = x + (getVehicle().z() != z ? side : 0);
-                int zTorch = z + (getVehicle().x() != x ? side : 0);
+				//calculate the x and z coordinates, this depends on which direction the cart is going
+				int xTorch = x + (getVehicle().z() != z ? side : 0);
+				int zTorch = z + (getVehicle().x() != x ? side : 0);
 
-                //now it's time to find a proper y value
-                for (int level = 2; level >= -2; level--) {
+				//now it's time to find a proper y value
+				for (int level = 2; level >= -2; level--) {
 
-                    //check if this coordinate is a valid place to place a torch
-                    if (getVehicle().getWorld().isAirBlock(xTorch, y + level, zTorch)  && Blocks.torch.canPlaceBlockAt(getVehicle().getWorld(), xTorch, y + level, zTorch)) {
+					//check if this coordinate is a valid place to place a torch
+					if (getVehicle().getWorld().isAirBlock(xTorch, y + level, zTorch)  && Blocks.torch.canPlaceBlockAt(getVehicle().getWorld(), xTorch, y + level, zTorch)) {
 
-                        //check if there's any torches to place
-                        for (int i = 0; i < getInventorySize(); i++) {
+						//check if there's any torches to place
+						for (int i = 0; i < getInventorySize(); i++) {
 
-                            //check if the slot contains torches
-                            if (getStack(i) != null) {
+							//check if the slot contains torches
+							if (getStack(i) != null) {
 
-                                if (Block.getBlockFromItem(getStack(i).getItem()) == Blocks.torch) {
-                                    if (doPreWork()) {
+								if (Block.getBlockFromItem(getStack(i).getItem()) == Blocks.torch) {
+									if (doPreWork()) {
 										startWorking(3);
 										return true;
 									}
 
 									//if so place it and remove one torch from the cart's inventory
-                                    getVehicle().getWorld().setBlock(xTorch, y + level, zTorch, Blocks.torch);
-        							if (!getVehicle().hasCreativeSupplies()) {
-	                                    getStack(i).stackSize--;
-	
-	                                    if (getStack(i).stackSize == 0) {
-	                                        setStack(i,null);
-	                                    }
-	
+									getVehicle().getWorld().setBlock(xTorch, y + level, zTorch, Blocks.torch);
+									if (!getVehicle().hasCreativeSupplies()) {
+										getStack(i).stackSize--;
+
+										if (getStack(i).stackSize == 0) {
+											setStack(i,null);
+										}
+
 										this.onInventoryChanged();
-        							}
-                                    break;
-                                }
-                            }
-                        }
+									}
+									break;
+								}
+							}
+						}
 
-                        break;
+						break;
 
-                    //if it isn't valid but there's already a torch there this side is already done. This shouldn't really happen since then it wouldn't be dark enough in the first place.
-                    } else if (getVehicle().getWorld().getBlock(xTorch, y + level, zTorch) == Blocks.torch) {
-                        break;
-                    }
-                }
-            }
-        }
+						//if it isn't valid but there's already a torch there this side is already done. This shouldn't really happen since then it wouldn't be dark enough in the first place.
+					} else if (getVehicle().getWorld().getBlock(xTorch, y + level, zTorch) == Blocks.torch) {
+						break;
+					}
+				}
+			}
+		}
 		stopWorking();
 		return false;
 	}
@@ -126,7 +126,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 	private int light;
 	private int lightLimit = 8;
 
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/torch.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/torch.png");
 
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
@@ -136,9 +136,9 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 		if (light == 15) {
 			barLength--;
 		}
-		
-		
-		
+
+
+
 		int srcX = 1;
 		if (inRect(x,y, boxRect)) {
 			srcX += boxRect[2] + 1;
@@ -148,14 +148,14 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 		drawImage(gui, 12+1, guiHeight()-10 + 1, 1, 11, barLength, 7);
 		drawImage(gui, 12 + 3 * lightLimit,guiHeight() - 10, 1, 19, 1, 9);
 	}
-	
+
 	private final int[] boxRect = new int[] {12, guiHeight() - 10, 46, 9};
 
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
 		drawStringOnMouseOver(gui, LocalizationCartRails.TORCH.translate(String.valueOf(lightLimit), String.valueOf(light)), x,y, boxRect);
 	}	
-	
+
 	@Override
 	public int guiHeight() {
 		return super.guiHeight() + 10;
@@ -169,8 +169,8 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 	protected void checkGuiData(Object[] info) {
 		short data = (short)(light & 15);
 		data |= (short)((lightLimit & 15) << 4);
-		
-		
+
+
 		updateGuiData(info, 0, data);
 	}
 	@Override
@@ -184,16 +184,16 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
-        lightLimit = dr.readByte();
-        if (lightLimit < 0) {
-            lightLimit = 0;
-        }else if (lightLimit > 15) {
-            lightLimit = 15;
-        }
+		lightLimit = dr.readByte();
+		if (lightLimit < 0) {
+			lightLimit = 0;
+		}else if (lightLimit > 15) {
+			lightLimit = 15;
+		}
 	}
-	
+
 	boolean markerMoving = false;
-	
+
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (button == 0) {
@@ -203,18 +203,18 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 			}
 		}
 	}	
-	
+
 	@Override
 	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {
 		if(markerMoving){
 			generatePacket(x);
 		}
 
-        if (button != -1) {
-            markerMoving = false;
-        }
+		if (button != -1) {
+			markerMoving = false;
+		}
 	}	
-	
+
 	private void generatePacket(int x) {
 		int xInBox = x - boxRect[0];
 		int val = xInBox / 3;
@@ -223,11 +223,11 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 		}else if (val > 15) {
 			val = 15;
 		}
-        DataWriter dw = getDataWriter();
-        dw.writeByte(val);
-        sendPacketToServer(dw);
+		DataWriter dw = getDataWriter();
+		dw.writeByte(val);
+		sendPacketToServer(dw);
 	}
-	
+
 
 	@Override
 	public void update() {
@@ -255,7 +255,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 		if (getVehicle().getWorld().isRemote) {
 			return;
 		}
-	
+
 		int val = 0;
 
 		for (int i = 0; i < 3; i++) {
@@ -273,16 +273,16 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule  {
 		}
 	}
 
-	
+
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setByte("lightLimit", (byte)lightLimit);
 	}	
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		lightLimit = tagCompound.getByte("lightLimit");
-	
+
 		calculateTorches();
 	}	
 

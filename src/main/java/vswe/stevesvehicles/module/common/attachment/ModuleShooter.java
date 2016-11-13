@@ -12,23 +12,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
-import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
-import vswe.stevesvehicles.localization.entry.module.LocalizationShooter;
-import vswe.stevesvehicles.module.cart.attachment.ModuleAttachment;
-import vswe.stevesvehicles.network.DataReader;
-import vswe.stevesvehicles.network.DataWriter;
-import vswe.stevesvehicles.module.common.addon.enchanter.EnchantmentInfo;
-import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.module.ISuppliesModule;
-import vswe.stevesvehicles.module.ModuleBase;
-import vswe.stevesvehicles.module.common.addon.enchanter.ModuleEnchants;
-import vswe.stevesvehicles.module.common.addon.projectile.ModuleProjectile;
 import vswe.stevesvehicles.container.slots.SlotArrow;
 import vswe.stevesvehicles.container.slots.SlotBase;
+import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
+import vswe.stevesvehicles.localization.entry.module.LocalizationShooter;
+import vswe.stevesvehicles.module.ISuppliesModule;
+import vswe.stevesvehicles.module.ModuleBase;
+import vswe.stevesvehicles.module.cart.attachment.ModuleAttachment;
+import vswe.stevesvehicles.module.common.addon.enchanter.EnchantmentInfo;
+import vswe.stevesvehicles.module.common.addon.enchanter.ModuleEnchants;
+import vswe.stevesvehicles.module.common.addon.projectile.ModuleProjectile;
+import vswe.stevesvehicles.network.DataReader;
+import vswe.stevesvehicles.network.DataWriter;
+import vswe.stevesvehicles.vehicle.VehicleBase;
 
 
 //TODO this module has so many numbers that should be replaced with constants
@@ -36,25 +36,25 @@ import vswe.stevesvehicles.container.slots.SlotBase;
 public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 	public ModuleShooter(VehicleBase vehicleBase) {
 		super(vehicleBase);
-		pipes = new ArrayList<Integer>();
+		pipes = new ArrayList<>();
 		generatePipes(pipes);
 		pipeRotations = new float[pipes.size()];
 		generateInterfaceRegions();
 	}
 
-    @Override
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
-        simulationInfo.add(new SimulationInfoMultiBoolean(LocalizationAssembler.INFO_BARRELS, "barrels", 4));
-        simulationInfo.add(new SimulationInfoMultiBoolean(LocalizationAssembler.INFO_BARRELS, "barrels", 4));
-    }
+	@Override
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+		simulationInfo.add(new SimulationInfoMultiBoolean(LocalizationAssembler.INFO_BARRELS, "barrels", 4));
+		simulationInfo.add(new SimulationInfoMultiBoolean(LocalizationAssembler.INFO_BARRELS, "barrels", 4));
+	}
 
-    private ArrayList<ModuleProjectile> projectiles;
+	private ArrayList<ModuleProjectile> projectiles;
 	private ModuleEnchants enchanter;
 	@Override
 	public void init() {
 		super.init();
-		projectiles = new ArrayList<ModuleProjectile>();
-		
+		projectiles = new ArrayList<>();
+
 		for (ModuleBase module : getVehicle().getModules()) {
 			if (module instanceof ModuleProjectile) {
 				projectiles.add((ModuleProjectile)module);
@@ -64,9 +64,9 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 			}
 		}
 	}		
-	
 
-	
+
+
 	@Override
 	protected int getInventoryHeight() {
 		return 2;
@@ -84,16 +84,16 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, LocalizationShooter.SHOOTER_TITLE.translate(), 8, 6, 0x404040);
+		drawString(gui, LocalizationShooter.SHOOTER_TITLE.translate(), 8, 6, 0x404040);
 
 		int delay = AInterval[arrowInterval];
-        double freq = 20D / (delay+1);
+		double freq = 20D / (delay+1);
 
-        String s = String.valueOf((((int)(freq * 1000)) / 1000D));
-        drawString(gui, LocalizationShooter.SHOOTER_FREQUENCY.translate() + ":", intervalDragArea[0] + intervalDragArea[2] + 5, 15, 0x404040);
+		String s = String.valueOf((((int)(freq * 1000)) / 1000D));
+		drawString(gui, LocalizationShooter.SHOOTER_FREQUENCY.translate() + ":", intervalDragArea[0] + intervalDragArea[2] + 5, 15, 0x404040);
 		drawString(gui,s, intervalDragArea[0] + intervalDragArea[2] + 5, 23, 0x404040);
-        s =  String.valueOf((delay / 20D) +LocalizationShooter.SHOOTER_SECONDS.translate());
-        drawString(gui, LocalizationShooter.SHOOTER_DELAY.translate() + ":", intervalDragArea[0] + intervalDragArea[2] + 5, 35, 0x404040);
+		s =  String.valueOf((delay / 20D) +LocalizationShooter.SHOOTER_SECONDS.translate());
+		drawString(gui, LocalizationShooter.SHOOTER_DELAY.translate() + ":", intervalDragArea[0] + intervalDragArea[2] + 5, 35, 0x404040);
 		drawString(gui,s, intervalDragArea[0] + intervalDragArea[2] + 5, 43, 0x404040);
 	}
 
@@ -125,7 +125,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 		intervalSelection = new int[] {intervalSelectionX,intervalSelectionY,14,53};
 		intervalDragArea = new int[] {intervalSelectionX-4,intervalSelectionY,40,53};	
 	}
-	
+
 	private int pipeSelectionX;
 	private int pipeSelectionY;
 
@@ -136,15 +136,15 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 	private int[] intervalDragArea;
 
 
-    private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/shooter.png");
-	
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/gui/shooter.png");
+
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		ResourceHelper.bindResource(TEXTURE);
 
 		drawImage(gui, pipeSelectionX + (26-8) / 2, pipeSelectionY + (26-8) / 2 - 1, 1, 111, 8, 9);
 
-        for (int i = 0; i < pipes.size(); i++) {
+		for (int i = 0; i < pipes.size(); i++) {
 			int pipe = pipes.get(i);
 			int pipeX = pipe % 3;
 			int pipeY = pipe / 3;
@@ -162,29 +162,29 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 			}
 
 			drawImage(gui,getRectForPipe(pipe), srcX,srcY);
-        }
+		}
 
 		drawImage(gui, intervalSelection, 45, 55);
 
 		int size = (int)((arrowInterval / (float)AInterval.length) * 4);
 
-	    int targetX = intervalSelectionX + 7;
-        int targetY = intervalSelectionY +  arrowInterval * 2;
-        int srcX = 1;
-        int srcY = 55 + size * 14;
+		int targetX = intervalSelectionX + 7;
+		int targetY = intervalSelectionY +  arrowInterval * 2;
+		int srcX = 1;
+		int srcY = 55 + size * 14;
 
-        drawImage(gui,targetX,targetY, srcX, srcY, 25, 13);
+		drawImage(gui,targetX,targetY, srcX, srcY, 25, 13);
 
 		srcX += 26;
 		targetX += 7;
 
-        int scaledTick = 41 * arrowTick / AInterval[arrowInterval];
-        drawImage(gui,targetX, targetY + 1, srcX, srcY + 1, 1, 11);
-        drawImage(gui,targetX + 1, targetY + 2, srcX + 1, srcY + 2, 1, 9);
-        drawImage(gui,targetX + 1, targetY + 1, srcX + 1, srcY + 1, Math.min(scaledTick, 15), 2);
-        drawImage(gui,targetX + 15, targetY + 1, srcX + 15, srcY + 1, 2, Math.max(Math.min(scaledTick, 25) - 15, 0));
-        int len = Math.max(Math.min(scaledTick, 41) - 25, 0);
-        drawImage(gui,targetX + 1 + (16 - len), targetY + 10, srcX + 1 + (16 - len), srcY + 10, len, 2);
+		int scaledTick = 41 * arrowTick / AInterval[arrowInterval];
+		drawImage(gui,targetX, targetY + 1, srcX, srcY + 1, 1, 11);
+		drawImage(gui,targetX + 1, targetY + 2, srcX + 1, srcY + 2, 1, 9);
+		drawImage(gui,targetX + 1, targetY + 1, srcX + 1, srcY + 1, Math.min(scaledTick, 15), 2);
+		drawImage(gui,targetX + 15, targetY + 1, srcX + 15, srcY + 1, 2, Math.max(Math.min(scaledTick, 25) - 15, 0));
+		int len = Math.max(Math.min(scaledTick, 41) - 25, 0);
+		drawImage(gui,targetX + 1 + (16 - len), targetY + 10, srcX + 1 + (16 - len), srcY + 10, len, 2);
 	}
 
 	private int[] getRectForPipe(int pipe) {
@@ -199,10 +199,10 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 			}else{
 				for (int i = 0; i < pipes.size(); i++) {
 					if (inRect(x,y, getRectForPipe(pipes.get(i)))) {
-                        DataWriter dw = getDataWriter();
-                        dw.writeBoolean(true);
-                        dw.writeByte(i);
-                        sendPacketToServer(dw);
+						DataWriter dw = getDataWriter();
+						dw.writeBoolean(true);
+						dw.writeByte(i);
+						sendPacketToServer(dw);
 						break;
 					}
 				}
@@ -213,21 +213,21 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 	private int dragState = -1;
 	@Override
 	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {
-	    if (button != -1) {
-            dragState = -1;
-        }else if (dragState != -1) {
-            int interval = ((y + getVehicle().getRealScrollY()) - intervalSelectionY - dragState) / 2;
+		if (button != -1) {
+			dragState = -1;
+		}else if (dragState != -1) {
+			int interval = ((y + getVehicle().getRealScrollY()) - intervalSelectionY - dragState) / 2;
 
-            if (interval != arrowInterval)
-            {
+			if (interval != arrowInterval)
+			{
 				if (interval >= 0 && interval < AInterval.length) {
-                    DataWriter dw = getDataWriter();
-                    dw.writeBoolean(false);
-                    dw.writeByte(interval);
-                    sendPacketToServer(dw);
+					DataWriter dw = getDataWriter();
+					dw.writeBoolean(false);
+					dw.writeByte(interval);
+					sendPacketToServer(dw);
 				}
-            }
-        }
+			}
+		}
 	}
 
 	@Override
@@ -264,7 +264,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {
-            arrowTick = data;
+			arrowTick = data;
 		}else if (id == 1) {
 			arrowInterval = data;
 		}
@@ -294,34 +294,36 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 	private final float[] pipeRotations;
 	protected void generatePipes(ArrayList<Integer> list) {
 		for (int i = 0; i < 9; i++) {
-			if (i == 4) continue;
+			if (i == 4) {
+				continue;
+			}
 			list.add(i);
 		}
 	}
 
-	
+
 	protected boolean hasProjectileItem() {
 		return getProjectileItem(false) != null;
 	}
 	//if flag is true, consume one projectile if found
 	protected ItemStack getProjectileItem(boolean flag) {
-		
+
 		if (flag && enchanter != null && enchanter.useInfinity()) {
 			flag = false;
 		}
-		
+
 		for (int i = 0; i < getInventorySize(); i++) {
 			if (getStack(i) != null) {
 				if (isValidProjectileItem(getStack(i))) {
 					ItemStack projectile =getStack(i).copy();
 					projectile.stackSize = 1;
-				
-					if (flag && !getVehicle().hasCreativeSupplies()) {
-                        getStack(i).stackSize--;
 
-                        if (getStack(i).stackSize == 0) {
-                            setStack(i,null);
-                        }
+					if (flag && !getVehicle().hasCreativeSupplies()) {
+						getStack(i).stackSize--;
+
+						if (getStack(i).stackSize == 0) {
+							setStack(i,null);
+						}
 					}
 
 					return projectile;
@@ -333,21 +335,21 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 	}
 
 	@SuppressWarnings("SuspiciousNameCombination")
-    protected void shoot() {
+	protected void shoot() {
 		setTimeToNext(AInterval[arrowInterval]);
 
 
-        double speedX = getVehicle().getEntity().motionX;
-        double speedZ = getVehicle().getEntity().motionZ;
+		double speedX = getVehicle().getEntity().motionX;
+		double speedZ = getVehicle().getEntity().motionZ;
 
-        boolean movingX = Math.abs(speedX) < 0.005;
-        boolean movingZ = Math.abs(speedZ) < 0.005;
+		boolean movingX = Math.abs(speedX) < 0.005;
+		boolean movingZ = Math.abs(speedZ) < 0.005;
 
 		if ((movingX && movingZ) || (!movingX && !movingZ) || !getVehicle().hasFuel()) {
 			return;
 		}
 
-        boolean hasShot = false;
+		boolean hasShot = false;
 
 		for (int i = 0; i < pipes.size(); i++) {
 			if (!isPipeActive(i)){
@@ -391,30 +393,30 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 		if (hasShot){
 			getVehicle().getWorld().playAuxSFX(1002, getVehicle().x(), getVehicle().y(), getVehicle().z(), 0);
 		}
-    }
-	
+	}
+
 	protected void damageEnchant() {
 		if (enchanter != null) {
 			enchanter.damageEnchant(EnchantmentInfo.Enchantment_Type.SHOOTER, 1);
 		}
 	}
-	
+
 	protected void setProjectileOnFire(Entity projectile) {
 		if (enchanter != null && enchanter.useFlame()) {
 			projectile.setFire(100);
 		}
 	}
-	
+
 	protected void setProjectileDamage(Entity projectile) {
 		if (enchanter != null && projectile instanceof EntityArrow) {
 			int power = enchanter.getPowerLevel();
 			if (power > 0) {
 				EntityArrow arrow = (EntityArrow)projectile;
-				arrow.setDamage((arrow).getDamage() + (double)power * 0.5D + 0.5D);	
+				arrow.setDamage((arrow).getDamage() + power * 0.5D + 0.5D);	
 			}
 		}	
 	}
-	          
+
 	protected void setProjectileKnockBack(Entity projectile) {
 		if (enchanter != null && projectile instanceof EntityArrow) {
 			int punch = enchanter.getPunchLevel();
@@ -424,16 +426,16 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 			}			
 		}
 	}
-	
-	                                                    
-	
+
+
+
 	protected void setHeading(Entity projectile, double motionX, double motionY, double motionZ, float motionMultiplier, float motionNoise) {
 		if (projectile instanceof IProjectile) {
 			((IProjectile)projectile).setThrowableHeading(motionX,motionY,motionZ,motionMultiplier,motionNoise);
 		}else if(projectile instanceof EntityFireball) {
 			//Not a projective :S
 			EntityFireball fireball = (EntityFireball)projectile;
-			
+
 			double totalMotion = (double)MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
 			fireball.accelerationX = motionX / totalMotion * 0.1D;
 			fireball.accelerationY = motionY / totalMotion * 0.1D;
@@ -449,7 +451,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 		}
 		return new EntityArrow(getVehicle().getWorld());
 	}
-	
+
 	public boolean isValidProjectileItem(ItemStack item) {
 		for (ModuleProjectile module : projectiles) {
 			if (module.isValidProjectile(item)) {
@@ -458,10 +460,10 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 		}	
 		return item.getItem() == Items.arrow;
 	}
-	
+
 	private final int[] AInterval = {1, 3, 5, 7, 10, 13, 17, 21, 27, 35, 44, 55, 70, 95, 130, 175, 220, 275, 340, 420, 520, 650};
-    private int arrowTick;
-    private int arrowInterval = 5;
+	private int arrowTick;
+	private int arrowInterval = 5;
 
 	protected void setTimeToNext(int val) {
 		arrowTick = val;
@@ -522,32 +524,32 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 		return pipeRotations[id];
 	}
 
-	
+
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setByte("Pipes", getActivePipes());
 		tagCompound.setByte("Interval", (byte)arrowInterval);
 		saveTick(tagCompound);
 	}
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setActivePipes(tagCompound.getByte("Pipes"));
 		arrowInterval = tagCompound.getByte("Interval");
-        loadTick(tagCompound);
+		loadTick(tagCompound);
 	}	
-	
+
 	protected void saveTick(NBTTagCompound tagCompound) {
 		tagCompound.setByte("Tick", (byte)arrowTick);
 	}
-	
+
 	protected void loadTick(NBTTagCompound tagCompound) {
 		arrowTick = tagCompound.getByte("Tick");
 	}
-	
+
 	@Override
 	public boolean haveSupplies() {
 		return hasProjectileItem();
 	}
-	
+
 }

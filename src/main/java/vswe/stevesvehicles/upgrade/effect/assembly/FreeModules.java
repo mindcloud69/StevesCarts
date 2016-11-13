@@ -5,7 +5,7 @@ import vswe.stevesvehicles.upgrade.effect.BaseEffect;
 
 
 public class FreeModules extends BaseEffect {
-    public FreeModules(TileEntityUpgrade upgrade) {
-        super(upgrade);
-    }
+	public FreeModules(TileEntityUpgrade upgrade) {
+		super(upgrade);
+	}
 }

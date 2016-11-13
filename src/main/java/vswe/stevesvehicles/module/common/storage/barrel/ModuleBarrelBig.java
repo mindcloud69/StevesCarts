@@ -4,12 +4,12 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 
 public class ModuleBarrelBig extends ModuleBarrel {
-    public ModuleBarrelBig(VehicleBase vehicleBase) {
-        super(vehicleBase);
-    }
+	public ModuleBarrelBig(VehicleBase vehicleBase) {
+		super(vehicleBase);
+	}
 
-    @Override
-    protected int getStackCount() {
-        return 1024;
-    }
+	@Override
+	protected int getStackCount() {
+		return 1024;
+	}
 }

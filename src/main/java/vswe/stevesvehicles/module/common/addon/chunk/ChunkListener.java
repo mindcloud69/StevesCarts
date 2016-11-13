@@ -5,9 +5,9 @@ import net.minecraftforge.event.entity.EntityEvent;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public class ChunkListener {
-    public ChunkListener() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	public ChunkListener() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
 	@SubscribeEvent
 	public void invoke(EntityEvent.EnteringChunk event) {	

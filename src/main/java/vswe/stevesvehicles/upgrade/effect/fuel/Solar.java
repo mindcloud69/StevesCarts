@@ -4,11 +4,12 @@ import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 
 public class Solar extends RechargerBase {
 
-    public Solar(TileEntityUpgrade upgrade) {
-        super(upgrade);
-    }
+	public Solar(TileEntityUpgrade upgrade) {
+		super(upgrade);
+	}
 
-    protected int getAmount() {
+	@Override
+	protected int getAmount() {
 		if (upgrade.yCoord > upgrade.getMaster().yCoord) {
 			return 400;
 		}else if(upgrade.yCoord < upgrade.getMaster().yCoord) {
@@ -17,7 +18,7 @@ public class Solar extends RechargerBase {
 			return 240;
 		}
 	}
-	
+
 	@Override
 	protected boolean canGenerate() {
 		return upgrade.getWorldObj().getBlockLightValue(upgrade.xCoord, upgrade.yCoord, upgrade.zCoord) == 15 &&

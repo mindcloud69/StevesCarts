@@ -12,9 +12,9 @@ public class StreetGroup extends PropertyGroup {
 	public float[] getColor() {
 		return color;
 	}
-	
+
 	public int getStructureCost() {
 		return houseCost;
 	}
-	
+
 }

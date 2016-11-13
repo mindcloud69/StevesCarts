@@ -8,10 +8,10 @@ public class ModuleDrillHardened extends ModuleDrill {
 	}
 
 	//returns how far the drill should drill above itself, i.e. how tall is the  hole
-    @Override
+	@Override
 	protected int blocksOnTop() {
-        return 5;
-    }
+		return 5;
+	}
 
 	//returns how far the drill should drill on each side
 	@Override

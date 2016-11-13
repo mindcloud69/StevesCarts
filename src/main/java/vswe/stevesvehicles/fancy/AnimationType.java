@@ -5,18 +5,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public enum AnimationType {
-    STILL("Still"),
-    ANIMATION("Loop"),
-    PAUSE("Pause"),
-    RANDOM("Random");
+	STILL("Still"),
+	ANIMATION("Loop"),
+	PAUSE("Pause"),
+	RANDOM("Random");
 
-    private String code;
+	private String code;
 
-    AnimationType(String code) {
-        this.code = code;
-    }
+	AnimationType(String code) {
+		this.code = code;
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 }

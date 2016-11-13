@@ -7,8 +7,8 @@ public class AnimationRigPart {
 	private float speed;
 	private AnimationRigPart down;
 	private AnimationRigPart up;
-	
-			
+
+
 	public AnimationRigPart(AnimationRig rig, float min, float max, float speed) {
 		this.min = min;
 		this.max = max;
@@ -16,35 +16,35 @@ public class AnimationRigPart {
 
 
 		this.val = this.min;
-		
-		
+
+
 		rig.addVal(this);
 	}
-	
+
 	public void setUp(AnimationRigPart up) {
 		this.up = up;
 	}
-	
+
 	public void setDown(AnimationRigPart down) {
 		this.down = down;
 	}	
-	
+
 	public void setUpAndDown(AnimationRigPart up) {
 		this.setUp(up);
 		up.setDown(this);
 	}
-	
+
 	public float getVal() {
 		return this.val;
 	}
-	
+
 	public boolean update(boolean goDown) {
 		float target = goDown ? min : max;
-		
+
 		if (target == this.val) {
 			return false;
 		}
-	
+
 		if (val < target) {
 			val += speed;
 			if (val > target) {
@@ -56,7 +56,7 @@ public class AnimationRigPart {
 				val = target;
 			}			
 		}
-		
+
 		if (goDown) {
 			if (down != null) {
 				down.update(true);

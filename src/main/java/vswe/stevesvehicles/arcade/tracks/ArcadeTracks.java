@@ -2,84 +2,84 @@ package vswe.stevesvehicles.arcade.tracks;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.arcade.ArcadeGame;
+import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.arcade.LocalizationTrack;
+import vswe.stevesvehicles.module.common.attachment.ModuleArcade;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.module.common.attachment.ModuleArcade;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ArcadeTracks extends ArcadeGame {
 
 	public ArcadeTracks(ModuleArcade module) {
 		super(module, LocalizationTrack.TITLE);
-		
-		carts = new ArrayList<Cart>();
-		
+
+		carts = new ArrayList<>();
+
 		carts.add(player = new Cart(0) {
 			@Override
 			public void onItemPickUp() {
 				completeLevel();	
 				playSound("win", 1, 1);
 			}
-			
+
 			@Override
 			public void onCrash() {				
 				if (isPlayingFinalLevel() && currentStory < unlockedLevels.length - 1 && unlockedLevels[currentStory + 1] == -1) {
-                    sendPacket(currentStory + 1, 0);
+					sendPacket(currentStory + 1, 0);
 				}
 			}
 		});
-		
-		
+
+
 		carts.add(enderman = new Cart(1));
-		lists = new ArrayList<ScrollableList>();
+		lists = new ArrayList<>();
 		lists.add(storyList = new ScrollableList(this, 5, 40) {
 			@Override
 			public boolean isVisible() {
 				return currentMenuTab == 0 && !storySelected;
 			}					
 		});
-		
-		
+
+
 		lists.add(mapList = new ScrollableList(this, 5, 40) {
 			@Override
 			public boolean isVisible() {
 				return currentMenuTab == 0 && storySelected;
 			}					
 		});	
-		
+
 		lists.add(userList = new ScrollableList(this, 5, 40) {
 			@Override
 			public boolean isVisible() {
 				return currentMenuTab == 1;
 			}					
 		});			
-		
-		
+
+
 		unlockedLevels = new int[TrackStory.stories.size()];
 		unlockedLevels[0] = 0;
 		for (int i = 1; i < unlockedLevels.length; i++) {
 			unlockedLevels[i] = -1;
 		}
-		
+
 		loadStories();
 		if (getModule().getVehicle().getWorld().isRemote) {
 			loadUserMaps();
 		}
 	}
-	
+
 	private void loadStories() {
 		storyList.clearList();
-		
+
 		for (int i = 0; i < TrackStory.stories.size(); i++) {
 			if (unlockedLevels[i] > -1) {
 				storyList.add(TrackStory.stories.get(i).getName());
@@ -88,7 +88,7 @@ public class ArcadeTracks extends ArcadeGame {
 			}
 		}
 	}
-	
+
 	private void loadMaps() {
 		int story = storyList.getSelectedIndex();
 		if (story != -1) {
@@ -103,14 +103,14 @@ public class ArcadeTracks extends ArcadeGame {
 			}	
 		}
 	}
-	
-	
+
+
 	@SideOnly(Side.CLIENT)
 	private void loadUserMaps() {	
 		userList.clearList();
-		
+
 		userMaps = TrackLevel.loadMapsFromFolder();
-		
+
 		if (StevesVehicles.arcadeDevOperator) {
 			for (int i = 0; i < TrackStory.stories.size(); i++) {
 				for (int j = 0; j < TrackStory.stories.get(i).getLevels().size(); j++) {
@@ -119,22 +119,22 @@ public class ArcadeTracks extends ArcadeGame {
 			}	
 		}
 
-        for (TrackLevel userMap : userMaps) {
-            userList.add(userMap.getName());
-        }
+		for (TrackLevel userMap : userMaps) {
+			userList.add(userMap.getName());
+		}
 	}
-	
+
 	private void loadMap(int story, int level) {
 		currentStory = story;
 		currentLevel = level;		
 		loadMap(TrackStory.stories.get(story).getLevels().get(level));
 	}
-	
+
 	private void loadMap(TrackLevel map) {
 		isUsingEditor = false;
 		trackMap = new Track[27][10];
-		tracks = new ArrayList<Track>();		
-		
+		tracks = new ArrayList<>();		
+
 		for (Track track : map.getTracks()) {
 			Track newTrack = track.copy();
 			tracks.add(newTrack);
@@ -142,7 +142,7 @@ public class ArcadeTracks extends ArcadeGame {
 				trackMap[newTrack.getX()][newTrack.getY()] = newTrack;
 			}
 		}	
-		
+
 		hoveringTrack = null;
 		editorTrack = null;
 		editorDetectorTrack = null;
@@ -155,8 +155,8 @@ public class ArcadeTracks extends ArcadeGame {
 		itemY = currentMap.getItemY();		
 		resetPosition();		
 	}
-	
-	
+
+
 	private void resetPosition() {
 		tick = 0;
 		player.setX(playerStartX);
@@ -165,17 +165,17 @@ public class ArcadeTracks extends ArcadeGame {
 		player.setDirection(TrackOrientation.Direction.STILL);
 		enderman.setAlive(false);
 	}
-	
-	
+
+
 	private TrackLevel currentMap;
-	
+
 	private boolean isMenuOpen = true;
 	private boolean isRunning = false;
-	
+
 	private int currentStory = -1;
 	private int currentLevel = -1;
 	private int[] unlockedLevels;
-	
+
 	ArrayList<Cart> carts;
 	private Cart player;
 	private Cart enderman;
@@ -186,13 +186,13 @@ public class ArcadeTracks extends ArcadeGame {
 	private int itemX;
 	private int itemY;
 	private boolean isItemTaken;
-	
+
 	private ArrayList<Track> tracks;
 	private Track[][] trackMap;
-	
-	
+
+
 	private int tick;
-	
+
 	private int currentMenuTab = 0;
 	private ArrayList<ScrollableList> lists;
 	private boolean storySelected;
@@ -205,34 +205,34 @@ public class ArcadeTracks extends ArcadeGame {
 	private boolean failedToSave;
 	private String saveName = "";
 	private String lastSavedName = "";
-	
 
-	
+
+
 	public Track[][] getTrackMap() {
 		return trackMap;
 	}
-	
-	
+
+
 	public Cart getEnderman() {
 		return enderman;
 	}
-	
+
 	private boolean isPlayingFinalLevel() {
 		return isPlayingNormalLevel() && currentLevel == TrackStory.stories.get(currentStory).getLevels().size() - 1;
 	}
-	
+
 	private boolean isUsingEditor() {
 		return isUsingEditor;
 	}	
-	
+
 	private boolean isPlayingUserLevel() {
 		return currentStory == -1;
 	}
-	
+
 	private boolean isPlayingNormalLevel() {
 		return !isUsingEditor() && !isPlayingUserLevel();
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
@@ -241,14 +241,14 @@ public class ArcadeTracks extends ArcadeGame {
 				for (Cart cart : carts) {
 					cart.move(this);
 				}
-				
+
 				tick = 0;
 			}else{
 				tick++;
 			}
 		}
 	}
-	
+
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
@@ -260,15 +260,15 @@ public class ArcadeTracks extends ArcadeGame {
 				getModule().drawString(gui, LocalizationTrack.SAVE_MESSAGE.translate(), menu[0] + 3, menu[1] + 3, 0x404040);
 			}
 			getModule().drawString(gui, saveName + (saveName.length() < 15 && getModule().getVehicle().getWorld().getWorldTime() % 20 < 10 ? "|" : ""), menu[0] + 5, menu[1] + 16, 0xFFFFFF);
-			
+
 		}else if (isMenuOpen) {
 			for (ScrollableList list : lists) {
 				list.drawForeground(gui);
 			}
-			
+
 			if (currentMenuTab == 0 || currentMenuTab == 1) {
 				int[] menu = getMenuArea();
-				
+
 				String str;
 				if (currentMenuTab == 1) {
 					str = LocalizationTrack.USER_MAPS.translate();
@@ -289,7 +289,7 @@ public class ArcadeTracks extends ArcadeGame {
 					getModule().drawSplitString(gui, message.getMessage(), LEFT_MARGIN + 4 + message.getX() * 16, TOP_MARGIN + 4 + message.getY() * 16, message.getW() * 16, 0x404040);
 				}
 			}
-			
+
 			if (isUsingEditor()) {
 				getModule().drawString(gui, "1-5 - " + LocalizationTrack.TRACK_SHAPE.translate(), 10, 180, 0x404040);
 				getModule().drawString(gui, "R - " + LocalizationTrack.TRACK_ROTATE.translate(), 10, 190, 0x404040);
@@ -298,7 +298,7 @@ public class ArcadeTracks extends ArcadeGame {
 				getModule().drawString(gui, "T - " + LocalizationTrack.TRACK_TYPE.translate(), 10, 220, 0x404040);
 				getModule().drawString(gui, "D - " + LocalizationTrack.TRACK_DELETE.translate(), 10, 230, 0x404040);
 				getModule().drawString(gui, "C - " + LocalizationTrack.TRACK_COPY.translate(), 10, 240, 0x404040);
-				
+
 				getModule().drawString(gui, "S - " + LocalizationTrack.MOVE_STEVE.translate(), 330, 180, 0x404040);
 				getModule().drawString(gui, "X - " + LocalizationTrack.MOVE_MAP.translate(), 330, 190, 0x404040);
 				getModule().drawString(gui, LocalizationTrack.LEFT_MOUSE.translate() + " - " + LocalizationTrack.PLACE_TRACK.translate(), 330, 200, 0x404040);
@@ -306,39 +306,39 @@ public class ArcadeTracks extends ArcadeGame {
 			}
 		}
 	}	
-	
+
 	public static final int LEFT_MARGIN = 5;	
 	public static final int TOP_MARGIN = 5;
 
-    private static final ResourceLocation TEXTURE_MENU = ResourceHelper.getResource("/gui/trackgamemenu.png");
-    private static final ResourceLocation TEXTURE_GAME = ResourceHelper.getResource("/gui/trackgame.png");
+	private static final ResourceLocation TEXTURE_MENU = ResourceHelper.getResource("/gui/trackgamemenu.png");
+	private static final ResourceLocation TEXTURE_GAME = ResourceHelper.getResource("/gui/trackgame.png");
 
 	@Override
 	public void drawBackground(GuiVehicle gui, int x, int y) {
 		if (!isSaveMenuOpen && isMenuOpen) {
 			ResourceHelper.bindResource(TEXTURE_MENU);
-			
+
 			getModule().drawImage(gui, getMenuArea(), 0, 0);
-			
+
 			for (int i = 0; i < 3; i++) {
 				int [] rect = getMenuTabArea(i);
-				
+
 				boolean active = getModule().inRect(x, y, rect);
 				boolean hidden = !active && i == currentMenuTab;
-				
+
 				if (!hidden) {
 					getModule().drawImage(gui, rect[0], rect[1] + rect[3], 0, active ? 114 : 113, rect[2], 1);
 				}
 			}
-			
+
 			for (ScrollableList list : lists) {
 				list.drawBackground(gui, x, y);
 			}			
 
 		}else if (currentMap != null) {			
 			ResourceHelper.bindResource(TEXTURE_GAME);
-			
-			
+
+
 			if (isUsingEditor() && !isRunning) {
 				for (int i = 0; i < trackMap.length; i++) {
 					for (int j = 0; j < trackMap[0].length; j++) {
@@ -346,11 +346,11 @@ public class ArcadeTracks extends ArcadeGame {
 					}					
 				}
 			}
-			
+
 			for (Track track : tracks) {
 				getModule().drawImage(gui, getTrackArea(track.getX(), track.getY()), 16 * track.getU(), 16 * track.getV(), track.getRotation());
 			}
-			
+
 			if (isUsingEditor()) {
 				if (editorDetectorTrack != null && !isRunning) {
 					editorDetectorTrack.drawOverlay(getModule(), gui, editorDetectorTrack.getX() * 16 + 8, editorDetectorTrack.getY() * 16 + 8, isRunning);
@@ -361,7 +361,7 @@ public class ArcadeTracks extends ArcadeGame {
 					track.drawOverlay(getModule(), gui, x, y, isRunning);
 				}	
 			}
-	
+
 			if (!isItemTaken) {
 				int itemIndex = 0;
 				if (isPlayingFinalLevel()) {
@@ -369,29 +369,29 @@ public class ArcadeTracks extends ArcadeGame {
 				}
 				getModule().drawImage(gui, LEFT_MARGIN + itemX * 16, TOP_MARGIN + itemY * 16, 16 * itemIndex, 256 - 16, 16, 16);
 			}
-			
+
 			for (Cart cart : carts) {
 				cart.render(this, gui, tick);
 			}
-			
+
 			if (isUsingEditor() && !isRunning) {
 				getModule().drawImage(gui, LEFT_MARGIN + playerStartX * 16, TOP_MARGIN + playerStartY * 16, 162, 212, 8, 8, playerStartDirection.getRenderRotation());
 			}
-			
+
 			if (!isMenuOpen && editorTrack != null) {
 				getModule().drawImage(gui, x - 8, y - 8, 16 * editorTrack.getU(), 16 * editorTrack.getV(), 16, 16, editorTrack.getRotation());
 			}
-				
-			
+
+
 			if (isSaveMenuOpen) {
 				int[] rect = getSaveMenuArea();
-				
+
 				getModule().drawImage(gui, rect, 0, 144);
 			}
-			
+
 		}
 
-		
+
 
 		ResourceHelper.bindResource(TEXTURE_GAME);
 		for (int i = 0; i < BUTTON_COUNT; i++) {
@@ -399,13 +399,13 @@ public class ArcadeTracks extends ArcadeGame {
 				int[] rect = getButtonArea(i);
 				int srcX = isButtonDisabled(i) ? 256 - 3*16 : getModule().inRect(x, y, rect) ? 256 - 2*16 : 256 - 16;
 				int srcY = i*16;
-				
-				
+
+
 				getModule().drawImage(gui, rect, srcX, srcY);
 			}
 		}		
 	}
-	
+
 	@Override
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
 		for (int i = 0; i < BUTTON_COUNT; i++) {
@@ -420,83 +420,83 @@ public class ArcadeTracks extends ArcadeGame {
 		if (isSaveMenuOpen) {
 			return;
 		}
-		
+
 		if (isMenuOpen) {
 			for (ScrollableList list : lists) {
 				list.mouseMovedOrUp(gui, x, y, button);
 			}			
 		}
-		
-		
+
+
 		if (currentMap != null && isUsingEditor()){
 			int x2 = x - LEFT_MARGIN;
 			int y2 = y - TOP_MARGIN;
-			
+
 			int gridX = x2 / 16;
 			int gridY = y2 / 16;
-			
+
 			if (gridX >= 0 && gridX < trackMap.length && gridY >= 0 && gridY < trackMap[0].length) {
 				hoveringTrack = trackMap[gridX][gridY];
 			}else{
 				hoveringTrack = null;
 			}
-						
+
 		}
-		
+
 		handleEditorTrack(x, y, button, false);
 	}		
-	
-	
+
+
 	@Override
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
 		if (!isSaveMenuOpen) {
-		
-            if (isMenuOpen) {
-                if (!getModule().inRect(x, y, getMenuArea())) {
-                    if (currentMap != null) {
-                        isMenuOpen = false;
-                    }
-                }else{
+
+			if (isMenuOpen) {
+				if (!getModule().inRect(x, y, getMenuArea())) {
+					if (currentMap != null) {
+						isMenuOpen = false;
+					}
+				}else{
 
 
-                    for (int i = 0; i < 3; i++) {
-                        if (i != currentMenuTab && getModule().inRect(x, y, getMenuTabArea(i))) {
-                            currentMenuTab = i;
-                            break;
-                        }
-                    }
+					for (int i = 0; i < 3; i++) {
+						if (i != currentMenuTab && getModule().inRect(x, y, getMenuTabArea(i))) {
+							currentMenuTab = i;
+							break;
+						}
+					}
 
-                    for (ScrollableList list : lists) {
-                        list.mouseClicked(gui, x, y, button);
-                    }
+					for (ScrollableList list : lists) {
+						list.mouseClicked(gui, x, y, button);
+					}
 
-                }
+				}
 
 
-            }else{
+			}else{
 
-                if (!isRunning) {
-                    for (Track track : tracks) {
-                        if (getModule().inRect(x, y, getTrackArea(track.getX(), track.getY()))) {
-                            if (isUsingEditor()) {
-                                if (editorTrack == null) {
-                                    track.onEditorClick(this);
-                                }
-                            }else{
-                                track.onClick(this);
-                            }
-                        }
-                    }
+				if (!isRunning) {
+					for (Track track : tracks) {
+						if (getModule().inRect(x, y, getTrackArea(track.getX(), track.getY()))) {
+							if (isUsingEditor()) {
+								if (editorTrack == null) {
+									track.onEditorClick(this);
+								}
+							}else{
+								track.onClick(this);
+							}
+						}
+					}
 
-                }
+				}
 
-                handleEditorTrack(x, y, button, true);
-            }
-        }
-		
+				handleEditorTrack(x, y, button, true);
+			}
+		}
+
 		for (int i = 0; i < BUTTON_COUNT; i++) {
 			int[] rect = getButtonArea(i);
-			
+
 			if (getModule().inRect(x, y, rect)) {
 				if (isButtonVisible(i) && !isButtonDisabled(i)) {
 					buttonClicked(i);
@@ -504,44 +504,44 @@ public class ArcadeTracks extends ArcadeGame {
 				}		
 			}
 		}		
-		
+
 	}
-	
-	
+
+
 	public void completeLevel() {
 		if (isPlayingNormalLevel()) {
 			int nextLevel = currentLevel + 1;
 			if (nextLevel > unlockedLevels[currentStory]) {
-                sendPacket(currentStory, nextLevel);
+				sendPacket(currentStory, nextLevel);
 			}		
 		}
 	}
 
-    private void sendPacket(int story, int level) {
-        DataWriter dw = getDataWriter();
-        dw.writeByte(story);
-        dw.writeByte(level);
-        sendPacketToServer(dw);
-    }
-	
+	private void sendPacket(int story, int level) {
+		DataWriter dw = getDataWriter();
+		dw.writeByte(story);
+		dw.writeByte(level);
+		sendPacketToServer(dw);
+	}
+
 	public int[] getMenuArea() {
 		return new int[] {(VehicleBase.MODULAR_SPACE_WIDTH - 256) / 2, (VehicleBase.MODULAR_SPACE_HEIGHT - 113) / 2 ,256, 113};
 	}
-	
+
 	private int[] getMenuTabArea(int id) {
 		int [] menu = getMenuArea();
-		
+
 		return new int[] {menu[0] + 1 + id * 85, menu[1] + 1, 84, 12};
 	}
-	
+
 	private int[] getSaveMenuArea() {
 		return new int[] {(VehicleBase.MODULAR_SPACE_WIDTH - 99) / 2, (VehicleBase.MODULAR_SPACE_HEIGHT - 47) / 2 ,99, 47};
 	}
-	
 
-	
+
+
 	private final int BUTTON_COUNT = 14;
-	
+
 	private int[] getButtonArea(int id) {
 		if (id == 4 || id == 5) {
 			int [] menu = getMenuArea();
@@ -556,17 +556,17 @@ public class ArcadeTracks extends ArcadeGame {
 			if (id >= 10 && id < 12) {
 				id -= 6;
 			}
-			
+
 			return new int[] {455, 26 + id * 18, 16, 16};
 		}
 	}	
-	
 
 
-	
-	
+
+
+
 	@SuppressWarnings("SimplifiableIfStatement") //easier to see this way
-    private boolean isButtonVisible(int id) {
+	private boolean isButtonVisible(int id) {
 		if (id == 4 || id == 5) {
 			return isMenuOpen && currentMenuTab == 0;
 		}else if(id > 5 && id < 10) {
@@ -579,7 +579,7 @@ public class ArcadeTracks extends ArcadeGame {
 			return true;
 		}
 	}
-	
+
 	private boolean isButtonDisabled(int id) {
 		switch (id) {
 			case 0:
@@ -610,7 +610,7 @@ public class ArcadeTracks extends ArcadeGame {
 				return true;
 		}
 	}
-	
+
 	private void buttonClicked(int id) {
 		switch (id) {
 			case 0:
@@ -694,7 +694,7 @@ public class ArcadeTracks extends ArcadeGame {
 				break;
 		}
 	}
-	
+
 	private String getButtonText(int id) {
 		switch (id) {
 			case 0:
@@ -728,9 +728,9 @@ public class ArcadeTracks extends ArcadeGame {
 			default:
 				return "Hello, I'm a button";
 		}
-		
+
 	}
-	
+
 	public static int[] getTrackArea(int x, int y) {
 		return new int[] {TOP_MARGIN + 16 * x, TOP_MARGIN + 16 * y, 16, 16};
 	}
@@ -746,18 +746,18 @@ public class ArcadeTracks extends ArcadeGame {
 	public int getItemX() {
 		return itemX;
 	}
-	
+
 	public int getItemY() {
 		return itemY;
 	}	
-	
+
 	@Override
 	public void save(NBTTagCompound tagCompound) {
 		for (int i = 0; i < unlockedLevels.length; i++) {
 			tagCompound.setByte("Unlocked" + i, (byte)unlockedLevels[i]);
 		}
 	}
-	
+
 	@Override
 	public void load(NBTTagCompound tagCompound) {
 		for (int i = 0; i < unlockedLevels.length; i++) {
@@ -765,17 +765,17 @@ public class ArcadeTracks extends ArcadeGame {
 		}
 		loadStories();
 	}
-	
+
 	@Override
 	public void receivePacket(DataReader dr, EntityPlayer player) {
-        int story = dr.readByte();
-        int level = dr.readByte();
-        unlockedLevels[story] = level;
-        if (unlockedLevels[story] > TrackStory.stories.get(story).getLevels().size() - 1) {
-            unlockedLevels[story] = TrackStory.stories.get(story).getLevels().size() - 1;
-        }
+		int story = dr.readByte();
+		int level = dr.readByte();
+		unlockedLevels[story] = level;
+		if (unlockedLevels[story] > TrackStory.stories.get(story).getLevels().size() - 1) {
+			unlockedLevels[story] = TrackStory.stories.get(story).getLevels().size() - 1;
+		}
 	}
-	
+
 	@Override
 	public void checkGuiData(Object[] info) {
 		for (int i = 0; i < unlockedLevels.length; i++) {
@@ -783,12 +783,12 @@ public class ArcadeTracks extends ArcadeGame {
 		}
 	}
 
-    @Override
-    public int numberOfGuiData() {
-        return TrackStory.stories.size();
-    }
+	@Override
+	public int numberOfGuiData() {
+		return TrackStory.stories.size();
+	}
 
-    @Override
+	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id >= 0 && id < unlockedLevels.length) {	
 			unlockedLevels[id] = data;
@@ -799,8 +799,8 @@ public class ArcadeTracks extends ArcadeGame {
 			}
 		}
 	}	
-	
-	
+
+
 	//editor stuff
 	private TrackEditor editorTrack;
 	private TrackDetector editorDetectorTrack;
@@ -812,7 +812,7 @@ public class ArcadeTracks extends ArcadeGame {
 		}
 		editorTrack = track;
 	}
-	
+
 
 	public void setEditorDetectorTrack(TrackDetector track) {
 		if (track.equals(editorDetectorTrack)) {
@@ -821,13 +821,13 @@ public class ArcadeTracks extends ArcadeGame {
 			editorDetectorTrack = track;
 		}
 	}	
-		
+
 	public TrackDetector getEditorDetectorTrack() {
 		return editorDetectorTrack;
 	}		
-	
+
 	private static final String VALID_SAVE_NAME_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789 ";
-	
+
 	@Override
 	public void keyPress(GuiVehicle gui, char character, int extraInformation) {
 		if (isSaveMenuOpen) {
@@ -840,16 +840,16 @@ public class ArcadeTracks extends ArcadeGame {
 			if (!isUsingEditor() || isRunning) {
 				return;
 			}
-			
+
 			Track track;
-			
+
 			if (editorTrack != null) {
 				track = editorTrack;
 			}else{
 				track = hoveringTrack;
 			}
-			
-	
+
+
 			switch (Character.toLowerCase(character)) {
 				case 'a':
 					if (track != null && track.getOrientation().getOpposite() != null ) {
@@ -927,42 +927,42 @@ public class ArcadeTracks extends ArcadeGame {
 						}
 						resetPosition();
 					}
-					
+
 					break;
-					
+
 				case 'x':
 					if (hoveringTrack != null) {
 						itemX = hoveringTrack.getX();
 						itemY = hoveringTrack.getY();
 					}
-					
+
 					break;	
 				case 'p':
 					//TrackLevel.saveMap("Test", playerStartX, playerStartY, playerStartDirection, itemX, itemY, tracks);
 					break;
 			}
 		}
-		
+
 	}
 
-	
+
 	private void handleEditorTrack(int x, int y, int button, boolean clicked) {
 		if (isRunning) {
 			isEditorTrackDraging = false;
 			return;
 		}
-		
+
 		if (editorTrack != null) {
 			if ((clicked && button == 0) || (!clicked && button == -1 && isEditorTrackDraging)) {
 				int x2 = x - LEFT_MARGIN;
 				int y2 = y - TOP_MARGIN;
-				
+
 				int gridX = x2 / 16;
 				int gridY = y2 / 16;
-				
+
 				if (gridX >= 0 && gridX < trackMap.length && gridY >= 0 && gridY < trackMap[0].length) {
-					
-					
+
+
 					if (trackMap[gridX][gridY] == null) {
 						Track newTrack = editorTrack.getRealTrack(gridX, gridY);
 						trackMap[gridX][gridY] = newTrack;
@@ -970,7 +970,7 @@ public class ArcadeTracks extends ArcadeGame {
 					}
 					isEditorTrackDraging = true;
 				}
-				
+
 			}else if (button == 1 || (!clicked && isEditorTrackDraging)) {
 				if (clicked) {
 					editorTrack = null;
@@ -979,13 +979,13 @@ public class ArcadeTracks extends ArcadeGame {
 			}
 		}		
 	}
-	
+
 	@Override
 	public boolean disableStandardKeyFunctionality() {
 		return isSaveMenuOpen;
 	}	
-	
-	
+
+
 	@SideOnly(Side.CLIENT)
 	private boolean save(String name) {
 		if (StevesVehicles.arcadeDevOperator) {
@@ -997,7 +997,7 @@ public class ArcadeTracks extends ArcadeGame {
 				return true;
 			}
 		}
-		
+
 		if (TrackLevel.saveMap(name, playerStartX, playerStartY, playerStartDirection, itemX, itemY, tracks)) {
 			lastSavedName = name;
 			loadUserMaps();
@@ -1006,10 +1006,10 @@ public class ArcadeTracks extends ArcadeGame {
 			saveName = name;
 			failedToSave = true;
 			isSaveMenuOpen = true;
-			
+
 			return false;
 		}
 	}
-	
-	
+
+
 }

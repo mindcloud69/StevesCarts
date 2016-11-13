@@ -1,28 +1,28 @@
 package vswe.stevesvehicles.module.common.storage.chest;
+import java.util.List;
+
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
-import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
-import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.module.common.storage.ModuleStorage;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.container.slots.SlotChest;
-
-import java.util.List;
+import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
+import vswe.stevesvehicles.module.common.storage.ModuleStorage;
+import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public abstract class ModuleChest extends ModuleStorage {
 	public ModuleChest(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-    @Override
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
-        if (hasVisualChest()) {
-            simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_CHEST, "storage"));
-        }
-    }
+	@Override
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+		if (hasVisualChest()) {
+			simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_CHEST, "storage"));
+		}
+	}
 
-    //called to update the module's actions. Called by the cart's update code.
+	//called to update the module's actions. Called by the cart's update code.
 	@Override
 	public void update() {
 		super.update();
@@ -41,7 +41,7 @@ public abstract class ModuleChest extends ModuleStorage {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public abstract class ModuleChest extends ModuleStorage {
 	public float getChestAngle() {
 		return chestAngle;
 	}
-	
+
 	protected boolean lidClosed() {
 		return chestAngle <= 0.0F;
 	}
@@ -67,7 +67,7 @@ public abstract class ModuleChest extends ModuleStorage {
 	protected float getLidSpeed() {
 		return (float)(Math.PI / 20);
 	}	
-		
+
 	protected float chestFullyOpenAngle() {
 		return (float)Math.PI * 7 / 16F;
 	}
@@ -75,7 +75,7 @@ public abstract class ModuleChest extends ModuleStorage {
 	protected boolean hasVisualChest() {
 		return true;
 	}
-	
+
 	protected boolean playChestSound() {
 		return hasVisualChest();
 	}	
@@ -96,14 +96,14 @@ public abstract class ModuleChest extends ModuleStorage {
 		}
 	}
 
-    @Override
+	@Override
 	public void openInventory() {
 		if (hasVisualChest()) {
 			updateDw(0,getDw(0)+1);
 		}
 	}
 
-    @Override
+	@Override
 	public void closeInventory() {
 		if (hasVisualChest()) {
 			updateDw(0,getDw(0)-1);
@@ -150,7 +150,7 @@ public abstract class ModuleChest extends ModuleStorage {
 			}
 		}
 	}
-	
+
 	public boolean isCompletelyFilled() {
 		for (int i = 0; i < getInventorySize(); i++) {
 			if (getStack(i) == null) {
@@ -159,7 +159,7 @@ public abstract class ModuleChest extends ModuleStorage {
 		}
 		return true;
 	}
-	
+
 	public boolean isCompletelyEmpty() {
 		for (int i = 0; i < getInventorySize(); i++) {
 			if (getStack(i) != null) {

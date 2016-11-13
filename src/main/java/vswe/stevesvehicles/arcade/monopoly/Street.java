@@ -11,21 +11,21 @@ public class Street extends Property {
 	private float[] color;	
 	private int structures;
 	private int baseRent;
-	
+
 	public Street(ArcadeMonopoly game, StreetGroup group, String name, int cost, int baseRent) {
 		super(game, group, name, cost);
 		this.color = group.getColor(); 
 		this.baseRent = baseRent;
 	}
-	
+
 	@Override
 	public void draw(GuiVehicle gui, EnumSet<PlaceState> states) {
 		super.draw(gui, states);
-		
+
 		GL11.glColor4f(color[0], color[1], color[2], 1.0F);		
 		game.getModule().drawImage(gui, 0, 0, ArcadeMonopoly.PLACE_WIDTH, 0, ArcadeMonopoly.PLACE_WIDTH, 22);
-		
-		
+
+
 		GL11.glColor4f(1F, 1F, 1F, 1F);
 		if (structures > 0 && structures < 5) {	
 			for (int i = 0; i < structures; i++) {
@@ -34,10 +34,10 @@ public class Street extends Property {
 		}else if(structures == 5) {
 			game.getModule().drawImage(gui, 3, 3, 92, 22, 16, 16);
 		}	
-		
+
 		drawValue(gui);
 	}
-	
+
 	public void increaseStructure() {
 		structures++;	
 	}
@@ -64,7 +64,7 @@ public class Street extends Property {
 				return baseRent * 100;	
 		}
 	}
-	
+
 	public int getRentCost(boolean ownsAll) {
 		if (ownsAll) {
 			return baseRent * 2;
@@ -72,7 +72,7 @@ public class Street extends Property {
 			return baseRent;
 		}
 	}	
-	
+
 	@Override
 	public int getRentCost() {
 		if (structures == 0) {
@@ -111,5 +111,5 @@ public class Street extends Property {
 	public void decreaseStructures() {
 		--structures;
 	}
-	
+
 }

@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSnow;
@@ -25,6 +23,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -32,20 +34,18 @@ import vswe.stevesvehicles.client.gui.assembler.SimulationInfoInteger;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
+import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.container.ContainerVehicle;
+import vswe.stevesvehicles.container.slots.SlotBase;
+import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
+import vswe.stevesvehicles.nbt.NBTHelper;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.network.PacketHandler;
 import vswe.stevesvehicles.network.PacketType;
-import vswe.stevesvehicles.nbt.NBTHelper;
-import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
-import vswe.stevesvehicles.module.data.ModuleData;
-import vswe.stevesvehicles.container.slots.SlotBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * The base for all modules. This is what's used by the vehicle to add features, models and interfaces for the vehicle. should not be
@@ -56,33 +56,33 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class ModuleBase {
 	//the vehicle this module is part of
 	private VehicleBase vehicle;
-	
+
 	//the inventory this module is using, could be an empty array. getInventorySize is controlling the size of this  
 	private	ItemStack[] cargo;
-	
+
 	//where in the interface the module is located, used to draw things where they should be.
 	//the values are calculated in the vehicle on initializing
 	private int offSetX;
 	private int offSetY;
-	
+
 	//offsets for Gui Data, Data Watchers and Packets. These offsets works as a header when 
 	//sending values between the client and the server
 	private int guiDataOffset;
 	private int dataWatcherOffset;
-	
+
 
 	//the slot global start index for this module, used to transfer the local indices to global ones
 	protected int slotGlobalStart;
-	
+
 	//the id of this module, this is assigned on creation. The id is the same as the ModuleData which created the module.
 	private int moduleId;
 
-    //the of this module, this is the position among modules that this module has.
-    private int positionId;
-	
+	//the of this module, this is the position among modules that this module has.
+	private int positionId;
+
 	//the models this module is using, this is generated from the ModuleData creating this module
 	private ArrayList<ModelVehicle> models;
-	
+
 	/**
 	 * Creates a new instance of this module, the module will be created at the given vehicle.
 	 * @param vehicle The vehicle this module is created on
@@ -90,23 +90,23 @@ public abstract class ModuleBase {
 	public ModuleBase(vswe.stevesvehicles.vehicle.VehicleBase vehicle) {
 		//save the vehicle
 		this.vehicle = vehicle;
-		
+
 		//initialize the inventory of this module
 		cargo = new ItemStack[getInventorySize()];
 	}
-	
+
 	/**
 	 * Initializes the modules, this is done after all modules has been added to the vehicle, and given proper IDs and everything.
 	 */
 	public void init() {
 
 	}
-	
+
 	/**
 	 * Initializes the modules, this is done after all modules has been added to the vehicle but before most of the initializing code
 	 */
 	public void preInit() {}
-	
+
 
 	/**
 	 * Get the vehicle this module is a part of
@@ -123,7 +123,7 @@ public abstract class ModuleBase {
 	public boolean isPlaceholder() {
 		return getVehicle().isPlaceholder;
 	}
-	
+
 
 	/**
 	 * Sets the modular id of this module, this is basically the id of the {@link ModuleData} used to create this module.
@@ -132,7 +132,7 @@ public abstract class ModuleBase {
 	public void setModuleId(int val) {
 		moduleId = val;
 	}
-	
+
 	/**
 	 * Returns which modular id this module is associated with
 	 * @return The module id
@@ -142,15 +142,15 @@ public abstract class ModuleBase {
 	}
 
 
-    public int getPositionId() {
-        return positionId;
-    }
+	public int getPositionId() {
+		return positionId;
+	}
 
-    public void setPositionId(int positionId) {
-        this.positionId = positionId;
-    }
+	public void setPositionId(int positionId) {
+		this.positionId = positionId;
+	}
 
-    /**
+	/**
 	 * Is called when the vehicle's inventory has been changed
 	 */
 	public void onInventoryChanged() {}
@@ -167,7 +167,7 @@ public abstract class ModuleBase {
 		}
 	}
 
-	
+
 	/**
 	 * Used to get where to start draw the interface, this is calculated by the vehicle.
 	 * @return The y offset of the interface
@@ -234,7 +234,7 @@ public abstract class ModuleBase {
 	protected int getInventoryWidth() {
 		return 3;
 	}
-	
+
 	/**
 	 * The height of slots in the basic slot allocation. Used by the default getInventorySize to make standard
 	 * slot allocation easier
@@ -250,7 +250,7 @@ public abstract class ModuleBase {
 	 * @param extraInformation Extra information of special keys
 	 */
 	public void keyPress(GuiVehicle gui, char character, int extraInformation) {}
-	
+
 	//the list of the slots used by this module
 	protected ArrayList<SlotBase> slotList;	
 	/**
@@ -260,7 +260,7 @@ public abstract class ModuleBase {
 	public ArrayList<SlotBase> getSlots() {
 		return slotList;
 	}
-	
+
 	/**
 	 * Generates the slots used for this module, this is used both for the Container and the Interface. For most modules
 	 * just leave this and use getSlot instead (as well as setting getInventoryWidth and getInventoryHeight)
@@ -269,20 +269,20 @@ public abstract class ModuleBase {
 	 */
 	public int generateSlots(int slotCount) {
 		slotGlobalStart = slotCount;
-	
-		slotList = new ArrayList<SlotBase>();
-	    for (int j = 0; j < getInventoryHeight(); j++)
-        {
+
+		slotList = new ArrayList<>();
+		for (int j = 0; j < getInventoryHeight(); j++)
+		{
 			for (int i = 0; i < getInventoryWidth(); i++)
 			{
 				slotList.add(getSlot(slotCount++,i,j));
 			}
-        }
+		}
 
 		return slotCount;
 	}
 
-	
+
 	/**
 	 * Returns a new slot with the given id, x and y coordinate. This is used to generate the slots easier. Just override this
 	 * function and return a new slots depending on where it's located. Shouldn't be used if you're overriding generateSlots
@@ -294,7 +294,7 @@ public abstract class ModuleBase {
 	protected SlotBase getSlot(int slotId, int x, int y) {
 		return null;
 	}
-	
+
 	/**
 	 * Whether this module has slots or not. By default a module is thought to have slots if it has an interface. This is 
 	 * however overridden if it's not the case.
@@ -362,7 +362,7 @@ public abstract class ModuleBase {
 	public void setStack(int slot, ItemStack item) {
 		cargo[slot] = item;
 	}
-	
+
 	/**
 	 * Used to try to merge/add the ItemStack in specific slots of this module.
 	 * @param slotStart The slot start id, this is the local id for this module.
@@ -381,7 +381,7 @@ public abstract class ModuleBase {
 	public void addStack(int slot, ItemStack item) {
 		addStack(slot, slot, item);
 	}	
-	
+
 	/**
 	 * Used to prevent the vehicle to drop things when it breaks. If any module returns false the vehicle won't drop anything.
 	 * @return If this module allows the vehicle to drop on death
@@ -393,12 +393,12 @@ public abstract class ModuleBase {
 	/**
 	 * Called when the vehicle breaks
 	 */
-    public void onDeath() {}
+	public void onDeath() {}
 
-    /**
-     * Whether the vehicle should allocate room for this interface. By default this also allocates slots, see hasSlots
-     * @return If the module is using an interface
-     */
+	/**
+	 * Whether the vehicle should allocate room for this interface. By default this also allocates slots, see hasSlots
+	 * @return If the module is using an interface
+	 */
 	public boolean hasGui() {
 		return false;
 	}
@@ -407,25 +407,25 @@ public abstract class ModuleBase {
 	 * If the module should draw any foreground, it is done here.
 	 * @param gui The GUI that will draw the interface
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawForeground(GuiVehicle gui) {}
 
-	 /**
-	  * Draws a one lined string in the center of the given rectangle. It will handle scrolling as well as module offset.
-	  * @param gui The gui to draw it on.
-	  * @param str The string to be drawn.
-	  * @param rect The rectangle
-	  * @param c The color to be used
-	  */
-	 @SideOnly(Side.CLIENT)
-	 public void drawString(GuiVehicle gui,String str, int[] rect, int c) {
+	/**
+	 * Draws a one lined string in the center of the given rectangle. It will handle scrolling as well as module offset.
+	 * @param gui The gui to draw it on.
+	 * @param str The string to be drawn.
+	 * @param rect The rectangle
+	 * @param c The color to be used
+	 */
+	@SideOnly(Side.CLIENT)
+	public void drawString(GuiVehicle gui,String str, int[] rect, int c) {
 		if (rect.length < 4) {
 			return;
 		}else{
 			drawString(gui, str, rect[0] + (rect[2] - gui.getFontRenderer().getStringWidth(str)) / 2, rect[1] + (rect[3] - gui.getFontRenderer().FONT_HEIGHT + 3) / 2, c);
 		}
-	 }
-	 
+	}
+
 	/**
 	 * Draws a string at the given location. It will handle scrolling as well as module offset.
 	 * @param gui The gui to draw it on.
@@ -434,84 +434,84 @@ public abstract class ModuleBase {
 	 * @param y The local y coordinate
 	 * @param c The color to be used
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawString(GuiVehicle gui,String str, int x, int y, int c) {
-		 drawString(gui, str, x, y, -1, false, c);
-	 }
-
-
-	 @SideOnly(Side.CLIENT)	 
-	public void drawString(GuiVehicle gui, String str, int x, int y, int w, boolean center, int c) {
-		 int j = gui.getGuiLeft();
-		 int k = gui.getGuiTop();
-		 int[] rect = new int[] {x, y , w, 8};
-
-         boolean stealInterface = doStealInterface();
-         int dif = 0;
-		 //scroll the bounding box
-		 if (!stealInterface) {
-             dif = handleScroll(rect);
-		 }
-		 
-
-		 if (rect[3] > 0) {
-             if (!stealInterface) {
-                 gui.setupAndStartScissor();
-             }
-			 if (center) {
-                 gui.getFontRenderer().drawString(str,  rect[0] + (rect[2] - gui.getFontRenderer().getStringWidth(str)) / 2+getX(), rect[1] + getY() + dif, c);
-				
-			 }else{
-                 gui.getFontRenderer().drawString(str, rect[0] + getX(), rect[1] + getY() + dif, c);
-			 }
-
-             if (!stealInterface) {
-                 gui.stopScissor();
-             }
-		 }
+		drawString(gui, str, x, y, -1, false, c);
 	}
 
-    @SideOnly(Side.CLIENT)
-    public void drawScaledCenteredString(GuiVehicle gui, String str, int x, int y, int w, float multiplier, int color) {
-        x -= gui.getGuiLeft();
-        y -= gui.getGuiTop();
 
-        GL11.glPushMatrix();
-        GL11.glScalef(multiplier, multiplier, 1F);
+	@SideOnly(Side.CLIENT)	 
+	public void drawString(GuiVehicle gui, String str, int x, int y, int w, boolean center, int c) {
+		int j = gui.getGuiLeft();
+		int k = gui.getGuiTop();
+		int[] rect = new int[] {x, y , w, 8};
 
-        int width = gui.getFontRenderer().getStringWidth(str);
-
-        x += (w - width * multiplier) / 2;
-
-
-        x += getX();
-        y += getY() - getVehicle().getRealScrollY();
-
-        gui.setupAndStartScissor();
-        gui.getFontRenderer().drawString(str, (int) ((x + gui.getGuiLeft()) / multiplier), (int) ((y + gui.getGuiTop()) / multiplier), color);
-        gui.stopScissor();
+		boolean stealInterface = doStealInterface();
+		int dif = 0;
+		//scroll the bounding box
+		if (!stealInterface) {
+			dif = handleScroll(rect);
+		}
 
 
-        GL11.glPopMatrix();
-    }
+		if (rect[3] > 0) {
+			if (!stealInterface) {
+				gui.setupAndStartScissor();
+			}
+			if (center) {
+				gui.getFontRenderer().drawString(str,  rect[0] + (rect[2] - gui.getFontRenderer().getStringWidth(str)) / 2+getX(), rect[1] + getY() + dif, c);
 
-	 @SideOnly(Side.CLIENT)	 
+			}else{
+				gui.getFontRenderer().drawString(str, rect[0] + getX(), rect[1] + getY() + dif, c);
+			}
+
+			if (!stealInterface) {
+				gui.stopScissor();
+			}
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void drawScaledCenteredString(GuiVehicle gui, String str, int x, int y, int w, float multiplier, int color) {
+		x -= gui.getGuiLeft();
+		y -= gui.getGuiTop();
+
+		GL11.glPushMatrix();
+		GL11.glScalef(multiplier, multiplier, 1F);
+
+		int width = gui.getFontRenderer().getStringWidth(str);
+
+		x += (w - width * multiplier) / 2;
+
+
+		x += getX();
+		y += getY() - getVehicle().getRealScrollY();
+
+		gui.setupAndStartScissor();
+		gui.getFontRenderer().drawString(str, (int) ((x + gui.getGuiLeft()) / multiplier), (int) ((y + gui.getGuiTop()) / multiplier), color);
+		gui.stopScissor();
+
+
+		GL11.glPopMatrix();
+	}
+
+	@SideOnly(Side.CLIENT)	 
 	public void drawStringWithShadow(GuiVehicle gui,String str, int x, int y, int c) {
-		 int j = gui.getGuiLeft();
-		 int k = gui.getGuiTop();
-		 int[] rect = new int[] {x, y , 0, 8};
-		 
-		 //scroll the bounding box
-		 if (!doStealInterface()) {
-			 handleScroll(rect);
-		 }
-		 
-		 //just draw the text if the whole text can be drawn
-		 if (rect[3] == 8) {	
+		int j = gui.getGuiLeft();
+		int k = gui.getGuiTop();
+		int[] rect = new int[] {x, y , 0, 8};
+
+		//scroll the bounding box
+		if (!doStealInterface()) {
+			handleScroll(rect);
+		}
+
+		//just draw the text if the whole text can be drawn
+		if (rect[3] == 8) {	
 			gui.getFontRenderer().drawStringWithShadow(str, rect[0]+getX(), rect[1] + getY(), c);			 
-		 }
+		}
 	}	 
-	
+
 	/**
 	 * Draws a multiline string at the given location. It will handle scrolling as well as module offset.
 	 * @param gui The gui to draw it on
@@ -521,17 +521,17 @@ public abstract class ModuleBase {
 	 * @param w The maximum width of the text area
 	 * @param c The color to be used
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawSplitString(GuiVehicle gui,String str, int x, int y, int w, int c) {
-		 drawSplitString(gui, str, x, y, w, false, c);
-	 }
-	 
-	 
-	 @SideOnly(Side.CLIENT)
+		drawSplitString(gui, str, x, y, w, false, c);
+	}
+
+
+	@SideOnly(Side.CLIENT)
 	public void drawSplitString(GuiVehicle gui,String str, int x, int y, int w, boolean center, int c) {
 		//split the string in multiple lines
 		List newlines = gui.getFontRenderer().listFormattedStringToWidth(str,w);
-		
+
 		//loop through the lines and draw then using drawString
 		for (int i = 0; i < newlines.size(); i++) {		
 			String line = newlines.get(i).toString();
@@ -539,25 +539,25 @@ public abstract class ModuleBase {
 		}
 	}
 
-	 
+
 	public void drawItemInInterface(GuiVehicle gui, ItemStack item, int x, int y) {
 		int[] rect = new int[] {x, y, 16, 16};
 		int dif = handleScroll(rect);
 		if (rect[3] > 0) {
-            RenderItem renderitem = new RenderItem();
-            gui.setZLevel(100);
-            renderitem.zLevel = 100;
-            gui.setupAndStartScissor();
+			RenderItem renderitem = new RenderItem();
+			gui.setZLevel(100);
+			renderitem.zLevel = 100;
+			gui.setupAndStartScissor();
 
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			renderitem.renderItemAndEffectIntoGUI(gui.getMinecraft().fontRenderer, gui.getMinecraft().renderEngine, item, rect[0] + getX(), rect[1] + getY() + dif);
 
-            gui.stopScissor();
-            renderitem.zLevel = 0;
-            gui.setZLevel(0);
+			gui.stopScissor();
+			renderitem.zLevel = 0;
+			gui.setZLevel(0);
 		}
 	}	 
-	 
+
 	/**
 	 * Draw an image in the given interface, using the current texture and using the given dimensions.
 	 * @param gui The gui to draw it on
@@ -568,11 +568,11 @@ public abstract class ModuleBase {
 	 * @param sizeX The width of the image
 	 * @param sizeY The height of the image
 	 */
-	 @SideOnly(Side.CLIENT) 
+	@SideOnly(Side.CLIENT) 
 	public void drawImage(GuiVehicle gui, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
 		drawImage(gui, targetX, targetY, srcX, srcY, sizeX, sizeY, GuiBase.RenderRotation.NORMAL);
 	}
-	 
+
 	/**
 	 * Draw an image in the given interface, using the current texture and using the given dimensions.
 	 * @param gui The gui to draw it on
@@ -584,12 +584,12 @@ public abstract class ModuleBase {
 	 * @param sizeY The height of the image
 	 * @param rotation The rotation this will be drawn with
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawImage(GuiVehicle gui, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY, GuiBase.RenderRotation rotation) {
 		//create a rectangle and call the other drawImage function to do the job
 		drawImage(gui, new int[] {targetX,targetY,sizeX,sizeY}, srcX,srcY, rotation);
 	}
-	 
+
 	/**
 	 * Draw an image in the given interface, using the current texture and using the given dimentiosn.
 	 * @param gui The gui to draw it on
@@ -597,11 +597,11 @@ public abstract class ModuleBase {
 	 * @param srcX The x coordinate in the source file
 	 * @param srcY They y coordinate in the source file
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawImage(GuiVehicle gui, int[] rect, int srcX, int srcY) {
-		 drawImage(gui, rect, srcX, srcY, GuiBase.RenderRotation.NORMAL);
+		drawImage(gui, rect, srcX, srcY, GuiBase.RenderRotation.NORMAL);
 	}
-	
+
 	/**
 	 * Draw an image in the given interface, using the current texture and using the given dimentiosn.
 	 * @param gui The gui to draw it on
@@ -610,7 +610,7 @@ public abstract class ModuleBase {
 	 * @param srcY They y coordinate in the source file
 	 * @param rotation The rotation this will be drawn with
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawImage(GuiVehicle gui, int[] rect, int srcX, int srcY, GuiBase.RenderRotation rotation) {
 		//the rectangle need to be valid
 		if (rect.length < 4) {
@@ -621,14 +621,14 @@ public abstract class ModuleBase {
 			if (!doStealInterface()) {
 				srcY -= handleScroll(rect);
 			}
-		
+
 			//if there's still something to draw(that it's not scrolled outside the screen)
 			if (rect[3] > 0) {
 				gui.drawRect(gui.getGuiLeft() + rect[0] + getX(), gui.getGuiTop() + rect[1] + getY(), srcX, srcY, rect[2], rect[3], rotation, textureSize);
 			}
 		}
 	}
-	 
+
 
 	/**
 	 * Draw an icon in the given interface, using the current texture and using the given dimensions.
@@ -664,7 +664,7 @@ public abstract class ModuleBase {
 			if (!doStealInterface()) {
 				srcY -= handleScroll(rect);
 			}
-		
+
 			//if there's still something to draw(that it's not scrolled outside the screen)
 			if (rect[3] > 0) {
 				gui.drawIcon(icon, gui.getGuiLeft() + rect[0] + getX(), gui.getGuiTop() + rect[1] + getY(), rect[2] / 16F, rect[3] / 16F, srcX / 16F, srcY / 16F);
@@ -682,10 +682,10 @@ public abstract class ModuleBase {
 	public int handleScroll(int rect[]) {
 		//scroll the rectangle
 		rect[1] -= getVehicle().getRealScrollY();
-		
+
 		//calculate the y val
 		int y = rect[1] + getY(); 
-		
+
 		//if it's too far up
 		if (y < 4) {
 			int dif = (y-4);
@@ -693,18 +693,18 @@ public abstract class ModuleBase {
 			y = 4;
 			rect[1] = y-getY();			
 			return dif;
-			
-		//if it's too far down
+
+			//if it's too far down
 		}else if(y + rect[3] > vswe.stevesvehicles.vehicle.VehicleBase.MODULAR_SPACE_HEIGHT) {
 			rect[3] = Math.max(0, vswe.stevesvehicles.vehicle.VehicleBase.MODULAR_SPACE_HEIGHT-y);
 			return 0;
-			
-		//if the whole rectangle do fit
+
+			//if the whole rectangle do fit
 		}else{
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Clones a rectangle
 	 * @param rect The rectangle to be clones {targetX, targetY, sizeX, sizeY}
@@ -713,7 +713,7 @@ public abstract class ModuleBase {
 	private int[] cloneRect(int[] rect) {
 		return new int[] {rect[0],rect[1],rect[2],rect[3]};
 	}
-	
+
 	/**
 	 * Whether the module is using client/server buttons. Currently not used
 	 * @return whether buttons are used or not
@@ -722,7 +722,7 @@ public abstract class ModuleBase {
 		return false;
 	}
 
-	
+
 	/**
 	 * Allows the module to override the direction the vehicle is going. This mechanic is not finished and hence won't work perfectly.
 	 * @param x The x coordinate in the world
@@ -734,27 +734,27 @@ public abstract class ModuleBase {
 		return RailDirection.DEFAULT;
 	}
 
-    public void openInventory() {
-    }
+	public void openInventory() {
+	}
 
-    public void closeInventory() {
+	public void closeInventory() {
 
-    }
+	}
 
 
-    /**
+	/**
 	 * Handles the different directions that the module can force a vehicle to go in. {@see getSpecialRailDirection}
 	 * @author Vswe
 	 *
 	 */
 	public enum RailDirection {DEFAULT, NORTH, WEST, SOUTH, EAST, LEFT, FORWARD, RIGHT}
-	
-	
+
+
 	/**
 	 * Initializing any server/client buttons
 	 */
 	protected void loadButtons() {}
-	
+
 
 
 	/**
@@ -763,36 +763,36 @@ public abstract class ModuleBase {
 	 */
 	public final void writeToNBT(NBTTagCompound tagCompound) {
 		//write the content of the slots to the tag compound
-        if (getInventorySize() > 0)
-        {
-            NBTTagList items = new NBTTagList();
+		if (getInventorySize() > 0)
+		{
+			NBTTagList items = new NBTTagList();
 
-            for (int i = 0; i < getInventorySize(); ++i)
-            {
-                if (getStack(i) != null)
-                {
-                    NBTTagCompound item = new NBTTagCompound();
-                    item.setByte("Slot", (byte)i);
-                    getStack(i).writeToNBT(item);
-                    items.appendTag(item);
-                }
-            }
+			for (int i = 0; i < getInventorySize(); ++i)
+			{
+				if (getStack(i) != null)
+				{
+					NBTTagCompound item = new NBTTagCompound();
+					item.setByte("Slot", (byte)i);
+					getStack(i).writeToNBT(item);
+					items.appendTag(item);
+				}
+			}
 
-            tagCompound.setTag("Items", items);
-        }	
+			tagCompound.setTag("Items", items);
+		}	
 
-        //writes module specific data
+		//writes module specific data
 		save(tagCompound);
 	}
-	
+
 	/**
 	 * Allows a module to save specific data when world is saved
-     * @param tagCompound The NBT tag compound to write to
-     *
-     */
+	 * @param tagCompound The NBT tag compound to write to
+	 *
+	 */
 	protected void save(NBTTagCompound tagCompound) {}
-	
-	
+
+
 	/**
 	 * Handles the reading of the NBT data when the world is being loaded
 	 * @param tagCompound The tag compound to read the data from
@@ -817,28 +817,28 @@ public abstract class ModuleBase {
 		//reads module specific data
 		load(tagCompound);
 	}	
-	
+
 	/**
 	 * Allows a module to load specific data when world is loaded
-     * @param tagCompound The NBT tag compound to read from
-     *
-     */
+	 * @param tagCompound The NBT tag compound to read from
+	 *
+	 */
 	protected void load(NBTTagCompound tagCompound) {}
 
-	
+
 	/**
 	 * Used to draw background for a module
 	 * @param gui The gui to draw on
 	 * @param x The x coordinate of the mouse
 	 * @param y The y coordinate of the mouse
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawBackground(GuiVehicle gui, int x, int y) {}
-	
-	 
-	 @SideOnly(Side.CLIENT)
+
+
+	@SideOnly(Side.CLIENT)
 	public void drawBackgroundItems(GuiVehicle gui, int x, int y) {}
-	 
+
 	/**
 	 * Used to handle mouse clicks on the module's interface
 	 * @param gui The gui that was clicked
@@ -846,9 +846,9 @@ public abstract class ModuleBase {
 	 * @param y The y coordinate of the mouse
 	 * @param button The button that was pressed on the mouse
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void mouseClicked(GuiVehicle gui,int x, int y, int button) {}
-	
+
 	/**
 	 * Used to handle mouse movement and move releases in the module's interface
 	 * @param gui The gui that is being used
@@ -856,16 +856,16 @@ public abstract class ModuleBase {
 	 * @param y The y coordinate of the mouse
 	 * @param button The button that was released, or -1 if the cursor is just being moved
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void mouseMovedOrUp(GuiVehicle gui,int x, int y, int button) {}
-	
+
 	/**
 	 * Used to draw mouse over text for a module
 	 * @param gui The gui to draw on
 	 * @param x The x coordinate of the mouse
 	 * @param y The y coordiante of the mouse
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {}
 
 
@@ -883,7 +883,7 @@ public abstract class ModuleBase {
 		//creates a rectangle and call the other inRect
 		return inRect(x,y, new int[] {x1,y1,sizeX,sizeY});
 	}
-	
+
 	/**
 	 * Detects if the given mouse coordinates are within the given rectangle
 	 * @param x The mouse x coordinate
@@ -901,7 +901,7 @@ public abstract class ModuleBase {
 			if (!doStealInterface()) {
 				handleScroll(rect);
 			}
-			
+
 			//check if the mouse is inside the scrolled rectangle
 			return x >= rect[0] && x <= rect[0] + rect[2] && y >= rect[1] && y <= rect[1] + rect[3];
 		}
@@ -922,17 +922,17 @@ public abstract class ModuleBase {
 	 * Tells the vehicle to turn around, if this module is allowed to tell the vehicle to do so.
 	 */
 	protected void turnback() {
-        if (getVehicle().getEntity() instanceof EntityModularCart) {
-            //check if this module is allowed to tell the vehicle
-            for (ModuleBase module : getVehicle().getModules()) {
-                if (module != this && module.preventTurnBack()) {
-                    return;
-                }
-            }
+		if (getVehicle().getEntity() instanceof EntityModularCart) {
+			//check if this module is allowed to tell the vehicle
+			for (ModuleBase module : getVehicle().getModules()) {
+				if (module != this && module.preventTurnBack()) {
+					return;
+				}
+			}
 
-            //if so, turn bakc
-            ((EntityModularCart)getVehicle().getEntity()).turnback();
-        }
+			//if so, turn bakc
+			((EntityModularCart)getVehicle().getEntity()).turnback();
+		}
 	}
 
 	/**
@@ -943,27 +943,27 @@ public abstract class ModuleBase {
 		return false;
 	}
 
-    protected DataWriter getDataWriter(boolean hasInterfaceOpen) {
-        DataWriter dw = PacketHandler.getDataWriter(PacketType.VEHICLE);
-        if (!hasInterfaceOpen) {
-            dw.writeInteger(getVehicle().getEntity().getEntityId());
-        }
-        dw.writeByte(getPositionId());
-        return dw;
-    }
+	protected DataWriter getDataWriter(boolean hasInterfaceOpen) {
+		DataWriter dw = PacketHandler.getDataWriter(PacketType.VEHICLE);
+		if (!hasInterfaceOpen) {
+			dw.writeInteger(getVehicle().getEntity().getEntityId());
+		}
+		dw.writeByte(getPositionId());
+		return dw;
+	}
 
-    protected DataWriter getDataWriter() {
-        return getDataWriter(true);
-    }
+	protected DataWriter getDataWriter() {
+		return getDataWriter(true);
+	}
 
 
 	protected void sendPacketToServer(DataWriter dw) {
-        PacketHandler.sendPacketToServer(dw);
+		PacketHandler.sendPacketToServer(dw);
 	}
 
-    protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {
-        PacketHandler.sendPacketToPlayer(dw, player);
-    }
+	protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {
+		PacketHandler.sendPacketToPlayer(dw, player);
+	}
 
 
 
@@ -971,12 +971,12 @@ public abstract class ModuleBase {
 
 
 	public static void delegateReceivedPacket(VehicleBase vehicle, DataReader dr, EntityPlayer player) {
-        int id = dr.readByte();
-        if (id >= 0 && id < vehicle.getModules().size()) {
-            vehicle.getModules().get(id).receivePacket(dr, player);
-        }
+		int id = dr.readByte();
+		if (id >= 0 && id < vehicle.getModules().size()) {
+			vehicle.getModules().get(id).receivePacket(dr, player);
+		}
 	}
-	
+
 	/**
 	 * The number of datawatchers this module wants to use
 	 * @return The amount of datawatchers
@@ -1035,7 +1035,7 @@ public abstract class ModuleBase {
 	 * @param val The value to update it to
 	 */
 	protected final void updateIntDw(int id, int val) {
-        getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (int) val);
+		getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (int) val);
 	}
 
 	/**
@@ -1046,14 +1046,14 @@ public abstract class ModuleBase {
 	protected final int getIntDw(int id) {
 		return getVehicle().getEntity().getDataWatcher().getWatchableObjectInt(getDwId(id));
 	}	
-	
+
 	/**
 	 * Adds a short datawathcer
 	 * @param id The local datawatcher id
 	 * @param val The value to add
 	 */
 	protected final void addShortDw(int id, int val) {
-        getVehicle().getEntity().getDataWatcher().addObject(getDwId(id), (short)val);
+		getVehicle().getEntity().getDataWatcher().addObject(getDwId(id), (short)val);
 	}
 
 	/**
@@ -1062,7 +1062,7 @@ public abstract class ModuleBase {
 	 * @param val The value to update it to
 	 */
 	protected final void updateShortDw(int id, int val) {
-        getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (short)val);
+		getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (short)val);
 	}
 
 	/**
@@ -1073,14 +1073,14 @@ public abstract class ModuleBase {
 	protected final short getShortDw(int id) {
 		return getVehicle().getEntity().getDataWatcher().getWatchableObjectShort(getDwId(id));
 	}	
-	
+
 	/**
 	 * Adds a datawathcer
 	 * @param id The local datawatcher id
 	 * @param val The value to add
 	 */
 	protected final void addDw(int id, int val) {
-        getVehicle().getEntity().getDataWatcher().addObject(getDwId(id), (byte)val);
+		getVehicle().getEntity().getDataWatcher().addObject(getDwId(id), (byte)val);
 	}
 
 	/**
@@ -1089,9 +1089,9 @@ public abstract class ModuleBase {
 	 * @param val The value to update it to
 	 */	
 	protected final void updateDw(int id, int val) {
-        getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (byte)val);
+		getVehicle().getEntity().getDataWatcher().updateObject(getDwId(id), (byte)val);
 	}
-	
+
 	/**
 	 * Get a datawatcher
 	 * @param id The local datawatcher id
@@ -1109,7 +1109,7 @@ public abstract class ModuleBase {
 	public int numberOfGuiData() {
 		return 0;
 	}
-	
+
 	/**
 	 * Get the gui data offset. This is used as a header to know which module owns a specific gui data.
 	 * @return
@@ -1141,8 +1141,8 @@ public abstract class ModuleBase {
 			player.sendProgressBarUpdate(con, id, data);
 		}		
 	}
-	
-	
+
+
 	/**
 	 * Updates the gui data sing the supplied info, this is what is being called from a module and it's also the function that
 	 * actually handles the update.
@@ -1156,14 +1156,14 @@ public abstract class ModuleBase {
 		if (con == null) {
 			return;
 		}
-		
+
 		//calculates the gloval id
 		int globalId = id + getGuiDataStart();
-		
+
 		List players = (List)info[1];
 		boolean isNew = (Boolean)info[2];
 		boolean flag = isNew;
-		
+
 		if (!flag) {
 			//if the value is not new, see if it has changed, if so we should update
 			if ( con.cache != null) {
@@ -1177,13 +1177,13 @@ public abstract class ModuleBase {
 				flag = true;
 			}
 		}
-		
+
 		//if the value is new or has changed we should update it
 		if (flag) {
 			if (con.cache == null) {
-				con.cache = new HashMap<Short,Short>();
+				con.cache = new HashMap<>();
 			}
-			
+
 			//update it and cache it
 			updateGuiData(con, players, globalId, data);
 			con.cache.put((short)globalId,data);
@@ -1198,17 +1198,17 @@ public abstract class ModuleBase {
 	public final void initGuiData(Container con, ICrafting player) {
 		ArrayList players = new ArrayList();
 		players.add(player);
-		
+
 		//simulate a value change but mark it as new instead
 		checkGuiData(con, players, true);
 	}
-	
+
 	/**
 	 * Used to send gui data information
 	 * @param info The information that should be sent as the first parameter to updateGuiData
 	 */
 	protected void checkGuiData(Object[] info) {}
-	
+
 	/**
 	 * Prepares the gui data check
 	 * @param con The container to be used
@@ -1219,10 +1219,10 @@ public abstract class ModuleBase {
 		if (con == null) {
 			return;
 		}	
-	
+
 		checkGuiData(new Object[] {con, players, isNew});
 	}
-	
+
 	/**
 	 * Receive gui data on the client side
 	 * @param id The local gui data id
@@ -1230,7 +1230,7 @@ public abstract class ModuleBase {
 	 */
 	public void receiveGuiData(int id, short data) {}
 
-	
+
 	/**
 	 * Get the consumption for this module
 	 * @param isMoving A flag telling you if the vehicle is moving or not
@@ -1240,16 +1240,16 @@ public abstract class ModuleBase {
 		return 0;
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void setModels(ArrayList<ModelVehicle> models){
 		this.models = models;
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public ArrayList<ModelVehicle> getModels() {
 		return models;
 	}
-	
+
 	public boolean haveModels() {
 		return models != null;
 	}	
@@ -1265,7 +1265,7 @@ public abstract class ModuleBase {
 	 * @param w The width of the rectangle
 	 * @param h The height of the rectangle
 	 */
-	 @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public final void drawStringOnMouseOver(GuiVehicle gui, String str, int x, int y, int x1, int y1, int w, int h) {
 		//creates a rectangle and calls the other drawStringOnMouseOver
 		drawStringOnMouseOver(gui, str, x, y, new int[] {x1, y1, w, h});
@@ -1279,8 +1279,8 @@ public abstract class ModuleBase {
 	 * @param y The y coordinate of the mouse
 	 * @param rect The rectangle that the mouse has to be in, defin as {x,y,width,height}
 	 */
-	 @SideOnly(Side.CLIENT)
-	 public final void drawStringOnMouseOver(GuiVehicle gui, String str, int x, int y, int[] rect) {
+	@SideOnly(Side.CLIENT)
+	public final void drawStringOnMouseOver(GuiVehicle gui, String str, int x, int y, int[] rect) {
 		//if it's not in the rectangle the text shouldn't be written
 		if (!inRect(x,y, rect)) {
 			return;
@@ -1289,32 +1289,32 @@ public abstract class ModuleBase {
 		//convert to global coordinates
 		x += getX();
 		y += getY();
-		
+
 		//draw the mouse overlay
 		gui.drawMouseOver(str,x,y);
 	}
 
-    @SideOnly(Side.CLIENT)
-         public final void drawStringOnMouseOver(GuiVehicle gui, String str, int x, int y) {
-        //convert to global coordinates
-        x += getX();
-        y += getY();
+	@SideOnly(Side.CLIENT)
+	public final void drawStringOnMouseOver(GuiVehicle gui, String str, int x, int y) {
+		//convert to global coordinates
+		x += getX();
+		y += getY();
 
-        //draw the mouse overlay
-        gui.drawMouseOver(str, x, y);
-    }
+		//draw the mouse overlay
+		gui.drawMouseOver(str, x, y);
+	}
 
-    @SideOnly(Side.CLIENT)
-    public final void drawStringOnMouseOver(GuiVehicle gui, List<String> info, int x, int y) {
-        //convert to global coordinates
-        x += getX();
-        y += getY();
+	@SideOnly(Side.CLIENT)
+	public final void drawStringOnMouseOver(GuiVehicle gui, List<String> info, int x, int y) {
+		//convert to global coordinates
+		x += getX();
+		y += getY();
 
-        //draw the mouse overlay
-        gui.drawMouseOver(info, x, y);
-    }
-	
-	
+		//draw the mouse overlay
+		gui.drawMouseOver(info, x, y);
+	}
+
+
 	/**
 	 * Draws an image overlay on the screen. Observe that this is not when a special interface is open.
 	 * @param rect The rectangle for the image's dimensions {targetX, targetY, width, height}
@@ -1324,7 +1324,7 @@ public abstract class ModuleBase {
 	protected void drawImage(int [] rect, int sourceX, int sourceY) {
 		drawImage(rect[0], rect[1], sourceX, sourceY, rect[2], rect[3]);	
 	}	
-	
+
 	/**
 	 * Draws an image overlay on the screen. Observe that this is not when a special interface is open.
 	 * @param targetX The x coordinate of the image
@@ -1334,27 +1334,27 @@ public abstract class ModuleBase {
 	 * @param width The width of the image
 	 * @param height The height of the image
 	 */
-    protected void drawImage(int targetX, int targetY, int sourceX, int sourceY, int width, int height)
-    {
-        float var7 = 0.00390625F;
-        float var8 = 0.00390625F;
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV((double)(targetX + 0), (double)(targetY + height), (double)-90, (double)((float)(sourceX + 0) * var7), (double)((float)(sourceY + height) * var8));
-        tess.addVertexWithUV((double)(targetX + width), (double)(targetY + height), (double)-90, (double)((float)(sourceX + width) * var7), (double)((float)(sourceY + height) * var8));
-        tess.addVertexWithUV((double)(targetX + width), (double)(targetY + 0), (double)-90, (double)((float)(sourceX + width) * var7), (double)((float)(sourceY + 0) * var8));
-        tess.addVertexWithUV((double)(targetX + 0), (double)(targetY + 0), (double)-90, (double)((float)(sourceX + 0) * var7), (double)((float)(sourceY + 0) * var8));
-        tess.draw();
-    }	
-	
-    /**
-     * Gets the player using the client. Used for example to check if a player is the active player.
-     * @return The palyer
-     */
+	protected void drawImage(int targetX, int targetY, int sourceX, int sourceY, int width, int height)
+	{
+		float var7 = 0.00390625F;
+		float var8 = 0.00390625F;
+		Tessellator tess = Tessellator.instance;
+		tess.startDrawingQuads();
+		tess.addVertexWithUV((double)(targetX + 0), (double)(targetY + height), (double)-90, (double)((sourceX + 0) * var7), (double)((sourceY + height) * var8));
+		tess.addVertexWithUV((double)(targetX + width), (double)(targetY + height), (double)-90, (double)((sourceX + width) * var7), (double)((sourceY + height) * var8));
+		tess.addVertexWithUV((double)(targetX + width), (double)(targetY + 0), (double)-90, (double)((sourceX + width) * var7), (double)((sourceY + 0) * var8));
+		tess.addVertexWithUV((double)(targetX + 0), (double)(targetY + 0), (double)-90, (double)((sourceX + 0) * var7), (double)((sourceY + 0) * var8));
+		tess.draw();
+	}	
+
+	/**
+	 * Gets the player using the client. Used for example to check if a player is the active player.
+	 * @return The palyer
+	 */
 	@SideOnly(Side.CLIENT)
 	protected EntityPlayer getClientPlayer() {
 		if (net.minecraft.client.Minecraft.getMinecraft() != null) {
-			return (EntityPlayer)net.minecraft.client.Minecraft.getMinecraft().thePlayer;
+			return net.minecraft.client.Minecraft.getMinecraft().thePlayer;
 		}
 		return null;
 	}
@@ -1365,7 +1365,7 @@ public abstract class ModuleBase {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void renderOverlay( net.minecraft.client.Minecraft minecraft) {}
-	
+
 	/**
 	 * Allows a module to stop the engines, won't stop modules using the engine though
 	 * @return True if the module is forcing the engines to stop
@@ -1373,7 +1373,7 @@ public abstract class ModuleBase {
 	public boolean stopEngines() {
 		return false;
 	}
-		
+
 	/**
 	 * Allows a module to stop the vehicle from being rendered
 	 * @return False if the vehicle sohuldn't be rendered
@@ -1381,7 +1381,7 @@ public abstract class ModuleBase {
 	public boolean shouldVehicleRender() {
 		return true;
 	}
-	
+
 	/**
 	 * Allows a module to tell the vehicle to use a specific push factor
 	 * @return the push factor, or -1 to use the default value
@@ -1389,7 +1389,7 @@ public abstract class ModuleBase {
 	public double getPushFactor() {
 		return -1;
 	}
-	
+
 	/**
 	 * Allows a module to change the color of the vehicle
 	 * @return The color of the vehicle {Red 0.0F to 1.0F, Green 0.0F to 1.0F, Blue 0.0F to 1.0F}
@@ -1397,7 +1397,7 @@ public abstract class ModuleBase {
 	public float[] getColor() {
 		return new float[] {1F,1F,1F};
 	}
-	
+
 	/**
 	 * Allows a module to change the y offset the mounted entity should be at
 	 * @param rider The mounted entity
@@ -1406,7 +1406,7 @@ public abstract class ModuleBase {
 	public float mountedOffset(Entity rider) {
 		return 0F;
 	}
-	
+
 
 
 	/**
@@ -1417,11 +1417,11 @@ public abstract class ModuleBase {
 	 * @return If this block counts as air by the modules
 	 */
 	protected boolean countsAsAir(int x, int y, int z) {
-	    if (getVehicle().getWorld().isAirBlock(x, y, z)) {
+		if (getVehicle().getWorld().isAirBlock(x, y, z)) {
 			return true;
 		}
 
-        Block b = getVehicle().getWorld().getBlock(x, y, z);
+		Block b = getVehicle().getWorld().getBlock(x, y, z);
 
 		if (b instanceof BlockSnow) {
 			return true;
@@ -1433,8 +1433,8 @@ public abstract class ModuleBase {
 
 		return false;
 	}	
-	
-	
+
+
 	/**
 	 * Called when the vehicle is passing a vanilla activator rail
 	 * @param x The X coordinate of the rail
@@ -1443,7 +1443,7 @@ public abstract class ModuleBase {
 	 * @param active If the rail is active or not
 	 */
 	public void activatedByRail(int x, int y, int z, boolean active) {}
-	
+
 	/**
 	 * Return the {@link ModuleData} which represents this module
 	 * @return
@@ -1451,7 +1451,7 @@ public abstract class ModuleBase {
 	public ModuleData getModuleData() {
 		return ModuleRegistry.getModuleFromId(getModuleId());
 	}
-	
+
 	/**
 	 * Allows a module to steal the whole interface, preventing any other module from using the 
 	 * interface. This is not meant to be permanent, use it when a lot of interface is required, 
@@ -1482,84 +1482,84 @@ public abstract class ModuleBase {
 
 	}
 
-    public String getModuleName() {
-        ModuleData data = getModuleData();
-        return data == null ? null : data.getName();
-    }
+	public String getModuleName() {
+		ModuleData data = getModuleData();
+		return data == null ? null : data.getName();
+	}
 
-    private boolean hasSimulationInfoBeenLoaded;
-    private List<SimulationInfo> simulationInfo;
-    public final void  initSimulationInfo() {
-        if (!hasSimulationInfoBeenLoaded) {
-            simulationInfo = new ArrayList<SimulationInfo>();
-            loadSimulationInfo(simulationInfo);
-            hasSimulationInfoBeenLoaded = true;
-        }
-    }
+	private boolean hasSimulationInfoBeenLoaded;
+	private List<SimulationInfo> simulationInfo;
+	public final void  initSimulationInfo() {
+		if (!hasSimulationInfoBeenLoaded) {
+			simulationInfo = new ArrayList<>();
+			loadSimulationInfo(simulationInfo);
+			hasSimulationInfoBeenLoaded = true;
+		}
+	}
 
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
 
-    }
+	}
 
-    public SimulationInfo getSimulationInfo(int id) {
-        return simulationInfo.get(id);
-    }
+	public SimulationInfo getSimulationInfo(int id) {
+		return simulationInfo.get(id);
+	}
 
-    public SimulationInfo getSimulationInfo() {
-        return getSimulationInfo(0);
-    }
+	public SimulationInfo getSimulationInfo() {
+		return getSimulationInfo(0);
+	}
 
 	public void addSimulationInfo(List<SimulationInfo> simulationInfo) {
-        simulationInfo.addAll(this.simulationInfo);
-    }
+		simulationInfo.addAll(this.simulationInfo);
+	}
 
-    public boolean getBooleanSimulationInfo() {
-        return ((SimulationInfoBoolean)getSimulationInfo()).getValue();
-    }
+	public boolean getBooleanSimulationInfo() {
+		return ((SimulationInfoBoolean)getSimulationInfo()).getValue();
+	}
 
-    public int getIntegerSimulationInfo() {
-        return ((SimulationInfoInteger)getSimulationInfo()).getValue();
-    }
+	public int getIntegerSimulationInfo() {
+		return ((SimulationInfoInteger)getSimulationInfo()).getValue();
+	}
 
-    public int getMultiBooleanIntegerSimulationInfo() {
-        return ((SimulationInfoMultiBoolean)getSimulationInfo()).getIntegerValue();
-    }
+	public int getMultiBooleanIntegerSimulationInfo() {
+		return ((SimulationInfoMultiBoolean)getSimulationInfo()).getIntegerValue();
+	}
 
-    private static final int DEFAULT_TEXTURE_SIZE = 256;
-    private int textureSize = DEFAULT_TEXTURE_SIZE;
-    public void setTextureSize(int val) {
-        this.textureSize = val;
-    }
-    public void resetTextureSize() {
-        setTextureSize(DEFAULT_TEXTURE_SIZE);
-    }
+	private static final int DEFAULT_TEXTURE_SIZE = 256;
+	private int textureSize = DEFAULT_TEXTURE_SIZE;
+	public void setTextureSize(int val) {
+		this.textureSize = val;
+	}
+	public void resetTextureSize() {
+		setTextureSize(DEFAULT_TEXTURE_SIZE);
+	}
 
-    private static final ResourceLocation TOGGLE_TEXTURE = ResourceHelper.getResource("/gui/toggle_base.png");
-    private static final int TEXTURE_SPACING = 1;
-    private static final int TOGGLE_IMAGE_BORDER_SRC_X = 1;
-    private static final int TOGGLE_IMAGE_BORDER_SRC_Y = 19;
-    protected static final int[] TOGGLE_BOX_RECT = new int[] {10, 21, 8, 8};
-    protected static final int[] TOGGLE_IMAGE_RECT = new int[] {20, 16, 18, 18};
-    private ResourceLocation toggleImageTexture;
+	private static final ResourceLocation TOGGLE_TEXTURE = ResourceHelper.getResource("/gui/toggle_base.png");
+	private static final int TEXTURE_SPACING = 1;
+	private static final int TOGGLE_IMAGE_BORDER_SRC_X = 1;
+	private static final int TOGGLE_IMAGE_BORDER_SRC_Y = 19;
+	protected static final int[] TOGGLE_BOX_RECT = new int[] {10, 21, 8, 8};
+	protected static final int[] TOGGLE_IMAGE_RECT = new int[] {20, 16, 18, 18};
+	private ResourceLocation toggleImageTexture;
 
-    @SideOnly(Side.CLIENT)
-    protected void drawToggleBox(GuiVehicle gui, String texture, boolean enabled, int x, int y) {
-        if (toggleImageTexture == null) {
-            toggleImageTexture = ResourceHelper.getResource("/gui/toggle/" + texture + ".png");
-        }
+	@SideOnly(Side.CLIENT)
+	protected void drawToggleBox(GuiVehicle gui, String texture, boolean enabled, int x, int y) {
+		if (toggleImageTexture == null) {
+			toggleImageTexture = ResourceHelper.getResource("/gui/toggle/" + texture + ".png");
+		}
 
-        ResourceHelper.bindResource(TOGGLE_TEXTURE);
+		ResourceHelper.bindResource(TOGGLE_TEXTURE);
 
-        int backgroundId = enabled ? 1 : 0;
-        int borderID = inRect(x,y, TOGGLE_BOX_RECT) ? 1 : 0;
+		int backgroundId = enabled ? 1 : 0;
+		int borderID = inRect(x,y, TOGGLE_BOX_RECT) ? 1 : 0;
 
-        ResourceHelper.bindResource(toggleImageTexture);
-        setTextureSize(16);
-        drawImage(gui, TOGGLE_IMAGE_RECT[0] + 1, TOGGLE_IMAGE_RECT[1] + 1, 0, 0, TOGGLE_IMAGE_RECT[2] - 2, TOGGLE_IMAGE_RECT[3] - 2);
-        resetTextureSize();
+		ResourceHelper.bindResource(toggleImageTexture);
+		setTextureSize(16);
+		drawImage(gui, TOGGLE_IMAGE_RECT[0] + 1, TOGGLE_IMAGE_RECT[1] + 1, 0, 0, TOGGLE_IMAGE_RECT[2] - 2, TOGGLE_IMAGE_RECT[3] - 2);
+		resetTextureSize();
 
-        ResourceHelper.bindResource(TOGGLE_TEXTURE);
-        drawImage(gui, TOGGLE_IMAGE_RECT, TOGGLE_IMAGE_BORDER_SRC_X, TOGGLE_IMAGE_BORDER_SRC_Y + (enabled ? 0 : TEXTURE_SPACING + TOGGLE_IMAGE_RECT[3]));
-        drawImage(gui, TOGGLE_BOX_RECT, TEXTURE_SPACING + (TEXTURE_SPACING + TOGGLE_BOX_RECT[2]) * backgroundId, TEXTURE_SPACING + (TEXTURE_SPACING + TOGGLE_BOX_RECT[3]) * borderID);
-    }
+		ResourceHelper.bindResource(TOGGLE_TEXTURE);
+		drawImage(gui, TOGGLE_IMAGE_RECT, TOGGLE_IMAGE_BORDER_SRC_X, TOGGLE_IMAGE_BORDER_SRC_Y + (enabled ? 0 : TEXTURE_SPACING + TOGGLE_IMAGE_RECT[3]));
+		drawImage(gui, TOGGLE_BOX_RECT, TEXTURE_SPACING + (TEXTURE_SPACING + TOGGLE_BOX_RECT[2]) * backgroundId, TEXTURE_SPACING + (TEXTURE_SPACING + TOGGLE_BOX_RECT[3]) * borderID);
+	}
 }

@@ -6,10 +6,10 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 public class Projectile extends Unit {
 
 	protected boolean playerProjectile;
-	
+
 	public Projectile(ArcadeInvaders game, int x, int y, boolean playerProjectile) {
 		super(game, x, y);
-		
+
 		this.playerProjectile = playerProjectile;
 	}
 
@@ -21,7 +21,7 @@ public class Projectile extends Unit {
 			game.getModule().drawImage(gui, x, y, 32, 0, 6, 6);
 		}
 	}
-	
+
 	@Override
 	protected void hitCalculation() {
 		//don't do anything
@@ -32,13 +32,13 @@ public class Projectile extends Unit {
 		if (super.update() == UpdateResult.DEAD) {
 			return UpdateResult.DEAD;
 		}
-		
+
 		this.y += playerProjectile ? -5 : 5;
 		if (this.y < 0 || this.y > VehicleBase.MODULAR_SPACE_HEIGHT) {
 			this.dead = true;
 			return UpdateResult.DEAD;
 		}
-		
+
 		return UpdateResult.DONE;
 	}
 
@@ -51,7 +51,7 @@ public class Projectile extends Unit {
 	protected int getHitBoxHeight() {
 		return playerProjectile ? 16 : 6;
 	}
-	
-	
-	
+
+
+
 }

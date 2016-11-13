@@ -1,33 +1,30 @@
 package vswe.stevesvehicles.module.common.addon;
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
-import vswe.stevesvehicles.localization.entry.module.LocalizationIndependence;
 import vswe.stevesvehicles.localization.entry.module.LocalizationVisual;
+import vswe.stevesvehicles.module.IActivatorModule;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.module.IActivatorModule;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	public ModuleInvisible(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
-    @Override
-    public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
-        simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_INVISIBLE, "invisible"));
-    }
+	@Override
+	public void loadSimulationInfo(List<SimulationInfo> simulationInfo) {
+		simulationInfo.add(new SimulationInfoBoolean(LocalizationAssembler.INFO_INVISIBLE, "invisible"));
+	}
 
-    @Override
+	@Override
 	public boolean hasSlots() {
 		return false;
 	}
@@ -41,34 +38,34 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void drawForeground(GuiVehicle gui) {
-	    drawString(gui, getModuleName(), 8, 6, 0x404040);
+		drawString(gui, getModuleName(), 8, 6, 0x404040);
 	}
 
 
 
-    @Override
-    public int guiWidth() {
-        return 90;
-    }
+	@Override
+	public int guiWidth() {
+		return 90;
+	}
 
-    @Override
-    public int guiHeight() {
-        return 40;
-    }
-
-
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void drawBackground(GuiVehicle gui, int x, int y) {
-        drawToggleBox(gui, "invisible", !isVisible(), x, y);
-    }
+	@Override
+	public int guiHeight() {
+		return 40;
+	}
 
 
-    @Override
-    public void drawMouseOver(GuiVehicle gui, int x, int y) {
-        drawStringOnMouseOver(gui, getStateName(), x,y, TOGGLE_IMAGE_RECT);
-    }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawBackground(GuiVehicle gui, int x, int y) {
+		drawToggleBox(gui, "invisible", !isVisible(), x, y);
+	}
+
+
+	@Override
+	public void drawMouseOver(GuiVehicle gui, int x, int y) {
+		drawStringOnMouseOver(gui, getStateName(), x,y, TOGGLE_IMAGE_RECT);
+	}
 
 
 	@Override 
@@ -78,7 +75,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 			setIsVisible(true);
 		}
 	}
-	
+
 	private boolean isVisible() {
 		if (isPlaceholder()) {
 			return !getBooleanSimulationInfo();
@@ -88,7 +85,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	}
 
 	private String getStateName() {
-        return LocalizationVisual.INVISIBILITY_TOGGLE.translate(isVisible() ? "0" : "1");
+		return LocalizationVisual.INVISIBILITY_TOGGLE.translate(isVisible() ? "0" : "1");
 	}
 
 	@Override
@@ -102,7 +99,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
-	    setIsVisible(!isVisible());
+		setIsVisible(!isVisible());
 	}
 
 	public void setIsVisible(boolean val) {
@@ -110,43 +107,47 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	}
 
 
-    @Override
-    public boolean shouldVehicleRender() {
-        return isVisible();
-    }
+	@Override
+	public boolean shouldVehicleRender() {
+		return isVisible();
+	}
 
-    @Override
+	@Override
 	public int numberOfDataWatchers() {
 		return 1;
 	}
-	
+
 	@Override
 	public void initDw() {
 		addDw(0,(byte)1);
 	}
-	
 
-	
+
+
+	@Override
 	public int getConsumption(boolean isMoving) {
 		return isVisible() ? super.getConsumption(isMoving) : 3;
 	}
-	
+
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
 		tagCompound.setBoolean("Invisible", !isVisible());
 	}
-	
+
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
 		setIsVisible(!tagCompound.getBoolean("Invisible"));
 	}	
 
+	@Override
 	public void doActivate(int id) {
 		setIsVisible(false);
 	}
+	@Override
 	public void doDeActivate(int id) {
 		setIsVisible(true);
 	}
+	@Override
 	public boolean isActive(int id) {
 		return !isVisible();
 	}

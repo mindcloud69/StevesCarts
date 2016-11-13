@@ -16,5 +16,5 @@ public class Chance extends CardPlace {
 	public Card getCard() {
 		return CardChance.cards.get(game.getModule().getVehicle().getRandom().nextInt(CardChance.cards.size()));
 	}
-	
+
 }

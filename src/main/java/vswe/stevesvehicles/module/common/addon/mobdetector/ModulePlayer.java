@@ -10,20 +10,22 @@ public class ModulePlayer extends ModuleEntityDetector {
 		super(vehicleBase);
 	}
 
+	@Override
 	public String getName() {
 		return LocalizationShooter.PLAYER_TITLE.translate();
 	}
+	@Override
 	public boolean isValidTarget(Entity target) {
 		return
-		(
-			target instanceof EntityPlayerMP
-			||
-			(
-				(target instanceof EntityTameable)
-				&&
-				((EntityTameable)target).isTamed()
-			)			
-		)
-		;
+				(
+						target instanceof EntityPlayerMP
+						||
+						(
+								(target instanceof EntityTameable)
+								&&
+								((EntityTameable)target).isTamed()
+								)			
+						)
+				;
 	}
 }

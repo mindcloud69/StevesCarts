@@ -41,7 +41,7 @@ public class HullPig extends ModuleHull {
 		getVehicle().getWorld().playSoundAtEntity(
 				getVehicle().getEntity(), "mob.pig.say", 1.0F,
 				(getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.2F + 1.0F
-		);
+				);
 	}
 
 	private int getRandomTimer() {

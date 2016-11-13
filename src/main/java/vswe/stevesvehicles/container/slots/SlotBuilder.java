@@ -5,12 +5,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 public class SlotBuilder extends SlotBase {
-    public SlotBuilder(IInventory inventory, int id, int x, int y) {
-        super(inventory, id, x, y);
-    }
+	public SlotBuilder(IInventory inventory, int id, int x, int y) {
+		super(inventory, id, x, y);
+	}
 
-    @Override
-    public boolean isItemValid(ItemStack itemstack) {
-        return Block.getBlockFromItem(itemstack.getItem()) == Blocks.rail;
-    }
+	@Override
+	public boolean isItemValid(ItemStack itemstack) {
+		return Block.getBlockFromItem(itemstack.getItem()) == Blocks.rail;
+	}
 }

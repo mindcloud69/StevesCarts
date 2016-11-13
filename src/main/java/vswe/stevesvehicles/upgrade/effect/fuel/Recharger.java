@@ -5,17 +5,17 @@ import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 public class Recharger extends RechargerBase {
 
 	protected int amount;
-	
+
 	public Recharger(TileEntityUpgrade upgrade, Integer amount) {
-        super(upgrade);
+		super(upgrade);
 		this.amount = amount;
 	}
-	
+
 	@Override
 	protected int getAmount() {
 		return amount;
 	}
-	
+
 	@Override
 	protected boolean canGenerate() {
 		return true;

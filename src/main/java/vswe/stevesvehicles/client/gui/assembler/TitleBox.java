@@ -16,7 +16,7 @@ public class TitleBox {
 		this.y = y;
 		this.color = color;
 	}
-	
+
 	public ILocalizedText getName() {
 		return name;
 	}

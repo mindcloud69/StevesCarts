@@ -10,7 +10,7 @@ public class BlockCoordinate {
 		this.y = y;
 		this.z = z;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
@@ -20,7 +20,7 @@ public class BlockCoordinate {
 	public int getZ() {
 		return z;
 	}		
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof BlockCoordinate) {
@@ -32,23 +32,23 @@ public class BlockCoordinate {
 			return false;
 		}
 	}
-	
+
 	@SuppressWarnings("UnusedDeclaration")
-    public double getDistToVehicleSquared(VehicleBase vehicle) {
+	public double getDistToVehicleSquared(VehicleBase vehicle) {
 		int xDif = this.x - vehicle.x();
 		int yDif = this.y - vehicle.y();
 		int zDif = this.z - vehicle.z();
-		
+
 		return Math.pow(xDif, 2)
-			 + Math.pow(yDif, 2)
-			 + Math.pow(zDif, 2);
+				+ Math.pow(yDif, 2)
+				+ Math.pow(zDif, 2);
 	}
-	
+
 	public double getHorizontalDistToVehicleSquared(VehicleBase vehicle) {
 		int xDif = this.x - vehicle.x();
 		int zDif = this.z - vehicle.z();
-		
+
 		return Math.pow(xDif, 2)
-			 + Math.pow(zDif, 2);
+				+ Math.pow(zDif, 2);
 	}		
 }

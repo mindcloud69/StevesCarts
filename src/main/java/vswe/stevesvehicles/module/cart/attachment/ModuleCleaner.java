@@ -38,64 +38,64 @@ public class ModuleCleaner extends ModuleAttachment {
 	private void suck() {
 		List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().boundingBox.expand(3D, 1D, 3D));
 
-        for (Object obj : list) {
-            if (obj instanceof EntityItem) {
-                EntityItem entityItem = (EntityItem) obj;
-                if (entityItem.delayBeforeCanPickup <= 10) {
-                    double difX = getVehicle().getEntity().posX - entityItem.posX;
-                    double difY = getVehicle().getEntity().posY - entityItem.posY;
-                    double difZ = getVehicle().getEntity().posZ - entityItem.posZ;
+		for (Object obj : list) {
+			if (obj instanceof EntityItem) {
+				EntityItem entityItem = (EntityItem) obj;
+				if (entityItem.delayBeforeCanPickup <= 10) {
+					double difX = getVehicle().getEntity().posX - entityItem.posX;
+					double difY = getVehicle().getEntity().posY - entityItem.posY;
+					double difZ = getVehicle().getEntity().posZ - entityItem.posZ;
 
-                    entityItem.motionX += calculateMotion(difX);
-                    entityItem.motionY += calculateMotion(difY);
-                    entityItem.motionZ += calculateMotion(difZ);
-                }
-            }
-        }
+					entityItem.motionX += calculateMotion(difX);
+					entityItem.motionY += calculateMotion(difY);
+					entityItem.motionZ += calculateMotion(difZ);
+				}
+			}
+		}
 	}
 
 	private void clean() {
 		List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().boundingBox.expand(1D, 0.5D, 1D));
 
-        for (Object obj : list) {
-            if (obj instanceof EntityItem) {
-                EntityItem entityItem = (EntityItem) obj;
+		for (Object obj : list) {
+			if (obj instanceof EntityItem) {
+				EntityItem entityItem = (EntityItem) obj;
 
-                if (entityItem.delayBeforeCanPickup <= 10 && !entityItem.isDead) {
-                    int stackSize = entityItem.getEntityItem().stackSize;
-                    getVehicle().addItemToChest(entityItem.getEntityItem());
+				if (entityItem.delayBeforeCanPickup <= 10 && !entityItem.isDead) {
+					int stackSize = entityItem.getEntityItem().stackSize;
+					getVehicle().addItemToChest(entityItem.getEntityItem());
 
-                    if (stackSize != entityItem.getEntityItem().stackSize) {
-                        getVehicle().getWorld().playSoundAtEntity(getVehicle().getEntity(), "random.pop", 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+					if (stackSize != entityItem.getEntityItem().stackSize) {
+						getVehicle().getWorld().playSoundAtEntity(getVehicle().getEntity(), "random.pop", 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
-                        if (entityItem.getEntityItem().stackSize <= 0) {
-                            entityItem.setDead();
-                        }
-                    } else {
-                        if (failPickup(entityItem.getEntityItem())) {
-                            entityItem.setDead();
-                        }
-                    }
-                }
-            } else if (obj instanceof EntityArrow) {
-                EntityArrow entityArrow = (EntityArrow) obj;
+						if (entityItem.getEntityItem().stackSize <= 0) {
+							entityItem.setDead();
+						}
+					} else {
+						if (failPickup(entityItem.getEntityItem())) {
+							entityItem.setDead();
+						}
+					}
+				}
+			} else if (obj instanceof EntityArrow) {
+				EntityArrow entityArrow = (EntityArrow) obj;
 
-                if (Math.pow(entityArrow.motionX, 2) + Math.pow(entityArrow.motionY, 2) + Math.pow(entityArrow.motionZ, 2) < 0.2D && entityArrow.arrowShake <= 0 && !entityArrow.isDead) {
-                    entityArrow.arrowShake = 3;
-                    ItemStack iItem = new ItemStack(Items.arrow, 1);
-                    getVehicle().addItemToChest(iItem);
+				if (Math.pow(entityArrow.motionX, 2) + Math.pow(entityArrow.motionY, 2) + Math.pow(entityArrow.motionZ, 2) < 0.2D && entityArrow.arrowShake <= 0 && !entityArrow.isDead) {
+					entityArrow.arrowShake = 3;
+					ItemStack iItem = new ItemStack(Items.arrow, 1);
+					getVehicle().addItemToChest(iItem);
 
-                    if (iItem.stackSize <= 0) {
-                        getVehicle().getWorld().playSoundAtEntity(getVehicle().getEntity(), "random.pop", 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                        entityArrow.setDead();
-                    } else {
-                        if (failPickup(iItem)) {
-                            entityArrow.setDead();
-                        }
-                    }
-                }
-            }
-        }
+					if (iItem.stackSize <= 0) {
+						getVehicle().getWorld().playSoundAtEntity(getVehicle().getEntity(), "random.pop", 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+						entityArrow.setDead();
+					} else {
+						if (failPickup(iItem)) {
+							entityArrow.setDead();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private boolean failPickup(ItemStack item) {

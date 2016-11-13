@@ -11,9 +11,11 @@ public class ModuleCake extends ModuleProjectile {
 	}
 
 
+	@Override
 	public boolean isValidProjectile(ItemStack item) {
 		return item.getItem() == Items.cake;
 	}
+	@Override
 	public Entity createProjectile(Entity target, ItemStack item) {
 		return new EntityCake(getVehicle().getWorld());
 	}

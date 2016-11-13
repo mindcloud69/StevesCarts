@@ -13,14 +13,14 @@ public abstract class ModuleSolarTop extends ModuleSolarBase {
 	public float getMovingLevel() {
 		return movingLevel;
 	}
-	
+
 	private static final  float MIN_VAL = -4F;
 	private static final float MAX_VAL = -13F;
 	private static final float MIN_ANGLE = 0F;
 	private static final float MAX_ANGLE = (float)(Math.PI / 2);
 	private float innerRotation = 0F;
 	private float movingLevel = MIN_VAL;
-	
+
 	@Override
 	public boolean updatePanels() {
 

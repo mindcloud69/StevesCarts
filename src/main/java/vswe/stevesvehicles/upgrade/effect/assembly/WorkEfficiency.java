@@ -14,7 +14,7 @@ public class WorkEfficiency extends BaseEffect {
 		this.efficiency = efficiency;
 	}
 
-	
+
 	public float getEfficiency() {
 		return efficiency;
 	}

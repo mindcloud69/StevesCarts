@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class PropertyGroup {
 
 	private ArrayList<Property> properties;
-	
+
 	public PropertyGroup() {
-		properties = new ArrayList<Property>();
+		properties = new ArrayList<>();
 	}
-	
+
 	public ArrayList<Property> getProperties() {
 		return properties;
 	}
@@ -17,6 +17,6 @@ public class PropertyGroup {
 	public void add(Property property) {
 		properties.add(property);
 	}
-					
+
 
 }

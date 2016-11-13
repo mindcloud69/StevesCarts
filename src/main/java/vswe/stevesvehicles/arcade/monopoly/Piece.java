@@ -16,18 +16,18 @@ public class Piece {
 	private ArrayList<NoteAnimation> oldnotes;
 	private boolean bankrupt;
 	private int turnsInJail;
-	
+
 	public Piece(ArcadeMonopoly game, int u, ControlledBy control) {
 		this.game = game;
 		this.pos = 0;
 		this.u = u;
 		this.money = new int[] {30, 30, 30, 30, 30, 30, 30};
 		this.control = control;
-		animationNotes = new ArrayList<NoteAnimation>();
-		oldnotes = new ArrayList<NoteAnimation>();
+		animationNotes = new ArrayList<>();
+		oldnotes = new ArrayList<>();
 		turnsInJail = -1;
 	}
-	
+
 	public void move(int dif) {
 		pos = (pos + dif) % (ArcadeMonopoly.BOARD_WIDTH * 2 + ArcadeMonopoly.BOARD_HEIGHT * 2);
 	}
@@ -36,20 +36,20 @@ public class Piece {
 		return pos;
 	}
 
-	
+
 	public int getV() {
 		return u;
 	}
-	
+
 	public int[] getNoteCount() {
 		return money;
 	}
-	
 
-	
+
+
 	public int getNoteCount(Note note) {
 		int money = this.money[note.getId()];
-				
+
 		for (int i = 0; i < oldnotes.size(); i++) {
 			if (note == oldnotes.get(i).getNote()) {
 				money -= 1;
@@ -58,37 +58,37 @@ public class Piece {
 
 		return money;
 	}	
-	
+
 	public int getTotalMoney() {
 		int money = 0;
-		
+
 		for (int i = 0; i < Note.notes.size(); i++){
 			money += Note.notes.get(i).getUnits() * this.money[i];
 		}
 
-        for (NoteAnimation oldNote : oldnotes) {
-            money -= oldNote.getNote().getUnits();
-        }
-		
+		for (NoteAnimation oldNote : oldnotes) {
+			money -= oldNote.getNote().getUnits();
+		}
+
 		return money;
 	}
-	
+
 	public void addMoney(int money, boolean useAnimation) {
 		for (int i = Note.notes.size() - 1; i >= 0; i--) {
 			Note note = Note.notes.get(i);
-			
+
 			int notesToAdd = money / note.getUnits();
 			if (notesToAdd > 0) {
 				addMoney(note, notesToAdd, true);
 				money -= notesToAdd * note.getUnits();
 			}
-			
+
 			if (money == 0) {
 				return;
 			}
 		}		
 	}
-	
+
 	public void addMoney(Note note, int amount, boolean useAnimation) {
 		if (useAnimation) {
 			int min = 10;
@@ -97,17 +97,17 @@ public class Piece {
 					min = animation.getAnimation();
 				}
 			}
-			
+
 			for (int i = 0; i < amount; i++) {
 				animationNotes.add(0, new NoteAnimation(note, min - 10, true));
 				min -=10;
 			}
-			
+
 		}else{
 			money[note.getId()] += amount;
 		}
 	}
-	
+
 	public void removeNewNoteAnimation(int i) {
 		if (animationNotes.get(i).isNew()) {
 			addMoney(animationNotes.get(i).getNote(), 1, false);
@@ -123,22 +123,22 @@ public class Piece {
 		}
 		animationNotes.remove(i);
 	}
-	
+
 	public ArrayList<NoteAnimation> getAnimationNotes() {
 		return animationNotes;
 	}
-	
+
 	public boolean removeMoney(int money, boolean useAnimation) {
 		int [] noteCounts = new int[Note.notes.size()];
 		int [] moneyBelowThisLevel = new int[Note.notes.size()];
-		
+
 		int totalmoney = 0;
 		for (int i = 0; i < noteCounts.length; i++) {
 			noteCounts[i] = getNoteCount(Note.notes.get(i));
 			moneyBelowThisLevel[i] = totalmoney;
 			totalmoney += noteCounts[i] * Note.notes.get(i).getUnits();
 		}
-		
+
 		if (totalmoney >= money) {		
 			for (int i = Note.notes.size() - 1; i >= 0; i--) {
 				Note note = Note.notes.get(i);
@@ -152,18 +152,18 @@ public class Piece {
 				}else if (moneyBelowThisLevel[i] < money) {
 					removeMoney(note, 1, useAnimation);
 					money -= note.getUnits();
-					
+
 					addMoney(-money, useAnimation);
-					
+
 					return true;
 				} 
-				
+
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	private void removeMoney(Note note, int amount, boolean useAnimation) {
 		if (useAnimation) {
 			int min = 10;
@@ -172,7 +172,7 @@ public class Piece {
 					min = animation.getAnimation();
 				}
 			}
-			
+
 			for (int i = 0; i < amount; i++) {
 				NoteAnimation animation = new NoteAnimation(note, min - 10, false);
 				animationNotes.add(0, animation);
@@ -183,12 +183,12 @@ public class Piece {
 			money[note.getId()] -= amount;
 		}
 	}
-	
-	
+
+
 	public int[] getMenuRect(int i) {
 		int w = 50 + extended;
-		
-		
+
+
 		return new int[] {VehicleBase.MODULAR_SPACE_WIDTH - w, 10 + i * 30, w, 30};
 	}
 
@@ -204,13 +204,13 @@ public class Piece {
 			extended = Math.max(0, extended - 50); 
 		}
 	}
-	
+
 	public static enum ControlledBy {
 		PLAYER,
 		COMPUTER,
 		OTHER
 	}
-	
+
 	public ControlledBy getController() {
 		return control;
 	}
@@ -222,7 +222,7 @@ public class Piece {
 	public boolean canAffordProperty(Property property) {	
 		return getTotalMoney() >= property.getCost();
 	}
-	
+
 
 	public void purchaseProperty(Property property) {
 		if (removeMoney(property.getCost(), true)) {
@@ -260,7 +260,7 @@ public class Piece {
 			System.out.println("Couldn't remove the resources, this is very weird :S");
 		}
 	}
-	
+
 	public boolean isBankrupt() {
 		return bankrupt;
 	}
@@ -276,7 +276,7 @@ public class Piece {
 			System.out.println("Couldn't remove the resources, this is very weird :S");
 		}		
 	}
-	
+
 	public boolean isInJail() {
 		return turnsInJail >= 0;
 	}
@@ -285,7 +285,7 @@ public class Piece {
 		turnsInJail = 0;
 		pos = ArcadeMonopoly.BOARD_WIDTH;
 	}
-	
+
 	public void releaseFromJail() {
 		turnsInJail = -1;
 	}
@@ -298,7 +298,7 @@ public class Piece {
 		return turnsInJail;
 	}
 
-	
+
 	public void payFine() {
 		if (removeMoney(50, true)) {
 			releaseFromJail();

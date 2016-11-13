@@ -11,12 +11,12 @@ public class TimeFlatCart extends BaseEffect {
 		super(upgrade);
 		this.ticks = ticks;
 	}
-	
+
 
 	protected int getSeconds() {
 		return ticks / 20;
 	}
-	
+
 	public int getTicks() {
 		return ticks;
 	}

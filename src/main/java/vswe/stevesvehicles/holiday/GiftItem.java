@@ -1,21 +1,21 @@
 package vswe.stevesvehicles.holiday;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
+import net.minecraft.item.ItemStack;
 import vswe.stevesvehicles.module.data.ModuleData;
+import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 public class GiftItem {
 	private int chanceWeight;
 	private int costPerItem;
 	private ItemStack item;
 	private boolean fixedSize;
-	
+
 	public GiftItem(ItemStack item, int costPerItem, int chanceWeight) {
 		this.item = item;
 		this.chanceWeight = chanceWeight;
@@ -24,7 +24,7 @@ public class GiftItem {
 
 
 	@SuppressWarnings("UnusedDeclaration")
-    public GiftItem(Block block, int costPerItem, int chanceWeight) {
+	public GiftItem(Block block, int costPerItem, int chanceWeight) {
 		this(new ItemStack(block,1), costPerItem, chanceWeight);
 	}
 
@@ -32,26 +32,26 @@ public class GiftItem {
 		this(new ItemStack(item,1), costPerItem, chanceWeight);
 	}
 
-    public ItemStack getItem() {
-        return item;
-    }
+	public ItemStack getItem() {
+		return item;
+	}
 
-    private static class GiftItemModule extends GiftItem {
-        private ModuleData module;
-        private GiftItemModule(ModuleData module, int costPerItem, int chanceWeight) {
-            super((ItemStack)null, costPerItem, chanceWeight);
-            this.module = module;
-        }
+	private static class GiftItemModule extends GiftItem {
+		private ModuleData module;
+		private GiftItemModule(ModuleData module, int costPerItem, int chanceWeight) {
+			super((ItemStack)null, costPerItem, chanceWeight);
+			this.module = module;
+		}
 
-        @Override
-        public ItemStack getItem() {
-            return module.getItemStack();
-        }
-    }
-	
-	public static ArrayList<GiftItem> ChristmasList = new ArrayList<GiftItem>();
-	public static ArrayList<GiftItem> EasterList  = new ArrayList<GiftItem>();
-	
+		@Override
+		public ItemStack getItem() {
+			return module.getItemStack();
+		}
+	}
+
+	public static ArrayList<GiftItem> ChristmasList = new ArrayList<>();
+	public static ArrayList<GiftItem> EasterList  = new ArrayList<>();
+
 	public static void init() {
 		ChristmasList.add(new GiftItem(new ItemStack(Blocks.dirt, 32), 25, 200000));
 		ChristmasList.add(new GiftItem(new ItemStack(Blocks.stone, 16), 50, 100000));
@@ -64,7 +64,7 @@ public class GiftItem {
 
 		GiftItem.addModuleGifts(EasterList);		
 	}
-	
+
 	public static void addModuleGifts(ArrayList<GiftItem> gifts) {
 		for (ModuleData module : ModuleRegistry.getAllModules()) {
 			if (module.getIsValid() && !module.getIsLocked() && module.getHasRecipe()) {
@@ -76,19 +76,19 @@ public class GiftItem {
 			}
 		}	
 	}
-	
+
 	public static ArrayList<ItemStack> generateItems(Random rand, ArrayList<GiftItem> gifts, int value, int maxTries) {
 		int totalChanceWeight = 0;
 		for (GiftItem gift : gifts) {
 			totalChanceWeight += gift.chanceWeight;
 		}
-				
-		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-		
+
+		ArrayList<ItemStack> items = new ArrayList<>();
+
 		if (totalChanceWeight == 0) {
 			return items;
 		}
-		
+
 		int tries = 0;
 		while (value > 0 && tries < maxTries) {
 			int chance = rand.nextInt(totalChanceWeight);
@@ -107,14 +107,14 @@ public class GiftItem {
 								}
 							}
 						}
-						
+
 						ItemStack item = gift.getItem().copy();
 						item.stackSize *= setSize;
 						items.add(item);
-						
+
 						value -= setSize * gift.costPerItem;
 					}
-					
+
 					break;
 				}else{
 					chance -= gift.chanceWeight;

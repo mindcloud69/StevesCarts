@@ -4,9 +4,9 @@ import net.minecraft.block.BlockSapling;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.module.cart.ITreeModule;
 import vswe.stevesvehicles.module.common.addon.ModuleAddon;
+import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 
@@ -14,38 +14,41 @@ public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 		super(vehicleBase);
 	}
 
+	@Override
 	public boolean isLeaves(Block b, int x, int y, int z) {
 		return b.isLeaves(getVehicle().getWorld(), x, y, z);
 	}
-	
+
+	@Override
 	public boolean isWood(Block b, int x, int y, int z) {
 		return b.isWood(getVehicle().getWorld(), x, y, z);
 	}
+	@Override
 	public boolean isSapling(ItemStack sapling) {
 		if (sapling != null /*&& sapling.getItem() instanceof ItemBlock*/) {
-			
+
 			if (isStackSapling(sapling)) {
 				return true;
 			}else if (sapling.getItem() instanceof ItemBlock){
 				Block b = Block.getBlockFromItem(sapling.getItem());
-				
+
 				if (b instanceof BlockSapling) {
 					return true;
 				}
-				
+
 				return b != null && isStackSapling(new ItemStack(b, 1, OreDictionary.WILDCARD_VALUE));
 			}
 		}
-			
+
 		return false;
-		
+
 	}	
-	
+
 	private boolean isStackSapling(ItemStack sapling) {
 		int id = OreDictionary.getOreID(sapling);
 		String name = OreDictionary.getOreName(id);
 		return name != null && name.startsWith("treeSapling");		
 	}
-	
-	
+
+
 }

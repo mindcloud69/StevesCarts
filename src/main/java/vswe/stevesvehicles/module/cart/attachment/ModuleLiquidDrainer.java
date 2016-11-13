@@ -7,29 +7,31 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
-import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.block.BlockCoordinate;
-import vswe.stevesvehicles.vehicle.VehicleBase;
+import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.module.cart.tool.ModuleDrill;
+import vswe.stevesvehicles.vehicle.VehicleBase;
 public class ModuleLiquidDrainer extends ModuleWorker {
 	public ModuleLiquidDrainer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
 
 	//lower numbers are prioritized
+	@Override
 	public byte getWorkPriority() {
 		return (byte)0;
 	}
 
 	//return true when the work is done, false allow other modules to continue the work
+	@Override
 	public boolean work() {
 		return false;
 	}
-	
+
 	public void handleLiquid(ModuleDrill drill, int x, int y, int z) {
-		
+
 		BlockCoordinate here = new BlockCoordinate(x,y,z);
-		ArrayList<BlockCoordinate> checked = new ArrayList<BlockCoordinate>();
+		ArrayList<BlockCoordinate> checked = new ArrayList<>();
 		int result = drainAt(drill, checked, here, 0);
 		if (result > 0 && doPreWork()) {
 			drill.kill();
@@ -38,13 +40,13 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 			stopWorking();
 		}
 	}	
-	
+
 
 	@Override
 	public boolean preventAutoShutdown() {
 		return true;
 	}
-	
+
 	private int drainAt(ModuleDrill drill, ArrayList<BlockCoordinate> checked, BlockCoordinate here, int buckets) {
 		int drained = 0;
 		Block b = getVehicle().getWorld().getBlock(here.getX(), here.getY(), here.getZ());
@@ -52,7 +54,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 			return 0;
 		}
 		int meta = getVehicle().getWorld().getBlockMetadata(here.getX(), here.getY(), here.getZ());
-		
+
 		FluidStack liquid = getFluidStack(b, here.getX(), here.getY(), here.getZ(), !doPreWork());
 		if (liquid != null) {
 			if (doPreWork()) {
@@ -71,7 +73,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 				buckets += canDrain ? 1 : 0;
 			}
 		}
-		
+
 		checked.add(here);
 
 
@@ -80,21 +82,21 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 				for (int x = -1; x <= 1; x++) {
 					for (int z = -1; z <= 1; z++) {	
 						if (Math.abs(x) + Math.abs(y) + Math.abs(z) == 1) {
-	
+
 							BlockCoordinate next = new BlockCoordinate(here.getX()+x,here.getY()+y,here.getZ()+z);
 							if (!checked.contains(next)) {
 								drained += drainAt(drill, checked, next, buckets);
 							}
-							
+
 						}
 					}
 				}
 			}
 		}
-		
+
 		return drained;
 	}		
-	
+
 	private boolean isLiquid(Block b) {
 
 		boolean isWater = b == Blocks.water || b == Blocks.flowing_water || b == Blocks.ice;
@@ -102,14 +104,14 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		boolean isOther = b != null && b instanceof IFluidBlock;
 		return isWater || isLava || isOther;
 	}
-	
+
 	private FluidStack getFluidStack(Block b, int x, int y, int z, boolean doDrain) {
 		if (b == Blocks.water || b == Blocks.flowing_water) {
 			return new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
-			
+
 		}else if (b == Blocks.lava || b == Blocks.flowing_lava) {
 			return new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-			
+
 		}else if (b instanceof IFluidBlock) {
 			IFluidBlock liquid = (IFluidBlock)b;
 
@@ -118,6 +120,6 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 			return null;
 		}
 	}	
-	
+
 
 }

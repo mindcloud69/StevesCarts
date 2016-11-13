@@ -1,22 +1,22 @@
 package vswe.stevesvehicles.block;
-import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import vswe.stevesvehicles.StevesVehicles;
-import vswe.stevesvehicles.tileentity.TileEntityDistributor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.IIcon;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
+import vswe.stevesvehicles.tileentity.TileEntityDistributor;
 
 public class BlockDistributor extends BlockContainerBase {
 
 
-    public BlockDistributor() {
-        super(Material.rock);
-        setCreativeTab(CreativeTabLoader.blocks);
-    }
+	public BlockDistributor() {
+		super(Material.rock);
+		setCreativeTab(CreativeTabLoader.blocks);
+	}
 
 
 	private IIcon purpleIcon;
@@ -26,10 +26,10 @@ public class BlockDistributor extends BlockContainerBase {
 	private IIcon greenIcon;
 	private IIcon yellowIcon;
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
-    public IIcon getIcon(int side, int meta) {
-        if (side == 0) {
+	public IIcon getIcon(int side, int meta) {
+		if (side == 0) {
 			return purpleIcon;
 		}else if(side == 1) {
 			return orangeIcon;
@@ -42,22 +42,22 @@ public class BlockDistributor extends BlockContainerBase {
 		}else{
 			return redIcon;
 		}
-    }
-	
-    @SideOnly(Side.CLIENT)
+	}
+
+	@SideOnly(Side.CLIENT)
 	@Override
-    public void registerBlockIcons(IIconRegister register) {
+	public void registerBlockIcons(IIconRegister register) {
 		purpleIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/purple");
-        orangeIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/orange");
+		orangeIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/orange");
 		redIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/red");
 		blueIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/blue");
 		greenIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/green");
 		yellowIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":distributor/yellow");
-    }	
+	}	
 
 
 	@Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityDistributor();
-    }
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityDistributor();
+	}
 }

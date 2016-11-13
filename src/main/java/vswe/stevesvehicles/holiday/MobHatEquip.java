@@ -3,6 +3,7 @@ package vswe.stevesvehicles.holiday;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,22 +12,21 @@ import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import vswe.stevesvehicles.item.ComponentTypes;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class MobHatEquip {
 
-    public MobHatEquip() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	public MobHatEquip() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
 	@SubscribeEvent
 	public void onEntityInteract(EntityInteractEvent event) {
 		EntityPlayer player = event.entityPlayer;
 		Entity target = event.target;
-		
+
 		if (target instanceof EntityVillager) {
 			EntityVillager villager = (EntityVillager)target;
-			
+
 			if (villager.getProfession() != TradeHandler.SANTA_ID) {
 				ItemStack item = player.getCurrentEquippedItem();
 
@@ -35,7 +35,7 @@ public class MobHatEquip {
 					if (!player.capabilities.isCreativeMode) {
 						--item.stackSize;
 					}
-				
+
 					if (!player.worldObj.isRemote) {
 						villager.setProfession(TradeHandler.SANTA_ID);
 						MerchantRecipeList list = villager.getRecipes(player);
@@ -52,7 +52,7 @@ public class MobHatEquip {
 			}
 
 		}
-			
+
 	}
 
 }

@@ -15,30 +15,32 @@ public class ModuleMonster extends ModuleEntityDetector {
 		super(vehicleBase);
 	}
 
+	@Override
 	public String getName() {
 		return LocalizationShooter.MONSTER_TITLE.translate();
 	}
+	@Override
 	public boolean isValidTarget(Entity target) {
 		return
-		(
-			target instanceof EntityMob
-			||
-			target instanceof EntityDragon
-			||
-			target instanceof EntityGhast
-			||
-			target instanceof EntitySlime
-			||
-			target instanceof EntityEnderCrystal
-			||
-			(
-				(target instanceof EntityWolf)
+				(
+						target instanceof EntityMob
+						||
+						target instanceof EntityDragon
+						||
+						target instanceof EntityGhast
+						||
+						target instanceof EntitySlime
+						||
+						target instanceof EntityEnderCrystal
+						||
+						(
+								(target instanceof EntityWolf)
+								&&
+								((EntityWolf)target).isAngry()
+								)
+						)
 				&&
-				((EntityWolf)target).isAngry()
-			)
-		)
-		&&
-		!(target instanceof EntityEnderman)	//projectiles can't hit them anyways
-		;
+				!(target instanceof EntityEnderman)	//projectiles can't hit them anyways
+				;
 	}
 }

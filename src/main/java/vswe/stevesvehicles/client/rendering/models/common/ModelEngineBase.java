@@ -8,16 +8,16 @@ import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 public abstract class ModelEngineBase extends ModelVehicle {
 
 	protected ModelRenderer anchor;
-    public ModelEngineBase() {
+	public ModelEngineBase() {
 		anchor = new ModelRenderer(this, 0, 0);
 		addRenderer(anchor);
 
 		anchor.setRotationPoint(
-			10.5F, 		//X
-			0.5F,		//Y
-			-0F			//Z
-		);		
-		
+				10.5F, 		//X
+				0.5F,		//Y
+				-0F			//Z
+				);		
+
 		anchor.rotateAngleY = -(float)Math.PI / 2;
 	}
 

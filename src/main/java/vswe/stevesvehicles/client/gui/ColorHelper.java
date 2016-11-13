@@ -22,5 +22,5 @@ public enum ColorHelper {
 	public String toString() {
 		return "\u00a7" + Integer.toHexString(ordinal());
 	}
-	
+
 }
