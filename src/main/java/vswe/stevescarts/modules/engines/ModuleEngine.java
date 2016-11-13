@@ -3,7 +3,6 @@ package vswe.stevescarts.modules.engines;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
@@ -45,7 +44,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	protected boolean isDisabled() {
 		return this.getPriority() >= 3 || this.getPriority() < 0;
 	}
-	
+
 	protected abstract DataParameter<Integer> getPriorityDw();
 
 	public int getPriority() {

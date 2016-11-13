@@ -14,12 +14,12 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.CartVersion;
-import vswe.stevescarts.helpers.ColorHelper;
 import vswe.stevescarts.helpers.ModuleCountPair;
 import vswe.stevescarts.modules.data.ModuleData;
 
@@ -109,16 +109,16 @@ public class ItemCarts extends ItemMinecart {
 						if (info.hasKey("Data" + (bytes.length + j))) {
 							name = module2.getCartInfoText(name, info.getByte("Data" + (bytes.length + j)));
 						}
-						list.add(ColorHelper.ORANGE + name);
+						list.add(TextFormatting.GOLD + name);
 					}
 				}
 			}
 			if (info.hasKey("maxTime")) {
-				list.add(ColorHelper.RED + "Incomplete cart!");
+				list.add(TextFormatting.RED+ "Incomplete cart!");
 				final int maxTime = info.getInteger("maxTime");
 				final int currentTime = info.getInteger("currentTime");
 				final int timeLeft = maxTime - currentTime;
-				list.add(ColorHelper.RED + "Time left: " + this.formatTime(timeLeft));
+				list.add(TextFormatting.RED + "Time left: " + this.formatTime(timeLeft));
 			}
 		} else {
 			list.add("No modules loaded");

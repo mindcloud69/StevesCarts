@@ -16,7 +16,7 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 	public ModuleThermalBase(final EntityMinecartModular cart) {
 		super(cart);
 	}
-	
+
 	@Override
 	protected DataParameter<Integer> getPriorityDw() {
 		return PRIORITY;

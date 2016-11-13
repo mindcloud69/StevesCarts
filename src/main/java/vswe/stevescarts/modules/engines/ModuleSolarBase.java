@@ -20,12 +20,12 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private static DataParameter<Integer> LIGHT = createDw(DataSerializers.VARINT);
 	private static DataParameter<Boolean> UP_STATE = createDw(DataSerializers.BOOLEAN);
 	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
-	
+
 	public ModuleSolarBase(final EntityMinecartModular cart) {
 		super(cart);
 		this.down = true;
 	}
-	
+
 	@Override
 	protected DataParameter<Integer> getPriorityDw() {
 		return PRIORITY;
@@ -60,9 +60,13 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	private void updateLight() {
-		this.light = this.getCart().worldObj.getLight(this.getCart().getPosition());
-		if (this.light == 15 && !this.getCart().worldObj.canBlockSeeSky(this.getCart().getPosition())) {
-			this.light = 14;
+		if(!this.getCart().worldObj.isDaytime()){
+			this.light = 0;
+		}else{
+			this.light = this.getCart().worldObj.getLight(this.getCart().getPosition());
+			if (this.light == 15 && !this.getCart().worldObj.canBlockSeeSky(this.getCart().getPosition())) {
+				this.light = 14;
+			}
 		}
 	}
 

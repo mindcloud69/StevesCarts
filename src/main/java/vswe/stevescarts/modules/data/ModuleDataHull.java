@@ -2,7 +2,7 @@ package vswe.stevescarts.modules.data;
 
 import java.util.List;
 
-import vswe.stevescarts.helpers.ColorHelper;
+import net.minecraft.util.text.TextFormatting;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ModuleBase;
 
@@ -54,9 +54,9 @@ public class ModuleDataHull extends ModuleData {
 
 	@Override
 	public void addSpecificInformation(final List list) {
-		list.add(ColorHelper.YELLOW + Localization.MODULE_INFO.MODULAR_CAPACITY.translate(String.valueOf(this.modularCapacity)));
-		list.add(ColorHelper.PURPLE + Localization.MODULE_INFO.COMPLEXITY_CAP.translate(String.valueOf(this.complexityMax)));
-		list.add(ColorHelper.ORANGE + Localization.MODULE_INFO.MAX_ENGINES.translate(String.valueOf(this.engineMaxCount)));
-		list.add(ColorHelper.GREEN + Localization.MODULE_INFO.MAX_ADDONS.translate(String.valueOf(this.addonMaxCount)));
+		list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.MODULAR_CAPACITY.translate(String.valueOf(this.modularCapacity)));
+		list.add(TextFormatting.DARK_PURPLE + Localization.MODULE_INFO.COMPLEXITY_CAP.translate(String.valueOf(this.complexityMax)));
+		list.add(TextFormatting.GOLD + Localization.MODULE_INFO.MAX_ENGINES.translate(String.valueOf(this.engineMaxCount)));
+		list.add(TextFormatting.GREEN + Localization.MODULE_INFO.MAX_ADDONS.translate(String.valueOf(this.addonMaxCount)));
 	}
 }

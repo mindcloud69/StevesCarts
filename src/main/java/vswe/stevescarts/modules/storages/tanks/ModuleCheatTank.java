@@ -2,12 +2,12 @@ package vswe.stevescarts.modules.storages.tanks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 import vswe.stevescarts.entitys.EntityMinecartModular;
-import vswe.stevescarts.helpers.ColorHelper;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleCheatTank extends ModuleTank {
-	private static final ColorHelper[] colors;
+	private static final TextFormatting[] colors = new TextFormatting[] { TextFormatting.YELLOW, TextFormatting.GREEN, TextFormatting.RED, TextFormatting.GOLD };;
 	private int mode;
 
 	public ModuleCheatTank(final EntityMinecartModular cart) {
@@ -100,9 +100,5 @@ public class ModuleCheatTank extends ModuleTank {
 	public void onFluidUpdated(final int tankid) {
 		this.updateAmount();
 		super.onFluidUpdated(tankid);
-	}
-
-	static {
-		colors = new ColorHelper[] { ColorHelper.YELLOW, ColorHelper.GREEN, ColorHelper.RED, ColorHelper.ORANGE };
 	}
 }

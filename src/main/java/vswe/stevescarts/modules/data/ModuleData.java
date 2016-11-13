@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,7 +19,6 @@ import vswe.stevescarts.Constants;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.CartVersion;
-import vswe.stevescarts.helpers.ColorHelper;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.RecipeHelper;
@@ -1040,11 +1040,11 @@ public class ModuleData {
 	}
 
 	private void addExtraMessage(final List list, final String str) {
-		list.add(ColorHelper.GRAY + "�o" + str + "�r");
+		list.add(TextFormatting.DARK_GRAY + (TextFormatting.ITALIC + str + TextFormatting.RESET));
 	}
 
 	public void addSpecificInformation(final List list) {
-		list.add(ColorHelper.LIGHTGRAY + Localization.MODULE_INFO.MODULAR_COST.translate() + ": " + this.modularCost);
+		list.add(TextFormatting.GRAY + Localization.MODULE_INFO.MODULAR_COST.translate() + ": " + this.modularCost);
 	}
 
 	public final void addInformation(final List list, final NBTTagCompound compound) {
@@ -1052,12 +1052,12 @@ public class ModuleData {
 		if (compound != null && compound.hasKey("Data")) {
 			final String extradatainfo = this.getModuleInfoText(compound.getByte("Data"));
 			if (extradatainfo != null) {
-				list.add(ColorHelper.WHITE + extradatainfo);
+				list.add(TextFormatting.WHITE + extradatainfo);
 			}
 		}
 		if (GuiScreen.isShiftKeyDown()) {
 			if (this.getRenderingSides() == null || this.getRenderingSides().size() == 0) {
-				list.add(ColorHelper.CYAN + Localization.MODULE_INFO.NO_SIDES.translate());
+				list.add(TextFormatting.DARK_AQUA + Localization.MODULE_INFO.NO_SIDES.translate());
 			} else {
 				String sides = "";
 				for (int i = 0; i < this.getRenderingSides().size(); ++i) {
@@ -1070,31 +1070,31 @@ public class ModuleData {
 						sides = sides + ", " + side.toString();
 					}
 				}
-				list.add(ColorHelper.CYAN + Localization.MODULE_INFO.OCCUPIED_SIDES.translate(sides, String.valueOf(this.getRenderingSides().size())));
+				list.add(TextFormatting.DARK_AQUA + Localization.MODULE_INFO.OCCUPIED_SIDES.translate(sides, String.valueOf(this.getRenderingSides().size())));
 			}
 			if (this.getNemesis() != null && this.getNemesis().size() != 0) {
 				if (this.getRenderingSides() == null || this.getRenderingSides().size() == 0) {
-					list.add(ColorHelper.RED + Localization.MODULE_INFO.CONFLICT_HOWEVER.translate() + ":");
+					list.add(TextFormatting.RED + Localization.MODULE_INFO.CONFLICT_HOWEVER.translate() + ":");
 				} else {
-					list.add(ColorHelper.RED + Localization.MODULE_INFO.CONFLICT_ALSO.translate() + ":");
+					list.add(TextFormatting.RED + Localization.MODULE_INFO.CONFLICT_ALSO.translate() + ":");
 				}
 				for (final ModuleData module : this.getNemesis()) {
-					list.add(ColorHelper.RED + module.getName());
+					list.add(TextFormatting.RED + module.getName());
 				}
 			}
 			if (this.parent != null) {
-				list.add(ColorHelper.YELLOW + Localization.MODULE_INFO.REQUIREMENT.translate() + " " + this.parent.getName());
+				list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.REQUIREMENT.translate() + " " + this.parent.getName());
 			}
 			if (this.getRequirement() != null && this.getRequirement().size() != 0) {
 				for (final ModuleDataGroup group : this.getRequirement()) {
-					list.add(ColorHelper.YELLOW + Localization.MODULE_INFO.REQUIREMENT.translate() + " " + group.getCountName() + " " + group.getName());
+					list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.REQUIREMENT.translate() + " " + group.getCountName() + " " + group.getName());
 				}
 			}
 			if (this.getAllowDuplicate()) {
-				list.add(ColorHelper.LIME + Localization.MODULE_INFO.DUPLICATES.translate());
+				list.add(TextFormatting.GREEN + Localization.MODULE_INFO.DUPLICATES.translate());
 			}
 		}
-		list.add(ColorHelper.LIGHTBLUE + Localization.MODULE_INFO.TYPE.translate() + ": " + ModuleData.moduleGroupNames[this.groupID].translate());
+		list.add(TextFormatting.BLUE + Localization.MODULE_INFO.TYPE.translate() + ": " + ModuleData.moduleGroupNames[this.groupID].translate());
 		this.addExtraMessage(list);
 	}
 

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -18,7 +19,6 @@ import vswe.stevescarts.containers.slots.SlotLiquidOutput;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiMinecart;
-import vswe.stevescarts.helpers.ColorHelper;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.helpers.storages.ITankHolder;
@@ -145,7 +145,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	protected String getTankInfo() {
 		String str = this.tank.getMouseOver();
 		if (this.tank.isLocked()) {
-			str = str + "\n\n" + ColorHelper.GREEN + Localization.MODULES.TANKS.LOCKED.translate() + "\n" + Localization.MODULES.TANKS.UNLOCK.translate();
+			str = str + "\n\n" + TextFormatting.GREEN + Localization.MODULES.TANKS.LOCKED.translate() + "\n" + Localization.MODULES.TANKS.UNLOCK.translate();
 		} else if (this.tank.getFluid() != null) {
 			str = str + "\n\n" + Localization.MODULES.TANKS.LOCK.translate();
 		}

@@ -10,6 +10,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotTorch;
@@ -216,7 +217,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void update() {
 		super.update();
-		this.light = this.getCart().worldObj.getLight(new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z()));
+		this.light = this.getCart().worldObj.getLightFor(EnumSkyBlock.BLOCK, new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z()));
 	}
 
 	@Override

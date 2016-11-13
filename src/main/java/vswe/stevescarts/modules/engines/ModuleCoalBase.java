@@ -16,11 +16,11 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	private int fireIndex;
 
 	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
-	
+
 	public ModuleCoalBase(final EntityMinecartModular cart) {
 		super(cart);
 	}
-	
+
 	@Override
 	protected DataParameter<Integer> getPriorityDw() {
 		return PRIORITY;

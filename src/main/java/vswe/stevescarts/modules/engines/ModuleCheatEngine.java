@@ -11,7 +11,7 @@ public class ModuleCheatEngine extends ModuleEngine {
 	public ModuleCheatEngine(final EntityMinecartModular cart) {
 		super(cart);
 	}
-	
+
 	@Override
 	protected DataParameter<Integer> getPriorityDw() {
 		return PRIORITY;
