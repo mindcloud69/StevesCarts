@@ -14,7 +14,7 @@ import vswe.stevescarts.modules.IActivatorModule;
 
 public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	private int[] buttonRect;
-	private static DataParameter<Boolean> VISABLE = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> VISABLE = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleInvisible(final EntityMinecartModular cart) {
 		super(cart);

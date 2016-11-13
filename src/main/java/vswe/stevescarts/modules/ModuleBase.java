@@ -634,10 +634,11 @@ public abstract class ModuleBase {
 		return this.getCart().getDataManager().get(key);
 	}
 
-	protected static <T> DataParameter<T> createDw(DataSerializer<T> serializer){
-		return EntityDataManager.createKey(EntityMinecartModular.class, serializer);
+	private int ids = -1;
+	protected <T> DataParameter<T> createDw(DataSerializer<T> serializer){
+		return serializer.createKey(getDwId(ids++));
 	}
-
+	
 	public int numberOfGuiData() {
 		return 0;
 	}

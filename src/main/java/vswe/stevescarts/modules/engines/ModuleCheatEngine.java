@@ -7,7 +7,7 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleCheatEngine extends ModuleEngine {
-	private static DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
+	private DataParameter<Integer> PRIORITY = createDw(DataSerializers.VARINT);
 	public ModuleCheatEngine(final EntityMinecartModular cart) {
 		super(cart);
 	}

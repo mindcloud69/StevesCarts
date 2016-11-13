@@ -41,7 +41,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	private final int[] AInterval;
 	private int arrowTick;
 	private int arrowInterval;
-	private static DataParameter<Byte> ACTIVE_PIPE = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> ACTIVE_PIPE = createDw(DataSerializers.BYTE);
 
 	public ModuleShooter(final EntityMinecartModular cart) {
 		super(cart);

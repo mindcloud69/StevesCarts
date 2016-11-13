@@ -38,7 +38,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	private ModulePlantSize plantSize;
 	private boolean isPlanting;
 	private float cutterAngle;
-	private static DataParameter<Boolean> IS_CUTTING = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> IS_CUTTING = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleWoodcutter(final EntityMinecartModular cart) {
 		super(cart);

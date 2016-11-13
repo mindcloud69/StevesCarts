@@ -14,7 +14,7 @@ import vswe.stevescarts.modules.IActivatorModule;
 public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	private boolean rdyToInit;
 	private int[] buttonRect;
-	private static DataParameter<Boolean> LOADING_CHUNK = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> LOADING_CHUNK = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleChunkLoader(final EntityMinecartModular cart) {
 		super(cart);

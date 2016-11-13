@@ -59,7 +59,7 @@ public class ModuleNote extends ModuleBase {
 	private int speedSetting;
 	private short lastModuleHeader;
 
-	private static DataParameter<Boolean> PLAYING = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> PLAYING = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleNote(final EntityMinecartModular cart) {
 		super(cart);

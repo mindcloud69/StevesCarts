@@ -29,8 +29,8 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	protected Tank tank;
 	private int tick;
 	protected int[] tankBounds;
-	private static DataParameter<String> FLUID_NAME = createDw(DataSerializers.STRING);
-	private static DataParameter<Integer> FLUID_AMOUNT = createDw(DataSerializers.VARINT);
+	private DataParameter<String> FLUID_NAME = createDw(DataSerializers.STRING);
+	private DataParameter<Integer> FLUID_AMOUNT = createDw(DataSerializers.VARINT);
 
 	public ModuleTank(final EntityMinecartModular cart) {
 		super(cart);

@@ -15,7 +15,7 @@ import vswe.stevescarts.modules.ILeverModule;
 public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	private int[] startstopRect;
 	private int[] turnbackRect;
-	private static DataParameter<Boolean> FORGE_STOPPING = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> FORGE_STOPPING = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleBrake(final EntityMinecartModular cart) {
 		super(cart);

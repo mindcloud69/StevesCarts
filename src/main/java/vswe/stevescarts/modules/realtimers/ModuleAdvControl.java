@@ -36,7 +36,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	private double odo;
 	private double trip;
 	private int[] buttonRect;
-	private static DataParameter<Integer> SPEED = createDw(DataSerializers.VARINT);
+	private DataParameter<Integer> SPEED = createDw(DataSerializers.VARINT);
 
 	public ModuleAdvControl(final EntityMinecartModular cart) {
 		super(cart);

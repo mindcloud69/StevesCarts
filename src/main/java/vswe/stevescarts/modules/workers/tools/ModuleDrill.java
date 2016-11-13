@@ -41,8 +41,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	private float drillRotation;
 	private int miningCoolDown;
 	private int[] buttonRect;
-	private static DataParameter<Boolean> IS_MINING = createDw(DataSerializers.BOOLEAN);
-	private static DataParameter<Boolean> IS_ENABLED = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> IS_MINING = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> IS_ENABLED = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleDrill(final EntityMinecartModular cart) {
 		super(cart);

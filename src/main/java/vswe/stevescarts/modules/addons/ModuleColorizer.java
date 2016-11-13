@@ -15,7 +15,7 @@ public class ModuleColorizer extends ModuleAddon {
 	private int markerOffsetX;
 	private int scrollWidth;
 	private int markerMoving;
-	private static DataParameter<int[]> COLORS = createDw(CartDataSerializers.VARINT);
+	private DataParameter<int[]> COLORS = createDw(CartDataSerializers.VARINT);
 
 	public ModuleColorizer(final EntityMinecartModular cart) {
 		super(cart);

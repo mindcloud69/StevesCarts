@@ -19,9 +19,9 @@ public class ModuleDynamite extends ModuleBase {
 	private int fuseStartY;
 	private final int maxFuseLength = 150;
 
-	private static DataParameter<Byte> FUSE = createDw(DataSerializers.BYTE);
-	private static DataParameter<Byte> FUSE_LENGTH = createDw(DataSerializers.BYTE);
-	private static DataParameter<Byte> EXPLOSION = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> FUSE = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> FUSE_LENGTH = createDw(DataSerializers.BYTE);
+	private DataParameter<Byte> EXPLOSION = createDw(DataSerializers.BYTE);
 
 	public ModuleDynamite(final EntityMinecartModular cart) {
 		super(cart);

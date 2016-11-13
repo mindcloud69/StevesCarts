@@ -18,7 +18,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	private float shieldDistance;
 	private float shieldAngle;
 	private int[] buttonRect;
-	private static DataParameter<Boolean> STATUS = createDw(DataSerializers.BOOLEAN);
+	private DataParameter<Boolean> STATUS = createDw(DataSerializers.BOOLEAN);
 
 	public ModuleShield(final EntityMinecartModular cart) {
 		super(cart);
