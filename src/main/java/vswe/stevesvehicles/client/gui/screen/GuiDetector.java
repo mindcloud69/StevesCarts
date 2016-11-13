@@ -42,7 +42,7 @@ public class GuiDetector extends GuiBase {
 	public void drawGuiForeground(int x, int y) {
 		GL11.glDisable(GL11.GL_LIGHTING);
 
-		getFontRenderer().drawString(DetectorType.getTypeFromMeta(detector.getBlockMetadata()).getName(), 8, 6, 0x404040);
+		getFontRenderer().drawString(DetectorType.getTypeFromMeta(detector.getBlockMetadata()).getTranslatedName(), 8, 6, 0x404040);
 
 		boolean isAnyMenuDown = false;
 		for (DropDownMenu menu : menus) {

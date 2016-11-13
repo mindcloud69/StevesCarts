@@ -4,6 +4,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -240,7 +241,7 @@ public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
 	}
 
 
-	public void refreshState(World world, int x, int y, int z, boolean flag) {
-		new Rail(world, x, y, z).func_150655_a(flag, false);
+	public void refreshState(World world, BlockPos pos, boolean flag) {
+		new Rail(world, pos, world.getBlockState(pos)).place(flag, false);
 	}
 }

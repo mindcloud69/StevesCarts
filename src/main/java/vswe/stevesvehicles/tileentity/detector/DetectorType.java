@@ -1,8 +1,12 @@
 package vswe.stevesvehicles.tileentity.detector;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.BlockRailAdvancedDetector;
 import vswe.stevesvehicles.block.ModBlocks;
@@ -15,7 +19,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 
-public enum DetectorType implements IRecipeOutput {
+public enum DetectorType implements IRecipeOutput, IStringSerializable {
 	NORMAL(0, true, false, true,
 			"detectors/manager/bot",
 			"detectors/manager/top",
@@ -68,8 +72,8 @@ public enum DetectorType implements IRecipeOutput {
 		}			
 
 		private void update(TileEntityDetector detector, boolean flag) {
-			if (detector.getWorldObj().getBlock(detector.xCoord, detector.yCoord + 1, detector.zCoord) == ModBlocks.ADVANCED_DETECTOR.getBlock()) {
-				((BlockRailAdvancedDetector)ModBlocks.ADVANCED_DETECTOR.getBlock()).refreshState(detector.getWorldObj(), detector.xCoord, detector.yCoord + 1, detector.zCoord, flag);
+			if (detector.getWorld().getBlockState(detector.getPos().up()).getBlock() == ModBlocks.ADVANCED_DETECTOR.getBlock()) {
+				((BlockRailAdvancedDetector)ModBlocks.ADVANCED_DETECTOR.getBlock()).refreshState(detector.getWorld(), detector.getPos().up(), flag);
 			}
 		}
 	},
@@ -97,10 +101,11 @@ public enum DetectorType implements IRecipeOutput {
 
 	};	
 
+	public static final DetectorType[] VALUES = values();
 
 	private int meta;
 	private String[] textures;
-	private IIcon[] icons;
+	//private IIcon[] icons;
 	private boolean acceptCart;
 	private boolean stopCart;
 	private boolean emitRedstone;
@@ -119,9 +124,13 @@ public enum DetectorType implements IRecipeOutput {
 	public int getMeta() {
 		return meta;
 	}
-
+	
 	public String getName() {
-		return StatCollector.translateToLocal(getUnlocalizedName() + ".name");
+		return name().toLowerCase(Locale.ENGLISH);
+	}
+
+	public String getTranslatedName() {
+		return I18n.translateToLocal(getUnlocalizedName() + ".name");
 	}
 
 	public String getUnlocalizedName() {
@@ -129,7 +138,7 @@ public enum DetectorType implements IRecipeOutput {
 	}
 
 
-	public void registerIcons(IIconRegister register) {
+	/*public void registerIcons(IIconRegister register) {
 		icons = new IIcon[textures.length];
 		for (int i = 0; i < textures.length; i++) {
 			icons[i] = register.registerIcon(StevesVehicles.instance.textureHeader + ":" + textures[i]);
@@ -139,7 +148,7 @@ public enum DetectorType implements IRecipeOutput {
 
 	public IIcon getIcon(int side) {
 		return icons[side];
-	}
+	}*/
 
 	public boolean canInteractWithCart() {
 		return acceptCart;
