@@ -19,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fluids.Fluid;
@@ -1275,6 +1277,14 @@ public class VehicleBase {
 	 */
 	public int z() {
 		return MathHelper.floor_double(entity.posZ);
+	}
+	
+	/**
+	 * The coordinates of the cart
+	 * @return The coordinates
+	 */
+	public BlockPos pos(){
+		return new BlockPos(x(), y(), z());
 	}
 
 	public ItemStack getStack(int id) {

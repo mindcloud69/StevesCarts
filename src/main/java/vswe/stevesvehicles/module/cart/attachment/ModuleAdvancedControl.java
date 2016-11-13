@@ -2,13 +2,20 @@ package vswe.stevesvehicles.module.cart.attachment;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartTravel;
@@ -49,6 +56,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	private static final int MAX_BAR_LENGTH = 62;
 
 	private static final ResourceLocation OVERLAY_TEXTURE = ResourceHelper.getResource("/gui/drive.png");
+	private DataParameter<Integer> SPEED;
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -82,13 +90,13 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 		int enginesEndAt = getVehicle().getEngines().size() * 15;
 
 		drawImage(5,enginesEndAt,0,15,32,32);
-		if (minecraft.gameSettings.keyBindForward.getIsKeyPressed()) {
+		if (minecraft.gameSettings.keyBindForward.isKeyDown()) {
 			drawImage(5+10,enginesEndAt + 5,32 + 10,15 + 5,12,6);
 		}
-		if (minecraft.gameSettings.keyBindLeft.getIsKeyPressed()) {
+		if (minecraft.gameSettings.keyBindLeft.isKeyDown()) {
 			drawImage(5+2,enginesEndAt + 13,32 + 2,15 + 13,6,12);
 		}
-		if (minecraft.gameSettings.keyBindRight.getIsKeyPressed()) {
+		if (minecraft.gameSettings.keyBindRight.isKeyDown()) {
 			drawImage(5+24,enginesEndAt + 13,32 + 24,15 + 13,6,12);
 		}    
 
@@ -105,14 +113,20 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 
 
 
-		minecraft.fontRenderer.drawString(LocalizationCartTravel.CONTROL_ODO.translate(), 5 + 2, enginesEndAt +52 + 2, 0x404040);
-		minecraft.fontRenderer.drawString(distToString(odo), 5 + 2, enginesEndAt +52 + 11, 0x404040);		
-		minecraft.fontRenderer.drawString(LocalizationCartTravel.CONTROL_TRIP.translate(), 5 + 2, enginesEndAt +52 + 22, 0x404040);
-		minecraft.fontRenderer.drawString(distToString(trip), 5 + 2, enginesEndAt +52 + 31, 0x404040);
+		minecraft.fontRendererObj.drawString(LocalizationCartTravel.CONTROL_ODO.translate(), 5 + 2, enginesEndAt +52 + 2, 0x404040);
+		minecraft.fontRendererObj.drawString(distToString(odo), 5 + 2, enginesEndAt +52 + 11, 0x404040);		
+		minecraft.fontRendererObj.drawString(LocalizationCartTravel.CONTROL_TRIP.translate(), 5 + 2, enginesEndAt +52 + 22, 0x404040);
+		minecraft.fontRendererObj.drawString(distToString(trip), 5 + 2, enginesEndAt +52 + 31, 0x404040);
 
-		RenderItem itemRenderer = new RenderItem();
-		itemRenderer.renderItemIntoGUI(minecraft.fontRenderer, minecraft.renderEngine, new ItemStack(Items.clock, 1), 5, enginesEndAt +32 + 3);
-		itemRenderer.renderItemIntoGUI(minecraft.fontRenderer, minecraft.renderEngine, new ItemStack(Items.compass, 1), 5 + 16, enginesEndAt+32 + 3);
+		drawItem(new ItemStack(Items.CLOCK, 1), 5, enginesEndAt + 32 + 3);
+		drawItem(new ItemStack(Items.COMPASS, 1), 21, enginesEndAt + 32 + 3);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void drawItem(ItemStack icon, final int targetX, final int targetY) {
+		RenderHelper.enableGUIStandardItemLighting();
+		RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+		itemRenderer.renderItemAndEffectIntoGUI(icon, targetX, targetY);
 
 	}
 
@@ -196,7 +210,8 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 				}
 				break;
 			case KEY:
-				if (getVehicle().getEntity().riddenByEntity != null && getVehicle().getEntity().riddenByEntity instanceof EntityPlayer && getVehicle().getEntity().riddenByEntity == player) {
+				Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
+				if (riddenByEntity instanceof EntityPlayer && riddenByEntity == player) {
 					keyInformation = (byte)dr.readByte();
 					((EntityModularCart)getVehicle().getEntity()).resetRailDirection();
 				}
@@ -222,15 +237,16 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	public void update() {
 		super.update();
 
-		if (!getVehicle().getWorld().isRemote && getVehicle().getEntity().riddenByEntity != null && getVehicle().getEntity().riddenByEntity instanceof EntityPlayer) {
+		Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
+		if (!getVehicle().getWorld().isRemote && riddenByEntity instanceof EntityPlayer) {
 			if (enginePacketTimer == 0) {
-				sendEnginePacket((EntityPlayer)getVehicle().getEntity().riddenByEntity);
+				sendEnginePacket((EntityPlayer)riddenByEntity);
 				enginePacketTimer = 15;
 			}else{
 				enginePacketTimer--;
 			}
 			if (tripPacketTimer == 0) {
-				sendTripPacket((EntityPlayer)getVehicle().getEntity().riddenByEntity);
+				sendTripPacket((EntityPlayer)riddenByEntity);
 				tripPacketTimer = 500;
 			}else{
 				tripPacketTimer--;
@@ -264,8 +280,8 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 			}
 
 			if (isForwardKeyDown() && isLeftKeyDown() && isRightKeyDown()) {
-				if (getVehicle().getEntity().riddenByEntity != null && getVehicle().getEntity().riddenByEntity instanceof EntityPlayer) {
-					getVehicle().getEntity().riddenByEntity.mountEntity(null);
+				if (riddenByEntity instanceof EntityPlayer) {
+					riddenByEntity.dismountRidingEntity();
 					keyInformation = (byte)0;
 				}			
 			}
@@ -328,7 +344,8 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 
 
 	private void encodeKeys() {
-		if (getVehicle().getEntity().riddenByEntity != null && getVehicle().getEntity().riddenByEntity instanceof EntityPlayer && getVehicle().getEntity().riddenByEntity == getClientPlayer()) {
+		Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
+		if (riddenByEntity instanceof EntityPlayer && riddenByEntity == getClientPlayer()) {
 			net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getMinecraft();	
 
 			byte oldVal = keyInformation;
@@ -336,12 +353,12 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 			keyInformation = 0;
 
 
-			keyInformation |= (byte)((minecraft.gameSettings.keyBindForward.getIsKeyPressed() ? 1 : 0));
-			keyInformation |= (byte)((minecraft.gameSettings.keyBindLeft.getIsKeyPressed() ? 1 : 0) << 1);
-			keyInformation |= (byte)((minecraft.gameSettings.keyBindRight.getIsKeyPressed() ? 1 : 0) << 2);
-			keyInformation |= (byte)((minecraft.gameSettings.keyBindBack.getIsKeyPressed() ? 1 : 0) << 3);
-			keyInformation |= (byte)((minecraft.gameSettings.keyBindJump.getIsKeyPressed() ? 1 : 0) << 4);
-			keyInformation |= (byte)((minecraft.gameSettings.keyBindSneak.getIsKeyPressed() ? 1 : 0) << 5);
+			keyInformation |= (byte)((minecraft.gameSettings.keyBindForward.isKeyDown() ? 1 : 0));
+			keyInformation |= (byte)((minecraft.gameSettings.keyBindLeft.isKeyDown() ? 1 : 0) << 1);
+			keyInformation |= (byte)((minecraft.gameSettings.keyBindRight.isKeyDown() ? 1 : 0) << 2);
+			keyInformation |= (byte)((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 3);
+			keyInformation |= (byte)((minecraft.gameSettings.keyBindJump.isKeyDown() ? 1 : 0) << 4);
+			keyInformation |= (byte)((minecraft.gameSettings.keyBindSneak.isKeyDown() ? 1 : 0) << 5);
 
 
 			if (oldVal != keyInformation) {
@@ -394,14 +411,14 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 		if (val < 0 || val > 6) {
 			return;
 		}
-		updateDw(0, val);
+		updateDw(SPEED, val);
 	}
 
 	private int getSpeedSetting() {
 		if (isPlaceholder()) {
 			return 1;
 		}else{
-			return getDw(0);
+			return getDw(SPEED);
 		}
 	}
 
@@ -413,7 +430,8 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
+		SPEED = createDw(DataSerializers.VARINT);
+		registerDw(SPEED, 0);
 	}
 
 
@@ -519,7 +537,8 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	//would be better to have in the seat but the onInteractFirst thingy doesn't really work due to vanilla stuff
 	@Override
 	public void postUpdate() {
-		if (getVehicle().getWorld().isRemote && getVehicle().getEntity().riddenByEntity != null && getVehicle().getEntity().riddenByEntity instanceof EntityPlayer && getVehicle().getEntity().riddenByEntity == getClientPlayer()) {
+		Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
+		if (getVehicle().getWorld().isRemote && riddenByEntity instanceof EntityPlayer && riddenByEntity == getClientPlayer()) {
 			KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
 		}
 	}

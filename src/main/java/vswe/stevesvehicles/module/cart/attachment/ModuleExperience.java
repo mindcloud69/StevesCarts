@@ -7,7 +7,8 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartCleaning;
@@ -28,7 +29,7 @@ public class ModuleExperience extends ModuleAttachment {
 	public void update() {
 		if (!getVehicle().getWorld().isRemote) {
 
-			List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().boundingBox.expand(3D, 1D, 3D));
+			List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().getEntityBoundingBox().expand(3D, 1D, 3D));
 
 			for (Object obj : list) {
 				if (obj instanceof EntityXPOrb && !((Entity) obj).isDead) {

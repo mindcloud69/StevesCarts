@@ -3,8 +3,11 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -18,6 +21,7 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleBrake extends ModuleAddon implements ILeverModule {
+	private DataParameter<Boolean> FORGE_STOPPING;
 	public ModuleBrake(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -88,12 +92,12 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 		if (isPlaceholder())  {
 			return getBooleanSimulationInfo();
 		}else{
-			return getDw(0) != 0;
+			return getDw(FORGE_STOPPING);
 		}
 	}
 
 	private void setForceStopping(boolean val) {
-		updateDw(0, (byte)(val ? 1 : 0));
+		updateDw(FORGE_STOPPING, val);
 	}
 
 	@Override
@@ -144,7 +148,8 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
+		FORGE_STOPPING = createDw(DataSerializers.BOOLEAN);
+		this.registerDw(FORGE_STOPPING, false);
 	}
 
 

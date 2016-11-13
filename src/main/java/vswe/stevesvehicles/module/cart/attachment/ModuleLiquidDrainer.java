@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,11 +30,9 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		return false;
 	}
 
-	public void handleLiquid(ModuleDrill drill, int x, int y, int z) {
-
-		BlockCoordinate here = new BlockCoordinate(x,y,z);
+	public void handleLiquid(ModuleDrill drill, BlockPos traget) {
 		ArrayList<BlockCoordinate> checked = new ArrayList<>();
-		int result = drainAt(drill, checked, here, 0);
+		int result = drainAt(drill, checked, traget, 0);
 		if (result > 0 && doPreWork()) {
 			drill.kill();
 			startWorking((int)(2.5F * result));
@@ -48,7 +47,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		return true;
 	}
 
-	private int drainAt(ModuleDrill drill, ArrayList<BlockCoordinate> checked, BlockCoordinate here, int buckets) {
+	private int drainAt(ModuleDrill drill, ArrayList<BlockCoordinate> checked, BlockPos here, int buckets) {
 		int drained = 0;
 		Block b = getVehicle().getWorld().getBlock(here.getX(), here.getY(), here.getZ());
 		if (!isLiquid(b)) {

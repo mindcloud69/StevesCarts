@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
 
 import vswe.stevesvehicles.block.BlockCoordinate;
@@ -18,12 +19,12 @@ public class ModuleOreTracker extends ModuleAddon {
 		super(vehicleBase);
 	}
 
-	public BlockCoordinate findBlockToMine(ModuleDrill drill, BlockCoordinate start) {
-		return findBlockToMine(drill, new ArrayList<BlockCoordinate>(), start, true);
+	public BlockPos findBlockToMine(ModuleDrill drill, BlockPos start) {
+		return findBlockToMine(drill, new ArrayList<BlockPos>(), start, true);
 	}
 
 
-	private BlockCoordinate findBlockToMine(ModuleDrill drill, ArrayList<BlockCoordinate> checked, BlockCoordinate current, boolean first) {
+	private BlockPos findBlockToMine(ModuleDrill drill, ArrayList<BlockPos> checked, BlockPos current, boolean first) {
 		if (current == null || checked.contains(current) || (!first && !isOre(current))) {
 			return null;
 		}
@@ -34,7 +35,7 @@ public class ModuleOreTracker extends ModuleAddon {
 				for (int y = -1; y <= 1; y++) {
 					for (int z = -1; z <= 1; z++) {
 						if (Math.abs(x) + Math.abs(y) + Math.abs(z) == 1) {
-							BlockCoordinate ret = findBlockToMine(drill, checked, new BlockCoordinate(current.getX() + x, current.getY() + y, current.getZ() + z), false);
+							BlockPos ret = findBlockToMine(drill, checked, current.add(x, y, z), false);
 
 							if (ret != null) {
 								return ret;
@@ -56,21 +57,25 @@ public class ModuleOreTracker extends ModuleAddon {
 		return current;
 	}
 
-	private boolean isOre(BlockCoordinate coordinate) {
-		Block b = getVehicle().getWorld().getBlock(coordinate.getX(), coordinate.getY(), coordinate.getZ());
+	private boolean isOre(BlockPos pos) {
+		Block block = getVehicle().getWorld().getBlockState(pos).getBlock();
 
-		if (b != null) {
-			if (b instanceof BlockOre) {
+		if (block != null) {
+			if (block instanceof BlockOre) {
 				return true;
 			}else{
-				ItemStack item = new ItemStack(b);
+				ItemStack item = new ItemStack(block);
 				if (item.getItem() != null) {
-					int oreId = OreDictionary.getOreID(item);
-					if (oreId == - 1) {
-						return false;
-					}else{
-						String oreName = OreDictionary.getOreName(oreId);
-						return oreName.toLowerCase().startsWith("ore");
+					int[] oreIds = OreDictionary.getOreIDs(item);
+					for(int oreId : oreIds){
+						if (oreId == - 1) {
+							return false;
+						}else{
+							String oreName = OreDictionary.getOreName(oreId);
+							if(oreName != null && oreName.toLowerCase().startsWith("ore")){
+								return true;
+							}
+						}
 					}
 				}
 			}

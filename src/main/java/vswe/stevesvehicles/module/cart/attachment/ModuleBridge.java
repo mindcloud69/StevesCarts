@@ -5,8 +5,14 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -18,6 +24,7 @@ import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
+	private DataParameter<Boolean> BRIDGE;
 	public ModuleBridge(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -56,30 +63,27 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean work() {
 		//get the next block
-		Vec3 next = getNextBlock();
-		//save the next block's coordinates for easy access
-		int x = (int) next.xCoord;
-		int y = (int) next.yCoord;
-		int z = (int) next.zCoord;
+		BlockPos next = getNextBlock();
+		BlockPos target;
 		int yLocation;
 
-		if (getModularCart().getYTarget() > y) {
-			yLocation = y;
-		}else if (getModularCart().getYTarget() < y) {
-			yLocation = y - 2;
+		if (getModularCart().getYTarget() > next.getY()) {
+			target = new BlockPos(next);
+		}else if (getModularCart().getYTarget() < next.getY()) {
+			target = next.down(2);
 		}else {
-			yLocation = y - 1;
+			target = next.down();
 		}
 
-		if (!BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y, z) && !BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y - 1, z)) {
+		if (!BlockRailBase.isRailBlock(getVehicle().getWorld(), next) && !BlockRailBase.isRailBlock(getVehicle().getWorld(), next.down())) {
 			if (doPreWork()) {
-				if (tryBuildBridge(x, yLocation, z, false)) {
+				if (tryBuildBridge(target, false)) {
 					startWorking(22);
 					setBridge(true);
 					return true;
 				}
 			}else {
-				if (tryBuildBridge(x, yLocation, z, true)) {
+				if (tryBuildBridge(target, true)) {
 					stopWorking();
 				}
 			}
@@ -89,10 +93,11 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 		return false;
 	}
 
-	private boolean tryBuildBridge(int x, int y, int z, boolean flag) {
-		Block b = getVehicle().getWorld().getBlock(x, y, z);
-
-		if ((countsAsAir(x, y, z) || b instanceof BlockLiquid) && isValidForTrack(x, y + 1, z, false)) {
+	private boolean tryBuildBridge(BlockPos target, boolean flag) {
+		World world = getVehicle().getWorld();
+		IBlockState blockState = world.getBlockState(target);
+		
+		if ((countsAsAir(target) || blockState.getBlock() instanceof BlockLiquid) && isValidForTrack(target.up(), false)) {
 
 			for (int m = 0; m < getInventorySize(); m++) {
 				if (getStack(m) != null) {
@@ -100,7 +105,8 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 					if (SlotBridge.isBridgeMaterial(getStack(m))) {
 						if (flag) {
 
-							getVehicle().getWorld().setBlock(x, y, z, Block.getBlockFromItem(getStack(m).getItem()), ((ItemBlock) (getStack(m).getItem())).getMetadata(getStack(m).getItemDamage()), 3);
+							ItemStack stack = getStack(m);
+							world.setBlockState(target, Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getItem().getMetadata(stack.getItemDamage())), 3);
 
 							if (!getVehicle().hasCreativeSupplies()) {
 								getStack(m).stackSize--;
@@ -118,7 +124,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 				}
 			}
 
-			if (!isValidForTrack(x,y,z,true) && !isValidForTrack(x,y+1,z,true) && !isValidForTrack(x,y+2,z,true)) {
+			if (!isValidForTrack(target, true) && !isValidForTrack(target.up(), true) && !isValidForTrack(target.up(2), true)) {
 				//turnback();
 			}
 		}
@@ -128,7 +134,8 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		addDw(0,0);
+		BRIDGE = createDw(DataSerializers.BOOLEAN);
+		registerDw(BRIDGE, false);
 	}
 	@Override
 	public int numberOfDataWatchers() {
@@ -136,14 +143,14 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	}
 
 	private void setBridge(boolean val) {
-		updateDw(0,val ? 1 : 0);
+		updateDw(BRIDGE, val);
 	}
 
 	public boolean needBridge() {
 		if (isPlaceholder()) {
 			return getBooleanSimulationInfo();
 		}else{
-			return getDw(0) != 0;
+			return getDw(BRIDGE);
 		}
 	}
 

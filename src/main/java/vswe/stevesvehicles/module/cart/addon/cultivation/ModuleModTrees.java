@@ -1,8 +1,11 @@
 package vswe.stevesvehicles.module.cart.addon.cultivation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import vswe.stevesvehicles.module.cart.ITreeModule;
@@ -16,13 +19,13 @@ public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 	}
 
 	@Override
-	public boolean isLeaves(Block b, int x, int y, int z) {
-		return b.isLeaves(getVehicle().getWorld(), x, y, z);
+	public boolean isLeaves(World world, IBlockState state, BlockPos pos) {
+		return state.getBlock().isLeaves(state, world, pos);
 	}
 
 	@Override
-	public boolean isWood(Block b, int x, int y, int z) {
-		return b.isWood(getVehicle().getWorld(), x, y, z);
+	public boolean isWood(World world, IBlockState state, BlockPos pos) {
+		return state.getBlock().isWood(world, pos);
 	}
 	@Override
 	public boolean isSapling(ItemStack sapling) {
@@ -46,9 +49,14 @@ public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 	}	
 
 	private boolean isStackSapling(ItemStack sapling) {
-		int id = OreDictionary.getOreID(sapling);
-		String name = OreDictionary.getOreName(id);
-		return name != null && name.startsWith("treeSapling");		
+		int[] ids = OreDictionary.getOreIDs(sapling);
+		for(int id : ids){
+			String name = OreDictionary.getOreName(id);
+			if(name != null && name.startsWith("treeSapling")){
+				return true;	
+			}
+		}
+		return false;
 	}
 
 

@@ -3,7 +3,14 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockNetherWart;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
@@ -16,6 +23,7 @@ import vswe.stevesvehicles.module.common.addon.ModuleAddon;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleLiquidSensors extends ModuleAddon {
+	private DataParameter<Byte> SENSOR_INFO;
 	public ModuleLiquidSensors(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -67,7 +75,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0,1);
+		registerDw(SENSOR_INFO, (byte)1);
 	}
 
 	private void activateLight(int light) {
@@ -94,17 +102,17 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		if (isPlaceholder()) {
 			return;
 		}
-		byte data = getDw(0);
+		byte data = getDw(SENSOR_INFO);
 		data &= ~3;
 		data |= val;
 		setSensorInfo(data);
 	}
 
-	private void setSensorInfo(int val) {
+	private void setSensorInfo(byte val) {
 		if (isPlaceholder()) {
 			return;
 		}	
-		updateDw(0,val);
+		updateDw(SENSOR_INFO, val);
 	}
 
 	private float sensorRotation;
@@ -115,7 +123,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		if (isPlaceholder()) {
 			return getIntegerSimulationInfo();
 		}else{
-			return getDw(0) & 3;
+			return getDw(SENSOR_INFO) & 3;
 		}
 	}
 
@@ -123,31 +131,29 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		if (isPlaceholder()) {
 			return getIntegerSimulationInfo() != 1;
 		}else{
-			return (getDw(0) & 4) != 0;
+			return (getDw(SENSOR_INFO) & 4) != 0;
 		}
 	}
 
 	public float getSensorRotation() {
 		return sensorRotation;
 	}
-
-
+	
 	//check if it's dangerous to remove a certain block(only used if a addon allows the cart to use it)
-	public boolean isDangerous(ModuleDrill drill, int x, int y, int z, int offsetX, int offsetY, int offsetZ) {
-		int targetX = x + offsetX;
-		int targetY = y + offsetY;
-		int targetZ = z + offsetZ;
+	public boolean isDangerous(final ModuleDrill drill, BlockPos target, boolean isUp) {
+		
+		World world = getVehicle().getWorld();
+		IBlockState state = world.getBlockState(target);
+		Block block = state.getBlock();
 
-		Block block = getVehicle().getWorld().getBlock(targetX, targetY, targetZ);
-
-		if (block == Blocks.lava) { //static lava
-			handleLiquid(drill, targetX, targetY, targetZ);
+		if (block == Blocks.LAVA) { //static lava
+			handleLiquid(drill, target);
 			return true;
-		}else if (block == Blocks.water) { //static water
-			handleLiquid(drill, targetX, targetY, targetZ);
+		}else if (block == Blocks.WATER) { //static water
+			handleLiquid(drill, target);
 			return true;
 		}else if (block != null && block instanceof IFluidBlock) { //static other //TODO is this really a static fluid
-			handleLiquid(drill, targetX, targetY, targetZ);
+			handleLiquid(drill, target);
 			return true;		
 		}
 
@@ -163,8 +169,8 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		//2.3.2. the liquid is not at the bottom -> it will spread one block and then fall -> it will flow to the bottom and start to spread -> the cart will be in the way -> not good
 		//2.4.  none of the above -> the liquid will flow and destroy the cart -> not good
 		//3. when the block is removed sand or gravel will fall down -> liquid on top of this will fall down -> the liquid will hit the cart -> not good (this is very difficult to detect(maybe not :P))
-		boolean isWater = block == Blocks.water || block == Blocks.flowing_water || block == Blocks.ice /* ice */;
-		boolean isLava = block == Blocks.lava || block == Blocks.flowing_lava;
+		boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE /* ice */;
+		boolean isLava = block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
 
 
 		//boolean isOther = block != null && block instanceof IFluidBlock;
@@ -175,26 +181,26 @@ public class ModuleLiquidSensors extends ModuleAddon {
 
 		if (isLiquid && block != null) {
 			//check for cases 1. and 2.
-			if (offsetY == 1) {
-				handleLiquid(drill, targetX, targetY, targetZ);
+			if (isUp) {
+				handleLiquid(drill, target);
 				return true; //case 1.
 			}else {
-				int m = getVehicle().getWorld().getBlockMetadata(targetX, targetY, targetZ);
+				int level = state.getValue(BlockLiquid.LEVEL);
 
-				if ((m & 8) == 8) {
+				if ((level & 8) == 8) {
 
 
-					if (block.isBlockSolid(getVehicle().getWorld(),targetX, targetY - 1, targetZ,1)) {
-						handleLiquid(drill, targetX, targetY, targetZ);
+					if (block.isBlockSolid(getVehicle().getWorld(), target.down(), EnumFacing.UP)) {
+						handleLiquid(drill, target);
 						return true; //case 2.2.E.
 					}else{
 						return false; //case 2.2.
 					}
-				}else if (isWater && ((m & 7) == 7)){
+				}else if (isWater && ((level & 7) == 7)){
 					return false; //case 2.1.
-				}else if (isLava && ((m & 7) == 7) && getVehicle().getWorld().provider.isHellWorld){
+				}else if (isLava && ((level & 7) == 7) && !getVehicle().getWorld().provider.isSurfaceWorld()){
 					return false; //case 2.1.
-				}else if (isLava && ((m & 7) == 6)){
+				}else if (isLava && ((level & 7) == 6)){
 					return false; //case 2.1.
 				}	
 				//TODO make a more advanced version of this, fluids are so more advanced than liquids
@@ -203,22 +209,22 @@ public class ModuleLiquidSensors extends ModuleAddon {
                     return false; //case 2.1.
                 }*/               				
 				else{
-					handleLiquid(drill, targetX, targetY, targetZ);
+					handleLiquid(drill, target);
 					return true; //case 2.4
 				}
 			}
 		}else{
 			//check for case 3
-			if (offsetY == 1){
+			if (isUp){
 				//sand or gravel
 				boolean isFalling = block instanceof BlockFalling;
 
 				if (isFalling){
-					return  isDangerous(drill, targetX, targetY, targetZ,   0,  1,  0) ||
-							isDangerous(drill, targetX, targetY, targetZ,   1,  0,  0) ||
-							isDangerous(drill, targetX, targetY, targetZ,   -1, 0,  0) ||
-							isDangerous(drill, targetX, targetY, targetZ,   0,  0,  1) ||
-							isDangerous(drill, targetX, targetY, targetZ,   0,  0, -1);
+					return  isDangerous(drill, target.up(), true) ||
+							isDangerous(drill, target.east(), false) ||
+							isDangerous(drill, target.west(),  false) ||
+							isDangerous(drill, target.south(), false) ||
+							isDangerous(drill, target.north(), false);
 				}
 			}
 		}
@@ -226,7 +232,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		return false;
 	}	
 
-	private void handleLiquid(ModuleDrill drill, int x, int y, int z) {
+	private void handleLiquid(ModuleDrill drill, BlockPos traget) {
 		ModuleLiquidDrainer liquidDrainer = null;
 		for (ModuleBase module : getVehicle().getModules()) {
 			if (module instanceof ModuleLiquidDrainer) {
@@ -236,7 +242,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		}	
 
 		if (liquidDrainer != null) {
-			liquidDrainer.handleLiquid(drill, x, y, z);
+			liquidDrainer.handleLiquid(drill, traget);
 		}
 	}	
 }

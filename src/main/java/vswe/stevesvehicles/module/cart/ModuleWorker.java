@@ -1,7 +1,10 @@
 package vswe.stevesvehicles.module.cart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -60,33 +63,31 @@ public abstract class ModuleWorker extends ModuleAttachment {
 		return (EntityModularCart)getVehicle().getEntity();
 	}
 
-	public Vec3 getLastBlock(){
+	public BlockPos getLastBlock(){
 		return getNextBlock(false);
 	}
-	public Vec3 getNextBlock(){
+	public BlockPos getNextBlock(){
 		return getNextBlock(true);
 	}
-	private Vec3 getNextBlock(boolean flag) {
+	private BlockPos getNextBlock(boolean flag) {
 		//load the integer position of the cart
-		int x = getVehicle().x();
-		int y = getVehicle().y();
-		int z = getVehicle().z();
+		BlockPos pos = getVehicle().pos();
 
 		//if there's a rail block below the cart, decrease the j value since the cart should therefore be counted as being on that rail
-		if (BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y - 1, z)){
-			y--;
+		if (BlockRailBase.isRailBlock(getVehicle().getWorld(), pos.down())){
+			pos = pos.down();
 		}
 
 		//check if the cart actually is on a piece of rail
-		Block b = getVehicle().getWorld().getBlock(x, y, z);
-		if (BlockRailBase.func_150051_a(b)) {
+		IBlockState blockState = getVehicle().getWorld().getBlockState(pos);
+		if (BlockRailBase.isRailBlock(blockState)) {
 
 			//int meta = worldObj.getBlockMetadata(i, j, k);
-			int meta = ((BlockRailBase)b).getBasicRailMetadata(getVehicle().getWorld(), getModularCart(), x, y, z);
+			int meta = ((BlockRailBase)blockState.getBlock()).getRailDirection(getVehicle().getWorld(), pos, blockState, getModularCart()).getMetadata();
 
 			//if the rail block is a slope we need to go up one level.
 			if (meta >= 2 && meta <= 5) {
-				y++;
+				pos = pos.up();
 			}
 
 			//load the rail logic for the rail
@@ -102,14 +103,10 @@ public abstract class ModuleWorker extends ModuleAttachment {
 			int dir = ((xDir && zDir) == flag) ? 0 : 1;
 
 			//return a vector with the coordinates of where the cart is heading
-			return Vec3.createVectorHelper(
-					x + logic[dir][0],
-					y + logic[dir][1],
-					z + logic[dir][2]
-					);
+			return pos.add(logic[dir][0], logic[dir][1], logic[dir][2]);
 		}else{
 			//if the cart is not on a rail block its next block should be where it already is.
-			return Vec3.createVectorHelper(x, y, z);
+			return pos;
 		}
 	}
 
@@ -125,16 +122,14 @@ public abstract class ModuleWorker extends ModuleAttachment {
 
 
 	//flag is false if it don't need a valid block to be built on(i.e assumes a bridge block will be there later)
-	protected boolean isValidForTrack(int x, int y, int z, boolean flag) {
-		boolean result = countsAsAir(x, y, z) && (!flag || World.doesBlockHaveSolidTopSurface(getVehicle().getWorld(), x, y - 1, z));
+	protected boolean isValidForTrack(BlockPos target, boolean flag) {
+		boolean result = countsAsAir(target) && (!flag || getVehicle().getWorld().isSideSolid(target.down(), EnumFacing.UP));
 
 		if (result) {
-			int targetX = x - (getVehicle().x() - x);
-			int targetY = y;
-			int targetZ = z - (getVehicle().z() - z);
-			Block block = getVehicle().getWorld().getBlock(targetX, targetY, targetZ);
-			boolean isWater = block == Blocks.water || block == Blocks.flowing_water || block == Blocks.ice;
-			boolean isLava = block == Blocks.lava || block == Blocks.flowing_lava;
+			target = target.add(-(getVehicle().x() - target.getX()), 0, -(getVehicle().z() - target.getZ()));
+			Block block = getVehicle().getWorld().getBlockState(target).getBlock();
+			boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE;
+			boolean isLava = block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
 			boolean isOther = block != null && block instanceof IFluidBlock;			
 			boolean isLiquid = isWater || isLava || isOther;
 			result = !isLiquid;

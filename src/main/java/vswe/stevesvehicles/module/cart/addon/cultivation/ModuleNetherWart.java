@@ -1,9 +1,12 @@
 package vswe.stevesvehicles.module.cart.addon.cultivation;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockNetherWart;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevesvehicles.module.cart.ICropModule;
 import vswe.stevesvehicles.module.common.addon.ModuleAddon;
 import vswe.stevesvehicles.vehicle.VehicleBase;
@@ -16,20 +19,17 @@ public class ModuleNetherWart extends ModuleAddon implements ICropModule {
 
 	@Override
 	public boolean isSeedValid(ItemStack seed) {
-		return seed.getItem() == Items.nether_wart;
+		return seed.getItem() == Items.NETHER_WART;
 	}
 
 	@Override
-	public Block getCropFromSeed(ItemStack seed) {
-		return Blocks.nether_wart;
+	public IBlockState getCropFromSeed(ItemStack seed) {
+		return Blocks.NETHER_WART.getDefaultState();
 	}
 
 	@Override
-	public boolean isReadyToHarvest(int x, int y, int z) {
-		Block b = getVehicle().getWorld().getBlock(x, y, z);
-		int m = getVehicle().getWorld().getBlockMetadata(x, y, z);
-
-		return b == Blocks.nether_wart && m == 3;
+	public boolean isReadyToHarvest(World world, IBlockState state, BlockPos pos) {
+		return state.getBlock() == Blocks.NETHER_WART && state.getValue(BlockNetherWart.AGE) == 3;
 	}
 
 }

@@ -4,8 +4,10 @@ import java.util.List;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-
+import net.minecraft.util.SoundCategory;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class ModuleCleaner extends ModuleAttachment {
@@ -37,12 +39,12 @@ public class ModuleCleaner extends ModuleAttachment {
 	}
 
 	private void suck() {
-		List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().boundingBox.expand(3D, 1D, 3D));
+		List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().getEntityBoundingBox().expand(3D, 1D, 3D));
 
 		for (Object obj : list) {
 			if (obj instanceof EntityItem) {
 				EntityItem entityItem = (EntityItem) obj;
-				if (entityItem.delayBeforeCanPickup <= 10) {
+				if (getPickupDelay(entityItem) <= 10) {
 					double difX = getVehicle().getEntity().posX - entityItem.posX;
 					double difY = getVehicle().getEntity().posY - entityItem.posY;
 					double difZ = getVehicle().getEntity().posZ - entityItem.posZ;
@@ -56,18 +58,18 @@ public class ModuleCleaner extends ModuleAttachment {
 	}
 
 	private void clean() {
-		List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().boundingBox.expand(1D, 0.5D, 1D));
+		List list = getVehicle().getWorld().getEntitiesWithinAABBExcludingEntity(getVehicle().getEntity(), getVehicle().getEntity().getEntityBoundingBox().expand(1D, 0.5D, 1D));
 
 		for (Object obj : list) {
 			if (obj instanceof EntityItem) {
 				EntityItem entityItem = (EntityItem) obj;
 
-				if (entityItem.delayBeforeCanPickup <= 10 && !entityItem.isDead) {
+				if (getPickupDelay(entityItem) <= 10 && !entityItem.isDead) {
 					int stackSize = entityItem.getEntityItem().stackSize;
 					getVehicle().addItemToChest(entityItem.getEntityItem());
 
 					if (stackSize != entityItem.getEntityItem().stackSize) {
-						getVehicle().getWorld().playSoundAtEntity(getVehicle().getEntity(), "random.pop", 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+						getVehicle().getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 						if (entityItem.getEntityItem().stackSize <= 0) {
 							entityItem.setDead();
@@ -83,11 +85,11 @@ public class ModuleCleaner extends ModuleAttachment {
 
 				if (Math.pow(entityArrow.motionX, 2) + Math.pow(entityArrow.motionY, 2) + Math.pow(entityArrow.motionZ, 2) < 0.2D && entityArrow.arrowShake <= 0 && !entityArrow.isDead) {
 					entityArrow.arrowShake = 3;
-					ItemStack iItem = new ItemStack(Items.arrow, 1);
+					ItemStack iItem = new ItemStack(Items.ARROW, 1);
 					getVehicle().addItemToChest(iItem);
 
 					if (iItem.stackSize <= 0) {
-						getVehicle().getWorld().playSoundAtEntity(getVehicle().getEntity(), "random.pop", 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+						getVehicle().getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						entityArrow.setDead();
 					} else {
 						if (failPickup(iItem)) {
@@ -97,6 +99,10 @@ public class ModuleCleaner extends ModuleAttachment {
 				}
 			}
 		}
+	}
+	
+	private int getPickupDelay(EntityItem item){
+		return (Integer)ObfuscationReflectionHelper.getPrivateValue(EntityItem.class, item, 1);
 	}
 
 	private boolean failPickup(ItemStack item) {
@@ -108,7 +114,7 @@ public class ModuleCleaner extends ModuleAttachment {
 		}
 
 		EntityItem entityitem = new EntityItem(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ , item.copy());
-		entityitem.delayBeforeCanPickup = 35;
+		entityitem.setPickupDelay(35);
 
 		entityitem.motionX = x / 3F;
 		entityitem.motionY = 0.15F;
