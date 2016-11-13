@@ -2,14 +2,18 @@ package vswe.stevesvehicles.item;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.Upgrade;
@@ -24,7 +28,7 @@ public class ItemUpgrade extends ItemBlock {
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int dmg){
 		Upgrade upgrade = UpgradeRegistry.getUpgradeFromId(dmg);
@@ -38,7 +42,7 @@ public class ItemUpgrade extends ItemBlock {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
 		Upgrade.registerIcons(register);
-	}	
+	}	*/
 
 
 	@Override
@@ -60,10 +64,9 @@ public class ItemUpgrade extends ItemBlock {
 	}
 
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata){
-
-		if (super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)) {
-			TileEntity tile = world.getTileEntity(x,y,z);
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+		if (super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)){
+			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof TileEntityUpgrade) {
 				TileEntityUpgrade upgrade = (TileEntityUpgrade)tile;
 				upgrade.setType(stack.getItemDamage());
@@ -71,11 +74,11 @@ public class ItemUpgrade extends ItemBlock {
 					upgrade.getMaster().onUpgradeUpdate();
 				}
 			}
-
+	
 			return true;
 		}
 		return false;
-	}	
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

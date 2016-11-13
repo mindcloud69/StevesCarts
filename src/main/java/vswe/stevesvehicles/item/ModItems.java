@@ -67,7 +67,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.config.Configuration;
-
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.module.data.ModuleData;
@@ -111,7 +111,7 @@ public final class ModItems {
 
 		for (int i = 0; i < ItemCartComponent.size(); i++) {
 			ItemStack subComponent = new ItemStack(component,1,i);
-			GameRegistry.registerCustomItemStack(subComponent.getUnlocalizedName(), subComponent);
+			//GameRegistry.registerCustomItemStack(subComponent.getUnlocalizedName(), subComponent);
 		}
 
 	}
@@ -125,12 +125,12 @@ public final class ModItems {
 
 		for (int i = 0; i < ItemBlockStorage.blocks.length; i++) {
 			ItemStack storage = new ItemStack(ModItems.storage, 1, i);
-			GameRegistry.registerCustomItemStack(storage.getUnlocalizedName(), storage);
+			//GameRegistry.registerCustomItemStack(storage.getUnlocalizedName(), storage);
 		}
 
 		for (DetectorType type : DetectorType.values()) {
 			ItemStack stack = new ItemStack(detectors, 1, type.getMeta());
-			GameRegistry.registerCustomItemStack(stack.getUnlocalizedName(), stack);
+			//GameRegistry.registerCustomItemStack(stack.getUnlocalizedName(), stack);
 		}
 	}
 

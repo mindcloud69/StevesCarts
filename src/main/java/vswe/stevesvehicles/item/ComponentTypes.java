@@ -2,7 +2,7 @@ package vswe.stevesvehicles.item;
 
 
 import net.minecraft.item.ItemStack;
-
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.holiday.HolidayType;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
 import vswe.stevesvehicles.recipe.ModuleRecipeShaped;

@@ -9,9 +9,11 @@ import java.io.IOException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -100,7 +102,7 @@ public class DataWriter {
 
 	private FMLProxyPacket createPacket() {
 		writeFinalBits();
-		return new FMLProxyPacket(stream, CHANNEL);
+		return new FMLProxyPacket(new PacketBuffer(stream), CHANNEL);
 	}
 
 
@@ -119,11 +121,11 @@ public class DataWriter {
 	}
 
 	void sendToAllPlayersAround(TileEntity te, double range) {
-		sendToAllPlayersAround(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, range);
+		sendToAllPlayersAround(te.getWorld(), te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), range);
 	}
 
 	void sendToAllPlayersAround(World world, int x, int y, int z, double range) {
-		packetHandler.sendToAllAround(createPacket(), new NetworkRegistry.TargetPoint(world.provider.dimensionId, x + 0.5,y + 0.5, z, range));
+		packetHandler.sendToAllAround(createPacket(), new NetworkRegistry.TargetPoint(world.provider.getDimension(), x + 0.5,y + 0.5, z, range));
 	}
 
 

@@ -10,8 +10,18 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.GeneratedInfo;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.gui.ColorHelper;
@@ -29,9 +39,6 @@ import vswe.stevesvehicles.vehicle.version.VehicleVersion;
 
 public class ItemVehicles extends Item {
 
-
-
-
 	public ItemVehicles() {
 		super();
 		this.setHasSubtypes(true);
@@ -40,7 +47,7 @@ public class ItemVehicles extends Item {
 	}
 
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
 		for (VehicleType vehicleType : VehicleRegistry.getInstance().getAllVehicles()) {
@@ -62,7 +69,7 @@ public class ItemVehicles extends Item {
 		}else{
 			return fallbackFallbackIcon;
 		}
-	}
+	}*/
 
 	private VehicleType getVehicleType(ItemStack item) {
 		VehicleVersion.updateItemStack(item);
@@ -71,29 +78,30 @@ public class ItemVehicles extends Item {
 
 	//TODO let the registered elements decide when they should be placed
 	@Override
-	public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		VehicleType vehicle = getVehicleType(item);
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		VehicleType vehicle = getVehicleType(stack);
 		if (vehicle != null && vehicle == VehicleRegistry.CART) {
-			if (BlockRailBase.func_150049_b_(world, x, y, z)) {
-				return placeVehicle(vehicle, player, item, world, x + 0.5, y + 0.5, z + 0.5) != null || world.isRemote;
+			if (BlockRailBase.isRailBlock(world, pos)) {
+				return (placeVehicle(vehicle, player, stack, world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) != null || world.isRemote) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
 			}
 		}
-		return false;
+		return EnumActionResult.FAIL;
 	}
 
 	//TODO let the registered elements decide when they should be placed
 	//TODO clean this up
+	
 	@Override
-	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
-		VehicleType vehicle = getVehicleType(item);
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+		VehicleType vehicle = getVehicleType(itemStack);
 		if (vehicle != null && vehicle == VehicleRegistry.BOAT) {
 			float f = 1.0F;
 			float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * f;
 			float f2 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * f;
 			double d0 = player.prevPosX + (player.posX - player.prevPosX) * f;
-			double d1 = player.prevPosY + (player.posY - player.prevPosY) * f + 1.62D - (double)player.yOffset;
+			double d1 = player.prevPosY + (player.posY - player.prevPosY) * f + 1.62D - (double)player.getYOffset();
 			double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
-			Vec3 vec3 = Vec3.createVectorHelper(d0, d1, d2);
+			Vec3d vec3 =new Vec3d(d0, d1, d2);
 			float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
 			float f4 = MathHelper.sin(-f2 * 0.017453292F - (float)Math.PI);
 			float f5 = -MathHelper.cos(-f1 * 0.017453292F);
@@ -101,15 +109,15 @@ public class ItemVehicles extends Item {
 			float f7 = f4 * f5;
 			float f8 = f3 * f5;
 			double d3 = 5.0D;
-			Vec3 vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
-			MovingObjectPosition movingobjectposition = world.rayTraceBlocks(vec3, vec31, true);
+			Vec3d vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
+			RayTraceResult result = world.rayTraceBlocks(vec3, vec31, true);
 
-			if (movingobjectposition != null) {
+			if (result != null) {
 
-				Vec3 vec32 = player.getLook(f);
+				Vec3d vec32 = player.getLook(f);
 				boolean flag = false;
 				float f9 = 1.0F;
-				List list = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.addCoord(vec32.xCoord * d3, vec32.yCoord * d3, vec32.zCoord * d3).expand((double)f9, (double)f9, (double)f9));
+				List list = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().addCoord(vec32.xCoord * d3, vec32.yCoord * d3, vec32.zCoord * d3).expand((double)f9, (double)f9, (double)f9));
 				int i;
 
 				for (i = 0; i < list.size(); ++i) {
@@ -117,7 +125,7 @@ public class ItemVehicles extends Item {
 
 					if (entity.canBeCollidedWith()) {
 						float f10 = entity.getCollisionBorderSize();
-						AxisAlignedBB axisalignedbb = entity.boundingBox.expand((double)f10, (double)f10, (double)f10);
+						AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand((double)f10, (double)f10, (double)f10);
 
 						if (axisalignedbb.isVecInside(vec3)) {
 							flag = true;
@@ -127,20 +135,18 @@ public class ItemVehicles extends Item {
 
 				if (!flag) {
 
-					if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-						i = movingobjectposition.blockX;
-						int j = movingobjectposition.blockY;
-						int k = movingobjectposition.blockZ;
+					if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
+						BlockPos pos = result.getBlockPos();
 
-						if (world.getBlock(i, j, k) == Blocks.snow_layer) {
-							--j;
+						if (world.getBlockState(pos).getBlock() == Blocks.SNOW_LAYER) {
+							pos = pos.down();
 						}
 
-						Entity boat = placeVehicle(vehicle, player, item, world, i + 0.5F, j + 1.0F, k + 0.5F);
+						Entity boat = placeVehicle(vehicle, player, itemStack, world, pos.getX() + 0.5F, pos.getY() + 1.0F, pos.getZ() + 0.5F);
 						if (boat != null) {
 							boat.rotationYaw = (float)(((MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3) - 1) * 90);
 
-							if (!world.getCollidingBoundingBoxes(boat, boat.boundingBox.expand(-0.1D, -0.1D, -0.1D)).isEmpty()) {
+							if (!world.getCollisionBoxes(boat, boat.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty()) {
 								boat.setDead();
 							}
 						}
@@ -148,9 +154,10 @@ public class ItemVehicles extends Item {
 
 				}
 			}
+			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 		}
 
-		return item;
+		return ActionResult.newResult(EnumActionResult.PASS, itemStack);
 	}
 
 	private Entity placeVehicle(VehicleType vehicle, EntityPlayer player, ItemStack item, World world, double x, double y, double z) {
@@ -184,11 +191,11 @@ public class ItemVehicles extends Item {
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
 	/**
 	 * allows items to add custom lines of information to the mouse over description
 	 */
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack item, EntityPlayer player, List list, boolean useExtraInfo) {
 		VehicleVersion.updateItemStack(item);
 

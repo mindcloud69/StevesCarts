@@ -4,11 +4,21 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import vswe.stevesvehicles.buoy.BuoyType;
@@ -45,32 +55,27 @@ public class ItemBuoy extends Item {
 	private static final double AREA_EXPANSION = 1.0;
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		double x = player.posX;
-		double y = player.posY + 1.62D - (double)player.yOffset;
+		double y = player.posY + 1.62D - (double)player.getYOffset();
 		double z = player.posZ;
-		Vec3 camera = Vec3.createVectorHelper(x, y, z);
+		Vec3d camera = new Vec3d(x, y, z);
 
-		Vec3 look = player.getLook(1.0F);
-		look.xCoord *= VIEW_MULTIPLIER;
-		look.yCoord *= VIEW_MULTIPLIER;
-		look.zCoord *= VIEW_MULTIPLIER;
+		Vec3d look = player.getLook(1.0F);
+		look = new Vec3d(look.xCoord * VIEW_MULTIPLIER, look.yCoord * VIEW_MULTIPLIER, look.zCoord * VIEW_MULTIPLIER);
 
-		Vec3 target = camera.addVector(look.xCoord, look.yCoord, look.zCoord);
-		MovingObjectPosition object = world.rayTraceBlocks(camera, target, true);
+		Vec3d target = camera.addVector(look.xCoord, look.yCoord, look.zCoord);
+		RayTraceResult object = world.rayTraceBlocks(camera, target, true);
 
-		if (object != null && object.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-
-
-
+		if (object != null && object.typeOfHit == RayTraceResult.Type.BLOCK) {
 			//noinspection unchecked
-			List<Entity> list = world.getEntitiesWithinAABB(Entity.class, player.boundingBox.addCoord(look.xCoord, look.yCoord, look.zCoord).expand(AREA_EXPANSION, AREA_EXPANSION, AREA_EXPANSION));
+			List<Entity> list = world.getEntitiesWithinAABB(Entity.class, player.getEntityBoundingBox().addCoord(look.xCoord, look.yCoord, look.zCoord).expand(AREA_EXPANSION, AREA_EXPANSION, AREA_EXPANSION));
 
 			boolean valid = true;
 			for (Entity entity : list) {
 				if (entity.canBeCollidedWith()) {
 					float borderSize = entity.getCollisionBorderSize();
-					AxisAlignedBB axisalignedbb = entity.boundingBox.expand(borderSize, borderSize, borderSize);
+					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand(borderSize, borderSize, borderSize);
 
 					if (axisalignedbb.isVecInside(camera)) {
 						valid = false;
@@ -79,24 +84,20 @@ public class ItemBuoy extends Item {
 				}
 			}
 
-
-
 			if (valid) {
-				Block block = world.getBlock( object.blockX, object.blockY, object.blockZ);
+				IBlockState state = world.getBlockState(object.getBlockPos());
 
-				if (block != null && block.getMaterial() == Material.water) { //TODO allow lava?
-					int targetX = object.blockX;
-					int targetY = object.blockY + 1;
-					int targetZ = object.blockZ;
+				if (state.getMaterial() == Material.WATER) { //TODO allow lava?
+					BlockPos pos = object.getBlockPos().add(0, 1, 0);
 
 
-					if (world.isAirBlock(targetX, targetY, targetZ)) {
+					if (world.isAirBlock(pos)) {
 						if (!world.isRemote) {
-							EntityBuoy buoy = new EntityBuoy(world, targetX, targetY, targetZ, BuoyType.getType(item.getItemDamage()));
+							EntityBuoy buoy = new EntityBuoy(world, pos, BuoyType.getType(itemStack.getItemDamage()));
 							world.spawnEntityInWorld(buoy);
 						}
 						if (!player.capabilities.isCreativeMode) {
-							item.stackSize--;
+							itemStack.stackSize--;
 						}
 					}
 
@@ -105,11 +106,6 @@ public class ItemBuoy extends Item {
 			}
 		}
 
-		return item;
-	}
-
-	@Override
-	public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		return false;
+		return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 	}
 }

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.init.Items;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.oredict.RecipeSorter;
 
 import vswe.stevesvehicles.block.ModBlocks;

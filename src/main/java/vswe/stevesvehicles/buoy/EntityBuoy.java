@@ -5,8 +5,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ModItems;
@@ -20,17 +26,16 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	public EntityBuoy(World world) {
 		super(world);
 		preventEntitySpawning = true;
-		yOffset = 0;
 		setSize(1, 2);
 
 		renderMultiplier = 0.8F + rand.nextFloat() * 0.4F;
 	}
 
-	public EntityBuoy(World world, int x, int y, int z, BuoyType buoyType) {
+	public EntityBuoy(World world, BlockPos pos, BuoyType buoyType) {
 		this(world);
-		this.posX = x + 0.5;
-		this.posY = y ;
-		this.posZ = z + 0.5;
+		this.posX = pos.getX() + 0.5;
+		this.posY = pos.getY() ;
+		this.posZ = pos.getZ() + 0.5;
 		this.buoyType = buoyType;
 	}
 
@@ -53,18 +58,13 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target) {
+	public ItemStack getPickedResult(RayTraceResult target) {
 		return getBuoyItem();
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entity) {
-		return entity.boundingBox;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox() {
-		return boundingBox;
+		return entity.getEntityBoundingBox();
 	}
 
 	@Override
@@ -145,13 +145,13 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	public void readSpawnData(ByteBuf additionalData) {
 		buoyType = BuoyType.getType(additionalData.readByte());
 	}
-
+	
 	@Override
-	public boolean interactFirst(EntityPlayer player) {
+	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
 		if (!worldObj.isRemote) {
-			FMLNetworkHandler.openGui(player, StevesVehicles.instance, 2, worldObj, getEntityId(), 0, 0);
+			player.openGui(StevesVehicles.instance, 2, worldObj, getEntityId(), 0, 0);
 		}
-		return true;
+		return EnumActionResult.SUCCESS;
 	}
 
 	private EntityBuoy getBuoy(int id) {
@@ -188,11 +188,6 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	public void setPrevBuoy(EntityBuoy buoy) {
 		setBuoy(DW_PREV_BUOY, buoy);
 	}
-
-
-
-
-
 
 	public void setBuoy(EntityBuoy buoy, boolean next) {
 		if (next) {

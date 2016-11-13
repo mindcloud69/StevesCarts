@@ -6,6 +6,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.StorageBlock;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
@@ -28,7 +30,7 @@ public class ItemBlockStorage extends ItemBlock {
 		}
 	}
 
-	public IIcon[] icons;
+	//public IIcon[] icons;
 
 	public ItemBlockStorage(Block block) {
 		super(block);
@@ -37,7 +39,7 @@ public class ItemBlockStorage extends ItemBlock {
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int dmg) {
 		dmg %= icons.length;
@@ -52,7 +54,7 @@ public class ItemBlockStorage extends ItemBlock {
 		for (int i = 0; i < icons.length; i++) {
 			icons[i] = register.registerIcon(StevesVehicles.instance.textureHeader + ":storage/" + blocks[i].getName());
 		}
-	}	
+	}	*/
 
 	public String getName(ItemStack item) {
 		if (item == null) {

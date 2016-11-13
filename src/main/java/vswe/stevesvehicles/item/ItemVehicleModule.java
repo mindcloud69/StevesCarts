@@ -6,6 +6,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
@@ -15,7 +17,7 @@ import vswe.stevesvehicles.tab.CreativeTabVehicle;
 
 public class ItemVehicleModule extends Item {
 	public ItemVehicleModule() {
-		setCreativeTab(CreativeTabs.tabTransport);
+		setCreativeTab(CreativeTabs.TRANSPORTATION);
 		setHasSubtypes(true);
 	}
 
@@ -25,7 +27,7 @@ public class ItemVehicleModule extends Item {
 		return CreativeTabLoader.getAllVehicleTabs();
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int dmg) {
 		ModuleData data = getModuleData(dmg);
@@ -33,7 +35,7 @@ public class ItemVehicleModule extends Item {
 			return data.getIcon();
 		}
 		return unknownIcon;
-	}
+	}*/
 
 
 	@Override
@@ -41,7 +43,7 @@ public class ItemVehicleModule extends Item {
 		return "steves_vehicles:item.common:unknown_module.name";
 	}
 
-	IIcon unknownIcon;
+	/*IIcon unknownIcon;
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -51,7 +53,7 @@ public class ItemVehicleModule extends Item {
 		}
 
 		unknownIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":unknown");
-	}
+	}*/
 
 	@Override
 	public String getUnlocalizedName(ItemStack item){

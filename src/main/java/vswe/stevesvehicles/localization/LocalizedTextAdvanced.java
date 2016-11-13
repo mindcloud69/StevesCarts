@@ -1,5 +1,7 @@
 package vswe.stevesvehicles.localization;
 
+import net.minecraft.util.text.translation.I18n;
+
 public class LocalizedTextAdvanced implements ILocalizedText {
 	private String unlocalizedText;
 
@@ -9,7 +11,7 @@ public class LocalizedTextAdvanced implements ILocalizedText {
 
 	@Override
 	public String translate(String... params) {
-		String result = StatCollector.translateToLocal(unlocalizedText);
+		String result = I18n.translateToLocal(unlocalizedText);
 		for (int i = 0; i < params.length; i++) {
 			String pluralCheck = "[%" + (i + 1) + ":";
 			int index = result.indexOf(pluralCheck);

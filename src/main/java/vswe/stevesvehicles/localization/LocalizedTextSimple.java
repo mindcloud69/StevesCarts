@@ -1,5 +1,7 @@
 package vswe.stevesvehicles.localization;
 
+import net.minecraft.util.text.translation.I18n;
+
 public class LocalizedTextSimple implements ILocalizedText {
 	private String unlocalizedText;
 
@@ -9,6 +11,6 @@ public class LocalizedTextSimple implements ILocalizedText {
 
 	@Override
 	public String translate(String... params) {
-		return StatCollector.translateToLocal(unlocalizedText);
+		return I18n.translateToLocal(unlocalizedText);
 	}
 }

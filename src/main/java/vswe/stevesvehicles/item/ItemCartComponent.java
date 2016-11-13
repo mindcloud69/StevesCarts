@@ -2,14 +2,22 @@ package vswe.stevesvehicles.item;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.holiday.EntityEasterEgg;
 import vswe.stevesvehicles.localization.ILocalizedText;
@@ -18,8 +26,8 @@ import vswe.stevesvehicles.tab.CreativeTabLoader;
 
 public class ItemCartComponent extends Item {
 
-	private IIcon icons[];
-	private IIcon unknownIcon;
+	/*private IIcon icons[];
+	private IIcon unknownIcon;*/
 	public static int size () {
 		return ComponentTypes.values().length;
 	}
@@ -36,7 +44,7 @@ public class ItemCartComponent extends Item {
 	}
 
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int dmg) {
 		if (dmg < 0 || dmg >= icons.length || icons[dmg] == null) {
@@ -56,7 +64,7 @@ public class ItemCartComponent extends Item {
 			}
 		}
 		unknownIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":unknown");
-	}
+	}*/
 
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
@@ -127,49 +135,49 @@ public class ItemCartComponent extends Item {
 	private boolean isThrowableEgg(ItemStack item) {
 		return item != null && item.getItemDamage() == ComponentTypes.PAINTED_EASTER_EGG.getId();
 	}
-
+	
 	@Override
-	public ItemStack onEaten(ItemStack item, World world, EntityPlayer player) {
-		if (isEdibleEgg(item)) {
-			if (item.getItemDamage() == ComponentTypes.EXPLOSIVE_EASTER_EGG.getId()) {
+	public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entity) {
+		if (isEdibleEgg(stack) && entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			if (stack.getItemDamage() == ComponentTypes.EXPLOSIVE_EASTER_EGG.getId()) {
 				//Explosive Easter Egg
 
-				world.createExplosion(null, player.posX, player.posY, player.posZ, 0.1F, false);		
-			}else if (item.getItemDamage() == ComponentTypes.BURNING_EASTER_EGG.getId()) {
+				world.createExplosion(null, entity.posX, entity.posY, entity.posZ, 0.1F, false);		
+			}else if (stack.getItemDamage() == ComponentTypes.BURNING_EASTER_EGG.getId()) {
 				//Burning Easter Egg
 
-				player.setFire(5);
+				entity.setFire(5);
 
 				if (!world.isRemote) {
-					player.addPotionEffect(new PotionEffect(Potion.waterBreathing.id, 600, 0));
+					entity.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 600, 0));
 				}					
-			}else if (item.getItemDamage() == ComponentTypes.GLISTERING_EASTER_EGG.getId()) {
+			}else if (stack.getItemDamage() == ComponentTypes.GLISTERING_EASTER_EGG.getId()) {
 				//Glistering Easter Egg
 
 				if (!world.isRemote) {
-					player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 50, 2));
+					entity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 50, 2));
 				}	
-			}else if (item.getItemDamage() == ComponentTypes.CHOCOLATE_EASTER_EGG.getId()) {
+			}else if (stack.getItemDamage() == ComponentTypes.CHOCOLATE_EASTER_EGG.getId()) {
 				//Chocolate Easter Egg
 
 				if (!world.isRemote) {
-					player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 300, 4));
+					entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, 300, 4));
 				}								
 			}
 
 
 
 			if (!player.capabilities.isCreativeMode) {
-				--item.stackSize;
+				--stack.stackSize;
 			}
-			world.playSoundAtEntity(player, "random.burp", 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound((EntityPlayer)entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 			player.getFoodStats().addStats(2, 0);
-			return item;
+			return stack;
 		}else{
-			return super.onEaten(item, world, player);
+			return super.onItemUseFinish(stack, world, entity);
 		}
-
-	}	
+	}
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack item)  {
@@ -178,27 +186,26 @@ public class ItemCartComponent extends Item {
 
 	@Override
 	public EnumAction getItemUseAction(ItemStack item) {
-		return isEdibleEgg(item) ? EnumAction.eat : super.getItemUseAction(item);
+		return isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
 	}		
-
+	
 	@Override
-	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player){
-		if (isEdibleEgg(item)) {
-			player.setItemInUse(item, this.getMaxItemUseDuration(item));
-			return item;
-		}else if(isThrowableEgg(item)) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+		if (isEdibleEgg(itemStack)) {
+			player.setActiveHand(hand);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
+		}else if(isThrowableEgg(itemStack)) {
 			if (!player.capabilities.isCreativeMode) {
-				--item.stackSize;
+				--itemStack.stackSize;
 			}
-			world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
 				world.spawnEntityInWorld(new EntityEasterEgg(world, player));
 			}
-			return item;
+			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 		}else{
-			return super.onItemRightClick(item, world, player);
+			return super.onItemRightClick(itemStack, world, player, hand);
 		}
-
-	}	
+	}
 
 }
