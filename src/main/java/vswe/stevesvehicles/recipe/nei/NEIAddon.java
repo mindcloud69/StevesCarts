@@ -1,7 +1,5 @@
 package vswe.stevesvehicles.recipe.nei;
 
-import vswe.stevesvehicles.GeneratedInfo;
-
 
 //TODO make sure nothing goes wrong just because NEI doesn't exist
 

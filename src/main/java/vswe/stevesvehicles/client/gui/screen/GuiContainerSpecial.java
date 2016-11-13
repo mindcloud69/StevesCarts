@@ -1,26 +1,7 @@
 package vswe.stevesvehicles.client.gui.screen;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -212,7 +193,7 @@ public abstract class GuiContainerSpecial /*extends GuiScreen*/ extends GuiConta
 
 	protected void drawGuiContainerForegroundLayer(int mX, int mY) {}
 	protected abstract void drawGuiContainerBackgroundLayer(float f, int mX, int mY);
-	
+
 	private void renderSlot(Slot slot, int x, int y) {
 		ItemStack slotItem = slot.getStack();
 		boolean shouldSlotUnderlayBeRendered = false;

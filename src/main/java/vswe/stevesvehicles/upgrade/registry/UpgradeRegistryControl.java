@@ -6,9 +6,6 @@ import static vswe.stevesvehicles.item.ComponentTypes.SIMPLE_PCB;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.effect.assembly.Blueprint;
 import vswe.stevesvehicles.upgrade.effect.assembly.Disassemble;

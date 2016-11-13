@@ -55,7 +55,7 @@ public abstract class ModuleRecipe implements IRecipe {
 	public RecipeItem[] getRecipeItems() {
 		return recipe;
 	}
-	
+
 	@Override
 	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
 		return ForgeHooks.defaultRecipeGetRemainingItems(inv);

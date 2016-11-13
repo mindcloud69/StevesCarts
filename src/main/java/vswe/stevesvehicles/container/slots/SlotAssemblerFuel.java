@@ -2,7 +2,6 @@ package vswe.stevesvehicles.container.slots;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidUtil;
 import vswe.stevesvehicles.module.data.ModuleType;
 import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;

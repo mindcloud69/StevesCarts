@@ -22,7 +22,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -30,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -77,7 +75,7 @@ public class VehicleBase {
 
 	public static final int MODULAR_SPACE_WIDTH = 443;
 	public static final int MODULAR_SPACE_HEIGHT = 168;
-	
+
 	private static final DataParameter<Boolean> IS_BURNING = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
 
@@ -488,7 +486,7 @@ public class VehicleBase {
 		if (getWorld().isRemote) {
 			return;
 		}
-		
+
 		entity.getDataManager().set(IS_DISANABLED, disabled);
 	}
 
@@ -510,7 +508,7 @@ public class VehicleBase {
 		if (getWorld().isRemote) {
 			return;
 		}
-		
+
 		entity.getDataManager().set(IS_BURNING, on);
 	}
 
@@ -1275,7 +1273,7 @@ public class VehicleBase {
 	public int z() {
 		return MathHelper.floor_double(entity.posZ);
 	}
-	
+
 	/**
 	 * The coordinates of the cart
 	 * @return The coordinates

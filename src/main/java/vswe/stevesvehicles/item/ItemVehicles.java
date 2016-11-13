@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.GeneratedInfo;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.gui.ColorHelper;
 import vswe.stevesvehicles.localization.entry.info.LocalizationLabel;
 import vswe.stevesvehicles.module.data.ModuleData;
@@ -90,7 +89,7 @@ public class ItemVehicles extends Item {
 
 	//TODO let the registered elements decide when they should be placed
 	//TODO clean this up
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		VehicleType vehicle = getVehicleType(itemStack);
@@ -99,7 +98,7 @@ public class ItemVehicles extends Item {
 			float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * f;
 			float f2 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * f;
 			double d0 = player.prevPosX + (player.posX - player.prevPosX) * f;
-			double d1 = player.prevPosY + (player.posY - player.prevPosY) * f + 1.62D - (double)player.getYOffset();
+			double d1 = player.prevPosY + (player.posY - player.prevPosY) * f + 1.62D - player.getYOffset();
 			double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
 			Vec3d vec3 =new Vec3d(d0, d1, d2);
 			float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
@@ -117,7 +116,7 @@ public class ItemVehicles extends Item {
 				Vec3d vec32 = player.getLook(f);
 				boolean flag = false;
 				float f9 = 1.0F;
-				List list = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().addCoord(vec32.xCoord * d3, vec32.yCoord * d3, vec32.zCoord * d3).expand((double)f9, (double)f9, (double)f9));
+				List list = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().addCoord(vec32.xCoord * d3, vec32.yCoord * d3, vec32.zCoord * d3).expand(f9, f9, f9));
 				int i;
 
 				for (i = 0; i < list.size(); ++i) {
@@ -125,7 +124,7 @@ public class ItemVehicles extends Item {
 
 					if (entity.canBeCollidedWith()) {
 						float f10 = entity.getCollisionBorderSize();
-						AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand((double)f10, (double)f10, (double)f10);
+						AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expand(f10, f10, f10);
 
 						if (axisalignedbb.isVecInside(vec3)) {
 							flag = true;
@@ -144,7 +143,7 @@ public class ItemVehicles extends Item {
 
 						Entity boat = placeVehicle(vehicle, player, itemStack, world, pos.getX() + 0.5F, pos.getY() + 1.0F, pos.getZ() + 0.5F);
 						if (boat != null) {
-							boat.rotationYaw = (float)(((MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3) - 1) * 90);
+							boat.rotationYaw = ((MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3) - 1) * 90;
 
 							if (!world.getCollisionBoxes(boat, boat.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty()) {
 								boat.setDead();

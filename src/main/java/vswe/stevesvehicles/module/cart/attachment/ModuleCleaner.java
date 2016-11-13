@@ -6,7 +6,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
@@ -100,7 +99,7 @@ public class ModuleCleaner extends ModuleAttachment {
 			}
 		}
 	}
-	
+
 	private int getPickupDelay(EntityItem item){
 		return (Integer)ObfuscationReflectionHelper.getPrivateValue(EntityItem.class, item, 1);
 	}

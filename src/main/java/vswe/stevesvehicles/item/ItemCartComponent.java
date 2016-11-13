@@ -9,7 +9,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -135,7 +134,7 @@ public class ItemCartComponent extends Item {
 	private boolean isThrowableEgg(ItemStack item) {
 		return item != null && item.getItemDamage() == ComponentTypes.PAINTED_EASTER_EGG.getId();
 	}
-	
+
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entity) {
 		if (isEdibleEgg(stack) && entity instanceof EntityPlayer) {
@@ -188,7 +187,7 @@ public class ItemCartComponent extends Item {
 	public EnumAction getItemUseAction(ItemStack item) {
 		return isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
 	}		
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		if (isEdibleEgg(itemStack)) {

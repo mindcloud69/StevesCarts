@@ -145,7 +145,7 @@ public abstract class ContainerBase extends Container {
 	public boolean canInteractWith(EntityPlayer player) {
 		return getTileEntity() != null && getTileEntity().isUseableByPlayer(player);
 	}
-	
+
 	@Override
 	public void addListener(IContainerListener listener) {
 		super.addListener(listener);

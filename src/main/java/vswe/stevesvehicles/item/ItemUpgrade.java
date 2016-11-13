@@ -74,7 +74,7 @@ public class ItemUpgrade extends ItemBlock {
 					upgrade.getMaster().onUpgradeUpdate();
 				}
 			}
-	
+
 			return true;
 		}
 		return false;

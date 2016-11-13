@@ -4,7 +4,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockNetherWart;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
@@ -138,10 +137,10 @@ public class ModuleLiquidSensors extends ModuleAddon {
 	public float getSensorRotation() {
 		return sensorRotation;
 	}
-	
+
 	//check if it's dangerous to remove a certain block(only used if a addon allows the cart to use it)
 	public boolean isDangerous(final ModuleDrill drill, BlockPos target, boolean isUp) {
-		
+
 		World world = getVehicle().getWorld();
 		IBlockState state = world.getBlockState(target);
 		Block block = state.getBlock();

@@ -57,11 +57,11 @@ public class ContainerCartAssembler extends ContainerBase {
 	public boolean canInteractWith(EntityPlayer player) {
 		return assembler.isUseableByPlayer(player);
 	}
-	
+
 	@Override
 	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
-		
+
 		assembler.initGuiData(this, listener);
 	}
 
@@ -96,7 +96,7 @@ public class ContainerCartAssembler extends ContainerBase {
 	public int lastMaxAssemblingTime;
 	public boolean lastIsAssembling;
 	public int lastFuelLevel;
-	
+
 	@Override
 	public ItemStack slotClick(int slotID, int button, ClickType clickType, EntityPlayer player) {
 		if (slotID >= 0 && slotID < inventorySlots.size()) {

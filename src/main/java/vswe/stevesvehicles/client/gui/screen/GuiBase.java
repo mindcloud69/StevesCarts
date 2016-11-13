@@ -524,7 +524,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 				pt4 = ptD;
 				break;	        	
 		}
-		
+
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexbuffer = tessellator.getBuffer();
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);

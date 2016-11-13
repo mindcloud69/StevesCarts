@@ -1,18 +1,5 @@
 package vswe.stevesvehicles.recipe.nei;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiCrafting;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-
-import vswe.stevesvehicles.recipe.ModuleRecipe;
-import vswe.stevesvehicles.recipe.item.RecipeItem;
-
 
 /*public abstract class RecipeHandlerModule extends TemplateRecipeHandler {
 	protected abstract class CachedModuleRecipe extends CachedRecipe {

@@ -36,7 +36,7 @@ public class ContainerBuoy extends ContainerBase {
 	public boolean canInteractWith(EntityPlayer player) {
 		return player.getDistanceSqToEntity(entityBuoy) <= 64;
 	}
-	
+
 	@Override
 	public void addListener(IContainerListener listener) {
 		super.addListener(listener);

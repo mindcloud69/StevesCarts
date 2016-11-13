@@ -1,33 +1,5 @@
 package vswe.stevesvehicles.recipe.nei;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.ResourceLocation;
-
-import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.client.gui.assembler.TitleBox;
-import vswe.stevesvehicles.client.gui.screen.GuiCartAssembler;
-import vswe.stevesvehicles.container.slots.SlotAssemblerFuel;
-import vswe.stevesvehicles.item.ModItems;
-import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
-import vswe.stevesvehicles.module.data.ModuleData;
-import vswe.stevesvehicles.module.data.ModuleDataHull;
-import vswe.stevesvehicles.module.data.ModuleType;
-import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
-
 
 /*public abstract class RecipeHandlerVehicle extends TemplateRecipeHandler {
 	protected abstract class CachedVehicleRecipe extends CachedRecipe {
@@ -302,9 +274,9 @@ import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
 
 
 
-	
+
      //   ============ METHODS TO GET RID OF THE PAGE TEXT ===========
-	 
+
 
 	private static final ResourceLocation EMPTY_RESOURCE = ResourceHelper.getResource("/gui/blank.png");
 	private boolean oldUnicodeFlag;

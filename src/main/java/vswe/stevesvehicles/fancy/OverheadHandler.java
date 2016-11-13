@@ -105,7 +105,7 @@ public class OverheadHandler extends FancyPancyHandler {
 	public void render(RenderLivingEvent.Specials.Post event) {
 		Entity entity = event.getEntity();
 		RenderLivingBase livingBase = event.getRenderer();
-		
+
 		if (entity instanceof AbstractClientPlayer && livingBase instanceof RenderPlayer) {
 			AbstractClientPlayer player = (AbstractClientPlayer)entity;
 			if (!player.isInvisible()) {

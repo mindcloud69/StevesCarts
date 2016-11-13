@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
 import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
@@ -157,7 +156,7 @@ public class Upgrade implements IRecipeOutput {
 			upgrade.createIcon(register);
 		}
 	}*/
-	
+
 	public boolean connectToRedstone() {
 		return false;
 	}

@@ -386,7 +386,7 @@ public class GuiVehicle extends GuiBase {
 	}
 
 	private static final int[] SCROLLABLE_AREA = {5, 4, 438, 164};
-	
+
 	@Override
 	protected void renderSlots(int x, int y) {
 		ModuleBase thief = vehicle.getInterfaceThief();

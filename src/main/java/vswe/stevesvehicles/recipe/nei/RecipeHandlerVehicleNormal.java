@@ -1,15 +1,5 @@
 package vswe.stevesvehicles.recipe.nei;
 
-
-import java.util.List;
-
-import net.minecraft.item.ItemStack;
-
-import vswe.stevesvehicles.item.ModItems;
-import vswe.stevesvehicles.module.data.ModuleData;
-import vswe.stevesvehicles.module.data.ModuleDataHull;
-import vswe.stevesvehicles.module.data.ModuleDataItemHandler;
-
 /*public class RecipeHandlerVehicleNormal extends RecipeHandlerVehicle {
 	private class CachedVehicleRecipeNormal extends CachedVehicleRecipe {
 		private PositionedStack result;

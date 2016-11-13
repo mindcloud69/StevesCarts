@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.BlockRailAdvancedDetector;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.localization.entry.block.LocalizationDetector;
@@ -124,7 +123,8 @@ public enum DetectorType implements IRecipeOutput, IStringSerializable {
 	public int getMeta() {
 		return meta;
 	}
-	
+
+	@Override
 	public String getName() {
 		return name().toLowerCase(Locale.ENGLISH);
 	}

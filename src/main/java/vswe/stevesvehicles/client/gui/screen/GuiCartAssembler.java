@@ -589,7 +589,7 @@ public class GuiCartAssembler extends GuiBase {
 
 			GL11.glRotatef(assembler.getRoll(), 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(assembler.getYaw(), 0.0F, 1.0F, 0.0F);
-			
+
 			RenderManager manager = Minecraft.getMinecraft().getRenderManager();
 			manager.playerViewY = 180.0F;
 

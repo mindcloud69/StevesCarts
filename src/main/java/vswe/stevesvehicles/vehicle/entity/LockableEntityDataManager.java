@@ -21,7 +21,7 @@ public class LockableEntityDataManager extends EntityDataManager {
 			setEntryValues(lockedList);
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void setEntryValues(List<DataEntry<?>> entries) {

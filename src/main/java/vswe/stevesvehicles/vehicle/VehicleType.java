@@ -2,7 +2,6 @@ package vswe.stevesvehicles.vehicle;
 
 
 import net.minecraft.util.text.translation.I18n;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public class VehicleType {

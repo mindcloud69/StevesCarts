@@ -1,9 +1,6 @@
 package vswe.stevesvehicles.tank;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevesvehicles.client.gui.screen.GuiBase;
 
 public interface ITankHolder {
 

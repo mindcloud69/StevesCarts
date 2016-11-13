@@ -2,7 +2,6 @@ package vswe.stevesvehicles.item;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,13 +11,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import vswe.stevesvehicles.buoy.BuoyType;
@@ -57,7 +54,7 @@ public class ItemBuoy extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		double x = player.posX;
-		double y = player.posY + 1.62D - (double)player.getYOffset();
+		double y = player.posY + 1.62D - player.getYOffset();
 		double z = player.posZ;
 		Vec3d camera = new Vec3d(x, y, z);
 

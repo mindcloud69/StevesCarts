@@ -8,7 +8,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.StorageBlock;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 

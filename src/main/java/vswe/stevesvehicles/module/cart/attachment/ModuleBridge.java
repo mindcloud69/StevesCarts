@@ -6,12 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -96,7 +94,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	private boolean tryBuildBridge(BlockPos target, boolean flag) {
 		World world = getVehicle().getWorld();
 		IBlockState blockState = world.getBlockState(target);
-		
+
 		if ((countsAsAir(target) || blockState.getBlock() instanceof BlockLiquid) && isValidForTrack(target.up(), false)) {
 
 			for (int m = 0; m < getInventorySize(); m++) {

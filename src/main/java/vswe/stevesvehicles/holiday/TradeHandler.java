@@ -2,7 +2,6 @@ package vswe.stevesvehicles.holiday;
 
 import java.util.Random;
 
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;

@@ -135,14 +135,14 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 		}
 	}
-	
+
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound var1 = new NBTTagCompound();
 		this.writeToNBT(var1);
 		return new SPacketUpdateTileEntity(getPos(), 1, var1);
 	}
-	
+
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
@@ -335,7 +335,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public String getName() {
 		return "container.assembler_upgrade";
 	}
-	
+
 	@Override
 	public boolean hasCustomName() {
 		return false;
@@ -355,7 +355,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public void openInventory(EntityPlayer player) {
 
 	}
-	
+
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		if (!hasInventory()) {
@@ -494,7 +494,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	private Tank getTank() {
 		return tankEffect != null ? tankEffect.getTank() : null;
 	}
-	
+
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
 		IFluidTank tank = getTank();
@@ -530,6 +530,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		compound.setTag(NBT_EFFECT, list);
 	}
 
+	@Override
 	public void update() {
 		if(effects != null && getMaster() != null) {
 			for (BaseEffect effect : effects) {

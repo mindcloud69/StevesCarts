@@ -145,7 +145,7 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	public void readSpawnData(ByteBuf additionalData) {
 		buoyType = BuoyType.getType(additionalData.readByte());
 	}
-	
+
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
 		if (!worldObj.isRemote) {
