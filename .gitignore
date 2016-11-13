@@ -1,20 +1,17 @@
-#Ignore eclipse workspace files
-.classpath
-.project
-.settings
-eclipse
+# everything
+/*
 
-#Ignore IntelliJ IDEA files
-*.iml
-*.ipr
-*.iws
-out
+# folders
+!/src
+!/gradle/
 
-#Ignore build files
-build
-
-#Ignore Minecraft run directory
-run
-
-#Ignore gradle logs
-.gradle
+# files
+!/.gitignore
+!/README.md
+!/build.gradle
+!/gradle.properties
+!/gradlew
+!/gradlew.bat
+!/export.py
+!/export.lnk
+!/build.lnk
