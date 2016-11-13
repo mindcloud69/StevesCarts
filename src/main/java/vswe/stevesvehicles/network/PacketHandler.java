@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,7 +43,7 @@ public class PacketHandler {
 
 				World world = player.worldObj;
 
-				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, x, y, z);
+				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, new BlockPos(x, y, z));
 
 			}else if(type == PacketType.VEHICLE){
 				int entityId = dr.readInteger();
@@ -146,8 +147,6 @@ public class PacketHandler {
 		dw.sendToPlayer((EntityPlayerMP)player);
 	}
 
-
-
 	public static void sendBlockInfoToClients(World world, byte[] data, int x, int y, int z) {
 		DataWriter dw = getDataWriter(PacketType.BLOCK);
 		dw.writeInteger(x);
@@ -161,6 +160,7 @@ public class PacketHandler {
 		dw.sendToAllPlayersAround(world, x, y, z, 64);
 	}
 
-
-
+	public static void sendBlockInfoToClients(World world, byte[] data, BlockPos pos) {
+		sendBlockInfoToClients(world, data, pos.getX(), pos.getY(), pos.getZ());
+	}
 }

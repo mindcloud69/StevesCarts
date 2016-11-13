@@ -13,16 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.FluidTankPropertiesWrapper;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,7 +62,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public void setMaster(TileEntityCartAssembler master) {
 		if (worldObj.isRemote && this.master != master) {
-			worldObj.markBlockForUpdate(this.xCoord,this.yCoord,this.zCoord);
+			//TODO: ?
+			//worldObj.markBlockForUpdate(this.xCoord,this.yCoord,this.zCoord);
 		}
 		this.master = master;
 	}
@@ -156,15 +154,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	}
 
-	@SideOnly(Side.CLIENT)
+	/*@SideOnly(Side.CLIENT)
 	public IIcon getTexture(boolean outside) {
 		if (getUpgrade() == null) {
 			return null;
 		}
 
-		return outside ? getUpgrade().getMainTexture() : getUpgrade().getSideTexture();
-	}
-
+	 */
 
 	public boolean hasInventory() {
 		return inventoryStacks != null;
@@ -561,5 +557,23 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public InventoryEffect getInventoryEffect() {
 		return inventoryEffect;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
 	}
 }

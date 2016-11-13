@@ -1,17 +1,16 @@
 package vswe.stevesvehicles.tileentity.distributor;
+import net.minecraft.util.EnumFacing;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.entry.block.LocalizationDistributor;
 import vswe.stevesvehicles.tileentity.TileEntityDistributor;
 
 public class DistributorSide {
-
-
 	private int id;
 	private ILocalizedText name;
-	private ForgeDirection side;
+	private EnumFacing side;
 	private int data;
 
-	public DistributorSide(int id, ILocalizedText name, ForgeDirection side) {
+	public DistributorSide(int id, ILocalizedText name, EnumFacing side) {
 		this.name = name;
 		this.id = id;
 		this.side = side;
@@ -30,14 +29,14 @@ public class DistributorSide {
 		return name.translate();
 	}
 
-	public ForgeDirection getSide() {
+	public EnumFacing getSide() {
 		return side;
 	}
 
 	public int getIntSide() {
-		for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-			if (ForgeDirection.VALID_DIRECTIONS[i] == side) {
-				return i;
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			if (facing == side) {
+				return facing.getIndex();
 			}
 		}
 
@@ -52,9 +51,9 @@ public class DistributorSide {
 	public boolean isEnabled(TileEntityDistributor distributor) {
 		if (distributor.getInventories().length == 0) {
 			return false;
-		}else if(getSide() == ForgeDirection.DOWN){
+		}else if(getSide() == EnumFacing.DOWN){
 			return !distributor.hasBot;
-		}else if(getSide() == ForgeDirection.UP){
+		}else if(getSide() == EnumFacing.UP){
 			return !distributor.hasTop;
 		}else{
 			return true;

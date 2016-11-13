@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiActivator;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.container.ContainerActivator;
@@ -80,13 +82,14 @@ public class TileEntityActivator extends TileEntityBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
 		//save all the options
 		for (TogglerOption option : options) {
 			nbttagcompound.setByte(option.getName(), (byte)option.getOption());
 		}
+		return nbttagcompound;
 	}
 
 
@@ -106,7 +109,7 @@ public class TileEntityActivator extends TileEntityBase {
 
 
 	@Override
-	public void initGuiData(Container con, ICrafting crafting) {
+	public void initGuiData(Container con, IContainerListener crafting) {
 		for (int i = 0; i < options.size(); i++) {
 			updateGuiData(con, crafting, i, (short)options.get(i).getOption());
 		}
@@ -114,7 +117,7 @@ public class TileEntityActivator extends TileEntityBase {
 
 
 	@Override
-	public void checkGuiData(Container con, ICrafting crafting) {
+	public void checkGuiData(Container con, IContainerListener crafting) {
 		for (int i = 0; i < options.size(); i++) {
 			int option = options.get(i).getOption();
 			int lastOption = ((ContainerActivator)con).lastOptions.get(i);

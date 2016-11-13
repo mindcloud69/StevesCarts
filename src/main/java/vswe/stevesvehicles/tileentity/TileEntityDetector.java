@@ -2,8 +2,11 @@ package vswe.stevesvehicles.tileentity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.client.gui.screen.GuiDetector;
 import vswe.stevesvehicles.container.ContainerBase;
@@ -15,7 +18,7 @@ import vswe.stevesvehicles.tileentity.detector.LogicObjectOperator;
 import vswe.stevesvehicles.tileentity.detector.OperatorObject;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
-public class TileEntityDetector extends TileEntityBase {
+public class TileEntityDetector extends TileEntityBase implements ITickable {
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -79,8 +82,7 @@ public class TileEntityDetector extends TileEntityBase {
 	private int activeTimer = 20;
 
 	@Override
-	public void updateEntity()
-	{	
+	public void update(){	
 		if (activeTimer > 0) {
 			if (--activeTimer == 0) {
 				DetectorType.getTypeFromMeta(worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).deactivate(this);
@@ -168,16 +170,16 @@ public class TileEntityDetector extends TileEntityBase {
 	}
 
 	@Override
-	public void initGuiData(Container con, ICrafting crafting) {
+	public void initGuiData(Container con, IContainerListener crafting) {
 		//sendAllLogicObjects(con, crafting, mainObj);
 	}
 
 	@Override
-	public void checkGuiData(Container con, ICrafting crafting) {
+	public void checkGuiData(Container con, IContainerListener crafting) {
 		sendUpdatedLogicObjects(con, crafting, mainObj, ((ContainerDetector)con).mainObj);	
 	}
 
-	private void sendUpdatedLogicObjects(Container con, ICrafting crafting, LogicObject real, LogicObject cache) {
+	private void sendUpdatedLogicObjects(Container con, IContainerListener crafting, LogicObject real, LogicObject cache) {
 		if (!real.equals(cache)) {
 			LogicObject parent = cache.getParent();
 			cache.setParent(null);
@@ -206,7 +208,7 @@ public class TileEntityDetector extends TileEntityBase {
 		}
 	}
 
-	private void sendLogicObject(Container con, ICrafting crafting, LogicObject obj) {
+	private void sendLogicObject(Container con, IContainerListener crafting, LogicObject obj) {
 		if (obj.getParent() == null) {
 			return;
 		}
@@ -215,7 +217,7 @@ public class TileEntityDetector extends TileEntityBase {
 		updateGuiData(con, crafting, 1, obj.getData());
 	}
 
-	private void removeLogicObject(Container con, ICrafting crafting, LogicObject obj) {
+	private void removeLogicObject(Container con, IContainerListener crafting, LogicObject obj) {
 		updateGuiData(con, crafting, 2, obj.getId());
 	}
 
@@ -271,13 +273,4 @@ public class TileEntityDetector extends TileEntityBase {
 			activeTimer = 20;
 		}
 	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
-		return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && entityPlayer.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-	}
-
-
-
-
 }

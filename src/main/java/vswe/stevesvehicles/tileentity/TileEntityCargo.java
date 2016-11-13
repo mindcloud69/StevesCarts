@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -84,7 +85,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "container.cargo_manager";
 	}
 
@@ -133,7 +134,7 @@ public class TileEntityCargo extends TileEntityManager {
 
 
 	@Override
-	public void checkGuiData(ContainerManager conManager, ICrafting crafting, boolean isNew) {
+	public void checkGuiData(ContainerManager conManager, IContainerListener crafting, boolean isNew) {
 		super.checkGuiData(conManager, crafting, isNew);
 
 		ContainerCargo con = (ContainerCargo)conManager;
@@ -228,12 +229,13 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setByte("workload", (byte)getWorkload());
 		for (int i = 0; i < 4; i++) {
 			nbttagcompound.setByte("target" + i, (byte)target[i]);
-		}		
+		}	
+		return nbttagcompound;
 	}
 
 	@Override

@@ -8,14 +8,17 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.BlockCartAssembler;
 import vswe.stevesvehicles.block.ModBlocks;
@@ -849,7 +852,7 @@ implements IInventory, ISidedInventory {
 
 
 	@Override
-	public void initGuiData(Container con, ICrafting crafting) {
+	public void initGuiData(Container con, IContainerListener crafting) {
 		updateGuiData(con, crafting, 0, getShortFromInt(true, maxAssemblingTime));
 		updateGuiData(con, crafting, 1, getShortFromInt(false, maxAssemblingTime));
 		updateGuiData(con, crafting, 2, getShortFromInt(true, getAssemblingTime()));
@@ -859,7 +862,7 @@ implements IInventory, ISidedInventory {
 		updateGuiData(con, crafting, 6, getShortFromInt(false, getFuelLevel()));
 	}
 	@Override
-	public void checkGuiData(Container container, ICrafting crafting) {
+	public void checkGuiData(Container container, IContainerListener crafting) {
 		ContainerCartAssembler con = (ContainerCartAssembler)container;
 		if (con.lastMaxAssemblingTime != maxAssemblingTime) {
 			updateGuiData(con, crafting, 0, getShortFromInt(true,maxAssemblingTime));	
@@ -1151,7 +1154,7 @@ implements IInventory, ISidedInventory {
 	}
 
 	public void puke(ItemStack item) {
-		EntityItem entityitem = new EntityItem(worldObj, xCoord, yCoord + 0.25, zCoord , item);
+		EntityItem entityitem = new EntityItem(worldObj, pos.getX(), pos.getY() + 0.25, pos.getZ() , item);
 		entityitem.motionX = (0.5F - worldObj.rand.nextFloat()) / 10;
 		entityitem.motionY = 0.15F;
 		entityitem.motionZ = (0.5F - worldObj.rand.nextFloat()) / 10;
@@ -1161,7 +1164,7 @@ implements IInventory, ISidedInventory {
 	private boolean loaded;
 	public void updateEntity() {
 		if (!loaded) {
-			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(worldObj, xCoord, yCoord, zCoord);
+			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(worldObj, pos);
 			loaded = true;
 		}
 
@@ -1417,12 +1420,6 @@ implements IInventory, ISidedInventory {
 		return false;
 	}
 
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
-		return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && entityPlayer.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-	}
-
 	ItemStack[] inventoryStacks;
 
 
@@ -1474,14 +1471,14 @@ implements IInventory, ISidedInventory {
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "container.vehicle_assembler";
 	}	
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
-	}	
+	}
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -1489,18 +1486,18 @@ implements IInventory, ISidedInventory {
 	}	
 
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 	}
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int i){
-		ItemStack item = getStackInSlot(i);
+	public ItemStack removeStackFromSlot(int index) {
+		ItemStack item = getStackInSlot(index);
 
 		if (item != null) {
-			setInventorySlotContents(i, null);
+			setInventorySlotContents(index, null);
 			if (item.stackSize == 0) {
 				return null;
 			}
@@ -1508,8 +1505,7 @@ implements IInventory, ISidedInventory {
 		}else{
 			return null;
 		}
-
-	}	
+	}
 
 	/**
 	 * Reads a tile entity from NBT.
@@ -1563,7 +1559,7 @@ implements IInventory, ISidedInventory {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound tagCompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 
 		NBTTagList items = new NBTTagList();
@@ -1604,6 +1600,7 @@ implements IInventory, ISidedInventory {
 		tagCompound.setInteger("maxTime", maxAssemblingTime);
 		tagCompound.setInteger("currentTime", getAssemblingTime());
 		tagCompound.setBoolean("isAssembling", isAssembling);
+		return tagCompound;
 	}
 
 
@@ -1634,20 +1631,21 @@ implements IInventory, ISidedInventory {
 
 
 	//slots
+
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-		return (side == 0 || side == 1) ? topBotSlots : sideSlots;
+	public int[] getSlotsForFace(EnumFacing side) {
+		return side == EnumFacing.UP || side == EnumFacing.DOWN ? topBotSlots : sideSlots;
 	}
 
 	//in
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side) {
-		return (side == 0 || side == 1) && this.isItemValidForSlot(slot, item);
+	public boolean canInsertItem(int slot, ItemStack item, EnumFacing side) {
+		return (side == EnumFacing.UP || side == EnumFacing.DOWN) && this.isItemValidForSlot(slot, item);
 	}
 
 	//out
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side) {
+	public boolean canExtractItem(int slot, ItemStack item, EnumFacing side) {
 		return true;
 	}
 
@@ -1669,5 +1667,23 @@ implements IInventory, ISidedInventory {
 		}else{
 			return 1;
 		}
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
 	}
 }

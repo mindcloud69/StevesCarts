@@ -18,28 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityBoatBase extends EntityBoat { //The only reason this extends EntityBoat is for vanilla and mods to actually think these are boats
-	public EntityBoatBase(World world) {
-		super(world);
-		isBoatEmpty = true;
-		preventEntitySpawning = true;
-		setSize(0.98F, 0.7F);
-		yOffset = height / 2;
-	}
-
-	public EntityBoatBase(World world, double x, double y, double z) {
-		this(world);
-		this.setPosition(x, y + yOffset, z);
-		this.motionX = 0;
-		this.motionY = 0;
-		this.motionZ = 0;
-		this.prevPosX = x;
-		this.prevPosY = y;
-		this.prevPosZ = z;
-	}
-
-
-
-
 	/** true if no player in boat */
 	private boolean isBoatEmpty;
 
@@ -57,6 +35,29 @@ public abstract class EntityBoatBase extends EntityBoat { //The only reason this
 	private double velocityZ;
 
 	protected boolean preventRotationUpdate;
+	
+	public EntityBoatBase(World world) {
+		super(world);
+		isBoatEmpty = true;
+		preventEntitySpawning = true;
+		setSize(0.98F, 0.7F);
+	}
+
+	public EntityBoatBase(World world, double x, double y, double z) {
+		this(world);
+		this.setPosition(x, y + getYOffset(), z);
+		this.motionX = 0;
+		this.motionY = 0;
+		this.motionZ = 0;
+		this.prevPosX = x;
+		this.prevPosY = y;
+		this.prevPosZ = z;
+	}
+	
+	@Override
+		public double getYOffset() {
+			return height / 2;
+		}
 
 
 	@Override
@@ -74,12 +75,7 @@ public abstract class EntityBoatBase extends EntityBoat { //The only reason this
 
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entity) {
-		return entity.boundingBox;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox() {
-		return boundingBox;
+		return entity.getEntityBoundingBox();
 	}
 
 	@Override
@@ -94,7 +90,7 @@ public abstract class EntityBoatBase extends EntityBoat { //The only reason this
 
 	@Override
 	public boolean attackEntityFrom(DamageSource type, float dmg) {
-		if (isEntityInvulnerable()) {
+		if (isEntityInvulnerable(type)) {
 			return false;
 		}
 

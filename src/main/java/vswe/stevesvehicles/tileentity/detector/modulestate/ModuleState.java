@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.tileentity.detector.modulestate;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
@@ -35,6 +36,6 @@ public abstract class ModuleState {
 	public abstract boolean isValid(VehicleBase vehicle);
 
 	public String getName() {
-		return StatCollector.translateToLocal(getUnlocalizedName());
+		return I18n.translateToLocal(getUnlocalizedName());
 	}
 }
