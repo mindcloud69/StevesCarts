@@ -407,7 +407,7 @@ public abstract class ModuleBase {
 	 * @param z
 	 *            Z coordinate in the world
 	 */
-	public void moveMinecartOnRail(int x, int y, int z) {
+	public void moveMinecartOnRail(BlockPos pos) {
 	}
 
 	/**
@@ -865,22 +865,18 @@ public abstract class ModuleBase {
 	 * Allows the module to override the direction the vehicle is going. This
 	 * mechanic is not finished and hence won't work perfectly.
 	 * 
-	 * @param x
-	 *            The x coordinate in the world
-	 * @param y
-	 *            The y coordinate in the world
-	 * @param z
-	 *            The z coordinate in the world
+	 * @param pos
+	 *            The coordinates in the world
 	 * @return The direction to go, default means that the module won't chane it
 	 */
-	public RailDirection getSpecialRailDirection(int x, int y, int z) {
+	public RailDirection getSpecialRailDirection(BlockPos pos) {
 		return RailDirection.DEFAULT;
 	}
 
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 	}
 
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 	}
 
 	/**

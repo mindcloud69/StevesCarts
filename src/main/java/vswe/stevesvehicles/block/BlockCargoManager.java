@@ -4,17 +4,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityCargo;
 
 public class BlockCargoManager extends BlockContainerBase {
 	public BlockCargoManager() {
-		super(Material.rock);
+		super(Material.ROCK);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	private IIcon topIcon;
+	/*private IIcon topIcon;
 	private IIcon botIcon;
 	private IIcon redIcon;
 	private IIcon blueIcon;
@@ -48,7 +47,7 @@ public class BlockCargoManager extends BlockContainerBase {
 		blueIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/blue");
 		greenIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/green");
 		yellowIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/cargo/yellow");
-	}
+	}*/
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

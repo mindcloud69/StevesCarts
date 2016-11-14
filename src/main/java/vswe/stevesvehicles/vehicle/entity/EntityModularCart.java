@@ -2,21 +2,30 @@ package vswe.stevesvehicles.vehicle.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockRailBase.EnumRailDirection;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.client.audio.MovingSoundMinecart;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,19 +45,15 @@ import vswe.stevesvehicles.vehicle.VehicleCart;
  */
 public class EntityModularCart extends EntityMinecart implements IVehicleEntity {
 	private VehicleBase vehicleBase;
-	public int disabledX;
-	public int disabledY;
-	public int disabledZ;
+	public BlockPos disabledPos;
 	protected boolean wasDisabled;
 	public double pushX;
 	public double pushZ;
 	public double temppushX;
 	public double temppushZ;
 	public boolean cornerFlip;
-	private int fixedMeta = -1;
-	private int fixedMX;
-	private int fixedMY;
-	private int fixedMZ;
+	private EnumRailDirection fixedRailDirection;
+	private BlockPos fixedRailPos;
 	private int wrongRender;
 	private boolean oldRender;
 	private float lastRenderYaw;
@@ -185,13 +190,13 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		}
 
 		@Override
-		public int getDefaultDisplayTileData() {
-			return -1;
+		public IBlockState getDefaultDisplayTile() {
+			return null;
 		}
 
 		@Override
-		public int getMinecartType() {
-			return -1;
+		public Type getType() {
+			return null;
 		}
 
 		/**
@@ -240,7 +245,6 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 			}
 		}
 
-		@Override
 		/**
 		 * Called when the cart is moving on top of a rail
 		 * 
@@ -253,28 +257,29 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		 * @param acceleration
 		 *            seems like the acceleration
 		 */
-		public void moveMinecartOnRail(int x, int y, int z, double acceleration/* ? */) {
-			super.moveMinecartOnRail(x, y, z, acceleration);
+
+		@Override
+		public void moveMinecartOnRail(BlockPos pos) {
+			super.moveMinecartOnRail(pos);
 			if (vehicleBase.getModules() != null) {
 				for (ModuleBase module : vehicleBase.getModules()) {
-					module.moveMinecartOnRail(x, y, z);
+					module.moveMinecartOnRail(pos);
 				}
 			}
-			Block block = worldObj.getBlock(x, y, z);
-			Block blockBelow = worldObj.getBlock(x, y - 1, z);
-			int metaBelow = worldObj.getBlockMetadata(x, y - 1, z);
-			int m = ((BlockRailBase) block).getBasicRailMetadata(worldObj, this, x, y, z);
-			if (((m == 6 || m == 7) && motionX < 0) || ((m == 8 || m == 9) && motionX > 0)) {
+			IBlockState state = worldObj.getBlockState(pos);
+			IBlockState stateBelow = worldObj.getBlockState(pos.down());
+			EnumRailDirection railDirection = ((BlockRailBase) state.getBlock()).getRailDirection(worldObj, pos, state, this);
+			if (((railDirection == EnumRailDirection.SOUTH_EAST || railDirection == EnumRailDirection.SOUTH_WEST) && motionX < 0) || ((railDirection == EnumRailDirection.NORTH_WEST || railDirection == EnumRailDirection.NORTH_EAST) && motionX > 0)) {
 				cornerFlip = true;
 			} else {
 				cornerFlip = false;
 			}
-			if (block != ModBlocks.ADVANCED_DETECTOR.getBlock() && vehicleBase.isDisabled()) {
+			if (state.getBlock() != ModBlocks.ADVANCED_DETECTOR.getBlock() && vehicleBase.isDisabled()) {
 				releaseCart();
 			}
-			boolean canBeDisabled = block == ModBlocks.ADVANCED_DETECTOR.getBlock()
-					&& (blockBelow != ModBlocks.DETECTOR_UNIT.getBlock() || !DetectorType.getTypeFromMeta(metaBelow).canInteractWithCart() || DetectorType.getTypeFromMeta(metaBelow).shouldStopCart());
-			boolean forceUnDisable = (wasDisabled && disabledX == x && disabledY == y && disabledZ == z);
+			boolean canBeDisabled = state.getBlock() == ModBlocks.ADVANCED_DETECTOR.getBlock()
+					&& (stateBelow.getBlock() != ModBlocks.DETECTOR_UNIT.getBlock() || !DetectorType.getTypeFromSate(stateBelow).canInteractWithCart() || DetectorType.getTypeFromSate(stateBelow).shouldStopCart());
+			boolean forceUnDisable = (wasDisabled && disabledPos != null && disabledPos.equals(pos));
 			if (!forceUnDisable && wasDisabled) {
 				wasDisabled = false;
 			}
@@ -286,88 +291,83 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 					temppushZ = pushZ;
 					pushX = pushZ = 0;
 				}
-				disabledX = x;
-				disabledY = y;
-				disabledZ = z;
+				disabledPos = pos;
 			}
-			if (fixedMX != x || fixedMY != y || fixedMZ != z) {
-				fixedMeta = -1;
-				fixedMY = -1;
+			if (fixedRailPos != null && !fixedRailPos.equals(pos)) {
+				fixedRailDirection = null;
+				if(fixedRailPos == null){
+					fixedRailPos = new BlockPos(0, -1, 0);
+				}else{
+					fixedRailPos = new BlockPos(fixedRailPos.getX(), -1, fixedRailPos.getZ());
+				}
 			}
 		}
 
 		/**
 		 * Allows the cart to override the rail's meta data when traveling
 		 * 
-		 * @param x
-		 *            The X coordinate of the rail
-		 * @param y
-		 *            The Y coordinate of the rail
-		 * @param z
-		 *            The Z coordinate of the rail
+		 * @param pos The coordinates of the rail
 		 * @return The meta data of the rail
 		 */
-		public int getRailMeta(int x, int y, int z) {
+		public EnumRailDirection getRailDirection(BlockPos pos) {
 			ModuleBase.RailDirection dir = ModuleBase.RailDirection.DEFAULT;
 			for (ModuleBase module : vehicleBase.getModules()) {
-				dir = module.getSpecialRailDirection(x, y, z);
+				dir = module.getSpecialRailDirection(pos);
 				if (dir != ModuleBase.RailDirection.DEFAULT) {
 					break;
 				}
 			}
 			if (dir == ModuleBase.RailDirection.DEFAULT) {
-				return -1;
+				return null;
 			}
 			int Yaw = (int) (rotationYaw % 180);
 			if (Yaw < 0) {
 				Yaw += 180;
 			}
 			boolean flag = Yaw >= 45 && Yaw <= 135;
-			if (fixedMeta == -1) {
+			if (fixedRailDirection == null) {
 				switch (dir) {
 					case FORWARD:
-						fixedMeta = flag ? 0 : 1;
+						fixedRailDirection = flag ? EnumRailDirection.NORTH_SOUTH : EnumRailDirection.EAST_WEST;
 						break;
 					case LEFT:
 						if (flag) {
-							fixedMeta = motionZ > 0 ? 9 : 7;
+							fixedRailDirection = motionZ > 0 ? EnumRailDirection.NORTH_EAST : EnumRailDirection.SOUTH_WEST;
 						} else {
-							fixedMeta = motionX > 0 ? 8 : 6;
+							fixedRailDirection = motionX > 0 ? EnumRailDirection.NORTH_WEST : EnumRailDirection.SOUTH_EAST;
 						}
 						break;
 					case RIGHT:
 						if (flag) {
-							fixedMeta = motionZ > 0 ? 8 : 6;
+							fixedRailDirection = motionZ > 0 ? EnumRailDirection.NORTH_WEST : EnumRailDirection.SOUTH_EAST;
 						} else {
-							fixedMeta = motionX > 0 ? 7 : 9;
+							fixedRailDirection = motionX > 0 ? EnumRailDirection.SOUTH_WEST : EnumRailDirection.NORTH_EAST;
 						}
 						break;
 						// doesn't work
 					case NORTH:
 						if (flag) {
-							fixedMeta = motionZ > 0 ? 0 : -1;
+							fixedRailDirection = motionZ > 0 ? EnumRailDirection.NORTH_SOUTH : null;
 						} else {
-							fixedMeta = motionX > 0 ? 7 : 6;
+							fixedRailDirection = motionX > 0 ? EnumRailDirection.SOUTH_WEST : EnumRailDirection.SOUTH_EAST;
 						}
 						break;
 					default:
-						fixedMeta = -1;
+						fixedRailDirection = null;
 				}
-				if (fixedMeta == -1) {
-					return -1;
+				if (fixedRailDirection == null) {
+					return null;
 				}
-				fixedMX = x;
-				fixedMY = y;
-				fixedMZ = z;
+				fixedRailPos = pos;
 			}
-			return fixedMeta;
+			return fixedRailDirection;
 		}
 
 		/**
 		 * Reset the modified meta data
 		 */
 		public void resetRailDirection() {
-			fixedMeta = -1;
+			fixedRailDirection = null;
 		}
 
 		/**
@@ -394,18 +394,19 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		}
 
 		@Override
-		protected void func_145821_a(int par1, int par2, int par3, double par4, double par6, Block par8, int par9) {
-			if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase) {
-				float move = ((EntityLivingBase) this.riddenByEntity).moveForward;
-				((EntityLivingBase) this.riddenByEntity).moveForward = 0;
-				super.func_145821_a(par1, par2, par3, par4, par6, par8, par9);
-				((EntityLivingBase) this.riddenByEntity).moveForward = move;
+		protected void moveAlongTrack(BlockPos pos, IBlockState state) {
+			Entity riddenByEntity = getControllingPassenger();
+			if (riddenByEntity != null && riddenByEntity instanceof EntityLivingBase) {
+				float move = ((EntityLivingBase) riddenByEntity).moveForward;
+				((EntityLivingBase) riddenByEntity).moveForward = 0;
+				moveAlongTrack(pos, state);
+				((EntityLivingBase) riddenByEntity).moveForward = move;
 			} else {
-				super.func_145821_a(par1, par2, par3, par4, par6, par8, par9);
+				moveAlongTrack(pos, state);
 			}
 			double d2 = this.pushX * this.pushX + this.pushZ * this.pushZ;
 			if (d2 > 1.0E-4D && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001D) {
-				d2 = (double) MathHelper.sqrt_double(d2);
+				d2 = MathHelper.sqrt_double(d2);
 				this.pushX /= d2;
 				this.pushZ /= d2;
 				if (this.pushX * this.motionX + this.pushZ * this.motionZ < 0.0D) {
@@ -427,7 +428,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 				motionY = 0;
 				motionZ = 0;
 			} else if (vehicleBase.getEngineFlag()) {
-				d0 = (double) MathHelper.sqrt_double(d0);
+				d0 = MathHelper.sqrt_double(d0);
 				this.pushX /= d0;
 				this.pushZ /= d0;
 				double d1 = getPushFactor();
@@ -465,13 +466,14 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		 * Saves data of the cart, also allows all modules to save their data
 		 */
 		@Override
-		public void writeToNBT(NBTTagCompound tagCompound) {
+		public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
 			super.writeToNBT(tagCompound);
 			vehicleBase.writeToNBT(tagCompound);
 			tagCompound.setDouble("pushX", pushX);
 			tagCompound.setDouble("pushZ", pushZ);
 			tagCompound.setDouble("temppushX", temppushX);
 			tagCompound.setDouble("temppushZ", temppushZ);
+			return tagCompound;
 		}
 
 		/**
@@ -509,13 +511,13 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		 * A method to be called when this cart is activated by the player
 		 **/
 		@Override
-		public boolean interactFirst(EntityPlayer player) {
+		public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
 			if (!vehicleBase.canInteractWithEntity(player)) {
-				return false;
+				return EnumActionResult.PASS;
 			}
 			if (!worldObj.isRemote) {
 				// Saves which direction the player activated the cart from
-				if (!vehicleBase.isDisabled() && riddenByEntity != player) {
+				if (!vehicleBase.isDisabled() && getControllingPassenger() != player) {
 					temppushX = posX - player.posX;
 					temppushZ = posZ - player.posZ;
 				}
@@ -526,7 +528,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 				}
 			}
 			vehicleBase.onInteractWith(player);
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
 
 		public boolean getRenderFlippedYaw(float yaw) {
@@ -577,18 +579,18 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		}
 
 		@Override
-		public ItemStack getStackInSlotOnClosing(int id) {
-			return vehicleBase.getStackOnCloseing(id);
+		public ItemStack removeStackFromSlot(int index) {
+			return vehicleBase.removeStackFromSlot(index);
 		}
 
 		@Override
-		public void openInventory() {
-			vehicleBase.openInventory();
+		public void openInventory(EntityPlayer player) {
+			vehicleBase.openInventory(player);
 		}
 
 		@Override
-		public void closeInventory() {
-			vehicleBase.closeInventory();
+		public void closeInventory(EntityPlayer player) {
+			vehicleBase.closeInventory(player);
 		}
 
 		@Override
@@ -602,38 +604,28 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		}
 
 		@Override
-		public String getInventoryName() {
-			return vehicleBase.getInventoryName();
+		public String getName() {
+			return vehicleBase.getName();
 		}
 
 		@Override
-		public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-			return vehicleBase.fill(from, resource, doFill);
+		public int fill(FluidStack resource, boolean doFill) {
+			return vehicleBase.fill(resource, doFill);
 		}
 
 		@Override
-		public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-			return vehicleBase.drain(from, maxDrain, doDrain);
+		public FluidStack drain(FluidStack resource, boolean doDrain) {
+			return vehicleBase.drain(resource, doDrain);
 		}
 
 		@Override
-		public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-			return vehicleBase.drain(from, resource, doDrain);
+		public FluidStack drain(int maxDrain, boolean doDrain) {
+			return vehicleBase.drain(maxDrain, doDrain);
 		}
 
 		@Override
-		public boolean canFill(ForgeDirection from, Fluid fluid) {
-			return vehicleBase.canFill(from, fluid);
-		}
-
-		@Override
-		public boolean canDrain(ForgeDirection from, Fluid fluid) {
-			return vehicleBase.canDrain(from, fluid);
-		}
-
-		@Override
-		public FluidTankInfo[] getTankInfo(ForgeDirection direction) {
-			return vehicleBase.getTankInfo(direction);
+		public IFluidTankProperties[] getTankProperties() {
+			return vehicleBase.getTankProperties();
 		}
 
 		@Override
@@ -647,8 +639,8 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		}
 
 		@Override
-		public AxisAlignedBB getBoundingBox() {
-			return vehicleBase.isPlaceholder ? null : super.getBoundingBox();
+		public AxisAlignedBB getEntityBoundingBox() {
+			return vehicleBase.isPlaceholder ? null : super.getEntityBoundingBox();
 		}
 
 		@Override

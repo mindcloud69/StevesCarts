@@ -4,17 +4,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityLiquid;
 
 public class BlockLiquidManager extends BlockContainerBase {
 	public BlockLiquidManager() {
-		super(Material.rock);
+		super(Material.ROCK);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	private IIcon topIcon;
+	/*private IIcon topIcon;
 	private IIcon botIcon;
 	private IIcon redIcon;
 	private IIcon blueIcon;
@@ -48,7 +47,7 @@ public class BlockLiquidManager extends BlockContainerBase {
 		blueIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/liquid/blue");
 		greenIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/liquid/green");
 		yellowIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":managers/liquid/yellow");
-	}
+	}*/
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

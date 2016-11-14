@@ -10,7 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.item.ItemBlockDetector;
 import vswe.stevesvehicles.item.ItemBlockStorage;
 import vswe.stevesvehicles.item.ItemUpgrade;
@@ -71,7 +71,7 @@ public enum ModBlocks implements IRecipeOutput {
 					Object blockInstance = blockConstructor.newInstance();
 					IBlockBase blockBase = (IBlockBase) blockInstance;
 					Block block = (Block) blockInstance;
-					block.setHardness(2F).setStepSound(Block.soundTypeMetal);
+					block.setHardness(2F);
 					GameRegistry.registerBlock(block, blockInfo.itemClazz, blockInfo.unlocalizedName);
 					blockBase.setUnlocalizedName("steves_vehicles:tile.common:" + blockInfo.unlocalizedName);
 					blockInfo.block = block;
@@ -104,16 +104,16 @@ public enum ModBlocks implements IRecipeOutput {
 	public static void addRecipes() {
 		CARGO_MANAGER.addRecipe(PLANKS, PLANKS, PLANKS, PLANKS, SIMPLE_PCB, PLANKS, PLANKS, PLANKS, PLANKS);
 		LIQUID_MANAGER.addRecipe(GLASS, GLASS, GLASS, GLASS, SIMPLE_PCB, GLASS, GLASS, GLASS, GLASS);
-		MODULE_TOGGLER.addRecipe(ORANGE, Items.gold_ingot, BLUE, Blocks.stone, Items.iron_ingot, Blocks.stone, Items.redstone, SIMPLE_PCB, Items.redstone);
-		EXTERNAL_DISTRIBUTOR.addRecipe(Blocks.stone, SIMPLE_PCB, Blocks.stone, SIMPLE_PCB, Items.redstone, SIMPLE_PCB, Blocks.stone, SIMPLE_PCB, Blocks.stone);
-		CART_ASSEMBLER.addRecipe(Items.iron_ingot, Blocks.stone, Items.iron_ingot, Blocks.stone, Items.iron_ingot, Blocks.stone, SIMPLE_PCB, Blocks.stone, SIMPLE_PCB);
-		JUNCTION.addRecipe(null, Items.redstone, null, Items.redstone, Blocks.rail, Items.redstone, null, Items.redstone, null);
-		ADVANCED_DETECTOR.addRecipeWithCount(2, Items.iron_ingot, Blocks.stone_pressure_plate, Items.iron_ingot, Items.iron_ingot, Items.redstone, Items.iron_ingot, Items.iron_ingot, Blocks.stone_pressure_plate, Items.iron_ingot);
-		DetectorType.UNIT.addShapedRecipe(Blocks.cobblestone, Blocks.stone_pressure_plate, Blocks.cobblestone, Items.iron_ingot, SIMPLE_PCB, Items.iron_ingot, Blocks.cobblestone, Blocks.stone_pressure_plate, Blocks.cobblestone);
-		DetectorType.NORMAL.addShapelessRecipe(DetectorType.UNIT, SIMPLE_PCB, Items.redstone);
-		DetectorType.STOP.addShapelessRecipe(DetectorType.UNIT, SIMPLE_PCB, Items.iron_ingot);
-		DetectorType.JUNCTION.addShapelessRecipe(DetectorType.UNIT, SIMPLE_PCB, Blocks.redstone_torch);
-		DetectorType.REDSTONE.addShapelessRecipe(DetectorType.UNIT, Items.redstone, Items.redstone, Items.redstone);
+		MODULE_TOGGLER.addRecipe(ORANGE, Items.GOLD_INGOT, BLUE, Blocks.STONE, Items.IRON_INGOT, Blocks.STONE, Items.REDSTONE, SIMPLE_PCB, Items.REDSTONE);
+		EXTERNAL_DISTRIBUTOR.addRecipe(Blocks.STONE, SIMPLE_PCB, Blocks.STONE, SIMPLE_PCB, Items.REDSTONE, SIMPLE_PCB, Blocks.STONE, SIMPLE_PCB, Blocks.STONE);
+		CART_ASSEMBLER.addRecipe(Items.IRON_INGOT, Blocks.STONE, Items.IRON_INGOT, Blocks.STONE, Items.IRON_INGOT, Blocks.STONE, SIMPLE_PCB, Blocks.STONE, SIMPLE_PCB);
+		JUNCTION.addRecipe(null, Items.REDSTONE, null, Items.REDSTONE, Blocks.RAIL, Items.REDSTONE, null, Items.REDSTONE, null);
+		ADVANCED_DETECTOR.addRecipeWithCount(2, Items.IRON_INGOT, Blocks.STONE_PRESSURE_PLATE, Items.IRON_INGOT, Items.IRON_INGOT, Items.REDSTONE, Items.IRON_INGOT, Items.IRON_INGOT, Blocks.STONE_PRESSURE_PLATE, Items.IRON_INGOT);
+		DetectorType.UNIT.addShapedRecipe(Blocks.COBBLESTONE, Blocks.STONE_PRESSURE_PLATE, Blocks.COBBLESTONE, Items.IRON_INGOT, SIMPLE_PCB, Items.IRON_INGOT, Blocks.COBBLESTONE, Blocks.STONE_PRESSURE_PLATE, Blocks.COBBLESTONE);
+		DetectorType.NORMAL.addShapelessRecipe(DetectorType.UNIT, SIMPLE_PCB, Items.REDSTONE);
+		DetectorType.STOP.addShapelessRecipe(DetectorType.UNIT, SIMPLE_PCB, Items.IRON_INGOT);
+		DetectorType.JUNCTION.addShapelessRecipe(DetectorType.UNIT, SIMPLE_PCB, Blocks.REDSTONE_TORCH);
+		DetectorType.REDSTONE.addShapelessRecipe(DetectorType.UNIT, Items.REDSTONE, Items.REDSTONE, Items.REDSTONE);
 	}
 
 	public Block getBlock() {

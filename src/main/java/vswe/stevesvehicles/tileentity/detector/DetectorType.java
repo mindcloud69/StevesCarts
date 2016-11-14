@@ -3,6 +3,8 @@ package vswe.stevesvehicles.tileentity.detector;
 import java.util.HashMap;
 import java.util.Locale;
 
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.translation.I18n;
@@ -65,6 +67,8 @@ public enum DetectorType implements IRecipeOutput, IStringSerializable {
 	private boolean emitRedstone;
 	private HashMap<Byte, OperatorObject> operators;
 
+	public static PropertyEnum<DetectorType> SATE = PropertyEnum.create("detectortype", DetectorType.class);
+
 	DetectorType(int meta, boolean acceptCart, boolean stopCart, boolean emitRedstone, String... textures) {
 		this.meta = meta;
 		this.textures = textures;
@@ -115,8 +119,12 @@ public enum DetectorType implements IRecipeOutput, IStringSerializable {
 	public void deactivate(TileEntityDetector detector) {
 	}
 
-	public static DetectorType getTypeFromMeta(int meta) {
-		return values()[meta & 7];
+	public static DetectorType getTypeFromSate(IBlockState state) {
+		return state.getValue(SATE);
+	}
+
+	public static DetectorType getTypeFromInt(int meta) {
+		return DetectorType.values()[meta];
 	}
 
 	public void initOperators(HashMap<Byte, OperatorObject> operators) {

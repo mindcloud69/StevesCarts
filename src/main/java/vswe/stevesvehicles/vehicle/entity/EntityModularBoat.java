@@ -355,7 +355,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int id) {
-		return vehicleBase.getStackOnCloseing(id);
+		return vehicleBase.removeStackFromSlot(id);
 	}
 
 	@Override
@@ -380,7 +380,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	public String getInventoryName() {
-		return vehicleBase.getInventoryName();
+		return vehicleBase.getName();
 	}
 
 	@Override

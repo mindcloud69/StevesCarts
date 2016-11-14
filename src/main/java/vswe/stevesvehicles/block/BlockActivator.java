@@ -4,17 +4,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityActivator;
 
 public class BlockActivator extends BlockContainerBase {
 	public BlockActivator() {
-		super(Material.rock);
+		super(Material.ROCK);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	private IIcon topIcon;
+	/*private IIcon topIcon;
 	private IIcon botIcon;
 	private IIcon sideIcon;
 
@@ -36,7 +35,7 @@ public class BlockActivator extends BlockContainerBase {
 		topIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":toggler/top");
 		botIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":toggler/bot");
 		sideIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":toggler/side");
-	}
+	}*/
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

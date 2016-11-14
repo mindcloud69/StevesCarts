@@ -1,9 +1,15 @@
 package vswe.stevesvehicles.client.rendering;
 
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.math.MathHelper;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 
 public class RendererBoat extends RendererVehicle {
+	public RendererBoat(RenderManager renderManager) {
+		super(renderManager);
+	}
+
 	@Override
 	protected void applyMatrixUpdates(VehicleBase vehicle, MatrixObject matrix, float partialTickTime) {
 		EntityModularBoat boat = (EntityModularBoat) vehicle.getEntity();

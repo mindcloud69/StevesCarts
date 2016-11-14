@@ -145,6 +145,10 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return UpgradeRegistry.getUpgradeFromId(type);
 	}
 
+	public int getType() {
+		return type;
+	}
+
 	public TileEntityUpgrade() {
 	}
 

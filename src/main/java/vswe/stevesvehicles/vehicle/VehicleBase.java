@@ -1272,7 +1272,7 @@ public class VehicleBase {
 		}
 	}
 
-	public ItemStack getStackOnCloseing(int id) {
+	public ItemStack removeStackFromSlot(int id) {
 		if (vehicleEntity.getStackInSlot(id) != null) {
 			ItemStack item = vehicleEntity.getStackInSlot(id);
 			vehicleEntity.setInventorySlotContents(id, null);
@@ -1282,18 +1282,18 @@ public class VehicleBase {
 		}
 	}
 
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 		if (modules != null) {
 			for (ModuleBase module : modules) {
-				module.openInventory();
+				module.openInventory(player);
 			}
 		}
 	}
 
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 		if (modules != null) {
 			for (ModuleBase module : modules) {
-				module.closeInventory();
+				module.closeInventory(player);
 			}
 		}
 	}
@@ -1362,7 +1362,15 @@ public class VehicleBase {
 		return amount;
 	}
 
-	private FluidStack drain(FluidStack resource, int maxDrain, boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
+		return drainInternal(null, maxDrain, doDrain);
+	}
+
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
+		return drainInternal(resource, resource == null ? 0 : resource.amount, doDrain);
+	}
+
+	private FluidStack drainInternal(FluidStack resource, int maxDrain, boolean doDrain) {
 		FluidStack ret = resource;
 		if (ret != null) {
 			ret = ret.copy();
@@ -1434,7 +1442,7 @@ public class VehicleBase {
 		return 64;
 	}
 
-	public String getInventoryName() {
+	public String getName() {
 		return "container.modular_vehicle";
 	}
 
