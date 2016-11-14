@@ -1,21 +1,29 @@
 package vswe.stevesvehicles.tileentity.distributor;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.entry.block.LocalizationDistributor;
 import vswe.stevesvehicles.tileentity.TileEntityDistributor;
 
-public class DistributorSide {
+public class DistributorSide implements IFluidHandler {
 	private int id;
 	private ILocalizedText name;
 	private EnumFacing side;
 	private int data;
+	private TileEntityDistributor tile;
 
-	public DistributorSide(int id, ILocalizedText name, EnumFacing side) {
+	public DistributorSide(int id, ILocalizedText name, EnumFacing side, TileEntityDistributor tile) {
 		this.name = name;
 		this.id = id;
 		this.side = side;
 		this.data = 0;
+		this.tile = tile;
 	}
 
 	public void setData(int data) {
@@ -107,5 +115,76 @@ public class DistributorSide {
 
 	public String getInfo() {
 		return LocalizationDistributor.SIDE_TOOLTIP.translate(getName());
+	}
+	
+	/**
+	 * Fills fluid into internal tanks, distribution is left to the
+	 * ITankContainer.
+	 * 
+	 * @param from
+	 *            Orientation the fluid is pumped in from.
+	 * @param resource
+	 *            FluidStack representing the maximum amount of fluid filled
+	 *            into the ITankContainer
+	 * @param doFill
+	 *            If false filling will only be simulated.
+	 * @return Amount of resource that was filled into internal tanks.
+	 */
+	@Override
+	public int fill(FluidStack resource, boolean doFill) {
+		IFluidTank[] tanks = tile.getTanks(side);
+		int amount = 0;
+		for (IFluidTank tank : tanks) {
+			amount += tank.fill(resource, doFill);
+		}
+		return amount;
+	}
+
+	@Override
+	public FluidStack drain(int maxDrain, boolean doDrain) {
+		return drain(null, maxDrain, doDrain);
+	}
+
+	@Override
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
+		return drain(resource, resource == null ? 0 : resource.amount, doDrain);
+	}
+
+	private FluidStack drain(FluidStack resource, int maxDrain, boolean doDrain) {
+		FluidStack ret = resource;
+		if (ret != null) {
+			ret = ret.copy();
+			ret.amount = 0;
+		}
+		IFluidTank[] tanks = tile.getTanks(side);
+		for (IFluidTank tank : tanks) {
+			FluidStack temp;
+			temp = tank.drain(maxDrain, doDrain);
+			if (temp != null && (ret == null || ret.isFluidEqual(temp))) {
+				if (ret == null) {
+					ret = temp;
+				} else {
+					ret.amount += temp.amount;
+				}
+				maxDrain -= temp.amount;
+				if (maxDrain <= 0) {
+					break;
+				}
+			}
+		}
+		if (ret != null && ret.amount == 0) {
+			return null;
+		}
+		return ret;
+	}
+	
+	@Override
+	public IFluidTankProperties[] getTankProperties() {
+		IFluidTank[] tanks = tile.getTanks(side);
+		IFluidTankProperties[] info = new IFluidTankProperties[tanks.length];
+		for (int i = 0; i < info.length; i++) {
+			info[i] = new FluidTankProperties(tanks[i].getFluid(), tanks[i].getCapacity());
+		}
+		return info;
 	}
 }

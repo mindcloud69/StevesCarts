@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.tileentity;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -79,7 +80,8 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 	public void update() {
 		if (activeTimer > 0) {
 			if (--activeTimer == 0) {
-				DetectorType.getTypeFromMeta(worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).deactivate(this);
+				IBlockState state = getWorld().getBlockState(pos);
+				DetectorType.getTypeFromSate(getWorld().getBlockState(pos)).deactivate(this);
 				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & ~8, 3);
 			}
 		}

@@ -5,18 +5,25 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
-
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.client.gui.screen.GuiDistributor;
 import vswe.stevesvehicles.container.ContainerBase;
@@ -27,7 +34,7 @@ import vswe.stevesvehicles.tank.Tank;
 import vswe.stevesvehicles.tileentity.distributor.DistributorSetting;
 import vswe.stevesvehicles.tileentity.distributor.DistributorSide;
 
-public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler {
+public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, ITickable {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
@@ -39,7 +46,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return new ContainerDistributor(this);
 	}
 
-	private ArrayList<DistributorSide> sides;
+	private final ArrayList<DistributorSide> sides;
 
 	public ArrayList<DistributorSide> getSides() {
 		return sides;
@@ -47,12 +54,12 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	public TileEntityDistributor() {
 		sides = new ArrayList<>();
-		sides.add(new DistributorSide(0, LocalizationDistributor.ORANGE, ForgeDirection.UP));
-		sides.add(new DistributorSide(1, LocalizationDistributor.PURPLE, ForgeDirection.DOWN));
-		sides.add(new DistributorSide(2, LocalizationDistributor.YELLOW, ForgeDirection.NORTH));
-		sides.add(new DistributorSide(3, LocalizationDistributor.GREEN, ForgeDirection.WEST));
-		sides.add(new DistributorSide(4, LocalizationDistributor.BLUE, ForgeDirection.SOUTH));
-		sides.add(new DistributorSide(5, LocalizationDistributor.RED, ForgeDirection.EAST));
+		sides.add(new DistributorSide(0, LocalizationDistributor.ORANGE, EnumFacing.UP, this));
+		sides.add(new DistributorSide(1, LocalizationDistributor.PURPLE, EnumFacing.DOWN, this));
+		sides.add(new DistributorSide(2, LocalizationDistributor.YELLOW, EnumFacing.NORTH, this));
+		sides.add(new DistributorSide(3, LocalizationDistributor.GREEN, EnumFacing.WEST, this));
+		sides.add(new DistributorSide(4, LocalizationDistributor.BLUE, EnumFacing.SOUTH, this));
+		sides.add(new DistributorSide(5, LocalizationDistributor.RED, EnumFacing.EAST, this));
 	}
 
 	@Override
@@ -64,17 +71,18 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		for (DistributorSide side : getSides()) {
 			nbttagcompound.setInteger("Side" + side.getId(), side.getData());
 		}
+		return nbttagcompound;
 	}
 
 	private boolean dirty = true;
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 		dirty = true;
 	}
 
@@ -92,11 +100,11 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public void initGuiData(Container con, ICrafting crafting) {
+	public void initGuiData(Container con, IContainerListener crafting) {
 	}
 
 	@Override
-	public void checkGuiData(Container con, ICrafting crafting) {
+	public void checkGuiData(Container con, IContainerListener crafting) {
 		ContainerDistributor distributor = (ContainerDistributor) con;
 		for (int i = 0; i < getSides().size(); i++) {
 			DistributorSide side = getSides().get(i);
@@ -156,16 +164,11 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	private TileEntityManager generateManager(int y) {
-		TileEntity TE = worldObj.getTileEntity(xCoord, yCoord + y, zCoord);
+		TileEntity TE = worldObj.getTileEntity(pos.add(0, y, 0));
 		if (TE != null && TE instanceof TileEntityManager) {
 			return (TileEntityManager) TE;
 		}
 		return null;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
-		return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && entityPlayer.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
 	}
 
 	private int translateSlotId(int slot) {
@@ -219,12 +222,12 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "container.external_distributor";
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
 	}
 
@@ -234,18 +237,18 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 	}
 
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 	}
-
+	
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
-		TileEntityManager manager = getManagerFromSlotId(slot);
+	public ItemStack removeStackFromSlot(int index) {
+		TileEntityManager manager = getManagerFromSlotId(index);
 		if (manager != null) {
-			return manager.getStackInSlotOnClosing(translateSlotId(slot));
+			return manager.removeStackFromSlot(translateSlotId(index));
 		} else {
 			return null;
 		}
@@ -265,77 +268,16 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	/**
-	 * Fills fluid into internal tanks, distribution is left to the
-	 * ITankContainer.
-	 * 
-	 * @param from
-	 *            Orientation the fluid is pumped in from.
-	 * @param resource
-	 *            FluidStack representing the maximum amount of fluid filled
-	 *            into the ITankContainer
-	 * @param doFill
-	 *            If false filling will only be simulated.
-	 * @return Amount of resource that was filled into internal tanks.
-	 */
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		IFluidTank[] tanks = getTanks(from);
-		int amount = 0;
-		for (IFluidTank tank : tanks) {
-			amount += tank.fill(resource, doFill);
-		}
-		return amount;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return drain(from, null, maxDrain, doDrain);
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		return drain(from, resource, resource == null ? 0 : resource.amount, doDrain);
-	}
-
-	private FluidStack drain(ForgeDirection from, FluidStack resource, int maxDrain, boolean doDrain) {
-		FluidStack ret = resource;
-		if (ret != null) {
-			ret = ret.copy();
-			ret.amount = 0;
-		}
-		IFluidTank[] tanks = getTanks(from);
-		for (IFluidTank tank : tanks) {
-			FluidStack temp;
-			temp = tank.drain(maxDrain, doDrain);
-			if (temp != null && (ret == null || ret.isFluidEqual(temp))) {
-				if (ret == null) {
-					ret = temp;
-				} else {
-					ret.amount += temp.amount;
-				}
-				maxDrain -= temp.amount;
-				if (maxDrain <= 0) {
-					break;
-				}
-			}
-		}
-		if (ret != null && ret.amount == 0) {
-			return null;
-		}
-		return ret;
-	}
-
-	/**
 	 * @param direction
 	 *            tank side: UNKNOWN for default tank set
 	 * @return Array of {@link FluidTank}s contained in this ITankContainer for
 	 *         this direction
 	 */
-	private IFluidTank[] getTanks(ForgeDirection direction) {
+	public IFluidTank[] getTanks(EnumFacing facing) {
 		TileEntityManager[] inventories = getInventories();
 		if (inventories.length > 0) {
 			for (DistributorSide side : getSides()) {
-				if (side.getSide() == direction) {
+				if (side.getSide() == facing) {
 					ArrayList<IFluidTank> tanks = new ArrayList<>();
 					if (hasTop && hasBot) {
 						populateTanks(tanks, side, inventories[0], false);
@@ -381,11 +323,11 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	// slots
 	@Override
-	public int[] getAccessibleSlotsFromSide(int direction) {
+	public int[] getSlotsForFace(EnumFacing direction) {
 		TileEntityManager[] inventories = getInventories();
 		if (inventories.length > 0) {
 			for (DistributorSide side : getSides()) {
-				if (side.getIntSide() == direction) {
+				if (side.getSide() == direction) {
 					ArrayList<Integer> slotChunks = new ArrayList<>();
 					if (hasTop && hasBot) {
 						populateSlots(slotChunks, side, inventories[0], false);
@@ -412,13 +354,13 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	// in
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side) {
+	public boolean canInsertItem(int slot, ItemStack item, EnumFacing side) {
 		return true;
 	}
 
 	// out
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side) {
+	public boolean canExtractItem(int slot, ItemStack item, EnumFacing side) {
 		return true;
 	}
 
@@ -426,25 +368,18 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public boolean isItemValidForSlot(int slotId, ItemStack item) {
 		return true;
 	}
-
+	
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return true;
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
-
+	
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		IFluidTank[] tanks = getTanks(from);
-		FluidTankInfo[] info = new FluidTankInfo[tanks.length];
-		for (int i = 0; i < info.length; i++) {
-			info[i] = new FluidTankInfo(tanks[i].getFluid(), tanks[i].getCapacity());
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getSides().get(facing.getIndex()));
 		}
-		return info;
+		return super.getCapability(capability, facing);
 	}
 
 	@Override
