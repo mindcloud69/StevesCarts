@@ -1,8 +1,15 @@
 package vswe.stevesvehicles.client.rendering;
 
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class RendererCart extends RendererVehicle {
+	public RendererCart(RenderManager renderManager) {
+		super(renderManager);
+	}
+
 	@Override
 	protected void applyMatrixUpdates(vswe.stevesvehicles.vehicle.VehicleBase vehicle, MatrixObject matrix, float partialTickTime) {
 		EntityModularCart cart = (EntityModularCart) vehicle.getEntity();
@@ -18,15 +25,15 @@ public class RendererCart extends RendererVehicle {
 		 * )partialPosZ,partialTickTime); if (rotations != null) { yaw =
 		 * (float)rotations.xCoord * 180F / (float)Math.PI; }
 		 */
-		Vec3 posFromRail = cart.func_70489_a(partialPosX, partialPosY, partialPosZ);
+		Vec3d posFromRail = cart.getPos(partialPosX, partialPosY, partialPosZ);
 		// if cart is on a rail the yaw and the pitch should be calculated
 		// accordingly(instead of just use given values)
 		if (posFromRail != null && cart.canUseRail()) {
 			// predict the last and next position of the cart with the given
 			// prediction time span
 			double predictionLength = 0.30000001192092896D;
-			Vec3 lastPos = cart.func_70495_a(partialPosX, partialPosY, partialPosZ, predictionLength);
-			Vec3 nextPos = cart.func_70495_a(partialPosX, partialPosY, partialPosZ, -predictionLength);
+			Vec3d lastPos = cart.getPosOffset(partialPosX, partialPosY, partialPosZ, predictionLength);
+			Vec3d nextPos = cart.getPosOffset(partialPosX, partialPosY, partialPosZ, -predictionLength);
 			// if the last pos wasn't on the rail
 			if (lastPos == null) {
 				lastPos = posFromRail;
@@ -40,7 +47,7 @@ public class RendererCart extends RendererVehicle {
 			matrix.y += (lastPos.yCoord + nextPos.yCoord) / 2.0D - partialPosY;
 			matrix.z += posFromRail.zCoord - partialPosZ;
 			// get the difference beetween the next and the last pos
-			Vec3 difference = nextPos.addVector(-lastPos.xCoord, -lastPos.yCoord, -lastPos.zCoord);
+			Vec3d difference = nextPos.addVector(-lastPos.xCoord, -lastPos.yCoord, -lastPos.zCoord);
 			// if there exist any difference
 			if (difference.lengthVector() != 0.0D) {
 				difference = difference.normalize();

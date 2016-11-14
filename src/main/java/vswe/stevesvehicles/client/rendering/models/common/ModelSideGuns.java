@@ -2,12 +2,14 @@ package vswe.stevesvehicles.client.rendering.models.common;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.module.common.attachment.ModuleShooterAdvancedSide;
 
+@SideOnly(Side.CLIENT)
 public class ModelSideGuns extends ModelVehicle {
 	@SuppressWarnings("SpellCheckingInspection")
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/sidegunsModel.png");

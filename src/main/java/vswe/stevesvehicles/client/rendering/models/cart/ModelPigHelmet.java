@@ -4,7 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.module.common.hull.HullPig;
@@ -39,7 +40,7 @@ public class ModelPigHelmet extends ModelVehicle {
 			return;
 		}
 		HullPig pig = (HullPig) module;
-		if (!pig.hasHelmet() || (isOverlay && !pig.getHelmetMultiRender())) {
+		if (!pig.hasHelmet() || (isOverlay)) {
 			return;
 		}
 		final float sizeMultiplier = 1F + 1F / 16F + 1F / 32F + (isOverlay ? 1F / 48F : 0);

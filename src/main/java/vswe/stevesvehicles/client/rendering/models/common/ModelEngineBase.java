@@ -1,7 +1,8 @@
 package vswe.stevesvehicles.client.rendering.models.common;
 
 import net.minecraft.client.model.ModelRenderer;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 
 @SideOnly(Side.CLIENT)

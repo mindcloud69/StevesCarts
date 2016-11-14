@@ -1,7 +1,8 @@
 package vswe.stevesvehicles.client.rendering.models.cart;
 
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
