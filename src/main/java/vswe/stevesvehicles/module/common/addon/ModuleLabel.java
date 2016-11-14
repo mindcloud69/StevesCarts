@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
@@ -21,7 +24,11 @@ public class ModuleLabel extends ModuleAddon {
 	private ArrayList<LabelInformation> labels;
 	private int delay = 0;
 	private ArrayList<SlotBase> storageSlots;
-
+	private DataParameter<Integer> SECONDS;
+	private DataParameter<Byte> USED;
+	private DataParameter<Integer> DATA ;
+	private DataParameter<Byte> ACTIVE;
+	
 	public ModuleLabel(VehicleBase vehicleBase) {
 		super(vehicleBase);
 		labels = new ArrayList<>();
@@ -46,7 +53,7 @@ public class ModuleLabel extends ModuleAddon {
 		labels.add(new LabelInformation(LocalizationVisual.FUEL_LABEL) {
 			@Override
 			public String getLabel() {
-				int seconds = getIntDw(1);
+				int seconds = getDw(SECONDS);
 				if (seconds == -1) {
 					return LocalizationVisual.FUEL_MESSAGE_NO_CONSUMPTION.translate();
 				} else {
@@ -61,7 +68,7 @@ public class ModuleLabel extends ModuleAddon {
 		labels.add(new LabelInformation(LocalizationVisual.STORAGE_LABEL) {
 			@Override
 			public String getLabel() {
-				int used = getDw(2);
+				int used = getDw(USED);
 				if (used < 0) {
 					used += 256;
 				}
@@ -111,11 +118,11 @@ public class ModuleLabel extends ModuleAddon {
 	}
 
 	private boolean isActive(int i) {
-		return !isPlaceholder() && (getDw(0) & (1 << i)) != 0;
+		return !isPlaceholder() && (getDw(ACTIVE) & (1 << i)) != 0;
 	}
 
 	private void toggleActive(int i) {
-		updateDw(0, getDw(0) ^ (1 << i));
+		updateDw(ACTIVE, (byte) (getDw(ACTIVE) ^ (1 << i)));
 	}
 
 	@Override
@@ -125,9 +132,12 @@ public class ModuleLabel extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0, (byte) 0);
-		addIntDw(1, 0);
-		addDw(2, 0);
+		SECONDS = createDw(DataSerializers.VARINT);
+		USED = createDw(DataSerializers.BYTE);
+		ACTIVE = createDw(DataSerializers.BYTE);
+		registerDw(ACTIVE, (byte)0);
+		registerDw(SECONDS, 0);
+		registerDw(USED, (byte)0);
 	}
 
 	@Override
@@ -149,7 +159,7 @@ public class ModuleLabel extends ModuleAddon {
 							data /= consumption * 20;
 						}
 					}
-					updateIntDw(1, data);
+					updateDw(SECONDS, data);
 				}
 				if (isActive(4)) {
 					int data = 0;
@@ -158,7 +168,7 @@ public class ModuleLabel extends ModuleAddon {
 							++data;
 						}
 					}
-					updateDw(2, (byte) data);
+					updateDw(USED, (byte) data);
 				}
 				delay = 20;
 			} else if (delay > 0) {
@@ -218,11 +228,11 @@ public class ModuleLabel extends ModuleAddon {
 
 	@Override
 	protected void load(NBTTagCompound tagCompound) {
-		updateDw(0, tagCompound.getByte("Active"));
+		updateDw(ACTIVE, tagCompound.getByte("Active"));
 	}
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		tagCompound.setByte("Active", getDw(0));
+		tagCompound.setByte("Active", getDw(ACTIVE));
 	}
 }

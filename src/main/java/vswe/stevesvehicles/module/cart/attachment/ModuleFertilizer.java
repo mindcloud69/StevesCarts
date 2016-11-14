@@ -167,8 +167,8 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 			return;
 		}
 		if (getStack(0) != null) {
-			boolean isBone = getStack(0).getItem() == Items.bone;
-			boolean isBoneMeal = getStack(0).getItem() == Items.dye && getStack(0).getItemDamage() == 15;
+			boolean isBone = getStack(0).getItem() == Items.BONE;
+			boolean isBoneMeal = getStack(0).getItem() == Items.DYE && getStack(0).getItemDamage() == 15;
 			if (isBone || isBoneMeal) {
 				int amount;
 				if (isBoneMeal) {

@@ -7,13 +7,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.block.BlockCoordinate;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
@@ -32,6 +39,8 @@ import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
+	private DataParameter<Boolean> IS_MINING;
+	private DataParameter<Boolean> IS_ENABLED;
 	public ModuleDrill(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -80,29 +89,22 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			stopWorking();
 		}
 		// get the next block so the cart knows where to mine
-		Vec3 next = getNextBlock();
-		// save the coordinates for easy access
-		int x = (int) next.xCoord;
-		int y = (int) next.yCoord;
-		int z = (int) next.zCoord;
+		BlockPos next = getNextBlock();
 		// retrieve the height range of the hole
 		int[] range = mineRange();
 		// loop through the blocks in the "hole" in front of the cart
 		for (int holeY = range[1]; holeY >= range[0]; holeY--) {
 			for (int holeX = -blocksOnSide(); holeX <= blocksOnSide(); holeX++) {
-				if (intelligence != null && !intelligence.isActive(holeX + blocksOnSide(), holeY, range[2], x > getVehicle().x() || z < getVehicle().z())) {
+				if (intelligence != null && !intelligence.isActive(holeX + blocksOnSide(), holeY, range[2], next.getX() > getVehicle().x() || next.getZ() < getVehicle().z())) {
 					continue;
 				}
 				// calculate the coordinates of this "hole"
-				int targetX = x + (getVehicle().z() != z ? holeX : 0);
-				int targetY = y + holeY;
-				int targetZ = z + (getVehicle().x() != x ? holeX : 0);
-				if (mineBlockAndRevive(targetX, targetY, targetZ, next, holeX, holeY)) {
+				if (mineBlockAndRevive(next.add((getVehicle().z() != next.getZ() ? holeX : 0), holeY, (getVehicle().x() != next.getX() ? holeX : 0)), next, holeX, holeY)) {
 					return true;
 				}
 			}
 		}
-		if (countsAsAir(x, y + range[0], z) && !isValidForTrack(x, y + range[0], z, true) && mineBlockAndRevive(x, y + (range[0] - 1), z, next, 0, range[0] - 1)) {
+		if (countsAsAir(next.add(0, range[0], 0)) && !isValidForTrack(next.add(0, range[0], 0), true) && mineBlockAndRevive(next.add(0, (range[0] - 1), 0), next, 0, range[0] - 1)) {
 			return true;
 		}
 		// if the code goes all the way to here, the cart is still ready for
@@ -118,17 +120,13 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	protected int[] mineRange() {
 		// the first element is the start index, the last is the end index
 		// get the next block
-		Vec3 next = getNextBlock();
-		// save the next block's coordinates for easy access
-		int x = (int) next.xCoord;
-		int y = (int) next.yCoord;
-		int z = (int) next.zCoord;
+		BlockPos next = getNextBlock();
 		int yTarget = getModularCart().getYTarget();
-		if (BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y, z) || BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y - 1, z)) {
+		if (BlockRailBase.isRailBlock(getVehicle().getWorld(), next) || BlockRailBase.isRailBlock(getVehicle().getWorld(), next.down())) {
 			return new int[] { 0, blocksOnTop() - 1, 1 };
-		} else if (y > yTarget) {
+		} else if (next.getY() > yTarget) {
 			return new int[] { -1, blocksOnTop() - 1, 1 };
-		} else if (y < yTarget) {
+		} else if (next.getY() < yTarget) {
 			return new int[] { 1, blocksOnTop() + 1, 0 };
 		} else {
 			return new int[] { 0, blocksOnTop() - 1, 1 };
@@ -150,8 +148,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		return blocksOnTop();
 	}
 
-	private boolean mineBlockAndRevive(int targetX, int targetY, int targetZ, Vec3 next, int holeX, int holeY) {
-		if (mineBlock(targetX, targetY, targetZ, next, holeX, holeY, false)) {
+	private boolean mineBlockAndRevive(BlockPos target, BlockPos next, int holeX, int holeY) {
+		if (mineBlock(target, next, holeX, holeY, false)) {
 			return true;
 		} else if (isDead()) {
 			revive();
@@ -161,18 +159,16 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		}
 	}
 
-	protected boolean mineBlock(int targetX, int targetY, int targetZ, Vec3 next, int holeX, int holeY, boolean flag) {
+	protected boolean mineBlock(BlockPos target, BlockPos next, int holeX, int holeY, boolean flag) {
+		World world = getVehicle().getWorld();
 		if (tracker != null) {
-			BlockCoordinate start = new BlockCoordinate(targetX, targetY, targetZ);
-			BlockCoordinate target = tracker.findBlockToMine(this, start);
-			if (target != null) {
-				targetX = target.getX();
-				targetY = target.getY();
-				targetZ = target.getZ();
+			BlockPos nextTarget = tracker.findBlockToMine(this, target);
+			if (nextTarget != null) {
+				target = nextTarget;
 			}
 		}
 		// test whether this block is valid or not
-		Object valid = isValidBlock(targetX, targetY, targetZ, holeX, holeY, flag);
+		Object valid = isValidBlock(target, holeX, holeY, flag);
 		TileEntity storage = null;
 		if (valid instanceof TileEntity) {
 			// if the test code found the block to be valid but it returned a
@@ -184,14 +180,14 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			return false;
 		}
 		// retrieve some information about the block
-		Block b = getVehicle().getWorld().getBlock(targetX, targetY, targetZ);
-		int m = getVehicle().getWorld().getBlockMetadata(targetX, targetY, targetZ);
+		IBlockState state = world.getBlockState(target);
+		Block block = state.getBlock();
 		// if the cart hasn't been working, tell it to work and it's therefore
 		// done for this tick
 		// if (doPreWork())
 		// {
 		// calculate the working time
-		float h = b.getBlockHardness(getVehicle().getWorld(), targetX, targetY, targetZ);
+		float h = state.getBlockHardness(world, target);
 		if (h < 0) {
 			h = 0;
 		}
@@ -224,18 +220,19 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			}
 		}
 		int fortune = enchanter != null ? enchanter.getFortuneLevel() : 0;
-		if (shouldSilkTouch(b, targetX, targetY, targetZ, m)) {
-			ItemStack silkTouchedItem = getSilkTouchedItem(b, m);
+		List<ItemStack> drops = block.getDrops(getVehicle().getWorld(), target, state, fortune);
+		if (shouldSilkTouch(state, target)) {
+			ItemStack silkTouchedItem = getSilkTouchedItem(state);
 			if (silkTouchedItem == null || minedItem(silkTouchedItem, next)) {
-				getVehicle().getWorld().setBlockToAir(targetX, targetY, targetZ);
+				getVehicle().getWorld().setBlockToAir(target);
 			} else {
 				return false;
 			}
 			// if the block drops anything, drop it
-		} else if (b.getDrops(getVehicle().getWorld(), targetX, targetY, targetZ, m, fortune).size() != 0) {
+		} else if (!drops.isEmpty()) {
 			// iStack = new ItemStack(b.idDropped(0, rand, 0),
 			// b.quantityDropped(rand), b.damageDropped(m));
-			ArrayList<ItemStack> stacks = b.getDrops(getVehicle().getWorld(), targetX, targetY, targetZ, m, fortune);
+			List<ItemStack> stacks = block.getDrops(getVehicle().getWorld(), target, state, fortune);
 			boolean shouldRemove = false;
 			for (ItemStack stack : stacks) {
 				if (minedItem(stack, next)) {
@@ -248,11 +245,11 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 				}
 			}
 			if (shouldRemove) {
-				getVehicle().getWorld().setBlockToAir(targetX, targetY, targetZ);
+				getVehicle().getWorld().setBlockToAir(target);
 			}
 		} else {
 			// mark this cart as idle and remove the block
-			getVehicle().getWorld().setBlockToAir(targetX, targetY, targetZ);
+			getVehicle().getWorld().setBlockToAir(target);
 		}
 		damageTool(1 + (int) h);
 		startWorking(getTimeToMine(h));
@@ -263,7 +260,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	/**
 	 * Let the cart handle a mined item, return true upon success.
 	 **/
-	protected boolean minedItem(ItemStack item, Vec3 coordinate) {
+	protected boolean minedItem(ItemStack item, BlockPos coordinate) {
 		if (item == null || item.stackSize <= 0) {
 			return true;
 		}
@@ -299,9 +296,9 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 					EntityItem entityitem = new EntityItem(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ, item);
 					// observe that the motion for X uses the Z coordinate and
 					// vice-versa
-					entityitem.motionX = (float) (getVehicle().z() - coordinate.zCoord) / 10;
+					entityitem.motionX = (float) (getVehicle().z() - coordinate.getZ()) / 10;
 					entityitem.motionY = 0.15F;
-					entityitem.motionZ = (float) (getVehicle().x() - coordinate.xCoord) / 10;
+					entityitem.motionZ = (float) (getVehicle().x() - coordinate.getX()) / 10;
 					getVehicle().getWorld().spawnEntityInWorld(entityitem);
 					return true;
 				} else {
@@ -311,9 +308,9 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			} else {
 				// pop out the item out of the cart's back
 				EntityItem entityitem = new EntityItem(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ, item);
-				entityitem.motionX = (float) (getVehicle().x() - coordinate.xCoord) / 10;
+				entityitem.motionX = (float) (getVehicle().x() - coordinate.getX()) / 10;
 				entityitem.motionY = 0.15F;
-				entityitem.motionZ = (float) (getVehicle().z() - coordinate.zCoord) / 10;
+				entityitem.motionZ = (float) (getVehicle().z() - coordinate.getZ()) / 10;
 				getVehicle().getWorld().spawnEntityInWorld(entityitem);
 				return true;
 			}
@@ -335,40 +332,41 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	 * 
 	 * if this returns null the block is not valid, all other values are valid.
 	 **/
-	public Object isValidBlock(int x, int y, int z, int i, int j, boolean flag) {
+	public Object isValidBlock(BlockPos pos, int i, int j, boolean flag) {
 		// do not remove rail blocks or block which will cause rail blocks to be
 		// removed
-		if ((!flag && BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y, z)) || BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y + 1, z)) {
+		if ((!flag && BlockRailBase.isRailBlock(getVehicle().getWorld(), pos)) || BlockRailBase.isRailBlock(getVehicle().getWorld(), pos.up())) {
 			return null;
 		} else {
 			// retrieve the needed values, block id and the like
-			Block b = getVehicle().getWorld().getBlock(x, y, z);
+			IBlockState state = getVehicle().getWorld().getBlockState(pos);
+			Block block = state.getBlock();
 			// there need to be a block to remove
-			if (b == null) {
+			if (block == null) {
 				return null;
 				// don't try to remove air
-			} else if (getVehicle().getWorld().isAirBlock(x, y, z)) {
+			} else if (getVehicle().getWorld().isAirBlock(pos)) {
 				return null;
 				// don't remove bedrock
-			} else if (b == Blocks.bedrock) {
+			} else if (block == Blocks.BEDROCK) {
 				return null;
 				// don't remove fluids either
-			} else if (b instanceof BlockLiquid) {
+			} else if (block instanceof BlockLiquid) {
 				return null;
 				// nor things which can't be removed
-			} else if (b.getBlockHardness(getVehicle().getWorld(), x, y, z) < 0) {
+			} else if (state.getBlockHardness(getVehicle().getWorld(), pos) < 0) {
 				return null;
 				// some special things are just allowed to be removed when in
 				// font of the cart, like torches
-			} else if ((i != 0 || j > 0) && (b == Blocks.torch || b == Blocks.redstone_wire || b == Blocks.redstone_torch || b == Blocks.unlit_redstone_torch || b == Blocks.powered_repeater || b == Blocks.unpowered_repeater
-					|| b == Blocks.powered_comparator || b == Blocks.unpowered_comparator || b == ModBlocks.MODULE_TOGGLER.getBlock())) {
+			} else if ((i != 0 || j > 0) && (block == Blocks.TORCH || block == Blocks.REDSTONE_WIRE || block == Blocks.REDSTONE_TORCH || block == Blocks.UNLIT_REDSTONE_TORCH || block == Blocks.POWERED_REPEATER || block == Blocks.UNPOWERED_REPEATER
+					|| block == Blocks.POWERED_COMPARATOR || block == Blocks.UNPOWERED_COMPARATOR || block == ModBlocks.MODULE_TOGGLER.getBlock())) {
 				return null;
 				// for containers like chest a special rule apply, therefore
 				// test if this is a container
-			} else if (b instanceof BlockContainer) {
+			} else if (block instanceof BlockContainer) {
 				// if so load its tile entity to check if it has an inventory or
 				// not
-				TileEntity tileentity = getVehicle().getWorld().getTileEntity(x, y, z);
+				TileEntity tileentity = getVehicle().getWorld().getTileEntity(pos);
 				if (tileentity != null && IInventory.class.isInstance(tileentity)) {
 					// depending on its position it's either invalid or we
 					// should return the tile entity to be able to remove its
@@ -383,8 +381,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			if (liquidSensors != null) {
 				// check all five directions for danger(no need to check below
 				// since liquids can't flow upwards ^^)
-				if (liquidSensors.isDangerous(this, x, y, z, 0, +1, 0) || liquidSensors.isDangerous(this, x, y, z, +1, 0, 0) || liquidSensors.isDangerous(this, x, y, z, -1, 0, 0) || liquidSensors.isDangerous(this, x, y, z, 0, 0, +1)
-						|| liquidSensors.isDangerous(this, x, y, z, 0, 0, -1)) {
+				if (liquidSensors.isDangerous(this, pos.up(), true) || liquidSensors.isDangerous(this, pos.east(), false) || liquidSensors.isDangerous(this, pos.west(), false) || liquidSensors.isDangerous(this, pos.south(), false) || liquidSensors.isDangerous(this, pos.north(), false)) {
 					sensorLight = (byte) 3;
 					return null;
 				}
@@ -417,18 +414,18 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	protected void startDrill() {
-		updateDw(0, 1);
+		updateDw(IS_MINING, true);
 	}
 
 	protected void stopDrill() {
-		updateDw(0, 0);
+		updateDw(IS_MINING, false);
 	}
 
 	protected boolean isMining() {
 		if (isPlaceholder()) {
 			return getBooleanSimulationInfo();
 		} else {
-			return getDw(0) != 0;
+			return getDw(IS_MINING);
 		}
 	}
 
@@ -438,8 +435,10 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 
 	@Override
 	public void initDw() {
-		addDw(0, 0);
-		addDw(1, 1);
+		IS_MINING = createDw(DataSerializers.BOOLEAN);
+		IS_ENABLED = createDw(DataSerializers.BOOLEAN);
+		registerDw(IS_MINING, false);
+		registerDw(IS_ENABLED, true);
 	}
 
 	@Override
@@ -456,11 +455,11 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	private boolean isDrillEnabled() {
-		return getDw(1) != 0;
+		return getDw(IS_ENABLED);
 	}
 
 	public void setDrillEnabled(boolean val) {
-		updateDw(1, val ? 1 : 0);
+		updateDw(IS_ENABLED, val);
 	}
 
 	@Override

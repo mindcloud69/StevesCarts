@@ -2,10 +2,12 @@ package vswe.stevesvehicles.module.common.addon.projectile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-
+import net.minecraft.potion.PotionHelper;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModulePotion extends ModuleProjectile {
@@ -15,7 +17,7 @@ public class ModulePotion extends ModuleProjectile {
 
 	@Override
 	public boolean isValidProjectile(ItemStack item) {
-		return item.getItem() == Items.potionitem && ItemPotion.isSplash(item.getItemDamage());
+		return item.getItem() == Items.SPLASH_POTION;
 	}
 
 	@Override

@@ -11,7 +11,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.entry.arcade.LocalizationTrack;
 

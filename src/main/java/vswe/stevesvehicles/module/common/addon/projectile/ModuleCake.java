@@ -13,7 +13,7 @@ public class ModuleCake extends ModuleProjectile {
 
 	@Override
 	public boolean isValidProjectile(ItemStack item) {
-		return item.getItem() == Items.cake;
+		return item.getItem() == Items.CAKE;
 	}
 
 	@Override

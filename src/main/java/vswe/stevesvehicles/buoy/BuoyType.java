@@ -1,6 +1,7 @@
 package vswe.stevesvehicles.buoy;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import vswe.stevesvehicles.client.ResourceHelper;
 
 public enum BuoyType {
@@ -18,7 +19,7 @@ public enum BuoyType {
 	}
 
 	public String getName() {
-		return StatCollector.translateToLocal(getUnlocalizedName() + ".name");
+		return I18n.translateToLocal(getUnlocalizedName() + ".name");
 	}
 
 	public static BuoyType getType(int meta) {

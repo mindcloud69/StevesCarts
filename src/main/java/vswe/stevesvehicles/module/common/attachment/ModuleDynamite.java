@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 
 import vswe.stevesvehicles.client.ResourceHelper;
@@ -22,6 +24,9 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleDynamite extends ModuleAttachment {
+	private DataParameter<Byte> FUSE;
+	private DataParameter<Byte> FUSE_LENGTH;
+	private DataParameter<Byte> EXPLOSION;
 	public ModuleDynamite(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -189,7 +194,7 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (isPlaceholder()) {
 			return ((SimulationInfoInteger) getSimulationInfo(1)).getValue() / 2.5F;
 		} else {
-			return getDw(2) / 2.5F;
+			return getDw(EXPLOSION) / 2.5F;
 		}
 	}
 
@@ -201,7 +206,7 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (ComponentTypes.DYNAMITE.isStackOfType(getStack(0))) {
 			f += getStack(0).stackSize * 2;
 		}
-		updateDw(2, (byte) f);
+		updateDw(EXPLOSION, (byte) f);
 	}
 
 	@Override
@@ -211,9 +216,12 @@ public class ModuleDynamite extends ModuleAttachment {
 
 	@Override
 	public void initDw() {
-		addDw(0, 0);
-		addDw(1, 70);
-		addDw(2, 8);
+		FUSE = createDw(DataSerializers.BYTE);
+		FUSE_LENGTH = createDw(DataSerializers.BYTE);
+		EXPLOSION = createDw(DataSerializers.BYTE);
+		registerDw(FUSE, (byte)0);
+		registerDw(FUSE_LENGTH, (byte)70);
+		registerDw(EXPLOSION, (byte)8);
 	}
 
 	private int simulationFuse;
@@ -222,7 +230,7 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (isPlaceholder()) {
 			return simulationFuse;
 		} else {
-			int val = getDw(0);
+			int val = getDw(FUSE);
 			if (val < 0) {
 				return val + 256;
 			} else {
@@ -235,7 +243,7 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (isPlaceholder()) {
 			simulationFuse = val;
 		} else {
-			updateDw(0, (byte) val);
+			updateDw(FUSE, (byte) val);
 		}
 	}
 
@@ -243,14 +251,14 @@ public class ModuleDynamite extends ModuleAttachment {
 		if (val > MAX_FUSE_LENGTH) {
 			val = MAX_FUSE_LENGTH;
 		}
-		updateDw(1, (byte) val);
+		updateDw(FUSE_LENGTH, (byte) val);
 	}
 
 	public int getFuseLength() {
 		if (isPlaceholder()) {
 			return ((SimulationInfoInteger) getSimulationInfo(0)).getValue();
 		} else {
-			int val = getDw(1);
+			int val = getDw(FUSE_LENGTH);
 			if (val < 0) {
 				return val + 256;
 			} else {

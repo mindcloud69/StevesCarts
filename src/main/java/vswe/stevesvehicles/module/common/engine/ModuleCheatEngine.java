@@ -1,12 +1,26 @@
 package vswe.stevesvehicles.module.common.engine;
 
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.LocalizationEngine;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleCheatEngine extends ModuleEngine {
+	private DataParameter<Integer> PRIORITY;
 	public ModuleCheatEngine(VehicleBase vehicleBase) {
 		super(vehicleBase);
+	}
+
+	@Override
+	public void initDw() {
+		PRIORITY = createDw(DataSerializers.VARINT);
+		super.initDw();
+	}
+
+	@Override
+	protected DataParameter<Integer> getPriorityDw() {
+		return PRIORITY;
 	}
 
 	@Override

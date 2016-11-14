@@ -1,8 +1,9 @@
 package vswe.stevesvehicles.module.common.addon;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-
+import net.minecraft.util.math.BlockPos;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleMelter extends ModuleAddon {
@@ -45,16 +46,17 @@ public class ModuleMelter extends ModuleAddon {
 		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); x++) {
 			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); z++) {
 				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); y++) {
-					Block b = getVehicle().getWorld().getBlock(x + getVehicle().x(), y + getVehicle().y(), z + getVehicle().z());
-					melt(b, x + getVehicle().x(), y + getVehicle().y(), z + getVehicle().z());
+					BlockPos pos = new BlockPos(x + getVehicle().x(), y + getVehicle().y(), z + getVehicle().z());
+					IBlockState state = getVehicle().getWorld().getBlockState(pos);
+					melt(state, pos);
 				}
 			}
 		}
 	}
 
-	protected boolean melt(Block b, int x, int y, int z) {
-		if (b == Blocks.snow) {
-			getVehicle().getWorld().setBlockToAir(x, y, z);
+	protected boolean melt(IBlockState state, BlockPos pos) {
+		if (state.getBlock() == Blocks.SNOW) {
+			getVehicle().getWorld().setBlockToAir(pos);
 			return true;
 		}
 		return false;

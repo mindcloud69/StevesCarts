@@ -1,7 +1,7 @@
 package vswe.stevesvehicles.module.common.addon;
 
 import net.minecraft.init.Blocks;
-
+import net.minecraft.util.math.BlockPos;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleSnowCannon extends ModuleAddon {
@@ -44,12 +44,9 @@ public class ModuleSnowCannon extends ModuleAddon {
 		for (int offsetX = -getBlocksOnSide(); offsetX <= getBlocksOnSide(); offsetX++) {
 			for (int offsetZ = -getBlocksOnSide(); offsetZ <= getBlocksOnSide(); offsetZ++) {
 				for (int offsetY = -getBlocksFromLevel(); offsetY <= getBlocksFromLevel(); offsetY++) {
-					int targetX = getVehicle().x() + offsetX;
-					int targetY = getVehicle().y() + offsetY;
-					int targetZ = getVehicle().z() + offsetZ;
-					if (countsAsAir(targetX, targetY, targetZ) && getVehicle().getWorld().getBiomeGenForCoords(targetX, targetZ).getFloatTemperature(targetX, targetY,
-							targetZ) <= 1.0F /* snow golems won't be hurt */ && Blocks.snow.canPlaceBlockAt(getVehicle().getWorld(), targetX, targetY, targetZ)) {
-						getVehicle().getWorld().setBlock(targetX, targetY, targetZ, Blocks.snow_layer);
+					BlockPos target = getVehicle().pos().add(offsetX, offsetY, offsetZ);
+					if (countsAsAir(target) && getVehicle().getWorld().getBiome(target).getFloatTemperature(target) <= 1.0F /* snow golems won't be hurt */ && Blocks.SNOW.canPlaceBlockAt(getVehicle().getWorld(), target)) {
+						getVehicle().getWorld().setBlockState(target, Blocks.SNOW_LAYER.getDefaultState());
 					}
 				}
 			}

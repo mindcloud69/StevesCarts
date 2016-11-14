@@ -14,7 +14,7 @@ public class ModuleEgg extends ModuleProjectile {
 
 	@Override
 	public boolean isValidProjectile(ItemStack item) {
-		return item.getItem() == Items.egg;
+		return item.getItem() == Items.EGG;
 	}
 
 	@Override

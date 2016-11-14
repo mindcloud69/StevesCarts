@@ -8,7 +8,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.ISpecialSlotSize;
@@ -93,7 +94,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		if (canUseAdvancedFeatures()) {
 			ItemStack icon;
 			if (isTargetInvalid()) {
-				icon = new ItemStack(Items.minecart, 1);
+				icon = new ItemStack(Items.MINECART, 1);
 			} else {
 				icon = TileEntityCargo.itemSelections.get(target).getIcon();
 			}

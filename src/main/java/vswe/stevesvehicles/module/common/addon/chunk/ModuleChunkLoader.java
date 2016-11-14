@@ -2,7 +2,10 @@ package vswe.stevesvehicles.module.common.addon.chunk;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.LocalizationIndependence;
 import vswe.stevesvehicles.module.IActivatorModule;
@@ -11,6 +14,7 @@ import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
+	private DataParameter<Boolean> LOADING_CHUNK;
 	public ModuleChunkLoader(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -55,7 +59,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	public void setChunkLoading(boolean val) {
 		if (!isPlaceholder()) {
-			updateDw(0, (byte) (val ? 1 : 0));
+			updateDw(LOADING_CHUNK, val);
 			// just to make sure
 			if (!getVehicle().getWorld().isRemote && rdyToInit) {
 				if (val) {
@@ -68,7 +72,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	}
 
 	private boolean isLoadingChunk() {
-		return !isPlaceholder() && getDw(0) != 0;
+		return !isPlaceholder() && getDw(LOADING_CHUNK);
 	}
 
 	@Override
@@ -117,7 +121,8 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		addDw(0, (byte) 0);
+		LOADING_CHUNK = createDw(DataSerializers.BOOLEAN);
+		registerDw(LOADING_CHUNK, false);
 	}
 
 	@Override

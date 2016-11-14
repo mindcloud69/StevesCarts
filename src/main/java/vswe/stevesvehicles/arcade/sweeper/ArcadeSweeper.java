@@ -3,7 +3,8 @@ package vswe.stevesvehicles.arcade.sweeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.arcade.ArcadeGame;
 import vswe.stevesvehicles.arcade.sweeper.Tile.TILE_STATE;
 import vswe.stevesvehicles.client.ResourceHelper;

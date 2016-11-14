@@ -4,8 +4,11 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.DamageSource;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -43,6 +46,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	private boolean shield = true;
 	private float shieldDistance = MAX_SHIELD_DISTANCE;
 	private float shieldAngle;
+	private DataParameter<Boolean> STATUS;
 
 	@Override
 	public void update() {
@@ -89,7 +93,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 
 	public void setShieldStatus(boolean val) {
 		if (!isPlaceholder()) {
-			updateDw(0, (byte) (val ? 1 : 0));
+			updateDw(STATUS, val );
 		}
 	}
 
@@ -97,7 +101,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 		if (isPlaceholder()) {
 			return getBooleanSimulationInfo();
 		} else {
-			return getDw(0) != 0;
+			return getDw(STATUS);
 		}
 	}
 
@@ -137,7 +141,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
-		updateDw(0, getShieldStatus() ? 0 : 1);
+		updateDw(STATUS, getShieldStatus());
 	}
 
 	@Override
@@ -147,7 +151,8 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		addDw(0, (byte) 0);
+		STATUS = createDw(DataSerializers.BOOLEAN);
+		registerDw(STATUS, false);
 	}
 
 	@Override

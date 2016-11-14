@@ -4,7 +4,10 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -15,6 +18,7 @@ import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
+	private DataParameter<Boolean> VISABLE;
 	public ModuleInvisible(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -72,7 +76,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 		if (isPlaceholder()) {
 			return !getBooleanSimulationInfo();
 		} else {
-			return getDw(0) != 0;
+			return getDw(VISABLE);
 		}
 	}
 
@@ -95,7 +99,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	}
 
 	public void setIsVisible(boolean val) {
-		updateDw(0, val ? 1 : 0);
+		updateDw(VISABLE, val);
 	}
 
 	@Override
@@ -110,7 +114,8 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void initDw() {
-		addDw(0, (byte) 1);
+		VISABLE = createDw(DataSerializers.BOOLEAN);
+		registerDw(VISABLE, true);
 	}
 
 	@Override

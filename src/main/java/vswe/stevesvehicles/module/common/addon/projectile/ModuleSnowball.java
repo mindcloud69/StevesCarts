@@ -14,7 +14,7 @@ public class ModuleSnowball extends ModuleProjectile {
 
 	@Override
 	public boolean isValidProjectile(ItemStack item) {
-		return item.getItem() == Items.snowball;
+		return item.getItem() == Items.SNOWBALL;
 	}
 
 	@Override

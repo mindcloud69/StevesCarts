@@ -2,9 +2,11 @@ package vswe.stevesvehicles.module.common.addon.enchanter;
 
 import java.util.ArrayList;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
@@ -213,7 +215,7 @@ public class ModuleEnchants extends ModuleAddon {
 			if (data == null) {
 				updateGuiData(info, i * 3, (short) (-1));
 			} else {
-				updateGuiData(info, i * 3, (short) (data.getEnchantment().getEnchantment().effectId));
+				updateGuiData(info, i * 3, (short) (Enchantment.getEnchantmentID(data.getEnchantment().getEnchantment())));
 				updateGuiData(info, i * 3 + 1, (short) (data.getValue() & 65535));
 				updateGuiData(info, i * 3 + 2, (short) ((data.getValue() >> 16) & 65535));
 			}
@@ -250,7 +252,7 @@ public class ModuleEnchants extends ModuleAddon {
 			if (enchants[i] == null) {
 				tagCompound.setShort("EffectId" + i, (short) -1);
 			} else {
-				tagCompound.setShort("EffectId" + i, (short) enchants[i].getEnchantment().getEnchantment().effectId);
+				tagCompound.setShort("EffectId" + i, (short) Enchantment.getEnchantmentID(enchants[i].getEnchantment().getEnchantment()));
 				tagCompound.setInteger("Value" + i, enchants[i].getValue());
 			}
 		}

@@ -14,7 +14,7 @@ public class ModuleFireball extends ModuleProjectile {
 
 	@Override
 	public boolean isValidProjectile(ItemStack item) {
-		return item.getItem() == Items.fire_charge;
+		return item.getItem() == Items.FIRE_CHARGE;
 	}
 
 	@Override

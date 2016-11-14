@@ -34,7 +34,7 @@ public class ModuleSmelter extends ModuleRecipe {
 				ItemStack recipe = getStack(0);
 				ItemStack result = null;
 				if (recipe != null) {
-					result = FurnaceRecipes.smelting().getSmeltingResult(recipe);
+					result = FurnaceRecipes.instance().getSmeltingResult(recipe);
 				}
 				if (result != null) {
 					result = result.copy();
@@ -129,7 +129,7 @@ public class ModuleSmelter extends ModuleRecipe {
 	public void onInventoryChanged() {
 		if (getVehicle().getWorld().isRemote) {
 			if (getStack(0) != null) {
-				setStack(1, FurnaceRecipes.smelting().getSmeltingResult(getStack(0)));
+				setStack(1, FurnaceRecipes.instance().getSmeltingResult(getStack(0)));
 			} else {
 				setStack(1, null);
 			}
