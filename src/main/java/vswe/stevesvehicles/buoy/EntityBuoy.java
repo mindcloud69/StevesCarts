@@ -4,6 +4,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -70,14 +73,14 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 		return false;
 	}
 
-	private static final int DW_NEXT_BUOY = 3;
-	private static final int DW_PREV_BUOY = 4;
+	private static final DataParameter<Integer> DW_NEXT_BUOY = EntityDataManager.createKey(EntityBuoy.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> DW_PREV_BUOY = EntityDataManager.createKey(EntityBuoy.class, DataSerializers.VARINT);
 
 	@SuppressWarnings("UnnecessaryBoxing")
 	@Override
 	protected void entityInit() {
-		dataWatcher.addObject(DW_NEXT_BUOY, new Integer(-1));
-		dataWatcher.addObject(DW_PREV_BUOY, new Integer(-1));
+		dataManager.register(DW_NEXT_BUOY, new Integer(-1));
+		dataManager.register(DW_PREV_BUOY, new Integer(-1));
 	}
 
 	private static final String NBT_TYPE = "BuoyType";
@@ -87,8 +90,8 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		buoyType = BuoyType.getType(compound.getByte(NBT_TYPE));
-		readBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
-		readBuoy(compound, NBT_PREV, DW_PREV_BUOY);
+		//readBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
+		//readBuoy(compound, NBT_PREV, DW_PREV_BUOY);
 	}
 
 	private void readBuoy(NBTTagCompound compound, String nbt, int id) {
@@ -108,8 +111,8 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setByte(NBT_TYPE, (byte) buoyType.getMeta());
-		writeBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
-		writeBuoy(compound, NBT_PREV, DW_PREV_BUOY);
+		//writeBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
+		//writeBuoy(compound, NBT_PREV, DW_PREV_BUOY);
 	}
 
 	@Override
@@ -154,8 +157,8 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 		return EnumActionResult.SUCCESS;
 	}
 
-	private EntityBuoy getBuoy(int id) {
-		int entityId = dataWatcher.getWatchableObjectInt(id);
+	private EntityBuoy getBuoy(DataParameter<Integer> id) {
+		int entityId = dataManager.get(id);
 		Entity entity = worldObj.getEntityByID(entityId);
 		if (entity instanceof EntityBuoy && !entity.isDead) {
 			return (EntityBuoy) entity;
@@ -171,11 +174,11 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 		return getBuoy(DW_PREV_BUOY);
 	}
 
-	private void setBuoy(int id, int entityId) {
-		dataWatcher.updateObject(id, entityId);
+	private void setBuoy(DataParameter<Integer> id, int entityId) {
+		dataManager.set(id, entityId);
 	}
 
-	private void setBuoy(int id, EntityBuoy buoy) {
+	private void setBuoy(DataParameter<Integer> id, EntityBuoy buoy) {
 		Integer entityId = buoy != null && !buoy.isDead ? buoy.getEntityId() : -1;
 		setBuoy(id, entityId);
 	}

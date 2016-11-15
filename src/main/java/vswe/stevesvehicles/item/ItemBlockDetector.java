@@ -18,7 +18,7 @@ public class ItemBlockDetector extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 		if (item != null && item.getItemDamage() >= 0 && item.getItemDamage() < DetectorType.values().length) {
-			DetectorType detectorType = DetectorType.getTypeFromMeta(item.getItemDamage());
+			DetectorType detectorType = DetectorType.getTypeFromInt(item.getItemDamage());
 			return detectorType.getUnlocalizedName();
 		}
 		return "item.unknown";

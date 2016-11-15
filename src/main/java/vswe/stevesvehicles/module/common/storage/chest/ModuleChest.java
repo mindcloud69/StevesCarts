@@ -2,6 +2,7 @@ package vswe.stevesvehicles.module.common.storage.chest;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -104,14 +105,14 @@ public abstract class ModuleChest extends ModuleStorage {
 	}
 
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 		if (hasVisualChest()) {
 			updateDw(IS_OPEN, true);
 		}
 	}
 
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 		if (hasVisualChest()) {
 			updateDw(IS_OPEN, false);
 		}
