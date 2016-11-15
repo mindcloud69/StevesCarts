@@ -16,6 +16,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.StartupQuery;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.network.PacketHandler;
@@ -43,7 +44,9 @@ public class RegistrySynchronizer {
 			// of Map.Entry<String, Integer> :S
 			for (Object o : registryLoader.nameToIdMapping.entrySet()) {
 				Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) o;
-				System.out.println("Sending registry data from server. (K = " + entry.getKey() + ", V = " + entry.getValue() + ")");
+				if(StevesVehicles.debugMode){
+					System.out.println("Sending registry data from server. (K = " + entry.getKey() + ", V = " + entry.getValue() + ")");
+				}
 				dw.writeString(entry.getKey());
 				dw.writeShort(entry.getValue());
 			}
@@ -58,7 +61,9 @@ public class RegistrySynchronizer {
 			for (int i = 0; i < count; i++) {
 				String name = reader.readString();
 				int id = reader.readShort();
-				System.out.println("Receiving registry data at client. (K = " + name + ", V = " + id + ")");
+				if(StevesVehicles.debugMode){
+					System.out.println("Receiving registry data at client. (K = " + name + ", V = " + id + ")");
+				}
 				registryLoader.nameToIdMapping.put(name, id); // WHAT THE
 				// SERIOUSLY
 				// FUCK 2, for

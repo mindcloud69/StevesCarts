@@ -1,4 +1,4 @@
-package vswe.stevesvehicles.module.items;
+package vswe.stevesvehicles.client.rendering.models.items;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -130,8 +130,12 @@ public class ModelGenerator {
 	}
 
 	public ModelResourceLocation getModel(ItemStack stack) {
+		String modelName = ((TexturedItem)stack.getItem()).getCustomModelLocation(stack);
+		if(modelName == null){
+			modelName = stack.getItem().getUnlocalizedName(stack);
+		}
 		//TODO: add constants
-		return new ModelResourceLocation("stevecarts" + ":" + stack.getItem().getUnlocalizedName(stack).substring(5), "inventory");
+		return new ModelResourceLocation("stevescarts:" + modelName.substring(5), "inventory");
 	}
 
 	public static Reader getReaderForResource(ResourceLocation location) throws IOException {

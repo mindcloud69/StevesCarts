@@ -7,6 +7,7 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import vswe.stevesvehicles.StevesVehicles;
 
 public class RegistryLoader<R extends IRegistry<E>, E> {
 	static List<RegistryLoader> registryLoaderList = new ArrayList<>();
@@ -116,7 +117,9 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 				NBTTagCompound moduleCompound = tags.getCompoundTagAt(i);
 				String key = moduleCompound.getString(NBT_KEY);
 				int value = moduleCompound.getShort(NBT_VALUE);
-				System.out.println("Loaded name to id mapping. (K = " + key + ", V = " + value + ")"); // TODO
+				if(StevesVehicles.debugMode){
+					System.out.println("Loaded name to id mapping. (K = " + key + ", V = " + value + ")"); // TODO
+				}
 				// Move
 				// to
 				// a
@@ -143,7 +146,9 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 				if (id == null) {
 					id = nextId++;
 					nameToIdMapping.put(code, id);
-					System.out.println("Added new name to id mapping. (K = " + code + ", V = " + id + ")"); // TODO
+					if(StevesVehicles.debugMode){
+						System.out.println("Added new name to id mapping. (K = " + code + ", V = " + id + ")"); // TODO
+					}
 					// Move
 					// to
 					// a
@@ -158,7 +163,9 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 
 	public void add(R registry) {
 		if (registries.containsKey(registry.getCode())) {
-			System.err.println("A registry with this code has already been registered. Failed to register a second registry with code " + registry.getCode());
+			if(StevesVehicles.debugMode){
+				System.err.println("A registry with this code has already been registered. Failed to register a second registry with code " + registry.getCode());
+			}
 		} else {
 			registries.put(registry.getCode(), registry);
 		}

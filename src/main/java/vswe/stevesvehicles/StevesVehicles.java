@@ -34,6 +34,7 @@ import vswe.stevesvehicles.client.rendering.ItemStackRenderer;
 import vswe.stevesvehicles.client.rendering.RenderBoat;
 import vswe.stevesvehicles.client.rendering.RenderBuoy;
 import vswe.stevesvehicles.client.rendering.RenderCart;
+import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
 import vswe.stevesvehicles.client.sounds.MinecartSoundMuter;
 import vswe.stevesvehicles.client.sounds.SoundHandler;
 import vswe.stevesvehicles.fancy.FancyPancyLoader;
@@ -66,6 +67,7 @@ import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 @Mod(modid = "StevesVehicles", name = "Steve's Vehicles", version = GeneratedInfo.version)
 public class StevesVehicles {
+	public static boolean debugMode = false;
 	public static boolean hasGreenScreen = false;
 	public static boolean freezeCartSimulation = false;
 	public static boolean renderSteve = false;
@@ -113,6 +115,7 @@ public class StevesVehicles {
 			loadSounds();
 		}
 		config.save();
+		ItemModelManager.load();
 	}
 
 	public TradeHandler tradeHandler;
@@ -168,14 +171,14 @@ public class StevesVehicles {
 		new SoundHandler();
 		new MinecartSoundMuter();
 	}
-	
+
 	@Mod.EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event){
 		if(event.getSide() == Side.CLIENT){
 			loadItemRenderer();
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	private void loadItemRenderer(){
 		//Done here to try and load after all other mods, as some mods override this

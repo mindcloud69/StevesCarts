@@ -1,4 +1,4 @@
-package vswe.stevesvehicles.module.items;
+package vswe.stevesvehicles.client.rendering.models.items;
 
 import java.util.ArrayList;
 

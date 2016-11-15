@@ -8,9 +8,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
+import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
-import vswe.stevesvehicles.module.items.TexturedItem;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tab.CreativeTabVehicle;
 
@@ -18,6 +19,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 	public ItemVehicleModule() {
 		setCreativeTab(CreativeTabs.TRANSPORTATION);
 		setHasSubtypes(true);
+		ItemModelManager.registerItem(this);
 	}
 
 	@Override
@@ -95,21 +97,30 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 			return null;
 		}
 	}
-	
-		@Override
-	 	public String getTextureName(int damage) {
-	 		ModuleData data = ModuleRegistry.getAllModules().get((byte) damage);
-	 		if (data != null) {
-	 			if(data.getIcon() == null){
-	 				data.setIcon("stevescarts:items/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/") + "_icon");
-	 			}
-	 			return data.getIcon();
-	 		}
-	 		return "stevescarts:items/unknown_icon";
-	 	}
-	 
-	 	@Override
-	 	public int getMaxMeta() {
-	 		return ModuleRegistry.getAllModules().size();
-	 	}
+
+	@Override
+	public String getCustomModelLocation(ItemStack stack) {
+		ModuleData data = ModuleRegistry.getAllModules().get(stack.getItemDamage());
+		if (data != null) {
+			return data.getUnlocalizedNameForItem();
+		}
+		return getUnlocalizedName();
+	}
+
+	@Override
+	public String getTextureName(int damage) {
+		ModuleData data = ModuleRegistry.getAllModules().get(damage);
+		if (data != null) {
+			if(data.getIcon() == null){
+				data.setIcon("stevescarts:items/modules/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
+			}
+			return data.getIcon();
+		}
+		return "stevescarts:items/unknown";
+	}
+
+	@Override
+	public int getMaxMeta() {
+		return ModuleRegistry.getAllModules().size();
+	}
 }

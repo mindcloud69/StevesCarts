@@ -1,4 +1,6 @@
-package vswe.stevesvehicles.module.items;
+package vswe.stevesvehicles.client.rendering.models.items;
+
+import net.minecraft.item.ItemStack;
 
 /**
  * Use this to apply a texture to an item
@@ -15,4 +17,9 @@ public interface TexturedItem {
 	 * @return Return 1 if basic item, else return the max damage
 	 */
 	int getMaxMeta();
+
+
+	default String getCustomModelLocation(ItemStack stack){
+		return null;
+	}
 }

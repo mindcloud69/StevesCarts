@@ -19,11 +19,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.StevesVehicles;
+import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
+import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
 import vswe.stevesvehicles.holiday.EntityEasterEgg;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
-import vswe.stevesvehicles.module.items.ItemModelManager;
-import vswe.stevesvehicles.module.items.TexturedItem;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 
 public class ItemCartComponent extends Item implements TexturedItem {
@@ -195,9 +195,9 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	@Override
 	public String getTextureName(int damage) {
 		if(getRawName(damage) == null){
-			return "stevescarts:items/unknown_icon";
+			return "stevescarts:items/unknown";
 		}
-		return "stevescarts:items/"  + getRawName(damage) + "_icon";
+		return "stevescarts:items/components/" + getName(damage);
 	}
 
 	@Override
