@@ -21,11 +21,12 @@ import vswe.stevescarts.containers.slots.SlotSeed;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.modules.ICropModule;
+import vswe.stevescarts.api.farms.ICropModule;
 import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
+import vswe.stevescarts.plugins.APIHelper;
 
-public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule, ICropModule {
+public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule {
 	private ArrayList<ICropModule> plantModules;
 	private int farming;
 	private float farmAngle;
@@ -51,6 +52,9 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 			if (module instanceof ICropModule) {
 				this.plantModules.add((ICropModule) module);
 			}
+		}
+		for(ICropModule cropModule : APIHelper.cropModules){
+			this.plantModules.add(cropModule);
 		}
 	}
 
@@ -221,31 +225,6 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public boolean isSeedValid(final ItemStack seed) {
-		return seed.getItem() == Items.WHEAT_SEEDS || seed.getItem() == Items.POTATO || seed.getItem() == Items.CARROT;
-	}
-
-	@Override
-	public Block getCropFromSeed(final ItemStack seed) {
-		if (seed.getItem() == Items.CARROT) {
-			return Blocks.CARROTS;
-		}
-		if (seed.getItem() == Items.POTATO) {
-			return Blocks.POTATOES;
-		}
-		if (seed.getItem() == Items.WHEAT_SEEDS) {
-			return Blocks.WHEAT;
-		}
-		return null;
-	}
-
-	@Override
-	public boolean isReadyToHarvest(World world, BlockPos pos) {
-		IBlockState blockState = world.getBlockState(pos);
-		return blockState.getBlock() instanceof BlockCrops && blockState.getValue(BlockCrops.AGE) == 7;
 	}
 
 	public float getFarmAngle() {

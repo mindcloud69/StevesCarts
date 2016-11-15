@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vswe.stevescarts.entitys.EntityMinecartModular;
-import vswe.stevescarts.modules.ICropModule;
+import vswe.stevescarts.api.farms.ICropModule;
 import vswe.stevescarts.modules.addons.ModuleAddon;
 
 public class ModuleNetherwart extends ModuleAddon implements ICropModule {

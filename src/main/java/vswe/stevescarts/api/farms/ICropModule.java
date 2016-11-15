@@ -1,4 +1,4 @@
-package vswe.stevescarts.modules;
+package vswe.stevescarts.api.farms;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

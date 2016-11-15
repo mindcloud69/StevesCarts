@@ -29,11 +29,12 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.BlockPosHelpers;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ISuppliesModule;
-import vswe.stevescarts.modules.ITreeModule;
+import vswe.stevescarts.api.farms.ITreeModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
+import vswe.stevescarts.plugins.APIHelper;
 
-public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule, ITreeModule {
+public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule {
 	private ArrayList<ITreeModule> treeModules;
 	private ModulePlantSize plantSize;
 	private boolean isPlanting;
@@ -92,6 +93,9 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				}
 				this.plantSize = (ModulePlantSize) module;
 			}
+		}
+		for(ITreeModule treeModule : APIHelper.treeModules){
+			this.treeModules.add(treeModule);
 		}
 	}
 
@@ -354,7 +358,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public boolean isLeavesHandler(IBlockState blockState, BlockPos pos) {
 		for (final ITreeModule module : this.treeModules) {
-			if (module.isLeaves(blockState, pos)) {
+			if (module.isLeaves(blockState, pos, getCart())) {
 				return true;
 			}
 		}
@@ -363,7 +367,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public boolean isWoodHandler(IBlockState blockState, BlockPos pos) {
 		for (final ITreeModule module : this.treeModules) {
-			if (module.isWood(blockState, pos)) {
+			if (module.isWood(blockState, pos, getCart())) {
 				return true;
 			}
 		}
@@ -377,21 +381,6 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public boolean isLeaves(IBlockState blockState, BlockPos pos) {
-		return blockState.getBlock() == Blocks.LEAVES || blockState.getBlock() == Blocks.LEAVES2;
-	}
-
-	@Override
-	public boolean isWood(IBlockState blockState, BlockPos pos) {
-		return blockState.getBlock() == Blocks.LOG || blockState.getBlock() == Blocks.LOG2;
-	}
-
-	@Override
-	public boolean isSapling(final ItemStack sapling) {
-		return sapling != null && Block.getBlockFromItem(sapling.getItem()) == Blocks.SAPLING;
 	}
 
 	private int getPlantSize() {

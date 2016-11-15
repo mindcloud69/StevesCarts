@@ -1,29 +1,25 @@
-package vswe.stevescarts.modules.addons.plants;
+package vswe.stevescarts.compat.minecraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
-import vswe.stevescarts.entitys.EntityMinecartModular;
-import vswe.stevescarts.modules.ITreeModule;
-import vswe.stevescarts.modules.addons.ModuleAddon;
+import vswe.stevescarts.api.farms.ITreeModule;
 
-public class ModuleModTrees extends ModuleAddon implements ITreeModule {
-	public ModuleModTrees(final EntityMinecartModular cart) {
-		super(cart);
+public class DefaultTreeModule implements ITreeModule {
+
+	@Override
+	public boolean isLeaves(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
+		return blockState.getBlock().isLeaves(blockState, cart.worldObj, pos);
 	}
 
 	@Override
-	public boolean isLeaves(IBlockState blockState, BlockPos pos) {
-		return blockState.getBlock().isLeaves(blockState, this.getCart().worldObj, pos);
-	}
-
-	@Override
-	public boolean isWood(IBlockState blockState, BlockPos pos) {
-		return blockState.getBlock().isWood(this.getCart().worldObj, pos);
+	public boolean isWood(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
+		return blockState.getBlock().isWood(cart.worldObj, pos);
 	}
 
 	@Override
@@ -42,9 +38,9 @@ public class ModuleModTrees extends ModuleAddon implements ITreeModule {
 
 	private boolean isStackSapling(final ItemStack sapling) {
 		final int[] ids = OreDictionary.getOreIDs(sapling);
-		for(int id : ids){
+		for (int id : ids) {
 			final String name = OreDictionary.getOreName(id);
-			if(name != null && name.startsWith("treeSapling")){
+			if (name != null && name.startsWith("treeSapling")) {
 				return true;
 			}
 		}

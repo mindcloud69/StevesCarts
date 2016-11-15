@@ -101,7 +101,6 @@ import vswe.stevescarts.modules.addons.mobdetectors.ModuleBat;
 import vswe.stevescarts.modules.addons.mobdetectors.ModuleMonster;
 import vswe.stevescarts.modules.addons.mobdetectors.ModulePlayer;
 import vswe.stevescarts.modules.addons.mobdetectors.ModuleVillager;
-import vswe.stevescarts.modules.addons.plants.ModuleModTrees;
 import vswe.stevescarts.modules.addons.plants.ModuleNetherwart;
 import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
 import vswe.stevescarts.modules.addons.projectiles.ModuleCake;
@@ -558,8 +557,8 @@ public class ModuleData {
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), Items.BUCKET, ComponentTypes.SIMPLE_PCB.getItemStack() }, { null, ComponentTypes.SIMPLE_PCB.getItemStack(), null } });
 		final ModuleData crafter = new ModuleData(87, "Crafter", ModuleCrafter.class, 22).setAllowDuplicate().addRecipe(new Object[][] { { ComponentTypes.SIMPLE_PCB.getItemStack() },
 			{ Blocks.CRAFTING_TABLE } });
-		new ModuleData(88, "Tree: Exotic", ModuleModTrees.class, 30).addRequirement(woodcutterGroup).addRecipe(new Object[][] { { Items.GLOWSTONE_DUST, null, Items.GLOWSTONE_DUST },
-			{ Items.REDSTONE, Blocks.SAPLING, Items.REDSTONE }, { ComponentTypes.SIMPLE_PCB.getItemStack(), ComponentTypes.EMPTY_DISK.getItemStack(), ComponentTypes.SIMPLE_PCB.getItemStack() } });
+//		new ModuleData(88, "Tree: Exotic", DefaultTreeModule.class, 30).addRequirement(woodcutterGroup).addRecipe(new Object[][] { { Items.GLOWSTONE_DUST, null, Items.GLOWSTONE_DUST },
+//			{ Items.REDSTONE, Blocks.SAPLING, Items.REDSTONE }, { ComponentTypes.SIMPLE_PCB.getItemStack(), ComponentTypes.EMPTY_DISK.getItemStack(), ComponentTypes.SIMPLE_PCB.getItemStack() } });
 		new ModuleData(89, "Planter Range Extender", ModulePlantSize.class, 20).addRequirement(woodcutterGroup).addRecipe(new Object[][] {
 			{ Items.REDSTONE, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.REDSTONE }, { null, Blocks.SAPLING, null },
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), Blocks.SAPLING, ComponentTypes.SIMPLE_PCB.getItemStack() } });

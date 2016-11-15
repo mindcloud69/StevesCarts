@@ -29,6 +29,7 @@ import vswe.stevescarts.helpers.GiftItem;
 import vswe.stevescarts.items.ItemBlockStorage;
 import vswe.stevescarts.items.ItemCartComponent;
 import vswe.stevescarts.items.ModItems;
+import vswe.stevescarts.plugins.PluginLoader;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.NAME, version = Constants.VERSION)
@@ -71,6 +72,7 @@ public class StevesCarts {
 		StevesCarts.proxy.preInit();
 		StevesCarts.proxy.initItemModels();
 		config.save();
+		PluginLoader.preInit(event);
 	}
 
 	@Mod.EventHandler
