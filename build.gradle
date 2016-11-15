@@ -60,4 +60,14 @@ task deobfJar(type: Jar) {
     classifier = 'dev'
 }
 
-build.dependsOn deobfJar
+task apiJar(type: Jar) {
+	from sourceSets.main.allSource
+	from sourceSets.main.output
+	include 'vswe/stevescarts/api/**/*'
+
+	classifier = "api"
+}
+
+apiJar.mustRunAfter deobfJar
+
+build.dependsOn deobfJar, apiJar
