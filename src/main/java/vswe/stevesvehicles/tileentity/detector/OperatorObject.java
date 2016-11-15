@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.entry.block.LocalizationDetector;
 import vswe.stevesvehicles.tileentity.TileEntityDetector;
@@ -70,7 +71,7 @@ public class OperatorObject {
 	}
 
 	public static Collection<OperatorObject> getOperatorList(int meta) {
-		return DetectorType.getTypeFromMeta(meta).getOperators().values();
+		return DetectorType.getTypeFromInt(meta).getOperators().values();
 	}
 
 	public static HashMap<Byte, OperatorObject> getAllOperators() {
@@ -78,62 +79,49 @@ public class OperatorObject {
 	}
 
 	public static class OperatorObjectRedirection extends OperatorObject {
-		private int x;
-		private int y;
-		private int z;
+		private BlockPos offset;
 
 		public OperatorObjectRedirection(HashMap<Byte, OperatorObject> operators, int ID, ILocalizedText name, int x, int y, int z) {
 			super(operators, ID, name, 0);
-			this.x = x;
-			this.y = y;
-			this.z = z;
+			offset = new BlockPos(x, y, z);
 		}
 
 		@Override
 		public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth, LogicObject A, LogicObject B) {
-			int x = this.x + detector.xCoord;
-			int y = this.y + detector.yCoord;
-			int z = this.z + detector.zCoord;
-			TileEntity tileentity = detector.getWorldObj().getTileEntity(x, y, z);
+			TileEntity tileentity = detector.getWorld().getTileEntity(offset.add(detector.getPos()));
 			return tileentity != null && tileentity instanceof TileEntityDetector && ((TileEntityDetector) tileentity).evaluate(vehicle, depth);
 		}
 	}
 
 	public static class OperatorObjectRedstone extends OperatorObject {
-		private int x;
-		private int y;
-		private int z;
+		private BlockPos offset;
 
 		public OperatorObjectRedstone(HashMap<Byte, OperatorObject> operators, int ID, ILocalizedText name, int x, int y, int z) {
 			super(operators, ID, name, 0);
-			this.x = x;
-			this.y = y;
-			this.z = z;
+			offset = new BlockPos(x, y, z);
 		}
 
 		@Override
 		public boolean evaluate(TileEntityDetector detector, VehicleBase vehicle, int depth, LogicObject A, LogicObject B) {
-			int x = this.x + detector.xCoord;
-			int y = this.y + detector.yCoord;
-			int z = this.z + detector.zCoord;
-			if (this.x == 0 && this.y == 0 && this.z == 0) {
-				return detector.getWorld().isBlockIndirectlyGettingPowered(x, y, z);
+			BlockPos pos = offset.add(detector.getPos());
+			if (offset.equals(BlockPos.ORIGIN)) {
+				return detector.getWorld().isBlockIndirectlyGettingPowered(pos) > 0;
 			} else {
-				int direction;
-				if (this.y > 0) {
-					direction = 0;
-				} else if (this.y < 0) {
-					direction = 1;
-				} else if (this.x > 0) {
-					direction = 4;
-				} else if (this.x < 0) {
-					direction = 5;
-				} else if (this.z > 0) {
-					direction = 2;
+				int facing;
+				if (pos.getY() > 0) {
+					facing = 0;
+				} else if (pos.getY() < 0) {
+					facing = 1;
+				} else if (pos.getX() > 0) {
+					facing = 4;
+				} else if (pos.getX() < 0) {
+					facing = 5;
+				} else if (pos.getZ() > 0) {
+					facing = 2;
 				} else {
-					direction = 3;
+					facing = 3;
 				}
-				return detector.getWorld().getIndirectPowerLevelTo(x, y, z, direction) > 0;
+				return detector.getWorld().getRedstonePower(pos, EnumFacing.VALUES[facing]) > 0;
 			}
 		}
 	}

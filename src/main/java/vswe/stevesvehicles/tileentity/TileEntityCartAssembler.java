@@ -17,9 +17,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.server.permission.context.BlockPosContext;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.BlockCartAssembler;
 import vswe.stevesvehicles.block.ModBlocks;
@@ -982,20 +984,20 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof Deployer) {
 				TileEntityUpgrade tile = effect.getUpgrade();
-				int x = 2 * tile.xCoord - xCoord;
-				int y = 2 * tile.yCoord - yCoord;
-				int z = 2 * tile.zCoord - zCoord;
-				if (tile.yCoord > yCoord) {
-					y += 1;
+				BlockPos pos = tile.getPos();
+				pos = pos.add(pos);
+				pos = pos.add(-this.pos.getX(), -this.pos.getY(), -this.pos.getZ());
+				if (tile.getPos().getY() > this.pos.getY()) {
+					pos.up();
 				}
-				if (BlockRailBase.func_150049_b_(worldObj, x, y, z)) {
+				if (BlockRailBase.isRailBlock(worldObj, pos)) {
 					try {
 						NBTTagCompound info = outputItem.getTagCompound();
 						if (info != null) {
-							EntityModularCart cart = new EntityModularCart(worldObj, x + 0.5F, y + 0.5F, z + 0.5F, info, outputItem.hasDisplayName() ? outputItem.getDisplayName() : null);
+							EntityModularCart cart = new EntityModularCart(worldObj, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, info, outputItem.hasDisplayName() ? outputItem.getDisplayName() : null);
 							worldObj.spawnEntityInWorld(cart);
-							cart.temppushX = tile.xCoord - xCoord;
-							cart.temppushZ = tile.zCoord - zCoord;
+							cart.temppushX = tile.getPos().getX() - pos.getX();
+							cart.temppushZ = tile.getPos().getZ() - pos.getZ();
 							managerInteract(cart, true);
 							return;
 						}
@@ -1012,28 +1014,29 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof Manager) {
 				TileEntityUpgrade tile = effect.getUpgrade();
-				int x2 = 2 * tile.xCoord - xCoord;
-				int y2 = 2 * tile.yCoord - yCoord;
-				int z2 = 2 * tile.zCoord - zCoord;
-				if (tile.yCoord > yCoord) {
-					y2 += 1;
+				BlockPos tilePos = tile.getPos();
+				BlockPos pos = tilePos;
+				pos = pos.add(pos);
+				pos = pos.add(-this.pos.getX(), -this.pos.getY(), -this.pos.getZ());
+				if (tile.getPos().getY() > this.pos.getY()) {
+					pos.up();
 				}
-				TileEntity managerTile = worldObj.getTileEntity(x2, y2, z2);
+				TileEntity managerTile = worldObj.getTileEntity(pos);
 				if (managerTile != null && managerTile instanceof TileEntityManager) {
 					ManagerTransfer transfer = new ManagerTransfer();
 					transfer.setCart(cart);
-					if (tile.yCoord != yCoord) {
+					if (tilePos.getY() != this.pos.getY()) {
 						transfer.setSide(-1);
-					} else if (tile.xCoord < xCoord) {
+					} else if (tilePos.getX() < this.pos.getX()) {
 						// red
 						transfer.setSide(0);
-					} else if (tile.xCoord > xCoord) {
+					} else if (tilePos.getX() > this.pos.getX()) {
 						// green
 						transfer.setSide(3);
-					} else if (tile.zCoord < zCoord) {
+					} else if (tilePos.getZ() < this.pos.getZ()) {
 						// blue
 						transfer.setSide(1);
-					} else if (tile.zCoord > zCoord) {
+					} else if (tilePos.getZ() > this.pos.getZ()) {
 						// yellow
 						transfer.setSide(2);
 					}

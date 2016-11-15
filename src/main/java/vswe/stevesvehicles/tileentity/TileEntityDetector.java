@@ -1,5 +1,6 @@
 package vswe.stevesvehicles.tileentity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -48,10 +49,11 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		int count = saveLogicObject(nbttagcompound, mainObj, 0, false);
 		nbttagcompound.setByte("LogicObjectCount", (byte) count);
+		return nbttagcompound;
 	}
 
 	private int saveLogicObject(NBTTagCompound nbttagcompound, LogicObject obj, int id, boolean saveMe) {
@@ -81,8 +83,9 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 		if (activeTimer > 0) {
 			if (--activeTimer == 0) {
 				IBlockState state = getWorld().getBlockState(pos);
+				Block block = state.getBlock();
 				DetectorType.getTypeFromSate(getWorld().getBlockState(pos)).deactivate(this);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & ~8, 3);
+				worldObj.setBlockState(pos, state.withProperty(DetectorType.ACTIVE, true), 3);
 			}
 		}
 	}
@@ -232,17 +235,17 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 
 	public void handleCart(VehicleBase vehicle) {
 		boolean truthValue = evaluate(vehicle, 0);
-		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		boolean isOn = (meta & 8) != 0;
+		IBlockState state = worldObj.getBlockState(pos);
+		boolean isOn = state.getValue(DetectorType.ACTIVE);
 		if (truthValue != isOn) {
 			if (truthValue) {
-				DetectorType.getTypeFromMeta(meta).activate(this, vehicle);
-				meta |= 8;
+				DetectorType.getTypeFromSate(state).activate(this, vehicle);
+				state = state.withProperty(DetectorType.ACTIVE, true);
 			} else {
-				DetectorType.getTypeFromMeta(meta).deactivate(this);
-				meta &= ~8;
+				DetectorType.getTypeFromSate(state).deactivate(this);
+				state = state.withProperty(DetectorType.ACTIVE, false);
 			}
-			worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, 3);
+			worldObj.setBlockState(pos, state, 3);
 		}
 		if (truthValue) {
 			activeTimer = 20;

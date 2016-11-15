@@ -61,7 +61,7 @@ public class BlockDetector extends BlockContainerBase {
 
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		return ((getMetaFromState(blockState) & 0x8) != 0x0 && DetectorType.getTypeFromSate(blockState).shouldEmitRedstone()) ? 15 : 0;
+		return blockState.getValue(DetectorType.ACTIVE) && DetectorType.getTypeFromSate(blockState).shouldEmitRedstone() ? 15 : 0;
 	}
 
 	@Override
@@ -96,12 +96,18 @@ public class BlockDetector extends BlockContainerBase {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.getTypeFromInt(meta));
+		boolean isActive = false;
+		int length = DetectorType.VALUES.length;
+		if(meta > length){
+			meta = meta-length;
+			isActive = false;
+		}
+		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.getTypeFromInt(meta)).withProperty(DetectorType.ACTIVE, isActive);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return (state.getValue(DetectorType.SATE)).getMeta();
+		return (state.getValue(DetectorType.ACTIVE) ? DetectorType.VALUES.length : 0) + state.getValue(DetectorType.SATE).getMeta();
 	}
 
 	@Override

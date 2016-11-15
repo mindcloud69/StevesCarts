@@ -3,17 +3,23 @@ package vswe.stevesvehicles.tileentity;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
-
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.client.gui.screen.GuiLiquid;
 import vswe.stevesvehicles.container.ContainerBase;
@@ -58,8 +64,8 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	private int tick;
 
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
+		super.update();
 		if (tick-- <= 0) {
 			tick = 5;
 		} else {
@@ -85,7 +91,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	 *            If false filling will only be simulated.
 	 * @return Amount of resource that was filled into internal tanks.
 	 */
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(FluidStack resource, boolean doFill) {
 		int amount = 0;
 		if (resource != null && resource.amount > 0) {
 			FluidStack fluid = resource.copy();
@@ -121,12 +127,12 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(int maxDrain, boolean doDrain) {
 		return drain((FluidStack) null, maxDrain, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return drain(resource, resource == null ? 0 : resource.amount, doDrain);
 	}
 
@@ -163,7 +169,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "container.fluid_manager";
 	}
 
@@ -187,11 +193,13 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		markDirty();
 	}
 
+	//TODO: SPRITES
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawImage(int tankId, GuiBase gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
 		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F);
-	}
+	}*/
 
 	@Override
 	protected boolean isTargetValid(ManagerTransfer transfer) {
@@ -200,7 +208,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 
 	@Override
 	protected boolean doTransfer(ManagerTransfer transfer) {
-		int maximumToTransfer = hasMaxAmount(transfer.getSetting()) ? Math.min(getMaxAmount(transfer.getSetting()) - transfer.getWorkload(), FluidContainerRegistry.BUCKET_VOLUME) : FluidContainerRegistry.BUCKET_VOLUME;
+		int maximumToTransfer = hasMaxAmount(transfer.getSetting()) ? Math.min(getMaxAmount(transfer.getSetting()) - transfer.getWorkload(), Fluid.BUCKET_VOLUME) : Fluid.BUCKET_VOLUME;
 		boolean success = false;
 		if (toCart[transfer.getSetting()]) {
 			for (int i = 0; i < tanks.length; i++) {
@@ -284,7 +292,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 
 	private boolean isFluidValid(int sideId, FluidStack fluid) {
 		ItemStack filter = getStackInSlot(sideId * 3 + 2);
-		FluidStack filterFluid = FluidContainerRegistry.getFluidForFilledItem(filter);
+		FluidStack filterFluid = FluidUtil.getFluidContained(filter);
 		if (filterFluid != null) {
 			if (!filterFluid.isFluidEqual(fluid)) {
 				return false;
@@ -294,7 +302,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	public int getMaxAmount(int id) {
-		return (int) (getMaxAmountBuckets(id) * FluidContainerRegistry.BUCKET_VOLUME);
+		return (int) (getMaxAmountBuckets(id) * Fluid.BUCKET_VOLUME);
 	}
 
 	public float getMaxAmountBuckets(int id) {
@@ -343,7 +351,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		for (int i = 0; i < 4; i++) {
 			if (tanks[i].getFluid() != null) {
@@ -353,10 +361,11 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 			}
 		}
 		nbttagcompound.setShort("workload", (short) getWorkload());
+		return nbttagcompound;
 	}
 
 	@Override
-	public void checkGuiData(ContainerManager conManager, ICrafting crafting, boolean isNew) {
+	public void checkGuiData(ContainerManager conManager, IContainerListener crafting, boolean isNew) {
 		super.checkGuiData(conManager, crafting, isNew);
 		ContainerLiquid con = (ContainerLiquid) conManager;
 		for (int i = 0; i < 4; i++) {
@@ -369,13 +378,13 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 				changed = true;
 			} else if (tanks[i].getFluid() != null) {
 				if (isNew || con.oldLiquids[i] == null) {
-					updateGuiData(con, crafting, id, (short) tanks[i].getFluid().fluidID);
+					updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tanks[i].getFluid().getFluid()));
 					updateGuiData(con, crafting, amount1, getShortFromInt(true, tanks[i].getFluid().amount));
 					updateGuiData(con, crafting, amount2, getShortFromInt(false, tanks[i].getFluid().amount));
 					changed = true;
 				} else {
-					if (con.oldLiquids[i].fluidID != tanks[i].getFluid().fluidID) {
-						updateGuiData(con, crafting, id, (short) tanks[i].getFluid().fluidID);
+					if (!con.oldLiquids[i].getFluid().getName().equals(tanks[i].getFluid().getFluid().getName())) {
+						updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tanks[i].getFluid().getFluid()));
 						changed = true;
 					}
 					if (con.oldLiquids[i].amount != tanks[i].getFluid().amount) {
@@ -406,7 +415,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 				if (data == -1) {
 					tanks[tankId].setFluid(null);
 				} else if (tanks[tankId].getFluid() == null) {
-					tanks[tankId].setFluid(new FluidStack(data, 0));
+					tanks[tankId].setFluid(new FluidStack(FluidRegistry.getFluid(data), 0));
 				}
 			} else if (tanks[tankId].getFluid() != null) {
 				tanks[tankId].getFluid().amount = getIntFromShort(contentId == 1, tanks[tankId].getFluid().amount, data);
@@ -441,10 +450,10 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 
 	// slots
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-		if (side == 1) {
+	public int[] getSlotsForFace(EnumFacing side) {
+		if (side == EnumFacing.UP) {
 			return TOP_SLOTS;
-		} else if (side == 0) {
+		} else if (side == EnumFacing.DOWN) {
 			return BOT_SLOTS;
 		} else {
 			return SIDE_SLOTS;
@@ -453,35 +462,25 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 
 	// in
 	@Override
-	public boolean canInsertItem(int slot, ItemStack item, int side) {
-		return side == 1 && isInput(slot) && this.isItemValidForSlot(slot, item);
+	public boolean canInsertItem(int slot, ItemStack item, EnumFacing side) {
+		return side == EnumFacing.UP && isInput(slot) && this.isItemValidForSlot(slot, item);
 	}
 
 	// out
 	@Override
-	public boolean canExtractItem(int slot, ItemStack item, int side) {
-		return side == 0 && isOutput(slot);
+	public boolean canExtractItem(int slot, ItemStack item, EnumFacing side) {
+		return side == EnumFacing.DOWN && isOutput(slot);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		FluidTankInfo[] info = new FluidTankInfo[tanks.length];
+	public IFluidTankProperties[] getTankProperties() {
+		IFluidTankProperties[] info = new IFluidTankProperties[tanks.length];
 		for (int i = 0; i < tanks.length; i++) {
-			info[i] = new FluidTankInfo(tanks[i].getFluid(), tanks[i].getCapacity());
+			info[i] = new FluidTankProperties(tanks[i].getFluid(), tanks[i].getCapacity());
 		}
 		return info;
 	}
-
+	
 	@Override
 	public int getField(int id) {
 		return 0;
