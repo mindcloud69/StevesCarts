@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
-import vswe.stevesvehicles.client.rendering.RendererVehicle;
+import vswe.stevesvehicles.client.rendering.RenderVehicle;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.module.common.storage.tank.ModuleTank;
@@ -82,7 +82,7 @@ public class ModelFrontTank extends ModelVehicle {
 		if (module != null) {
 			FluidStack liquid = ((ModuleTank) module).getFluid();
 			if (liquid != null) {
-				RendererVehicle.renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -14, 0, 0, 6, 6, 12, multiplier);
+				RenderVehicle.renderLiquidCuboid(liquid, ((ModuleTank) module).getCapacity(), -14, 0, 0, 6, 6, 12, multiplier);
 			}
 		}
 	}

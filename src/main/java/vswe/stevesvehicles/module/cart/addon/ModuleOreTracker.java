@@ -43,7 +43,7 @@ public class ModuleOreTracker extends ModuleAddon {
 		if (first && !isOre(current)) {
 			return null;
 		}
-		if (drill.isValidBlock(current.getX(), current.getY(), current.getZ(), 0, 1, true) == null) {
+		if (drill.isValidBlock(current, 0, 1, true) == null) {
 			return null;
 		}
 		return current;

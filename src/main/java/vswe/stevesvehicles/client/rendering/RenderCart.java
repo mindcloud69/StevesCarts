@@ -5,8 +5,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
-public class RendererCart extends RendererVehicle {
-	public RendererCart(RenderManager renderManager) {
+public class RenderCart extends RenderVehicle {
+	public RenderCart(RenderManager renderManager) {
 		super(renderManager);
 	}
 

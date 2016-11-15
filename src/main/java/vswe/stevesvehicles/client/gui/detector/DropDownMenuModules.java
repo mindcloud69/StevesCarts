@@ -21,7 +21,8 @@ public class DropDownMenuModules extends DropDownMenuPages {
 		int modulePosId = 0;
 		for (ModuleData module : ModuleRegistry.getAllModules()) {
 			if (module.getIsValid()) {
-				drawContent(gui, modulePosId, module.getIcon());
+				//TODO: sprites
+				//drawContent(gui, modulePosId, module.getIcon());
 				modulePosId++;
 			}
 		}
@@ -59,7 +60,8 @@ public class DropDownMenuModules extends DropDownMenuPages {
 		}
 	}
 
-	private void drawContent(GuiDetector gui, int index, IIcon icon) {
+	//TODO:sprites
+	/*private void drawContent(GuiDetector gui, int index, IIcon icon) {
 		int[] rect = getContentRect(index);
 		if (rect == null) {
 			return;
@@ -70,7 +72,7 @@ public class DropDownMenuModules extends DropDownMenuPages {
 			int offset = rect[3] - height;
 			gui.drawIcon(icon, gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1] + offset, rect[2] / 16F, height / 16F, 0F, offset / 16F);
 		}
-	}
+	}*/
 
 	@Override
 	protected int getPageCount() {

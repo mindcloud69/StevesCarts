@@ -770,7 +770,8 @@ public abstract class ModuleBase {
 	 * @param sizeY
 	 *            The height of the image
 	 */
-	@SideOnly(Side.CLIENT)
+	//TODO: sprites
+	/*@SideOnly(Side.CLIENT)
 	public void drawImage(GuiVehicle gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
 		// create a rectangle and call the other drawImage function to do the
 		// job
@@ -790,7 +791,7 @@ public abstract class ModuleBase {
 	 *            The x coordinate in the source file
 	 * @param srcY
 	 *            They y coordinate in the source file
-	 */
+	 
 	@SideOnly(Side.CLIENT)
 	public void drawImage(GuiVehicle gui, IIcon icon, int[] rect, int srcX, int srcY) {
 		// the rectangle need to be valid
@@ -808,7 +809,7 @@ public abstract class ModuleBase {
 				gui.drawIcon(icon, gui.getGuiLeft() + rect[0] + getX(), gui.getGuiTop() + rect[1] + getY(), rect[2] / 16F, rect[3] / 16F, srcX / 16F, srcY / 16F);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Scrolls a given rectangle accordingly to the scrollbar in the interface

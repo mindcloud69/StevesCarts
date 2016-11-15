@@ -31,9 +31,9 @@ import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.gui.GuiHandler;
 import vswe.stevesvehicles.client.gui.OverlayRenderer;
 import vswe.stevesvehicles.client.rendering.ItemStackRenderer;
-import vswe.stevesvehicles.client.rendering.RendererBoat;
-import vswe.stevesvehicles.client.rendering.RendererBuoy;
-import vswe.stevesvehicles.client.rendering.RendererCart;
+import vswe.stevesvehicles.client.rendering.RenderBoat;
+import vswe.stevesvehicles.client.rendering.RenderBuoy;
+import vswe.stevesvehicles.client.rendering.RenderCart;
 import vswe.stevesvehicles.client.sounds.MinecartSoundMuter;
 import vswe.stevesvehicles.client.sounds.SoundHandler;
 import vswe.stevesvehicles.fancy.FancyPancyLoader;
@@ -147,8 +147,8 @@ public class StevesVehicles {
 	private void loadRendering() {
 		new FancyPancyLoader();
 		// TODO move to the vehicle types?
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, (RenderManager manager) -> new RendererCart(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, (RenderManager manager) -> new RendererBoat(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, (RenderManager manager) -> new RenderCart(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, (RenderManager manager) -> new RenderBoat(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEasterEgg.class, (RenderManager manager) -> new RenderSnowball(manager, null, Minecraft.getMinecraft().getRenderItem()) {
 			@Override
 			public ItemStack getStackToRender(Entity entityIn) {
@@ -160,7 +160,7 @@ public class StevesVehicles {
 		for (ModuleData moduleData : ModuleRegistry.getAllModules()) {
 			moduleData.loadClientValues();
 		}
-		RenderingRegistry.registerEntityRenderingHandler(EntityBuoy.class, (RenderManager manager) -> new RendererBuoy(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBuoy.class, (RenderManager manager) -> new RenderBuoy(manager));
 	}
 
 	@SideOnly(Side.CLIENT)

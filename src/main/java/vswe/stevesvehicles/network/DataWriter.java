@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 
 public class DataWriter {
@@ -70,19 +71,10 @@ public class DataWriter {
 	}
 
 	public void writeNBT(NBTTagCompound nbtTagCompound) {
-		byte[] bytes = null;
 		if (nbtTagCompound != null) {
 			try {
-				bytes = CompressedStreamTools.compress(nbtTagCompound);
+				CompressedStreamTools.writeCompressed(nbtTagCompound, new ByteBufOutputStream(stream));
 			} catch (IOException ex) {
-				bytes = null;
-			}
-		}
-		writeBoolean(bytes != null);
-		if (bytes != null) {
-			writeData(bytes.length, DataBitHelper.NBT_LENGTH);
-			for (byte b : bytes) {
-				writeByte(b);
 			}
 		}
 	}

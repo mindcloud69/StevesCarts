@@ -11,9 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.rendering.models.ModelBuoy;
 
-public class RendererBuoy extends Render {
+public class RenderBuoy extends Render {
 	
-	public RendererBuoy(RenderManager renderManager) {
+	public RenderBuoy(RenderManager renderManager) {
 		super(renderManager);
 	}
 

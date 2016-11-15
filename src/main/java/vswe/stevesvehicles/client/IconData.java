@@ -2,7 +2,8 @@ package vswe.stevesvehicles.client;
 
 import net.minecraft.util.ResourceLocation;
 
-public class IconData {
+//TODO: sprites
+/*public class IconData {
 	private IIcon icon;
 	private String texture;
 
@@ -22,4 +23,4 @@ public class IconData {
 	public ResourceLocation getResource() {
 		return ResourceHelper.getResourceFromPath(texture);
 	}
-}
+}*/

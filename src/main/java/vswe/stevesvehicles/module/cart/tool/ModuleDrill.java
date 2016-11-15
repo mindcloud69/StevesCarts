@@ -104,7 +104,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 				}
 			}
 		}
-		if (countsAsAir(next.add(0, range[0], 0)) && !isValidForTrack(next.add(0, range[0], 0), true) && mineBlockAndRevive(next.add(0, (range[0] - 1), 0), next, 0, range[0] - 1)) {
+		if (countsAsAir(next.add(0, range[0], 0)) && !isValidForTrack(getVehicle().getWorld(), next.add(0, range[0], 0), true) && mineBlockAndRevive(next.add(0, (range[0] - 1), 0), next, 0, range[0] - 1)) {
 			return true;
 		}
 		// if the code goes all the way to here, the cart is still ready for

@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.GeneratedInfo;
@@ -20,6 +24,8 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 @SideOnly(Side.CLIENT)
 public class GuiVehicle extends GuiBase {
+	private static final int SLOT_SIZE = 16;
+	private static final int SLOT_HOVER_COLOR = 0x80FFFFFF;
 	private VehicleBase vehicle;
 
 	public GuiVehicle(InventoryPlayer invPlayer, VehicleBase vehicle) {
@@ -320,9 +326,11 @@ public class GuiVehicle extends GuiBase {
 	}
 
 	private static final int[] SCROLLABLE_AREA = { 5, 4, 438, 164 };
-
+	
 	@Override
-	protected void renderSlots(int x, int y) {
+	public void drawSlot(Slot slot) {
+        int x = slot.xDisplayPosition;
+        int y = slot.yDisplayPosition;
 		ModuleBase thief = vehicle.getInterfaceThief();
 		if (thief != null) {
 			drawModuleBackgroundItems(thief, x, y);
@@ -332,14 +340,63 @@ public class GuiVehicle extends GuiBase {
 			}
 		}
 		setupScissor(SCROLLABLE_AREA);
-		super.renderSlots(x, y);
+        ItemStack itemstack = slot.getStack();
+    	boolean shouldSlotOverlayBeRendered = false;
+        boolean shouldSlotUnderlayBeRendered = false;
+        boolean shouldSlotBeRendered = slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
+        ItemStack itemstack1 = this.mc.thePlayer.inventory.getItemStack();
+        String info = null;
+
+        if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
+            itemstack = itemstack.copy();
+            itemstack.stackSize /= 2;
+        }
+        else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null){
+            if (this.dragSplittingSlots.size() == 1){
+                return;
+            }
+
+            if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)){
+                itemstack = itemstack1.copy();
+                shouldSlotUnderlayBeRendered = true;
+                Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().stackSize);
+
+                if (itemstack.stackSize > itemstack.getMaxStackSize()){
+                    info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
+                    itemstack.stackSize = itemstack.getMaxStackSize();
+                }
+
+                if (itemstack.stackSize > slot.getItemStackLimit(itemstack)) {
+                    info = TextFormatting.YELLOW + "" + slot.getItemStackLimit(itemstack);
+                    itemstack.stackSize = slot.getItemStackLimit(itemstack);
+                }
+            }
+            else
+            {
+                this.dragSplittingSlots.remove(slot);
+                this.updateDragSplitting();
+            }
+        }
+
+        this.zLevel = 100.0F;
+        this.itemRender.zLevel = 100.0F;
+
+        if (itemstack == null && isMouseOverSlot(slot, x, y) && slot.canBeHovered())
+        {
+        	shouldSlotOverlayBeRendered = true;
+        }
+        if (!shouldSlotBeRendered){
+            renderSlot(slot, itemstack, shouldSlotBeRendered, true, shouldSlotUnderlayBeRendered, shouldSlotUnderlayBeRendered, info);
+        }
+
+        this.itemRender.zLevel = 0.0F;
+        this.zLevel = 0.0F;
 	}
 
 	private boolean shouldScissorSlot(Slot slot) {
 		return slot instanceof SlotBase;
 	}
 
-	@Override
 	protected void renderSlot(Slot slot, ItemStack slotItem, boolean shouldSlotBeRendered, boolean shouldSlotItemBeRendered, boolean shouldSlotUnderlayBeRendered, boolean shouldSlotOverlayBeRendered, String info) {
 		if (shouldScissorSlot(slot)) {
 			startScissor();
@@ -353,7 +410,21 @@ public class GuiVehicle extends GuiBase {
 			}
 		}
 		if (render) {
-			super.renderSlot(slot, slotItem, shouldSlotBeRendered, shouldSlotItemBeRendered, shouldSlotUnderlayBeRendered, shouldSlotOverlayBeRendered, info);
+			if (shouldSlotBeRendered) {
+				if (shouldSlotUnderlayBeRendered) {
+					drawRect(slot.xDisplayPosition, slot.yDisplayPosition, slot.xDisplayPosition + SLOT_SIZE, slot.yDisplayPosition + SLOT_SIZE, SLOT_HOVER_COLOR);
+				}
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
+				if (shouldSlotItemBeRendered && slotItem != null) {
+					itemRender.renderItemAndEffectIntoGUI(slotItem, slot.xDisplayPosition, slot.yDisplayPosition);
+					itemRender.renderItemOverlayIntoGUI(fontRendererObj, slotItem, slot.xDisplayPosition, slot.yDisplayPosition, info);
+				}
+				if (shouldSlotOverlayBeRendered) {
+					GL11.glEnable(GL11.GL_DEPTH_TEST);
+					drawRect(slot.xDisplayPosition, slot.yDisplayPosition, slot.xDisplayPosition + SLOT_SIZE, slot.yDisplayPosition + SLOT_SIZE, SLOT_HOVER_COLOR);
+					GL11.glEnable(GL11.GL_DEPTH_TEST);
+				}
+			}
 		}
 		if (shouldScissorSlot(slot)) {
 			stopScissor();
@@ -361,7 +432,7 @@ public class GuiVehicle extends GuiBase {
 	}
 
 	@Override
-	protected boolean isMouseOverSlot(Slot slot, int mX, int mY) {
+	public boolean isMouseOverSlot(Slot slot, int mX, int mY) {
 		return (!shouldScissorSlot(slot) || inRect(mX - guiLeft, mY - guiTop, SCROLLABLE_AREA)) && super.isMouseOverSlot(slot, mX, mY);
 	}
 

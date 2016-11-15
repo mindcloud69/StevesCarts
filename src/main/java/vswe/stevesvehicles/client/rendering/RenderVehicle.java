@@ -18,8 +18,8 @@ import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
-public abstract class RendererVehicle extends Render {
-	public RendererVehicle(RenderManager renderManager) {
+public abstract class RenderVehicle extends Render {
+	public RenderVehicle(RenderManager renderManager) {
 		super(renderManager);
 		this.shadowSize = 0.5F;
 	}

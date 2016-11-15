@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 
 public class DataReader {
 	private ByteBuf stream;
@@ -75,12 +76,8 @@ public class DataReader {
 
 	public NBTTagCompound readNBT() {
 		if (readBoolean()) {
-			byte[] bytes = new byte[readData(DataBitHelper.NBT_LENGTH)];
-			for (int i = 0; i < bytes.length; i++) {
-				bytes[i] = (byte) readByte();
-			}
 			try {
-				return CompressedStreamTools.func_152457_a(bytes, new NBTSizeTracker(2097152L));
+				return CompressedStreamTools.read(new ByteBufInputStream(stream), new NBTSizeTracker(2097152L));
 			} catch (IOException ex) {
 				return null;
 			}

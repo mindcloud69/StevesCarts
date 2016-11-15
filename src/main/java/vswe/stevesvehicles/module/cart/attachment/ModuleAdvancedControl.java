@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
@@ -144,7 +145,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	}
 
 	@Override
-	public RailDirection getSpecialRailDirection(int x, int y, int z) {
+	public RailDirection getSpecialRailDirection(BlockPos pos) {
 		if (isForwardKeyDown()) {
 			return RailDirection.FORWARD;
 		} else if (isLeftKeyDown()) {
