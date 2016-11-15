@@ -1,8 +1,11 @@
 package vswe.stevesvehicles.module.cart.attachment;
 
+import akka.actor.dungeon.ChildrenContainer.WaitingForChildren;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
@@ -22,77 +25,67 @@ public class ModuleRemover extends ModuleWorker {
 		return true;
 	}
 
-	private int removeX;
-	private int removeY = -1;
-	private int removeZ;
+	private BlockPos remove = BlockPos.ORIGIN.add(0, -1, 0);
 
 	// return true when the work is done, false allow other modules to continue
 	// the work
 	@Override
 	public boolean work() {
-		if (removeY != -1 && !(removeX == getVehicle().x() && removeZ == getVehicle().z())) {
-			if (removeRail(removeX, removeY, removeZ, true)) {
+		World world = getVehicle().getWorld();
+		if (remove.getY() != -1 && !(remove.getX() == getVehicle().x() && remove.getY() == getVehicle().z())) {
+			if (removeRail(world, remove, true)) {
 				return false;
 			}
 		}
-		Vec3 next = getNextBlock();
-		Vec3 last = getLastBlock();
-		boolean front = isRailAtLocation(next);
-		boolean back = isRailAtLocation(last);
+		BlockPos next = getNextBlock();
+		BlockPos last = getLastBlock();
+		boolean front = isRailAtLocation(world, next);
+		boolean back = isRailAtLocation(world, last);
 		if (!front) {
 			if (back) {
 				turnback();
-				if (removeRail(getVehicle().x(), getVehicle().y(), getVehicle().z(), false)) {
+				if (removeRail(world, getVehicle().pos(), false)) {
 					return true;
 				}
 			} else {
 				// out of rails to remove
 			}
 		} else if (!back) {
-			if (removeRail(getVehicle().x(), getVehicle().y(), getVehicle().z(), false)) {
+			if (removeRail(world, getVehicle().pos(), false)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean isRailAtLocation(Vec3 coordinates) {
-		int x = (int) coordinates.xCoord;
-		int y = (int) coordinates.yCoord;
-		int z = (int) coordinates.zCoord;
-		return BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y + 1, z) || BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y, z) || BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y - 1, z);
+	private boolean isRailAtLocation(World world, BlockPos coordinates) {
+		return BlockRailBase.isRailBlock(world, coordinates.up()) || BlockRailBase.isRailBlock(world, coordinates) || BlockRailBase.isRailBlock(world, coordinates.down());
 	}
 
-	private boolean removeRail(int x, int y, int z, boolean flag) {
+	private boolean removeRail(World world, BlockPos coordinates, boolean flag) {
 		if (flag) {
-			if (BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y, z) && getVehicle().getWorld().getBlock(x, y, z) == Blocks.rail) {
+			if (BlockRailBase.isRailBlock(getVehicle().getWorld(), coordinates) && world.getBlockState(coordinates).getBlock() == Blocks.RAIL) {
 				if (!doPreWork()) {
-					ItemStack item = new ItemStack(Blocks.rail, 1);
+					ItemStack item = new ItemStack(Blocks.RAIL, 1);
 					getVehicle().addItemToChest(item);
 					if (item.stackSize == 0) {
-						getVehicle().getWorld().setBlockToAir(x, y, z);
+						getVehicle().getWorld().setBlockToAir(coordinates);
 					}
-					removeY = -1;
+					remove = new BlockPos(remove.getX(), -1, remove.getZ());
 				} else {
 					startWorking(12);
 					return true;
 				}
 			} else {
-				removeY = -1;
+				remove = new BlockPos(remove.getX(), -1, remove.getZ());
 			}
 		} else {
-			if (BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y - 1, z)) {
-				removeX = x;
-				removeY = y - 1;
-				removeZ = z;
-			} else if (BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y, z)) {
-				removeX = x;
-				removeY = y;
-				removeZ = z;
-			} else if (BlockRailBase.func_150049_b_(getVehicle().getWorld(), x, y + 1, z)) {
-				removeX = x;
-				removeY = y + 1;
-				removeZ = z;
+			if (BlockRailBase.isRailBlock(getVehicle().getWorld(), coordinates.down())) {
+				remove = coordinates.down();
+			} else if (BlockRailBase.isRailBlock(getVehicle().getWorld(), coordinates)) {
+				remove = coordinates;
+			} else if (BlockRailBase.isRailBlock(getVehicle().getWorld(), coordinates.up())) {
+				remove = coordinates.up();
 			}
 		}
 		stopWorking();

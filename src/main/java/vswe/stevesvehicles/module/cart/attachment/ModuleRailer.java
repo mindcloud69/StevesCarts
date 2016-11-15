@@ -9,6 +9,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoInteger;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -21,6 +25,7 @@ import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
+	private DataParameter<Byte> RAILS;
 	public ModuleRailer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -55,20 +60,17 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	// the work
 	@Override
 	public boolean work() {
+		World world = getVehicle().getWorld();
 		// get the next block
-		Vec3 next = getNextBlock();
-		// save the next block's coordinates for easy access
-		int x = (int) next.xCoord;
-		int y = (int) next.yCoord;
-		int z = (int) next.zCoord;
-		ArrayList<Integer[]> positions = getValidRailPositions(x, y, z);
+		BlockPos next = getNextBlock();
+		ArrayList<BlockPos> positions = getValidRailPositions(next);
 		// if this cart hasn't started working
 		if (doPreWork()) {
 			// check if it's possible to place a rail, if so start the working
 			// delay
 			boolean valid = false;
-			for (Integer[] position : positions) {
-				if (tryPlaceTrack(position[0], position[1], position[2], false)) {
+			for (BlockPos position : positions) {
+				if (tryPlaceTrack(world, position, false)) {
 					valid = true;
 					break;
 				}
@@ -77,8 +79,8 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 				startWorking(12);
 			} else {
 				boolean front = false;
-				for (Integer[] position : positions) {
-					if (BlockRailBase.func_150049_b_(getVehicle().getWorld(), position[0], position[1], position[2])) {
+				for (BlockPos position : positions) {
+					if (BlockRailBase.isRailBlock(world, position)) {
 						front = true;
 						break;
 					}
@@ -92,8 +94,8 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 			// if the cart is working it's now time for it to place its rail,
 			// try to find a spot for it
 			stopWorking();
-			for (Integer[] position : positions) {
-				if (tryPlaceTrack(position[0], position[1], position[2], true)) {
+			for (BlockPos position : positions) {
+				if (tryPlaceTrack(world, position, true)) {
 					break;
 				}
 			}
@@ -101,18 +103,18 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 		}
 	}
 
-	protected ArrayList<Integer[]> getValidRailPositions(int x, int y, int z) {
-		ArrayList<Integer[]> lst = new ArrayList<>();
-		if (y >= getVehicle().y()) {
-			lst.add(new Integer[] { x, y + 1, z });
+	protected ArrayList<BlockPos> getValidRailPositions(BlockPos pos) {
+		ArrayList<BlockPos> lst = new ArrayList<>();
+		if (pos.getY() >= getVehicle().y()) {
+			lst.add(pos.up());
 		}
-		lst.add(new Integer[] { x, y, z });
-		lst.add(new Integer[] { x, y - 1, z });
+		lst.add(pos);
+		lst.add(pos.down());
 		return lst;
 	}
 
 	protected boolean validRail(Item item) {
-		return Block.getBlockFromItem(item) == Blocks.rail;
+		return Block.getBlockFromItem(item) == Blocks.RAIL;
 	}
 
 	/**
@@ -121,9 +123,9 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	 * the flag parameter is telling if it should build anything, if false it
 	 * will only test the posibillities.
 	 **/
-	private boolean tryPlaceTrack(int x, int y, int z, boolean flag) {
+	private boolean tryPlaceTrack(World world, BlockPos pos, boolean flag) {
 		// test if this block is free to use
-		if (isValidForTrack(x, y, z, true)) {
+		if (isValidForTrack(world, pos, true)) {
 			// loop through the slots to search for rails
 			for (int id = 0; id < getInventorySize(); id++) {
 				// check if it has found a standard rail block
@@ -133,7 +135,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 						// parameter is true this action should also be done
 						if (flag) {
 							// place the rail
-							getVehicle().getWorld().setBlock(x, y, z, Block.getBlockFromItem(getStack(id).getItem()));
+							getVehicle().getWorld().setBlockState(pos, Block.getBlockFromItem(getStack(id).getItem()).getDefaultState());
 							if (!getVehicle().hasCreativeSupplies()) {
 								// remove the placed rail from the cart's
 								// inventory
@@ -164,7 +166,8 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public void initDw() {
-		addDw(0, 0);
+		RAILS = createDw(DataSerializers.BYTE);
+		registerDw(RAILS, (byte)0);
 	}
 
 	@Override
@@ -192,14 +195,14 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 				}
 			}
 		}
-		updateDw(0, valid);
+		updateDw(RAILS, valid);
 	}
 
 	public int getRails() {
 		if (isPlaceholder()) {
 			return getIntegerSimulationInfo();
 		} else {
-			return getDw(0);
+			return getDw(RAILS);
 		}
 	}
 

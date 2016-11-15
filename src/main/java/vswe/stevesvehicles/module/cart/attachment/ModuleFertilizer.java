@@ -3,10 +3,15 @@ package vswe.stevesvehicles.module.cart.attachment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
@@ -95,30 +100,23 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean work() {
 		// get the next block so the cart knows where to mine
-		Vec3 next = getNextBlock();
-		// save thee coordinates for easy access
-		int x = (int) next.xCoord;
-		int y = (int) next.yCoord;
-		int z = (int) next.zCoord;
+		BlockPos next = getNextBlock();
 		// loop through the blocks in the "hole" in front of the cart
 		for (int i = -range; i <= range; i++) {
 			for (int j = -range; j <= range; j++) {
 				// calculate the coordinates of this "hole"
-				int targetX = x + i;
-				int targetY = y - 1;
-				int targetZ = z + j;
-				fertilize(targetX, targetY, targetZ);
+				BlockPos target = next.add(i, -1, j);
+				fertilize(getVehicle().getWorld(), target);
 			}
 		}
 		return false;
 	}
 
-	private void fertilize(int x, int y, int z) {
-		Block block = getVehicle().getWorld().getBlock(x, y + 1, z);
-		int metadataOfBlockAbove = getVehicle().getWorld().getBlockMetadata(x, y + 1, z);
-		int metadata = getVehicle().getWorld().getBlockMetadata(x, y, z);
+	private void fertilize(World world, BlockPos pos) {
+		IBlockState stateAbove = world.getBlockState(pos.up());
+		IBlockState state = world.getBlockState(pos);
 		if (fertilizerStorage > 0) {
-			if (block instanceof BlockCrops && metadataOfBlockAbove != 7) {
+			/*if (state.getBlock() instanceof BlockCrops && metadataOfBlockAbove != 7) {
 				if ((metadata > 0 && getVehicle().getRandom().nextInt(250) == 0) || (metadata == 0 && getVehicle().getRandom().nextInt(1000) == 0)) {
 					getVehicle().getWorld().setBlockMetadataWithNotify(x, y + 1, z, metadataOfBlockAbove + 1, 3);
 					if (!getVehicle().hasCreativeSupplies()) {
@@ -133,6 +131,15 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 					}
 					if (!getVehicle().hasCreativeSupplies()) {
 						fertilizerStorage--;
+					}
+				}
+			}*/
+			if(stateAbove.getBlock() instanceof IGrowable){
+				IGrowable growable = (IGrowable) stateAbove.getBlock();
+				if(growable.canGrow(world, pos, stateAbove, false)){
+					if(growable.canUseBonemeal(world, world.rand, pos, stateAbove)){
+						growable.grow(world, world.rand, pos, stateAbove);
+						--this.fertilizerStorage;
 					}
 				}
 			}

@@ -1,7 +1,11 @@
 package vswe.stevesvehicles.module.cart.attachment;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import vswe.stevesvehicles.module.ModuleBase;
@@ -38,19 +42,11 @@ public class ModuleHydrater extends ModuleWorker {
 	@Override
 	public boolean work() {
 		// get the next block so the cart knows where to mine
-		Vec3 next = getNextBlock();
-		// save thee coordinates for easy access
-		int x = (int) next.xCoord;
-		int y = (int) next.yCoord;
-		int z = (int) next.zCoord;
+		BlockPos next = getNextBlock();
 		// loop through the blocks in the "hole" in front of the cart
 		for (int i = -range; i <= range; i++) {
 			for (int j = -range; j <= range; j++) {
-				// calculate the coordinates of this "hole"
-				int coordX = x + i;
-				int coordY = y - 1;
-				int coordZ = z + j;
-				if (hydrate(coordX, coordY, coordZ)) {
+				if (hydrate(next.add(i, -1, j))) {
 					return true;
 				}
 			}
@@ -58,11 +54,11 @@ public class ModuleHydrater extends ModuleWorker {
 		return false;
 	}
 
-	private boolean hydrate(int x, int y, int z) {
-		Block b = getVehicle().getWorld().getBlock(x, y, z);
-		int m = getVehicle().getWorld().getBlockMetadata(x, y, z);
-		if (b == Blocks.farmland && m != 7) {
-			int waterCost = 7 - m;
+	private boolean hydrate(BlockPos pos) {
+		World world = getVehicle().getWorld();
+		IBlockState state = world.getBlockState(pos);
+		if (state.getBlock() == Blocks.FARMLAND && state.getValue(BlockFarmland.MOISTURE) != 7) {
+			int waterCost = 7 - state.getValue(BlockFarmland.MOISTURE);
 			waterCost = getVehicle().drain(FluidRegistry.WATER, waterCost, false);
 			if (waterCost > 0) {
 				if (doPreWork()) {
@@ -73,7 +69,7 @@ public class ModuleHydrater extends ModuleWorker {
 					if (!getVehicle().hasCreativeSupplies()) {
 						getVehicle().drain(FluidRegistry.WATER, waterCost, true);
 					}
-					getVehicle().getWorld().setBlockMetadataWithNotify(x, y, z, m + waterCost, 3);
+					getVehicle().getWorld().setBlockState(pos, state.withProperty(BlockFarmland.MOISTURE, state.getValue(BlockFarmland.MOISTURE) + waterCost), 3);
 				}
 			}
 		}

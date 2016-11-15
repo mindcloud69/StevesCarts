@@ -3,11 +3,18 @@ package vswe.stevesvehicles.module.cart.attachment;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
@@ -23,6 +30,7 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
+	private DataParameter<Integer> TORCHES;
 	public ModuleTorch(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -60,37 +68,35 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
+		World world = getVehicle().getWorld();
 		// get the next block
-		Vec3 next = getLastBlock();
-		// save the next block's coordinates for easy access
-		int x = (int) next.xCoord;
-		int y = (int) next.yCoord;
-		int z = (int) next.zCoord;
+		BlockPos next = getLastBlock();
 		// if it's too dark, try to place torches
 		if (light <= lightLimit) {
 			// try to place it at both sides
 			for (int side = -1; side <= 1; side += 2) {
 				// calculate the x and z coordinates, this depends on which
 				// direction the cart is going
-				int xTorch = x + (getVehicle().z() != z ? side : 0);
-				int zTorch = z + (getVehicle().x() != x ? side : 0);
+				BlockPos torch = next.add(getVehicle().z() != next.getZ() ? side : 0,0, getVehicle().x() != next.getX() ? side : 0);
 				// now it's time to find a proper y value
 				for (int level = 2; level >= -2; level--) {
 					// check if this coordinate is a valid place to place a
 					// torch
-					if (getVehicle().getWorld().isAirBlock(xTorch, y + level, zTorch) && Blocks.torch.canPlaceBlockAt(getVehicle().getWorld(), xTorch, y + level, zTorch)) {
+					BlockPos target = torch.add(0, level, 0);
+					if (world.isAirBlock(target) && Blocks.TORCH.canPlaceBlockAt(world, target)) {
 						// check if there's any torches to place
 						for (int i = 0; i < getInventorySize(); i++) {
 							// check if the slot contains torches
 							if (getStack(i) != null) {
-								if (Block.getBlockFromItem(getStack(i).getItem()) == Blocks.torch) {
+								if (Block.getBlockFromItem(getStack(i).getItem()) == Blocks.TORCH) {
 									if (doPreWork()) {
 										startWorking(3);
 										return true;
 									}
 									// if so place it and remove one torch from
 									// the cart's inventory
-									getVehicle().getWorld().setBlock(xTorch, y + level, zTorch, Blocks.torch);
+									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, null, new ItemStack(Blocks.TORCH));
+									getVehicle().getWorld().setBlockState(torch, state);
 									if (!getVehicle().hasCreativeSupplies()) {
 										getStack(i).stackSize--;
 										if (getStack(i).stackSize == 0) {
@@ -107,7 +113,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 						// this side is already done. This shouldn't really
 						// happen since then it wouldn't be dark enough in the
 						// first place.
-					} else if (getVehicle().getWorld().getBlock(xTorch, y + level, zTorch) == Blocks.torch) {
+					} else if (getVehicle().getWorld().getBlockState(target).getBlock() == Blocks.TORCH) {
 						break;
 					}
 				}
@@ -217,12 +223,13 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void update() {
 		super.update();
-		light = getVehicle().getWorld().getBlockLightValue(getVehicle().x(), getVehicle().y() + 1, getVehicle().z());
+		light = getVehicle().getWorld().getLightFor(EnumSkyBlock.BLOCK, getVehicle().pos().up());
 	}
 
 	@Override
 	public void initDw() {
-		addDw(0, 0);
+		TORCHES = createDw(DataSerializers.VARINT);
+		registerDw(TORCHES, 0);
 	}
 
 	@Override
@@ -244,14 +251,14 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 		for (int i = 0; i < 3; i++) {
 			val |= ((getStack(i) != null ? 1 : 0) << i);
 		}
-		updateDw(0, val);
+		updateDw(TORCHES, val);
 	}
 
 	public int getTorches() {
 		if (isPlaceholder()) {
 			return getMultiBooleanIntegerSimulationInfo();
 		} else {
-			return getDw(0);
+			return getDw(TORCHES);
 		}
 	}
 
@@ -270,7 +277,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	public boolean haveSupplies() {
 		for (int i = 0; i < getInventorySize(); i++) {
 			ItemStack item = getStack(i);
-			if (item != null && Block.getBlockFromItem(item.getItem()) == Blocks.torch) {
+			if (item != null && Block.getBlockFromItem(item.getItem()) == Blocks.TORCH) {
 				return true;
 			}
 		}

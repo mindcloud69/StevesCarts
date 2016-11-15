@@ -5,9 +5,12 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
 import vswe.stevesvehicles.vehicle.VehicleBase;
@@ -25,7 +28,8 @@ public class ModuleFlowerRemover extends ModuleAttachment {
 	@Override
 	public void update() {
 		super.update();
-		if (getVehicle().getWorld().isRemote) {
+		World world = getVehicle().getWorld();
+		if (world.isRemote) {
 			bladeAngle += getBladeSpindSpeed();
 			if (getVehicle().hasFuel()) {
 				bladeSpeed = Math.min(MAX_BLADE_SPEED, bladeSpeed + BLADE_ACCELERATION);
@@ -37,8 +41,8 @@ public class ModuleFlowerRemover extends ModuleAttachment {
 		if (getVehicle().hasFuel()) {
 			if (tick >= getInterval()) {
 				tick = 0;
-				mowTheLawn();
-				shearEntities();
+				mowTheLawn(world);
+				shearEntities(world);
 			} else {
 				tick++;
 			}
@@ -59,19 +63,16 @@ public class ModuleFlowerRemover extends ModuleAttachment {
 		return 1;
 	}
 
-	private void mowTheLawn() {
+	private void mowTheLawn(World world) {
 		for (int offsetX = -getBlocksOnSide(); offsetX <= getBlocksOnSide(); offsetX++) {
 			for (int offsetZ = -getBlocksOnSide(); offsetZ <= getBlocksOnSide(); offsetZ++) {
 				for (int offsetY = -getBlocksFromLevel(); offsetY <= getBlocksFromLevel(); offsetY++) {
-					int targetX = offsetX + getVehicle().x();
-					int targetY = offsetY + getVehicle().y();
-					int targetZ = offsetZ + getVehicle().z();
-					if (isFlower(targetX, targetY, targetZ)) {
-						Block block = getVehicle().getWorld().getBlock(targetX, targetY, targetZ);
-						int m = getVehicle().getWorld().getBlockMetadata(targetX, targetY, targetZ);
-						if (block != null) {
-							addStuff(block.getDrops(getVehicle().getWorld(), targetX, targetY, targetZ, m, 0));
-							getVehicle().getWorld().setBlockToAir(targetX, targetY, targetZ);
+					BlockPos target = getVehicle().pos().add(offsetX, offsetY, offsetZ);
+					if (isFlower(world, target)) {
+						IBlockState state = world.getBlockState(target);
+						if (state != null) {
+							addStuff(state.getBlock().getDrops(getVehicle().getWorld(), target, state, 0));
+							getVehicle().getWorld().setBlockToAir(target);
 						}
 					}
 				}
@@ -79,25 +80,25 @@ public class ModuleFlowerRemover extends ModuleAttachment {
 		}
 	}
 
-	private void shearEntities() {
-		List entities = getVehicle().getWorld().getEntitiesWithinAABB(EntityLiving.class, getVehicle().getEntity().boundingBox.expand(getBlocksOnSide(), getBlocksFromLevel() + 2F, getBlocksOnSide()));
+	private void shearEntities(World world) {
+		List entities = world.getEntitiesWithinAABB(EntityLiving.class, getVehicle().getEntity().getEntityBoundingBox().expand(getBlocksOnSide(), getBlocksFromLevel() + 2F, getBlocksOnSide()));
 		for (Object entity : entities) {
 			EntityLiving target = (EntityLiving) entity;
 			if (target instanceof IShearable) {
 				IShearable shearable = (IShearable) target;
-				if (shearable.isShearable(null, getVehicle().getWorld(), (int) target.posX, (int) target.posY, (int) target.posZ)) {
-					addStuff(shearable.onSheared(null, getVehicle().getWorld(), (int) target.posX, (int) target.posY, (int) target.posZ, 0));
+				if (shearable.isShearable(null, world, target.getPosition())) {
+					addStuff(shearable.onSheared(null, world, target.getPosition(), 0));
 				}
 			}
 		}
 	}
 
-	private boolean isFlower(int x, int y, int z) {
-		Block block = getVehicle().getWorld().getBlock(x, y, z);
-		return block != null && block instanceof BlockBush;
+	private boolean isFlower(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		return state.getBlock() instanceof BlockBush;
 	}
 
-	private void addStuff(ArrayList<ItemStack> stuff) {
+	private void addStuff(List<ItemStack> stuff) {
 		for (ItemStack item : stuff) {
 			getVehicle().addItemToChest(item);
 			if (item.stackSize != 0) {

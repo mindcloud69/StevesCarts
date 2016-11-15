@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import vswe.stevesvehicles.module.cart.attachment.ModuleAttachment;
@@ -121,11 +122,11 @@ public abstract class ModuleWorker extends ModuleAttachment {
 
 	// flag is false if it don't need a valid block to be built on(i.e assumes a
 	// bridge block will be there later)
-	protected boolean isValidForTrack(BlockPos target, boolean flag) {
-		boolean result = countsAsAir(target) && (!flag || getVehicle().getWorld().isSideSolid(target.down(), EnumFacing.UP));
+	protected boolean isValidForTrack(World world, BlockPos target, boolean flag) {
+		boolean result = countsAsAir(target) && (!flag || world.isSideSolid(target.down(), EnumFacing.UP));
 		if (result) {
 			target = target.add(-(getVehicle().x() - target.getX()), 0, -(getVehicle().z() - target.getZ()));
-			Block block = getVehicle().getWorld().getBlockState(target).getBlock();
+			Block block = world.getBlockState(target).getBlock();
 			boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE;
 			boolean isLava = block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
 			boolean isOther = block != null && block instanceof IFluidBlock;
