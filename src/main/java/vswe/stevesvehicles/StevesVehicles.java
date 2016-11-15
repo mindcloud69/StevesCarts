@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -28,12 +30,10 @@ import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.gui.GuiHandler;
 import vswe.stevesvehicles.client.gui.OverlayRenderer;
-import vswe.stevesvehicles.client.rendering.RenderBuoyItem;
-import vswe.stevesvehicles.client.rendering.RenderVehicleItem;
+import vswe.stevesvehicles.client.rendering.ItemStackRenderer;
 import vswe.stevesvehicles.client.rendering.RendererBoat;
 import vswe.stevesvehicles.client.rendering.RendererBuoy;
 import vswe.stevesvehicles.client.rendering.RendererCart;
-import vswe.stevesvehicles.client.rendering.RendererUpgrade;
 import vswe.stevesvehicles.client.sounds.MinecartSoundMuter;
 import vswe.stevesvehicles.client.sounds.SoundHandler;
 import vswe.stevesvehicles.fancy.FancyPancyLoader;
@@ -147,8 +147,8 @@ public class StevesVehicles {
 	private void loadRendering() {
 		new FancyPancyLoader();
 		// TODO move to the vehicle types?
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, (RenderManager manager) -> new RendererCart());
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, (RenderManager manager) -> new RendererBoat());
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, (RenderManager manager) -> new RendererCart(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, (RenderManager manager) -> new RendererBoat(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEasterEgg.class, (RenderManager manager) -> new RenderSnowball(manager, null, Minecraft.getMinecraft().getRenderItem()) {
 			@Override
 			public ItemStack getStackToRender(Entity entityIn) {
@@ -156,21 +156,29 @@ public class StevesVehicles {
 			}
 		});
 		// StevesVehicles.instance.blockRenderer = new RendererUpgrade();
-		new RenderVehicleItem();
 		RenderingRegistry.registerEntityRenderingHandler(EntityCake.class, (RenderManager manager) -> new RenderSnowball(manager, Items.CAKE, Minecraft.getMinecraft().getRenderItem()));
-		if (StevesVehicles.instance.tradeHandler != null) {
-			StevesVehicles.instance.tradeHandler.registerSkin();
-		}
 		for (ModuleData moduleData : ModuleRegistry.getAllModules()) {
 			moduleData.loadClientValues();
 		}
-		RenderingRegistry.registerEntityRenderingHandler(EntityBuoy.class, new RendererBuoy());
-		new RenderBuoyItem();
+		RenderingRegistry.registerEntityRenderingHandler(EntityBuoy.class, (RenderManager manager) -> new RendererBuoy(manager));
 	}
 
 	@SideOnly(Side.CLIENT)
 	private void loadSounds() {
 		new SoundHandler();
 		new MinecartSoundMuter();
+	}
+	
+	@Mod.EventHandler
+	public void loadComplete(FMLLoadCompleteEvent event){
+		if(event.getSide() == Side.CLIENT){
+			loadItemRenderer();
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	private void loadItemRenderer(){
+		//Done here to try and load after all other mods, as some mods override this
+		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
 	}
 }

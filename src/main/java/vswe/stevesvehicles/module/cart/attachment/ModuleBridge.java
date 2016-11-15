@@ -94,7 +94,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	private boolean tryBuildBridge(BlockPos target, boolean flag) {
 		World world = getVehicle().getWorld();
 		IBlockState blockState = world.getBlockState(target);
-		if ((countsAsAir(target) || blockState.getBlock() instanceof BlockLiquid) && isValidForTrack(target.up(), false)) {
+		if ((countsAsAir(target) || blockState.getBlock() instanceof BlockLiquid) && isValidForTrack(world, target.up(), false)) {
 			for (int m = 0; m < getInventorySize(); m++) {
 				if (getStack(m) != null) {
 					if (SlotBridge.isBridgeMaterial(getStack(m))) {
@@ -113,7 +113,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 					}
 				}
 			}
-			if (!isValidForTrack(target, true) && !isValidForTrack(target.up(), true) && !isValidForTrack(target.up(2), true)) {
+			if (!isValidForTrack(world, target, true) && !isValidForTrack(world, target.up(), true) && !isValidForTrack(world, target.up(2), true)) {
 				// turnback();
 			}
 		}
