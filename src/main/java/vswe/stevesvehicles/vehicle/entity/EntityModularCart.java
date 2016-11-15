@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.vehicle.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.state.IBlockState;
@@ -22,9 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -704,7 +701,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 
 		@Override
 		public void setField(int id, int value) {
-			
+
 		}
 
 		@Override
@@ -714,6 +711,6 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 
 		@Override
 		public void clear() {
-			
+
 		}
 }

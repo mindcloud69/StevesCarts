@@ -12,7 +12,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
@@ -91,6 +90,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	 *            If false filling will only be simulated.
 	 * @return Amount of resource that was filled into internal tanks.
 	 */
+	@Override
 	public int fill(FluidStack resource, boolean doFill) {
 		int amount = 0;
 		if (resource != null && resource.amount > 0) {
@@ -480,7 +480,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		}
 		return info;
 	}
-	
+
 	@Override
 	public int getField(int id) {
 		return 0;

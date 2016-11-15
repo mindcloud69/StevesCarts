@@ -7,11 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import vswe.stevesvehicles.buoy.BuoyType;
-import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.client.rendering.models.ModelBuoy;
 import vswe.stevesvehicles.client.rendering.models.ModelVehicle;
@@ -20,14 +17,14 @@ import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.ModuleDataItemHandler;
 
 public class ItemStackRenderer extends TileEntityItemStackRenderer {
-	
+
 	private ModelBase model = new ModelBuoy();
 	TileEntityItemStackRenderer renderer;
 
 	public ItemStackRenderer(TileEntityItemStackRenderer renderer) {
 		this.renderer = renderer;
 	}
-	
+
 	@Override
 	public void renderByItem(ItemStack itemStack) {
 		if(itemStack.getItem() == ModItems.buoys){

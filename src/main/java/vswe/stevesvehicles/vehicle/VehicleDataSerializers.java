@@ -6,7 +6,7 @@ import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.DataSerializers;
 
 public class VehicleDataSerializers {
-	
+
 	public static void init() {
 		DataSerializers.registerSerializer(VARINT);
 	}
@@ -28,5 +28,5 @@ public class VehicleDataSerializers {
 			return new DataParameter(id, this);
 		}
 	};
-	
+
 }

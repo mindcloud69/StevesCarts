@@ -3,7 +3,6 @@ package vswe.stevesvehicles.client.rendering.models.cart;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.ResourceHelper;
@@ -30,7 +29,7 @@ public class ModelBridge extends ModelVehicle {
 		int yDif;
 		needBridge = ((ModuleBridge) module).needBridge();
 		BlockPos next = ((ModuleBridge) module).getNextBlock();
-		int y = (int) next.getY();
+		int y = next.getY();
 		yDif = ((EntityModularCart) module.getVehicle().getEntity()).getYTarget() - y;
 		if (needBridge) {
 			if (yDif > 0) {

@@ -2,7 +2,6 @@ package vswe.stevesvehicles.tileentity.distributor;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -116,7 +115,7 @@ public class DistributorSide implements IFluidHandler {
 	public String getInfo() {
 		return LocalizationDistributor.SIDE_TOOLTIP.translate(getName());
 	}
-	
+
 	/**
 	 * Fills fluid into internal tanks, distribution is left to the
 	 * ITankContainer.
@@ -177,7 +176,7 @@ public class DistributorSide implements IFluidHandler {
 		}
 		return ret;
 	}
-	
+
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
 		IFluidTank[] tanks = tile.getTanks(side);

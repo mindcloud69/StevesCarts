@@ -34,7 +34,7 @@ public class CraftingDummy extends InventoryCrafting {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		return null;

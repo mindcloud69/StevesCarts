@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -326,11 +324,11 @@ public class GuiVehicle extends GuiBase {
 	}
 
 	private static final int[] SCROLLABLE_AREA = { 5, 4, 438, 164 };
-	
+
 	@Override
 	public void drawSlot(Slot slot) {
-        int x = slot.xDisplayPosition;
-        int y = slot.yDisplayPosition;
+		int x = slot.xDisplayPosition;
+		int y = slot.yDisplayPosition;
 		ModuleBase thief = vehicle.getInterfaceThief();
 		if (thief != null) {
 			drawModuleBackgroundItems(thief, x, y);
@@ -340,57 +338,57 @@ public class GuiVehicle extends GuiBase {
 			}
 		}
 		setupScissor(SCROLLABLE_AREA);
-        ItemStack itemstack = slot.getStack();
-    	boolean shouldSlotOverlayBeRendered = false;
-        boolean shouldSlotUnderlayBeRendered = false;
-        boolean shouldSlotBeRendered = slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
-        ItemStack itemstack1 = this.mc.thePlayer.inventory.getItemStack();
-        String info = null;
+		ItemStack itemstack = slot.getStack();
+		boolean shouldSlotOverlayBeRendered = false;
+		boolean shouldSlotUnderlayBeRendered = false;
+		boolean shouldSlotBeRendered = slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
+		ItemStack itemstack1 = this.mc.thePlayer.inventory.getItemStack();
+		String info = null;
 
-        if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
-            itemstack = itemstack.copy();
-            itemstack.stackSize /= 2;
-        }
-        else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null){
-            if (this.dragSplittingSlots.size() == 1){
-                return;
-            }
+		if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
+			itemstack = itemstack.copy();
+			itemstack.stackSize /= 2;
+		}
+		else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null){
+			if (this.dragSplittingSlots.size() == 1){
+				return;
+			}
 
-            if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)){
-                itemstack = itemstack1.copy();
-                shouldSlotUnderlayBeRendered = true;
-                Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().stackSize);
+			if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)){
+				itemstack = itemstack1.copy();
+				shouldSlotUnderlayBeRendered = true;
+				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().stackSize);
 
-                if (itemstack.stackSize > itemstack.getMaxStackSize()){
-                    info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
-                    itemstack.stackSize = itemstack.getMaxStackSize();
-                }
+				if (itemstack.stackSize > itemstack.getMaxStackSize()){
+					info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
+					itemstack.stackSize = itemstack.getMaxStackSize();
+				}
 
-                if (itemstack.stackSize > slot.getItemStackLimit(itemstack)) {
-                    info = TextFormatting.YELLOW + "" + slot.getItemStackLimit(itemstack);
-                    itemstack.stackSize = slot.getItemStackLimit(itemstack);
-                }
-            }
-            else
-            {
-                this.dragSplittingSlots.remove(slot);
-                this.updateDragSplitting();
-            }
-        }
+				if (itemstack.stackSize > slot.getItemStackLimit(itemstack)) {
+					info = TextFormatting.YELLOW + "" + slot.getItemStackLimit(itemstack);
+					itemstack.stackSize = slot.getItemStackLimit(itemstack);
+				}
+			}
+			else
+			{
+				this.dragSplittingSlots.remove(slot);
+				this.updateDragSplitting();
+			}
+		}
 
-        this.zLevel = 100.0F;
-        this.itemRender.zLevel = 100.0F;
+		this.zLevel = 100.0F;
+		this.itemRender.zLevel = 100.0F;
 
-        if (itemstack == null && isMouseOverSlot(slot, x, y) && slot.canBeHovered())
-        {
-        	shouldSlotOverlayBeRendered = true;
-        }
-        if (!shouldSlotBeRendered){
-            renderSlot(slot, itemstack, shouldSlotBeRendered, true, shouldSlotUnderlayBeRendered, shouldSlotUnderlayBeRendered, info);
-        }
+		if (itemstack == null && isMouseOverSlot(slot, x, y) && slot.canBeHovered())
+		{
+			shouldSlotOverlayBeRendered = true;
+		}
+		if (!shouldSlotBeRendered){
+			renderSlot(slot, itemstack, shouldSlotBeRendered, true, shouldSlotUnderlayBeRendered, shouldSlotUnderlayBeRendered, info);
+		}
 
-        this.itemRender.zLevel = 0.0F;
-        this.zLevel = 0.0F;
+		this.itemRender.zLevel = 0.0F;
+		this.zLevel = 0.0F;
 	}
 
 	private boolean shouldScissorSlot(Slot slot) {

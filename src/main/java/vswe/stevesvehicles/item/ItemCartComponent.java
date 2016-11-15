@@ -22,9 +22,11 @@ import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.holiday.EntityEasterEgg;
 import vswe.stevesvehicles.localization.ILocalizedText;
 import vswe.stevesvehicles.localization.LocalizedTextAdvanced;
+import vswe.stevesvehicles.module.items.ItemModelManager;
+import vswe.stevesvehicles.module.items.TexturedItem;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 
-public class ItemCartComponent extends Item {
+public class ItemCartComponent extends Item implements TexturedItem {
 	/*
 	 * private IIcon icons[]; private IIcon unknownIcon;
 	 */
@@ -37,6 +39,7 @@ public class ItemCartComponent extends Item {
 		setHasSubtypes(true);
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabLoader.components);
+		ItemModelManager.registerItem(this);
 	}
 
 	private String getName(int dmg) {
@@ -57,6 +60,14 @@ public class ItemCartComponent extends Item {
 	 * register.registerIcon(StevesVehicles.instance.textureHeader +
 	 * ":unknown"); }
 	 */
+
+	private String getRawName(final int i) {
+		if(getName(i) == null){
+			return null;
+		}
+		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
+	}
+
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || getName(item.getItemDamage()) == null) {
@@ -179,5 +190,18 @@ public class ItemCartComponent extends Item {
 		} else {
 			return super.onItemRightClick(itemStack, world, player, hand);
 		}
+	}
+
+	@Override
+	public String getTextureName(int damage) {
+		if(getRawName(damage) == null){
+			return "stevescarts:items/unknown_icon";
+		}
+		return "stevescarts:items/"  + getRawName(damage) + "_icon";
+	}
+
+	@Override
+	public int getMaxMeta() {
+		return size();
 	}
 }

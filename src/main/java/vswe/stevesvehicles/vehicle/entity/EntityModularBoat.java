@@ -13,9 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -71,7 +69,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 		super.readFromNBT(tagCompound);
 		vehicleBase.readFromNBT(tagCompound);
 	}
-	
+
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
 		if (player.isSneaking()) {
@@ -359,7 +357,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public ItemStack decrStackSize(int id, int count) {
 		return vehicleBase.decreaseStack(id, count);
 	}
-	
+
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		return vehicleBase.removeStackFromSlot(index);
@@ -409,7 +407,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public FluidStack drain(FluidStack resource, boolean doDrain) {
 		return vehicleBase.drain(resource, doDrain);
 	}
-	
+
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
 		return vehicleBase.getTankProperties();
@@ -424,7 +422,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public void readSpawnData(ByteBuf data) {
 		vehicleBase.readSpawnData(data);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getEntityBoundingBox() {
 		return vehicleBase.isPlaceholder ? null : super.getEntityBoundingBox();
@@ -457,7 +455,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	public void setField(int id, int value) {
-		
+
 	}
 
 	@Override
@@ -467,6 +465,6 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	public void clear() {
-		
+
 	}
 }

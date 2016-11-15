@@ -17,6 +17,7 @@ import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 public class Upgrade implements IRecipeOutput {
 	// private static HashMap<Byte, IIcon> sides;
 	private static HashMap<Class<? extends BaseEffect>, IEffectInfo> effectInfo;
+	private String icon;
 
 	public static void registerInfo(Class<? extends BaseEffect> clazz, IEffectInfo info) {
 		if (effectInfo == null) {
@@ -132,6 +133,15 @@ public class Upgrade implements IRecipeOutput {
 	 * ":upgrades/sides/default"); for (Upgrade upgrade :
 	 * UpgradeRegistry.getAllUpgrades()) { upgrade.createIcon(register); } }
 	 */
+
+	public String getIcon() {
+		return this.icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
 	public boolean connectToRedstone() {
 		return false;
 	}

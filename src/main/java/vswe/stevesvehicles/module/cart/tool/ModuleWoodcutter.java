@@ -16,7 +16,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import vswe.stevesvehicles.block.BlockCoordinate;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfo;
 import vswe.stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
@@ -349,12 +348,12 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isLeaves(World world, IBlockState state, BlockPos pos) {
 		return state.getBlock() == Blocks.LEAVES || state.getBlock() == Blocks.LEAVES2;
 	}
-	
+
 	@Override
 	public boolean isWood(World world, IBlockState state, BlockPos pos) {
 		return state.getBlock() == Blocks.LOG || state.getBlock() == Blocks.LOG2;

@@ -12,7 +12,7 @@ import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.client.rendering.models.ModelBuoy;
 
 public class RenderBuoy extends Render {
-	
+
 	public RenderBuoy(RenderManager renderManager) {
 		super(renderManager);
 	}

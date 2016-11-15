@@ -1,7 +1,5 @@
 package vswe.stevesvehicles.client;
 
-import net.minecraft.util.ResourceLocation;
-
 //TODO: sprites
 /*public class IconData {
 	private IIcon icon;

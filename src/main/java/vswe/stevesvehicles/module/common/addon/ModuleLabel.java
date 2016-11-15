@@ -28,7 +28,7 @@ public class ModuleLabel extends ModuleAddon {
 	private DataParameter<Byte> USED;
 	private DataParameter<Integer> DATA ;
 	private DataParameter<Byte> ACTIVE;
-	
+
 	public ModuleLabel(VehicleBase vehicleBase) {
 		super(vehicleBase);
 		labels = new ArrayList<>();

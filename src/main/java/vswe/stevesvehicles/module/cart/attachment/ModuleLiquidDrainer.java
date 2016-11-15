@@ -9,12 +9,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 
-import vswe.stevesvehicles.block.BlockCoordinate;
 import vswe.stevesvehicles.module.cart.ModuleWorker;
 import vswe.stevesvehicles.module.cart.tool.ModuleDrill;
 import vswe.stevesvehicles.util.BlockPosUtils;

@@ -15,17 +15,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.module.items.ItemModelManager;
+import vswe.stevesvehicles.module.items.TexturedItem;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
-public class ItemUpgrade extends ItemBlock {
+public class ItemUpgrade extends ItemBlock implements TexturedItem{
 	public ItemUpgrade(Block block) {
 		super(block);
 		setHasSubtypes(true);
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabLoader.blocks);
+		ItemModelManager.registerItem(this);
 	}
 	/*
 	 * @Override
@@ -77,5 +80,22 @@ public class ItemUpgrade extends ItemBlock {
 		if (upgrade != null) {
 			upgrade.addInfo(lst);
 		}
+	}
+
+	@Override
+	public String getTextureName(int damage) {
+		Upgrade data = UpgradeRegistry.getUpgradeFromId(damage);
+		if (data != null) {
+			if(data.getIcon() == null){
+				data.setIcon("stevescarts:blocks/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/") + "_icon");
+			}
+			return data.getIcon();
+		}
+		return "stevescarts:items/unknown_icon";
+	}
+
+	@Override
+	public int getMaxMeta() {
+		return UpgradeRegistry.getAllUpgrades().size();
 	}
 }

@@ -18,7 +18,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	private static final int[] BUTTON = new int[] { 10, 26, 16, 16 };
 	private int cooldown;
 	private DataParameter<int[]> COLORS;
-	
+
 	public ModuleColorRandomizer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}

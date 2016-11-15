@@ -791,7 +791,7 @@ public abstract class ModuleBase {
 	 *            The x coordinate in the source file
 	 * @param srcY
 	 *            They y coordinate in the source file
-	 
+
 	@SideOnly(Side.CLIENT)
 	public void drawImage(GuiVehicle gui, IIcon icon, int[] rect, int srcX, int srcY) {
 		// the rectangle need to be valid

@@ -10,10 +10,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
+import vswe.stevesvehicles.module.items.TexturedItem;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tab.CreativeTabVehicle;
 
-public class ItemVehicleModule extends Item {
+public class ItemVehicleModule extends Item implements TexturedItem {
 	public ItemVehicleModule() {
 		setCreativeTab(CreativeTabs.TRANSPORTATION);
 		setHasSubtypes(true);
@@ -94,4 +95,21 @@ public class ItemVehicleModule extends Item {
 			return null;
 		}
 	}
+	
+		@Override
+	 	public String getTextureName(int damage) {
+	 		ModuleData data = ModuleRegistry.getAllModules().get((byte) damage);
+	 		if (data != null) {
+	 			if(data.getIcon() == null){
+	 				data.setIcon("stevescarts:items/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/") + "_icon");
+	 			}
+	 			return data.getIcon();
+	 		}
+	 		return "stevescarts:items/unknown_icon";
+	 	}
+	 
+	 	@Override
+	 	public int getMaxMeta() {
+	 		return ModuleRegistry.getAllModules().size();
+	 	}
 }

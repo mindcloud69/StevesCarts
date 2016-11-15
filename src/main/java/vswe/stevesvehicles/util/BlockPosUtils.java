@@ -1,12 +1,10 @@
 package vswe.stevesvehicles.util;
 
 import net.minecraft.util.math.BlockPos;
-import vswe.stevesvehicles.module.common.addon.projectile.EntityCake;
 import vswe.stevesvehicles.vehicle.VehicleBase;
-import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class BlockPosUtils {
-	
+
 	public static double getHorizontalDistToVehicleSquared(BlockPos pos, VehicleBase vehicle) {
 		final int xDif = pos.getX() - vehicle.x();
 		final int zDif = pos.getZ() - vehicle.z();

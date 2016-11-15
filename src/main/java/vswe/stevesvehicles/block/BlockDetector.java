@@ -98,8 +98,8 @@ public class BlockDetector extends BlockContainerBase {
 	public IBlockState getStateFromMeta(int meta) {
 		boolean isActive = false;
 		int length = DetectorType.VALUES.length;
-		if(meta > length){
-			meta = meta-length;
+		if(meta >= length){
+			meta -= length;
 			isActive = false;
 		}
 		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.getTypeFromInt(meta)).withProperty(DetectorType.ACTIVE, isActive);
@@ -112,6 +112,6 @@ public class BlockDetector extends BlockContainerBase {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, DetectorType.SATE);
+		return new BlockStateContainer(this, DetectorType.SATE, DetectorType.ACTIVE);
 	}
 }

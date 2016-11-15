@@ -52,9 +52,8 @@ public class ModuleData implements IRecipeOutput {
 	private ArrayList<String> removedModels;
 	@SideOnly(Side.CLIENT)
 	private float modelMultiplier;
-	/*
-	 * @SideOnly(Side.CLIENT) private IIcon icon;
-	 */
+	@SideOnly(Side.CLIENT) 
+	private String icon;
 
 	public ModuleData(String unlocalizedName, Class<? extends ModuleBase> moduleClass, int modularCost) {
 		this.moduleClass = moduleClass;
@@ -486,6 +485,14 @@ public class ModuleData implements IRecipeOutput {
 	 * "/")); }
 	 * @SideOnly(Side.CLIENT) public IIcon getIcon() { return icon; }
 	 */
+	
+	 	public String getIcon() {
+	 		return this.icon;
+	 	}
+	 
+		public void setIcon(String icon) {
+	 		this.icon = icon;
+	 }
 	public ItemStack getItemStack(int count) {
 		int id = ModuleRegistry.getIdFromModule(this);
 		if (id >= 0) {

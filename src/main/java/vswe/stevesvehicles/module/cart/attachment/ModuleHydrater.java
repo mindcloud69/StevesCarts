@@ -1,6 +1,5 @@
 package vswe.stevesvehicles.module.cart.attachment;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
