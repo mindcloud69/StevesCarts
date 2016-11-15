@@ -29,7 +29,6 @@ public class PluginLoader {
             StevesCarts.logger.info("Found plugin candidate:" + asmData.getClassName());
             if(asmData.getAnnotationInfo().size() != 0){
                 String modId = (String) asmData.getAnnotationInfo().get("dependentMod");
-                System.out.println(modId);
                 if(!Loader.isModLoaded(modId)){
                     StevesCarts.logger.info("Plugin was NOT loaded due to mod '" + modId + "' missing, this isn't an error");
                     continue;

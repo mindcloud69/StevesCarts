@@ -39,6 +39,17 @@ minecraft {
     replace '${version}', project.version
 }
 
+repositories {
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
+}
+
+
+dependencies {
+	compile "net.sengir.forestry:forestry_1.10.2:5.2.16.326:api"
+}
 
 processResources{
 	inputs.property "version", project.version
