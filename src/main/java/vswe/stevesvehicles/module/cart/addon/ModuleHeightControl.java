@@ -3,6 +3,8 @@ package vswe.stevesvehicles.module.cart.addon;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 
 import vswe.stevesvehicles.client.ResourceHelper;
@@ -15,6 +17,7 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleHeightControl extends ModuleAddon {
+	private DataParameter<Integer> Y_TARGET;
 	public ModuleHeightControl(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -193,11 +196,12 @@ public class ModuleHeightControl extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0, getVehicle().y());
+		Y_TARGET = createDw(DataSerializers.VARINT);
+		registerDw(Y_TARGET, getVehicle().y());
 	}
 
 	public void setYTarget(int val) {
-		updateDw(0, val);
+		updateDw(Y_TARGET, val);
 	}
 
 	@Override
@@ -205,7 +209,7 @@ public class ModuleHeightControl extends ModuleAddon {
 		if (isPlaceholder()) {
 			return 64;
 		}
-		int data = getDw(0);
+		int data = getDw(Y_TARGET);
 		if (data < 0) {
 			data += 256;
 		}

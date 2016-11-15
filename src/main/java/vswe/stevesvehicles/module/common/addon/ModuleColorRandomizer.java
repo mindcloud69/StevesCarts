@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
 
 import vswe.stevesvehicles.client.ResourceHelper;
@@ -11,11 +12,13 @@ import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.localization.entry.module.LocalizationVisual;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.vehicle.VehicleBase;
+import vswe.stevesvehicles.vehicle.VehicleDataSerializers;
 
 public class ModuleColorRandomizer extends ModuleAddon {
 	private static final int[] BUTTON = new int[] { 10, 26, 16, 16 };
 	private int cooldown;
-
+	private DataParameter<int[]> COLORS;
+	
 	public ModuleColorRandomizer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -110,9 +113,8 @@ public class ModuleColorRandomizer extends ModuleAddon {
 
 	@Override
 	public void initDw() {
-		addDw(0, 255);
-		addDw(1, 255);
-		addDw(2, 255);
+		COLORS = createDw(VehicleDataSerializers.VARINT);
+		registerDw(COLORS, new int[]{255, 255, 255});
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 		if (isPlaceholder()) {
 			return 255;
 		}
-		int tempVal = getDw(i);
+		int tempVal = this.getDw(COLORS)[i];
 		if (tempVal < 0) {
 			tempVal += 256;
 		}
@@ -132,7 +134,9 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	}
 
 	public void setColorVal(int id, int val) {
-		updateDw(id, val);
+		int[] colors = getDw(COLORS);
+		colors[id] = val;
+		updateDw(COLORS, colors);
 	}
 
 	private float getColorComponent(int i) {
