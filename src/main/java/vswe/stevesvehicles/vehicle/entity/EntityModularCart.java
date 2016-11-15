@@ -90,7 +90,6 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		public EntityModularCart(World world, double x, double y, double z, NBTTagCompound info, String name) {
 			super(world, x, y, z);
 			this.vehicleBase = new VehicleCart(this, info, name);
-			overrideDataWatcher();
 		}
 
 		/**
@@ -103,21 +102,16 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		public EntityModularCart(World world) {
 			super(world);
 			this.vehicleBase = new VehicleCart(this);
-			overrideDataWatcher();
 		}
 
 		/**
 		 * The normal datawatcher is overridden by a special one on the client side.
 		 * This is to be able to wait to process data in the beginning. Fixing the
 		 * syncing at start up.
-		 */
-		private void overrideDataWatcher() {
-			if (worldObj.isRemote) {
-				this.dataWatcher = new LockableEntityDataManager(this);
-				this.dataWatcher.addObject(0, Byte.valueOf((byte) 0));
-				this.dataWatcher.addObject(1, Short.valueOf((short) 300));
-				this.entityInit();
-			}
+		 */	
+		@SideOnly(Side.CLIENT)
+		private void overrideDatawatcher() {
+			this.dataManager = new LockableEntityDataManager(this);
 		}
 
 		/**
@@ -135,8 +129,10 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		 */
 		@Override
 		protected void entityInit() {
+			if(this.worldObj.isRemote && !(dataManager instanceof LockableEntityDataManager)){
+				this.overrideDatawatcher();
+			}
 			super.entityInit();
-			this.dataWatcher.addObject(16, new Byte((byte) 0));
 		}
 
 		/**
@@ -699,5 +695,25 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 			if (sound != null) {
 				ReflectionHelper.setPrivateValue(MovingSound.class, sound, true, 0);
 			}
+		}
+
+		@Override
+		public int getField(int id) {
+			return 0;
+		}
+
+		@Override
+		public void setField(int id, int value) {
+			
+		}
+
+		@Override
+		public int getFieldCount() {
+			return 0;
+		}
+
+		@Override
+		public void clear() {
+			
 		}
 }

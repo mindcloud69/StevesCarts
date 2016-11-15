@@ -2,17 +2,23 @@ package vswe.stevesvehicles.vehicle.entity;
 
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.network.DataReader;
@@ -28,13 +34,11 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public EntityModularBoat(World world) {
 		super(world);
 		this.vehicleBase = new VehicleBoat(this);
-		overrideDataWatcher();
 	}
 
 	public EntityModularBoat(World world, double x, double y, double z, NBTTagCompound info, String name) {
 		super(world, x, y, z);
 		this.vehicleBase = new VehicleBoat(this, info, name);
-		overrideDataWatcher();
 	}
 
 	/**
@@ -42,25 +46,24 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	 * side. This is to be able to wait to process data in the beginning. Fixing
 	 * the syncing at start up.
 	 */
-	private void overrideDataWatcher() {
-		if (worldObj.isRemote) {
-			this.dataWatcher = new LockableEntityDataManager(this);
-			this.dataWatcher.addObject(0, Byte.valueOf((byte) 0));
-			this.dataWatcher.addObject(1, Short.valueOf((short) 300));
-			this.entityInit();
-		}
+	@SideOnly(Side.CLIENT)
+	private void overrideDatawatcher() {
+		this.dataManager = new LockableEntityDataManager(this);
 	}
 
 	@Override
 	protected void entityInit() {
+		if(this.worldObj.isRemote && !(dataManager instanceof LockableEntityDataManager)){
+			this.overrideDatawatcher();
+		}
 		super.entityInit();
-		this.dataWatcher.addObject(16, new Byte((byte) 0));
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tagCompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 		vehicleBase.writeToNBT(tagCompound);
+		return tagCompound;
 	}
 
 	@Override
@@ -68,11 +71,11 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 		super.readFromNBT(tagCompound);
 		vehicleBase.readFromNBT(tagCompound);
 	}
-
+	
 	@Override
-	public boolean interactFirst(EntityPlayer player) {
+	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
 		if (player.isSneaking()) {
-			List<EntityBuoy> list = worldObj.getEntitiesWithinAABB(EntityBuoy.class, boundingBox.expand(10, 3, 10));
+			List<EntityBuoy> list = worldObj.getEntitiesWithinAABB(EntityBuoy.class, getEntityBoundingBox().expand(10, 3, 10));
 			EntityBuoy closest = null;
 			double closestDistance = 0;
 			for (EntityBuoy buoy : list) {
@@ -85,13 +88,13 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 			if (closest != null) {
 				moveTo(closest);
 			}
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
 		if (!vehicleBase.canInteractWithEntity(player)) {
-			return false;
+			return EnumActionResult.PASS;
 		} else {
 			vehicleBase.onInteractWith(player);
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
 	}
 
@@ -138,6 +141,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	protected void handleSteering() {
+		Entity riddenByEntity = getControllingPassenger();
 		double speed = Math.sqrt(motionX * motionX + motionZ * motionZ);
 		if (riddenByEntity != null && riddenByEntity instanceof EntityLivingBase) {
 			EntityLivingBase rider = (EntityLivingBase) riddenByEntity;
@@ -161,7 +165,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 				motionZ = Math.sin(yaw) * speed;
 				rotationYaw = (float) yaw * 180 / (float) Math.PI - 180;
 			}
-			preventRotationUpdate = true;
+			//preventRotationUpdate = true;
 		} else {
 			hasRider = false;
 			if (hasTarget) {
@@ -267,24 +271,27 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	private int delay = 0;
 
 	@Override
-	protected void updateRiderBoat() {
-		if (worldObj.isRemote) {
-			if (delay < SYNC_DELAY) {
-				delay++;
+	public void updatePassenger(Entity passenger) {
+		super.updatePassenger(passenger);
+		if(isPassenger(passenger)){
+			if (worldObj.isRemote) {
+				if (delay < SYNC_DELAY) {
+					delay++;
+				} else {
+					delay = 0;
+					DataWriter dw = PacketHandler.getDataWriter(PacketType.BOAT_MOVEMENT);
+					dw.writeInteger(Float.floatToIntBits((float) posX));
+					dw.writeInteger(Float.floatToIntBits((float) posY));
+					dw.writeInteger(Float.floatToIntBits((float) posZ));
+					dw.writeInteger(Float.floatToIntBits(rotationYaw));
+					dw.writeInteger(Float.floatToIntBits((float) motionX));
+					dw.writeInteger(Float.floatToIntBits((float) motionY));
+					dw.writeInteger(Float.floatToIntBits((float) motionZ));
+					PacketHandler.sendPacketToServer(dw);
+				}
 			} else {
-				delay = 0;
-				DataWriter dw = PacketHandler.getDataWriter(PacketType.BOAT_MOVEMENT);
-				dw.writeInteger(Float.floatToIntBits((float) posX));
-				dw.writeInteger(Float.floatToIntBits((float) posY));
-				dw.writeInteger(Float.floatToIntBits((float) posZ));
-				dw.writeInteger(Float.floatToIntBits(rotationYaw));
-				dw.writeInteger(Float.floatToIntBits((float) motionX));
-				dw.writeInteger(Float.floatToIntBits((float) motionY));
-				dw.writeInteger(Float.floatToIntBits((float) motionZ));
-				PacketHandler.sendPacketToServer(dw);
+				delay++;
 			}
-		} else {
-			delay++;
 		}
 	}
 
@@ -352,20 +359,20 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public ItemStack decrStackSize(int id, int count) {
 		return vehicleBase.decreaseStack(id, count);
 	}
-
+	
 	@Override
-	public ItemStack getStackInSlotOnClosing(int id) {
-		return vehicleBase.removeStackFromSlot(id);
+	public ItemStack removeStackFromSlot(int index) {
+		return vehicleBase.removeStackFromSlot(index);
 	}
 
 	@Override
-	public void openInventory() {
-		vehicleBase.openInventory();
+	public void openInventory(EntityPlayer player) {
+		vehicleBase.openInventory(player);
 	}
 
 	@Override
-	public void closeInventory() {
-		vehicleBase.closeInventory();
+	public void closeInventory(EntityPlayer player) {
+		vehicleBase.closeInventory(player);
 	}
 
 	@Override
@@ -379,43 +386,33 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return vehicleBase.getName();
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		return vehicleBase.fill(from, resource, doFill);
+	public int fill(FluidStack resource, boolean doFill) {
+		return vehicleBase.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return vehicleBase.drain(from, maxDrain, doDrain);
+	public FluidStack drain(int maxDrain, boolean doDrain) {
+		return vehicleBase.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		return vehicleBase.drain(from, resource, doDrain);
+	public FluidStack drain(FluidStack resource, boolean doDrain) {
+		return vehicleBase.drain(resource, doDrain);
 	}
-
+	
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return vehicleBase.canFill(from, fluid);
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return vehicleBase.canDrain(from, fluid);
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection direction) {
-		return vehicleBase.getTankInfo(direction);
+	public IFluidTankProperties[] getTankProperties() {
+		return vehicleBase.getTankProperties();
 	}
 
 	@Override
@@ -427,10 +424,10 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public void readSpawnData(ByteBuf data) {
 		vehicleBase.readSpawnData(data);
 	}
-
+	
 	@Override
-	public AxisAlignedBB getBoundingBox() {
-		return vehicleBase.isPlaceholder ? null : super.getBoundingBox();
+	public AxisAlignedBB getEntityBoundingBox() {
+		return vehicleBase.isPlaceholder ? null : super.getEntityBoundingBox();
 	}
 
 	@Override
@@ -451,5 +448,25 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	@Override
 	public VehicleBase getVehicle() {
 		return vehicleBase;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		
 	}
 }
