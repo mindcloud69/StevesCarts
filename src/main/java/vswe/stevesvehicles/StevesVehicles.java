@@ -112,10 +112,9 @@ public class StevesVehicles {
 		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 21, instance, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityBuoy.class, "buoy", 22, instance, 80, 3, false);
 		if (event.getSide() == Side.CLIENT) {
-			loadSounds();
+			loadClient();
 		}
 		config.save();
-		ItemModelManager.load();
 	}
 
 	public TradeHandler tradeHandler;
@@ -167,9 +166,10 @@ public class StevesVehicles {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void loadSounds() {
+	private void loadClient() {
 		new SoundHandler();
 		new MinecartSoundMuter();
+		ItemModelManager.load();
 	}
 
 	@Mod.EventHandler

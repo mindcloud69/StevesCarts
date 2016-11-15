@@ -97,10 +97,18 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 			return null;
 		}
 	}
+	
+	private ModuleData getModelModuleData(int dmg) {
+		ModuleData data = ModuleRegistry.getModuleFromId(dmg);
+		if(data == null){
+			data = ModuleRegistry.getAllModules().get(dmg);
+		}
+		return data;
+	}
 
 	@Override
 	public String getCustomModelLocation(ItemStack stack) {
-		ModuleData data = ModuleRegistry.getAllModules().get(stack.getItemDamage());
+		ModuleData data = getModelModuleData(stack.getItemDamage());
 		if (data != null) {
 			return data.getUnlocalizedNameForItem();
 		}
@@ -108,8 +116,13 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 	}
 
 	@Override
+	public boolean useMeshDefinition() {
+		return true;
+	}
+	
+	@Override
 	public String getTextureName(int damage) {
-		ModuleData data = ModuleRegistry.getAllModules().get(damage);
+		ModuleData data = getModelModuleData(damage);
 		if (data != null) {
 			if(data.getIcon() == null){
 				data.setIcon("stevescarts:items/modules/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));

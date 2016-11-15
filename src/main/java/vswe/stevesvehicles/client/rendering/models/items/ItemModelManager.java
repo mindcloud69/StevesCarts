@@ -2,9 +2,22 @@ package vswe.stevesvehicles.client.rendering.models.items;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelManager;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.block.ModBlocks;
+import vswe.stevesvehicles.item.ItemVehicles;
+import vswe.stevesvehicles.item.ModItems;
+import vswe.stevesvehicles.tileentity.detector.DetectorType;
+import vswe.stevesvehicles.vehicle.VehicleRegistry;
+import vswe.stevesvehicles.vehicle.VehicleType;
 
 /**
  * Create a new instance of this in your mod
@@ -19,8 +32,41 @@ public class ItemModelManager {
 	public static void load() {
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			modelGenerator = new ModelGenerator();
+			ModelLoader.setCustomMeshDefinition(ModItems.modules, new ItemVehicleModuleMeshDefinition());
+			for(VehicleType type : VehicleRegistry.getInstance().getElements()){
+				registerItemModel(ModItems.vehicles, VehicleRegistry.getInstance().getIdFromType(type));
+			}
+			registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
+			registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
+			registerItemModel(ModBlocks.LIQUID_MANAGER.getBlock(), 0);
+			for (int i = 0; i < 3; ++i) {
+				ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockMetalStorage", "type=" + i);
+				ModelLoader.setCustomModelResourceLocation(ModItems.storage, i, location);
+			}
+			registerItemModel(ModBlocks.JUNCTION.getBlock(), 0);
+			registerItemModel(ModBlocks.ADVANCED_DETECTOR.getBlock(), 0);
+			registerItemModel(ModBlocks.MODULE_TOGGLER.getBlock(), 0);
+			registerItemModel(ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), 0);
+			registerItemModel(ModBlocks.DETECTOR_UNIT.getBlock(), 0);
+			for (int i = 0; i < 5; ++i) {
+				ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockDetector", "detectortype=" + DetectorType.getTypeFromInt(i).getName());
+				ModelLoader.setCustomModelResourceLocation(ModItems.detectors, i, location);
+			}
 			MinecraftForge.EVENT_BUS.register(modelGenerator);
 		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void registerItemModel(Item i, int meta)
+	{
+		ResourceLocation loc = i.getRegistryName();
+		ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(loc, "inventory"));
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void registerItemModel(Block b, int meta)
+	{
+		registerItemModel(Item.getItemFromBlock(b), meta);
 	}
 
 	/**
