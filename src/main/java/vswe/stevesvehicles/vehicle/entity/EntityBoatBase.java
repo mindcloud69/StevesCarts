@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityWaterMob;
@@ -578,7 +579,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 	@Override
 	@SideOnly(Side.CLIENT)
 	public float getRowingTime(int p_184448_1_, float limbSwing){
-		return this.getPaddleState(p_184448_1_) ? (float)MathHelper.denormalizeClamp(this.paddlePositions[p_184448_1_] - 0.01D, this.paddlePositions[p_184448_1_], limbSwing) : 0.0F;
+		return this.getPaddleState(p_184448_1_) ? (float)MathHelper.clampedLerp(this.paddlePositions[p_184448_1_] - 0.01D, this.paddlePositions[p_184448_1_], limbSwing) : 0.0F;
 	}
 
 	protected void handleRotation() {
@@ -645,7 +646,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 				this.world.sendPacketToServer(new CPacketSteerBoat(this.getPaddleState(0), this.getPaddleState(1)));
 			}
 
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 		} else{
 			this.motionX = 0.0D;
 			this.motionY = 0.0D;

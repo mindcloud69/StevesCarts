@@ -12,20 +12,20 @@ public abstract class TileEntityInventory extends TileEntityBase implements IInv
 	public static final ItemStack INVALID_STACK = ItemStack.field_190927_a;
 	protected NonNullList<ItemStack> inventoryStacks;
 
-	
+
 	public TileEntityInventory(int size) {
 		this(NonNullList.<ItemStack>func_191197_a(size, INVALID_STACK));
 	}
-	
+
 	public TileEntityInventory(NonNullList<ItemStack> inventoryStacks) {
 		this.inventoryStacks = inventoryStacks;
 	}
-	
+
 	@Override
 	public int getSizeInventory() {
 		return inventoryStacks.size();
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);;

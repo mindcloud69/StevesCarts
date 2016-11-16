@@ -114,7 +114,7 @@ public class ModelGenerator {
 					ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> map = IPerspectiveAwareModel.MapWrapper.getTransforms(transforms);
 					IPerspectiveAwareModel iPerspectiveAwareModel = new IPerspectiveAwareModel.MapWrapper(model, map);
 					if(!((TexturedItem)item).useMeshDefinition()){
-					itemModelMesher.register(item, i, inventory);
+						itemModelMesher.register(item, i, inventory);
 					}
 					event.getModelRegistry().putObject(inventory, iPerspectiveAwareModel);
 				}

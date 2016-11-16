@@ -1,14 +1,8 @@
 package vswe.stevesvehicles.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRail;
-import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.BlockRailDetector;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +30,7 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 	//private IIcon normalIcon;
 	//private IIcon cornerIcon;
 	private String unlocalizedName;
-	
+
 	public BlockRailAdvancedDetector() {
 		setCreativeTab(CreativeTabLoader.blocks);
 		setSoundType(SoundType.METAL);
@@ -53,7 +47,7 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 		normalIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector");
 		cornerIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector_corner");
 	}*/
-	
+
 	@Override
 	public String getUnlocalizedName() {
 		return unlocalizedName;

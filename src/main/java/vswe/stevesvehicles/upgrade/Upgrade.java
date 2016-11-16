@@ -72,7 +72,7 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 	public String getTranslatedName() {
 		return I18n.translateToLocal(getUnlocalizedName());
 	}
-	
+
 	public String getName() {
 		return unlocalizedName;
 	}

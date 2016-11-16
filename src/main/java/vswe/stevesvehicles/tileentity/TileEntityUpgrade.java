@@ -9,9 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -45,7 +43,7 @@ import vswe.stevesvehicles.upgrade.effect.util.TankEffect;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
 public class TileEntityUpgrade extends TileEntityInventory implements ISidedInventory, IFluidHandler, IFluidTank, ITickable {
-	
+
 	public static final NonNullList<ItemStack> DEFAULT_STACKS = NonNullList.func_191197_a(0, INVALID_STACK);
 
 	private TileEntityCartAssembler master;
@@ -57,11 +55,11 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
 	// INVENTORY STUFF BELOW
 	private int[] slotsForSide;
-	
+
 	public TileEntityUpgrade(){
 		super(DEFAULT_STACKS);
 	}
-	
+
 	public void setMaster(TileEntityCartAssembler master, EnumFacing side) {
 		if (this.master != master) {
 			if(!world.isRemote){
@@ -74,7 +72,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 		}
 		this.master = master;
 	}
-	
+
 	public EnumFacing getSide() {
 		return world.getBlockState(pos).getValue(BlockUpgrade.FACING);
 	}
@@ -141,7 +139,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 			}
 		}
 	}
-	
+
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		NBTTagCompound tagCompound = super.getUpdateTag();
@@ -235,7 +233,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 		}
 		return super.getSizeInventory();
 	}
-	
+
 	@Override
 	public boolean func_191420_l(){
 		if (hasInventory()) {
@@ -519,7 +517,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	public InventoryEffect getInventoryEffect() {
 		return inventoryEffect;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {

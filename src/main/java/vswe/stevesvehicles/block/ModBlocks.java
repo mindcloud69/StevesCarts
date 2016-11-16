@@ -99,7 +99,7 @@ public enum ModBlocks implements IRecipeOutput {
 			}
 		}
 	}
-	
+
 	protected Item createItem(Block block){
 		return new ItemBlock(block);
 	}

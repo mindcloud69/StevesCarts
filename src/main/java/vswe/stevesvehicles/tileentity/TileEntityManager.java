@@ -1,21 +1,14 @@
 package vswe.stevesvehicles.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
 import vswe.stevesvehicles.container.ContainerManager;
-import vswe.stevesvehicles.nbt.NBTHelper;
 import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.tileentity.manager.ManagerTransfer;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;

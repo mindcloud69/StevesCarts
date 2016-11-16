@@ -101,7 +101,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 			return null;
 		}
 	}
-	
+
 	private ModuleData getModelModuleData(int dmg) {
 		ModuleData data = ModuleRegistry.getModuleFromId(dmg);
 		if(data == null){
@@ -123,7 +123,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 	public boolean useMeshDefinition() {
 		return true;
 	}
-	
+
 	@Override
 	public String getTextureName(int damage) {
 		ModuleData data = getModelModuleData(damage);

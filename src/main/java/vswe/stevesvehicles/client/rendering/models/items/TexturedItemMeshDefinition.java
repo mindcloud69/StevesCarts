@@ -11,7 +11,7 @@ public class TexturedItemMeshDefinition implements ItemMeshDefinition {
 
 	TexturedItemMeshDefinition() {
 	}
-	
+
 	@Override
 	public ModelResourceLocation getModelLocation(ItemStack stack) {
 		return ItemModelManager.modelGenerator.getModel(stack);

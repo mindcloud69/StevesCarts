@@ -187,7 +187,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public int getSizeInventory() {
 		return 120;
 	}
-	
+
 	//TODO: TEST IT
 	@Override
 	public boolean func_191420_l() {

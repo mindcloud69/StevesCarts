@@ -22,7 +22,7 @@ public interface TexturedItem {
 	default String getCustomModelLocation(ItemStack stack){
 		return null;
 	}
-	
+
 	default boolean useMeshDefinition(){
 		return false;
 	}

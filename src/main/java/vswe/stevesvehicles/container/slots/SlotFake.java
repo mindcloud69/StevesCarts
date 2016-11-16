@@ -15,7 +15,7 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	public int getSlotStackLimit() {
 		return 0;
 	}
-	
+
 	@Override
 	public ItemStack func_190901_a(EntityPlayer player, ItemStack item) {
 		if (item != null && player != null && player.inventory != null) {

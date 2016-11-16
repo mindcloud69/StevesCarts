@@ -17,7 +17,7 @@ import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class RenderFactorys {
-	
+
 	public static class BuoyFactory implements IRenderFactory<EntityBuoy>{
 
 		@Override
@@ -25,7 +25,7 @@ public class RenderFactorys {
 			return new RenderBuoy(manager);
 		}
 	}
-	
+
 	public static class ModularCartFactory implements IRenderFactory<EntityModularCart>{
 
 		@Override
@@ -33,7 +33,7 @@ public class RenderFactorys {
 			return new RenderCart(manager);
 		}
 	}
-	
+
 	public static class ModularBoatFactory implements IRenderFactory<EntityModularBoat>{
 
 		@Override
@@ -41,7 +41,7 @@ public class RenderFactorys {
 			return new RenderBoat(manager);
 		}
 	}
-	
+
 	public static class EasterEggFactory implements IRenderFactory<EntityEasterEgg>{
 
 		@Override
@@ -54,7 +54,7 @@ public class RenderFactorys {
 			};
 		}
 	}
-	
+
 	public static class CakeFactory implements IRenderFactory<EntityCake>{
 
 		@Override

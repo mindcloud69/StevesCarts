@@ -3,7 +3,6 @@ package vswe.stevesvehicles.client.rendering.models.items;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +12,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.block.ModBlocks;
-import vswe.stevesvehicles.item.ItemVehicles;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.tileentity.detector.DetectorType;
 import vswe.stevesvehicles.vehicle.VehicleRegistry;
@@ -56,7 +54,7 @@ public class ItemModelManager {
 			MinecraftForge.EVENT_BUS.register(modelGenerator);
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public static void registerItemModel(Item i, int meta)
 	{

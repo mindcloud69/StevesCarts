@@ -50,7 +50,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem{
 		}
 		return "item.unknown";
 	}
-	
+
 	private Upgrade getModelUpgrade(int dmg) {
 		Upgrade upgrade = UpgradeRegistry.getUpgradeFromId(dmg);
 		if(upgrade == null){
@@ -67,7 +67,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem{
 		}
 		return getUnlocalizedName();
 	}
-	
+
 	@Override
 	public boolean useMeshDefinition() {
 		return true;

@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -1454,15 +1453,16 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	@Override
 	public void clear() {
 	}
-	
-    public boolean func_191420_l()
-    {
-        for (ItemStack itemstack : spareModules){
-            if (!itemstack.func_190926_b())
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+
+	@Override
+	public boolean func_191420_l()
+	{
+		for (ItemStack itemstack : spareModules){
+			if (!itemstack.func_190926_b())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.google.common.base.Optional;
 
 import net.minecraft.block.properties.PropertyHelper;
-import scala.unchecked;
 import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 

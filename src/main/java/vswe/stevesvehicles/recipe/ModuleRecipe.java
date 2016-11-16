@@ -1,7 +1,5 @@
 package vswe.stevesvehicles.recipe;
 
-import java.util.List;
-
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
