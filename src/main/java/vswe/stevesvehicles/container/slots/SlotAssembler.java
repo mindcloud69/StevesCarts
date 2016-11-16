@@ -36,7 +36,7 @@ public class SlotAssembler extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack itemstack) {
-		return itemstack != null && isValid && ModuleDataItemHandler.isValidModuleItem(type, itemstack) && (!getHasStack() || (getStack().stackSize > 0 && itemstack.stackSize > 0));
+		return itemstack != null && isValid && ModuleDataItemHandler.isValidModuleItem(type, itemstack) && (!getHasStack() || (getStack().func_190916_E() > 0 && itemstack.func_190916_E() > 0));
 	}
 
 	public void invalidate() {
@@ -121,6 +121,6 @@ public class SlotAssembler extends Slot {
 
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
-		return this.getStack() != null && this.getStack().stackSize > 0 && (!assembler.isInFreeMode() || getSlotIndex() >= assembler.getSlots().size() - assembler.nonModularSlots());
+		return this.getStack() != null && this.getStack().func_190916_E() > 0 && (!assembler.isInFreeMode() || getSlotIndex() >= assembler.getSlots().size() - assembler.nonModularSlots());
 	}
 }

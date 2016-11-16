@@ -49,7 +49,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	Tank[] tanks;
 
 	public TileEntityLiquid() {
-		super();
+		super(12);
 		tanks = new Tank[4];
 		for (int i = 0; i < 4; i++) {
 			tanks[i] = new Tank(this, 32000, i);
@@ -70,7 +70,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		} else {
 			return;
 		}
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			for (int i = 0; i < 4; i++) {
 				tanks[i].containerTransfer();
 			}
@@ -96,7 +96,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		if (resource != null && resource.amount > 0) {
 			FluidStack fluid = resource.copy();
 			for (int i = 0; i < 4; i++) {
-				int tempAmount = tanks[i].fill(fluid, doFill, worldObj.isRemote);
+				int tempAmount = tanks[i].fill(fluid, doFill, world.isRemote);
 				amount += tempAmount;
 				fluid.amount -= tempAmount;
 				if (fluid.amount <= 0) {
@@ -123,7 +123,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		if (tankIndex < 0 || tankIndex >= 4) {
 			return 0;
 		}
-		return tanks[tankIndex].fill(resource, doFill, worldObj.isRemote);
+		return tanks[tankIndex].fill(resource, doFill, world.isRemote);
 	}
 
 	@Override
@@ -143,9 +143,9 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 			ret.amount = 0;
 		}
 		for (int i = 0; i < 4; i++) {
-			FluidStack temp = tanks[i].drain(maxDrain, false, worldObj.isRemote);
+			FluidStack temp = tanks[i].drain(maxDrain, false, world.isRemote);
 			if (temp != null && (ret == null || ret.isFluidEqual(temp))) {
-				temp = tanks[i].drain(maxDrain, doDrain, worldObj.isRemote);
+				temp = tanks[i].drain(maxDrain, doDrain, world.isRemote);
 				if (ret == null) {
 					ret = temp;
 				} else {
@@ -161,11 +161,6 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 			return null;
 		}
 		return ret;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 12;
 	}
 
 	@Override

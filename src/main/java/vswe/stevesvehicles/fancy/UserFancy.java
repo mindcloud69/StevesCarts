@@ -28,7 +28,7 @@ public class UserFancy {
 		if (activeFancyPancy != null) {
 			activeFancyPancy.update();
 		}
-		if (++activeCheck >= 100 || (activeCheck >= 20 && player.equals(Minecraft.getMinecraft().thePlayer))) {
+		if (++activeCheck >= 100 || (activeCheck >= 20 && player.equals(Minecraft.getMinecraft().player))) {
 			activeCheck = 0;
 			updateActive(player);
 		}

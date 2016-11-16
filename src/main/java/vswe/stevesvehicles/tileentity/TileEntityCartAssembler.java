@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,7 +72,7 @@ import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
  * @author Vswe
  *
  */
-public class TileEntityCartAssembler extends TileEntityBase implements ISidedInventory {
+public class TileEntityCartAssembler extends TileEntityInventory implements ISidedInventory {
 	/**
 	 * ASSEMBLING VARIABLES
 	 */
@@ -237,6 +238,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 	public static final TitleBox INFO_BOX = new TitleBox(LocalizationAssembler.TITLE_INFORMATION, 375, 30, 0xCCBE00);
 
 	public TileEntityCartAssembler() {
+		super(0);
 		// create all the lists for everything
 		upgrades = new ArrayList<>();
 		spareModules = new ArrayList<>();
@@ -298,7 +300,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 		outputSlot = new SlotOutput(this, slotID, 450, 220);
 		slots.add(outputSlot);
 		// create the place to store all the items for the slots
-		inventoryStacks = new ItemStack[slots.size()];
+		inventoryStacks = NonNullList.func_191197_a(slots.size(), ItemStack.field_190927_a);
 		// create the arrays used by ISidedInventory
 		topBotSlots = new int[] { getSizeInventory() - nonModularSlots() };
 		sideSlots = new int[] { getSizeInventory() - nonModularSlots() + 1 };
@@ -546,9 +548,9 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 						}
 					} else if (slotId != 0) {
 						if (slot.getStack().func_190916_E() == getKeepSize()) {
-							slot.getStack().stackSize = getRemovedSize();
+							slot.getStack().func_190920_e(getRemovedSize());
 						} else {
-							slot.getStack().stackSize = getKeepSize();
+							slot.getStack().func_190920_e(getKeepSize());
 						}
 					}
 				}
@@ -683,7 +685,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 					items.add(item);
 				} else if (!isSimulated) {
 					ItemStack spare = item.copy();
-					spare.stackSize = 1;
+					spare.func_190920_e(1);
 					spareModules.add(spare);
 				}
 			}
@@ -1059,7 +1061,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 			if (effect instanceof Disassemble) {
 				for (ItemStack item : spareModules) {
 					TransferHandler.TransferItem(item, effect.getUpgrade(), new ContainerUpgrade(null, effect.getUpgrade()), 1);
-					if (item.stackSize > 0) {
+					if (item.func_190916_E() > 0) {
 						puke(item);
 					}
 				}
@@ -1133,7 +1135,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 				if (fuelSlot.getStack().getItem().hasContainerItem(fuelSlot.getStack())) {
 					fuelSlot.putStack(new ItemStack(fuelSlot.getStack().getItem().getContainerItem()));
 				} else {
-					fuelSlot.getStack().stackSize--;
+					fuelSlot.getStack().func_190918_g(1);
 				}
 				if (fuelSlot.getStack().func_190916_E() <= 0) {
 					fuelSlot.putStack(null);
@@ -1311,47 +1313,6 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 		return false;
 	}
 
-	ItemStack[] inventoryStacks;
-
-	@Override
-	public int getSizeInventory() {
-		return inventoryStacks.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return inventoryStacks[i];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (inventoryStacks[i] != null) {
-			if (inventoryStacks[i].func_190916_E() <= j) {
-				ItemStack itemstack = inventoryStacks[i];
-				inventoryStacks[i] = null;
-				markDirty();
-				return itemstack;
-			}
-			ItemStack result = inventoryStacks[i].splitStack(j);
-			if (inventoryStacks[i].func_190916_E() == 0) {
-				inventoryStacks[i] = null;
-			}
-			markDirty();
-			return result;
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		inventoryStacks[i] = itemstack;
-		if (itemstack != null && itemstack.func_190916_E() > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-		markDirty();
-	}
-
 	@Override
 	public String getName() {
 		return "container.vehicle_assembler";
@@ -1362,48 +1323,12 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 		return false;
 	}
 
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		ItemStack item = getStackInSlot(index);
-		if (item != null) {
-			setInventorySlotContents(index, null);
-			if (item.func_190916_E() == 0) {
-				return null;
-			}
-			return item;
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-		for (int i = 0; i < items.tagCount(); ++i) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getByte("Slot") & 255;
-			ItemStack iStack = new ItemStack(item);
-			if (slot >= 0 && slot < getSizeInventory()) {
-				setInventorySlotContents(slot, iStack);
-			}
-		}
 		NBTTagList spares = tagCompound.getTagList("Spares", NBTHelper.COMPOUND.getId());
 		spareModules.clear();
 		for (int i = 0; i < spares.tagCount(); ++i) {
@@ -1432,17 +1357,6 @@ public class TileEntityCartAssembler extends TileEntityBase implements ISidedInv
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		NBTTagList items = new NBTTagList();
-		for (int i = 0; i < getSizeInventory(); ++i) {
-			ItemStack iStack = getStackInSlot(i);
-			if (iStack != null) {
-				NBTTagCompound item = new NBTTagCompound();
-				item.setByte("Slot", (byte) i);
-				iStack.writeToNBT(item);
-				items.appendTag(item);
-			}
-		}
-		tagCompound.setTag("Items", items);
 		NBTTagList spares = new NBTTagList();
 		for (ItemStack iStack : spareModules) {
 			if (iStack != null) {

@@ -1548,7 +1548,7 @@ public abstract class ModuleBase {
 	@SideOnly(Side.CLIENT)
 	protected EntityPlayer getClientPlayer() {
 		if (net.minecraft.client.Minecraft.getMinecraft() != null) {
-			return net.minecraft.client.Minecraft.getMinecraft().thePlayer;
+			return net.minecraft.client.Minecraft.getMinecraft().player;
 		}
 		return null;
 	}

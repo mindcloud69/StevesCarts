@@ -31,7 +31,7 @@ public class SlotBarrel extends SlotChest implements ISpecialSlotRender, ISpecia
 	@SideOnly(Side.CLIENT)
 	@Override
 	public ItemStack getStackToRender(ItemStack slotItem) {
-		if (slotItem != null && slotItem.stackSize == 0) {
+		if (slotItem != null && slotItem.func_190916_E() == 0) {
 			return null;
 		} else {
 			return slotItem;
@@ -40,7 +40,7 @@ public class SlotBarrel extends SlotChest implements ISpecialSlotRender, ISpecia
 
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
-		return getStack() == null || getStack().stackSize > 0;
+		return getStack() == null || getStack().func_190916_E() > 0;
 	}
 
 	@Override

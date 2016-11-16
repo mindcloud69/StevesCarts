@@ -166,7 +166,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return null;
 	}
 
-	private int translateSlotId(int slot) {
+	private int getValidSlotIndex(int slot) {
 		return slot % 60;
 	}
 
@@ -187,12 +187,18 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public int getSizeInventory() {
 		return 120;
 	}
+	
+	//TODO: TEST IT
+	@Override
+	public boolean func_191420_l() {
+		return false;
+	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		TileEntityManager manager = getManagerFromSlotId(slot);
 		if (manager != null) {
-			return manager.getStackInSlot(translateSlotId(slot));
+			return manager.getStackInSlot(getValidSlotIndex(slot));
 		} else {
 			return null;
 		}
@@ -202,7 +208,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public ItemStack decrStackSize(int slot, int count) {
 		TileEntityManager manager = getManagerFromSlotId(slot);
 		if (manager != null) {
-			return manager.decrStackSize(translateSlotId(slot), count);
+			return manager.decrStackSize(getValidSlotIndex(slot), count);
 		} else {
 			return null;
 		}
@@ -212,7 +218,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public void setInventorySlotContents(int slot, ItemStack itemstack) {
 		TileEntityManager manager = getManagerFromSlotId(slot);
 		if (manager != null) {
-			manager.setInventorySlotContents(translateSlotId(slot), itemstack);
+			manager.setInventorySlotContents(getValidSlotIndex(slot), itemstack);
 		}
 	}
 
@@ -243,7 +249,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public ItemStack removeStackFromSlot(int index) {
 		TileEntityManager manager = getManagerFromSlotId(index);
 		if (manager != null) {
-			return manager.removeStackFromSlot(translateSlotId(index));
+			return manager.removeStackFromSlot(getValidSlotIndex(index));
 		} else {
 			return null;
 		}

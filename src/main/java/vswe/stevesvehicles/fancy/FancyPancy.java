@@ -254,7 +254,7 @@ public class FancyPancy {
 	}
 
 	private boolean isObserverValid() {
-		AbstractClientPlayer observerPlayer = Minecraft.getMinecraft().thePlayer;
+		AbstractClientPlayer observerPlayer = Minecraft.getMinecraft().player;
 		String observerName = StringUtils.stripControlCodes(observerPlayer.getName());
 		if (observers != null && observers.length != 0) {
 			boolean foundObserver = false;
@@ -294,10 +294,10 @@ public class FancyPancy {
 	private boolean isDimensionValid(AbstractClientPlayer player) {
 		if (dimensions == null || dimensions.size() == 0) {
 			return true;
-		} else if (player.worldObj == null || player.worldObj.provider == null) {
+		} else if (player.world == null || player.world.provider == null) {
 			return false;
 		}
-		int id = player.worldObj.provider.getDimension();
+		int id = player.world.provider.getDimension();
 		for (int[] levelRange : dimensions) {
 			if ((levelRange.length == 1 && levelRange[0] == id) || (levelRange.length == 2 && levelRange[0] <= id && id <= levelRange[1])) {
 				return true;

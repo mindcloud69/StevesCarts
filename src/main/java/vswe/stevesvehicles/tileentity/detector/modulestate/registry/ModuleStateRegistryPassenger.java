@@ -12,6 +12,7 @@ import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntityChicken;
@@ -56,13 +57,7 @@ public class ModuleStateRegistryPassenger extends ModuleStateRegistry {
 		createAndRegisterSimplePassenger("ocelot", EntityOcelot.class);
 		createAndRegisterSimplePassenger("villager", EntityVillager.class);
 		createAndRegisterSimplePassenger("steve", EntityPlayer.class);
-		ModuleState zombieVillager = new ModuleStatePassenger("zombie_villager", EntityZombie.class) {
-			@Override
-			public boolean isPassengerValid(Entity passenger) {
-				return ((EntityZombie) passenger).isVillager();
-			}
-		};
-		register(zombieVillager);
+		createAndRegisterSimplePassenger("zombie_villager", EntityZombieVillager.class);
 		ModuleState child = new ModuleStatePassenger("child", EntityAgeable.class) {
 			@Override
 			public boolean isPassengerValid(Entity passenger) {

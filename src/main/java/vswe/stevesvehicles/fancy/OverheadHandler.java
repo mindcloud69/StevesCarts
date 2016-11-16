@@ -103,7 +103,7 @@ public class OverheadHandler extends FancyPancyHandler {
 			AbstractClientPlayer player = (AbstractClientPlayer) entity;
 			if (!player.isInvisible()) {
 				RenderPlayer render = (RenderPlayer) livingBase;
-				EntityPlayer observer = Minecraft.getMinecraft().thePlayer;
+				EntityPlayer observer = Minecraft.getMinecraft().player;
 				boolean isObserver = player == observer;
 				double distanceSq = player.getDistanceSqToEntity(observer);
 				double distanceLimit = player.isSneaking() ? RenderLivingBase.NAME_TAG_RANGE_SNEAK : RenderLivingBase.NAME_TAG_RANGE;

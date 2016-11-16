@@ -47,13 +47,13 @@ public abstract class ContainerBase extends Container {
 			} else if (!mergeItemStack(itemstack1, 0, getMyInventory().getSizeInventory(), false)) {
 				return null;
 			}
-			if (itemstack1.stackSize == 0) {
-				slot.putStack(null);
+			if (itemstack1.func_190916_E() == 0) {
+				slot.putStack(ItemStack.field_190927_a);
 			} else {
 				slot.onSlotChanged();
 			}
-			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onPickupFromSlot(player, itemstack1);
+			if (itemstack1.func_190916_E() != itemstack.func_190916_E()) {
+				return slot.func_190901_a(player, itemstack1);
 			} else {
 				return null;
 			}
@@ -74,10 +74,10 @@ public abstract class ContainerBase extends Container {
 		Slot slot;
 		ItemStack slotItem;
 		if (item.isStackable()) {
-			while (item.stackSize > 0 && (!invert && id < end || invert && id >= start)) {
+			while (item.func_190916_E() > 0 && (!invert && id < end || invert && id >= start)) {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
-				if (slotItem != null && slotItem.stackSize > 0 && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
+				if (slotItem != null && slotItem.func_190916_E() > 0 && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
 					int size = slotItem.stackSize + item.stackSize;
 					int maxLimit = Math.min(item.getMaxStackSize(), slot.getSlotStackLimit());
 					if (size <= maxLimit) {
@@ -85,7 +85,7 @@ public abstract class ContainerBase extends Container {
 						slotItem.stackSize = size;
 						slot.onSlotChanged();
 						result = true;
-					} else if (slotItem.stackSize < maxLimit) {
+					} else if (slotItem.func_190916_E() < maxLimit) {
 						item.stackSize -= maxLimit - slotItem.stackSize;
 						slotItem.stackSize = maxLimit;
 						slot.onSlotChanged();
@@ -115,7 +115,7 @@ public abstract class ContainerBase extends Container {
 					item.stackSize -= stackSize;
 					slot.putStack(newItem);
 					slot.onSlotChanged();
-					result = item.stackSize == 0;
+					result = item.func_190916_E() == 0;
 					break;
 				}
 				if (invert) {
@@ -130,7 +130,7 @@ public abstract class ContainerBase extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return getTileEntity() != null && getTileEntity().isUseableByPlayer(player);
+		return getTileEntity() != null && getTileEntity().isUsableByPlayer(player);
 	}
 
 	@Override

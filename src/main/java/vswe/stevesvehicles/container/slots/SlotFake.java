@@ -15,13 +15,13 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	public int getSlotStackLimit() {
 		return 0;
 	}
-
+	
 	@Override
-	public void onPickupFromSlot(EntityPlayer player, ItemStack item) {
-		super.onPickupFromSlot(player, item);
+	public ItemStack func_190901_a(EntityPlayer player, ItemStack item) {
 		if (item != null && player != null && player.inventory != null) {
 			player.inventory.setItemStack(null);
 		}
+		return super.func_190901_a(player, item);
 	}
 
 	@Override
