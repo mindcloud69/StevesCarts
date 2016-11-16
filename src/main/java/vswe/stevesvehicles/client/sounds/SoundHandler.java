@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class SoundHandler {
 	public static void playDefaultSound(String name, SoundCategory category, float volume, float pitch) {
-		ISound soundObj = new PlayerSound(Minecraft.getMinecraft().thePlayer, category, name, volume, pitch);
+		ISound soundObj = new PlayerSound(Minecraft.getMinecraft().player, category, name, volume, pitch);
 		Minecraft.getMinecraft().getSoundHandler().playSound(soundObj);
 	}
 

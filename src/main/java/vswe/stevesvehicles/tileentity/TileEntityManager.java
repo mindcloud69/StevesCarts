@@ -1,13 +1,16 @@
 package vswe.stevesvehicles.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
@@ -17,45 +20,17 @@ import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.tileentity.manager.ManagerTransfer;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
-public abstract class TileEntityManager extends TileEntityBase implements IInventory, ITickable {
+public abstract class TileEntityManager extends TileEntityInventory implements IInventory, ITickable {
+	public int layoutType;
+	// public int workload;
+	public int moveTime;
+	public boolean toCart[] = new boolean[] { true, true, true, true };
+	public boolean doReturn[] = new boolean[] { false, false, false, false };
+	public int amount[] = new int[] { 0, 0, 0, 0 };
+	public int color[] = new int[] { 1, 2, 3, 4 };
 	public TileEntityManager() {
-		cargoItemStacks = new ItemStack[getSizeInventory()];
 		moveTime = 0;
 		standardTransferHandler = new ManagerTransfer();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return cargoItemStacks[i];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (cargoItemStacks[i] != null) {
-			if (cargoItemStacks[i].func_190916_E() <= j) {
-				ItemStack itemstack = cargoItemStacks[i];
-				cargoItemStacks[i] = null;
-				markDirty();
-				return itemstack;
-			}
-			ItemStack result = cargoItemStacks[i].splitStack(j);
-			if (cargoItemStacks[i].stackSize == 0) {
-				cargoItemStacks[i] = null;
-			}
-			markDirty();
-			return result;
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		cargoItemStacks[i] = itemstack;
-		if (itemstack != null && itemstack.func_190916_E() > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-		markDirty();
 	}
 
 	@Override
@@ -75,16 +50,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		NBTTagList nbttaglist = nbttagcompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-		cargoItemStacks = new ItemStack[getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); i++) {
-			NBTTagCompound slotCompound = nbttaglist.getCompoundTagAt(i);
-			byte byte0 = slotCompound.getByte("Slot");
-			if (byte0 >= 0 && byte0 < cargoItemStacks.length) {
-				cargoItemStacks[byte0] = new ItemStack(slotCompound);
-			}
-		}
+		super.readFromNBT(nbttagcompound);;
 		moveTime = nbttagcompound.getByte("moveTime");
 		setLowestSetting(nbttagcompound.getByte("lowestNumber"));
 		layoutType = nbttagcompound.getByte("layout");
@@ -121,16 +87,6 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		}
 		nbttagcompound.setByte("toCart", temp);
 		nbttagcompound.setByte("doReturn", temp2);
-		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < cargoItemStacks.length; i++) {
-			if (cargoItemStacks[i] != null) {
-				NBTTagCompound slotCompound = new NBTTagCompound();
-				slotCompound.setByte("Slot", (byte) i);
-				cargoItemStacks[i].writeToNBT(slotCompound);
-				nbttaglist.appendTag(slotCompound);
-			}
-		}
-		nbttagcompound.setTag("Items", nbttaglist);
 		return nbttagcompound;
 	}
 
@@ -389,26 +345,6 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Override
 	public void openInventory(EntityPlayer entityPlayer) {
-	}
-
-	private ItemStack cargoItemStacks[];
-	public int layoutType;
-	// public int workload;
-	public int moveTime;
-	public boolean toCart[] = new boolean[] { true, true, true, true };
-	public boolean doReturn[] = new boolean[] { false, false, false, false };
-	public int amount[] = new int[] { 0, 0, 0, 0 };
-	public int color[] = new int[] { 1, 2, 3, 4 };
-
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		if (this.cargoItemStacks[index] != null) {
-			ItemStack var2 = this.cargoItemStacks[index];
-			this.cargoItemStacks[index] = null;
-			return var2;
-		} else {
-			return null;
-		}
 	}
 
 	protected void updateLayout() {

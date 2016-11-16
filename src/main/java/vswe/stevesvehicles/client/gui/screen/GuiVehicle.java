@@ -342,7 +342,7 @@ public class GuiVehicle extends GuiBase {
 		boolean shouldSlotOverlayBeRendered = false;
 		boolean shouldSlotUnderlayBeRendered = false;
 		boolean shouldSlotBeRendered = slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
-		ItemStack itemstack1 = this.mc.thePlayer.inventory.getItemStack();
+		ItemStack itemstack1 = this.mc.player.inventory.getItemStack();
 		String info = null;
 
 		if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
@@ -357,14 +357,14 @@ public class GuiVehicle extends GuiBase {
 			if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)){
 				itemstack = itemstack1.copy();
 				shouldSlotUnderlayBeRendered = true;
-				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().stackSize);
+				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().func_190916_E());
 
-				if (itemstack.stackSize > itemstack.getMaxStackSize()){
+				if (itemstack.func_190916_E() > itemstack.getMaxStackSize()){
 					info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
 					itemstack.stackSize = itemstack.getMaxStackSize();
 				}
 
-				if (itemstack.stackSize > slot.getItemStackLimit(itemstack)) {
+				if (itemstack.func_190916_E() > slot.getItemStackLimit(itemstack)) {
 					info = TextFormatting.YELLOW + "" + slot.getItemStackLimit(itemstack);
 					itemstack.stackSize = slot.getItemStackLimit(itemstack);
 				}

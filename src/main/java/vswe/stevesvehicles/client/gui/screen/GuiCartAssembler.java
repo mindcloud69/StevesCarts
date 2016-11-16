@@ -238,8 +238,8 @@ public class GuiCartAssembler extends GuiBase {
 				srcY = BIG_SLOT_SRC_Y;
 			} else {
 				size = SLOT_SIZE;
-				if (slot.getStack() != null && slot.getStack().stackSize <= 0) {
-					if (slot.getStack().stackSize == TileEntityCartAssembler.getRemovedSize()) {
+				if (slot.getStack() != null && slot.getStack().func_190916_E() <= 0) {
+					if (slot.getStack().func_190916_E() == TileEntityCartAssembler.getRemovedSize()) {
 						srcX = MODIFIED_RED_SLOT_SRC_X;
 					} else {
 						srcX = MODIFIED_GREEN_SLOT_SRC_X;
@@ -353,7 +353,7 @@ public class GuiCartAssembler extends GuiBase {
 				renderitem.renderItemIntoGUI(item, target[0] + 1, target[1] + 1);
 				if (hover) {
 					// noinspection unchecked
-					List<String> info = item.getTooltip(this.mc.thePlayer, mc.gameSettings.advancedItemTooltips);
+					List<String> info = item.getTooltip(this.mc.player, mc.gameSettings.advancedItemTooltips);
 					drawMouseOver(info, x, y);
 				}
 				ResourceHelper.bindResource(TEXTURE_EXTRA);
@@ -505,7 +505,7 @@ public class GuiCartAssembler extends GuiBase {
 			RenderManager manager = Minecraft.getMinecraft().getRenderManager();
 			manager.playerViewY = 180.0F;
 			if (StevesVehicles.renderSteve) {
-				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+				EntityPlayer player = Minecraft.getMinecraft().player;
 				ItemStack stack = player.getHeldItemMainhand();
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));
 				float temp = player.rotationPitch;
@@ -672,7 +672,7 @@ public class GuiCartAssembler extends GuiBase {
 				int targetY = slot.getY() - 1;
 				int size = 18;
 				if (inRect(x, y, new int[] { targetX, targetY, size, size })) {
-					if (slot.getStack() != null && ((i != 0 && slot.getStack().stackSize <= 0) || assembler.isInFreeMode())) {
+					if (slot.getStack() != null && ((i != 0 && slot.getStack().func_190916_E() <= 0) || assembler.isInFreeMode())) {
 						DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
 						dw.writeByte(1);
 						dw.writeByte(i);
