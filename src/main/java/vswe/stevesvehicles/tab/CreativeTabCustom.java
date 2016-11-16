@@ -18,20 +18,8 @@ public class CreativeTabCustom extends CreativeTabs {
 		this.localizedText = localizedText;
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public ItemStack getIconItemStack() {
-		return item;
-	}
-
 	public void setIcon(ItemStack item) {
 		this.item = item;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Item getTabIconItem() {
-		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -44,5 +32,11 @@ public class CreativeTabCustom extends CreativeTabs {
 	@Override
 	public String getTabLabel() {
 		return localizedText.translate();
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public ItemStack getTabIconItem() {
+		return item;
 	}
 }

@@ -139,7 +139,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 		{
 			return false;
 		}
-		else if (!this.worldObj.isRemote && !this.isDead)
+		else if (!this.world.isRemote && !this.isDead)
 		{
 			if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null && this.isPassenger(source.getEntity())){
 				return false;
@@ -152,7 +152,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 
 				if (flag || this.getDamageTaken() > 40.0F)
 				{
-					if (!flag && this.worldObj.getGameRules().getBoolean("doEntityDrops"))
+					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops"))
 					{
 						this.dropItemWithOffset(this.getItemBoat(), 1, 0.0F);
 					}
@@ -322,7 +322,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 			++this.outOfControlTicks;
 		}
 
-		if (!this.worldObj.isRemote && this.outOfControlTicks >= 60.0F) {
+		if (!this.world.isRemote && this.outOfControlTicks >= 60.0F) {
 			this.removePassengers();
 		}
 
@@ -381,12 +381,12 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 	private boolean checkInWater()
 	{
 		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
-		int i = MathHelper.floor_double(axisalignedbb.minX);
-		int j = MathHelper.ceiling_double_int(axisalignedbb.maxX);
-		int k = MathHelper.floor_double(axisalignedbb.minY);
-		int l = MathHelper.ceiling_double_int(axisalignedbb.minY + 0.001D);
-		int i1 = MathHelper.floor_double(axisalignedbb.minZ);
-		int j1 = MathHelper.ceiling_double_int(axisalignedbb.maxZ);
+		int i = MathHelper.floor(axisalignedbb.minX);
+		int j = MathHelper.ceil(axisalignedbb.maxX);
+		int k = MathHelper.floor(axisalignedbb.minY);
+		int l = MathHelper.ceil(axisalignedbb.minY + 0.001D);
+		int i1 = MathHelper.floor(axisalignedbb.minZ);
+		int j1 = MathHelper.ceil(axisalignedbb.maxZ);
 		boolean flag = false;
 		this.waterLevel = Double.MIN_VALUE;
 		BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
@@ -400,11 +400,11 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 					for (int i2 = i1; i2 < j1; ++i2)
 					{
 						blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-						IBlockState iblockstate = this.worldObj.getBlockState(blockpos$pooledmutableblockpos);
+						IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
 						if (iblockstate.getMaterial() == Material.WATER)
 						{
-							float f = getLiquidHeight(iblockstate, this.worldObj, blockpos$pooledmutableblockpos);
+							float f = getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos);
 							this.waterLevel = Math.max(f, this.waterLevel);
 							flag |= axisalignedbb.minY < f;
 						}
@@ -428,12 +428,12 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 	{
 		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 		double d0 = axisalignedbb.maxY + 0.001D;
-		int i = MathHelper.floor_double(axisalignedbb.minX);
-		int j = MathHelper.ceiling_double_int(axisalignedbb.maxX);
-		int k = MathHelper.floor_double(axisalignedbb.maxY);
-		int l = MathHelper.ceiling_double_int(d0);
-		int i1 = MathHelper.floor_double(axisalignedbb.minZ);
-		int j1 = MathHelper.ceiling_double_int(axisalignedbb.maxZ);
+		int i = MathHelper.floor(axisalignedbb.minX);
+		int j = MathHelper.ceil(axisalignedbb.maxX);
+		int k = MathHelper.floor(axisalignedbb.maxY);
+		int l = MathHelper.ceil(d0);
+		int i1 = MathHelper.floor(axisalignedbb.minZ);
+		int j1 = MathHelper.ceil(axisalignedbb.maxZ);
 		boolean flag = false;
 		BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
 
@@ -446,9 +446,9 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 					for (int i2 = i1; i2 < j1; ++i2)
 					{
 						blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-						IBlockState iblockstate = this.worldObj.getBlockState(blockpos$pooledmutableblockpos);
+						IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
-						if (iblockstate.getMaterial() == Material.WATER && d0 < getLiquidHeight(iblockstate, this.worldObj, blockpos$pooledmutableblockpos))
+						if (iblockstate.getMaterial() == Material.WATER && d0 < getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos))
 						{
 							if (iblockstate.getValue(BlockLiquid.LEVEL).intValue() != 0)
 							{
@@ -531,11 +531,11 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 				riddenByEntity = null;
 			}
 		}*/
-		List<Entity> list = this.worldObj.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.<Entity>getTeamCollisionPredicate(this));
+		List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.<Entity>getTeamCollisionPredicate(this));
 
 		if (!list.isEmpty())
 		{
-			boolean flag = !this.worldObj.isRemote && !(this.getControllingPassenger() instanceof EntityPlayer);
+			boolean flag = !this.world.isRemote && !(this.getControllingPassenger() instanceof EntityPlayer);
 
 			for (int j = 0; j < list.size(); ++j)
 			{
@@ -640,9 +640,9 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 
 			this.updateMotion();
 
-			if (this.worldObj.isRemote){
+			if (this.world.isRemote){
 				this.controlBoat();
-				this.worldObj.sendPacketToServer(new CPacketSteerBoat(this.getPaddleState(0), this.getPaddleState(1)));
+				this.world.sendPacketToServer(new CPacketSteerBoat(this.getPaddleState(0), this.getPaddleState(1)));
 			}
 
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -796,7 +796,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 	protected void applyYawToEntity(Entity entityToUpdate){
 		entityToUpdate.setRenderYawOffset(this.rotationYaw);
 		float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
-		float f1 = MathHelper.clamp_float(f, -105.0F, 105.0F);
+		float f1 = MathHelper.clamp(f, -105.0F, 105.0F);
 		entityToUpdate.prevRotationYaw += f1 - f;
 		entityToUpdate.rotationYaw += f1 - f;
 		entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
@@ -812,7 +812,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
 	{
-		if (!this.worldObj.isRemote && !player.isSneaking() && this.outOfControlTicks < 60.0F)
+		if (!this.world.isRemote && !player.isSneaking() && this.outOfControlTicks < 60.0F)
 		{
 			player.startRiding(this);
 		}
@@ -838,11 +838,11 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 
 					this.fall(this.fallDistance, 1.0F);
 
-					if (!this.worldObj.isRemote && !this.isDead)
+					if (!this.world.isRemote && !this.isDead)
 					{
 						this.setDead();
 
-						if (this.worldObj.getGameRules().getBoolean("doEntityDrops"))
+						if (this.world.getGameRules().getBoolean("doEntityDrops"))
 						{
 							for (int i = 0; i < 3; ++i)
 							{
@@ -859,7 +859,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 
 				this.fallDistance = 0.0F;
 			}
-			else if (this.worldObj.getBlockState((new BlockPos(this)).down()).getMaterial() != Material.WATER && y < 0.0D)
+			else if (this.world.getBlockState((new BlockPos(this)).down()).getMaterial() != Material.WATER && y < 0.0D)
 			{
 				this.fallDistance = (float)(this.fallDistance - y);
 			}
@@ -1036,7 +1036,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 		if (riddenByEntity != null && riddenByEntity instanceof EntityPlayer && riddenByEntity != player) {
 			return EnumActionResult.SUCCESS;
 		} else {
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				player.startRiding(this);
 			}
 			return EnumActionResult.SUCCESS;

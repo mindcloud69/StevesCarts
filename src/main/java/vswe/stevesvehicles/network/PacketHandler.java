@@ -29,7 +29,7 @@ public class PacketHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
-		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+		EntityPlayer player = FMLClientHandler.instance().getClient().player;
 		try {
 			DataReader dr = new DataReader(event.getPacket().payload());
 			PacketType type = dr.readEnum(PacketType.class);
@@ -37,11 +37,11 @@ public class PacketHandler {
 				int x = dr.readSignedInteger();
 				int y = dr.readSignedInteger();
 				int z = dr.readSignedInteger();
-				World world = player.worldObj;
+				World world = player.world;
 				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, new BlockPos(x, y, z));
 			} else if (type == PacketType.VEHICLE) {
 				int entityId = dr.readInteger();
-				World world = player.worldObj;
+				World world = player.world;
 				VehicleBase vehicle = getVehicle(entityId, world);
 				if (vehicle != null) {
 					receivePacketAtVehicle(vehicle, dr, player);
@@ -66,7 +66,7 @@ public class PacketHandler {
 		try {
 			DataReader dr = new DataReader(event.getPacket().payload());
 			PacketType type = dr.readEnum(PacketType.class);
-			World world = player.worldObj;
+			World world = player.world;
 			if (type == PacketType.BLOCK || type == PacketType.VEHICLE || type == PacketType.BUOY) {
 				Container container = player.openContainer;
 				if (container instanceof ContainerPlayer) {

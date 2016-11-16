@@ -85,7 +85,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 				IBlockState state = getWorld().getBlockState(pos);
 				Block block = state.getBlock();
 				DetectorType.getTypeFromSate(getWorld().getBlockState(pos)).deactivate(this);
-				worldObj.setBlockState(pos, state.withProperty(DetectorType.ACTIVE, true), 3);
+				world.setBlockState(pos, state.withProperty(DetectorType.ACTIVE, true), 3);
 			}
 		}
 	}
@@ -235,7 +235,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 
 	public void handleCart(VehicleBase vehicle) {
 		boolean truthValue = evaluate(vehicle, 0);
-		IBlockState state = worldObj.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 		boolean isOn = state.getValue(DetectorType.ACTIVE);
 		if (truthValue != isOn) {
 			if (truthValue) {
@@ -245,7 +245,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 				DetectorType.getTypeFromSate(state).deactivate(this);
 				state = state.withProperty(DetectorType.ACTIVE, false);
 			}
-			worldObj.setBlockState(pos, state, 3);
+			world.setBlockState(pos, state, 3);
 		}
 		if (truthValue) {
 			activeTimer = 20;

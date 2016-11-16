@@ -250,7 +250,7 @@ public class TileEntityCargo extends TileEntityManager {
 		for (int i = 0; i < fromInv.getSizeInventory(); i++) {
 			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
 				ItemStack iStack = fromInv.getStackInSlot(i);
-				int stackSize = iStack.stackSize;
+				int stackSize = iStack.func_190916_E();
 				int maxNumber;
 				if (getAmountType(transfer.getSetting()) == 1) {
 					maxNumber = getAmount(transfer.getSetting()) - transfer.getWorkload();
@@ -258,15 +258,15 @@ public class TileEntityCargo extends TileEntityManager {
 					maxNumber = -1;
 				}
 				TransferHandler.TransferItem(iStack, toInv, toCont, toValid, maxNumber, TransferHandler.TransferType.MANAGER);
-				if (iStack.stackSize != stackSize) {
+				if (iStack.func_190916_E() != stackSize) {
 					if (getAmountType(transfer.getSetting()) == 1) {
-						transfer.setWorkload(transfer.getWorkload() + stackSize - iStack.stackSize);
+						transfer.setWorkload(transfer.getWorkload() + stackSize - iStack.func_190916_E());
 					} else if (getAmountType(transfer.getSetting()) == 2) {
 						transfer.setWorkload(transfer.getWorkload() + 1);
 					}
 					markDirty();
 					transfer.getCart().markDirty();
-					if (iStack.stackSize == 0) {
+					if (iStack.func_190916_E() == 0) {
 						fromInv.setInventorySlotContents(i, null);
 					}
 					if (transfer.getWorkload() >= getAmount(transfer.getSetting()) && getAmountType(transfer.getSetting()) != 0) {

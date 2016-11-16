@@ -64,11 +64,11 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	
 	public void setMaster(TileEntityCartAssembler master, EnumFacing side) {
 		if (this.master != master) {
-			if(!worldObj.isRemote){
-				IBlockState state = worldObj.getBlockState(pos);
+			if(!world.isRemote){
+				IBlockState state = world.getBlockState(pos);
 				if(side != null){
 					state = blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side);
-					worldObj.setBlockState(pos, state);
+					world.setBlockState(pos, state);
 				}
 			}
 			// TODO: ?
@@ -78,7 +78,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 	
 	public EnumFacing getSide() {
-		return worldObj.getBlockState(pos).getValue(BlockUpgrade.FACING);
+		return world.getBlockState(pos).getValue(BlockUpgrade.FACING);
 	}
 
 	public TileEntityCartAssembler getMaster() {
@@ -289,14 +289,14 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		} else if (i < 0 || i >= getSizeInventory()) {
 			return null;
 		} else if (inventoryStacks[i] != null) {
-			if (inventoryStacks[i].stackSize <= j) {
+			if (inventoryStacks[i].func_190916_E() <= j) {
 				ItemStack itemstack = inventoryStacks[i];
 				inventoryStacks[i] = null;
 				markDirty();
 				return itemstack;
 			}
 			ItemStack ret = inventoryStacks[i].splitStack(j);
-			if (inventoryStacks[i].stackSize == 0) {
+			if (inventoryStacks[i].func_190916_E() == 0) {
 				inventoryStacks[i] = null;
 			}
 			markDirty();
@@ -314,7 +314,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 		} else if (i >= 0 && i < getSizeInventory()) {
 			inventoryStacks[i] = itemstack;
-			if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+			if (itemstack != null && itemstack.func_190916_E() > getInventoryStackLimit()) {
 				itemstack.stackSize = getInventoryStackLimit();
 			}
 			markDirty();

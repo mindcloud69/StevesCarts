@@ -42,7 +42,7 @@ public abstract class BlockContainerBase extends BlockContainer implements IBloc
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			player.openGui(StevesVehicles.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
 		}

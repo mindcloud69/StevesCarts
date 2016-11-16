@@ -215,8 +215,8 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		return world.getBlockState(pos.down()).getBlock() == ModBlocks.DETECTOR_UNIT.getBlock() && ModBlocks.DETECTOR_UNIT.getBlock().onBlockActivated(world, pos.down(), world.getBlockState(pos.down()), playerIn, hand, heldItem, EnumFacing.UP, hitX, hitY, hitZ);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		return world.getBlockState(pos.down()).getBlock() == ModBlocks.DETECTOR_UNIT.getBlock() && ModBlocks.DETECTOR_UNIT.getBlock().onBlockActivated(world, pos.down(), world.getBlockState(pos.down()), playerIn, hand, EnumFacing.UP, hitX, hitY, hitZ);
 	}
 
 	public void refreshState(World world, BlockPos pos, boolean flag) {

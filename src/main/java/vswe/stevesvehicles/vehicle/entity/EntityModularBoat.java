@@ -51,7 +51,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	protected void entityInit() {
-		if(this.worldObj.isRemote && !(dataManager instanceof LockableEntityDataManager)){
+		if(this.world.isRemote && !(dataManager instanceof LockableEntityDataManager)){
 			this.overrideDatawatcher();
 		}
 		super.entityInit();
@@ -73,7 +73,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
 		if (player.isSneaking()) {
-			List<EntityBuoy> list = worldObj.getEntitiesWithinAABB(EntityBuoy.class, getEntityBoundingBox().expand(10, 3, 10));
+			List<EntityBuoy> list = world.getEntitiesWithinAABB(EntityBuoy.class, getEntityBoundingBox().expand(10, 3, 10));
 			EntityBuoy closest = null;
 			double closestDistance = 0;
 			for (EntityBuoy buoy : list) {
@@ -272,7 +272,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public void updatePassenger(Entity passenger) {
 		super.updatePassenger(passenger);
 		if(isPassenger(passenger)){
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				if (delay < SYNC_DELAY) {
 					delay++;
 				} else {
@@ -332,10 +332,10 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public void markDirty() {
 		vehicleBase.onInventoryUpdate();
 	}
-
+	
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return entityplayer.getDistanceSq(posX, posY, posZ) <= 64D;
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return player.getDistanceSq(posX, posY, posZ) <= 64D;
 	}
 
 	@Override

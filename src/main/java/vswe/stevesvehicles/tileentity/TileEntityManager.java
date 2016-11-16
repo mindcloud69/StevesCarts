@@ -32,7 +32,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (cargoItemStacks[i] != null) {
-			if (cargoItemStacks[i].stackSize <= j) {
+			if (cargoItemStacks[i].func_190916_E() <= j) {
 				ItemStack itemstack = cargoItemStacks[i];
 				cargoItemStacks[i] = null;
 				markDirty();
@@ -52,7 +52,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		cargoItemStacks[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+		if (itemstack != null && itemstack.func_190916_E() > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 		markDirty();
@@ -191,7 +191,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Override
 	public void update() {
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			updateLayout();
 			return;
 		}

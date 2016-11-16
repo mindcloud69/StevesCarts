@@ -201,18 +201,18 @@ public class BlockUpgrade extends BlockContainerBase {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityUpgrade) {
 			TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
 			if (upgrade.useStandardInterface()) {
 				if (upgrade.getMaster() != null) {
-					return ModBlocks.CART_ASSEMBLER.getBlock().onBlockActivated(world, upgrade.getMaster().getPos(), state, player, hand, heldItem, side, hitX, hitY, hitZ);
+					return ModBlocks.CART_ASSEMBLER.getBlock().onBlockActivated(world, upgrade.getMaster().getPos(), state, player, hand, side, hitX, hitY, hitZ);
 				} else {
 					return false;
 				}
 			} else {
-				return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+				return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
 			}
 		}
 		return true;

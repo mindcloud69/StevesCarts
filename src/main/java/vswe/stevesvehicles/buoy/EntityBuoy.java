@@ -48,7 +48,7 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	// TODO write a proper one
 	@Override
 	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
-		if (!worldObj.isRemote && !isDead) {
+		if (!world.isRemote && !isDead) {
 			setDead();
 		}
 		return true;
@@ -118,7 +118,7 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			renderTick++;
 		}
 	}
@@ -150,16 +150,16 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	@Override
-	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
-		if (!worldObj.isRemote) {
-			player.openGui(StevesVehicles.instance, 2, worldObj, getEntityId(), 0, 0);
+	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
+		if (!world.isRemote) {
+			player.openGui(StevesVehicles.instance, 2, world, getEntityId(), 0, 0);
 		}
 		return EnumActionResult.SUCCESS;
 	}
 
 	private EntityBuoy getBuoy(DataParameter<Integer> id) {
 		int entityId = dataManager.get(id);
-		Entity entity = worldObj.getEntityByID(entityId);
+		Entity entity = world.getEntityByID(entityId);
 		if (entity instanceof EntityBuoy && !entity.isDead) {
 			return (EntityBuoy) entity;
 		}

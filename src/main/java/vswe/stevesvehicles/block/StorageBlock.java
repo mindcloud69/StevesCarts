@@ -33,7 +33,7 @@ public class StorageBlock implements IRecipeOutput {
 			@Override
 			public ItemStack getItemStack() {
 				ItemStack result = item.copy();
-				result.stackSize = 9;
+				result.func_190920_e(9);
 				return result;
 			}
 		}, 1, 1, new Object[] { getItemStack() }));

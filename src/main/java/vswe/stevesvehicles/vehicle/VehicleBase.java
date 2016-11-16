@@ -101,7 +101,7 @@ public class VehicleBase {
 	private final Entity entity;
 
 	public World getWorld() {
-		return entity.worldObj;
+		return entity.world;
 	}
 
 	public VehicleBase(IVehicleEntity entity) {
@@ -1194,7 +1194,7 @@ public class VehicleBase {
 	 * @return The x coordinate
 	 */
 	public int x() {
-		return MathHelper.floor_double(entity.posX);
+		return MathHelper.floor(entity.posX);
 	}
 
 	/**
@@ -1203,7 +1203,7 @@ public class VehicleBase {
 	 * @return The y coordinate
 	 */
 	public int y() {
-		return MathHelper.floor_double(entity.posY);
+		return MathHelper.floor(entity.posY);
 	}
 
 	/**
@@ -1212,7 +1212,7 @@ public class VehicleBase {
 	 * @return The y coordinate
 	 */
 	public int z() {
-		return MathHelper.floor_double(entity.posZ);
+		return MathHelper.floor(entity.posZ);
 	}
 
 	/**
