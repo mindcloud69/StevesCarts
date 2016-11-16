@@ -11,6 +11,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -18,6 +19,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
@@ -42,17 +44,9 @@ import vswe.stevesvehicles.upgrade.effect.util.InventoryEffect;
 import vswe.stevesvehicles.upgrade.effect.util.TankEffect;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
-public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITickable {
-	@SideOnly(Side.CLIENT)
-	@Override
-	public GuiBase getGui(InventoryPlayer inv) {
-		return new GuiUpgrade(inv, this);
-	}
-
-	@Override
-	public ContainerBase getContainer(InventoryPlayer inv) {
-		return new ContainerUpgrade(inv, this);
-	}
+public class TileEntityUpgrade extends TileEntityInventory implements ISidedInventory, IFluidHandler, IFluidTank, ITickable {
+	
+	public static final NonNullList<ItemStack> DEFAULT_STACKS = NonNullList.func_191197_a(0, INVALID_STACK);
 
 	private TileEntityCartAssembler master;
 	private int type;
@@ -61,6 +55,12 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	private InventoryEffect inventoryEffect;
 	private TankEffect tankEffect;
 	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
+	// INVENTORY STUFF BELOW
+	private int[] slotsForSide;
+	
+	public TileEntityUpgrade(){
+		super(DEFAULT_STACKS);
+	}
 	
 	public void setMaster(TileEntityCartAssembler master, EnumFacing side) {
 		if (this.master != master) {
@@ -71,8 +71,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 					world.setBlockState(pos, state);
 				}
 			}
-			// TODO: ?
-			// worldObj.markBlockForUpdate(this.xCoord,this.yCoord,this.zCoord);
 		}
 		this.master = master;
 	}
@@ -109,14 +107,14 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 				slotsForSide = new int[inventorySize];
 				init();
 				if (inventorySize > 0) {
-					inventoryStacks = new ItemStack[inventorySize];
+					inventoryStacks = NonNullList.func_191197_a(inventorySize, ItemStack.field_190927_a);
 					for (int i = 0; i < slotsForSide.length; i++) {
 						slotsForSide[i] = i;
 					}
 				}
 			} else {
 				effects = null;
-				inventoryStacks = null;
+				inventoryStacks = DEFAULT_STACKS;
 			}
 		}
 	}
@@ -171,15 +169,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return type;
 	}
 
-	public TileEntityUpgrade() {
-	}
-
-	/*
-	 * @SideOnly(Side.CLIENT) public IIcon getTexture(boolean outside) { if
-	 * (getUpgrade() == null) { return null; }
-	 */
 	public boolean hasInventory() {
-		return inventoryStacks != null;
+		return inventoryStacks.isEmpty();
 	}
 
 	@Override
@@ -205,19 +196,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		NBTTagList items = new NBTTagList();
-		if (inventoryStacks != null) {
-			for (int i = 0; i < inventoryStacks.length; ++i) {
-				ItemStack iStack = inventoryStacks[i];
-				if (iStack != null) {
-					NBTTagCompound item = new NBTTagCompound();
-					item.setByte("Slot", (byte) i);
-					iStack.writeToNBT(item);
-					items.appendTag(item);
-				}
-			}
-		}
-		tagCompound.setTag("Items", items);
 		tagCompound.setByte("Type", (byte) getType());
 		if (effects != null) {
 			save(tagCompound);
@@ -246,79 +224,69 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 	}
 
-	// INVENTORY STUFF BELOW
-	ItemStack[] inventoryStacks;
-	private int[] slotsForSide;
-
 	@Override
 	public int getSizeInventory() {
-		if (inventoryStacks == null) {
+		if (hasInventory()) {
 			if (master == null) {
 				return 0;
 			} else {
 				return master.getSizeInventory();
 			}
-		} else {
-			return inventoryStacks.length;
 		}
+		return super.getSizeInventory();
+	}
+	
+	@Override
+	public boolean func_191420_l(){
+		if (hasInventory()) {
+			if(master == null){
+				return false;
+			}else {
+				return master.func_191420_l();
+			}
+		}
+		return super.func_191420_l();
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int i) {
-		if (inventoryStacks == null) {
+	public ItemStack getStackInSlot(int index) {
+		if (hasInventory()) {
 			if (master == null) {
-				return null;
+				return INVALID_STACK;
 			} else {
-				return master.getStackInSlot(i);
+				return master.getStackInSlot(index);
 			}
-		} else if (i < 0 || i >= getSizeInventory()) {
-			return null;
-		} else {
-			return inventoryStacks[i];
 		}
+		return super.getStackInSlot(index);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (inventoryStacks == null) {
+	public ItemStack decrStackSize(int index, int size) {
+		if (hasInventory()) {
 			if (master == null) {
-				return null;
+				return INVALID_STACK;
 			} else {
-				return master.decrStackSize(i, j);
+				return master.decrStackSize(index, size);
 			}
-		} else if (i < 0 || i >= getSizeInventory()) {
-			return null;
-		} else if (inventoryStacks[i] != null) {
-			if (inventoryStacks[i].func_190916_E() <= j) {
-				ItemStack itemstack = inventoryStacks[i];
-				inventoryStacks[i] = null;
-				markDirty();
-				return itemstack;
-			}
-			ItemStack ret = inventoryStacks[i].splitStack(j);
-			if (inventoryStacks[i].func_190916_E() == 0) {
-				inventoryStacks[i] = null;
-			}
-			markDirty();
-			return ret;
-		} else {
+		} else if (index < 0 || index >= getSizeInventory()) {
 			return null;
 		}
+		ItemStack stack = super.decrStackSize(index, size);
+		markDirty();
+		return stack;
 	}
 
 	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		if (inventoryStacks == null) {
+	public void setInventorySlotContents(int index, ItemStack itemStack) {
+		if (hasInventory()) {
 			if (master != null) {
-				master.setInventorySlotContents(i, itemstack);
+				master.setInventorySlotContents(index, itemStack);
+			}else{
+				return;
 			}
-		} else if (i >= 0 && i < getSizeInventory()) {
-			inventoryStacks[i] = itemstack;
-			if (itemstack != null && itemstack.func_190916_E() > getInventoryStackLimit()) {
-				itemstack.stackSize = getInventoryStackLimit();
-			}
-			markDirty();
 		}
+		super.setInventorySlotContents(index, itemStack);
+		markDirty();
 	}
 
 	@Override
@@ -550,6 +518,17 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public InventoryEffect getInventoryEffect() {
 		return inventoryEffect;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public GuiBase getGui(InventoryPlayer inv) {
+		return new GuiUpgrade(inv, this);
+	}
+
+	@Override
+	public ContainerBase getContainer(InventoryPlayer inv) {
+		return new ContainerUpgrade(inv, this);
 	}
 
 	@Override

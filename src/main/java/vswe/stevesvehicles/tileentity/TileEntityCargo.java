@@ -44,6 +44,10 @@ import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelectionModule;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public class TileEntityCargo extends TileEntityManager {
+	
+	public TileEntityCargo() {
+		super(60);
+	}
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
@@ -74,11 +78,6 @@ public class TileEntityCargo extends TileEntityManager {
 		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_FIREWORK, SlotFirework.class, new ItemStack(Items.FIREWORKS, 1)));
 		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_BUCKET, SlotMilker.class, new ItemStack(Items.BUCKET, 1)));
 		itemSelections.add(new CargoItemSelection(LocalizationCargo.SLOT_CAKE, SlotCake.class, new ItemStack(Items.CAKE, 1)));
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 60;
 	}
 
 	@Override

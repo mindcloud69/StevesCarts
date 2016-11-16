@@ -9,9 +9,21 @@ import net.minecraft.util.NonNullList;
 
 public abstract class TileEntityInventory extends TileEntityBase implements IInventory {
 
-	private final NonNullList<ItemStack> inventoryStacks = NonNullList.<ItemStack>func_191197_a(5, ItemStack.field_190927_a);
+	public static final ItemStack INVALID_STACK = ItemStack.field_190927_a;
+	protected NonNullList<ItemStack> inventoryStacks;
 
-	public TileEntityInventory() {
+	
+	public TileEntityInventory(int size) {
+		this(NonNullList.<ItemStack>func_191197_a(size, INVALID_STACK));
+	}
+	
+	public TileEntityInventory(NonNullList<ItemStack> inventoryStacks) {
+		this.inventoryStacks = inventoryStacks;
+	}
+	
+	@Override
+	public int getSizeInventory() {
+		return inventoryStacks.size();
 	}
 	
 	@Override

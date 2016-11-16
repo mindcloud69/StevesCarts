@@ -159,7 +159,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	private TileEntityManager generateManager(int y) {
-		TileEntity TE = worldObj.getTileEntity(pos.add(0, y, 0));
+		TileEntity TE = world.getTileEntity(pos.add(0, y, 0));
 		if (TE != null && TE instanceof TileEntityManager) {
 			return (TileEntityManager) TE;
 		}

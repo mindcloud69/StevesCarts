@@ -104,7 +104,7 @@ public abstract class TileEntityBase extends TileEntity {
 	 *            The player that wants to interact
 	 * @return If the player can use this tile entity
 	 */
-	public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
+	public boolean isUsableByPlayer(EntityPlayer entityPlayer) {
 		return world.getTileEntity(getPos()) == this && entityPlayer.getDistanceSqToCenter(getPos()) <= 64D;
 	}
 

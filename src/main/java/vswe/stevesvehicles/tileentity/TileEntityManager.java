@@ -20,7 +20,7 @@ import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.tileentity.manager.ManagerTransfer;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
-public abstract class TileEntityManager extends TileEntityInventory implements IInventory, ITickable {
+public abstract class TileEntityManager extends TileEntityInventory implements ITickable {
 	public int layoutType;
 	// public int workload;
 	public int moveTime;
@@ -28,7 +28,8 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 	public boolean doReturn[] = new boolean[] { false, false, false, false };
 	public int amount[] = new int[] { 0, 0, 0, 0 };
 	public int color[] = new int[] { 1, 2, 3, 4 };
-	public TileEntityManager() {
+	public TileEntityManager(int size) {
+		super(size);
 		moveTime = 0;
 		standardTransferHandler = new ManagerTransfer();
 	}

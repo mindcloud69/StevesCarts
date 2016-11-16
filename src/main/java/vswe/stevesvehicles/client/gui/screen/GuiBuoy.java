@@ -109,7 +109,7 @@ public class GuiBuoy extends GuiBase {
 	private void reloadElements() {
 		mapElements.clear();
 		listElements.clear();
-		List list = buoy.worldObj.getEntitiesWithinAABBExcludingEntity(buoy,
+		List list = buoy.world.getEntitiesWithinAABBExcludingEntity(buoy,
 				new AxisAlignedBB(buoy.posX - VISIBLE_BLOCKS / 2, buoy.posY - VISIBLE_Y_OFFSET / 2, buoy.posZ - VISIBLE_BLOCKS / 2, buoy.posX + VISIBLE_BLOCKS / 2, buoy.posY + VISIBLE_Y_OFFSET / 2, buoy.posZ + VISIBLE_BLOCKS / 2));
 		mapElements.add(createBuoyElement(buoy, true));
 		mapElements.add(createBuoyTargetElement(buoy));

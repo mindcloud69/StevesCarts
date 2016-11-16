@@ -71,7 +71,7 @@ import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
  * @author Vswe
  *
  */
-public class TileEntityCartAssembler extends TileEntityBase implements IInventory, ISidedInventory {
+public class TileEntityCartAssembler extends TileEntityBase implements ISidedInventory {
 	/**
 	 * ASSEMBLING VARIABLES
 	 */
@@ -1135,7 +1135,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 				} else {
 					fuelSlot.getStack().stackSize--;
 				}
-				if (fuelSlot.getStack().stackSize <= 0) {
+				if (fuelSlot.getStack().func_190916_E() <= 0) {
 					fuelSlot.putStack(null);
 				}
 			}
@@ -1290,7 +1290,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
 			if (getStackInSlot(i) != null) {
 				ModuleData data = ModItems.modules.getModuleData(getStackInSlot(i));
-				if (data != null && getStackInSlot(i).stackSize != getRemovedSize()) {
+				if (data != null && getStackInSlot(i).func_190916_E() != getRemovedSize()) {
 					dataList.add(getStackInSlot(i).getItemDamage());
 				}
 			}
@@ -1304,7 +1304,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 
 	public boolean getIsDisassembling() {
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
-			if (getStackInSlot(i) != null && getStackInSlot(i).stackSize <= 0) {
+			if (getStackInSlot(i) != null && getStackInSlot(i).func_190916_E() <= 0) {
 				return true;
 			}
 		}
@@ -1540,4 +1540,15 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	@Override
 	public void clear() {
 	}
+	
+    public boolean func_191420_l()
+    {
+        for (ItemStack itemstack : spareModules){
+            if (!itemstack.func_190926_b())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
