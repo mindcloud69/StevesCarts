@@ -126,7 +126,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		 */
 		@Override
 		protected void entityInit() {
-			if(this.worldObj.isRemote && !(dataManager instanceof LockableEntityDataManager)){
+			if(this.world.isRemote && !(dataManager instanceof LockableEntityDataManager)){
 				this.overrideDatawatcher();
 			}
 			super.entityInit();
@@ -267,9 +267,9 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 					module.moveMinecartOnRail(pos);
 				}
 			}
-			IBlockState state = worldObj.getBlockState(pos);
-			IBlockState stateBelow = worldObj.getBlockState(pos.down());
-			EnumRailDirection railDirection = ((BlockRailBase) state.getBlock()).getRailDirection(worldObj, pos, state, this);
+			IBlockState state = world.getBlockState(pos);
+			IBlockState stateBelow = world.getBlockState(pos.down());
+			EnumRailDirection railDirection = ((BlockRailBase) state.getBlock()).getRailDirection(world, pos, state, this);
 			if (((railDirection == EnumRailDirection.SOUTH_EAST || railDirection == EnumRailDirection.SOUTH_WEST) && motionX < 0) || ((railDirection == EnumRailDirection.NORTH_WEST || railDirection == EnumRailDirection.NORTH_EAST) && motionX > 0)) {
 				cornerFlip = true;
 			} else {
@@ -407,7 +407,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 			}
 			double d2 = this.pushX * this.pushX + this.pushZ * this.pushZ;
 			if (d2 > 1.0E-4D && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001D) {
-				d2 = MathHelper.sqrt_double(d2);
+				d2 = MathHelper.sqrt(d2);
 				this.pushX /= d2;
 				this.pushZ /= d2;
 				if (this.pushX * this.motionX + this.pushZ * this.motionZ < 0.0D) {
@@ -429,7 +429,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 				motionY = 0;
 				motionZ = 0;
 			} else if (vehicleBase.getEngineFlag()) {
-				d0 = MathHelper.sqrt_double(d0);
+				d0 = MathHelper.sqrt(d0);
 				this.pushX /= d0;
 				this.pushZ /= d0;
 				double d1 = getPushFactor();
@@ -494,7 +494,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		public void onUpdate() {
 			super.onUpdate();
 			vehicleBase.onUpdate();
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				updateSounds();
 			}
 			setCurrentCartSpeedCapOnRail(getMaxCartSpeedOnRail());
@@ -504,7 +504,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		 * Returns if this inventory(the cart) is usuable by the specific player
 		 */
 		@Override
-		public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		public boolean isUsableByPlayer(EntityPlayer entityplayer) {
 			return entityplayer.getDistanceSq(posX, posY, posZ) <= 64D;
 		}
 		
@@ -513,7 +513,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 			if (!vehicleBase.canInteractWithEntity(player)) {
 				return EnumActionResult.PASS;
 			}
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				// Saves which direction the player activated the cart from
 				if (!vehicleBase.isDisabled() && getControllingPassenger() != player) {
 					temppushX = posX - player.posX;
@@ -688,7 +688,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 			} else if (keepSilent == 1) {
 				keepSilent = 0;
 				Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecart(this));
-				Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecartRiding(Minecraft.getMinecraft().thePlayer, this));
+				Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecartRiding(Minecraft.getMinecraft().player, this));
 			}
 		}
 

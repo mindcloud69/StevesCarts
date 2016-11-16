@@ -25,7 +25,7 @@ public class OverlayRenderer {
 	@SideOnly(Side.CLIENT)
 	private void renderOverlay() {
 		Minecraft minecraft = Minecraft.getMinecraft();
-		EntityPlayer player = minecraft.thePlayer;
+		EntityPlayer player = minecraft.player;
 		if(player != null){
 			Entity ridingEntity = player.getRidingEntity();
 			if (minecraft.currentScreen == null && ridingEntity instanceof IVehicleEntity) {
