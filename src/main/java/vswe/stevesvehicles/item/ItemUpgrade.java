@@ -17,6 +17,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
 import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
+import vswe.stevesvehicles.module.data.ModuleData;
+import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.Upgrade;
@@ -48,14 +50,27 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem{
 		}
 		return "item.unknown";
 	}
+	
+	private Upgrade getModelUpgrade(int dmg) {
+		Upgrade upgrade = UpgradeRegistry.getUpgradeFromId(dmg);
+		if(upgrade == null){
+			upgrade = UpgradeRegistry.getAllUpgrades().get(dmg);
+		}
+		return upgrade;
+	}
 
 	@Override
 	public String getCustomModelLocation(ItemStack stack) {
-		Upgrade data = UpgradeRegistry.getAllUpgrades().get(stack.getItemDamage());
-		if (data != null) {
-			return data.getUnlocalizedNameForItem();
+		Upgrade upgrade = getModelUpgrade(stack.getItemDamage());
+		if (upgrade != null) {
+			return upgrade.getUnlocalizedNameForItem();
 		}
 		return getUnlocalizedName();
+	}
+	
+	@Override
+	public boolean useMeshDefinition() {
+		return true;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -93,7 +108,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem{
 
 	@Override
 	public String getTextureName(int damage) {
-		Upgrade data = UpgradeRegistry.getAllUpgrades().get(damage);
+		Upgrade data = getModelUpgrade(damage);
 		if (data != null) {
 			if(data.getIcon() == null){
 				data.setIcon("stevescarts:blocks/upgrades/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));

@@ -34,6 +34,7 @@ import vswe.stevesvehicles.client.rendering.ItemStackRenderer;
 import vswe.stevesvehicles.client.rendering.RenderBoat;
 import vswe.stevesvehicles.client.rendering.RenderBuoy;
 import vswe.stevesvehicles.client.rendering.RenderCart;
+import vswe.stevesvehicles.client.rendering.RenderFactorys;
 import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
 import vswe.stevesvehicles.client.sounds.MinecartSoundMuter;
 import vswe.stevesvehicles.client.sounds.SoundHandler;
@@ -148,21 +149,6 @@ public class StevesVehicles {
 	@SideOnly(Side.CLIENT)
 	private void loadRendering() {
 		new FancyPancyLoader();
-		// TODO move to the vehicle types?
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, (RenderManager manager) -> new RenderCart(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, (RenderManager manager) -> new RenderBoat(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityEasterEgg.class, (RenderManager manager) -> new RenderSnowball(manager, null, Minecraft.getMinecraft().getRenderItem()) {
-			@Override
-			public ItemStack getStackToRender(Entity entityIn) {
-				return new ItemStack(ModItems.component, 1, ComponentTypes.PAINTED_EASTER_EGG.getId());
-			}
-		});
-		// StevesVehicles.instance.blockRenderer = new RendererUpgrade();
-		RenderingRegistry.registerEntityRenderingHandler(EntityCake.class, (RenderManager manager) -> new RenderSnowball(manager, Items.CAKE, Minecraft.getMinecraft().getRenderItem()));
-		for (ModuleData moduleData : ModuleRegistry.getAllModules()) {
-			moduleData.loadClientValues();
-		}
-		RenderingRegistry.registerEntityRenderingHandler(EntityBuoy.class, (RenderManager manager) -> new RenderBuoy(manager));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -170,6 +156,16 @@ public class StevesVehicles {
 		new SoundHandler();
 		new MinecartSoundMuter();
 		ItemModelManager.load();
+		// TODO move to the vehicle types?
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularCart.class, new RenderFactorys.ModularCartFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityModularBoat.class, new RenderFactorys.ModularBoatFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityEasterEgg.class, new RenderFactorys.EasterEggFactory());
+		// StevesVehicles.instance.blockRenderer = new RendererUpgrade();
+		RenderingRegistry.registerEntityRenderingHandler(EntityCake.class, new RenderFactorys.CakeFactory());
+		for (ModuleData moduleData : ModuleRegistry.getAllModules()) {
+			moduleData.loadClientValues();
+		}
+		RenderingRegistry.registerEntityRenderingHandler(EntityBuoy.class, new RenderFactorys.BuoyFactory());
 	}
 
 	@Mod.EventHandler

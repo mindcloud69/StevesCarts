@@ -25,7 +25,7 @@ public class GuiUpgrade extends GuiBase {
 	public void drawGuiForeground(int x, int y) {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		if (upgrade.getUpgrade() != null) {
-			getFontRenderer().drawString(upgrade.getUpgrade().getName(), 8, 6, 0x404040);
+			getFontRenderer().drawString(upgrade.getUpgrade().getTranslatedName(), 8, 6, 0x404040);
 			InterfaceEffect gui = upgrade.getInterfaceEffect();
 			if (gui != null) {
 				gui.drawForeground(this);

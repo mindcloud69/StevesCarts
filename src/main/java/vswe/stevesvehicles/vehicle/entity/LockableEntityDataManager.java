@@ -8,11 +8,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LockableEntityDataManager extends EntityDataManager {
-	private boolean isLocked = true;
+	private boolean isLocked;
 	private List lockedList;
 
 	public LockableEntityDataManager(Entity entity) {
 		super(entity);
+		for(DataEntry entry : entity.getDataManager().getAll()){
+			register(entry.getKey(), entry.getValue());
+		}
+		isLocked = true;
 	}
 
 	public void release() {

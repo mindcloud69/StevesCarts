@@ -139,6 +139,14 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		public float getEyeHeight() {
 			return 0.9F;
 		}
+		
+		@Override
+		protected void setSize(float width, float height) {
+			if(vehicleBase == null || vehicleBase.isPlaceholder){
+				return;
+			}
+			super.setSize(width, height);
+		}
 
 		/**
 		 * Get the offset the riding entity should be rendered at
@@ -633,7 +641,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 
 		@Override
 		public AxisAlignedBB getEntityBoundingBox() {
-			return vehicleBase.isPlaceholder ? null : super.getEntityBoundingBox();
+			return vehicleBase == null || vehicleBase.isPlaceholder ? null : super.getEntityBoundingBox();
 		}
 
 		@Override

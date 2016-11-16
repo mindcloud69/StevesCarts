@@ -7,10 +7,13 @@ import java.lang.reflect.Constructor;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ItemBlockDetector;
 import vswe.stevesvehicles.item.ItemBlockStorage;
 import vswe.stevesvehicles.item.ItemUpgrade;
@@ -32,15 +35,29 @@ public enum ModBlocks implements IRecipeOutput {
 	CART_ASSEMBLER("vehicle_assembler", BlockCartAssembler.class, TileEntityCartAssembler.class, "assembler"),
 	MODULE_TOGGLER("module_toggler", BlockActivator.class, TileEntityActivator.class, "toggler"),
 	EXTERNAL_DISTRIBUTOR("external_distributor", BlockDistributor.class, TileEntityDistributor.class, "distributor"),
-	DETECTOR_UNIT("detector_unit", BlockDetector.class, TileEntityDetector.class, "detector", ItemBlockDetector.class),
-	UPGRADE("upgrade", BlockUpgrade.class, TileEntityUpgrade.class, "upgrade", ItemUpgrade.class),
+	DETECTOR_UNIT("detector_unit", BlockDetector.class, TileEntityDetector.class, "detector"){
+		@Override
+		protected Item createItem(Block block) {
+			return new ItemBlockDetector(block);
+		}
+	},
+	UPGRADE("upgrade", BlockUpgrade.class, TileEntityUpgrade.class, "upgrade"){
+		@Override
+		protected Item createItem(Block block) {
+			return new ItemUpgrade(block);
+		}
+	},
 	LIQUID_MANAGER("liquid_manager", BlockLiquidManager.class, TileEntityLiquid.class, "liquid"),
-	STORAGE("metal_storage", BlockMetalStorage.class, ItemBlockStorage.class);
+	STORAGE("metal_storage", BlockMetalStorage.class){
+		@Override
+		protected Item createItem(Block block) {
+			return new ItemBlockStorage(block);
+		}
+	};
 	private final String unlocalizedName;
 	private final Class<? extends IBlockBase> clazz;
 	private final Class<? extends TileEntity> tileEntityClazz;
 	private final String tileEntityName;
-	private final Class<? extends ItemBlock> itemClazz;
 	private Block block;
 
 	ModBlocks(String unlocalizedName, Class<? extends IBlockBase> clazz) {
@@ -48,19 +65,10 @@ public enum ModBlocks implements IRecipeOutput {
 	}
 
 	ModBlocks(String unlocalizedName, Class<? extends IBlockBase> clazz, Class<? extends TileEntity> tileEntityClazz, String tileEntityName) {
-		this(unlocalizedName, clazz, tileEntityClazz, tileEntityName, ItemBlock.class);
-	}
-
-	ModBlocks(String unlocalizedName, Class<? extends IBlockBase> clazz, Class<? extends ItemBlock> itemClazz) {
-		this(unlocalizedName, clazz, null, null, itemClazz);
-	}
-
-	ModBlocks(String unlocalizedName, Class<? extends IBlockBase> clazz, Class<? extends TileEntity> tileEntityClazz, String tileEntityName, Class<? extends ItemBlock> itemClazz) {
 		this.unlocalizedName = unlocalizedName;
 		this.clazz = clazz;
 		this.tileEntityClazz = tileEntityClazz;
 		this.tileEntityName = tileEntityName;
-		this.itemClazz = itemClazz;
 	}
 
 	public static void init() {
@@ -72,7 +80,11 @@ public enum ModBlocks implements IRecipeOutput {
 					IBlockBase blockBase = (IBlockBase) blockInstance;
 					Block block = (Block) blockInstance;
 					block.setHardness(2F);
-					GameRegistry.registerBlock(block, blockInfo.itemClazz, blockInfo.unlocalizedName);
+					block.setRegistryName(new ResourceLocation(StevesVehicles.instance.textureHeader, blockInfo.unlocalizedName));
+					GameRegistry.register(block);
+					Item item = blockInfo.createItem(block);
+					item.setRegistryName(block.getRegistryName());
+					GameRegistry.register(item);
 					blockBase.setUnlocalizedName("steves_vehicles:tile.common:" + blockInfo.unlocalizedName);
 					blockInfo.block = block;
 					if (blockInfo.tileEntityClazz != null) {
@@ -86,6 +98,10 @@ public enum ModBlocks implements IRecipeOutput {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	protected Item createItem(Block block){
+		return new ItemBlock(block);
 	}
 
 	private void addRecipeWithCount(int count, Object... recipe) {

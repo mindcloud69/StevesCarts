@@ -14,7 +14,7 @@ import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
 import vswe.stevesvehicles.upgrade.effect.BaseEffect;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
-public class Upgrade implements IRecipeOutput {
+public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 	// private static HashMap<Byte, IIcon> sides;
 	private static HashMap<Class<? extends BaseEffect>, IEffectInfo> effectInfo;
 	private String icon;
@@ -69,8 +69,12 @@ public class Upgrade implements IRecipeOutput {
 		return getUnlocalizedNameForItem() + ".name";
 	}
 
-	public String getName() {
+	public String getTranslatedName() {
 		return I18n.translateToLocal(getUnlocalizedName());
+	}
+	
+	public String getName() {
+		return unlocalizedName;
 	}
 
 	public Upgrade addEffect(Class<? extends BaseEffect> effect, Object... params) {
@@ -144,5 +148,15 @@ public class Upgrade implements IRecipeOutput {
 
 	public boolean connectToRedstone() {
 		return false;
+	}
+
+	@Override
+	public int compareTo(Upgrade o) {
+		if(o == null){
+			return 1;
+		}else if(o == this){
+			return 0;
+		}
+		return UpgradeRegistry.getIdFromUpgrade(this) > UpgradeRegistry.getIdFromUpgrade(o) ? 1 : -1;
 	}
 }

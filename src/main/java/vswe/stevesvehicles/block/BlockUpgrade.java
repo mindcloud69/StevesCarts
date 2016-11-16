@@ -26,7 +26,7 @@ import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 public class BlockUpgrade extends BlockContainerBase {
 
 	public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, UpgradeRegistry.getAllUpgrades().size());
+	public static final PropertyUpgrade TYPE = new PropertyUpgrade("type");
 	public BlockUpgrade() {
 		super(Material.ROCK);
 		setCreativeTab(CreativeTabLoader.blocks);
@@ -90,7 +90,7 @@ public class BlockUpgrade extends BlockContainerBase {
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		Upgrade upgrade = getUpgrade(world, pos);
 		if(upgrade != null){
-			state = state.withProperty(TYPE, UpgradeRegistry.getAllUpgrades().indexOf(upgrade));
+			state = state.withProperty(TYPE, upgrade);
 		}
 		return super.getActualState(state, world, pos);
 	}

@@ -7,9 +7,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ItemVehicleModuleMeshDefinition implements ItemMeshDefinition {
+public class TexturedItemMeshDefinition implements ItemMeshDefinition {
 
-	ItemVehicleModuleMeshDefinition() {
+	TexturedItemMeshDefinition() {
 	}
 	
 	@Override

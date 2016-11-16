@@ -1,8 +1,11 @@
 package vswe.stevesvehicles.recipe;
 
+import java.util.List;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
@@ -44,7 +47,7 @@ public abstract class ModuleRecipe implements IRecipe {
 	private ItemStack getResult() {
 		ItemStack item = result.getItemStack();
 		if (item != null) {
-			item.stackSize *= count;
+			item.func_190920_e(item.func_190916_E() * count);
 		}
 		return item;
 	}
@@ -54,7 +57,7 @@ public abstract class ModuleRecipe implements IRecipe {
 	}
 
 	@Override
-	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
 		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
 }

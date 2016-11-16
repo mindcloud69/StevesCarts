@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -25,6 +26,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.block.BlockUpgrade;
+import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.client.gui.screen.GuiBase;
 import vswe.stevesvehicles.client.gui.screen.GuiUpgrade;
 import vswe.stevesvehicles.container.ContainerBase;
@@ -57,13 +60,25 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	private InterfaceEffect interfaceEffect;
 	private InventoryEffect inventoryEffect;
 	private TankEffect tankEffect;
-
-	public void setMaster(TileEntityCartAssembler master) {
-		if (worldObj.isRemote && this.master != master) {
+	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
+	
+	public void setMaster(TileEntityCartAssembler master, EnumFacing side) {
+		if (this.master != master) {
+			if(!worldObj.isRemote){
+				IBlockState state = worldObj.getBlockState(pos);
+				if(side != null){
+					state = blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side);
+					worldObj.setBlockState(pos, state);
+				}
+			}
 			// TODO: ?
 			// worldObj.markBlockForUpdate(this.xCoord,this.yCoord,this.zCoord);
 		}
 		this.master = master;
+	}
+	
+	public EnumFacing getSide() {
+		return worldObj.getBlockState(pos).getValue(BlockUpgrade.FACING);
 	}
 
 	public TileEntityCartAssembler getMaster() {
@@ -128,6 +143,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 		}
 	}
+	
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound tagCompound = super.getUpdateTag();
+		tagCompound.setByte("Type", (byte) getType());
+		return tagCompound;
+	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
@@ -163,7 +185,9 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		setType(tagCompound.getByte("Type"));
+		if(tagCompound.hasKey("Type")){
+			setType(tagCompound.getByte("Type"));
+		}
 		NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
 		for (int i = 0; i < items.tagCount(); ++i) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
@@ -194,7 +218,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 		}
 		tagCompound.setTag("Items", items);
-		tagCompound.setByte("Type", (byte) type);
+		tagCompound.setByte("Type", (byte) getType());
 		if (effects != null) {
 			save(tagCompound);
 		}

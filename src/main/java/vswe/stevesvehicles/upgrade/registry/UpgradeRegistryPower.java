@@ -40,7 +40,7 @@ public class UpgradeRegistryPower extends UpgradeRegistry {
 		engine.addEffect(FuelCost.class, 1.03F);
 		engine.addShapedRecipe(null, SIMPLE_PCB, null, Blocks.PISTON, Blocks.FURNACE, Blocks.PISTON, Items.IRON_INGOT, BLANK_UPGRADE, Items.IRON_INGOT);
 		register(engine);
-		Upgrade thermal = new Upgrade("thermal_engine_upgrade");
+		Upgrade thermal = new Upgrade("thermal_engine");
 		thermal.addEffect(ThermalFuel.class);
 		thermal.addEffect(FuelCost.class, 1.03F);
 		thermal.addShapedRecipe(Blocks.NETHER_BRICK, ADVANCED_PCB, Blocks.NETHER_BRICK, Blocks.PISTON, Blocks.FURNACE, Blocks.PISTON, Blocks.OBSIDIAN, BLANK_UPGRADE, Blocks.OBSIDIAN);

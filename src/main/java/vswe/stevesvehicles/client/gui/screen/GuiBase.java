@@ -223,14 +223,13 @@ public abstract class GuiBase extends GuiContainerSpecial {
 
 	public void mouseClick(int x, int y, int button) {
 	}
-
-	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		mouseX = scaleX(mouseX);
-		mouseY = scaleY(mouseY);
-		super.mouseReleased(mouseX, mouseY, state);
-		this.mouseMoved(mouseX, mouseY, state);
-		this.mouseDragged(mouseX, mouseY, state);
+	
+	protected void mouseMovedOrUp(int x, int y, final int button) {
+		x = this.scaleX(x);
+		y = this.scaleY(y);
+		//super.mouseMovedOrUp(x, y, button);
+		this.mouseMoved(x, y, button);
+		this.mouseDragged(x, y, button);
 	}
 
 	private int myOwnEventButton = 0;
@@ -258,12 +257,12 @@ public abstract class GuiBase extends GuiContainerSpecial {
 				return;
 			}
 			this.myOwnEventButton = -1;
-			this.mouseReleased(i, j, Mouse.getEventButton());
+			this.mouseMovedOrUp(i, j, Mouse.getEventButton());
 		} else if (this.myOwnEventButton != -1 && this.myOwnTimeyWhineyThingy > 0L) {
 			long k = Minecraft.getSystemTime() - this.myOwnTimeyWhineyThingy;
 			this.mouseClickMove(i, j, this.myOwnEventButton, k);
 		} else {
-			this.mouseReleased(i, j, -1);
+			this.mouseMovedOrUp(i, j, -1);
 		}
 	}
 

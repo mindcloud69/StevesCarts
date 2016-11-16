@@ -32,7 +32,8 @@ public class ItemModelManager {
 	public static void load() {
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			modelGenerator = new ModelGenerator();
-			ModelLoader.setCustomMeshDefinition(ModItems.modules, new ItemVehicleModuleMeshDefinition());
+			ModelLoader.setCustomMeshDefinition(ModItems.modules, new TexturedItemMeshDefinition());
+			ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(ModBlocks.UPGRADE.getBlock()), new TexturedItemMeshDefinition());
 			for(VehicleType type : VehicleRegistry.getInstance().getElements()){
 				registerItemModel(ModItems.vehicles, VehicleRegistry.getInstance().getIdFromType(type));
 			}
@@ -40,7 +41,7 @@ public class ItemModelManager {
 			registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
 			registerItemModel(ModBlocks.LIQUID_MANAGER.getBlock(), 0);
 			for (int i = 0; i < 3; ++i) {
-				ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockMetalStorage", "type=" + i);
+				ModelResourceLocation location = new ModelResourceLocation("stevescarts:metal_storage", "type=" + i);
 				ModelLoader.setCustomModelResourceLocation(ModItems.storage, i, location);
 			}
 			registerItemModel(ModBlocks.JUNCTION.getBlock(), 0);
@@ -49,7 +50,7 @@ public class ItemModelManager {
 			registerItemModel(ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), 0);
 			registerItemModel(ModBlocks.DETECTOR_UNIT.getBlock(), 0);
 			for (int i = 0; i < 5; ++i) {
-				ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockDetector", "detectortype=" + DetectorType.getTypeFromInt(i).getName());
+				ModelResourceLocation location = new ModelResourceLocation("stevescarts:detector_unit", "active=false,detectortype=" + DetectorType.getTypeFromInt(i).getName());
 				ModelLoader.setCustomModelResourceLocation(ModItems.detectors, i, location);
 			}
 			MinecraftForge.EVENT_BUS.register(modelGenerator);

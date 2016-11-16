@@ -1,0 +1,24 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "transform":"forge:default-block",
+    "model":"orientable",
+    "textures":{
+      "particle":"stevescarts:blocks/toggler/top",
+      "top":"stevescarts:blocks/toggler/top",
+      "down":"stevescarts:blocks/toggler/bot",
+      "south": "stevescarts:blocks/toggler/side",
+      "north": "stevescarts:blocks/toggler/side",
+      "east": "stevescarts:blocks/toggler/side",
+      "west": "stevescarts:blocks/toggler/side"
+    }
+  },
+  "variants":{
+    "inventory":{
+      "transform":"forge:default-block"
+    },
+    "normal":{
+      "transform":"forge:default-block"
+    }
+  }
+}

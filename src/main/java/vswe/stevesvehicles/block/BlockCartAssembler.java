@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.EnumFaceDirection;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -52,18 +54,12 @@ public class BlockCartAssembler extends BlockContainerBase {
 	}
 
 	private void checkForUpgrades(World world, BlockPos pos) {
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				for (int k = -1; k <= 1; k++) {
-					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						checkForUpgrade(world, pos.add(i, j, k));
-					}
-				}
-			}
+		for(EnumFacing facing : EnumFacing.HORIZONTALS){
+			this.checkForUpgrade(world, pos.offset(facing), facing);
 		}
 	}
 
-	private TileEntityCartAssembler checkForUpgrade(World world, BlockPos pos) {
+	private TileEntityCartAssembler checkForUpgrade(World world, BlockPos pos, EnumFacing facing) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityUpgrade) {
 			TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
@@ -71,14 +67,14 @@ public class BlockCartAssembler extends BlockContainerBase {
 			if (masters.size() == 1) {
 				TileEntityCartAssembler master = masters.get(0);
 				master.addUpgrade(upgrade);
-				upgrade.setMaster(master);
+				upgrade.setMaster(master, facing);
 				return master;
 			} else {
 				for (TileEntityCartAssembler master : masters) {
 					master.removeUpgrade(upgrade);
 					master.onUpgradeUpdate();
 				}
-				upgrade.setMaster(null);
+				upgrade.setMaster(null, null);
 			}
 		}
 		return null;

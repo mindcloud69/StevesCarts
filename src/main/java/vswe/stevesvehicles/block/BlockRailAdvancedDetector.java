@@ -1,7 +1,14 @@
 package vswe.stevesvehicles.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRail;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.BlockRailBase.EnumRailDirection;
+import net.minecraft.block.BlockRailDetector;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,12 +32,12 @@ import vswe.stevesvehicles.upgrade.effect.assembly.Disassemble;
 import vswe.stevesvehicles.upgrade.effect.external.Transposer;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
-public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
+public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlockBase {
 	//private IIcon normalIcon;
 	//private IIcon cornerIcon;
-
+	private String unlocalizedName;
+	
 	public BlockRailAdvancedDetector() {
-		super(false);
 		setCreativeTab(CreativeTabLoader.blocks);
 		setSoundType(SoundType.METAL);
 	}
@@ -46,6 +53,17 @@ public class BlockRailAdvancedDetector extends BlockSpecialRailBase {
 		normalIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector");
 		cornerIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector_corner");
 	}*/
+	
+	@Override
+	public String getUnlocalizedName() {
+		return unlocalizedName;
+	}
+
+	@Override
+	public BlockRailAdvancedDetector setUnlocalizedName(String name) {
+		this.unlocalizedName = name;
+		return this;
+	}
 
 	@Override
 	public boolean canMakeSlopes(IBlockAccess world, BlockPos pos) {
