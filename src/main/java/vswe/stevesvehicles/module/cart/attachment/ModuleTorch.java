@@ -21,6 +21,7 @@ import vswe.stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.container.slots.SlotTorch;
+import vswe.stevesvehicles.item.ItemBlockStorage;
 import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
 import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartRails;
 import vswe.stevesvehicles.module.ISuppliesModule;
@@ -95,11 +96,11 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 									}
 									// if so place it and remove one torch from
 									// the cart's inventory
-									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, null, new ItemStack(Blocks.TORCH));
+									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, null);
 									getVehicle().getWorld().setBlockState(torch, state);
 									if (!getVehicle().hasCreativeSupplies()) {
 										getStack(i).stackSize--;
-										if (getStack(i).stackSize == 0) {
+										if (getStack(i).func_190916_E() == 0) {
 											setStack(i, null);
 										}
 										this.onInventoryChanged();

@@ -192,7 +192,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		for (int i = 0; i < items.tagCount(); ++i) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
 			int slot = item.getByte("Slot") & 255;
-			ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
+			ItemStack iStack = new ItemStack(item);
 			if (slot >= 0 && slot < getSizeInventory()) {
 				setInventorySlotContents(slot, iStack);
 			}

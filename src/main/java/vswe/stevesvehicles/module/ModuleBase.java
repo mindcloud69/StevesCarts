@@ -945,7 +945,7 @@ public abstract class ModuleBase {
 				NBTTagCompound item = items.getCompoundTagAt(i);
 				int slot = item.getByte("Slot") & 255;
 				if (slot >= 0 && slot < getInventorySize()) {
-					setStack(slot, ItemStack.loadItemStackFromNBT(item));
+					setStack(slot, new ItemStack(item));
 				}
 			}
 		}

@@ -63,8 +63,8 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 						}
 						// an empty stack is not worth anything, remove the
 						// stack if so.
-						if (getStack(i).stackSize == 0) {
-							setStack(i, null);
+						if (getStack(i).func_190916_E() == 0) {
+							setStack(i, ItemStack.field_190927_a);
 						}
 					}
 					// after filling the cart with fuel we're done here

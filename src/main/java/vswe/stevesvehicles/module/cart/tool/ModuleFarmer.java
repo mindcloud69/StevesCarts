@@ -145,7 +145,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					world.setBlockState(pos.up(), crop);
 					if (!getVehicle().hasCreativeSupplies()) {
 						getStack(seedSlot).stackSize--;
-						if (getStack(seedSlot).stackSize <= 0) {
+						if (getStack(seedSlot).func_190916_E() <= 0) {
 							setStack(seedSlot, null);
 						}
 					}
@@ -180,7 +180,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				}
 				for (ItemStack item : stuff) {
 					getVehicle().addItemToChest(item);
-					if (item.stackSize != 0) {
+					if (item.func_190916_E() != 0) {
 						EntityItem entityitem = new EntityItem(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ, item);
 						entityitem.motionX = (float) (pos.getX() - getVehicle().x()) / 10;
 						entityitem.motionY = 0.15F;

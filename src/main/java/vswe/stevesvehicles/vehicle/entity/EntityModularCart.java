@@ -507,12 +507,9 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 			return entityplayer.getDistanceSq(posX, posY, posZ) <= 64D;
 		}
-
-		/**
-		 * A method to be called when this cart is activated by the player
-		 **/
+		
 		@Override
-		public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
+		public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand stack) {
 			if (!vehicleBase.canInteractWithEntity(player)) {
 				return EnumActionResult.PASS;
 			}
@@ -720,5 +717,10 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		@Override
 		public void clear() {
 
+		}
+
+		@Override
+		public boolean func_191420_l() {
+			return false;
 		}
 }

@@ -342,7 +342,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 					if (outputSlot instanceof ISpecialSlotSize) {
 						count += ((ISpecialSlotSize) outputSlot).getItemSize();
 					} else {
-						count += item.stackSize;
+						count += item.func_190916_E();
 					}
 					if (count >= maxItemCount) {
 						return false;

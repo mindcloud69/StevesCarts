@@ -50,7 +50,7 @@ public class ModuleMilker extends ModuleAttachment {
 					if (bucket != null && bucket.getItem() == Items.BUCKET) {
 						ItemStack milk = new ItemStack(Items.MILK_BUCKET);
 						getVehicle().addItemToChest(milk);
-						if (milk.stackSize <= 0) {
+						if (milk.func_190916_E() <= 0) {
 							milkBuffer = 0;
 							if (--bucket.stackSize <= 0) {
 								setStack(i, null);

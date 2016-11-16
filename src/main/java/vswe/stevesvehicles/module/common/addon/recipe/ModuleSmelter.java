@@ -54,7 +54,7 @@ public class ModuleSmelter extends ModuleRecipe {
 									inputSlot.putStack(null);
 								}
 								getVehicle().addItemToChest(result, getValidSlot(), null);
-								if (result.stackSize != 0) {
+								if (result.func_190916_E() != 0) {
 									for (int j = 0; j < allTheSlots.size(); j++) {
 										allTheSlots.get(j).putStack(originals.get(j));
 									}

@@ -298,7 +298,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 					projectile.stackSize = 1;
 					if (flag && !getVehicle().hasCreativeSupplies()) {
 						getStack(i).stackSize--;
-						if (getStack(i).stackSize == 0) {
+						if (getStack(i).func_190916_E() == 0) {
 							setStack(i, null);
 						}
 					}

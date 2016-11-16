@@ -82,7 +82,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 			NBTTagCompound slotCompound = nbttaglist.getCompoundTagAt(i);
 			byte byte0 = slotCompound.getByte("Slot");
 			if (byte0 >= 0 && byte0 < cargoItemStacks.length) {
-				cargoItemStacks[byte0] = ItemStack.loadItemStackFromNBT(slotCompound);
+				cargoItemStacks[byte0] = new ItemStack(slotCompound);
 			}
 		}
 		moveTime = nbttagcompound.getByte("moveTime");

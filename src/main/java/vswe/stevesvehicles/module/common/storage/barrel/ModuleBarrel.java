@@ -315,10 +315,10 @@ public abstract class ModuleBarrel extends ModuleStorage {
 							storedItem = input.copy();
 						}
 						int max = getMaxItems(true);
-						int canMove = Math.min(max - itemCount, input.stackSize);
+						int canMove = Math.min(max - itemCount, input.func_190916_E());
 						itemCount += canMove;
 						input.stackSize -= canMove;
-						if (input.stackSize == 0) {
+						if (input.func_190916_E() == 0) {
 							setStack(0, null);
 						}
 					}
@@ -329,7 +329,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 							setStack(1, output);
 							output.stackSize = 0;
 						}
-						int canMove = Math.min(output.getMaxStackSize() - output.stackSize, itemCount);
+						int canMove = Math.min(output.getMaxStackSize() - output.func_190916_E(), itemCount);
 						output.stackSize += canMove;
 						itemCount -= canMove;
 					}

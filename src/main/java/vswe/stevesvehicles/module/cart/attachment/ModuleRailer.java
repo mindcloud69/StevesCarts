@@ -141,7 +141,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 								// inventory
 								getStack(id).stackSize--;
 								// remove the stack if it's empty
-								if (getStack(id).stackSize == 0) {
+								if (getStack(id).func_190916_E() == 0) {
 									setStack(id, null);
 								}
 								getVehicle().getVehicleEntity().markDirty();

@@ -810,7 +810,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 	}
 
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, @Nullable ItemStack stack, EnumHand hand)
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
 	{
 		if (!this.worldObj.isRemote && !player.isSneaking() && this.outOfControlTicks < 60.0F)
 		{
@@ -1031,7 +1031,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 	}
 
 	@Override
-	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
+	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
 		Entity riddenByEntity = getControllingPassenger();
 		if (riddenByEntity != null && riddenByEntity instanceof EntityPlayer && riddenByEntity != player) {
 			return EnumActionResult.SUCCESS;

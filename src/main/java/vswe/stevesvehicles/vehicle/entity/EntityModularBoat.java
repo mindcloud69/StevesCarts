@@ -71,7 +71,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	}
 
 	@Override
-	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
+	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
 		if (player.isSneaking()) {
 			List<EntityBuoy> list = worldObj.getEntitiesWithinAABB(EntityBuoy.class, getEntityBoundingBox().expand(10, 3, 10));
 			EntityBuoy closest = null;

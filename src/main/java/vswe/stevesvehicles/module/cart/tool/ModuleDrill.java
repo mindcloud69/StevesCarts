@@ -259,20 +259,20 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	 * Let the cart handle a mined item, return true upon success.
 	 **/
 	protected boolean minedItem(ItemStack item, BlockPos coordinate) {
-		if (item == null || item.stackSize <= 0) {
+		if (item == null || item.func_190916_E() <= 0) {
 			return true;
 		}
 		for (ModuleBase module : getVehicle().getModules()) {
 			if (module instanceof ModuleIncinerator) {
 				((ModuleIncinerator) module).incinerate(item);
-				if (item.stackSize <= 0) {
+				if (item.func_190916_E() <= 0) {
 					return true;
 				}
 			}
 		}
-		int size = item.stackSize;
+		int size = item.func_190916_E();
 		getVehicle().addItemToChest(item);
-		if (item.stackSize == 0) {
+		if (item.func_190916_E() == 0) {
 			// everything worked fine
 			return true;
 		} else {
@@ -284,7 +284,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 				}
 			}
 			if (hasChest) {
-				if (item.stackSize != size) {
+				if (item.func_190916_E() != size) {
 					// if only some items did fit in the chest we have no other
 					// choice than spitting out the rest
 					// but don't do it the normal way, that would only make the

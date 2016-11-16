@@ -1256,13 +1256,13 @@ public class VehicleBase {
 		}
 		if (vehicleEntity.getStackInSlot(id) != null) {
 			ItemStack item;
-			if (vehicleEntity.getStackInSlot(id).stackSize <= count) {
+			if (vehicleEntity.getStackInSlot(id).func_190916_E() <= count) {
 				item = vehicleEntity.getStackInSlot(id);
 				vehicleEntity.setInventorySlotContents(id, null);
 				return item;
 			} else {
 				item = vehicleEntity.getStackInSlot(id).splitStack(count);
-				if (vehicleEntity.getStackInSlot(id).stackSize == 0) {
+				if (vehicleEntity.getStackInSlot(id).func_190916_E() == 0) {
 					vehicleEntity.setInventorySlotContents(id, null);
 				}
 				return item;

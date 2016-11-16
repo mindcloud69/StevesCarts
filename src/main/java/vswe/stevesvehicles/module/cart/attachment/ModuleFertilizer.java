@@ -182,7 +182,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 					getStack(0).stackSize--;
 					fertilizerStorage += amount * FERTILIZERS_PER_BONE_MEAL;
 				}
-				if (getStack(0).stackSize == 0) {
+				if (getStack(0).func_190916_E() == 0) {
 					setStack(0, null);
 				}
 			}

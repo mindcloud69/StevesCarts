@@ -99,7 +99,7 @@ public class ModuleFlowerRemover extends ModuleAttachment {
 	private void addStuff(List<ItemStack> stuff) {
 		for (ItemStack item : stuff) {
 			getVehicle().addItemToChest(item);
-			if (item.stackSize != 0) {
+			if (item.func_190916_E() != 0) {
 				EntityItem entityitem = new EntityItem(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY, getVehicle().getEntity().posZ, item);
 				entityitem.motionX = 0;
 				entityitem.motionY = 0.15F;
