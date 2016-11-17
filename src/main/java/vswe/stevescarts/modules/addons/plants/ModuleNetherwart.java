@@ -23,8 +23,8 @@ public class ModuleNetherwart extends ModuleAddon implements ICropModule {
 	}
 
 	@Override
-	public Block getCropFromSeed(final ItemStack seed) {
-		return Blocks.NETHER_WART;
+	public IBlockState getCropFromSeed(final ItemStack seed, World world, BlockPos pos) {
+		return Blocks.NETHER_WART.getDefaultState();
 	}
 
 	@Override

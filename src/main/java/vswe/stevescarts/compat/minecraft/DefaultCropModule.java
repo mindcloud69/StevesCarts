@@ -2,12 +2,14 @@ package vswe.stevescarts.compat.minecraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import vswe.stevescarts.api.farms.ICropModule;
 
 /**
@@ -17,19 +19,23 @@ public class DefaultCropModule implements ICropModule {
 
 	@Override
 	public boolean isSeedValid(final ItemStack seed) {
-		return seed.getItem() == Items.WHEAT_SEEDS || seed.getItem() == Items.POTATO || seed.getItem() == Items.CARROT;
+		return seed.getItem() == Items.WHEAT_SEEDS || seed.getItem() == Items.POTATO || seed.getItem() == Items.CARROT || seed.getItem() instanceof IPlantable;
 	}
 
 	@Override
-	public Block getCropFromSeed(final ItemStack seed) {
+	public IBlockState getCropFromSeed(final ItemStack seed, World world, BlockPos pos) {
 		if (seed.getItem() == Items.CARROT) {
-			return Blocks.CARROTS;
+			return Blocks.CARROTS.getDefaultState();
 		}
 		if (seed.getItem() == Items.POTATO) {
-			return Blocks.POTATOES;
+			return Blocks.POTATOES.getDefaultState();
 		}
 		if (seed.getItem() == Items.WHEAT_SEEDS) {
-			return Blocks.WHEAT;
+			return Blocks.WHEAT.getDefaultState();
+		}
+		if(seed.getItem() instanceof IPlantable){
+			IPlantable plantable = (IPlantable) seed.getItem();
+			return plantable.getPlant(world, pos);
 		}
 		return null;
 	}
@@ -37,6 +43,12 @@ public class DefaultCropModule implements ICropModule {
 	@Override
 	public boolean isReadyToHarvest(World world, BlockPos pos) {
 		IBlockState blockState = world.getBlockState(pos);
+		if(blockState.getBlock() instanceof IGrowable){
+			IGrowable growable = (IGrowable) blockState.getBlock();
+			if(!growable.canGrow(world, pos, blockState, false)){
+				return true;
+			}
+		}
 		return blockState.getBlock() instanceof BlockCrops && blockState.getValue(BlockCrops.AGE) == 7;
 	}
 }

@@ -128,8 +128,8 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		if (soilblock != null) {
 			for (int i = 0; i < this.getInventorySize(); ++i) {
 				if (this.getStack(i) != null && this.isSeedValidHandler(this.getStack(i))) {
-					Block cropblock = this.getCropFromSeedHandler(this.getStack(i));
-					if (cropblock != null && cropblock instanceof IPlantable && world.isAirBlock(pos.up()) && soilblock.canSustainPlant(soilState, world, pos, EnumFacing.UP, (IPlantable) cropblock)) {
+					IBlockState cropblock = this.getCropFromSeedHandler(this.getStack(i), world, pos);
+					if (cropblock != null && cropblock.getBlock() instanceof IPlantable && world.isAirBlock(pos.up()) && soilblock.canSustainPlant(soilState, world, pos, EnumFacing.UP, (IPlantable) cropblock.getBlock())) {
 						hasSeeds = i;
 						break;
 					}
@@ -141,8 +141,8 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					return true;
 				}
 				this.stopWorking();
-				Block cropblock2 = this.getCropFromSeedHandler(this.getStack(hasSeeds));
-				world.setBlockState(pos.up(), cropblock2.getDefaultState());
+				IBlockState cropblock2 = this.getCropFromSeedHandler(this.getStack(hasSeeds), world, pos);
+				world.setBlockState(pos.up(), cropblock2);
 				ItemStack stack = this.getStack(hasSeeds);
 				--stack.stackSize;
 				if (this.getStack(hasSeeds).stackSize <= 0) {
@@ -209,10 +209,10 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		return false;
 	}
 
-	protected Block getCropFromSeedHandler(final ItemStack seed) {
+	protected IBlockState getCropFromSeedHandler(final ItemStack seed, World world, BlockPos pos) {
 		for (final ICropModule module : this.plantModules) {
 			if (module.isSeedValid(seed)) {
-				return module.getCropFromSeed(seed);
+				return module.getCropFromSeed(seed, world, pos);
 			}
 		}
 		return null;
