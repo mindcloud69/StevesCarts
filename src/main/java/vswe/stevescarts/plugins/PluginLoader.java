@@ -1,7 +1,9 @@
 package vswe.stevescarts.plugins;
 
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ProgressManager;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.api.ISCPlugin;
@@ -49,9 +51,15 @@ public class PluginLoader {
             }
         }
         apiHelper = new APIHelper();
-        for(ISCPlugin plugin : pluginList){
-            plugin.loadAddons(apiHelper);
-        }
         StevesCarts.logger.info("Loaded " + pluginList.size() +" plguins");
     }
+
+	public static void init(FMLInitializationEvent event){
+		ProgressManager.ProgressBar bar = ProgressManager.push("SC2 Plguins", pluginList.size());
+		for(ISCPlugin plugin : pluginList){
+			bar.step("Loading " + plugin.getClass().getCanonicalName());
+			plugin.loadAddons(apiHelper);
+		}
+		ProgressManager.pop(bar);
+	}
 }

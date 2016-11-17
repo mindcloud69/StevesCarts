@@ -177,13 +177,19 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		if (sapling != null) {
 			if (this.doPreWork()) {
-				if (sapling.getItem().onItemUse(sapling, this.getFakePlayer(), getCart().worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS) {
-					if (sapling.stackSize == 0) {
-						this.setStack(saplingSlotId, null);
+				for(ITreeModule module : treeModules){
+					if(module.isSapling(sapling)){
+						if (module.plantSapling(getCart().worldObj, pos, sapling, getFakePlayer())) {
+							if (sapling.stackSize == 0) {
+								this.setStack(saplingSlotId, null);
+							}
+							this.startWorking(25);
+							return this.isPlanting = true;
+						}
 					}
-					this.startWorking(25);
-					return this.isPlanting = true;
 				}
+				this.stopWorking();
+				this.isPlanting = false;;
 			} else {
 				this.stopWorking();
 				this.isPlanting = false;

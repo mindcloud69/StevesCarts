@@ -9,6 +9,6 @@ public class CompatForestry implements ISCPlugin{
 
 	@Override
 	public void loadAddons(ISCHelpers plugins) {
-
+		plugins.registerTree(new ForestryTreeModule());
 	}
 }

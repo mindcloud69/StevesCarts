@@ -93,6 +93,7 @@ public class StevesCarts {
 		ModItems.addRecipes();
 		ModBlocks.addRecipes();
 		CartDataSerializers.init();
+		PluginLoader.init(evt);
 	}
 
 	@Mod.EventHandler
