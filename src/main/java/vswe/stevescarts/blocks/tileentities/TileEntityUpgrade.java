@@ -129,6 +129,11 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return writeToNBT(super.getUpdateTag());
+	}
+
 	public AssemblerUpgrade getUpgrade() {
 		return AssemblerUpgrade.getUpgrade(this.type);
 	}
