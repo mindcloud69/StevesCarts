@@ -74,6 +74,7 @@ public class ItemCarts extends ItemMinecart {
 								}
 							}
 							StevesCarts.logger.error(" --------------- Broken cart info --------------- ");
+							return EnumActionResult.FAIL;
 						}
 					}
 				} catch (Exception e) {
