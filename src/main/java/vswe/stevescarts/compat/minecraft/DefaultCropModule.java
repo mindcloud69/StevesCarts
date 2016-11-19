@@ -49,6 +49,12 @@ public class DefaultCropModule implements ICropModule {
 				return true;
 			}
 		}
-		return blockState.getBlock() instanceof BlockCrops && blockState.getValue(BlockCrops.AGE) == 7;
+		if(blockState.getBlock() instanceof BlockCrops){
+			BlockCrops crops = (BlockCrops) blockState.getBlock();
+			if(crops.isMaxAge(blockState)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
