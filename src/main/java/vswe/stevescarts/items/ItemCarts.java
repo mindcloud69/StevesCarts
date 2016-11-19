@@ -1,5 +1,6 @@
 package vswe.stevescarts.items;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,16 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.CartVersion;
 import vswe.stevescarts.helpers.ModuleCountPair;
+import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.data.ModuleData;
 
 public class ItemCarts extends ItemMinecart {
@@ -50,8 +54,27 @@ public class ItemCarts extends ItemMinecart {
 				try {
 					final NBTTagCompound info = stack.getTagCompound();
 					if (info != null && !info.hasKey("maxTime")) {
-						final EntityMinecartModular cart = new EntityMinecartModular(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, info, stack.getDisplayName());
-						world.spawnEntityInWorld(cart);
+						try {
+							final EntityMinecartModular cart = new EntityMinecartModular(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, info, stack.getDisplayName());
+							world.spawnEntityInWorld(cart);
+						} catch (Exception e){
+							e.printStackTrace();
+							player.addChatComponentMessage(new TextComponentString("The cart failed to be placed into the world, this is due to an issue with one or more modules. "
+								+ "Please post your log on the issue tracker here: " + TextFormatting.BLUE + " https://github.com/modmuss50/SC2/issues"));
+							StevesCarts.logger.error(" --------------- Broken cart info --------------- ");
+							StevesCarts.logger.error(info);
+							NBTTagByteArray moduleIDTag = (NBTTagByteArray) info.getTag("Modules");
+							for (final byte id : moduleIDTag.getByteArray()) {
+								try {
+									final Class<? extends ModuleBase> moduleClass = ModuleData.getList().get(id).getModuleClass();
+									StevesCarts.logger.error("--- " + moduleClass.getCanonicalName());
+								} catch (Exception ex) {
+									StevesCarts.logger.error("Failed to load module with ID " + id + "! More info below.");
+									e.printStackTrace();
+								}
+							}
+							StevesCarts.logger.error(" --------------- Broken cart info --------------- ");
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
