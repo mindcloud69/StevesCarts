@@ -23,6 +23,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.GeneratedInfo;
 import vswe.stevesvehicles.client.gui.ColorHelper;
 import vswe.stevesvehicles.localization.entry.info.LocalizationLabel;
@@ -68,7 +69,8 @@ public class ItemVehicles extends Item {
 
 	// TODO let the registered elements decide when they should be placed
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
 		VehicleType vehicle = getVehicleType(stack);
 		if (vehicle != null && vehicle == VehicleRegistry.CART) {
 			if (BlockRailBase.isRailBlock(world, pos)) {
@@ -81,7 +83,8 @@ public class ItemVehicles extends Item {
 	// TODO let the registered elements decide when they should be placed
 	// TODO clean this up
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack itemStack = player.getHeldItem(hand);
 		VehicleType vehicle = getVehicleType(itemStack);
 		if (vehicle != null && vehicle == VehicleRegistry.BOAT) {
 			float f = 1.0F;
@@ -124,7 +127,7 @@ public class ItemVehicles extends Item {
 						}
 						Entity boat = placeVehicle(vehicle, player, itemStack, world, pos.getX() + 0.5F, pos.getY() + 1.0F, pos.getZ() + 0.5F);
 						if (boat != null) {
-							boat.rotationYaw = ((MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3) - 1) * 90;
+							boat.rotationYaw = ((MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3) - 1) * 90;
 							if (!world.getCollisionBoxes(boat, boat.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty()) {
 								boat.setDead();
 							}
@@ -148,7 +151,7 @@ public class ItemVehicles extends Item {
 						Object obj = constructor.newInstance(world, x, y, z, info, item.hasDisplayName() ? item.getDisplayName() : null);
 						world.spawnEntityInWorld((Entity) obj);
 						if (!player.capabilities.isCreativeMode) {
-							--item.stackSize;
+							item.func_190918_g(1);
 						}
 						return (Entity) obj;
 					}
@@ -160,7 +163,7 @@ public class ItemVehicles extends Item {
 			}
 		} else {
 			if (!player.capabilities.isCreativeMode) {
-				--item.stackSize;
+				item.func_190918_g(1);
 			}
 			return null;
 		}
@@ -186,7 +189,7 @@ public class ItemVehicles extends Item {
 				int timeLeft = maxTime - currentTime;
 				list.add(ColorHelper.RED + LocalizationLabel.TIME_LEFT.translate() + ": " + formatTime(timeLeft));
 			}
-			if (GeneratedInfo.inDev) {
+			if (Constants.inDev) {
 				// dev version only, no localization required
 				list.add(ColorHelper.WHITE + "Version: " + (info.hasKey("CartVersion") ? info.getByte("CartVersion") : 0));
 			}

@@ -14,6 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -101,7 +102,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	@SuppressWarnings("unchecked")
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List lst) {
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList lst) {
 		for (int i = 0; i < size(); i++) {
 			ItemStack iStack = new ItemStack(item, 1, i);
 			if (isValid(iStack)) {
@@ -153,7 +154,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 				}
 			}
 			if (!player.capabilities.isCreativeMode) {
-				--stack.stackSize;
+				stack.func_190918_g(1);
 			}
 			world.playSound((EntityPlayer) entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 			player.getFoodStats().addStats(2, 0);
@@ -174,13 +175,14 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack itemStack = player.getHeldItem(hand);
 		if (isEdibleEgg(itemStack)) {
 			player.setActiveHand(hand);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 		} else if (isThrowableEgg(itemStack)) {
 			if (!player.capabilities.isCreativeMode) {
-				--itemStack.stackSize;
+				itemStack.func_190918_g(1);
 			}
 			world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
@@ -188,7 +190,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 		} else {
-			return super.onItemRightClick(itemStack, world, player, hand);
+			return super.onItemRightClick(world, player, hand);
 		}
 	}
 

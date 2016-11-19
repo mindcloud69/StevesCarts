@@ -11,6 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -75,7 +76,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem{
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List lst) {
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList lst) {
 		for (Upgrade upgrade : UpgradeRegistry.getAllUpgrades()) {
 			lst.add(upgrade.getItemStack());
 		}

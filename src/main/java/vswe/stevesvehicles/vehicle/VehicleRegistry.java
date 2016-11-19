@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.registry.IRegistry;
 import vswe.stevesvehicles.registry.RegistryLoader;
@@ -52,7 +54,7 @@ public class VehicleRegistry implements IRegistry<VehicleType> {
 		} else {
 			vehicles.put(vehicleType.getUnlocalizedName(), vehicleType);
 			allVehicles.add(vehicleType);
-			EntityRegistry.registerModEntity((Class<? extends Entity>) vehicleType.getClazz(), vehicleType.getRawUnlocalizedName(), allVehicles.size(), StevesVehicles.instance, 80, 3, true);
+			EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, vehicleType.getRawUnlocalizedName()), (Class<? extends Entity>) vehicleType.getClazz(), vehicleType.getRawUnlocalizedName(), allVehicles.size(), StevesVehicles.instance, 80, 3, true);
 		}
 	}
 

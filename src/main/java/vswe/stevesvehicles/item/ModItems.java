@@ -65,8 +65,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.module.data.ModuleData;
@@ -81,21 +83,17 @@ public final class ModItems {
 	public static ItemUpgrade upgrades;
 	public static ItemBlockStorage storage;
 	public static ItemBlockDetector detectors;
-	private static final String VEHICLE_NAME = "ModularVehicle";
-	private static final String COMPONENTS_NAME = "ModuleComponents";
-	private static final String MODULES_NAME = "CartModule";
-	private static final String BUOY_NAME = "Buoy";
+	private static final String VEHICLE_NAME = "vehicles";
+	private static final String COMPONENTS_NAME = "components";
+	private static final String MODULES_NAME = "modules";
+	private static final String BUOY_NAME = "buoys";
 	private static HashMap<String, Boolean> validModules = new HashMap<>();
 
 	public static void preBlockInit(Configuration config) {
-		(vehicles = new ItemVehicles()).setUnlocalizedName(StevesVehicles.localStart + VEHICLE_NAME);
-		component = new ItemCartComponent();
-		modules = new ItemVehicleModule();
-		buoys = new ItemBuoy();
-		GameRegistry.registerItem(vehicles, VEHICLE_NAME);
-		GameRegistry.registerItem(component, COMPONENTS_NAME);
-		GameRegistry.registerItem(modules, MODULES_NAME);
-		GameRegistry.registerItem(buoys, BUOY_NAME);
+		(vehicles = GameRegistry.register(new ItemVehicles(), new ResourceLocation(Constants.MOD_ID, VEHICLE_NAME))).setUnlocalizedName(StevesVehicles.localStart + VEHICLE_NAME);
+		component = GameRegistry.register(new ItemCartComponent(), new ResourceLocation(Constants.MOD_ID, COMPONENTS_NAME));
+		modules = GameRegistry.register(new ItemVehicleModule(), new ResourceLocation(Constants.MOD_ID, MODULES_NAME));
+		buoys = GameRegistry.register(new ItemBuoy(), new ResourceLocation(Constants.MOD_ID, BUOY_NAME));
 		for (ModuleData module : ModuleRegistry.getAllModules()) {
 			if (!module.getIsLocked()) {
 				validModules.put(module.getFullRawUnlocalizedName(), config.get("EnabledModules", module.getName().replace(" ", "").replace(":", "_"), module.getEnabledByDefault()).getBoolean(true));

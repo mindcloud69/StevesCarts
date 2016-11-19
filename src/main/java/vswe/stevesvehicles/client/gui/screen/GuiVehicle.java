@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.GeneratedInfo;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.slots.ISpecialSlotRender;
@@ -282,7 +283,7 @@ public class GuiVehicle extends GuiBase {
 					}
 				}
 			}
-			if (GeneratedInfo.inDev) {
+			if (Constants.inDev) {
 				drawTexturedModalRect(getGuiLeft() + module.getX(), getGuiTop() + module.getY() - vehicle.getRealScrollY(), MARKER_SRC_X, MARKER_SRC_Y, 3, 3);
 				drawTexturedModalRect(getGuiLeft() + module.getX() + module.guiWidth() - 2, getGuiTop() + module.getY() - vehicle.getRealScrollY(), MARKER_SRC_X + 3, MARKER_SRC_Y, 3, 3);
 				drawTexturedModalRect(getGuiLeft() + module.getX() + module.guiWidth() - 2, getGuiTop() + module.getY() + module.guiHeight() - 2 - vehicle.getRealScrollY(), MARKER_SRC_X + 3, MARKER_SRC_Y + 3, 3, 3);

@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -56,7 +57,7 @@ import vswe.stevesvehicles.vehicle.VehicleRegistry;
 import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
-@Mod(modid = "StevesVehicles", name = "Steve's Vehicles", version = GeneratedInfo.version)
+@Mod(modid = Constants.MOD_ID, name = Constants.NAME, version = Constants.version)
 public class StevesVehicles {
 	public static boolean debugMode = false;
 	public static boolean hasGreenScreen = false;
@@ -99,9 +100,9 @@ public class StevesVehicles {
 		ItemBlockStorage.init();
 		ModBlocks.init();
 		ModItems.postBlockInit(config);
-		EntityRegistry.registerModEntity(EntityEasterEgg.class, "Egg.Vswe", 20, instance, 80, 3, true);
-		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 21, instance, 80, 3, true);
-		EntityRegistry.registerModEntity(EntityBuoy.class, "buoy", 22, instance, 80, 3, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "egg"), EntityEasterEgg.class, "Egg.Vswe", 20, instance, 80, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "cake"), EntityCake.class, "Cake.Vswe", 21, instance, 80, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "buoy"), EntityBuoy.class, "buoy", 22, instance, 80, 3, false);
 		if (event.getSide() == Side.CLIENT) {
 			loadClient();
 		}

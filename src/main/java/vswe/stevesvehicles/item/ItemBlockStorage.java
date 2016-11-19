@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.block.StorageBlock;
@@ -66,7 +67,7 @@ public class ItemBlockStorage extends ItemBlock {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tab, List items) {
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList items) {
 		for (int i = 0; i < blocks.length; i++) {
 			items.add(new ItemStack(item, 1, i));
 		}
