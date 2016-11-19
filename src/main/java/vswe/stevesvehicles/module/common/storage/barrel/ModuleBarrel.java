@@ -317,7 +317,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 						int max = getMaxItems(true);
 						int canMove = Math.min(max - itemCount, input.func_190916_E());
 						itemCount += canMove;
-						input.stackSize -= canMove;
+						input.func_190918_g(canMove);
 						if (input.func_190916_E() == 0) {
 							setStack(0, null);
 						}
@@ -368,7 +368,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	public int getTotalCount() {
 		ItemStack input = getStack(0);
 		ItemStack output = getStack(1);
-		return itemCount + (input != null ? input.stackSize : 0) + (output != null ? output.stackSize : 0);
+		return itemCount + (input != null ? input.func_190916_E() : 0) + (output != null ? output.func_190916_E() : 0);
 	}
 
 	private int getMaxItems(boolean onlyInternal) {
@@ -420,7 +420,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	protected void load(NBTTagCompound tagCompound) {
 		if (tagCompound.hasKey(NBT_ITEM)) {
 			NBTTagCompound itemCompound = tagCompound.getCompoundTag(NBT_ITEM);
-			storedItem = ItemStack.loadItemStackFromNBT(itemCompound);
+			storedItem = new ItemStack(itemCompound);
 			itemCount = itemCompound.getShort(NBT_BARREL_COUNT);
 			if (itemCount < 0) {
 				itemCount += 65536;

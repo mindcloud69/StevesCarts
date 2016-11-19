@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
@@ -21,7 +22,6 @@ import vswe.stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.container.slots.SlotTorch;
-import vswe.stevesvehicles.item.ItemBlockStorage;
 import vswe.stevesvehicles.localization.entry.block.LocalizationAssembler;
 import vswe.stevesvehicles.localization.entry.module.cart.LocalizationCartRails;
 import vswe.stevesvehicles.module.ISuppliesModule;
@@ -96,10 +96,10 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 									}
 									// if so place it and remove one torch from
 									// the cart's inventory
-									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, null);
+									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, null, EnumHand.MAIN_HAND);
 									getVehicle().getWorld().setBlockState(torch, state);
 									if (!getVehicle().hasCreativeSupplies()) {
-										getStack(i).stackSize--;
+										getStack(i).func_190918_g(1);
 										if (getStack(i).func_190916_E() == 0) {
 											setStack(i, null);
 										}

@@ -49,7 +49,7 @@ public class ContainerCartAssembler extends ContainerBase {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return assembler.isUseableByPlayer(player);
+		return assembler.isUsableByPlayer(player);
 	}
 
 	@Override

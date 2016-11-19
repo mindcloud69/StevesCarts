@@ -5,9 +5,9 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
+import net.minecraftforge.fluids.FluidUtil;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.container.slots.SlotBase;
 import vswe.stevesvehicles.container.slots.SlotMilker;
@@ -39,12 +39,12 @@ public class ModuleMilker extends ModuleAttachment {
 
 	private void depositMilk() {
 		if (milkBuffer > 0) {
-			FluidStack ret = FluidContainerRegistry.getFluidForFilledItem(new ItemStack(Items.MILK_BUCKET));
+			FluidStack ret = FluidUtil.getFluidContained(new ItemStack(Items.MILK_BUCKET));
 			if (ret != null) {
 				ret.amount = milkBuffer;
 				milkBuffer -= getVehicle().fill(ret, true);
 			}
-			if (milkBuffer == FluidContainerRegistry.BUCKET_VOLUME) {
+			if (milkBuffer == Fluid.BUCKET_VOLUME) {
 				for (int i = 0; i < getInventorySize(); i++) {
 					ItemStack bucket = getStack(i);
 					if (bucket != null && bucket.getItem() == Items.BUCKET) {
@@ -52,7 +52,8 @@ public class ModuleMilker extends ModuleAttachment {
 						getVehicle().addItemToChest(milk);
 						if (milk.func_190916_E() <= 0) {
 							milkBuffer = 0;
-							if (--bucket.stackSize <= 0) {
+							bucket.func_190918_g(1);
+							if (bucket.func_190916_E() <= 0) {
 								setStack(i, null);
 							}
 						}
@@ -63,10 +64,10 @@ public class ModuleMilker extends ModuleAttachment {
 	}
 
 	private void generateMilk() {
-		if (milkBuffer < FluidContainerRegistry.BUCKET_VOLUME) {
+		if (milkBuffer < Fluid.BUCKET_VOLUME) {
 			Entity rider = getVehicle().getEntity().getControllingPassenger();
 			if (rider != null && rider instanceof EntityCow) {
-				milkBuffer = Math.min(milkBuffer + 75, FluidContainerRegistry.BUCKET_VOLUME);
+				milkBuffer = Math.min(milkBuffer + 75, Fluid.BUCKET_VOLUME);
 			}
 		}
 	}

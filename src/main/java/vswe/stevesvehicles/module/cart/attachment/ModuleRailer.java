@@ -139,7 +139,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 							if (!getVehicle().hasCreativeSupplies()) {
 								// remove the placed rail from the cart's
 								// inventory
-								getStack(id).stackSize--;
+								getStack(id).func_190918_g(1);
 								// remove the stack if it's empty
 								if (getStack(id).func_190916_E() == 0) {
 									setStack(id, null);

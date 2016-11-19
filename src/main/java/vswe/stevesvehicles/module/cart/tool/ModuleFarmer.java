@@ -144,7 +144,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					IBlockState crop = getCropFromSeedHandler(getStack(seedSlot));
 					world.setBlockState(pos.up(), crop);
 					if (!getVehicle().hasCreativeSupplies()) {
-						getStack(seedSlot).stackSize--;
+						getStack(seedSlot).func_190918_g(1);
 						if (getStack(seedSlot).func_190916_E() <= 0) {
 							setStack(seedSlot, null);
 						}

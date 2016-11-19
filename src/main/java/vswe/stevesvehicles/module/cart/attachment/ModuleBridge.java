@@ -102,7 +102,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 							ItemStack stack = getStack(m);
 							world.setBlockState(target, Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getItem().getMetadata(stack.getItemDamage())), 3);
 							if (!getVehicle().hasCreativeSupplies()) {
-								getStack(m).stackSize--;
+								getStack(m).func_190918_g(1);
 								if (getStack(m).func_190916_E() == 0) {
 									setStack(m, null);
 								}

@@ -112,7 +112,7 @@ public class ModuleFirework extends ModuleAttachment {
 						removeItemStack(item, 1, i);
 						removedPaper = true;
 					} else if (item.getItem() == Items.GUNPOWDER && countGunpowder < maxGunpowder) {
-						while (item.stackSize > 0 && countGunpowder < maxGunpowder) {
+						while (item.func_190916_E() > 0 && countGunpowder < maxGunpowder) {
 							countGunpowder++;
 							removeItemStack(item, 1, i);
 						}
@@ -213,7 +213,7 @@ public class ModuleFirework extends ModuleAttachment {
 			ItemStack item = getStack(i);
 			if (item != null) {
 				if (item.getItem() == Items.DYE) {
-					maxColors[item.getItemDamage()] += item.stackSize;
+					maxColors[item.getItemDamage()] += item.func_190916_E();
 				}
 			}
 		}
@@ -250,7 +250,7 @@ public class ModuleFirework extends ModuleAttachment {
 			if (item != null) {
 				if (item.getItem() == Items.DYE) {
 					if (currentColors[item.getItemDamage()] > 0) {
-						int count = Math.min(currentColors[item.getItemDamage()], item.stackSize);
+						int count = Math.min(currentColors[item.getItemDamage()], item.func_190916_E());
 						currentColors[item.getItemDamage()] -= count;
 					}
 				}
@@ -262,7 +262,7 @@ public class ModuleFirework extends ModuleAttachment {
 	private void removeItemStack(ItemStack item, int count, int id) {
 		if (!getVehicle().hasCreativeSupplies()) {
 			item.stackSize -= count;
-			if (item.stackSize <= 0) {
+			if (item.func_190916_E() <= 0) {
 				setStack(id, null);
 			}
 		}

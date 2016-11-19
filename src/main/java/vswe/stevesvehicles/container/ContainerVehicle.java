@@ -66,7 +66,7 @@ public class ContainerVehicle extends ContainerBase {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return vehicle.getVehicleEntity().isUseableByPlayer(player);
+		return vehicle.getVehicleEntity().isUsableByPlayer(player);
 	}
 
 	@Override

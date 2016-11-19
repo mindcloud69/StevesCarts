@@ -2,7 +2,7 @@ package vswe.stevesvehicles.container.slots;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-
+import net.minecraftforge.fluids.FluidUtil;
 import vswe.stevesvehicles.tank.Tank;
 import vswe.stevesvehicles.tileentity.TileEntityLiquid;
 
@@ -23,7 +23,7 @@ public class SlotLiquidManagerInput extends SlotBase {
 
 	public static boolean isItemStackValid(ItemStack itemstack, TileEntityLiquid manager, int tankId) {
 		if (tankId < 0 || tankId >= 4) {
-			return FluidContainerRegistry.isContainer(itemstack);
+			return FluidUtil.getFluidHandler(itemstack) != null;
 		}
 		Tank tank = manager.getTanks()[tankId];
 		return (FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null)

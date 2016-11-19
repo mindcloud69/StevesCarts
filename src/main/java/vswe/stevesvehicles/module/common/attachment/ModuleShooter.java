@@ -297,7 +297,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 					ItemStack projectile = getStack(i).copy();
 					projectile.stackSize = 1;
 					if (flag && !getVehicle().hasCreativeSupplies()) {
-						getStack(i).stackSize--;
+						getStack(i).func_190918_g(1);
 						if (getStack(i).func_190916_E() == 0) {
 							setStack(i, null);
 						}
@@ -395,7 +395,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 		} else if (projectile instanceof EntityFireball) {
 			// Not a projective :S
 			EntityFireball fireball = (EntityFireball) projectile;
-			double totalMotion = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
+			double totalMotion = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
 			fireball.accelerationX = motionX / totalMotion * 0.1D;
 			fireball.accelerationY = motionY / totalMotion * 0.1D;
 			fireball.accelerationZ = motionZ / totalMotion * 0.1D;

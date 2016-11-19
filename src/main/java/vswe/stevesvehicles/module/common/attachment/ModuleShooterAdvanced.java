@@ -148,7 +148,7 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 		double disX = target.posX - getVehicle().getEntity().posX;
 		double disY = target.posY + target.getEyeHeight() - 0.699999988079071D - projectile.posY;
 		double disZ = target.posZ - getVehicle().getEntity().posZ;
-		double dis = MathHelper.sqrt_double(disX * disX + disZ * disZ);
+		double dis = MathHelper.sqrt(disX * disX + disZ * disZ);
 		if (dis >= 1.0E-7D) {
 			float theta = (float) (Math.atan2(disZ, disX) * 180.0D / Math.PI) - 90.0F;
 			float phi = (float) (-(Math.atan2(disY, dis) * 180.0D / Math.PI));

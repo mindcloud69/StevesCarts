@@ -47,10 +47,10 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 		if (!getVehicle().getWorld().isRemote) {
 			ItemStack item = getStack(0);
 			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && dynamiteCount < getMaxDynamiteCount()) {
-				int count = Math.min(getMaxDynamiteCount() - dynamiteCount, item.stackSize);
+				int count = Math.min(getMaxDynamiteCount() - dynamiteCount, item.func_190916_E());
 				dynamiteCount += count;
 				item.stackSize -= count;
-				if (item.stackSize == 0) {
+				if (item.func_190916_E() == 0) {
 					setStack(0, null);
 				}
 			}

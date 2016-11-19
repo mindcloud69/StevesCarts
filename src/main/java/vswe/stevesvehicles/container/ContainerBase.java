@@ -78,7 +78,7 @@ public abstract class ContainerBase extends Container {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
 				if (slotItem != null && slotItem.func_190916_E() > 0 && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
-					int size = slotItem.stackSize + item.stackSize;
+					int size = slotItem.func_190916_E() + item.func_190916_E();
 					int maxLimit = Math.min(item.getMaxStackSize(), slot.getSlotStackLimit());
 					if (size <= maxLimit) {
 						item.stackSize = 0;
@@ -86,7 +86,7 @@ public abstract class ContainerBase extends Container {
 						slot.onSlotChanged();
 						result = true;
 					} else if (slotItem.func_190916_E() < maxLimit) {
-						item.stackSize -= maxLimit - slotItem.stackSize;
+						item.func_190918_g(maxLimit - slotItem.func_190916_E());
 						slotItem.stackSize = maxLimit;
 						slot.onSlotChanged();
 						result = true;
@@ -99,7 +99,7 @@ public abstract class ContainerBase extends Container {
 				}
 			}
 		}
-		if (item.stackSize > 0) {
+		if (item.func_190916_E() > 0) {
 			if (invert) {
 				id = end - 1;
 			} else {
@@ -109,10 +109,10 @@ public abstract class ContainerBase extends Container {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
 				if (slotItem == null && TransferHandler.isItemValidForTransfer(slot, item, TransferHandler.TransferType.SHIFT)) {
-					int stackSize = Math.min(slot.getSlotStackLimit(), item.stackSize);
+					int stackSize = Math.min(slot.getSlotStackLimit(), item.func_190916_E());
 					ItemStack newItem = item.copy();
 					newItem.stackSize = stackSize;
-					item.stackSize -= stackSize;
+					item.func_190918_g(stackSize);
 					slot.putStack(newItem);
 					slot.onSlotChanged();
 					result = item.func_190916_E() == 0;

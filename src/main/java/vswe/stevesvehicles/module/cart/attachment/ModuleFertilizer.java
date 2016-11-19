@@ -178,8 +178,8 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 				} else {
 					amount = 3;
 				}
-				if (fertilizerStorage <= FERTILIZERS_PER_BONE_MEAL * (MAX_STACKS_OF_BONES * BONE_MEALS_PER_BONE * STACK_SIZE - amount) && getStack(0).stackSize > 0) {
-					getStack(0).stackSize--;
+				if (fertilizerStorage <= FERTILIZERS_PER_BONE_MEAL * (MAX_STACKS_OF_BONES * BONE_MEALS_PER_BONE * STACK_SIZE - amount) && getStack(0).func_190916_E() > 0) {
+					getStack(0).func_190918_g(1);
 					fertilizerStorage += amount * FERTILIZERS_PER_BONE_MEAL;
 				}
 				if (getStack(0).func_190916_E() == 0) {

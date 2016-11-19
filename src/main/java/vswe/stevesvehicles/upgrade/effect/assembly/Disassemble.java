@@ -129,7 +129,7 @@ public class Disassemble extends InventoryEffect {
 				boolean addedHull = false;
 				List<ItemStack> modules = ModuleDataItemHandler.getModularItems(cart);
 				for (ItemStack item : modules) {
-					item.stackSize = 0;
+					item.func_190920_e(0);
 					TransferHandler.TransferItem(item, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), 1);
 					if (!addedHull) {
 						addedHull = true;

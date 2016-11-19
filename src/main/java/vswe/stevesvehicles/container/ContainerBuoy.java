@@ -51,7 +51,7 @@ public class ContainerBuoy extends ContainerBase {
 	public void receiveInfo(DataReader dr, boolean server) {
 		if (server) {
 			int entityId = dr.readSignedInteger();
-			Entity entity = entityBuoy.worldObj.getEntityByID(entityId);
+			Entity entity = entityBuoy.world.getEntityByID(entityId);
 			EntityBuoy otherBuoy = null;
 			if (entity instanceof EntityBuoy && !entity.isDead) {
 				otherBuoy = (EntityBuoy) entity;
