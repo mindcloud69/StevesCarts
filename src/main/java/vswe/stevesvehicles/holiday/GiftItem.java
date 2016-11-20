@@ -24,7 +24,6 @@ public class GiftItem {
 		this.costPerItem = costPerItem;
 	}
 
-	@SuppressWarnings("UnusedDeclaration")
 	public GiftItem(Block block, int costPerItem, int chanceWeight) {
 		this(new ItemStack(block, 1), costPerItem, chanceWeight);
 	}

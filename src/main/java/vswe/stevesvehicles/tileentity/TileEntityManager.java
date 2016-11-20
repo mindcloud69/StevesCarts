@@ -254,6 +254,9 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 					reset();
 				}
 				break;
+			default: {
+				break;
+			}
 		}
 	}
 

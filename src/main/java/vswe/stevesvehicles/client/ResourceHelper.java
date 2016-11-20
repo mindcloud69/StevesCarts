@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 public class ResourceHelper {
-	@SuppressWarnings("SpellCheckingInspection")
 	public static ResourceLocation getResource(String path) {
 		return new ResourceLocation("stevescarts", "textures" + path);
 	}

@@ -472,7 +472,7 @@ public class ArcadeTracks extends ArcadeGame {
 		}
 	}
 
-	@SuppressWarnings("SimplifiableIfStatement") // easier to see this way
+	// easier to see this way
 	private boolean isButtonVisible(int id) {
 		if (id == 4 || id == 5) {
 			return isMenuOpen && currentMenuTab == 0;

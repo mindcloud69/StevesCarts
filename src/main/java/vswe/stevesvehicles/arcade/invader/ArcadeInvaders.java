@@ -224,7 +224,6 @@ public class ArcadeInvaders extends ArcadeGame {
 		}
 	}
 
-	@SuppressWarnings("SpellCheckingInspection")
 	private final static String[][] numbers = new String[][] { { "XXXX", "X  X", "X  X", "X  X", "X  X", "X  X", "XXXX" }, { "   X", "   X", "   X", "   X", "   X", "   X", "   X" }, { "XXXX", "   X", "   X", "XXXX", "X   ", "X   ", "XXXX" },
 		{ "XXXX", "   X", "   X", "XXXX", "   X", "   X", "XXXX" }, { "X  X", "X  X", "X  X", "XXXX", "   X", "   X", "   X" }, { "XXXX", "X   ", "X   ", "XXXX", "   X", "   X", "XXXX" }, { "XXXX", "X   ", "X   ", "XXXX", "X  X", "X  X", "XXXX" },
 		{ "XXXX", "   X", "   X", "   X", "   X", "   X", "   X" }, { "XXXX", "X  X", "X  X", "XXXX", "X  X", "X  X", "XXXX" }, { "XXXX", "X  X", "X  X", "XXXX", "   X", "   X", "XXXX" } };

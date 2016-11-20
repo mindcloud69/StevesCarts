@@ -16,7 +16,6 @@ public class SoundHandler {
 		Minecraft.getMinecraft().getSoundHandler().playSound(soundObj);
 	}
 
-	@SuppressWarnings("SpellCheckingInspection")
 	public static void playSound(String name, SoundCategory category, float volume, float pitch) {
 		playDefaultSound("stevescarts:" + name, category, volume, pitch);
 	}

@@ -54,7 +54,7 @@ public class DistributorSide implements IFluidHandler {
 		return data;
 	}
 
-	@SuppressWarnings("SimplifiableIfStatement") // more clear what it does like
+	// more clear what it does like
 	// this
 	public boolean isEnabled(TileEntityDistributor distributor) {
 		if (distributor.getInventories().length == 0) {

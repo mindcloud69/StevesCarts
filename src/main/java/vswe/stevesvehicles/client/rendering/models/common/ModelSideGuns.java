@@ -11,7 +11,6 @@ import vswe.stevesvehicles.module.common.attachment.ModuleShooterAdvancedSide;
 
 @SideOnly(Side.CLIENT)
 public class ModelSideGuns extends ModelVehicle {
-	@SuppressWarnings("SpellCheckingInspection")
 	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/sidegunsModel.png");
 
 	@Override

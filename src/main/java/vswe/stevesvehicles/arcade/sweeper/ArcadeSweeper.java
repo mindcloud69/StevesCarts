@@ -64,7 +64,7 @@ public class ArcadeSweeper extends ArcadeGame {
 		}
 	}
 
-	@SuppressWarnings("ConstantConditions")
+	
 	private void newGame(int width, int height, int totalCreepers) {
 		isPlaying = true;
 		ticks = 0;

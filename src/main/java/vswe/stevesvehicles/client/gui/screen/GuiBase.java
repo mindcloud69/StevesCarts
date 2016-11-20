@@ -325,7 +325,6 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	 * + 0, targetY + 0, this.getZLevel(), x + 0, y + 0); tessellator.draw(); }
 	 */
 
-	@SuppressWarnings("SuspiciousNameCombination")
 	public void drawRectWithSourceOffset(int x, int y, int u, int v, RenderRotation rotation, int offsetX, int offsetY, int fullWidth, int fullHeight) {
 		int w = fullWidth - offsetX;
 		int h = fullHeight - offsetY;

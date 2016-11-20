@@ -76,7 +76,6 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	private static final DataParameter<Integer> DW_NEXT_BUOY = EntityDataManager.createKey(EntityBuoy.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> DW_PREV_BUOY = EntityDataManager.createKey(EntityBuoy.class, DataSerializers.VARINT);
 
-	@SuppressWarnings("UnnecessaryBoxing")
 	@Override
 	protected void entityInit() {
 		dataManager.register(DW_NEXT_BUOY, new Integer(-1));

@@ -39,7 +39,6 @@ public class HeightControlOre {
 		ores.add(this);
 	}
 
-	@SuppressWarnings("UnusedDeclaration")
 	public HeightControlOre(String name, ResourceLocation texture, int srcX, int srcY, int spanHighest, int spanLowest, int bestHighest, int bestLowest) {
 		this.name = name;
 		this.useDefaultTexture = false;

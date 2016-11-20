@@ -309,7 +309,6 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 		return null;
 	}
 
-	@SuppressWarnings("SuspiciousNameCombination")
 	protected void shoot() {
 		setTimeToNext(AInterval[arrowInterval]);
 		double speedX = getVehicle().getEntity().motionX;

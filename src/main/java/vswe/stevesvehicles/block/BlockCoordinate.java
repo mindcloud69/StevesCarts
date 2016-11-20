@@ -35,7 +35,6 @@ public class BlockCoordinate {
 		}
 	}
 
-	@SuppressWarnings("UnusedDeclaration")
 	public double getDistToVehicleSquared(VehicleBase vehicle) {
 		int xDif = this.x - vehicle.x();
 		int yDif = this.y - vehicle.y();
