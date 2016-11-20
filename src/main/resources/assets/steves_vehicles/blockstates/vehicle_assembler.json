@@ -1,0 +1,39 @@
+{
+   "forge_marker":1,
+   "defaults":{
+      "transform":"forge:default-block",
+      "model":"orientable",
+      "textures":{
+         "particle":"steves_vehicles:blocks/assembler/top",
+         "top":"steves_vehicles:blocks/assembler/top",
+         "down":"steves_vehicles:blocks/assembler/bot"
+      }
+   },
+   "variants":{
+      "inventory":{
+         "transform":"forge:default-block",
+         "textures":{
+            "front":"steves_vehicles:blocks/assembler/side_1",
+            "side":"steves_vehicles:blocks/assembler/side_1"
+         }
+      },
+      "normal":{
+         "transform":"forge:default-block",
+         "textures":{
+               "front":"steves_vehicles:blocks/assembler/side_1",
+               "side":"steves_vehicles:blocks/assembler/side_1",
+			   "down": "steves_vehicles:blocks/assembler/bot"
+            }
+         },
+      "inventory": {
+         "model": "orientable",
+         "textures": {
+            "particle": "steves_vehicles:blocks/assembler/side_1",
+            "top": "steves_vehicles:blocks/assembler/top",
+            "down": "steves_vehicles:blocks/assembler/bot",
+            "side": "steves_vehicles:blocks/assembler/side_1",
+            "front": "steves_vehicles:blocks/assembler/side_1"
+         }
+      }
+   }
+}

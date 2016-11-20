@@ -19,6 +19,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
 import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
@@ -196,9 +197,9 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	@Override
 	public String getTextureName(int damage) {
 		if (getRawName(damage) == null) {
-			return "stevescarts:items/unknown";
+			return Constants.UNKNOWN_SPRITE;
 		}
-		return "stevescarts:items/components/" + getName(damage);
+		return Constants.MOD_ID + ":items/components/" + getName(damage);
 	}
 
 	@Override

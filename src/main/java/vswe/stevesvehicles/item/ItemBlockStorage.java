@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.block.StorageBlock;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 
@@ -60,7 +61,7 @@ public class ItemBlockStorage extends ItemBlock {
 			StorageBlock block = blocks[item.getItemDamage()];
 			return "steves_vehicles:tile.metal_storage:" + block.getName();
 		}
-		return "item.unknown";
+		return Constants.UNKNOWN_ITEM;
 	}
 
 	@Override

@@ -14,17 +14,17 @@
     "type": {
       "0": {
         "textures": {
-          "all": "stevescarts:blocks/storage/reinforced_metal"
+          "all": "steves_vehicles:blocks/storage/reinforced_metal"
         }
       },
       "1": {
         "textures": {
-          "all": "stevescarts:blocks/storage/galgadorian"
+          "all": "steves_vehicles:blocks/storage/galgadorian"
         }
       },
       "2": {
         "textures": {
-          "all": "stevescarts:blocks/storage/enhanced_galgadorian"
+          "all": "steves_vehicles:blocks/storage/enhanced_galgadorian"
         }
       }
     }

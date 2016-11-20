@@ -68,7 +68,6 @@ public class StevesVehicles {
 	public static final String CHANNEL = "SC2";
 	public final String texturePath = "/assets/stevescarts/textures";
 	// public final String soundPath = "/assets/stevescarts/sounds";
-	public final String textureHeader = "stevescarts";
 	public static final String localStart = "SC2:";
 	@Instance(Constants.MOD_ID)
 	public static StevesVehicles instance;
@@ -114,8 +113,8 @@ public class StevesVehicles {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		CreativeTabLoader.postInit();
-		RecipeSorter.register("steves_vehicles:shaped", ModuleRecipeShaped.class, RecipeSorter.Category.SHAPED, "before:minecraft:shaped before:steves_vehicles:shapeless");
-		RecipeSorter.register("steves_vehicles:shapeless", ModuleRecipeShapeless.class, RecipeSorter.Category.SHAPELESS, "after:steves_vehicles:shaped");
+		RecipeSorter.register(Constants.MOD_ID + ":shaped", ModuleRecipeShaped.class, RecipeSorter.Category.SHAPED, "before:minecraft:shaped before:steves_vehicles:shapeless");
+		RecipeSorter.register(Constants.MOD_ID + ":shapeless", ModuleRecipeShapeless.class, RecipeSorter.Category.SHAPELESS, "after:steves_vehicles:shaped");
 		packetHandler.register(new PacketHandler());
 		new OverlayRenderer();
 		new TicketListener();

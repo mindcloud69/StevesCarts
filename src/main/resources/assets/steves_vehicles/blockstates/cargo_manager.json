@@ -1,0 +1,24 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "transform":"forge:default-block",
+    "model":"orientable",
+    "textures":{
+      "particle":"steves_vehicles:blocks/managers/cargo/top",
+      "top":"steves_vehicles:blocks/managers/cargo/top",
+      "down":"steves_vehicles:blocks/managers/cargo/bot",
+      "south": "steves_vehicles:blocks/managers/cargo/blue",
+      "north": "steves_vehicles:blocks/managers/cargo/yellow",
+      "east": "steves_vehicles:blocks/managers/cargo/red",
+      "west": "steves_vehicles:blocks/managers/cargo/green"
+    }
+  },
+  "variants":{
+    "inventory":{
+      "transform":"forge:default-block"
+    },
+    "normal":{
+      "transform":"forge:default-block"
+    }
+  }
+}

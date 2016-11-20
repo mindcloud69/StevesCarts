@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
 import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
 import vswe.stevesvehicles.module.data.ModuleData;
@@ -130,11 +131,11 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 		ModuleData data = getModelModuleData(damage);
 		if (data != null) {
 			if (data.getIcon() == null) {
-				data.setIcon("stevescarts:items/modules/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
+				data.setIcon(Constants.MOD_ID + ":items/modules/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
 			}
 			return data.getIcon();
 		}
-		return "stevescarts:items/unknown";
+		return Constants.UNKNOWN_SPRITE;
 	}
 
 	@Override

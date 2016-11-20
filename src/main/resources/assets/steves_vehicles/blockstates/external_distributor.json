@@ -1,0 +1,24 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "transform":"forge:default-block",
+    "model":"orientable",
+    "textures":{
+      "particle":"steves_vehicles:blocks/distributor/blue",
+      "top":"steves_vehicles:blocks/distributor/orange",
+      "down":"steves_vehicles:blocks/distributor/purple",
+      "south": "steves_vehicles:blocks/distributor/blue",
+      "north": "steves_vehicles:blocks/distributor/yellow",
+      "east": "steves_vehicles:blocks/distributor/red",
+      "west": "steves_vehicles:blocks/distributor/green"
+    }
+  },
+  "variants":{
+    "inventory":{
+      "transform":"forge:default-block"
+    },
+    "normal":{
+      "transform":"forge:default-block"
+    }
+  }
+}

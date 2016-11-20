@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.tileentity.detector.DetectorType;
@@ -39,7 +40,7 @@ public class ItemModelManager {
 			registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
 			registerItemModel(ModBlocks.LIQUID_MANAGER.getBlock(), 0);
 			for (int i = 0; i < 3; ++i) {
-				ModelResourceLocation location = new ModelResourceLocation("stevescarts:metal_storage", "type=" + i);
+				ModelResourceLocation location = new ModelResourceLocation(Constants.MOD_ID + ":metal_storage", "type=" + i);
 				ModelLoader.setCustomModelResourceLocation(ModItems.storage, i, location);
 			}
 			registerItemModel(ModBlocks.JUNCTION.getBlock(), 0);
@@ -48,7 +49,7 @@ public class ItemModelManager {
 			registerItemModel(ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), 0);
 			registerItemModel(ModBlocks.DETECTOR_UNIT.getBlock(), 0);
 			for (int i = 0; i < 5; ++i) {
-				ModelResourceLocation location = new ModelResourceLocation("stevescarts:detector_unit", "active=false,detectortype=" + DetectorType.getTypeFromInt(i).getName());
+				ModelResourceLocation location = new ModelResourceLocation(Constants.MOD_ID + ":detector_unit", "active=false,detectortype=" + DetectorType.getTypeFromInt(i).getName());
 				ModelLoader.setCustomModelResourceLocation(ModItems.detectors, i, location);
 			}
 			MinecraftForge.EVENT_BUS.register(modelGenerator);

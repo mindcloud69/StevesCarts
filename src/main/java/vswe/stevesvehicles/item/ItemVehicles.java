@@ -248,7 +248,7 @@ public class ItemVehicles extends Item {
 		if (type != null) {
 			return type.getUnlocalizedNameForItem();
 		} else {
-			return "item.unknown";
+			return Constants.UNKNOWN_ITEM;
 		}
 	}
 }

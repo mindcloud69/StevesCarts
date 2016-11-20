@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ItemBlockDetector;
 import vswe.stevesvehicles.item.ItemBlockStorage;
@@ -80,12 +81,12 @@ public enum ModBlocks implements IRecipeOutput {
 					IBlockBase blockBase = (IBlockBase) blockInstance;
 					Block block = (Block) blockInstance;
 					block.setHardness(2F);
-					block.setRegistryName(new ResourceLocation(StevesVehicles.instance.textureHeader, blockInfo.unlocalizedName));
+					block.setRegistryName(new ResourceLocation(Constants.MOD_ID, blockInfo.unlocalizedName));
 					GameRegistry.register(block);
 					Item item = blockInfo.createItem(block);
 					item.setRegistryName(block.getRegistryName());
 					GameRegistry.register(item);
-					blockBase.setUnlocalizedName("steves_vehicles:tile.common:" + blockInfo.unlocalizedName);
+					blockBase.setUnlocalizedName(Constants.MOD_ID +":tile.common:" + blockInfo.unlocalizedName);
 					blockInfo.block = block;
 					if (blockInfo.tileEntityClazz != null) {
 						GameRegistry.registerTileEntity(blockInfo.tileEntityClazz, blockInfo.tileEntityName);

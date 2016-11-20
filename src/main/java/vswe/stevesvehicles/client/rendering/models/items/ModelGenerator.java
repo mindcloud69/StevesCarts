@@ -36,6 +36,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 
 public class ModelGenerator {
 	private FaceBakery faceBakery = new FaceBakery();
@@ -130,7 +131,7 @@ public class ModelGenerator {
 			modelName = stack.getItem().getUnlocalizedName(stack);
 		}
 		// TODO: add constants
-		return new ModelResourceLocation("stevescarts:" + modelName.substring(5), "inventory");
+		return new ModelResourceLocation(Constants.MOD_ID + ":" + modelName.substring(5), "inventory");
 	}
 
 	public static Reader getReaderForResource(ResourceLocation location) throws IOException {

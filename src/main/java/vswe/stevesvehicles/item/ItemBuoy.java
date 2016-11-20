@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.buoy.BuoyType;
 import vswe.stevesvehicles.buoy.EntityBuoy;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
@@ -36,7 +36,7 @@ public class ItemBuoy extends Item {
 			BuoyType buoy = BuoyType.getType(item.getItemDamage());
 			return buoy.getUnlocalizedName();
 		}
-		return "item.unknown";
+		return Constants.UNKNOWN_ITEM;
 	}
 
 	@Override

@@ -1,0 +1,87 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "transform":"forge:default-block",
+    "model":"orientable",
+    "textures":{
+      "particle":"steves_vehicles:blocks/detectors/manager/bot",
+      "top":"steves_vehicles:blocks/detectors/manager/top",
+      "down":"steves_vehicles:blocks/detectors/manager/bot",
+      "south": "steves_vehicles:blocks/detectors/manager/blue",
+      "north": "steves_vehicles:blocks/detectors/manager/yellow",
+      "east": "steves_vehicles:blocks/detectors/manager/red",
+      "west": "steves_vehicles:blocks/detectors/manager/green"
+    }
+  },
+  "variants":{
+    "inventory":{
+      "transform":"forge:default-block"
+    },
+    "normal":{
+      "transform":"forge:default-block"
+    },
+    "detectortype": {
+      "normal": {
+        "textures": {
+          "particle":"steves_vehicles:blocks/detectors/manager/bot",
+          "top":"steves_vehicles:blocks/detectors/manager/top",
+          "down":"steves_vehicles:blocks/detectors/manager/bot",
+          "south": "steves_vehicles:blocks/detectors/manager/blue",
+          "north": "steves_vehicles:blocks/detectors/manager/yellow",
+          "east": "steves_vehicles:blocks/detectors/manager/red",
+          "west": "steves_vehicles:blocks/detectors/manager/green"
+        }
+      },
+      "unit": {
+        "textures": {
+          "particle":"steves_vehicles:blocks/detectors/manager/bot",
+          "top":"steves_vehicles:blocks/detectors/manager/bot",
+          "down":"steves_vehicles:blocks/detectors/manager/bot",
+          "south": "steves_vehicles:blocks/detectors/unit/blue",
+          "north": "steves_vehicles:blocks/detectors/unit/yellow",
+          "east": "steves_vehicles:blocks/detectors/unit/red",
+          "west": "steves_vehicles:blocks/detectors/unit/green"
+        }
+      },
+      "stop": {
+        "textures": {
+          "particle":"steves_vehicles:blocks/detectors/station/top",
+          "top":"steves_vehicles:blocks/detectors/station/top",
+          "down":"steves_vehicles:blocks/detectors/manager/bot",
+          "south": "steves_vehicles:blocks/detectors/station/blue",
+          "north": "steves_vehicles:blocks/detectors/station/yellow",
+          "east": "steves_vehicles:blocks/detectors/station/red",
+          "west": "steves_vehicles:blocks/detectors/station/green"
+        }
+      },
+      "junction": {
+        "textures": {
+          "particle":"steves_vehicles:blocks/detectors/junction/top",
+          "top":"steves_vehicles:blocks/detectors/junction/top",
+          "down":"steves_vehicles:blocks/detectors/manager/bot",
+          "south": "steves_vehicles:blocks/detectors/junction/blue",
+          "north": "steves_vehicles:blocks/detectors/junction/yellow",
+          "east": "steves_vehicles:blocks/detectors/junction/red",
+          "west": "steves_vehicles:blocks/detectors/junction/green"
+        }
+      },
+      "redstone": {
+        "textures": {
+          "particle":"steves_vehicles:blocks/detectors/redstone/bot",
+          "top":"steves_vehicles:blocks/detectors/redstone/bot",
+          "down":"steves_vehicles:blocks/detectors/redstone/bot",
+          "south": "steves_vehicles:blocks/detectors/redstone/blue",
+          "north": "steves_vehicles:blocks/detectors/redstone/yellow",
+          "east": "steves_vehicles:blocks/detectors/redstone/red",
+          "west": "steves_vehicles:blocks/detectors/redstone/green"
+        }
+      }
+    },
+	"active": {
+		"true":{
+		},
+		"false": {
+		}
+	}
+  }
+}

@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
 import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
@@ -47,7 +48,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 		if (upgrade != null) {
 			return upgrade.getUnlocalizedNameForItem();
 		}
-		return "item.unknown";
+		return Constants.UNKNOWN_ITEM;
 	}
 
 	private Upgrade getModelUpgrade(int dmg) {
@@ -110,11 +111,11 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 		Upgrade data = getModelUpgrade(damage);
 		if (data != null) {
 			if (data.getIcon() == null) {
-				data.setIcon("stevescarts:blocks/upgrades/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
+				data.setIcon(Constants.MOD_ID + ":blocks/upgrades/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
 			}
 			return data.getIcon();
 		}
-		return "stevescarts:items/unknown";
+		return Constants.UNKNOWN_SPRITE;
 	}
 
 	@Override
