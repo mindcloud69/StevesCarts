@@ -24,7 +24,7 @@ public class TradeHandler implements ITradeList {
 	}
 
 	@Override
-	public void func_190888_a(IMerchant p_190888_1_, MerchantRecipeList recipeList, Random p_190888_3_) {
+	public void addMerchantRecipe(IMerchant p_190888_1_, MerchantRecipeList recipeList, Random p_190888_3_) {
 		recipeList.add(new MerchantRecipe(ComponentTypes.STOLEN_PRESENT.getItemStack(3), ComponentTypes.GREEN_WRAPPING_PAPER.getItemStack()));
 	}
 }

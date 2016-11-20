@@ -164,7 +164,7 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 		setProjectileDamage(projectile);
 		setProjectileOnFire(projectile);
 		setProjectileKnockBack(projectile);
-		getVehicle().getWorld().spawnEntityInWorld(projectile);
+		getVehicle().getWorld().spawnEntity(projectile);
 		damageEnchant();
 	}
 

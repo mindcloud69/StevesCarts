@@ -90,7 +90,7 @@ public class Disassemble extends InventoryEffect {
 	private void resetMaster(TileEntityCartAssembler master, boolean full) {
 		for (int i = 0; i < master.getSizeInventory() - master.nonModularSlots(); i++) {
 			if (master.getStackInSlot(i) != null) {
-				if (master.getStackInSlot(i).func_190916_E() <= 0) {
+				if (master.getStackInSlot(i).getCount() <= 0) {
 					master.setInventorySlotContents(i, null);
 				} else if (full) {
 					if (!master.getWorld().isRemote) {
@@ -129,7 +129,7 @@ public class Disassemble extends InventoryEffect {
 				boolean addedHull = false;
 				List<ItemStack> modules = ModuleDataItemHandler.getModularItems(cart);
 				for (ItemStack item : modules) {
-					item.func_190920_e(0);
+					item.setCount(0);
 					TransferHandler.TransferItem(item, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), 1);
 					if (!addedHull) {
 						addedHull = true;
@@ -152,7 +152,7 @@ public class Disassemble extends InventoryEffect {
 			return 0;
 		}
 		for (int i = 0; i < upgrade.getMaster().getSizeInventory() - upgrade.getMaster().nonModularSlots(); i++) {
-			if (upgrade.getMaster().getStackInSlot(i) != null && upgrade.getMaster().getStackInSlot(i).func_190916_E() <= 0) {
+			if (upgrade.getMaster().getStackInSlot(i) != null && upgrade.getMaster().getStackInSlot(i).getCount() <= 0) {
 				return 1;
 			}
 		}

@@ -55,12 +55,12 @@ public class InputChest extends SimpleInventoryEffect {
 						if (willInvalidate(upgrade.getMaster(), module)) {
 							continue;
 						}
-						int stackSize = itemstack.func_190916_E();
+						int stackSize = itemstack.getCount();
 						TransferHandler.TransferItem(itemstack, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), Slot.class, SlotAssemblerFuel.class, 1);
-						if (itemstack.func_190916_E() == 0) {
+						if (itemstack.getCount() == 0) {
 							upgrade.setInventorySlotContents(slotId, null);
 						}
-						if (stackSize != itemstack.func_190916_E()) {
+						if (stackSize != itemstack.getCount()) {
 							break;
 						}
 					}

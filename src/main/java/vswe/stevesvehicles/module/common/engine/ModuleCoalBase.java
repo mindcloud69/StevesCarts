@@ -59,12 +59,12 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 						} else {
 							// if this isn't a bucket of lava or something
 							// similar decrease the number of items.
-							getStack(i).func_190918_g(1);
+							getStack(i).shrink(1);
 						}
 						// an empty stack is not worth anything, remove the
 						// stack if so.
-						if (getStack(i).func_190916_E() == 0) {
-							setStack(i, ItemStack.field_190927_a);
+						if (getStack(i).getCount() == 0) {
+							setStack(i, ItemStack.EMPTY);
 						}
 					}
 					// after filling the cart with fuel we're done here
@@ -79,7 +79,7 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 		int totalFuel = getFuelLevel();
 		for (int i = 0; i < getInventorySize(); i++) {
 			if (getStack(i) != null) {
-				totalFuel += SlotFuel.getItemBurnTime(this, getStack(i)) * getStack(i).func_190916_E();
+				totalFuel += SlotFuel.getItemBurnTime(this, getStack(i)) * getStack(i).getCount();
 			}
 		}
 		return totalFuel;

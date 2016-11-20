@@ -64,7 +64,7 @@ public abstract class BlockContainerBase extends BlockContainer implements IBloc
 					entityItem.motionX = world.rand.nextGaussian() * 0.05F;
 					entityItem.motionY = world.rand.nextGaussian() * 0.05F + 0.2F;
 					entityItem.motionZ = world.rand.nextGaussian() * 0.05F;
-					world.spawnEntityInWorld(entityItem);
+					world.spawnEntity(entityItem);
 				}
 			}
 		}

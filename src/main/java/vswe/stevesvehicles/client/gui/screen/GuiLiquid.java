@@ -11,6 +11,9 @@ import vswe.stevesvehicles.container.ContainerLiquid;
 import vswe.stevesvehicles.localization.entry.block.LocalizationLiquid;
 import vswe.stevesvehicles.tileentity.TileEntityLiquid;
 
+import vswe.stevesvehicles.client.gui.screen.GuiBase.RenderRotation;
+import vswe.stevesvehicles.client.gui.screen.GuiManager.ColorEffect;
+
 @SideOnly(Side.CLIENT)
 public class GuiLiquid extends GuiManager {
 	public GuiLiquid(InventoryPlayer invPlayer, TileEntityLiquid liquid) {

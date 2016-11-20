@@ -89,22 +89,22 @@ public class ModuleEnchants extends ModuleAddon {
 		super.update();
 		if (!getVehicle().getWorld().isRemote) {
 			for (int i = 0; i < 3; i++) {
-				if (getStack(i) != null && getStack(i).func_190916_E() > 0) {
-					int stackSize = getStack(i).func_190916_E();
+				if (getStack(i) != null && getStack(i).getCount() > 0) {
+					int stackSize = getStack(i).getCount();
 					enchants[i] = EnchantmentInfo.addBook(enabledTypes, enchants[i], getStack(i));
-					if (getStack(i).func_190916_E() != stackSize) {
+					if (getStack(i).getCount() != stackSize) {
 						boolean valid = true;
 						for (int j = 0; j < 3; j++) {
 							if (i != j) {
 								if (enchants[i] != null && enchants[j] != null && enchants[i].getEnchantment() == enchants[j].getEnchantment()) {
 									enchants[i] = null;
-									getStack(i).func_190917_f(1);
+									getStack(i).grow(1);
 									valid = false;
 									break;
 								}
 							}
 						}
-						if (valid && getStack(i).func_190916_E() <= 0) {
+						if (valid && getStack(i).getCount() <= 0) {
 							setStack(i, null);
 						}
 					}

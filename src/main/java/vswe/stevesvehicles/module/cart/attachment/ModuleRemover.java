@@ -67,7 +67,7 @@ public class ModuleRemover extends ModuleWorker {
 				if (!doPreWork()) {
 					ItemStack item = new ItemStack(Blocks.RAIL, 1);
 					getVehicle().addItemToChest(item);
-					if (item.func_190916_E() == 0) {
+					if (item.getCount() == 0) {
 						getVehicle().getWorld().setBlockToAir(coordinates);
 					}
 					remove = new BlockPos(remove.getX(), -1, remove.getZ());

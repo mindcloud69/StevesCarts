@@ -37,12 +37,12 @@ public class EntityEasterEgg extends EntityEgg {
 					EntityPig entitypig = new EntityPig(world);
 					entitypig.setGrowingAge(-24000);
 					entitypig.setLocationAndAngles(posX, posY, posZ, this.rotationYaw, 0.0F);
-					world.spawnEntityInWorld(entitypig);
+					world.spawnEntity(entitypig);
 				} else {
 					EntityChicken entitychicken = new EntityChicken(world);
 					entitychicken.setGrowingAge(-24000);
 					entitychicken.setLocationAndAngles(posX, posY, posZ, this.rotationYaw, 0.0F);
-					world.spawnEntityInWorld(entitychicken);
+					world.spawnEntity(entitychicken);
 				}
 			} else {
 				List<ItemStack> items = GiftItem.generateItems(rand, GiftItem.EasterList, 25 + rand.nextInt(300), 1);
@@ -51,7 +51,7 @@ public class EntityEasterEgg extends EntityEgg {
 					eItem.motionX = rand.nextGaussian() * 0.05F;
 					eItem.motionY = rand.nextGaussian() * 0.25F;
 					eItem.motionZ = rand.nextGaussian() * 0.05F;
-					world.spawnEntityInWorld(eItem);
+					world.spawnEntity(eItem);
 				}
 			}
 		}

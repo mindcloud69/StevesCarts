@@ -25,8 +25,8 @@ public class ModuleCrafter extends ModuleRecipe {
 			if (!getVehicle().getWorld().isRemote && getValidSlot() != null) {
 				ItemStack result = dummy.getResult();
 				if (result != null && getVehicle().getModules() != null) {
-					if (result.func_190916_E() == 0) {
-						result.func_190920_e(1);
+					if (result.getCount() == 0) {
+						result.setCount(1);
 					}
 					prepareLists();
 					if (canCraftMoreOfResult(result)) {
@@ -49,8 +49,8 @@ public class ModuleCrafter extends ModuleRecipe {
 										if (item.getItem().hasContainerItem(item)) {
 											containers.add(item.getItem().getContainerItem(item));
 										}
-										item.func_190918_g(1);
-										if (item.func_190916_E() <= 0) {
+										item.shrink(1);
+										if (item.getCount() <= 0) {
 											inputSlot.putStack(null);
 										}
 										valid = true;
@@ -64,14 +64,14 @@ public class ModuleCrafter extends ModuleRecipe {
 						}
 						if (valid) {
 							getVehicle().addItemToChest(result, getValidSlot(), null);
-							if (result.func_190916_E() > 0) {
+							if (result.getCount() > 0) {
 								valid = false;
 							} else {
 								edited = true;
 								for (ItemStack container : containers) {
 									if (container != null) {
 										getVehicle().addItemToChest(container, getValidSlot(), null);
-										if (container.func_190916_E() > 0) {
+										if (container.getCount() > 0) {
 											valid = false;
 											break;
 										}

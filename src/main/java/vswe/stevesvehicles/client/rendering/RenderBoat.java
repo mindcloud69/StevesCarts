@@ -6,6 +6,8 @@ import net.minecraft.util.math.MathHelper;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 
+import vswe.stevesvehicles.client.rendering.RenderVehicle.MatrixObject;
+
 public class RenderBoat extends RenderVehicle {
 	public RenderBoat(RenderManager renderManager) {
 		super(renderManager);

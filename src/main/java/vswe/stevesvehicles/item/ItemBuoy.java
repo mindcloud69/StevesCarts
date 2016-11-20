@@ -81,10 +81,10 @@ public class ItemBuoy extends Item {
 					if (world.isAirBlock(pos)) {
 						if (!world.isRemote) {
 							EntityBuoy buoy = new EntityBuoy(world, pos, BuoyType.getType(itemStack.getItemDamage()));
-							world.spawnEntityInWorld(buoy);
+							world.spawnEntity(buoy);
 						}
 						if (!player.capabilities.isCreativeMode) {
-							itemStack.func_190918_g(1);
+							itemStack.shrink(1);
 						}
 					}
 				}

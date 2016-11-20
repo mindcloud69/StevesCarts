@@ -38,6 +38,6 @@ public class MobChristmasDrop {
 		obj.motionX = monster.world.rand.nextGaussian() * 0.05F;
 		obj.motionY = monster.world.rand.nextGaussian() * 0.05F + 0.2F;
 		obj.motionZ = monster.world.rand.nextGaussian() * 0.05F;
-		monster.world.spawnEntityInWorld(obj);
+		monster.world.spawnEntity(obj);
 	}
 }

@@ -17,6 +17,8 @@ import vswe.stevesvehicles.network.PacketHandler;
 import vswe.stevesvehicles.network.PacketType;
 import vswe.stevesvehicles.tileentity.TileEntityManager;
 
+import vswe.stevesvehicles.client.gui.screen.GuiBase.RenderRotation;
+
 @SideOnly(Side.CLIENT)
 public abstract class GuiManager extends GuiBase {
 	public GuiManager(TileEntityManager manager, ContainerManager container) {

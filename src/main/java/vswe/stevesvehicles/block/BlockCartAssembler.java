@@ -165,7 +165,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 				entityItem.motionX = world.rand.nextGaussian() * 0.05F;
 				entityItem.motionY = world.rand.nextGaussian() * 0.25F;
 				entityItem.motionZ = world.rand.nextGaussian() * 0.05F;
-				world.spawnEntityInWorld(entityItem);
+				world.spawnEntity(entityItem);
 			}
 		}
 		super.breakBlock(world, pos, state);

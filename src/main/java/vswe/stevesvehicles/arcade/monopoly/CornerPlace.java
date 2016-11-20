@@ -4,6 +4,8 @@ import java.util.EnumSet;
 
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
+import vswe.stevesvehicles.arcade.monopoly.Place.PlaceState;
+
 public class CornerPlace extends Place {
 	private int texture;
 

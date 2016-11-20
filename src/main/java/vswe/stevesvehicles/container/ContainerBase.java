@@ -47,13 +47,13 @@ public abstract class ContainerBase extends Container {
 			} else if (!mergeItemStack(itemstack1, 0, getMyInventory().getSizeInventory(), false)) {
 				return null;
 			}
-			if (itemstack1.func_190916_E() == 0) {
-				slot.putStack(ItemStack.field_190927_a);
+			if (itemstack1.getCount() == 0) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
-			if (itemstack1.func_190916_E() != itemstack.func_190916_E()) {
-				return slot.func_190901_a(player, itemstack1);
+			if (itemstack1.getCount() != itemstack.getCount()) {
+				return slot.onTake(player, itemstack1);
 			} else {
 				return null;
 			}
@@ -74,20 +74,20 @@ public abstract class ContainerBase extends Container {
 		Slot slot;
 		ItemStack slotItem;
 		if (item.isStackable()) {
-			while (item.func_190916_E() > 0 && (!invert && id < end || invert && id >= start)) {
+			while (item.getCount() > 0 && (!invert && id < end || invert && id >= start)) {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
-				if (slotItem != null && slotItem.func_190916_E() > 0 && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
-					int size = slotItem.func_190916_E() + item.func_190916_E();
+				if (slotItem != null && slotItem.getCount() > 0 && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
+					int size = slotItem.getCount() + item.getCount();
 					int maxLimit = Math.min(item.getMaxStackSize(), slot.getSlotStackLimit());
 					if (size <= maxLimit) {
-						item.func_190920_e(0);
-						slotItem.func_190920_e(size);
+						item.setCount(0);
+						slotItem.setCount(size);
 						slot.onSlotChanged();
 						result = true;
-					} else if (slotItem.func_190916_E() < maxLimit) {
-						item.func_190918_g(maxLimit - slotItem.func_190916_E());
-						slotItem.func_190920_e(maxLimit);
+					} else if (slotItem.getCount() < maxLimit) {
+						item.shrink(maxLimit - slotItem.getCount());
+						slotItem.setCount(maxLimit);
 						slot.onSlotChanged();
 						result = true;
 					}
@@ -99,7 +99,7 @@ public abstract class ContainerBase extends Container {
 				}
 			}
 		}
-		if (item.func_190916_E() > 0) {
+		if (item.getCount() > 0) {
 			if (invert) {
 				id = end - 1;
 			} else {
@@ -109,13 +109,13 @@ public abstract class ContainerBase extends Container {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
 				if (slotItem == null && TransferHandler.isItemValidForTransfer(slot, item, TransferHandler.TransferType.SHIFT)) {
-					int stackSize = Math.min(slot.getSlotStackLimit(), item.func_190916_E());
+					int stackSize = Math.min(slot.getSlotStackLimit(), item.getCount());
 					ItemStack newItem = item.copy();
-					newItem.func_190920_e(stackSize);
-					item.func_190918_g(stackSize);
+					newItem.setCount(stackSize);
+					item.shrink(stackSize);
 					slot.putStack(newItem);
 					slot.onSlotChanged();
-					result = item.func_190916_E() == 0;
+					result = item.getCount() == 0;
 					break;
 				}
 				if (invert) {

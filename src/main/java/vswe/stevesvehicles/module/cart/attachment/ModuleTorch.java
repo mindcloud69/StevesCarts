@@ -100,8 +100,8 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, null, EnumHand.MAIN_HAND);
 									getVehicle().getWorld().setBlockState(torch, state);
 									if (!getVehicle().hasCreativeSupplies()) {
-										getStack(i).func_190918_g(1);
-										if (getStack(i).func_190916_E() == 0) {
+										getStack(i).shrink(1);
+										if (getStack(i).getCount() == 0) {
 											setStack(i, null);
 										}
 										this.onInventoryChanged();

@@ -90,7 +90,7 @@ public class ModuleFirework extends ModuleAttachment {
 			if (item != null) {
 				if (item.getItem() == Items.FIREWORKS) {
 					ItemStack firework = item.copy();
-					firework.func_190917_f(1);
+					firework.grow(1);
 					removeItemStack(item, 1, i);
 					return firework;
 				} else if (item.getItem() == Items.PAPER) {
@@ -112,7 +112,7 @@ public class ModuleFirework extends ModuleAttachment {
 						removeItemStack(item, 1, i);
 						removedPaper = true;
 					} else if (item.getItem() == Items.GUNPOWDER && countGunpowder < maxGunpowder) {
-						while (item.func_190916_E() > 0 && countGunpowder < maxGunpowder) {
+						while (item.getCount() > 0 && countGunpowder < maxGunpowder) {
 							countGunpowder++;
 							removeItemStack(item, 1, i);
 						}
@@ -149,7 +149,7 @@ public class ModuleFirework extends ModuleAttachment {
 			if (item != null) {
 				if (item.getItem() == Items.FIREWORK_CHARGE) {
 					ItemStack charge = item.copy();
-					charge.func_190917_f(1);
+					charge.grow(1);
 					removeItemStack(item, 1, i);
 					return charge;
 				}
@@ -213,7 +213,7 @@ public class ModuleFirework extends ModuleAttachment {
 			ItemStack item = getStack(i);
 			if (item != null) {
 				if (item.getItem() == Items.DYE) {
-					maxColors[item.getItemDamage()] += item.func_190916_E();
+					maxColors[item.getItemDamage()] += item.getCount();
 				}
 			}
 		}
@@ -250,7 +250,7 @@ public class ModuleFirework extends ModuleAttachment {
 			if (item != null) {
 				if (item.getItem() == Items.DYE) {
 					if (currentColors[item.getItemDamage()] > 0) {
-						int count = Math.min(currentColors[item.getItemDamage()], item.func_190916_E());
+						int count = Math.min(currentColors[item.getItemDamage()], item.getCount());
 						currentColors[item.getItemDamage()] -= count;
 					}
 				}
@@ -261,8 +261,8 @@ public class ModuleFirework extends ModuleAttachment {
 
 	private void removeItemStack(ItemStack item, int count, int id) {
 		if (!getVehicle().hasCreativeSupplies()) {
-			item.func_190918_g(count);
-			if (item.func_190916_E() <= 0) {
+			item.shrink(count);
+			if (item.getCount() <= 0) {
 				setStack(id, null);
 			}
 		}
@@ -270,6 +270,6 @@ public class ModuleFirework extends ModuleAttachment {
 
 	private void launchFirework(ItemStack firework) {
 		EntityFireworkRocket rocket = new EntityFireworkRocket(getVehicle().getWorld(), getVehicle().getEntity().posX, getVehicle().getEntity().posY + 1, getVehicle().getEntity().posZ, firework);
-		getVehicle().getWorld().spawnEntityInWorld(rocket);
+		getVehicle().getWorld().spawnEntity(rocket);
 	}
 }

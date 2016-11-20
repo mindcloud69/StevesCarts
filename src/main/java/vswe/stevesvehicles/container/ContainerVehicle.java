@@ -38,8 +38,8 @@ public class ContainerVehicle extends ContainerBase {
 				if (module.hasSlots()) {
 					ArrayList<SlotBase> slotsList = module.getSlots();
 					for (SlotBase slot : slotsList) {
-						slot.xDisplayPosition = slot.getX() + module.getX() + 1;
-						slot.yDisplayPosition = slot.getY() + module.getY() + 1;
+						slot.xPos = slot.getX() + module.getX() + 1;
+						slot.yPos = slot.getY() + module.getY() + 1;
 						addSlotToContainer(slot);
 					}
 				}

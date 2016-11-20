@@ -8,11 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 
 public abstract class TileEntityInventory extends TileEntityBase implements IInventory {
-	public static final ItemStack INVALID_STACK = ItemStack.field_190927_a;
+	public static final ItemStack INVALID_STACK = ItemStack.EMPTY;
 	protected NonNullList<ItemStack> inventoryStacks;
 
 	public TileEntityInventory(int size) {
-		this(NonNullList.<ItemStack> func_191197_a(size, INVALID_STACK));
+		this(NonNullList.<ItemStack> withSize(size, INVALID_STACK));
 	}
 
 	public TileEntityInventory(NonNullList<ItemStack> inventoryStacks) {
@@ -29,13 +29,13 @@ public abstract class TileEntityInventory extends TileEntityBase implements IInv
 		super.readFromNBT(nbttagcompound);
 		;
 		inventoryStacks.clear();
-		ItemStackHelper.func_191283_b(nbttagcompound, inventoryStacks);
+		ItemStackHelper.loadAllItems(nbttagcompound, inventoryStacks);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		ItemStackHelper.func_191282_a(nbttagcompound, inventoryStacks);
+		ItemStackHelper.saveAllItems(nbttagcompound, inventoryStacks);
 		return nbttagcompound;
 	}
 
@@ -55,9 +55,9 @@ public abstract class TileEntityInventory extends TileEntityBase implements IInv
 	}
 
 	@Override
-	public boolean func_191420_l() {
+	public boolean isEmpty() {
 		for (ItemStack itemstack : inventoryStacks) {
-			if (!itemstack.func_190926_b()) {
+			if (!itemstack.isEmpty()) {
 				return false;
 			}
 		}
@@ -67,8 +67,8 @@ public abstract class TileEntityInventory extends TileEntityBase implements IInv
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventoryStacks.set(i, itemstack);
-		if (itemstack.func_190916_E() > getInventoryStackLimit()) {
-			itemstack.func_190920_e(getInventoryStackLimit());
+		if (itemstack.getCount() > getInventoryStackLimit()) {
+			itemstack.setCount(getInventoryStackLimit());
 		}
 		markDirty();
 	}

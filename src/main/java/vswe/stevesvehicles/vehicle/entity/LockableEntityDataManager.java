@@ -7,6 +7,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.minecraft.network.datasync.EntityDataManager.DataEntry;
+
 public class LockableEntityDataManager extends EntityDataManager {
 	private boolean isLocked;
 	private List lockedList;

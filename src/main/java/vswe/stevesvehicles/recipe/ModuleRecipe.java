@@ -45,7 +45,7 @@ public abstract class ModuleRecipe implements IRecipe {
 	private ItemStack getResult() {
 		ItemStack item = result.getItemStack();
 		if (item != null) {
-			item.func_190920_e(item.func_190916_E() * count);
+			item.setCount(item.getCount() * count);
 		}
 		return item;
 	}

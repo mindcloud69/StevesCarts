@@ -238,8 +238,8 @@ public class GuiCartAssembler extends GuiBase {
 				srcY = BIG_SLOT_SRC_Y;
 			} else {
 				size = SLOT_SIZE;
-				if (slot.getStack() != null && slot.getStack().func_190916_E() <= 0) {
-					if (slot.getStack().func_190916_E() == TileEntityCartAssembler.getRemovedSize()) {
+				if (slot.getStack() != null && slot.getStack().getCount() <= 0) {
+					if (slot.getStack().getCount() == TileEntityCartAssembler.getRemovedSize()) {
 						srcX = MODIFIED_RED_SLOT_SRC_X;
 					} else {
 						srcX = MODIFIED_GREEN_SLOT_SRC_X;
@@ -672,7 +672,7 @@ public class GuiCartAssembler extends GuiBase {
 				int targetY = slot.getY() - 1;
 				int size = 18;
 				if (inRect(x, y, new int[] { targetX, targetY, size, size })) {
-					if (slot.getStack() != null && ((i != 0 && slot.getStack().func_190916_E() <= 0) || assembler.isInFreeMode())) {
+					if (slot.getStack() != null && ((i != 0 && slot.getStack().getCount() <= 0) || assembler.isInFreeMode())) {
 						DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
 						dw.writeByte(1);
 						dw.writeByte(i);

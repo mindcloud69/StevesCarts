@@ -205,7 +205,7 @@ public class ModuleDynamite extends ModuleAttachment {
 		}
 		int f = 8;
 		if (ComponentTypes.DYNAMITE.isStackOfType(getStack(0))) {
-			f += getStack(0).func_190916_E() * 2;
+			f += getStack(0).getCount() * 2;
 		}
 		updateDw(EXPLOSION, (byte) f);
 	}

@@ -43,7 +43,7 @@ import vswe.stevesvehicles.upgrade.effect.util.TankEffect;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
 public class TileEntityUpgrade extends TileEntityInventory implements ISidedInventory, IFluidHandler, IFluidTank, ITickable {
-	public static final NonNullList<ItemStack> DEFAULT_STACKS = NonNullList.func_191197_a(0, INVALID_STACK);
+	public static final NonNullList<ItemStack> DEFAULT_STACKS = NonNullList.withSize(0, INVALID_STACK);
 	private TileEntityCartAssembler master;
 	private int type;
 	private List<BaseEffect> effects;
@@ -103,7 +103,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 				slotsForSide = new int[inventorySize];
 				init();
 				if (inventorySize > 0) {
-					inventoryStacks = NonNullList.func_191197_a(inventorySize, ItemStack.field_190927_a);
+					inventoryStacks = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
 					for (int i = 0; i < slotsForSide.length; i++) {
 						slotsForSide[i] = i;
 					}
@@ -233,15 +233,15 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	}
 
 	@Override
-	public boolean func_191420_l() {
+	public boolean isEmpty() {
 		if (hasInventory()) {
 			if (master == null) {
 				return false;
 			} else {
-				return master.func_191420_l();
+				return master.isEmpty();
 			}
 		}
-		return super.func_191420_l();
+		return super.isEmpty();
 	}
 
 	@Override

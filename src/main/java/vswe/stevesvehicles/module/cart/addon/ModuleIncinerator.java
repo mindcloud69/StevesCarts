@@ -17,13 +17,13 @@ public class ModuleIncinerator extends ModuleAddon {
 	public void incinerate(ItemStack item) {
 		if (isItemValid(item)) {
 			if (getIncinerationCost() != 0) {
-				int amount = item.func_190916_E() * getIncinerationCost();
+				int amount = item.getCount() * getIncinerationCost();
 				amount = getVehicle().drain(FluidRegistry.LAVA, amount, false);
 				int incinerated = amount / getIncinerationCost();
 				getVehicle().drain(FluidRegistry.LAVA, incinerated * getIncinerationCost(), true);
-				item.func_190918_g(incinerated);
+				item.shrink(incinerated);
 			} else {
-				item.func_190920_e(0);
+				item.setCount(0);
 			}
 		}
 	}

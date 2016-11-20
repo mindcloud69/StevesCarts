@@ -26,6 +26,8 @@ import vswe.stevesvehicles.upgrade.effect.assembly.Disassemble;
 import vswe.stevesvehicles.upgrade.effect.external.Transposer;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
+import net.minecraft.block.BlockRailBase.Rail;
+
 public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlockBase {
 	// private IIcon normalIcon;
 	// private IIcon cornerIcon;

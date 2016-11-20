@@ -43,6 +43,8 @@ import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelection;
 import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelectionModule;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
+import vswe.stevesvehicles.tileentity.TileEntityManager.PacketId;
+
 public class TileEntityCargo extends TileEntityManager {
 	public TileEntityCargo() {
 		super(60);
@@ -249,7 +251,7 @@ public class TileEntityCargo extends TileEntityManager {
 		for (int i = 0; i < fromInv.getSizeInventory(); i++) {
 			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
 				ItemStack iStack = fromInv.getStackInSlot(i);
-				int stackSize = iStack.func_190916_E();
+				int stackSize = iStack.getCount();
 				int maxNumber;
 				if (getAmountType(transfer.getSetting()) == 1) {
 					maxNumber = getAmount(transfer.getSetting()) - transfer.getWorkload();
@@ -257,15 +259,15 @@ public class TileEntityCargo extends TileEntityManager {
 					maxNumber = -1;
 				}
 				TransferHandler.TransferItem(iStack, toInv, toCont, toValid, maxNumber, TransferHandler.TransferType.MANAGER);
-				if (iStack.func_190916_E() != stackSize) {
+				if (iStack.getCount() != stackSize) {
 					if (getAmountType(transfer.getSetting()) == 1) {
-						transfer.setWorkload(transfer.getWorkload() + stackSize - iStack.func_190916_E());
+						transfer.setWorkload(transfer.getWorkload() + stackSize - iStack.getCount());
 					} else if (getAmountType(transfer.getSetting()) == 2) {
 						transfer.setWorkload(transfer.getWorkload() + 1);
 					}
 					markDirty();
 					transfer.getCart().markDirty();
-					if (iStack.func_190916_E() == 0) {
+					if (iStack.getCount() == 0) {
 						fromInv.setInventorySlotContents(i, null);
 					}
 					if (transfer.getWorkload() >= getAmount(transfer.getSetting()) && getAmountType(transfer.getSetting()) != 0) {

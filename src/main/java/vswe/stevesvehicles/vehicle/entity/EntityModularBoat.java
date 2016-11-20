@@ -303,7 +303,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 			tempX = restrictMovement(tempX, posX, MAX_MOVEMENT);
 			tempY = restrictMovement(tempY, posY, MAX_MOVEMENT);
 			tempZ = restrictMovement(tempZ, posZ, MAX_MOVEMENT);
-			moveEntity(MoverType.SELF, tempX - posX, tempY - posY, tempZ - posZ);
+			move(MoverType.SELF, tempX - posX, tempY - posY, tempZ - posZ);
 			rotationYaw = Float.intBitsToFloat(dr.readSignedInteger());
 			motionX = restrictMovement(Float.intBitsToFloat(dr.readSignedInteger()), motionX, MAX_SPEED);
 			motionY = restrictMovement(Float.intBitsToFloat(dr.readSignedInteger()), motionY, MAX_SPEED);
@@ -355,8 +355,8 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	}
 
 	@Override
-	public boolean func_191420_l() {
-		return vehicleBase.func_191420_l();
+	public boolean isEmpty() {
+		return vehicleBase.isEmpty();
 	}
 
 	@Override

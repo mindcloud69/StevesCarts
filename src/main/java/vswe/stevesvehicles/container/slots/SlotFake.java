@@ -17,11 +17,11 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	}
 
 	@Override
-	public ItemStack func_190901_a(EntityPlayer player, ItemStack item) {
+	public ItemStack onTake(EntityPlayer player, ItemStack item) {
 		if (item != null && player != null && player.inventory != null) {
 			player.inventory.setItemStack(null);
 		}
-		return super.func_190901_a(player, item);
+		return super.onTake(player, item);
 	}
 
 	@Override

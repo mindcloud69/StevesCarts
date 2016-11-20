@@ -29,7 +29,7 @@ public class MobHatEquip {
 				if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == ComponentTypes.WARM_HAT.getId()) {
 					if (!player.capabilities.isCreativeMode) {
 						final ItemStack itemStack = item;
-						itemStack.func_190918_g(1);
+						itemStack.shrink(1);
 					}
 					if (!player.world.isRemote) {
 						villager.setProfession(TradeHandler.santaProfession);
@@ -39,7 +39,7 @@ public class MobHatEquip {
 							e.printStackTrace();
 						}
 					}
-					if (item.func_190916_E() <= 0 && !player.capabilities.isCreativeMode) {
+					if (item.getCount() <= 0 && !player.capabilities.isCreativeMode) {
 						player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 					}
 					event.setCanceled(true);

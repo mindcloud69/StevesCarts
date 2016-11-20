@@ -19,6 +19,8 @@ import vswe.stevesvehicles.tileentity.TileEntityCargo;
 import vswe.stevesvehicles.tileentity.TileEntityManager;
 import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelection;
 
+import vswe.stevesvehicles.client.gui.screen.GuiManager.ColorEffect;
+
 @SideOnly(Side.CLIENT)
 public class GuiCargo extends GuiManager {
 	public GuiCargo(InventoryPlayer invPlayer, TileEntityCargo cargo) {

@@ -151,9 +151,9 @@ public class ItemVehicles extends Item implements TexturedItem {
 						Class<? extends IVehicleEntity> clazz = vehicle.getClazz();
 						Constructor<? extends IVehicleEntity> constructor = clazz.getConstructor(World.class, double.class, double.class, double.class, NBTTagCompound.class, String.class);
 						Object obj = constructor.newInstance(world, x, y, z, info, item.hasDisplayName() ? item.getDisplayName() : null);
-						world.spawnEntityInWorld((Entity) obj);
+						world.spawnEntity((Entity) obj);
 						if (!player.capabilities.isCreativeMode) {
-							item.func_190918_g(1);
+							item.shrink(1);
 						}
 						return (Entity) obj;
 					}
@@ -165,7 +165,7 @@ public class ItemVehicles extends Item implements TexturedItem {
 			}
 		} else {
 			if (!player.capabilities.isCreativeMode) {
-				item.func_190918_g(1);
+				item.shrink(1);
 			}
 			return null;
 		}

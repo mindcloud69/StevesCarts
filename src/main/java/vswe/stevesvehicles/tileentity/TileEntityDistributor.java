@@ -190,7 +190,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	// TODO: TEST IT
 	@Override
-	public boolean func_191420_l() {
+	public boolean isEmpty() {
 		return false;
 	}
 

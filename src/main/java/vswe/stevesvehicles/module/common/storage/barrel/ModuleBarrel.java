@@ -292,7 +292,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 				ItemStack output = getStack(1);
 				if (output != null && storedItem == null) {
 					storedItem = output.copy();
-					storedItem.func_190920_e(1);
+					storedItem.setCount(1);
 				} else if (output == null && storedItem != null && itemCount == 0 && !isLocked) {
 					storedItem = null;
 				}
@@ -302,7 +302,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 					if (storedItem != null) {
 						if (isLocked) {
 							ItemStack itemStack = storedItem.copy();
-							itemStack.func_190920_e(0);
+							itemStack.setCount(0);
 							setStack(1, itemStack);
 						} else {
 							storedItem = null;
@@ -315,10 +315,10 @@ public abstract class ModuleBarrel extends ModuleStorage {
 							storedItem = input.copy();
 						}
 						int max = getMaxItems(true);
-						int canMove = Math.min(max - itemCount, input.func_190916_E());
+						int canMove = Math.min(max - itemCount, input.getCount());
 						itemCount += canMove;
-						input.func_190918_g(canMove);
-						if (input.func_190916_E() == 0) {
+						input.shrink(canMove);
+						if (input.getCount() == 0) {
 							setStack(0, null);
 						}
 					}
@@ -327,10 +327,10 @@ public abstract class ModuleBarrel extends ModuleStorage {
 						if (output == null) {
 							output = storedItem.copy();
 							setStack(1, output);
-							output.func_190920_e(0);
+							output.setCount(0);
 						}
-						int canMove = Math.min(output.getMaxStackSize() - output.func_190916_E(), itemCount);
-						output.func_190917_f(canMove);
+						int canMove = Math.min(output.getMaxStackSize() - output.getCount(), itemCount);
+						output.grow(canMove);
 						itemCount -= canMove;
 					}
 				}
@@ -368,7 +368,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	public int getTotalCount() {
 		ItemStack input = getStack(0);
 		ItemStack output = getStack(1);
-		return itemCount + (input != null ? input.func_190916_E() : 0) + (output != null ? output.func_190916_E() : 0);
+		return itemCount + (input != null ? input.getCount() : 0) + (output != null ? output.getCount() : 0);
 	}
 
 	private int getMaxItems(boolean onlyInternal) {

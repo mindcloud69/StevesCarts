@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL11;
 
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
+import vswe.stevesvehicles.arcade.monopoly.Place.PlaceState;
+
 public class Street extends Property {
 	private float[] color;
 	private int structures;

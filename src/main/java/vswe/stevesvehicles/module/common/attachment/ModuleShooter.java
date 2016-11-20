@@ -295,10 +295,10 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 			if (getStack(i) != null) {
 				if (isValidProjectileItem(getStack(i))) {
 					ItemStack projectile = getStack(i).copy();
-					projectile.func_190920_e(1);
+					projectile.setCount(1);
 					if (flag && !getVehicle().hasCreativeSupplies()) {
-						getStack(i).func_190918_g(1);
-						if (getStack(i).func_190916_E() == 0) {
+						getStack(i).shrink(1);
+						if (getStack(i).getCount() == 0) {
 							setStack(i, null);
 						}
 					}
@@ -347,7 +347,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 			setProjectileDamage(projectile);
 			setProjectileOnFire(projectile);
 			setProjectileKnockBack(projectile);
-			getVehicle().getWorld().spawnEntityInWorld(projectile);
+			getVehicle().getWorld().spawnEntity(projectile);
 			hasShot = true;
 			damageEnchant();
 		}

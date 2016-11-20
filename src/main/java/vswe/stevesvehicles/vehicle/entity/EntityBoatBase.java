@@ -495,7 +495,7 @@ public abstract class EntityBoatBase extends EntityBoat { // The only reason
 				this.controlBoat();
 				this.world.sendPacketToServer(new CPacketSteerBoat(this.getPaddleState(0), this.getPaddleState(1)));
 			}
-			this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+			this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 		} else {
 			this.motionX = 0.0D;
 			this.motionY = 0.0D;

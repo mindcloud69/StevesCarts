@@ -50,12 +50,12 @@ public class ModuleSmelter extends ModuleRecipe {
 						for (SlotBase inputSlot : inputSlots) {
 							ItemStack item = inputSlot.getStack();
 							if (item != null && item.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item, recipe)) {
-								item.func_190918_g(1);
-								if (item.func_190916_E() <= 0) {
+								item.shrink(1);
+								if (item.getCount() <= 0) {
 									inputSlot.putStack(null);
 								}
 								getVehicle().addItemToChest(result, getValidSlot(), null);
-								if (result.func_190916_E() != 0) {
+								if (result.getCount() != 0) {
 									for (int j = 0; j < allTheSlots.size(); j++) {
 										allTheSlots.get(j).putStack(originals.get(j));
 									}

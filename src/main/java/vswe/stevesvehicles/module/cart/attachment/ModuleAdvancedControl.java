@@ -26,6 +26,8 @@ import vswe.stevesvehicles.network.DataReader;
 import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
+import vswe.stevesvehicles.module.ModuleBase.RailDirection;
+
 public class ModuleAdvancedControl extends ModuleAttachment implements ILeverModule {
 	public ModuleAdvancedControl(vswe.stevesvehicles.vehicle.VehicleBase vehicleBase) {
 		super(vehicleBase);

@@ -95,7 +95,7 @@ public class EnchantmentInfo {
 				int newValue = data.getEnchantment().getValue(level) + data.getValue();
 				if (newValue <= data.getEnchantment().getMaxValue()) {
 					data.setValue(newValue);
-					itemstack.func_190918_g(1);
+					itemstack.shrink(1);
 				}
 			}
 		}

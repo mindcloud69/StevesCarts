@@ -33,6 +33,8 @@ import vswe.stevesvehicles.tileentity.detector.DetectorType;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.VehicleCart;
 
+import net.minecraft.entity.item.EntityMinecart.Type;
+
 /**
  * The modular minecart class, this is the cart. This is what controls all
  * modules whereas the modules({@link ModuleBase} handles specific tasks. The
@@ -574,8 +576,8 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 	}
 
 	@Override
-	public boolean func_191420_l() {
-		return vehicleBase.func_191420_l();
+	public boolean isEmpty() {
+		return vehicleBase.isEmpty();
 	}
 
 	@Override

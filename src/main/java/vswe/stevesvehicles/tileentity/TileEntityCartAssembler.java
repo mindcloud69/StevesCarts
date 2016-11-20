@@ -300,7 +300,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		outputSlot = new SlotOutput(this, slotID, 450, 220);
 		slots.add(outputSlot);
 		// create the place to store all the items for the slots
-		inventoryStacks = NonNullList.func_191197_a(slots.size(), ItemStack.field_190927_a);
+		inventoryStacks = NonNullList.withSize(slots.size(), ItemStack.EMPTY);
 		// create the arrays used by ISidedInventory
 		topBotSlots = new int[] { getSizeInventory() - nonModularSlots() };
 		sideSlots = new int[] { getSizeInventory() - nonModularSlots() + 1 };
@@ -533,7 +533,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 			if (slotId >= 0 && slotId < getSlots().size()) {
 				SlotAssembler slot = getSlots().get(slotId);
 				if (slot.getStack() != null) {
-					if (slot.getStack().func_190916_E() > 0) {
+					if (slot.getStack().getCount() > 0) {
 						boolean canRemove = freeMode;
 						if (canRemove && slotId == 0) {
 							for (int i = 1; i < getSlots().size() - nonModularSlots(); i++) {
@@ -544,13 +544,13 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 							}
 						}
 						if (canRemove) {
-							slot.putStack(ItemStack.field_190927_a);
+							slot.putStack(ItemStack.EMPTY);
 						}
 					} else if (slotId != 0) {
-						if (slot.getStack().func_190916_E() == getKeepSize()) {
-							slot.getStack().func_190920_e(getRemovedSize());
+						if (slot.getStack().getCount() == getKeepSize()) {
+							slot.getStack().setCount(getRemovedSize());
 						} else {
-							slot.getStack().func_190920_e(getKeepSize());
+							slot.getStack().setCount(getKeepSize());
 						}
 					}
 				}
@@ -681,11 +681,11 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
 			ItemStack item = getStackInSlot(i);
 			if (item != null) {
-				if (item.func_190916_E() != getRemovedSize()) {
+				if (item.getCount() != getRemovedSize()) {
 					items.add(item);
 				} else if (!isSimulated) {
 					ItemStack spare = item.copy();
-					spare.func_190920_e(1);
+					spare.setCount(1);
 					spareModules.add(spare);
 				}
 			}
@@ -728,7 +728,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 			if (item != null) {
 				boolean validSize = true;
 				for (int invalidItem : invalid) {
-					if (invalidItem == item.func_190916_E() || (invalidItem > 0 && item.func_190916_E() > 0)) {
+					if (invalidItem == item.getCount() || (invalidItem > 0 && item.getCount() > 0)) {
 						validSize = false;
 						break;
 					}
@@ -776,7 +776,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 				for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
 					if (getStackInSlot(i) != null) {
 						ModuleData data = ModItems.modules.getModuleData(getStackInSlot(i));
-						if (data != null && getStackInSlot(i).func_190916_E() != getRemovedSize()) {
+						if (data != null && getStackInSlot(i).getCount() != getRemovedSize()) {
 							modules.add(data);
 						}
 					}
@@ -996,7 +996,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 						NBTTagCompound info = outputItem.getTagCompound();
 						if (info != null) {
 							EntityModularCart cart = new EntityModularCart(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, info, outputItem.hasDisplayName() ? outputItem.getDisplayName() : null);
-							world.spawnEntityInWorld(cart);
+							world.spawnEntity(cart);
 							cart.temppushX = tile.getPos().getX() - pos.getX();
 							cart.temppushZ = tile.getPos().getZ() - pos.getZ();
 							managerInteract(cart, true);
@@ -1061,7 +1061,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 			if (effect instanceof Disassemble) {
 				for (ItemStack item : spareModules) {
 					TransferHandler.TransferItem(item, effect.getUpgrade(), new ContainerUpgrade(null, effect.getUpgrade()), 1);
-					if (item.func_190916_E() > 0) {
+					if (item.getCount() > 0) {
 						puke(item);
 					}
 				}
@@ -1078,7 +1078,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		entityitem.motionX = (0.5F - world.rand.nextFloat()) / 10;
 		entityitem.motionY = 0.15F;
 		entityitem.motionZ = (0.5F - world.rand.nextFloat()) / 10;
-		world.spawnEntityInWorld(entityitem);
+		world.spawnEntity(entityitem);
 	}
 
 	private boolean loaded;
@@ -1135,9 +1135,9 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 				if (fuelSlot.getStack().getItem().hasContainerItem(fuelSlot.getStack())) {
 					fuelSlot.putStack(new ItemStack(fuelSlot.getStack().getItem().getContainerItem()));
 				} else {
-					fuelSlot.getStack().func_190918_g(1);
+					fuelSlot.getStack().shrink(1);
 				}
-				if (fuelSlot.getStack().func_190916_E() <= 0) {
+				if (fuelSlot.getStack().getCount() <= 0) {
 					fuelSlot.putStack(null);
 				}
 			}
@@ -1292,7 +1292,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
 			if (getStackInSlot(i) != null) {
 				ModuleData data = ModItems.modules.getModuleData(getStackInSlot(i));
-				if (data != null && getStackInSlot(i).func_190916_E() != getRemovedSize()) {
+				if (data != null && getStackInSlot(i).getCount() != getRemovedSize()) {
 					dataList.add(getStackInSlot(i).getItemDamage());
 				}
 			}
@@ -1306,7 +1306,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	public boolean getIsDisassembling() {
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
-			if (getStackInSlot(i) != null && getStackInSlot(i).func_190916_E() <= 0) {
+			if (getStackInSlot(i) != null && getStackInSlot(i).getCount() <= 0) {
 				return true;
 			}
 		}
@@ -1456,9 +1456,9 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	@Override
-	public boolean func_191420_l() {
+	public boolean isEmpty() {
 		for (ItemStack itemstack : spareModules) {
-			if (!itemstack.func_190926_b()) {
+			if (!itemstack.isEmpty()) {
 				return false;
 			}
 		}

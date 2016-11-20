@@ -1030,7 +1030,7 @@ public class VehicleBase {
 					entityitem.motionX = rand.nextGaussian() * 0.05F;
 					entityitem.motionY = rand.nextGaussian() * 0.05F + 0.2F;
 					entityitem.motionZ = rand.nextGaussian() * 0.05F;
-					getWorld().spawnEntityInWorld(entityitem);
+					getWorld().spawnEntity(entityitem);
 				}
 			}
 		}
@@ -1237,11 +1237,11 @@ public class VehicleBase {
 		return null;
 	}
 
-	public boolean func_191420_l() {
+	public boolean isEmpty() {
 		if (modules != null) {
 			for (ModuleBase module : modules) {
 				for (int i = 0; i < module.getInventorySize(); i++) {
-					if (!module.getStack(i).func_190926_b()) {
+					if (!module.getStack(i).isEmpty()) {
 						return false;
 					}
 				}
@@ -1269,13 +1269,13 @@ public class VehicleBase {
 		}
 		if (vehicleEntity.getStackInSlot(id) != null) {
 			ItemStack item;
-			if (vehicleEntity.getStackInSlot(id).func_190916_E() <= count) {
+			if (vehicleEntity.getStackInSlot(id).getCount() <= count) {
 				item = vehicleEntity.getStackInSlot(id);
 				vehicleEntity.setInventorySlotContents(id, null);
 				return item;
 			} else {
 				item = vehicleEntity.getStackInSlot(id).splitStack(count);
-				if (vehicleEntity.getStackInSlot(id).func_190916_E() == 0) {
+				if (vehicleEntity.getStackInSlot(id).getCount() == 0) {
 					vehicleEntity.setInventorySlotContents(id, null);
 				}
 				return item;

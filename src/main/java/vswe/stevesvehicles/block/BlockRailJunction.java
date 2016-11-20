@@ -13,6 +13,8 @@ import net.minecraft.world.IBlockAccess;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
+import net.minecraft.block.BlockRailBase.EnumRailDirection;
+
 public class BlockRailJunction extends BlockSpecialRailBase {
 	// private IIcon normalIcon;
 	// private IIcon cornerIcon;

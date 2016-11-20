@@ -25,7 +25,7 @@ public class ModuleRecipeShapeless extends ModuleRecipe {
 		for (int i = 0; i < GRID_WIDTH; i++) {
 			for (int j = 0; j < GRID_HEIGHT; j++) {
 				ItemStack item = crafting.getStackInRowAndColumn(i, j);
-				if (!item.func_190926_b()) {
+				if (!item.isEmpty()) {
 					boolean foundMatch = false;
 					for (RecipeItem recipeItem : remainingRecipe) {
 						if (recipeItem.matches(item)) {

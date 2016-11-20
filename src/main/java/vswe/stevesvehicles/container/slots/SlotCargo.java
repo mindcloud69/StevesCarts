@@ -41,23 +41,23 @@ public class SlotCargo extends SlotBase implements ISpecialSlotValidator {
 		if (id < 15) {
 			int x = (id) % 5;
 			int y = (id) / 5;
-			xDisplayPosition = 8 + x * 18;
-			yDisplayPosition = 16 + y * 18 - offset;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 - offset;
 		} else if (id < 30) {
 			int x = (id - 15) % 5 + 11;
 			int y = (id - 15) / 5;
-			xDisplayPosition = 8 + x * 18;
-			yDisplayPosition = 16 + y * 18 - offset;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 - offset;
 		} else if (id < 45) {
 			int x = (id - 30) % 5;
 			int y = (id - 30) / 5 + 3;
-			xDisplayPosition = 8 + x * 18;
-			yDisplayPosition = 16 + y * 18 + offset;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 + offset;
 		} else {
 			int x = (id - 45) % 5 + 11;
 			int y = (id - 45) / 5 + 3;
-			xDisplayPosition = 8 + x * 18;
-			yDisplayPosition = 16 + y * 18 + offset;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 + offset;
 		}
 	}
 }

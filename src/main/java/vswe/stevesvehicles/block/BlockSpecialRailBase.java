@@ -5,6 +5,8 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 
+import net.minecraft.block.BlockRailBase.EnumRailDirection;
+
 public class BlockSpecialRailBase extends BlockRailBase implements IBlockBase {
 	private String unlocalizedName;
 

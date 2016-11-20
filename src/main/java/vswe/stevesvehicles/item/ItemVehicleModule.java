@@ -63,7 +63,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 	public void getSubItems(Item item, CreativeTabs tab, NonNullList lst) {
 		for (ModuleData module : ModuleRegistry.getAllModules()) {
 			if (module.getIsValid()) {
-				ItemStack stack = ItemStack.field_190927_a;
+				ItemStack stack = ItemStack.EMPTY;
 				if (tab instanceof CreativeTabVehicle) {
 					CreativeTabVehicle vehicleTab = (CreativeTabVehicle) tab;
 					if (module.getValidVehicles() != null && module.getValidVehicles().contains(vehicleTab.getVehicleType())) {
@@ -72,7 +72,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 				} else {
 					stack = module.getItemStack();
 				}
-				if (!stack.func_190926_b()) {
+				if (!stack.isEmpty()) {
 					lst.add(stack);
 				}
 			}

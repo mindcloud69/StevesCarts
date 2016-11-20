@@ -167,7 +167,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		if (sapling != null) {
 			if (doPreWork()) {
 				if (sapling.getItem().onItemUse(getFakePlayer(), world, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0, 0, 0) == EnumActionResult.SUCCESS) {
-					if (sapling.func_190916_E() == 0) {
+					if (sapling.getCount() == 0) {
 						setStack(saplingSlotId, null);
 					}
 					startWorking(25);
@@ -237,7 +237,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		boolean first = true;
 		for (ItemStack item : stuff) {
 			getVehicle().addItemToChest(item, Slot.class, SlotFuel.class);
-			if (item.func_190916_E() != 0) {
+			if (item.getCount() != 0) {
 				if (first) {
 					return false;
 				}
@@ -245,7 +245,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				entityitem.motionX = (float) (here.getX() - getVehicle().x()) / 10;
 				entityitem.motionY = 0.15F;
 				entityitem.motionZ = (float) (here.getZ() - getVehicle().z()) / 10;
-				getVehicle().getWorld().spawnEntityInWorld(entityitem);
+				getVehicle().getWorld().spawnEntity(entityitem);
 			}
 			first = false;
 		}

@@ -92,8 +92,8 @@ public class GiftItem {
 			for (GiftItem gift : gifts) {
 				if (chance < gift.chanceWeight) {
 					int maxSetSize = (value / gift.costPerItem);
-					if (maxSetSize * gift.getItem().func_190916_E() > gift.getItem().getItem().getItemStackLimit(gift.getItem())) {
-						maxSetSize = gift.getItem().getItem().getItemStackLimit(gift.getItem()) / gift.getItem().func_190916_E();
+					if (maxSetSize * gift.getItem().getCount() > gift.getItem().getItem().getItemStackLimit(gift.getItem())) {
+						maxSetSize = gift.getItem().getItem().getItemStackLimit(gift.getItem()) / gift.getItem().getCount();
 					}
 					if (maxSetSize > 0) {
 						int setSize = 1;
@@ -105,7 +105,7 @@ public class GiftItem {
 							}
 						}
 						ItemStack item = gift.getItem().copy();
-						item.func_190920_e(item.func_190916_E() * setSize);
+						item.setCount(item.getCount() * setSize);
 						items.add(item);
 						value -= setSize * gift.costPerItem;
 					}

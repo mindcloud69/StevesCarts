@@ -67,9 +67,9 @@ public class Tank implements IFluidTank {
 							containerStack = new ItemStack(container, 1);
 							owner.addToOutputContainer(tankId, containerStack);
 						}
-						if (containerStack == null || containerStack.func_190916_E() == 0) {
-							item.func_190918_g(1);
-							if (item.func_190916_E() <= 0) {
+						if (containerStack == null || containerStack.getCount() == 0) {
+							item.shrink(1);
+							if (item.getCount() <= 0) {
 								owner.clearInputContainer(tankId);
 							}
 							fill(fluidContent, true, false);
@@ -82,9 +82,9 @@ public class Tank implements IFluidTank {
 					FluidStack fluidContentFilled = FluidUtil.getFluidContained(full);
 					if (fluidContentFilled != null) {
 						owner.addToOutputContainer(tankId, full);
-						if (full.func_190916_E() == 0) {
-							item.func_190918_g(1);
-							if (item.func_190916_E() <= 0) {
+						if (full.getCount() == 0) {
+							item.shrink(1);
+							if (item.getCount() <= 0) {
 								owner.clearInputContainer(tankId);
 							}
 							drain(fluidContentFilled.amount, true, false);

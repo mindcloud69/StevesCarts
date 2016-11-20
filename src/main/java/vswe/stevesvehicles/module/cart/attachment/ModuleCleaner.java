@@ -58,11 +58,11 @@ public class ModuleCleaner extends ModuleAttachment {
 			if (obj instanceof EntityItem) {
 				EntityItem entityItem = (EntityItem) obj;
 				if (getPickupDelay(entityItem) <= 10 && !entityItem.isDead) {
-					int stackSize = entityItem.getEntityItem().func_190916_E();
+					int stackSize = entityItem.getEntityItem().getCount();
 					getVehicle().addItemToChest(entityItem.getEntityItem());
-					if (stackSize != entityItem.getEntityItem().func_190916_E()) {
+					if (stackSize != entityItem.getEntityItem().getCount()) {
 						getVehicle().getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
-						if (entityItem.getEntityItem().func_190916_E() <= 0) {
+						if (entityItem.getEntityItem().getCount() <= 0) {
 							entityItem.setDead();
 						}
 					} else {
@@ -77,7 +77,7 @@ public class ModuleCleaner extends ModuleAttachment {
 					entityArrow.arrowShake = 3;
 					ItemStack iItem = new ItemStack(Items.ARROW, 1);
 					getVehicle().addItemToChest(iItem);
-					if (iItem.func_190916_E() <= 0) {
+					if (iItem.getCount() <= 0) {
 						getVehicle().getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((getVehicle().getRandom().nextFloat() - getVehicle().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						entityArrow.setDead();
 					} else {
@@ -105,7 +105,7 @@ public class ModuleCleaner extends ModuleAttachment {
 		entityitem.motionX = x / 3F;
 		entityitem.motionY = 0.15F;
 		entityitem.motionZ = z / 3F;
-		getVehicle().getWorld().spawnEntityInWorld(entityitem);
+		getVehicle().getWorld().spawnEntity(entityitem);
 		return true;
 	}
 

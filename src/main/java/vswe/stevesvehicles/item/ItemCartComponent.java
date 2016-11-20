@@ -154,7 +154,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 				}
 			}
 			if (!player.capabilities.isCreativeMode) {
-				stack.func_190918_g(1);
+				stack.shrink(1);
 			}
 			world.playSound((EntityPlayer) entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 			player.getFoodStats().addStats(2, 0);
@@ -182,11 +182,11 @@ public class ItemCartComponent extends Item implements TexturedItem {
 			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 		} else if (isThrowableEgg(itemStack)) {
 			if (!player.capabilities.isCreativeMode) {
-				itemStack.func_190918_g(1);
+				itemStack.shrink(1);
 			}
 			world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
-				world.spawnEntityInWorld(new EntityEasterEgg(world, player));
+				world.spawnEntity(new EntityEasterEgg(world, player));
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
 		} else {

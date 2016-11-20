@@ -64,8 +64,8 @@ public class TransferHandler {
 					// item in the slot and the item we want to store, if they
 					// are the same in various different properties they can be
 					// stored together.
-					if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i).getItem() == iStack.getItem() && inv.getStackInSlot(i).isStackable() && inv.getStackInSlot(i).func_190916_E() < inv.getStackInSlot(i).getMaxStackSize()
-							&& inv.getStackInSlot(i).func_190916_E() < cont.getSlot(i).getSlotStackLimit() && (inv.getStackInSlot(i).func_190916_E() > 0 && iStack.func_190916_E() > 0)
+					if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i).getItem() == iStack.getItem() && inv.getStackInSlot(i).isStackable() && inv.getStackInSlot(i).getCount() < inv.getStackInSlot(i).getMaxStackSize()
+							&& inv.getStackInSlot(i).getCount() < cont.getSlot(i).getSlotStackLimit() && (inv.getStackInSlot(i).getCount() > 0 && iStack.getCount() > 0)
 							&& (!inv.getStackInSlot(i).getHasSubtypes() || inv.getStackInSlot(i).getItemDamage() == iStack.getItemDamage())
 							&& (inv.getStackInSlot(i).getTagCompound() == null || inv.getStackInSlot(i).getTagCompound().equals(iStack.getTagCompound()))) {
 						// mark this slot as a good one, break the loop since
@@ -102,7 +102,7 @@ public class TransferHandler {
 				// add to an existing ItemStack and a new one.
 				if (inv.getStackInSlot(pos) == null) {
 					ItemStack clone = iStack.copy();
-					clone.func_190920_e(0);
+					clone.setCount(0);
 					if (!fake) {
 						inv.setInventorySlotContents(pos, clone);
 					}
@@ -113,12 +113,12 @@ public class TransferHandler {
 				// now it's time to calculate how many items we can transfer.
 				// This is done by comparing the stack size with all stack
 				// limits.
-				int stackSize = iStack.func_190916_E();
-				if (stackSize > existingItem.getMaxStackSize() - existingItem.func_190916_E()) {
-					stackSize = existingItem.getMaxStackSize() - existingItem.func_190916_E();
+				int stackSize = iStack.getCount();
+				if (stackSize > existingItem.getMaxStackSize() - existingItem.getCount()) {
+					stackSize = existingItem.getMaxStackSize() - existingItem.getCount();
 				}
-				if (stackSize > cont.getSlot(pos).getSlotStackLimit() - existingItem.func_190916_E()) {
-					stackSize = cont.getSlot(pos).getSlotStackLimit() - existingItem.func_190916_E();
+				if (stackSize > cont.getSlot(pos).getSlotStackLimit() - existingItem.getCount()) {
+					stackSize = cont.getSlot(pos).getSlotStackLimit() - existingItem.getCount();
 				}
 				boolean killMe = false;
 				if (maxItems != -1) {
@@ -136,17 +136,17 @@ public class TransferHandler {
 				} else {
 					// decrease the items in the stack we want to store and
 					// increase the items in the stack in the cart
-					iStack.func_190918_g(stackSize);
+					iStack.shrink(stackSize);
 					;
 					if (!fake) {
-						inv.getStackInSlot(pos).func_190917_f(stackSize);
+						inv.getStackInSlot(pos).grow(stackSize);
 						;
 					}
 					// if the stack we want to store is empty we're done and
 					// therefore mark the slot position as invalid to exit the
 					// loop. If it isn't marked as invalid the loop will loop
 					// again to try to store the rest of the items.
-					if (iStack.func_190916_E() == 0 || killMe || maxItems == 0) {
+					if (iStack.getCount() == 0 || killMe || maxItems == 0) {
 						pos = -1;
 					}
 				}

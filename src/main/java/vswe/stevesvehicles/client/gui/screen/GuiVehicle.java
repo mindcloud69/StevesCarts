@@ -271,8 +271,8 @@ public class GuiVehicle extends GuiBase {
 					module.handleScroll(rect);
 					boolean visible = rect[3] > 0;
 					if (visible) {
-						slot.xDisplayPosition = slot.getX() + module.getX() + 1;
-						slot.yDisplayPosition = slot.getY() + module.getY() + 1 - vehicle.getRealScrollY();
+						slot.xPos = slot.getX() + module.getX() + 1;
+						slot.yPos = slot.getY() + module.getY() + 1 - vehicle.getRealScrollY();
 					} else {
 						resetSlot(slot);
 					}
@@ -295,8 +295,8 @@ public class GuiVehicle extends GuiBase {
 	private static final int MARKER_SRC_Y = 250;
 
 	private void resetSlot(SlotBase slot) {
-		slot.xDisplayPosition = -9001;
-		slot.yDisplayPosition = -9001;
+		slot.xPos = -9001;
+		slot.yPos = -9001;
 	}
 
 	private void drawModuleBackground(ModuleBase module, int x, int y) {
@@ -327,8 +327,8 @@ public class GuiVehicle extends GuiBase {
 
 	@Override
 	public void drawSlot(Slot slot) {
-		int x = slot.xDisplayPosition;
-		int y = slot.yDisplayPosition;
+		int x = slot.xPos;
+		int y = slot.yPos;
 		ModuleBase thief = vehicle.getInterfaceThief();
 		if (thief != null) {
 			drawModuleBackgroundItems(thief, x, y);
@@ -346,7 +346,7 @@ public class GuiVehicle extends GuiBase {
 		String info = null;
 		if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
 			itemstack = itemstack.copy();
-			itemstack.func_190920_e(itemstack.func_190916_E() / 2);
+			itemstack.setCount(itemstack.getCount() / 2);
 		} else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null) {
 			if (this.dragSplittingSlots.size() == 1) {
 				return;
@@ -354,14 +354,14 @@ public class GuiVehicle extends GuiBase {
 			if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)) {
 				itemstack = itemstack1.copy();
 				shouldSlotUnderlayBeRendered = true;
-				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().func_190916_E());
-				if (itemstack.func_190916_E() > itemstack.getMaxStackSize()) {
+				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().getCount());
+				if (itemstack.getCount() > itemstack.getMaxStackSize()) {
 					info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
-					itemstack.func_190920_e(itemstack.getMaxStackSize());
+					itemstack.setCount(itemstack.getMaxStackSize());
 				}
-				if (itemstack.func_190916_E() > slot.getItemStackLimit(itemstack)) {
+				if (itemstack.getCount() > slot.getItemStackLimit(itemstack)) {
 					info = TextFormatting.YELLOW + "" + slot.getItemStackLimit(itemstack);
-					itemstack.func_190920_e(slot.getItemStackLimit(itemstack));
+					itemstack.setCount(slot.getItemStackLimit(itemstack));
 				}
 			} else {
 				this.dragSplittingSlots.remove(slot);
@@ -399,16 +399,16 @@ public class GuiVehicle extends GuiBase {
 		if (render) {
 			if (shouldSlotBeRendered) {
 				if (shouldSlotUnderlayBeRendered) {
-					drawRect(slot.xDisplayPosition, slot.yDisplayPosition, slot.xDisplayPosition + SLOT_SIZE, slot.yDisplayPosition + SLOT_SIZE, SLOT_HOVER_COLOR);
+					drawRect(slot.xPos, slot.yPos, slot.xPos + SLOT_SIZE, slot.yPos + SLOT_SIZE, SLOT_HOVER_COLOR);
 				}
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 				if (shouldSlotItemBeRendered && slotItem != null) {
-					itemRender.renderItemAndEffectIntoGUI(slotItem, slot.xDisplayPosition, slot.yDisplayPosition);
-					itemRender.renderItemOverlayIntoGUI(fontRendererObj, slotItem, slot.xDisplayPosition, slot.yDisplayPosition, info);
+					itemRender.renderItemAndEffectIntoGUI(slotItem, slot.xPos, slot.yPos);
+					itemRender.renderItemOverlayIntoGUI(fontRendererObj, slotItem, slot.xPos, slot.yPos, info);
 				}
 				if (shouldSlotOverlayBeRendered) {
 					GL11.glEnable(GL11.GL_DEPTH_TEST);
-					drawRect(slot.xDisplayPosition, slot.yDisplayPosition, slot.xDisplayPosition + SLOT_SIZE, slot.yDisplayPosition + SLOT_SIZE, SLOT_HOVER_COLOR);
+					drawRect(slot.xPos, slot.yPos, slot.xPos + SLOT_SIZE, slot.yPos + SLOT_SIZE, SLOT_HOVER_COLOR);
 					GL11.glEnable(GL11.GL_DEPTH_TEST);
 				}
 			}
