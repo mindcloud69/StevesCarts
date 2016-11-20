@@ -10,7 +10,7 @@ import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelNote extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/noteModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/note.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

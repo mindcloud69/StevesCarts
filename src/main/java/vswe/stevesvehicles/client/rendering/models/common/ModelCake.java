@@ -16,7 +16,7 @@ public class ModelCake extends ModelVehicle {
 		return 256;
 	}
 
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/cakeModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/cake.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

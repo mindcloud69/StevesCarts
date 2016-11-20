@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.common.storage.chest.ModuleEggBasket;
 
 @SideOnly(Side.CLIENT)
 public class ModelEggBasket extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/chestModelEaster.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/chest_easter.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

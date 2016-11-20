@@ -10,7 +10,7 @@ import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelToolPlate extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/toolPlateModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/tool_plate.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.common.storage.chest.ModuleChest;
 
 @SideOnly(Side.CLIENT)
 public class ModelFrontChest extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/frontChestModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/front_chest.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

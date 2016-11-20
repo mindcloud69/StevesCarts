@@ -13,7 +13,7 @@ import vswe.stevesvehicles.module.common.attachment.ModuleDynamite;
 
 @SideOnly(Side.CLIENT)
 public class ModelDynamite extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/tntModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/tnt.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

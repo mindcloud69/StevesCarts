@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.cart.attachment.ModuleRailer;
 
 @SideOnly(Side.CLIENT)
 public class ModelRailer extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/builderModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/builder.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

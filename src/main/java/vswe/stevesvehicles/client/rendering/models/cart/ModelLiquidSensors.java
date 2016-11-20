@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.cart.addon.ModuleLiquidSensors;
 
 @SideOnly(Side.CLIENT)
 public class ModelLiquidSensors extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/sensorModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/sensor.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

@@ -13,8 +13,8 @@ import vswe.stevesvehicles.module.common.storage.tank.ModuleTank;
 
 @SideOnly(Side.CLIENT)
 public class ModelTopTank extends ModelVehicle {
-	private static final ResourceLocation TEXTURE_STANDARD = ResourceHelper.getResource("/models/tankModelTop.png");
-	private static final ResourceLocation TEXTURE_OPEN = ResourceHelper.getResource("/models/tankModelTopOpen.png");
+	private static final ResourceLocation TEXTURE_STANDARD = ResourceHelper.getResource("/models/tank_top.png");
+	private static final ResourceLocation TEXTURE_OPEN = ResourceHelper.getResource("/models/tank_top_open.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

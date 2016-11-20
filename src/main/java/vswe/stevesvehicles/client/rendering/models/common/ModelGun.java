@@ -13,7 +13,7 @@ import vswe.stevesvehicles.module.common.attachment.ModuleShooter;
 
 @SideOnly(Side.CLIENT)
 public class ModelGun extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/gunModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/gun.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

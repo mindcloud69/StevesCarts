@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.common.attachment.ModuleShooterAdvanced;
 
 @SideOnly(Side.CLIENT)
 public class ModelMobDetector extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/mobDetectorModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/mob_detector.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

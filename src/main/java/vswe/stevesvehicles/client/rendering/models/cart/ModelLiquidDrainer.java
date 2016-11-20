@@ -8,7 +8,7 @@ import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelLiquidDrainer extends ModelCleaner {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/cleanerModelLiquid.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/cleaner_liquid.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

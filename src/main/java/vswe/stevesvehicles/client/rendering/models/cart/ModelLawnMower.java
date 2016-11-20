@@ -13,7 +13,7 @@ import vswe.stevesvehicles.module.cart.attachment.ModuleFlowerRemover;
 
 @SideOnly(Side.CLIENT)
 public class ModelLawnMower extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/lawnmowerModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/lawnmower.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

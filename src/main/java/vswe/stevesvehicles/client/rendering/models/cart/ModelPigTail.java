@@ -12,7 +12,7 @@ import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelPigTail extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/pigtailModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/pigtail.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

@@ -117,8 +117,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/hullModelCreative.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/hullModelCreativeTop.png")));
+				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/creative_hull.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/creative_hull_top.png")));
 			}
 		};
 		creative.addVehicles(VehicleRegistry.CART);

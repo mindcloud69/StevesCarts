@@ -13,12 +13,12 @@ import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 @SideOnly(Side.CLIENT)
 public class ModelBridge extends ModelVehicle {
-	private static final ResourceLocation NORMAL = ResourceHelper.getResource("/models/aiModelNormal.png");
-	private static final ResourceLocation DOWN = ResourceHelper.getResource("/models/aiModelDown.png");
-	private static final ResourceLocation UP = ResourceHelper.getResource("/models/aiModelUp.png");
-	private static final ResourceLocation NORMAL_WARNING = ResourceHelper.getResource("/models/aiModelNormalWarning.png");
-	private static final ResourceLocation DOWN_WARNING = ResourceHelper.getResource("/models/aiModelDownWarning.png");
-	private static final ResourceLocation UP_WARNING = ResourceHelper.getResource("/models/aiModelUpWarning.png");
+	private static final ResourceLocation NORMAL = ResourceHelper.getResource("/models/ai_normal.png");
+	private static final ResourceLocation DOWN = ResourceHelper.getResource("/models/ai_down.png");
+	private static final ResourceLocation UP = ResourceHelper.getResource("/models/ai_up.png");
+	private static final ResourceLocation NORMAL_WARNING = ResourceHelper.getResource("/models/ai_normal_warning.png");
+	private static final ResourceLocation DOWN_WARNING = ResourceHelper.getResource("/models/ai_down_warning.png");
+	private static final ResourceLocation UP_WARNING = ResourceHelper.getResource("/models/ai_up_warning.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

@@ -10,7 +10,7 @@ import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelTrackRemover extends ModelVehicle {
-	private static ResourceLocation texture = ResourceHelper.getResource("/models/removerModel.png");
+	private static ResourceLocation texture = ResourceHelper.getResource("/models/remover.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

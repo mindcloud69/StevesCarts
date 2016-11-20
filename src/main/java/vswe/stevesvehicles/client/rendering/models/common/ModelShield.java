@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.common.addon.ModuleShield;
 
 @SideOnly(Side.CLIENT)
 public class ModelShield extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/shieldModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/shield.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

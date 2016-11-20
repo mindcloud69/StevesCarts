@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.cart.attachment.ModuleAdvancedControl;
 
 @SideOnly(Side.CLIENT)
 public class ModelWheel extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/wheelModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/wheel.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

@@ -29,6 +29,7 @@ public class ModuleRegistry implements IRegistry<ModuleData> {
 		add(new ModuleRegistryBoatHulls());
 		add(new ModuleRegistryEngines());
 		add(new ModuleRegistryCartTools());
+
 		add(new ModuleRegistryChests());
 		add(new ModuleRegistryTanks());
 		add(new ModuleRegistryBarrel());

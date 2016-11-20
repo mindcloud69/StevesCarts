@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.common.attachment.ModuleSeat;
 
 @SideOnly(Side.CLIENT)
 public class ModelSeat extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/chairModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/chair.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {

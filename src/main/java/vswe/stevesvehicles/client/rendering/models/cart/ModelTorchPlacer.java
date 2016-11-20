@@ -11,7 +11,7 @@ import vswe.stevesvehicles.module.cart.attachment.ModuleTorch;
 
 @SideOnly(Side.CLIENT)
 public class ModelTorchPlacer extends ModelVehicle {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/torchModel.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/torch.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {
