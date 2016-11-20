@@ -39,6 +39,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
 	private DataParameter<Boolean> IS_MINING;
 	private DataParameter<Boolean> IS_ENABLED;
+
 	public ModuleDrill(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -379,7 +380,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			if (liquidSensors != null) {
 				// check all five directions for danger(no need to check below
 				// since liquids can't flow upwards ^^)
-				if (liquidSensors.isDangerous(this, pos.up(), true) || liquidSensors.isDangerous(this, pos.east(), false) || liquidSensors.isDangerous(this, pos.west(), false) || liquidSensors.isDangerous(this, pos.south(), false) || liquidSensors.isDangerous(this, pos.north(), false)) {
+				if (liquidSensors.isDangerous(this, pos.up(), true) || liquidSensors.isDangerous(this, pos.east(), false) || liquidSensors.isDangerous(this, pos.west(), false) || liquidSensors.isDangerous(this, pos.south(), false)
+						|| liquidSensors.isDangerous(this, pos.north(), false)) {
 					sensorLight = (byte) 3;
 					return null;
 				}

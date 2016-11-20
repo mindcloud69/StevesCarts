@@ -29,6 +29,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule, ICropModule {
 	private DataParameter<Boolean> IS_FARMING;
+
 	public ModuleFarmer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}

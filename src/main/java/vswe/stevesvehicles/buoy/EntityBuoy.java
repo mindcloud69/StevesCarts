@@ -89,8 +89,8 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		buoyType = BuoyType.getType(compound.getByte(NBT_TYPE));
-		//readBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
-		//readBuoy(compound, NBT_PREV, DW_PREV_BUOY);
+		// readBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
+		// readBuoy(compound, NBT_PREV, DW_PREV_BUOY);
 	}
 
 	private void readBuoy(NBTTagCompound compound, String nbt, int id) {
@@ -110,8 +110,8 @@ public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setByte(NBT_TYPE, (byte) buoyType.getMeta());
-		//writeBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
-		//writeBuoy(compound, NBT_PREV, DW_PREV_BUOY);
+		// writeBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
+		// writeBuoy(compound, NBT_PREV, DW_PREV_BUOY);
 	}
 
 	@Override

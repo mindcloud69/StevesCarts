@@ -54,7 +54,8 @@ public class VehicleRegistry implements IRegistry<VehicleType> {
 		} else {
 			vehicles.put(vehicleType.getUnlocalizedName(), vehicleType);
 			allVehicles.add(vehicleType);
-			EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, vehicleType.getRawUnlocalizedName()), (Class<? extends Entity>) vehicleType.getClazz(), vehicleType.getRawUnlocalizedName(), allVehicles.size(), StevesVehicles.instance, 80, 3, true);
+			EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, vehicleType.getRawUnlocalizedName()), (Class<? extends Entity>) vehicleType.getClazz(), vehicleType.getRawUnlocalizedName(), allVehicles.size(), StevesVehicles.instance,
+					80, 3, true);
 		}
 	}
 

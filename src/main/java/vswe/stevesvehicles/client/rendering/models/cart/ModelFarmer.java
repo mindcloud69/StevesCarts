@@ -37,7 +37,7 @@ public class ModelFarmer extends ModelVehicle {
 		mainAnchor.setRotationPoint(-18, // X
 				4, // Y
 				0 // Z
-				);
+		);
 		for (int i = -1; i <= 1; i += 2) {
 			ModelRenderer smallArm = new ModelRenderer(this, 26, 23);
 			mainAnchor.addChild(smallArm);
@@ -52,7 +52,7 @@ public class ModelFarmer extends ModelVehicle {
 			smallArm.setRotationPoint(0, // X
 					0, // Y
 					i * 17 // Z
-					);
+			);
 		}
 		ModelRenderer mainArm = new ModelRenderer(this, 0, 37);
 		mainAnchor.addChild(mainArm);
@@ -67,7 +67,7 @@ public class ModelFarmer extends ModelVehicle {
 		mainArm.setRotationPoint(8, // X
 				0, // Y
 				0 // Z
-				);
+		);
 		mainArm.rotateAngleY = (float) Math.PI / 2;
 		for (int i = -1; i <= 1; i += 2) {
 			ModelRenderer extra = new ModelRenderer(this, 26, 27);
@@ -83,7 +83,7 @@ public class ModelFarmer extends ModelVehicle {
 			extra.setRotationPoint(8, // X
 					0, // Y
 					i * 30 // Z
-					);
+			);
 			ModelRenderer bigArm = new ModelRenderer(this, 26, 17);
 			mainAnchor.addChild(bigArm);
 			fixSize(bigArm);
@@ -97,14 +97,14 @@ public class ModelFarmer extends ModelVehicle {
 			bigArm.setRotationPoint(8, // X
 					0, // Y
 					i * 32 // Z
-					);
+			);
 		}
 		anchor = new ModelRenderer(this);
 		mainAnchor.addChild(anchor);
 		anchor.setRotationPoint(22, // X
 				0, // Y
 				0 // Z
-				);
+		);
 		float start = -1.5F;
 		float end = 1.5F;
 		for (float i = -1.5F; i <= 1.5F; i++) {
@@ -122,7 +122,7 @@ public class ModelFarmer extends ModelVehicle {
 				side.setRotationPoint(0, // X
 						0, // Y
 						i * 20 + (j % 2) * 0.005F // Z
-						);
+				);
 				side.rotateAngleZ = j * (float) (Math.PI * 2) / 6;
 			}
 			if (i == start || i == end) {
@@ -139,7 +139,7 @@ public class ModelFarmer extends ModelVehicle {
 				sideCenter.setRotationPoint(0, // X
 						0, // Y
 						i * 20 // Z
-						);
+				);
 			} else {
 				for (int j = 0; j < 3; j++) {
 					ModelRenderer sideCenter = new ModelRenderer(this, 26, 12);
@@ -155,7 +155,7 @@ public class ModelFarmer extends ModelVehicle {
 					sideCenter.setRotationPoint(0, // X
 							0, // Y
 							i * 20 // Z
-							);
+					);
 					sideCenter.rotateAngleZ = (j + 0.25F) * (float) (Math.PI * 2) / 3;
 				}
 			}
@@ -174,7 +174,7 @@ public class ModelFarmer extends ModelVehicle {
 			middle.setRotationPoint(0, // X
 					0, // Y
 					(i % 2) * 0.005F // Z
-					);
+			);
 			middle.rotateAngleX = i * (float) (Math.PI * 2) / 6;
 			middle.rotateAngleY = (float) Math.PI / 2;
 		}
@@ -197,7 +197,7 @@ public class ModelFarmer extends ModelVehicle {
 			outer.setRotationPoint(0, // X
 					-8.8F, // Y
 					0 // Z
-					);
+			);
 			outer.rotateAngleX = (float) Math.PI;
 			outers[i] = outer;
 			for (int j = -13; j <= 13; j++) {
@@ -217,7 +217,7 @@ public class ModelFarmer extends ModelVehicle {
 				nail.setRotationPoint(j * 2, // X
 						-2F, // Y
 						0 // Z
-						);
+				);
 			}
 		}
 	}

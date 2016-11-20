@@ -52,7 +52,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	protected void entityInit() {
-		if(this.world.isRemote && !(dataManager instanceof LockableEntityDataManager)){
+		if (this.world.isRemote && !(dataManager instanceof LockableEntityDataManager)) {
 			this.overrideDatawatcher();
 		}
 		super.entityInit();
@@ -164,7 +164,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 				motionZ = Math.sin(yaw) * speed;
 				rotationYaw = (float) yaw * 180 / (float) Math.PI - 180;
 			}
-			//preventRotationUpdate = true;
+			// preventRotationUpdate = true;
 		} else {
 			hasRider = false;
 			if (hasTarget) {
@@ -272,7 +272,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	@Override
 	public void updatePassenger(Entity passenger) {
 		super.updatePassenger(passenger);
-		if(isPassenger(passenger)){
+		if (isPassenger(passenger)) {
 			if (world.isRemote) {
 				if (delay < SYNC_DELAY) {
 					delay++;
@@ -353,7 +353,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public void setInventorySlotContents(int id, ItemStack item) {
 		vehicleBase.setStack(id, item);
 	}
-	
+
 	@Override
 	public boolean func_191420_l() {
 		return vehicleBase.func_191420_l();
@@ -461,7 +461,6 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	public void setField(int id, int value) {
-
 	}
 
 	@Override
@@ -471,6 +470,5 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	public void clear() {
-
 	}
 }

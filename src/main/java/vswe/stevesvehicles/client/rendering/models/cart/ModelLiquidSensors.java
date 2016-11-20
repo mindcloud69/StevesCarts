@@ -50,12 +50,12 @@ public class ModelLiquidSensors extends ModelVehicle {
 			base.setRotationPoint(-10.0F, // X
 					-11F, // Y
 					6F // Z
-					);
+			);
 		} else {
 			base.setRotationPoint(-10.0F, // X
 					-11F, // Y
 					-8.0F // Z
-					);
+			);
 		}
 		ModelRenderer head = new ModelRenderer(this, 4, 0);
 		fixSize(head);
@@ -70,7 +70,7 @@ public class ModelLiquidSensors extends ModelVehicle {
 		head.setRotationPoint(1.0F, // X
 				0F, // Y
 				1.0F // Z
-				);
+		);
 		ModelRenderer face = new ModelRenderer(this, 20, 0);
 		fixSize(face);
 		head.addChild(face);
@@ -84,7 +84,7 @@ public class ModelLiquidSensors extends ModelVehicle {
 		face.setRotationPoint(-2.5F, // X
 				0F, // Y
 				0.0F // Z
-				);
+		);
 		ModelRenderer[] dynamic = new ModelRenderer[4];
 		dynamic[0] = head;
 		for (int i = 1; i < 4; i++) {
@@ -101,7 +101,7 @@ public class ModelLiquidSensors extends ModelVehicle {
 			light.setRotationPoint(0F, // X
 					-2.5F, // Y
 					0.0F // Z
-					);
+			);
 			dynamic[i] = light;
 		}
 		return dynamic;

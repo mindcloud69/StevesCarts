@@ -15,7 +15,7 @@ public abstract class ModelEngineBase extends ModelVehicle {
 		anchor.setRotationPoint(10.5F, // X
 				0.5F, // Y
 				-0F // Z
-				);
+		);
 		anchor.rotateAngleY = -(float) Math.PI / 2;
 	}
 }

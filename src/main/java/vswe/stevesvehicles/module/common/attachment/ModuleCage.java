@@ -161,8 +161,7 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 		for (Object entity : entities) {
 			EntityLivingBase target = (EntityLivingBase) entity;
 			if (target instanceof EntityPlayer || target instanceof EntityIronGolem || target instanceof EntityDragon || target instanceof EntitySlime || target instanceof EntityWaterMob || target instanceof EntityWither || target instanceof EntityEnderman
-					|| (target instanceof EntitySpider && !(target instanceof EntityCaveSpider)) || target instanceof EntityGiantZombie || target instanceof EntityFlying
-					|| (target instanceof EntityWitherSkeleton)) {
+					|| (target instanceof EntitySpider && !(target instanceof EntityCaveSpider)) || target instanceof EntityGiantZombie || target instanceof EntityFlying || (target instanceof EntityWitherSkeleton)) {
 				continue;
 			}
 			if (target.getControllingPassenger() == null) {

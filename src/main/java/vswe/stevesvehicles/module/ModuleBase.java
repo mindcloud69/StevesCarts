@@ -770,47 +770,28 @@ public abstract class ModuleBase {
 	 * @param sizeY
 	 *            The height of the image
 	 */
-	//TODO: sprites
-	/*@SideOnly(Side.CLIENT)
-	public void drawImage(GuiVehicle gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
-		// create a rectangle and call the other drawImage function to do the
-		// job
-		drawImage(gui, icon, new int[] { targetX, targetY, sizeX, sizeY }, srcX, srcY);
-	}
-
-	/**
-	 * Draw an image in the given interface, using the current texture and using
-	 * the given dimentiosn.
-	 * 
-	 * @param gui
-	 *            The gui to draw it on
-	 * @param rect
-	 *            The rectangle indicating where to draw it {targetX, targetY,
-	 *            sizeX, sizeY}
-	 * @param srcX
-	 *            The x coordinate in the source file
-	 * @param srcY
-	 *            They y coordinate in the source file
-
-	@SideOnly(Side.CLIENT)
-	public void drawImage(GuiVehicle gui, IIcon icon, int[] rect, int srcX, int srcY) {
-		// the rectangle need to be valid
-		if (rect.length < 4) {
-			return;
-		} else {
-			// clones the rectangle and scroll the clone
-			rect = cloneRect(rect);
-			if (!doStealInterface()) {
-				srcY -= handleScroll(rect);
-			}
-			// if there's still something to draw(that it's not scrolled outside
-			// the screen)
-			if (rect[3] > 0) {
-				gui.drawIcon(icon, gui.getGuiLeft() + rect[0] + getX(), gui.getGuiTop() + rect[1] + getY(), rect[2] / 16F, rect[3] / 16F, srcX / 16F, srcY / 16F);
-			}
-		}
-	}*/
-
+	// TODO: sprites
+	/*
+	 * @SideOnly(Side.CLIENT) public void drawImage(GuiVehicle gui, IIcon icon,
+	 * int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) { //
+	 * create a rectangle and call the other drawImage function to do the // job
+	 * drawImage(gui, icon, new int[] { targetX, targetY, sizeX, sizeY }, srcX,
+	 * srcY); } /** Draw an image in the given interface, using the current
+	 * texture and using the given dimentiosn.
+	 * @param gui The gui to draw it on
+	 * @param rect The rectangle indicating where to draw it {targetX, targetY,
+	 * sizeX, sizeY}
+	 * @param srcX The x coordinate in the source file
+	 * @param srcY They y coordinate in the source file
+	 * @SideOnly(Side.CLIENT) public void drawImage(GuiVehicle gui, IIcon icon,
+	 * int[] rect, int srcX, int srcY) { // the rectangle need to be valid if
+	 * (rect.length < 4) { return; } else { // clones the rectangle and scroll
+	 * the clone rect = cloneRect(rect); if (!doStealInterface()) { srcY -=
+	 * handleScroll(rect); } // if there's still something to draw(that it's not
+	 * scrolled outside // the screen) if (rect[3] > 0) { gui.drawIcon(icon,
+	 * gui.getGuiLeft() + rect[0] + getX(), gui.getGuiTop() + rect[1] + getY(),
+	 * rect[2] / 16F, rect[3] / 16F, srcX / 16F, srcY / 16F); } } }
+	 */
 	/**
 	 * Scrolls a given rectangle accordingly to the scrollbar in the interface
 	 * 

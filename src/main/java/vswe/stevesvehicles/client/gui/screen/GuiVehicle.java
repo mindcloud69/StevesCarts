@@ -344,49 +344,38 @@ public class GuiVehicle extends GuiBase {
 		boolean shouldSlotBeRendered = slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
 		ItemStack itemstack1 = this.mc.player.inventory.getItemStack();
 		String info = null;
-
 		if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
 			itemstack = itemstack.copy();
 			itemstack.func_190920_e(itemstack.func_190916_E() / 2);
-		}
-		else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null){
-			if (this.dragSplittingSlots.size() == 1){
+		} else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null) {
+			if (this.dragSplittingSlots.size() == 1) {
 				return;
 			}
-
-			if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)){
+			if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)) {
 				itemstack = itemstack1.copy();
 				shouldSlotUnderlayBeRendered = true;
 				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().func_190916_E());
-
-				if (itemstack.func_190916_E() > itemstack.getMaxStackSize()){
+				if (itemstack.func_190916_E() > itemstack.getMaxStackSize()) {
 					info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
 					itemstack.func_190920_e(itemstack.getMaxStackSize());
 				}
-
 				if (itemstack.func_190916_E() > slot.getItemStackLimit(itemstack)) {
 					info = TextFormatting.YELLOW + "" + slot.getItemStackLimit(itemstack);
 					itemstack.func_190920_e(slot.getItemStackLimit(itemstack));
 				}
-			}
-			else
-			{
+			} else {
 				this.dragSplittingSlots.remove(slot);
 				this.updateDragSplitting();
 			}
 		}
-
 		this.zLevel = 100.0F;
 		this.itemRender.zLevel = 100.0F;
-
-		if (itemstack == null && isMouseOverSlot(slot, x, y) && slot.canBeHovered())
-		{
+		if (itemstack == null && isMouseOverSlot(slot, x, y) && slot.canBeHovered()) {
 			shouldSlotOverlayBeRendered = true;
 		}
-		if (!shouldSlotBeRendered){
+		if (!shouldSlotBeRendered) {
 			renderSlot(slot, itemstack, shouldSlotBeRendered, true, shouldSlotUnderlayBeRendered, shouldSlotUnderlayBeRendered, info);
 		}
-
 		this.itemRender.zLevel = 0.0F;
 		this.zLevel = 0.0F;
 	}

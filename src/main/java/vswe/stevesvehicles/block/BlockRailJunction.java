@@ -14,9 +14,8 @@ import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class BlockRailJunction extends BlockSpecialRailBase {
-	//private IIcon normalIcon;
-	//private IIcon cornerIcon;
-
+	// private IIcon normalIcon;
+	// private IIcon cornerIcon;
 	public static PropertyEnum<EnumRailDirection> SHAPE = BlockRail.SHAPE;
 
 	public BlockRailJunction() {
@@ -25,18 +24,17 @@ public class BlockRailJunction extends BlockSpecialRailBase {
 		setSoundType(SoundType.METAL);
 	}
 
-	/*@Override
-	public IIcon getIcon(int side, int meta) {
-		return meta >= 6 ? cornerIcon : normalIcon;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister register) {
-		normalIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/junction");
-		cornerIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/junction_corner");
-	}*/
-
+	/*
+	 * @Override public IIcon getIcon(int side, int meta) { return meta >= 6 ?
+	 * cornerIcon : normalIcon; }
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void registerBlockIcons(IIconRegister
+	 * register) { normalIcon =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":rails/junction"); cornerIcon =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":rails/junction_corner"); }
+	 */
 	@Override
 	public boolean canMakeSlopes(IBlockAccess world, BlockPos pos) {
 		return false;
@@ -65,7 +63,7 @@ public class BlockRailJunction extends BlockSpecialRailBase {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState(){
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, SHAPE);
 	}
 }

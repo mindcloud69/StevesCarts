@@ -64,7 +64,6 @@ public class ArcadeSweeper extends ArcadeGame {
 		}
 	}
 
-	
 	private void newGame(int width, int height, int totalCreepers) {
 		isPlaying = true;
 		ticks = 0;

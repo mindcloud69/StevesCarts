@@ -21,29 +21,25 @@ import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.Upgrade;
 
 public class BlockUpgrade extends BlockContainerBase {
-
 	public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyUpgrade TYPE = new PropertyUpgrade("type");
+
 	public BlockUpgrade() {
 		super(Material.ROCK);
 		setCreativeTab(CreativeTabLoader.blocks);
 		setSoundType(SoundType.METAL);
 	}
 
-	/*@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int side, int meta) {
-		return Upgrade.getStandardIcon();
-	}
-
-	@Override
-	public void registerBlockIcons(IIconRegister register) {
-		// Load nothing here
-	}*/
-
+	/*
+	 * @SideOnly(Side.CLIENT)
+	 * @Override public IIcon getIcon(int side, int meta) { return
+	 * Upgrade.getStandardIcon(); }
+	 * @Override public void registerBlockIcons(IIconRegister register) { //
+	 * Load nothing here }
+	 */
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, TYPE );
+		return new BlockStateContainer(this, FACING, TYPE);
 	}
 
 	@Override
@@ -86,7 +82,7 @@ public class BlockUpgrade extends BlockContainerBase {
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		Upgrade upgrade = getUpgrade(world, pos);
-		if(upgrade != null){
+		if (upgrade != null) {
 			state = state.withProperty(TYPE, upgrade);
 		}
 		return super.getActualState(state, world, pos);

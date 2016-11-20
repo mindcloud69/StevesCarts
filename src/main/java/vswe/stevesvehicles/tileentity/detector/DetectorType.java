@@ -67,7 +67,6 @@ public enum DetectorType implements IRecipeOutput, IStringSerializable {
 	private boolean stopCart;
 	private boolean emitRedstone;
 	private HashMap<Byte, OperatorObject> operators;
-
 	public static PropertyEnum<DetectorType> SATE = PropertyEnum.create("detectortype", DetectorType.class);
 	public static PropertyBool ACTIVE = PropertyBool.create("active");
 

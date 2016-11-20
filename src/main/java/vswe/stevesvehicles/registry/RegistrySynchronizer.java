@@ -44,7 +44,7 @@ public class RegistrySynchronizer {
 			// of Map.Entry<String, Integer> :S
 			for (Object o : registryLoader.nameToIdMapping.entrySet()) {
 				Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) o;
-				if(StevesVehicles.debugMode){
+				if (StevesVehicles.debugMode) {
 					System.out.println("Sending registry data from server. (K = " + entry.getKey() + ", V = " + entry.getValue() + ")");
 				}
 				dw.writeString(entry.getKey());
@@ -61,7 +61,7 @@ public class RegistrySynchronizer {
 			for (int i = 0; i < count; i++) {
 				String name = reader.readString();
 				int id = reader.readShort();
-				if(StevesVehicles.debugMode){
+				if (StevesVehicles.debugMode) {
 					System.out.println("Receiving registry data at client. (K = " + name + ", V = " + id + ")");
 				}
 				registryLoader.nameToIdMapping.put(name, id); // WHAT THE

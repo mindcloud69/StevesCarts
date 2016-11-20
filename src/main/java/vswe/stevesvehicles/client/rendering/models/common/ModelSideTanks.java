@@ -40,7 +40,7 @@ public class ModelSideTanks extends ModelVehicle {
 				tankSide.setRotationPoint(-2.0F, // X
 						-0.5F, // Y
 						-10.5F + i * 22 + -3F + j * 5 // Z
-						);
+				);
 				ModelRenderer tankTopBot = new ModelRenderer(this, 0, 7);
 				addRenderer(tankTopBot);
 				tankTopBot.addBox(-6, // X
@@ -53,7 +53,7 @@ public class ModelSideTanks extends ModelVehicle {
 				tankTopBot.setRotationPoint(-2.0F, // X
 						-0.5F + -2.5F + j * 5, // Y
 						-11F + i * 22 // Z
-						);
+				);
 				tankTopBot.rotateAngleX = (float) Math.PI / 2;
 			}
 			ModelRenderer tankFront = new ModelRenderer(this, 26, 0);
@@ -68,7 +68,7 @@ public class ModelSideTanks extends ModelVehicle {
 			tankFront.setRotationPoint(-2.0F - 5.5F, // X
 					-0.5F, // Y
 					-11F + i * 22 // Z
-					);
+			);
 			tankFront.rotateAngleY = (float) Math.PI / 2;
 			ModelRenderer tankBack = new ModelRenderer(this, 36, 0);
 			addRenderer(tankBack);
@@ -82,7 +82,7 @@ public class ModelSideTanks extends ModelVehicle {
 			tankBack.setRotationPoint(-2.0F + 6.5F, // X
 					-0.5F, // Y
 					-11F + i * 22 // Z
-					);
+			);
 			tankBack.rotateAngleY = (float) Math.PI / 2;
 			ModelRenderer tube1 = new ModelRenderer(this, 26, 5);
 			addRenderer(tube1);
@@ -96,7 +96,7 @@ public class ModelSideTanks extends ModelVehicle {
 			tube1.setRotationPoint(-2.0F + 7.5F, // X
 					-0.5F, // Y
 					-11F + i * 22 // Z
-					);
+			);
 			ModelRenderer tube2 = new ModelRenderer(this, 26, 5);
 			addRenderer(tube2);
 			tube2.addBox(-2, // X
@@ -109,7 +109,7 @@ public class ModelSideTanks extends ModelVehicle {
 			tube2.setRotationPoint(-2.0F + 9.5F, // X
 					-0.5F, // Y
 					-10F + i * 20 // Z
-					);
+			);
 			tube2.rotateAngleY = (float) Math.PI / 2;
 			ModelRenderer connection = new ModelRenderer(this, 36, 0);
 			addRenderer(connection);
@@ -123,7 +123,7 @@ public class ModelSideTanks extends ModelVehicle {
 			connection.setRotationPoint(-2.0F + 9.5F, // X
 					-0.5F, // Y
 					-8.5F + i * 17 // Z
-					);
+			);
 		}
 	}
 

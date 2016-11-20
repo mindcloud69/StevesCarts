@@ -4,8 +4,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.container.slots.ISpecialItemTransferValidator;
 import vswe.stevesvehicles.container.slots.ISpecialSlotValidator;
 
@@ -138,9 +136,11 @@ public class TransferHandler {
 				} else {
 					// decrease the items in the stack we want to store and
 					// increase the items in the stack in the cart
-					iStack.func_190918_g(stackSize);;
+					iStack.func_190918_g(stackSize);
+					;
 					if (!fake) {
-						inv.getStackInSlot(pos).func_190917_f(stackSize);;
+						inv.getStackInSlot(pos).func_190917_f(stackSize);
+						;
 					}
 					// if the stack we want to store is empty we're done and
 					// therefore mark the slot position as invalid to exit the

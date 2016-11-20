@@ -19,6 +19,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	private DataParameter<Boolean> VISABLE;
+
 	public ModuleInvisible(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}

@@ -43,6 +43,6 @@ public class ModelNote extends ModelVehicle {
 		base.setRotationPoint(-16.0F, // X
 				-13.5F, // Y
 				-12 + 14.0F * (opposite ? 1 : -1) // Z
-				);
+		);
 	}
 }

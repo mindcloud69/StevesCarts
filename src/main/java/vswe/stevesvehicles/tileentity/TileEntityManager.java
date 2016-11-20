@@ -21,6 +21,7 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 	public boolean doReturn[] = new boolean[] { false, false, false, false };
 	public int amount[] = new int[] { 0, 0, 0, 0 };
 	public int color[] = new int[] { 1, 2, 3, 4 };
+
 	public TileEntityManager(int size) {
 		super(size);
 		moveTime = 0;
@@ -44,7 +45,8 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);;
+		super.readFromNBT(nbttagcompound);
+		;
 		moveTime = nbttagcompound.getByte("moveTime");
 		setLowestSetting(nbttagcompound.getByte("lowestNumber"));
 		layoutType = nbttagcompound.getByte("layout");

@@ -3,7 +3,6 @@ package vswe.stevesvehicles.tank;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,11 +22,13 @@ public class Tank implements IFluidTank {
 	private ITankHolder owner;
 	private int tankId;
 	private boolean isLocked;
+	private final IFluidHandler handler;
 
 	public Tank(ITankHolder owner, int tankSize, int tankId) {
 		this.owner = owner;
 		this.tankSize = tankSize;
 		this.tankId = tankId;
+		this.handler = new TankFluidHandler(this);
 	}
 
 	public Tank copy() {
@@ -76,19 +77,19 @@ public class Tank implements IFluidTank {
 					}
 				}
 			} else if (fluidContent == null) {
-				ItemStack full = FluidContainerRegistry.fillFluidContainer(fluid, item);
+				ItemStack full = FluidUtil.tryFillContainer(item, handler, fluid.amount, null, true).result;
 				if (full != null) {
-						FluidStack fluidContentFilled = FluidUtil.getFluidContained(full);
-						if (fluidContentFilled != null) {
-							owner.addToOutputContainer(tankId, full);
-							if (full.func_190916_E() == 0) {
-								item.func_190918_g(1);
-								if (item.func_190916_E() <= 0) {
-									owner.clearInputContainer(tankId);
-								}
-								drain(fluidContentFilled.amount, true, false);
+					FluidStack fluidContentFilled = FluidUtil.getFluidContained(full);
+					if (fluidContentFilled != null) {
+						owner.addToOutputContainer(tankId, full);
+						if (full.func_190916_E() == 0) {
+							item.func_190918_g(1);
+							if (item.func_190916_E() <= 0) {
+								owner.clearInputContainer(tankId);
 							}
+							drain(fluidContentFilled.amount, true, false);
 						}
+					}
 				}
 			}
 		}

@@ -82,7 +82,7 @@ public class ModelSolarPanelHeads extends ModelSolarPanel {
 		panel.setRotationPoint((float) Math.sin(rotation) * f, // X
 				-5F, // Y
 				(float) Math.cos(rotation) * f // Z
-				);
+		);
 		panel.rotateAngleY = rotation;
 		panels.add(panel);
 	}

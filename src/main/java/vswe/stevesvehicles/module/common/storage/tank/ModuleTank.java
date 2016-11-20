@@ -249,9 +249,9 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	protected void receivePacket(DataReader dr, EntityPlayer player) {
 		if ((getFluid() != null
 				|| tank.isLocked() /*
-				 * just to allow the user to unlock it if
-				 * something goes wrong
-				 */)) {
+									 * just to allow the user to unlock it if
+									 * something goes wrong
+									 */)) {
 			tank.setLocked(!tank.isLocked());
 			if (!tank.isLocked() && tank.getFluid() != null && tank.getFluid().amount <= 0) {
 				tank.setFluid(null);

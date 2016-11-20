@@ -49,6 +49,6 @@ public class ModelEngineInside extends ModelEngineBase {
 		back.setRotationPoint(0, // X
 				-0.5F, // Y
 				0.3F // Z
-				);
+		);
 	}
 }

@@ -43,7 +43,7 @@ public class ModelTopTank extends ModelVehicle {
 			tankSide.setRotationPoint(0F, // X
 					-8.5F, // Y
 					-5.5F + i * 11 // Z
-					);
+			);
 			if (!open || i == 0) {
 				ModelRenderer tankTopBot = new ModelRenderer(this, 0, 0);
 				addRenderer(tankTopBot);
@@ -57,7 +57,7 @@ public class ModelTopTank extends ModelVehicle {
 				tankTopBot.setRotationPoint(0, // X
 						-5.5F - i * 6, // Y
 						0 // Z
-						);
+				);
 				tankTopBot.rotateAngleX = (float) Math.PI / 2;
 			}
 			ModelRenderer tankFrontBack = new ModelRenderer(this, 0, 19);
@@ -72,7 +72,7 @@ public class ModelTopTank extends ModelVehicle {
 			tankFrontBack.setRotationPoint(-7.5F + i * 15, // X
 					-8.5F, // Y
 					0 // Z
-					);
+			);
 			tankFrontBack.rotateAngleY = (float) Math.PI / 2;
 		}
 	}

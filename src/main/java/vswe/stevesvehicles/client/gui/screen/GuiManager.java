@@ -43,7 +43,7 @@ public abstract class GuiManager extends GuiBase {
 			drawMouseOver(
 					LocalizationManager.CHANGE_TURN_BACK.translate() + "\n" + LocalizationManager.CURRENT_SETTING.translate() + ": "
 							+ (manager.color[i] == 5 ? LocalizationManager.TURN_BACK_DISABLED.translate() : (manager.doReturn[manager.color[i] - 1] ? LocalizationManager.TURN_BACK.translate() : LocalizationManager.CONTINUE_FORWARD.translate())),
-							x, y, getReturnCoordinate(i));
+					x, y, getReturnCoordinate(i));
 			drawMouseOver(LocalizationManager.CHANGE_TRANSFER_SIZE.translate() + "\n" + LocalizationManager.CURRENT_SETTING.translate() + ": " + getMaxSizeOverlay(i), x, y, getTextCoordinate(i));
 			drawMouseOver(LocalizationManager.CHANGE_SIDE.translate() + "\n" + LocalizationManager.CURRENT_SIDE.translate() + ": " + (new String[] { LocalizationManager.RED_SIDE.translate(), LocalizationManager.BLUE_SIDE.translate(),
 					LocalizationManager.YELLOW_SIDE.translate(), LocalizationManager.GREEN_SIDE.translate(), LocalizationManager.DISABLED_SIDE.translate() })[manager.color[i] - 1], x, y, getColorSelectorCoordinate(i));

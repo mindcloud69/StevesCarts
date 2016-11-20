@@ -26,7 +26,7 @@ public class ModuleLabel extends ModuleAddon {
 	private ArrayList<SlotBase> storageSlots;
 	private DataParameter<Integer> SECONDS;
 	private DataParameter<Byte> USED;
-	private DataParameter<Integer> DATA ;
+	private DataParameter<Integer> DATA;
 	private DataParameter<Byte> ACTIVE;
 
 	public ModuleLabel(VehicleBase vehicleBase) {
@@ -135,9 +135,9 @@ public class ModuleLabel extends ModuleAddon {
 		SECONDS = createDw(DataSerializers.VARINT);
 		USED = createDw(DataSerializers.BYTE);
 		ACTIVE = createDw(DataSerializers.BYTE);
-		registerDw(ACTIVE, (byte)0);
+		registerDw(ACTIVE, (byte) 0);
 		registerDw(SECONDS, 0);
-		registerDw(USED, (byte)0);
+		registerDw(USED, (byte) 0);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class ItemModelManager {
 			modelGenerator = new ModelGenerator();
 			ModelLoader.setCustomMeshDefinition(ModItems.modules, new TexturedItemMeshDefinition());
 			ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(ModBlocks.UPGRADE.getBlock()), new TexturedItemMeshDefinition());
-			for(VehicleType type : VehicleRegistry.getInstance().getElements()){
+			for (VehicleType type : VehicleRegistry.getInstance().getElements()) {
 				registerItemModel(ModItems.vehicles, VehicleRegistry.getInstance().getIdFromType(type));
 			}
 			registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
@@ -56,27 +56,25 @@ public class ItemModelManager {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void registerItemModel(Item i, int meta)
-	{
+	public static void registerItemModel(Item i, int meta) {
 		ResourceLocation loc = i.getRegistryName();
 		ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(loc, "inventory"));
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void registerItemModel(Block b, int meta)
-	{
+	public static void registerItemModel(Block b, int meta) {
 		registerItemModel(Item.getItemFromBlock(b), meta);
 	}
 
 	/**
 	 * Use this to register an object to be rendered
 	 *
-	 * @param object the object to load
+	 * @param object
+	 *            the object to load
 	 */
 	public static void registerItem(TexturedItem object) {
 		if (!items.contains(object)) {
 			items.add(object);
 		}
 	}
-
 }

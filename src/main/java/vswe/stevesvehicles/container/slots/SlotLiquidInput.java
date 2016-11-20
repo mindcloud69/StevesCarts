@@ -27,7 +27,6 @@ public class SlotLiquidInput extends SlotBase {
 
 	@Override
 	public boolean isItemValid(ItemStack itemstack) {
-		return (FluidUtil.getFluidContained(itemstack) == null && tank.getFluid() != null)
-				|| (FluidUtil.getFluidContained(itemstack) != null && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidUtil.getFluidContained(itemstack))));
+		return (FluidUtil.getFluidContained(itemstack) == null && tank.getFluid() != null) || (FluidUtil.getFluidContained(itemstack) != null && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidUtil.getFluidContained(itemstack))));
 	}
 }

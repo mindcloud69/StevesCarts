@@ -17,33 +17,28 @@ import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class RenderFactorys {
-
-	public static class BuoyFactory implements IRenderFactory<EntityBuoy>{
-
+	public static class BuoyFactory implements IRenderFactory<EntityBuoy> {
 		@Override
 		public Render<? super EntityBuoy> createRenderFor(RenderManager manager) {
 			return new RenderBuoy(manager);
 		}
 	}
 
-	public static class ModularCartFactory implements IRenderFactory<EntityModularCart>{
-
+	public static class ModularCartFactory implements IRenderFactory<EntityModularCart> {
 		@Override
 		public Render<? super EntityModularCart> createRenderFor(RenderManager manager) {
 			return new RenderCart(manager);
 		}
 	}
 
-	public static class ModularBoatFactory implements IRenderFactory<EntityModularBoat>{
-
+	public static class ModularBoatFactory implements IRenderFactory<EntityModularBoat> {
 		@Override
 		public Render<? super EntityModularBoat> createRenderFor(RenderManager manager) {
 			return new RenderBoat(manager);
 		}
 	}
 
-	public static class EasterEggFactory implements IRenderFactory<EntityEasterEgg>{
-
+	public static class EasterEggFactory implements IRenderFactory<EntityEasterEgg> {
 		@Override
 		public Render<? super EntityEasterEgg> createRenderFor(RenderManager manager) {
 			return new RenderSnowball(manager, null, Minecraft.getMinecraft().getRenderItem()) {
@@ -55,8 +50,7 @@ public class RenderFactorys {
 		}
 	}
 
-	public static class CakeFactory implements IRenderFactory<EntityCake>{
-
+	public static class CakeFactory implements IRenderFactory<EntityCake> {
 		@Override
 		public Render<? super EntityCake> createRenderFor(RenderManager manager) {
 			return new RenderSnowball(manager, Items.CAKE, Minecraft.getMinecraft().getRenderItem());

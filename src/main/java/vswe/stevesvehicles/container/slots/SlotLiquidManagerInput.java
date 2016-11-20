@@ -25,7 +25,6 @@ public class SlotLiquidManagerInput extends SlotBase {
 			return FluidUtil.getFluidHandler(itemstack) != null;
 		}
 		Tank tank = manager.getTanks()[tankId];
-		return (FluidUtil.getFluidContained(itemstack) == null && tank.getFluid() != null)
-				|| (FluidUtil.getFluidContained(itemstack) != null && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidUtil.getFluidContained(itemstack))));
+		return (FluidUtil.getFluidContained(itemstack) == null && tank.getFluid() != null) || (FluidUtil.getFluidContained(itemstack) != null && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidUtil.getFluidContained(itemstack))));
 	}
 }

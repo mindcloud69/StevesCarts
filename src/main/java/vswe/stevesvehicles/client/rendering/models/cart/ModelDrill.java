@@ -47,7 +47,7 @@ public class ModelDrill extends ModelVehicle {
 			drill.setRotationPoint(0, // X
 					0, // Y
 					cartLength / 2 + 1 // Z
-					);
+			);
 			srcY += 7 - i;
 		}
 	}

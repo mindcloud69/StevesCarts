@@ -160,15 +160,16 @@ public class StevesVehicles {
 	}
 
 	@Mod.EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event){
-		if(event.getSide() == Side.CLIENT){
+	public void loadComplete(FMLLoadCompleteEvent event) {
+		if (event.getSide() == Side.CLIENT) {
 			loadItemRenderer();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void loadItemRenderer(){
-		//Done here to try and load after all other mods, as some mods override this
+	private void loadItemRenderer() {
+		// Done here to try and load after all other mods, as some mods override
+		// this
 		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
 	}
 }

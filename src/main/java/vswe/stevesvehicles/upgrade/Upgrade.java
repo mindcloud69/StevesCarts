@@ -137,7 +137,6 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 	 * ":upgrades/sides/default"); for (Upgrade upgrade :
 	 * UpgradeRegistry.getAllUpgrades()) { upgrade.createIcon(register); } }
 	 */
-
 	public String getIcon() {
 		return this.icon;
 	}
@@ -152,9 +151,9 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 
 	@Override
 	public int compareTo(Upgrade o) {
-		if(o == null){
+		if (o == null) {
 			return 1;
-		}else if(o == this){
+		} else if (o == this) {
 			return 0;
 		}
 		return UpgradeRegistry.getIdFromUpgrade(this) > UpgradeRegistry.getIdFromUpgrade(o) ? 1 : -1;

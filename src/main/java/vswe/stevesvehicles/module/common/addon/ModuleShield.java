@@ -93,7 +93,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 
 	public void setShieldStatus(boolean val) {
 		if (!isPlaceholder()) {
-			updateDw(STATUS, val );
+			updateDw(STATUS, val);
 		}
 	}
 

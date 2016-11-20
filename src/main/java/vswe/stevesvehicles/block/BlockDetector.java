@@ -22,20 +22,15 @@ public class BlockDetector extends BlockContainerBase {
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	/*@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int side, int meta) {
-		return DetectorType.getTypeFromMeta(meta).getIcon(side);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister register) {
-		for (DetectorType type : DetectorType.values()) {
-			type.registerIcons(register);
-		}
-	}*/
-
+	/*
+	 * @SideOnly(Side.CLIENT)
+	 * @Override public IIcon getIcon(int side, int meta) { return
+	 * DetectorType.getTypeFromMeta(meta).getIcon(side); }
+	 * @SideOnly(Side.CLIENT)
+	 * @Override public void registerBlockIcons(IIconRegister register) { for
+	 * (DetectorType type : DetectorType.values()) {
+	 * type.registerIcons(register); } }
+	 */
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, NonNullList list) {
 		for (DetectorType type : DetectorType.values()) {
@@ -97,7 +92,7 @@ public class BlockDetector extends BlockContainerBase {
 	public IBlockState getStateFromMeta(int meta) {
 		boolean isActive = false;
 		int length = DetectorType.VALUES.length;
-		if(meta >= length){
+		if (meta >= length) {
 			meta -= length;
 			isActive = false;
 		}

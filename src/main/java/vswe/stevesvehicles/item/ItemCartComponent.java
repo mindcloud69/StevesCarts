@@ -61,9 +61,8 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	 * register.registerIcon(StevesVehicles.instance.textureHeader +
 	 * ":unknown"); }
 	 */
-
 	private String getRawName(final int i) {
-		if(getName(i) == null){
+		if (getName(i) == null) {
 			return null;
 		}
 		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
@@ -196,7 +195,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 
 	@Override
 	public String getTextureName(int damage) {
-		if(getRawName(damage) == null){
+		if (getRawName(damage) == null) {
 			return "stevescarts:items/unknown";
 		}
 		return "stevescarts:items/components/" + getName(damage);

@@ -53,7 +53,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 	}
 
 	private void checkForUpgrades(World world, BlockPos pos) {
-		for(EnumFacing facing : EnumFacing.HORIZONTALS){
+		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 			this.checkForUpgrade(world, pos.offset(facing), facing);
 		}
 	}

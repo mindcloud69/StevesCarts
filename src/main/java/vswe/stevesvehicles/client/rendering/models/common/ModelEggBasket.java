@@ -39,7 +39,7 @@ public class ModelEggBasket extends ModelVehicle {
 			chestSide.setRotationPoint(0F, // X
 					-8.5F, // Y
 					-5.5F + i * 11 // Z
-					);
+			);
 			ModelRenderer chestFrontBack = new ModelRenderer(this, 0, 19);
 			addRenderer(chestFrontBack);
 			chestFrontBack.addBox(-5, // X
@@ -52,7 +52,7 @@ public class ModelEggBasket extends ModelVehicle {
 			chestFrontBack.setRotationPoint(-7.5F + i * 15, // X
 					-8.5F, // Y
 					0 // Z
-					);
+			);
 			chestFrontBack.rotateAngleY = (float) Math.PI / 2;
 			ModelRenderer chestHandle = new ModelRenderer(this, 0, 36);
 			addRenderer(chestHandle);
@@ -66,7 +66,7 @@ public class ModelEggBasket extends ModelVehicle {
 			chestHandle.setRotationPoint(0F, // X
 					-12.5F, // Y
 					-5.5F + i * 11 // Z
-					);
+			);
 			ModelRenderer chestHandleSmall = new ModelRenderer(this, 0, 40);
 			addRenderer(chestHandleSmall);
 			chestHandleSmall.addBox(-1, // X
@@ -79,7 +79,7 @@ public class ModelEggBasket extends ModelVehicle {
 			chestHandleSmall.setRotationPoint(0F, // X
 					-14.5F, // Y
 					-4.5F + i * 9 // Z
-					);
+			);
 		}
 		chestTop = new ModelRenderer(this, 0, 0);
 		addRenderer(chestTop);
@@ -93,7 +93,7 @@ public class ModelEggBasket extends ModelVehicle {
 		chestTop.setRotationPoint(0, // X
 				-11.5F, // Y
 				0 // Z
-				);
+		);
 		chestTop.rotateAngleX = (float) Math.PI / 2;
 		chestTop.rotateAngleY = 0.1F;
 		ModelRenderer chestBot = new ModelRenderer(this, 0, 25);
@@ -108,7 +108,7 @@ public class ModelEggBasket extends ModelVehicle {
 		chestBot.setRotationPoint(0, // X
 				-5.5F, // Y
 				0 // Z
-				);
+		);
 		chestBot.rotateAngleX = (float) Math.PI / 2;
 		ModelRenderer chestHandleTop = new ModelRenderer(this, 0, 42);
 		addRenderer(chestHandleTop);
@@ -122,7 +122,7 @@ public class ModelEggBasket extends ModelVehicle {
 		chestHandleTop.setRotationPoint(0F, // X
 				-15.5F, // Y
 				0 // Z
-				);
+		);
 		chestHandleTop.rotateAngleX = (float) Math.PI / 2;
 		for (int i = 0; i < 12; i++) {
 			addEgg(i);
@@ -147,7 +147,7 @@ public class ModelEggBasket extends ModelVehicle {
 		eggBot.setRotationPoint(targetY, // X
 				-6.5F, // Y
 				targetX // Z
-				);
+		);
 		ModelRenderer eggBase = new ModelRenderer(this, 38, textureY);
 		addRenderer(eggBase);
 		eggBase.addBox(-1.5F, // X
@@ -160,7 +160,7 @@ public class ModelEggBasket extends ModelVehicle {
 		eggBase.setRotationPoint(targetY, // X
 				-7.5F, // Y
 				targetX // Z
-				);
+		);
 		ModelRenderer eggMiddle = new ModelRenderer(this, 50, textureY);
 		addRenderer(eggMiddle);
 		eggMiddle.addBox(-1F, // X
@@ -173,7 +173,7 @@ public class ModelEggBasket extends ModelVehicle {
 		eggMiddle.setRotationPoint(targetY, // X
 				-8.75F, // Y
 				targetX // Z
-				);
+		);
 		ModelRenderer eggTip = new ModelRenderer(this, 58, textureY);
 		addRenderer(eggTip);
 		eggTip.addBox(-0.5F, // X
@@ -186,7 +186,7 @@ public class ModelEggBasket extends ModelVehicle {
 		eggTip.setRotationPoint(targetY, // X
 				-9.25F, // Y
 				targetX // Z
-				);
+		);
 	}
 
 	@Override

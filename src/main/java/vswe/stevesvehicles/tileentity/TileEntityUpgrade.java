@@ -43,9 +43,7 @@ import vswe.stevesvehicles.upgrade.effect.util.TankEffect;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
 public class TileEntityUpgrade extends TileEntityInventory implements ISidedInventory, IFluidHandler, IFluidTank, ITickable {
-
 	public static final NonNullList<ItemStack> DEFAULT_STACKS = NonNullList.func_191197_a(0, INVALID_STACK);
-
 	private TileEntityCartAssembler master;
 	private int type;
 	private List<BaseEffect> effects;
@@ -56,15 +54,15 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	// INVENTORY STUFF BELOW
 	private int[] slotsForSide;
 
-	public TileEntityUpgrade(){
+	public TileEntityUpgrade() {
 		super(DEFAULT_STACKS);
 	}
 
 	public void setMaster(TileEntityCartAssembler master, EnumFacing side) {
 		if (this.master != master) {
-			if(!world.isRemote){
+			if (!world.isRemote) {
 				IBlockState state = world.getBlockState(pos);
-				if(side != null){
+				if (side != null) {
 					state = blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side);
 					world.setBlockState(pos, state);
 				}
@@ -174,7 +172,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		if(tagCompound.hasKey("Type")){
+		if (tagCompound.hasKey("Type")) {
 			setType(tagCompound.getByte("Type"));
 		}
 		NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
@@ -235,11 +233,11 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	}
 
 	@Override
-	public boolean func_191420_l(){
+	public boolean func_191420_l() {
 		if (hasInventory()) {
-			if(master == null){
+			if (master == null) {
 				return false;
-			}else {
+			} else {
 				return master.func_191420_l();
 			}
 		}
@@ -279,7 +277,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 		if (hasInventory()) {
 			if (master != null) {
 				master.setInventorySlotContents(index, itemStack);
-			}else{
+			} else {
 				return;
 			}
 		}

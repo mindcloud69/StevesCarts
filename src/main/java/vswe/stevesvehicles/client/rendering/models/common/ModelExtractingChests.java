@@ -51,7 +51,7 @@ public class ModelExtractingChests extends ModelVehicle {
 		base.setRotationPoint(-16.0F, // X
 				-5.5F, // Y
 				-14.0F // Z
-				);
+		);
 		ModelRenderer lid = new ModelRenderer(this, 0, 0);
 		fixSize(lid);
 		chestAnchor.addChild(lid);
@@ -65,7 +65,7 @@ public class ModelExtractingChests extends ModelVehicle {
 		lid.setRotationPoint(-16.0F, // X
 				-1.5F, // Y
 				2F // Z
-				);
+		);
 		ModelRenderer lock = new ModelRenderer(this, 0, 37);
 		fixSize(lock);
 		lid.addChild(lock);
@@ -79,7 +79,7 @@ public class ModelExtractingChests extends ModelVehicle {
 		lock.setRotationPoint(14.0F, // X
 				-3F, // Y
 				-15.5F // Z
-				);
+		);
 		return new ModelRenderer[] { base, lid };
 	}
 

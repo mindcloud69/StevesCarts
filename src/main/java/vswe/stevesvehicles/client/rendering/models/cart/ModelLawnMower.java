@@ -57,7 +57,7 @@ public class ModelLawnMower extends ModelVehicle {
 		base.setRotationPoint(0, // X
 				-1.5F, // Y
 				-9F // Z
-				);
+		);
 		for (int i = 0; i < 2; i++) {
 			ModelRenderer arm = new ModelRenderer(this, 0, 8);
 			base.addChild(arm);
@@ -72,7 +72,7 @@ public class ModelLawnMower extends ModelVehicle {
 			arm.setRotationPoint(-8.25F + i * 16.5F, // X
 					0F, // Y
 					-8 // Z
-					);
+			);
 			arm.rotateAngleY = (float) Math.PI / 2;
 			ModelRenderer arm2 = new ModelRenderer(this, 0, 14);
 			arm.addChild(arm2);
@@ -87,7 +87,7 @@ public class ModelLawnMower extends ModelVehicle {
 			arm2.setRotationPoint(6.5F, // X
 					3F, // Y
 					0 // Z
-					);
+			);
 			arm2.rotateAngleZ = (float) Math.PI / 2;
 			ModelRenderer bladePin = new ModelRenderer(this, 0, 20);
 			arm2.addChild(bladePin);
@@ -102,7 +102,7 @@ public class ModelLawnMower extends ModelVehicle {
 			bladePin.setRotationPoint(2.5F, // X
 					0, // Y
 					0 // Z
-					);
+			);
 			ModelRenderer bladeAnchor = new ModelRenderer(this, 0, 0);
 			bladePin.addChild(bladeAnchor);
 			bladeAnchor.rotateAngleY = (float) Math.PI / 2;
@@ -120,7 +120,7 @@ public class ModelLawnMower extends ModelVehicle {
 				blade.setRotationPoint(0, // X
 						0, // Y
 						j * 0.01F // Z
-						);
+				);
 				blade.rotateAngleZ = ((float) Math.PI / 2) * (j + i * 0.5F);
 				ModelRenderer bladeTip = new ModelRenderer(this, 0, 26);
 				blade.addChild(bladeTip);
@@ -135,7 +135,7 @@ public class ModelLawnMower extends ModelVehicle {
 				bladeTip.setRotationPoint(0, // X
 						0, // Y
 						0.005F // Z
-						);
+				);
 			}
 			bladePins.add(bladePin);
 		}

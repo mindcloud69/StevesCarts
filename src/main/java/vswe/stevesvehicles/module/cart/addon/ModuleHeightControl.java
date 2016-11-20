@@ -18,6 +18,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleHeightControl extends ModuleAddon {
 	private DataParameter<Integer> Y_TARGET;
+
 	public ModuleHeightControl(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}

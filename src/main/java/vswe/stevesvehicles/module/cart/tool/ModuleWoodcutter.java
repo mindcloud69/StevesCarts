@@ -33,6 +33,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule, ITreeModule {
 	private DataParameter<Boolean> IS_CUTTING;
+
 	public ModuleWoodcutter(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -127,7 +128,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			if (j < 0) {
 				j = -size - j - 1;
 			}
-			BlockPos plant = next .add(getVehicle().z() != next.getZ() ? j : 0, -1, getVehicle().x() != next.getX() ? j : 0);
+			BlockPos plant = next.add(getVehicle().z() != next.getZ() ? j : 0, -1, getVehicle().x() != next.getX() ? j : 0);
 			if (plant(size, world, plant, next.getX(), next.getZ())) {
 				setCutting(false);
 				return true;

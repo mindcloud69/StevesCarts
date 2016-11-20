@@ -27,6 +27,7 @@ public class ModuleDynamite extends ModuleAttachment {
 	private DataParameter<Byte> FUSE;
 	private DataParameter<Byte> FUSE_LENGTH;
 	private DataParameter<Byte> EXPLOSION;
+
 	public ModuleDynamite(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -219,9 +220,9 @@ public class ModuleDynamite extends ModuleAttachment {
 		FUSE = createDw(DataSerializers.BYTE);
 		FUSE_LENGTH = createDw(DataSerializers.BYTE);
 		EXPLOSION = createDw(DataSerializers.BYTE);
-		registerDw(FUSE, (byte)0);
-		registerDw(FUSE_LENGTH, (byte)70);
-		registerDw(EXPLOSION, (byte)8);
+		registerDw(FUSE, (byte) 0);
+		registerDw(FUSE_LENGTH, (byte) 70);
+		registerDw(EXPLOSION, (byte) 8);
 	}
 
 	private int simulationFuse;

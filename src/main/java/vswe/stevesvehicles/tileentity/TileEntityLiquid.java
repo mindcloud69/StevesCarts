@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
@@ -188,14 +187,14 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		markDirty();
 	}
 
-	//TODO: SPRITES
+	// TODO: SPRITES
 	/*
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void drawImage(int tankId, GuiBase gui, IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int sizeY) {
-		gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() + targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F);
-	}*/
-
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void drawImage(int tankId, GuiBase gui,
+	 * IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int
+	 * sizeY) { gui.drawIcon(icon, gui.getGuiLeft() + targetX, gui.getGuiTop() +
+	 * targetY, sizeX / 16F, sizeY / 16F, srcX / 16F, srcY / 16F); }
+	 */
 	@Override
 	protected boolean isTargetValid(ManagerTransfer transfer) {
 		return true;
@@ -372,22 +371,25 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 				updateGuiData(con, crafting, id, (short) -1);
 				changed = true;
 			} else if (tanks[i].getFluid() != null) {
-				if (isNew || con.oldLiquids[i] == null) {
-					updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tanks[i].getFluid().getFluid()));
-					updateGuiData(con, crafting, amount1, getShortFromInt(true, tanks[i].getFluid().amount));
-					updateGuiData(con, crafting, amount2, getShortFromInt(false, tanks[i].getFluid().amount));
-					changed = true;
-				} else {
-					if (!con.oldLiquids[i].getFluid().getName().equals(tanks[i].getFluid().getFluid().getName())) {
-						updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tanks[i].getFluid().getFluid()));
-						changed = true;
-					}
-					if (con.oldLiquids[i].amount != tanks[i].getFluid().amount) {
-						updateGuiData(con, crafting, amount1, getShortFromInt(true, tanks[i].getFluid().amount));
-						updateGuiData(con, crafting, amount2, getShortFromInt(false, tanks[i].getFluid().amount));
-						changed = true;
-					}
-				}
+				// TODO: rework gui data system
+				/*
+				 * if (isNew || con.oldLiquids[i] == null) { updateGuiData(con,
+				 * crafting, id, (short)
+				 * FluidRegistry.getFluidID(tanks[i].getFluid().getFluid()));
+				 * updateGuiData(con, crafting, amount1, getShortFromInt(true,
+				 * tanks[i].getFluid().amount)); updateGuiData(con, crafting,
+				 * amount2, getShortFromInt(false, tanks[i].getFluid().amount));
+				 * changed = true; } else { if
+				 * (!con.oldLiquids[i].getFluid().getName().equals(tanks[i].
+				 * getFluid().getFluid().getName())) { updateGuiData(con,
+				 * crafting, id, (short)
+				 * FluidRegistry.getFluidID(tanks[i].getFluid().getFluid()));
+				 * changed = true; } if (con.oldLiquids[i].amount !=
+				 * tanks[i].getFluid().amount) { updateGuiData(con, crafting,
+				 * amount1, getShortFromInt(true, tanks[i].getFluid().amount));
+				 * updateGuiData(con, crafting, amount2, getShortFromInt(false,
+				 * tanks[i].getFluid().amount)); changed = true; } }
+				 */
 			}
 			if (changed) {
 				if (tanks[i].getFluid() == null) {
@@ -403,18 +405,17 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id > 3) {
-			id -= 4;
-			int tankId = id / 4;
-			int contentId = id % 4;
-			if (contentId == 0) {
-				if (data == -1) {
-					tanks[tankId].setFluid(null);
-				} else if (tanks[tankId].getFluid() == null) {
-					tanks[tankId].setFluid(new FluidStack(FluidRegistry.getFluid(data), 0));
-				}
-			} else if (tanks[tankId].getFluid() != null) {
-				tanks[tankId].getFluid().amount = getIntFromShort(contentId == 1, tanks[tankId].getFluid().amount, data);
-			}
+			// TODO: rework gui data system
+			/*
+			 * id -= 4; int tankId = id / 4; int contentId = id % 4; if
+			 * (contentId == 0) { if (data == -1) {
+			 * tanks[tankId].setFluid(null); } else if (tanks[tankId].getFluid()
+			 * == null) { tanks[tankId].setFluid(new
+			 * FluidStack(FluidRegistry.getFluid(data), 0)); } } else if
+			 * (tanks[tankId].getFluid() != null) {
+			 * tanks[tankId].getFluid().amount = getIntFromShort(contentId == 1,
+			 * tanks[tankId].getFluid().amount, data); }
+			 */
 		} else {
 			super.receiveGuiData(id, data);
 		}

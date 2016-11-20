@@ -188,7 +188,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return 120;
 	}
 
-	//TODO: TEST IT
+	// TODO: TEST IT
 	@Override
 	public boolean func_191420_l() {
 		return false;
@@ -377,7 +377,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getSides().get(facing.getIndex()));
 		}
 		return super.getCapability(capability, facing);

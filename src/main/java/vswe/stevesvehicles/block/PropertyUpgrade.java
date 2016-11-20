@@ -9,7 +9,6 @@ import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
 public class PropertyUpgrade extends PropertyHelper<Upgrade> {
-
 	public PropertyUpgrade(String name) {
 		super(name, Upgrade.class);
 	}

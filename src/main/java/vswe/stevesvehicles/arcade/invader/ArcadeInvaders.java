@@ -225,81 +225,81 @@ public class ArcadeInvaders extends ArcadeGame {
 	}
 
 	private final static String[][] numbers = new String[][] { { "XXXX", "X  X", "X  X", "X  X", "X  X", "X  X", "XXXX" }, { "   X", "   X", "   X", "   X", "   X", "   X", "   X" }, { "XXXX", "   X", "   X", "XXXX", "X   ", "X   ", "XXXX" },
-		{ "XXXX", "   X", "   X", "XXXX", "   X", "   X", "XXXX" }, { "X  X", "X  X", "X  X", "XXXX", "   X", "   X", "   X" }, { "XXXX", "X   ", "X   ", "XXXX", "   X", "   X", "XXXX" }, { "XXXX", "X   ", "X   ", "XXXX", "X  X", "X  X", "XXXX" },
-		{ "XXXX", "   X", "   X", "   X", "   X", "   X", "   X" }, { "XXXX", "X  X", "X  X", "XXXX", "X  X", "X  X", "XXXX" }, { "XXXX", "X  X", "X  X", "XXXX", "   X", "   X", "XXXX" } };
+			{ "XXXX", "   X", "   X", "XXXX", "   X", "   X", "XXXX" }, { "X  X", "X  X", "X  X", "XXXX", "   X", "   X", "   X" }, { "XXXX", "X   ", "X   ", "XXXX", "   X", "   X", "XXXX" }, { "XXXX", "X   ", "X   ", "XXXX", "X  X", "X  X", "XXXX" },
+			{ "XXXX", "   X", "   X", "   X", "   X", "   X", "   X" }, { "XXXX", "X  X", "X  X", "XXXX", "X  X", "X  X", "XXXX" }, { "XXXX", "X  X", "X  X", "XXXX", "   X", "   X", "XXXX" } };
 
-		private void newHighScore() {
-			buildings.clear();
-			int digits;
-			if (score == 0) {
-				digits = 1;
-			} else {
-				digits = (int) Math.floor(Math.log10(score)) + 1;
-			}
-			canSpawnPahiGhast = false;
-			int currentGhast = 0;
-			for (int i = 0; i < digits; i++) {
-				int digit = (score / (int) Math.pow(10, (digits - i - 1))) % 10;
-				String[] number = numbers[digit];
-				for (int j = 0; j < number.length; j++) {
-					String line = number[j];
-					for (int k = 0; k < line.length(); k++) {
-						if (line.charAt(k) == 'X') {
-							int x = (VehicleBase.MODULAR_SPACE_WIDTH - (digits * 90 - 10)) / 2 + i * 90 + k * 20;
-							int y = 5 + j * 20;
-							InvaderGhast ghast;
-							if (currentGhast >= invaders.size()) {
-								invaders.add(ghast = new InvaderGhast(this, x, -20));
-								currentGhast++;
-							} else {
-								ghast = (InvaderGhast) invaders.get(currentGhast++);
-							}
-							ghast.setTarget(x, y);
+	private void newHighScore() {
+		buildings.clear();
+		int digits;
+		if (score == 0) {
+			digits = 1;
+		} else {
+			digits = (int) Math.floor(Math.log10(score)) + 1;
+		}
+		canSpawnPahiGhast = false;
+		int currentGhast = 0;
+		for (int i = 0; i < digits; i++) {
+			int digit = (score / (int) Math.pow(10, (digits - i - 1))) % 10;
+			String[] number = numbers[digit];
+			for (int j = 0; j < number.length; j++) {
+				String line = number[j];
+				for (int k = 0; k < line.length(); k++) {
+					if (line.charAt(k) == 'X') {
+						int x = (VehicleBase.MODULAR_SPACE_WIDTH - (digits * 90 - 10)) / 2 + i * 90 + k * 20;
+						int y = 5 + j * 20;
+						InvaderGhast ghast;
+						if (currentGhast >= invaders.size()) {
+							invaders.add(ghast = new InvaderGhast(this, x, -20));
+							currentGhast++;
+						} else {
+							ghast = (InvaderGhast) invaders.get(currentGhast++);
 						}
+						ghast.setTarget(x, y);
 					}
 				}
 			}
-			for (int i = currentGhast; i < invaders.size(); i++) {
-				InvaderGhast ghast = (InvaderGhast) invaders.get(i);
-				ghast.setTarget(ghast.x, -25);
-			}
-			gameOverCounter = 0;
-			if (score > highscore) {
-				newHighscore = true;
-				int val = score;
-				DataWriter dw = getDataWriter();
-				dw.writeShort(val);
-				sendPacketToServer(dw);
-			}
 		}
+		for (int i = currentGhast; i < invaders.size(); i++) {
+			InvaderGhast ghast = (InvaderGhast) invaders.get(i);
+			ghast.setTarget(ghast.x, -25);
+		}
+		gameOverCounter = 0;
+		if (score > highscore) {
+			newHighscore = true;
+			int val = score;
+			DataWriter dw = getDataWriter();
+			dw.writeShort(val);
+			sendPacketToServer(dw);
+		}
+	}
 
-		@Override
-		public void receivePacket(DataReader dr, EntityPlayer player) {
-			highscore = dr.readShort();
-		}
+	@Override
+	public void receivePacket(DataReader dr, EntityPlayer player) {
+		highscore = dr.readShort();
+	}
 
-		@Override
-		public void checkGuiData(Object[] info) {
-			updateGuiData(info, 0, (short) (highscore));
-		}
+	@Override
+	public void checkGuiData(Object[] info) {
+		updateGuiData(info, 0, (short) (highscore));
+	}
 
-		@Override
-		public int numberOfGuiData() {
-			return 1;
-		}
+	@Override
+	public int numberOfGuiData() {
+		return 1;
+	}
 
-		@Override
-		public void receiveGuiData(int id, short data) {
-			highscore = data;
-		}
+	@Override
+	public void receiveGuiData(int id, short data) {
+		highscore = data;
+	}
 
-		@Override
-		public void save(NBTTagCompound tagCompound) {
-			tagCompound.setShort("Highscore", (short) highscore);
-		}
+	@Override
+	public void save(NBTTagCompound tagCompound) {
+		tagCompound.setShort("Highscore", (short) highscore);
+	}
 
-		@Override
-		public void load(NBTTagCompound tagCompound) {
-			highscore = tagCompound.getShort("Highscore");
-		}
+	@Override
+	public void load(NBTTagCompound tagCompound) {
+		highscore = tagCompound.getShort("Highscore");
+	}
 }

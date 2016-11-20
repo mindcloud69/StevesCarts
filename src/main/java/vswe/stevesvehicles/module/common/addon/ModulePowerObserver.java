@@ -96,8 +96,8 @@ public class ModulePowerObserver extends ModuleAddon {
 	private void drawEngine(GuiVehicle gui, int id, int[] rect) {
 		ModuleEngine engine = getVehicle().getEngines().get(id);
 		ResourceHelper.bindResource(ITEM_TEXTURE);
-		//TODO:sprites
-		//drawImage(gui, engine.getModuleData().getIcon(), rect, 0, 0);
+		// TODO:sprites
+		// drawImage(gui, engine.getModuleData().getIcon(), rect, 0, 0);
 	}
 
 	private int[] getAreaRect(int id) {

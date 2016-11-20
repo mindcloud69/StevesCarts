@@ -27,8 +27,8 @@ import vswe.stevesvehicles.upgrade.effect.external.Transposer;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
 public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlockBase {
-	//private IIcon normalIcon;
-	//private IIcon cornerIcon;
+	// private IIcon normalIcon;
+	// private IIcon cornerIcon;
 	private String unlocalizedName;
 
 	public BlockRailAdvancedDetector() {
@@ -36,18 +36,17 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 		setSoundType(SoundType.METAL);
 	}
 
-	/*@Override
-	public IIcon getIcon(int side, int meta) {
-		return meta >= 6 ? cornerIcon : normalIcon;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister register) {
-		normalIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector");
-		cornerIcon = register.registerIcon(StevesVehicles.instance.textureHeader + ":rails/detector_corner");
-	}*/
-
+	/*
+	 * @Override public IIcon getIcon(int side, int meta) { return meta >= 6 ?
+	 * cornerIcon : normalIcon; }
+	 * @Override
+	 * @SideOnly(Side.CLIENT) public void registerBlockIcons(IIconRegister
+	 * register) { normalIcon =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":rails/detector"); cornerIcon =
+	 * register.registerIcon(StevesVehicles.instance.textureHeader +
+	 * ":rails/detector_corner"); }
+	 */
 	@Override
 	public String getUnlocalizedName() {
 		return unlocalizedName;

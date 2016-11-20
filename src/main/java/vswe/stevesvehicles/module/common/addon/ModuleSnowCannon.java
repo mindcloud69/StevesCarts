@@ -45,7 +45,8 @@ public class ModuleSnowCannon extends ModuleAddon {
 			for (int offsetZ = -getBlocksOnSide(); offsetZ <= getBlocksOnSide(); offsetZ++) {
 				for (int offsetY = -getBlocksFromLevel(); offsetY <= getBlocksFromLevel(); offsetY++) {
 					BlockPos target = getVehicle().pos().add(offsetX, offsetY, offsetZ);
-					if (countsAsAir(target) && getVehicle().getWorld().getBiome(target).getFloatTemperature(target) <= 1.0F /* snow golems won't be hurt */ && Blocks.SNOW.canPlaceBlockAt(getVehicle().getWorld(), target)) {
+					if (countsAsAir(target) && getVehicle().getWorld().getBiome(target).getFloatTemperature(
+							target) <= 1.0F /* snow golems won't be hurt */ && Blocks.SNOW.canPlaceBlockAt(getVehicle().getWorld(), target)) {
 						getVehicle().getWorld().setBlockState(target, Blocks.SNOW_LAYER.getDefaultState());
 					}
 				}

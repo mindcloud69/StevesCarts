@@ -13,7 +13,7 @@ public class LockableEntityDataManager extends EntityDataManager {
 
 	public LockableEntityDataManager(Entity entity) {
 		super(entity);
-		for(DataEntry entry : entity.getDataManager().getAll()){
+		for (DataEntry entry : entity.getDataManager().getAll()) {
 			register(entry.getKey(), entry.getValue());
 		}
 		isLocked = true;

@@ -18,14 +18,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
 import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
-import vswe.stevesvehicles.module.data.ModuleData;
-import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityUpgrade;
 import vswe.stevesvehicles.upgrade.Upgrade;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
-public class ItemUpgrade extends ItemBlock implements TexturedItem{
+public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	public ItemUpgrade(Block block) {
 		super(block);
 		setHasSubtypes(true);
@@ -54,7 +52,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem{
 
 	private Upgrade getModelUpgrade(int dmg) {
 		Upgrade upgrade = UpgradeRegistry.getUpgradeFromId(dmg);
-		if(upgrade == null){
+		if (upgrade == null) {
 			upgrade = UpgradeRegistry.getAllUpgrades().get(dmg);
 		}
 		return upgrade;
@@ -111,7 +109,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem{
 	public String getTextureName(int damage) {
 		Upgrade data = getModelUpgrade(damage);
 		if (data != null) {
-			if(data.getIcon() == null){
+			if (data.getIcon() == null) {
 				data.setIcon("stevescarts:blocks/upgrades/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
 			}
 			return data.getIcon();

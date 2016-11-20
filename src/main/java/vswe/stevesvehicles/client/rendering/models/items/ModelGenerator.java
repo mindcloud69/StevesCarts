@@ -38,9 +38,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModelGenerator {
-
 	private FaceBakery faceBakery = new FaceBakery();
-
 	public List<ItemIconInfo> itemIcons = new ArrayList<>();
 
 	@SideOnly(Side.CLIENT)
@@ -65,7 +63,7 @@ public class ModelGenerator {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void bakeModels(ModelBakeEvent event) {
-		if(Minecraft.getMinecraft().getRenderItem() == null || Minecraft.getMinecraft().getRenderItem().getItemModelMesher() == null){
+		if (Minecraft.getMinecraft().getRenderItem() == null || Minecraft.getMinecraft().getRenderItem().getItemModelMesher() == null) {
 			return;
 		}
 		ItemModelMesher itemModelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
@@ -86,34 +84,29 @@ public class ModelGenerator {
 					if (texture == null) {
 						break;
 					}
-
 					ModelResourceLocation inventory;
 					inventory = getItemInventoryResourceLocation(item);
-
 					if (iTexturedItem.getMaxMeta() != 1) {
 						if (getModel(new ItemStack(item, 1, i)) != null) {
 							inventory = getModel(new ItemStack(item, 1, i));
 							ModelBakery.registerItemVariants(item, inventory);
 						}
 					}
-
 					final TextureAtlasSprite finalTexture = texture;
 					Function<ResourceLocation, TextureAtlasSprite> textureGetter = location -> finalTexture;
 					ImmutableList.Builder<ResourceLocation> builder = ImmutableList.builder();
 					builder.add(new ResourceLocation(itemIconInfo.textureName));
 					ItemLayerModel itemLayerModel = new ItemLayerModel(builder.build());
 					IBakedModel model = itemLayerModel.bake(ItemLayerModel.INSTANCE.getDefaultState(), DefaultVertexFormats.ITEM, textureGetter);
-
 					ItemCameraTransforms transforms = null;
 					try {
 						transforms = loadTransformFromJson(new ResourceLocation("minecraft:models/item/generated"));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-
 					ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> map = IPerspectiveAwareModel.MapWrapper.getTransforms(transforms);
 					IPerspectiveAwareModel iPerspectiveAwareModel = new IPerspectiveAwareModel.MapWrapper(model, map);
-					if(!((TexturedItem)item).useMeshDefinition()){
+					if (!((TexturedItem) item).useMeshDefinition()) {
 						itemModelMesher.register(item, i, inventory);
 					}
 					event.getModelRegistry().putObject(inventory, iPerspectiveAwareModel);
@@ -132,11 +125,11 @@ public class ModelGenerator {
 	}
 
 	public ModelResourceLocation getModel(ItemStack stack) {
-		String modelName = ((TexturedItem)stack.getItem()).getCustomModelLocation(stack);
-		if(modelName == null){
+		String modelName = ((TexturedItem) stack.getItem()).getCustomModelLocation(stack);
+		if (modelName == null) {
 			modelName = stack.getItem().getUnlocalizedName(stack);
 		}
-		//TODO: add constants
+		// TODO: add constants
 		return new ModelResourceLocation("stevescarts:" + modelName.substring(5), "inventory");
 	}
 
@@ -152,14 +145,12 @@ public class ModelGenerator {
 		}
 	}
 
-	//Item
+	// Item
 	class ItemIconInfo {
-
 		Item item;
 		int damage;
 		TextureAtlasSprite sprite;
 		String textureName;
-
 		public boolean isBucket = false;
 
 		public Item getItem() {
@@ -176,6 +167,5 @@ public class ModelGenerator {
 			this.sprite = sprite;
 			this.textureName = textureName;
 		}
-
 	}
 }

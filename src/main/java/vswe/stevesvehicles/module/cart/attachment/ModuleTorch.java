@@ -32,6 +32,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	private DataParameter<Integer> TORCHES;
+
 	public ModuleTorch(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -78,7 +79,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 			for (int side = -1; side <= 1; side += 2) {
 				// calculate the x and z coordinates, this depends on which
 				// direction the cart is going
-				BlockPos torch = next.add(getVehicle().z() != next.getZ() ? side : 0,0, getVehicle().x() != next.getX() ? side : 0);
+				BlockPos torch = next.add(getVehicle().z() != next.getZ() ? side : 0, 0, getVehicle().x() != next.getX() ? side : 0);
 				// now it's time to find a proper y value
 				for (int level = 2; level >= -2; level--) {
 					// check if this coordinate is a valid place to place a

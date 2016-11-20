@@ -35,20 +35,20 @@ public enum ModBlocks implements IRecipeOutput {
 	CART_ASSEMBLER("vehicle_assembler", BlockCartAssembler.class, TileEntityCartAssembler.class, "assembler"),
 	MODULE_TOGGLER("module_toggler", BlockActivator.class, TileEntityActivator.class, "toggler"),
 	EXTERNAL_DISTRIBUTOR("external_distributor", BlockDistributor.class, TileEntityDistributor.class, "distributor"),
-	DETECTOR_UNIT("detector_unit", BlockDetector.class, TileEntityDetector.class, "detector"){
+	DETECTOR_UNIT("detector_unit", BlockDetector.class, TileEntityDetector.class, "detector") {
 		@Override
 		protected Item createItem(Block block) {
 			return new ItemBlockDetector(block);
 		}
 	},
-	UPGRADE("upgrade", BlockUpgrade.class, TileEntityUpgrade.class, "upgrade"){
+	UPGRADE("upgrade", BlockUpgrade.class, TileEntityUpgrade.class, "upgrade") {
 		@Override
 		protected Item createItem(Block block) {
 			return new ItemUpgrade(block);
 		}
 	},
 	LIQUID_MANAGER("liquid_manager", BlockLiquidManager.class, TileEntityLiquid.class, "liquid"),
-	STORAGE("metal_storage", BlockMetalStorage.class){
+	STORAGE("metal_storage", BlockMetalStorage.class) {
 		@Override
 		protected Item createItem(Block block) {
 			return new ItemBlockStorage(block);
@@ -100,7 +100,7 @@ public enum ModBlocks implements IRecipeOutput {
 		}
 	}
 
-	protected Item createItem(Block block){
+	protected Item createItem(Block block) {
 		return new ItemBlock(block);
 	}
 

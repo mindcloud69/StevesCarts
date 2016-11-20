@@ -17,6 +17,7 @@ import vswe.stevesvehicles.vehicle.VehicleDataSerializers;
 
 public class ModuleColorizer extends ModuleAddon {
 	private DataParameter<int[]> COLORS;
+
 	public ModuleColorizer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -150,7 +151,7 @@ public class ModuleColorizer extends ModuleAddon {
 	@Override
 	public void initDw() {
 		COLORS = createDw(VehicleDataSerializers.VARINT);
-		registerDw(COLORS, new int[]{255, 255, 255});
+		registerDw(COLORS, new int[] { 255, 255, 255 });
 	}
 
 	@Override

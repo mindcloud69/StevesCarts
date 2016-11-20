@@ -4,7 +4,6 @@ import net.minecraft.util.math.BlockPos;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class BlockPosUtils {
-
 	public static double getHorizontalDistToVehicleSquared(BlockPos pos, VehicleBase vehicle) {
 		final int xDif = pos.getX() - vehicle.x();
 		final int zDif = pos.getZ() - vehicle.z();

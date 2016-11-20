@@ -484,7 +484,6 @@ public class ModuleData implements IRecipeOutput {
 	 * "/")); }
 	 * @SideOnly(Side.CLIENT) public IIcon getIcon() { return icon; }
 	 */
-
 	public String getIcon() {
 		return this.icon;
 	}
@@ -492,6 +491,7 @@ public class ModuleData implements IRecipeOutput {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
+
 	public ItemStack getItemStack(int count) {
 		int id = ModuleRegistry.getIdFromModule(this);
 		if (id >= 0) {

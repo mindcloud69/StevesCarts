@@ -55,7 +55,7 @@ public class ModelTorchPlacer extends ModelVehicle {
 		base.setRotationPoint(0, // X
 				-2F, // Y
 				-9F // Z
-				);
+		);
 		ModelRenderer[] torches = new ModelRenderer[3];
 		for (int i = -1; i <= 1; i++) {
 			ModelRenderer torchHolder = new ModelRenderer(this, 0, 6);
@@ -71,7 +71,7 @@ public class ModelTorchPlacer extends ModelVehicle {
 			torchHolder.setRotationPoint(i * 4, // X
 					0F, // Y
 					-1.5F // Z
-					);
+			);
 			ModelRenderer torch = new ModelRenderer(this, 0, 9);
 			torches[i + 1] = torch;
 			torchHolder.addChild(torch);
@@ -86,7 +86,7 @@ public class ModelTorchPlacer extends ModelVehicle {
 			torch.setRotationPoint(0, // X
 					0F, // Y
 					-1.5F // Z
-					);
+			);
 		}
 		return torches;
 	}

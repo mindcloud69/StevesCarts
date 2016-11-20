@@ -48,7 +48,7 @@ public class ModelWoodCutter extends ModelVehicle {
 			main.setRotationPoint(-13, // X
 					0, // Y
 					i * 2 // Z
-					);
+			);
 			ModelRenderer tip = new ModelRenderer(this, 0, 4);
 			main.addChild(tip);
 			fixSize(tip);
@@ -62,7 +62,7 @@ public class ModelWoodCutter extends ModelVehicle {
 			tip.setRotationPoint(-4F, // X
 					0, // Y
 					0 // Z
-					);
+			);
 		}
 	}
 

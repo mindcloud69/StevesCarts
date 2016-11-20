@@ -26,6 +26,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	private DataParameter<Byte> RAILS;
+
 	public ModuleRailer(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -167,7 +168,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void initDw() {
 		RAILS = createDw(DataSerializers.BYTE);
-		registerDw(RAILS, (byte)0);
+		registerDw(RAILS, (byte) 0);
 	}
 
 	@Override

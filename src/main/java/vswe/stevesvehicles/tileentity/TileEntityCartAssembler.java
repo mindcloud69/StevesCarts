@@ -1455,11 +1455,9 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	@Override
-	public boolean func_191420_l()
-	{
-		for (ItemStack itemstack : spareModules){
-			if (!itemstack.func_190926_b())
-			{
+	public boolean func_191420_l() {
+		for (ItemStack itemstack : spareModules) {
+			if (!itemstack.func_190926_b()) {
 				return false;
 			}
 		}

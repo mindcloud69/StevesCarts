@@ -71,7 +71,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 				} else {
 					stack = module.getItemStack();
 				}
-				if(stack != null){
+				if (stack != null) {
 					lst.add(stack);
 				}
 			}
@@ -105,7 +105,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 
 	private ModuleData getModelModuleData(int dmg) {
 		ModuleData data = ModuleRegistry.getModuleFromId(dmg);
-		if(data == null){
+		if (data == null) {
 			data = ModuleRegistry.getAllModules().get(dmg);
 		}
 		return data;
@@ -129,7 +129,7 @@ public class ItemVehicleModule extends Item implements TexturedItem {
 	public String getTextureName(int damage) {
 		ModuleData data = getModelModuleData(damage);
 		if (data != null) {
-			if(data.getIcon() == null){
+			if (data.getIcon() == null) {
 				data.setIcon("stevescarts:items/modules/" + data.getFullRawUnlocalizedName().replace(".", "/").replace(":", "/"));
 			}
 			return data.getIcon();

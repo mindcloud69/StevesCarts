@@ -44,10 +44,10 @@ import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelectionModule;
 import vswe.stevesvehicles.transfer.TransferHandler;
 
 public class TileEntityCargo extends TileEntityManager {
-
 	public TileEntityCargo() {
 		super(60);
 	}
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {

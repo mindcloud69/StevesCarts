@@ -41,8 +41,9 @@ public class LogicObjectModule extends LogicObject {
 		ModuleData module = ModuleRegistry.getModuleFromId(data);
 		if (module != null) {
 			ResourceHelper.bindResource(GuiDetector.MODULE_TEXTURE);
-			//TODO:SPRITES
-			//gui.drawIcon(module.getIcon(), gui.getGuiLeft() + x, gui.getGuiTop() + y, 1F, 1F, 0F, 0F);
+			// TODO:SPRITES
+			// gui.drawIcon(module.getIcon(), gui.getGuiLeft() + x,
+			// gui.getGuiTop() + y, 1F, 1F, 0F, 0F);
 		}
 		super.draw(gui, mouseX, mouseY);
 	}

@@ -153,7 +153,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 					info = getInfo(item);
 				} catch (Exception ignored) {
 				} // if some item fails to generate its tooltip we don't want to
-				// crash, just ignore displaying a tooltip
+					// crash, just ignore displaying a tooltip
 				if (info != null) {
 					if (isLocked) {
 						info.add("");

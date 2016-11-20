@@ -111,28 +111,29 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 		IBlockState stateAbove = world.getBlockState(pos.up());
 		IBlockState state = world.getBlockState(pos);
 		if (fertilizerStorage > 0) {
-			/*if (state.getBlock() instanceof BlockCrops && metadataOfBlockAbove != 7) {
-				if ((metadata > 0 && getVehicle().getRandom().nextInt(250) == 0) || (metadata == 0 && getVehicle().getRandom().nextInt(1000) == 0)) {
-					getVehicle().getWorld().setBlockMetadataWithNotify(x, y + 1, z, metadataOfBlockAbove + 1, 3);
-					if (!getVehicle().hasCreativeSupplies()) {
-						fertilizerStorage--;
-					}
-				}
-			} else if (block instanceof BlockSapling && getVehicle().getWorld().getBlockLightValue(x, y + 2, z) >= 9) {
-				if (getVehicle().getRandom().nextInt(100) == 0) {
-					if (getVehicle().getRandom().nextInt(6) == 0) {
-						getVehicle().getWorld().setBlockMetadataWithNotify(x, y + 1, z, metadataOfBlockAbove | 8, 3);
-						((BlockSapling) Blocks.sapling).func_149878_d(getVehicle().getWorld(), x, y + 1, z, getVehicle().getRandom());
-					}
-					if (!getVehicle().hasCreativeSupplies()) {
-						fertilizerStorage--;
-					}
-				}
-			}*/
-			if(stateAbove.getBlock() instanceof IGrowable){
+			/*
+			 * if (state.getBlock() instanceof BlockCrops &&
+			 * metadataOfBlockAbove != 7) { if ((metadata > 0 &&
+			 * getVehicle().getRandom().nextInt(250) == 0) || (metadata == 0 &&
+			 * getVehicle().getRandom().nextInt(1000) == 0)) {
+			 * getVehicle().getWorld().setBlockMetadataWithNotify(x, y + 1, z,
+			 * metadataOfBlockAbove + 1, 3); if
+			 * (!getVehicle().hasCreativeSupplies()) { fertilizerStorage--; } }
+			 * } else if (block instanceof BlockSapling &&
+			 * getVehicle().getWorld().getBlockLightValue(x, y + 2, z) >= 9) {
+			 * if (getVehicle().getRandom().nextInt(100) == 0) { if
+			 * (getVehicle().getRandom().nextInt(6) == 0) {
+			 * getVehicle().getWorld().setBlockMetadataWithNotify(x, y + 1, z,
+			 * metadataOfBlockAbove | 8, 3); ((BlockSapling)
+			 * Blocks.sapling).func_149878_d(getVehicle().getWorld(), x, y + 1,
+			 * z, getVehicle().getRandom()); } if
+			 * (!getVehicle().hasCreativeSupplies()) { fertilizerStorage--; } }
+			 * }
+			 */
+			if (stateAbove.getBlock() instanceof IGrowable) {
 				IGrowable growable = (IGrowable) stateAbove.getBlock();
-				if(growable.canGrow(world, pos, stateAbove, false)){
-					if(growable.canUseBonemeal(world, world.rand, pos, stateAbove)){
+				if (growable.canGrow(world, pos, stateAbove, false)) {
+					if (growable.canUseBonemeal(world, world.rand, pos, stateAbove)) {
 						growable.grow(world, world.rand, pos, stateAbove);
 						--this.fertilizerStorage;
 					}

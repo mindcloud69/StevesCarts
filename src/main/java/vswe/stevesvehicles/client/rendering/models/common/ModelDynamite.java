@@ -102,7 +102,7 @@ public class ModelDynamite extends ModelVehicle {
 		dynamite.setRotationPoint(x * 10F, // X
 				y * -8F, // Y
 				z * 18F // Z
-				);
+		);
 		dynamite.rotateAngleY = (float) Math.PI / 2;
 		return dynamite;
 	}
@@ -117,9 +117,9 @@ public class ModelDynamite extends ModelVehicle {
 			float size = ((ModuleDynamite) module).explosionSize();
 			float max = 4F /* base */ + 0.8F
 					/* how much a tnt is worth */ * 50 /*
-					 * the number of TNTs
-					 * possible
-					 */;
+														 * the number of TNTs
+														 * possible
+														 */;
 			float perModel = max / dynamites.length;
 			for (int i = 0; i < dynamites.length; i++) {
 				dynamites[i].isHidden = i * perModel >= size;
@@ -128,7 +128,7 @@ public class ModelDynamite extends ModelVehicle {
 		anchor.setRotationPoint(0, // X
 				-24 / sizeMultiplier, // Y
 				0 // Z
-				);
+		);
 	}
 
 	private float sizeMultiplier;

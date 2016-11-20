@@ -15,6 +15,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	private DataParameter<Boolean> LOADING_CHUNK;
+
 	public ModuleChunkLoader(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}

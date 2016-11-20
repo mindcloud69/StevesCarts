@@ -227,7 +227,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	protected void mouseMovedOrUp(int x, int y, final int button) {
 		x = this.scaleX(x);
 		y = this.scaleY(y);
-		//super.mouseMovedOrUp(x, y, button);
+		// super.mouseMovedOrUp(x, y, button);
 		this.mouseMoved(x, y, button);
 		this.mouseDragged(x, y, button);
 	}

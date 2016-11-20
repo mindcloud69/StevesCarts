@@ -8,6 +8,7 @@ import vswe.stevesvehicles.vehicle.VehicleBase;
 
 public class ModuleCheatEngine extends ModuleEngine {
 	private DataParameter<Integer> PRIORITY;
+
 	public ModuleCheatEngine(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}

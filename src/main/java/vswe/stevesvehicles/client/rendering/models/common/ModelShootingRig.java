@@ -35,7 +35,7 @@ public class ModelShootingRig extends ModelVehicle {
 		base.setRotationPoint(0.0F, // X
 				-5.5F, // Y
 				-0.0F // Z
-				);
+		);
 		base.rotateAngleY = (float) Math.PI / 2;
 		ModelRenderer pillar = new ModelRenderer(this, 0, 7);
 		addRenderer(pillar);
@@ -49,7 +49,7 @@ public class ModelShootingRig extends ModelVehicle {
 		pillar.setRotationPoint(0.0F, // X
 				-8F, // Y
 				-0.0F // Z
-				);
+		);
 		ModelRenderer top = new ModelRenderer(this, 16, 7);
 		addRenderer(top);
 		top.addBox(-3, // X
@@ -62,6 +62,6 @@ public class ModelShootingRig extends ModelVehicle {
 		top.setRotationPoint(0.0F, // X
 				-11F, // Y
 				-0.0F // Z
-				);
+		);
 	}
 }

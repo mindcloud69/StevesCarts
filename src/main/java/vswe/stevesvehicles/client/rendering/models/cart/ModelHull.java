@@ -45,7 +45,7 @@ public class ModelHull extends ModelVehicle {
 		bot.setRotationPoint(0.0F, // X
 				cartOnGround, // Y
 				0.0F // Z
-				);
+		);
 		front.addBox(-cartWidth / 2, // X
 				-cartHeight - 1, // Y
 				-1.0F, // Z
@@ -56,7 +56,7 @@ public class ModelHull extends ModelVehicle {
 		front.setRotationPoint(-cartLength / 2 + 1, // X
 				cartOnGround, // Y
 				0.0F // Z
-				);
+		);
 		left.addBox(-cartLength / 2 + 2, // X
 				-cartHeight - 1, // Y
 				-1.0F, // Z
@@ -67,7 +67,7 @@ public class ModelHull extends ModelVehicle {
 		left.setRotationPoint(0.0F, // X
 				cartOnGround, // Y
 				-cartWidth / 2 + 1 // Z
-				);
+		);
 		right.addBox(-cartLength / 2 + 2, // X
 				-cartHeight - 1, // Y
 				-1.0F, // Z
@@ -78,7 +78,7 @@ public class ModelHull extends ModelVehicle {
 		right.setRotationPoint(0.0F, // X
 				cartOnGround, // Y
 				cartWidth / 2 - 1 // Z
-				);
+		);
 		back.addBox(-cartWidth / 2, // X
 				-cartHeight - 1, // Y
 				-1.0F, // Z
@@ -89,7 +89,7 @@ public class ModelHull extends ModelVehicle {
 		back.setRotationPoint(cartLength / 2 - 1, // X
 				cartOnGround, // Y
 				0.0F // Z
-				);
+		);
 		bot.rotateAngleX = ((float) Math.PI / 2F);
 		front.rotateAngleY = ((float) Math.PI * 3F / 2F);
 		left.rotateAngleY = (float) Math.PI;

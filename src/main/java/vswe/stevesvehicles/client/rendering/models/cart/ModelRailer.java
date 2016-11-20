@@ -39,7 +39,7 @@ public class ModelRailer extends ModelVehicle {
 			railAnchor.setRotationPoint(0, // X
 					-r, // Y
 					0 // Z
-					);
+			);
 			ModelRenderer rail1 = new ModelRenderer(this, 18, 0);
 			fixSize(rail1);
 			railAnchor.addChild(rail1);
@@ -53,7 +53,7 @@ public class ModelRailer extends ModelVehicle {
 			rail1.setRotationPoint(-16.0F, // X
 					-6.5F, // Y
 					-7.0F // Z
-					);
+			);
 			rail1.rotateAngleZ = ((float) Math.PI * 3F / 2F);
 			rail1.rotateAngleY = ((float) Math.PI * 3F / 2F);
 			ModelRenderer rail2 = new ModelRenderer(this, 24, 0);
@@ -69,7 +69,7 @@ public class ModelRailer extends ModelVehicle {
 			rail2.setRotationPoint(-16.0F, // X
 					-6.5F, // Y
 					3.0F // Z
-					);
+			);
 			rail2.rotateAngleZ = ((float) Math.PI * 3F / 2F);
 			rail2.rotateAngleY = ((float) Math.PI * 3F / 2F);
 			for (int i = 0; i < 4; i++) {
@@ -86,7 +86,7 @@ public class ModelRailer extends ModelVehicle {
 				railBedMiddle.setRotationPoint(-8.0F + i * 4, // X
 						-6.5F, // Y
 						-8.0F // Z
-						);
+				);
 				railBedMiddle.rotateAngleZ = ((float) Math.PI * 3F / 2F);
 				railBedMiddle.rotateAngleY = ((float) Math.PI * 3F / 2F);
 				ModelRenderer railBedSide1 = new ModelRenderer(this, 0, 3);
@@ -102,7 +102,7 @@ public class ModelRailer extends ModelVehicle {
 				railBedSide1.setRotationPoint(-8.0F + i * 4, // X
 						-6.5F, // Y
 						-7.5F // Z
-						);
+				);
 				railBedSide1.rotateAngleZ = ((float) Math.PI * 3F / 2F);
 				railBedSide1.rotateAngleY = ((float) Math.PI * 3F / 2F);
 				ModelRenderer railBedSide2 = new ModelRenderer(this, 0, 3);
@@ -118,7 +118,7 @@ public class ModelRailer extends ModelVehicle {
 				railBedSide2.setRotationPoint(-8.0F + i * 4, // X
 						-6.5F, // Y
 						5.5F // Z
-						);
+				);
 				railBedSide2.rotateAngleZ = ((float) Math.PI * 3F / 2F);
 				railBedSide2.rotateAngleY = ((float) Math.PI * 3F / 2F);
 			}

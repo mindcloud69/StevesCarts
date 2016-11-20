@@ -39,7 +39,7 @@ public class ModelSolarPanelBase extends ModelSolarPanel {
 		base.setRotationPoint(0, // X
 				-4.5F, // Y
 				0 // Z
-				);
+		);
 		ModelRenderer moving = createMovingHolder(8, 0);
 		moving.addBox(-2, // X
 				-3.5F, // Y
@@ -61,6 +61,6 @@ public class ModelSolarPanelBase extends ModelSolarPanel {
 		top.setRotationPoint(0, // X
 				-5F, // Y
 				0 // Z
-				);
+		);
 	}
 }

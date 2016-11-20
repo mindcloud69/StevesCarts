@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
  * Use this to apply a texture to an item
  */
 public interface TexturedItem {
-
 	/**
-	 * @param damage the damage of the item that the texture is being loaded for
+	 * @param damage
+	 *            the damage of the item that the texture is being loaded for
 	 * @return the Texture name in the form of "modid:items/textureName"
 	 */
 	String getTextureName(int damage);
@@ -18,12 +18,11 @@ public interface TexturedItem {
 	 */
 	int getMaxMeta();
 
-
-	default String getCustomModelLocation(ItemStack stack){
+	default String getCustomModelLocation(ItemStack stack) {
 		return null;
 	}
 
-	default boolean useMeshDefinition(){
+	default boolean useMeshDefinition() {
 		return false;
 	}
 }

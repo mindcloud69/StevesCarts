@@ -5,7 +5,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -94,22 +93,26 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 			upgrade.updateGuiData(con, crafting, id, (short) -1);
 			changed = true;
 		} else if (tank.getFluid() != null) {
-			if (isNew || oldFluid == null) {
-				upgrade.updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tank.getFluid().getFluid()));
-				upgrade.updateGuiData(con, crafting, amount1, upgrade.getShortFromInt(true, tank.getFluid().amount));
-				upgrade.updateGuiData(con, crafting, amount2, upgrade.getShortFromInt(false, tank.getFluid().amount));
-				changed = true;
-			} else {
-				if (!oldFluid.getFluid().getName().equals(tank.getFluid().getFluid().getName())) {
-					upgrade.updateGuiData(con, crafting, id, (short) FluidRegistry.getFluidID(tank.getFluid().getFluid()));
-					changed = true;
-				}
-				if (oldFluid.amount != tank.getFluid().amount) {
-					upgrade.updateGuiData(con, crafting, amount1, upgrade.getShortFromInt(true, tank.getFluid().amount));
-					upgrade.updateGuiData(con, crafting, amount2, upgrade.getShortFromInt(false, tank.getFluid().amount));
-					changed = true;
-				}
-			}
+			// TODO: rework gui data system
+			/*
+			 * if (isNew || oldFluid == null) { upgrade.updateGuiData(con,
+			 * crafting, id, (short)
+			 * FluidRegistry.getFluidID(tank.getFluid().getFluid()));
+			 * upgrade.updateGuiData(con, crafting, amount1,
+			 * upgrade.getShortFromInt(true, tank.getFluid().amount));
+			 * upgrade.updateGuiData(con, crafting, amount2,
+			 * upgrade.getShortFromInt(false, tank.getFluid().amount)); changed
+			 * = true; } else { if
+			 * (!oldFluid.getFluid().getName().equals(tank.getFluid().getFluid()
+			 * .getName())) { upgrade.updateGuiData(con, crafting, id, (short)
+			 * FluidRegistry.getFluidID(tank.getFluid().getFluid())); changed =
+			 * true; } if (oldFluid.amount != tank.getFluid().amount) {
+			 * upgrade.updateGuiData(con, crafting, amount1,
+			 * upgrade.getShortFromInt(true, tank.getFluid().amount));
+			 * upgrade.updateGuiData(con, crafting, amount2,
+			 * upgrade.getShortFromInt(false, tank.getFluid().amount)); changed
+			 * = true; } }
+			 */
 		}
 		if (changed) {
 			if (tank.getFluid() == null) {
@@ -123,15 +126,14 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 	// TODO Synchronize the tag somehow :S
 	@Override
 	public void receiveGuiData(int id, short data) {
-		if (id == 0) {
-			if (data == -1) {
-				tank.setFluid(null);
-			} else if (tank.getFluid() == null) {
-				tank.setFluid(new FluidStack(FluidRegistry.getFluid(data), 0));
-			}
-		} else if (tank.getFluid() != null) {
-			tank.getFluid().amount = upgrade.getIntFromShort(id == 1, tank.getFluid().amount, data);
-		}
+		// TODO: rework gui data system
+		/*
+		 * if (id == 0) { if (data == -1) { tank.setFluid(null); } else if
+		 * (tank.getFluid() == null) { tank.setFluid(new
+		 * FluidStack(FluidRegistry.getFluid(data), 0)); } } else if
+		 * (tank.getFluid() != null) { tank.getFluid().amount =
+		 * upgrade.getIntFromShort(id == 1, tank.getFluid().amount, data); }
+		 */
 	}
 
 	private int tick;
