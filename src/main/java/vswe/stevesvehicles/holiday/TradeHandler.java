@@ -9,6 +9,7 @@ import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
+import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.item.ComponentTypes;
 
@@ -16,7 +17,7 @@ public class TradeHandler implements ITradeList {
 	public static VillagerProfession santaProfession;
 
 	public TradeHandler() {
-		santaProfession = new VillagerProfession("stevevehicles:santa", ResourceHelper.getResource("/models/santa.png").toString(), ResourceHelper.getResource("/models/santa_zombie.png").toString());
+		santaProfession = new VillagerProfession(Constants.MOD_ID + ":santa", ResourceHelper.getResource("/models/santa.png").toString(), ResourceHelper.getResource("/models/santa_zombie.png").toString());
 		VillagerCareer career = new VillagerCareer(santaProfession, "santa");
 		VillagerRegistry.instance().register(santaProfession);
 		career.addTrade(1, this);

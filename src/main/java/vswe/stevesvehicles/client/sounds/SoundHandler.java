@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.Constants;
 
 @SideOnly(Side.CLIENT)
 public class SoundHandler {
@@ -17,7 +18,7 @@ public class SoundHandler {
 	}
 
 	public static void playSound(String name, SoundCategory category, float volume, float pitch) {
-		playDefaultSound("stevescarts:" + name, category, volume, pitch);
+		playDefaultSound(Constants.MOD_ID + ":" + name, category, volume, pitch);
 	}
 
 	private static class PlayerSound extends PositionedSound {

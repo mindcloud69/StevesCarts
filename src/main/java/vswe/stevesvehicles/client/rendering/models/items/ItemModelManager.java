@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.block.ModBlocks;
+import vswe.stevesvehicles.buoy.BuoyType;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.tileentity.detector.DetectorType;
 import vswe.stevesvehicles.vehicle.VehicleRegistry;
@@ -33,8 +34,9 @@ public class ItemModelManager {
 			modelGenerator = new ModelGenerator();
 			ModelLoader.setCustomMeshDefinition(ModItems.modules, new TexturedItemMeshDefinition());
 			ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(ModBlocks.UPGRADE.getBlock()), new TexturedItemMeshDefinition());
-			for (VehicleType type : VehicleRegistry.getInstance().getElements()) {
-				registerItemModel(ModItems.vehicles, VehicleRegistry.getInstance().getIdFromType(type));
+			ModelLoader.setCustomMeshDefinition(ModItems.vehicles, new VehicleMeshDefinition());
+			for (BuoyType type : BuoyType.values()) {
+				registerItemModel(ModItems.buoys, type.ordinal());
 			}
 			registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
 			registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);

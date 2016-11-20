@@ -1,11 +1,15 @@
 package vswe.stevesvehicles.vehicle;
 
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 
 public class VehicleType {
 	private Class<? extends IVehicleEntity> clazz;
 	private final String unlocalizedName;
+	@SideOnly(Side.CLIENT) 
+	private String icon;
 
 	public VehicleType(Class<? extends IVehicleEntity> clazz, String unlocalizedName) {
 		this.clazz = clazz;
@@ -31,13 +35,12 @@ public class VehicleType {
 	public String getName() {
 		return I18n.translateToLocal(getUnlocalizedName());
 	}
-	/*
-	 * @SideOnly(Side.CLIENT) private IIcon fallbackIcon;
-	 * @SideOnly(Side.CLIENT) public void registerIcons(IIconRegister register)
-	 * { fallbackIcon =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":vehicles/" + getRawUnlocalizedName()); }
-	 * @SideOnly(Side.CLIENT) public IIcon getFallbackIcon() { return
-	 * fallbackIcon; }
-	 */
+	
+	public String getIcon() {
+		return this.icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 }

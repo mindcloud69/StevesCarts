@@ -2,10 +2,11 @@ package vswe.stevesvehicles.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import vswe.stevesvehicles.Constants;
 
 public class ResourceHelper {
 	public static ResourceLocation getResource(String path) {
-		return new ResourceLocation("stevescarts", "textures" + path);
+		return new ResourceLocation(Constants.MOD_ID, "textures" + path);
 	}
 
 	public static ResourceLocation getResourceFromPath(String path) {

@@ -25,6 +25,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.Constants;
 import vswe.stevesvehicles.client.gui.ColorHelper;
+import vswe.stevesvehicles.client.rendering.models.items.ItemModelManager;
+import vswe.stevesvehicles.client.rendering.models.items.TexturedItem;
 import vswe.stevesvehicles.localization.entry.info.LocalizationLabel;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.ModuleDataItemHandler;
@@ -36,12 +38,13 @@ import vswe.stevesvehicles.vehicle.VehicleType;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 import vswe.stevesvehicles.vehicle.version.VehicleVersion;
 
-public class ItemVehicles extends Item {
+public class ItemVehicles extends Item implements TexturedItem {
 	public ItemVehicles() {
 		super();
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		setCreativeTab(null);
+		ItemModelManager.registerItem(this);
 	}
 
 	/*
@@ -250,5 +253,27 @@ public class ItemVehicles extends Item {
 		} else {
 			return Constants.UNKNOWN_ITEM;
 		}
+	}
+	
+	@Override
+	public boolean useMeshDefinition() {
+		return true;
+	}
+
+	@Override
+	public String getTextureName(int damage) {
+		VehicleType type = VehicleRegistry.getInstance().getAllVehicles().get(damage);
+		if (type != null) {
+			if (type.getIcon() == null) {
+				type.setIcon(Constants.MOD_ID + ":items/vehicles/" + type.getRawUnlocalizedName());
+			}
+			return type.getIcon();
+		}
+		return Constants.UNKNOWN_SPRITE;
+	}
+
+	@Override
+	public int getMaxMeta() {
+		return VehicleRegistry.getInstance().getAllVehicles().size();
 	}
 }
