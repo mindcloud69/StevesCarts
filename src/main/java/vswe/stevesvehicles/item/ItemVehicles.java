@@ -31,6 +31,8 @@ import vswe.stevesvehicles.localization.entry.info.LocalizationLabel;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.ModuleDataItemHandler;
 import vswe.stevesvehicles.module.data.ModuleDataPair;
+import vswe.stevesvehicles.upgrade.Upgrade;
+import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 import vswe.stevesvehicles.util.Tuple;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.VehicleRegistry;
@@ -258,6 +260,23 @@ public class ItemVehicles extends Item implements TexturedItem {
 	@Override
 	public boolean useMeshDefinition() {
 		return true;
+	}
+	
+	private VehicleType getModelType(int dmg) {
+		VehicleType type = VehicleRegistry.getInstance().getTypeFromId(dmg);
+		if (type == null) {
+			type = VehicleRegistry.getInstance().getAllVehicles().get(dmg);
+		}
+		return type;
+	}
+
+	@Override
+	public String getCustomModelLocation(ItemStack stack) {
+		VehicleType type = getModelType(stack.getItemDamage());
+		if (type != null) {
+			return type.getUnlocalizedNameForItem();
+		}
+		return getUnlocalizedName();
 	}
 
 	@Override
