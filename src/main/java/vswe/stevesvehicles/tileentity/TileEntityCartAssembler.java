@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -71,7 +72,7 @@ import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
  * @author Vswe
  *
  */
-public class TileEntityCartAssembler extends TileEntityInventory implements ISidedInventory {
+public class TileEntityCartAssembler extends TileEntityInventory implements ISidedInventory, ITickable {
 	/**
 	 * ASSEMBLING VARIABLES
 	 */
@@ -543,7 +544,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 							}
 						}
 						if (canRemove) {
-							slot.putStack(null);
+							slot.putStack(ItemStack.field_190927_a);
 						}
 					} else if (slotId != 0) {
 						if (slot.getStack().func_190916_E() == getKeepSize()) {
@@ -1082,7 +1083,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	private boolean loaded;
 
-	public void updateEntity() {
+	public void update() {
 		if (!loaded) {
 			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, pos);
 			loaded = true;

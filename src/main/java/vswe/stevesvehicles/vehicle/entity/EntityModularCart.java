@@ -129,6 +129,8 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		if (this.world.isRemote && !(dataManager instanceof LockableEntityDataManager)) {
 			this.overrideDatawatcher();
 		}
+		dataManager.register(VehicleBase.IS_WORKING, false);
+		dataManager.register(VehicleBase.IS_DISANABLED, false);
 		super.entityInit();
 	}
 

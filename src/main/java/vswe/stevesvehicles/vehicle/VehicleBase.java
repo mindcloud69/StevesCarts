@@ -73,8 +73,8 @@ public class VehicleBase {
 	private VehicleType vehicleType;
 	public static final int MODULAR_SPACE_WIDTH = 443;
 	public static final int MODULAR_SPACE_HEIGHT = 168;
-	private static final DataParameter<Boolean> IS_BURNING = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> IS_WORKING = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
 	private static Random rand = new Random();
 	/**
 	 * All Modules that belong to this cart
@@ -445,7 +445,7 @@ public class VehicleBase {
 	 * determine if a module that requires power should run or not.
 	 */
 	public boolean isEngineBurning() {
-		return entity.getDataManager().get(IS_BURNING);
+		return entity.getDataManager().get(IS_WORKING);
 	}
 
 	/**
@@ -458,7 +458,7 @@ public class VehicleBase {
 		if (getWorld().isRemote) {
 			return;
 		}
-		entity.getDataManager().set(IS_BURNING, on);
+		entity.getDataManager().set(IS_WORKING, on);
 	}
 
 	/**

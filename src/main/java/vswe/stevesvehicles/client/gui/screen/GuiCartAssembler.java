@@ -566,7 +566,7 @@ public class GuiCartAssembler extends GuiBase {
 				}
 			}
 			if (isScrolling) {
-				if (button != -1) {
+				if (button != 0) {
 					isScrolling = false;
 					assembler.setSpinning(true);
 				} else {
