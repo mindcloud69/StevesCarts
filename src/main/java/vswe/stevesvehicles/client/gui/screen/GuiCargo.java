@@ -3,6 +3,8 @@ package vswe.stevesvehicles.client.gui.screen;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiCreateFlatWorld;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -123,7 +125,7 @@ public class GuiCargo extends GuiManager {
 	}
 
 	@Override
-	protected void drawItems(int id, RenderItem renderitem, int left, int top) {
+	protected void drawItems(int id, int left, int top) {
 		ItemStack cartIcon;
 		if (getCargo().target[id] < 0 || getCargo().target[id] >= TileEntityCargo.itemSelections.size() || TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon() == null) {
 			cartIcon = new ItemStack(Items.MINECART);
@@ -131,9 +133,7 @@ public class GuiCargo extends GuiManager {
 			cartIcon = TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon();
 		}
 		int[] coordinate = getBoxCoordinate(id);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		renderitem.renderItemIntoGUI(cartIcon, left + coordinate[0], top + coordinate[1]);
-		GL11.glEnable(GL11.GL_LIGHTING);
+		drawItemStack(cartIcon, left + coordinate[0], top + coordinate[1]);
 	}
 
 	@Override

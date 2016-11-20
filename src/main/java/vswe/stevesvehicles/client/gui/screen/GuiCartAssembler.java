@@ -350,7 +350,7 @@ public class GuiCartAssembler extends GuiBase {
 				int backGroundIndex = hover ? 1 : 0;
 				drawRect(target, MODULE_BACKGROUND_SRC_X + (target[2] + TEXTURE_SPACING) * backGroundIndex, MODULE_BACKGROUND_SRC_Y);
 				ItemStack item = moduleData.getItemStack();
-				renderitem.renderItemIntoGUI(item, target[0] + 1, target[1] + 1);
+				drawItemStack(item, target[0] + 1, target[1] + 1);
 				if (hover) {
 					// noinspection unchecked
 					List<String> info = item.getTooltip(this.mc.player, mc.gameSettings.advancedItemTooltips);
@@ -404,7 +404,6 @@ public class GuiCartAssembler extends GuiBase {
 		}
 	}
 
-	private static final RenderItem renderitem = Minecraft.getMinecraft().getRenderItem();
 	private static final int MODULE_X = 156;
 	private static final int MODULE_Y = 25;
 	private static final int MODULE_SPACING = 20;

@@ -12,10 +12,13 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -36,6 +39,24 @@ public abstract class GuiBase extends GuiContainerSpecial {
 
 	public boolean inRect(int x, int y, int[] coords) {
 		return coords != null && x >= coords[0] && x < coords[0] + coords[2] && y >= coords[1] && y < coords[1] + coords[3];
+	}
+	
+	public void drawItemStack(ItemStack stack, int x, int y) {
+		GlStateManager.pushMatrix();
+		RenderHelper.enableGUIStandardItemLighting();
+		GlStateManager.disableLighting();
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.enableColorMaterial();
+		GlStateManager.enableLighting();
+		GlStateManager.enableDepth();
+		this.itemRender.zLevel = 100.0F;
+		this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+		this.itemRender.zLevel = 0.0F;
+		GlStateManager.disableLighting();
+		GlStateManager.popMatrix();
+		GlStateManager.disableDepth();
+		GlStateManager.enableLighting();
+		RenderHelper.disableStandardItemLighting();
 	}
 
 	// TODO due to the scaling the mouse over may go outside the screen(since it

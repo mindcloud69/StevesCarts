@@ -78,11 +78,10 @@ public abstract class GuiManager extends GuiBase {
 			int color = manager.color[i] - 1;
 			drawColors(i, color, left, top);
 		}
-		RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 		int[] coordinate = getCenterCoordinate();
-		renderItem.renderItemIntoGUI(new ItemStack(getBlock(), 1), left + coordinate[0], top + coordinate[1]);
+		drawItemStack(new ItemStack(getBlock(), 1), left + coordinate[0], top + coordinate[1]);
 		for (int i = 0; i < 4; i++) {
-			drawItems(i, renderItem, left, top);
+			drawItems(i, left, top);
 		}
 		GL11.glColor4f(1F, 1F, 1F, 1F);
 	}
@@ -317,7 +316,7 @@ public abstract class GuiManager extends GuiBase {
 		return 0;
 	}
 
-	protected void drawItems(int id, RenderItem renderitem, int left, int top) {
+	protected void drawItems(int id, int left, int top) {
 	}
 
 	protected abstract String getMaxSizeOverlay(int id);
