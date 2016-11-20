@@ -98,7 +98,7 @@ public class ModuleEnchants extends ModuleAddon {
 							if (i != j) {
 								if (enchants[i] != null && enchants[j] != null && enchants[i].getEnchantment() == enchants[j].getEnchantment()) {
 									enchants[i] = null;
-									getStack(i).stackSize += 1;
+									getStack(i).func_190917_f(1);
 									valid = false;
 									break;
 								}

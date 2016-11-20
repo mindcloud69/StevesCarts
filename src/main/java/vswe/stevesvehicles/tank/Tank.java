@@ -3,11 +3,14 @@ package vswe.stevesvehicles.tank;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.client.gui.ColorHelper;
@@ -52,8 +55,8 @@ public class Tank implements IFluidTank {
 	public void containerTransfer() {
 		ItemStack item = owner.getInputContainer(tankId);
 		if (item != null) {
-			if (FluidContainerRegistry.isFilledContainer(item)) {
-				FluidStack fluidContent = FluidContainerRegistry.getFluidForFilledItem(item);
+			FluidStack fluidContent = FluidUtil.getFluidContained(item);
+			if (fluidContent != null) {
 				if (fluidContent != null) {
 					int fill = fill(fluidContent, false, false);
 					if (fill == fluidContent.amount) {
@@ -72,20 +75,20 @@ public class Tank implements IFluidTank {
 						}
 					}
 				}
-			} else if (FluidContainerRegistry.isEmptyContainer(item)) {
+			} else if (fluidContent == null) {
 				ItemStack full = FluidContainerRegistry.fillFluidContainer(fluid, item);
 				if (full != null) {
-					FluidStack fluidContent = FluidContainerRegistry.getFluidForFilledItem(full);
-					if (fluidContent != null) {
-						owner.addToOutputContainer(tankId, full);
-						if (full.func_190916_E() == 0) {
-							item.func_190918_g(1);
-							if (item.func_190916_E() <= 0) {
-								owner.clearInputContainer(tankId);
+						FluidStack fluidContentFilled = FluidUtil.getFluidContained(full);
+						if (fluidContentFilled != null) {
+							owner.addToOutputContainer(tankId, full);
+							if (full.func_190916_E() == 0) {
+								item.func_190918_g(1);
+								if (item.func_190916_E() <= 0) {
+									owner.clearInputContainer(tankId);
+								}
+								drain(fluidContentFilled.amount, true, false);
 							}
-							drain(fluidContent.amount, true, false);
 						}
-					}
 				}
 			}
 		}

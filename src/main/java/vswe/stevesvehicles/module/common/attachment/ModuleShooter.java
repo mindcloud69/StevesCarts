@@ -295,7 +295,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 			if (getStack(i) != null) {
 				if (isValidProjectileItem(getStack(i))) {
 					ItemStack projectile = getStack(i).copy();
-					projectile.stackSize = 1;
+					projectile.func_190920_e(1);
 					if (flag && !getVehicle().hasCreativeSupplies()) {
 						getStack(i).func_190918_g(1);
 						if (getStack(i).func_190916_E() == 0) {

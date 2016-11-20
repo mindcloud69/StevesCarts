@@ -353,6 +353,11 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 	public void setInventorySlotContents(int id, ItemStack item) {
 		vehicleBase.setStack(id, item);
 	}
+	
+	@Override
+	public boolean func_191420_l() {
+		return vehicleBase.func_191420_l();
+	}
 
 	@Override
 	public ItemStack decrStackSize(int id, int count) {

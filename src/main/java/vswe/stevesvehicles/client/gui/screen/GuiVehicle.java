@@ -13,7 +13,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.Constants;
-import vswe.stevesvehicles.GeneratedInfo;
 import vswe.stevesvehicles.client.ResourceHelper;
 import vswe.stevesvehicles.container.slots.ISpecialSlotRender;
 import vswe.stevesvehicles.container.slots.SlotBase;
@@ -348,7 +347,7 @@ public class GuiVehicle extends GuiBase {
 
 		if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
 			itemstack = itemstack.copy();
-			itemstack.stackSize /= 2;
+			itemstack.func_190920_e(itemstack.func_190916_E() / 2);
 		}
 		else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null){
 			if (this.dragSplittingSlots.size() == 1){
@@ -362,12 +361,12 @@ public class GuiVehicle extends GuiBase {
 
 				if (itemstack.func_190916_E() > itemstack.getMaxStackSize()){
 					info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
-					itemstack.stackSize = itemstack.getMaxStackSize();
+					itemstack.func_190920_e(itemstack.getMaxStackSize());
 				}
 
 				if (itemstack.func_190916_E() > slot.getItemStackLimit(itemstack)) {
 					info = TextFormatting.YELLOW + "" + slot.getItemStackLimit(itemstack);
-					itemstack.stackSize = slot.getItemStackLimit(itemstack);
+					itemstack.func_190920_e(slot.getItemStackLimit(itemstack));
 				}
 			}
 			else

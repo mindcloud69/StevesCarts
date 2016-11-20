@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -1235,6 +1236,19 @@ public class VehicleBase {
 			}
 		}
 		return null;
+	}
+	
+	public boolean func_191420_l() {
+		if (modules != null) {
+			for (ModuleBase module : modules) {
+				for(int i = 0;i < module.getInventorySize();i++){
+					if(!module.getStack(i).func_190926_b()){
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 	public void setStack(int id, ItemStack item) {

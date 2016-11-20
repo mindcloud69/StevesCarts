@@ -29,9 +29,9 @@ public class MobHatEquip {
 				if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == ComponentTypes.WARM_HAT.getId()) {
 					if (!player.capabilities.isCreativeMode) {
 						final ItemStack itemStack = item;
-						--itemStack.stackSize;
+						itemStack.func_190918_g(1);
 					}
-					if (!player.worldObj.isRemote) {
+					if (!player.world.isRemote) {
 						villager.setProfession(TradeHandler.santaProfession);
 						try {
 							ReflectionHelper.findMethod(EntityVillager.class, villager, new String[] { "populateBuyingList" }).invoke(null);
@@ -39,7 +39,7 @@ public class MobHatEquip {
 							e.printStackTrace();
 						}
 					}
-					if (item.stackSize <= 0 && !player.capabilities.isCreativeMode) {
+					if (item.func_190916_E() <= 0 && !player.capabilities.isCreativeMode) {
 						player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 					}
 					event.setCanceled(true);

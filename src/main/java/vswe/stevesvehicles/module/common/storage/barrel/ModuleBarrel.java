@@ -205,7 +205,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	@SideOnly(Side.CLIENT)
 	private List<String> getInfo(ItemStack item) {
 		// noinspection unchecked
-		return item.getTooltip(Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+		return item.getTooltip(Minecraft.getMinecraft().player, Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
 	}
 
 	@Override
@@ -292,7 +292,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 				ItemStack output = getStack(1);
 				if (output != null && storedItem == null) {
 					storedItem = output.copy();
-					storedItem.stackSize = 1;
+					storedItem.func_190920_e(1);
 				} else if (output == null && storedItem != null && itemCount == 0 && !isLocked) {
 					storedItem = null;
 				}
@@ -302,7 +302,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 					if (storedItem != null) {
 						if (isLocked) {
 							ItemStack itemStack = storedItem.copy();
-							itemStack.stackSize = 0;
+							itemStack.func_190920_e(0);
 							setStack(1, itemStack);
 						} else {
 							storedItem = null;
@@ -327,10 +327,10 @@ public abstract class ModuleBarrel extends ModuleStorage {
 						if (output == null) {
 							output = storedItem.copy();
 							setStack(1, output);
-							output.stackSize = 0;
+							output.func_190920_e(0);
 						}
 						int canMove = Math.min(output.getMaxStackSize() - output.func_190916_E(), itemCount);
-						output.stackSize += canMove;
+						output.func_190917_f(canMove);
 						itemCount -= canMove;
 					}
 				}

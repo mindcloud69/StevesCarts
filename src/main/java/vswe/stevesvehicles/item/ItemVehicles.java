@@ -24,7 +24,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.Constants;
-import vswe.stevesvehicles.GeneratedInfo;
 import vswe.stevesvehicles.client.gui.ColorHelper;
 import vswe.stevesvehicles.localization.entry.info.LocalizationLabel;
 import vswe.stevesvehicles.module.data.ModuleData;

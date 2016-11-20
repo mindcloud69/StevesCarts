@@ -34,15 +34,15 @@ public class EntityCake extends EntityEgg {
 			}
 		} else {
 			BlockPos pos = getPosition();
-			if (worldObj.isAirBlock(pos) && worldObj.isSideSolid(pos.down(), EnumFacing.UP)) {
-				worldObj.setBlockState(pos, Blocks.CAKE.getDefaultState());
+			if (world.isAirBlock(pos) && world.isSideSolid(pos.down(), EnumFacing.UP)) {
+				world.setBlockState(pos, Blocks.CAKE.getDefaultState());
 			}
 		}
 		for (int i = 0; i < 8; i++) {
 			// noinspection SpellCheckingInspection
-			worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SNOWBALL, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
 		}
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			setDead();
 		}
 	}

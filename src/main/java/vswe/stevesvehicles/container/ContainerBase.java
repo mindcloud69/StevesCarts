@@ -81,13 +81,13 @@ public abstract class ContainerBase extends Container {
 					int size = slotItem.func_190916_E() + item.func_190916_E();
 					int maxLimit = Math.min(item.getMaxStackSize(), slot.getSlotStackLimit());
 					if (size <= maxLimit) {
-						item.stackSize = 0;
-						slotItem.stackSize = size;
+						item.func_190920_e(0);
+						slotItem.func_190920_e(size);
 						slot.onSlotChanged();
 						result = true;
 					} else if (slotItem.func_190916_E() < maxLimit) {
 						item.func_190918_g(maxLimit - slotItem.func_190916_E());
-						slotItem.stackSize = maxLimit;
+						slotItem.func_190920_e(maxLimit);
 						slot.onSlotChanged();
 						result = true;
 					}
@@ -111,7 +111,7 @@ public abstract class ContainerBase extends Container {
 				if (slotItem == null && TransferHandler.isItemValidForTransfer(slot, item, TransferHandler.TransferType.SHIFT)) {
 					int stackSize = Math.min(slot.getSlotStackLimit(), item.func_190916_E());
 					ItemStack newItem = item.copy();
-					newItem.stackSize = stackSize;
+					newItem.func_190920_e(stackSize);
 					item.func_190918_g(stackSize);
 					slot.putStack(newItem);
 					slot.onSlotChanged();

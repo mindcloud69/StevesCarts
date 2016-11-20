@@ -49,7 +49,7 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && dynamiteCount < getMaxDynamiteCount()) {
 				int count = Math.min(getMaxDynamiteCount() - dynamiteCount, item.func_190916_E());
 				dynamiteCount += count;
-				item.stackSize -= count;
+				item.func_190918_g(count);
 				if (item.func_190916_E() == 0) {
 					setStack(0, null);
 				}

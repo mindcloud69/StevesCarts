@@ -90,7 +90,7 @@ public class ModuleFirework extends ModuleAttachment {
 			if (item != null) {
 				if (item.getItem() == Items.FIREWORKS) {
 					ItemStack firework = item.copy();
-					firework.stackSize = 1;
+					firework.func_190917_f(1);
 					removeItemStack(item, 1, i);
 					return firework;
 				} else if (item.getItem() == Items.PAPER) {
@@ -149,7 +149,7 @@ public class ModuleFirework extends ModuleAttachment {
 			if (item != null) {
 				if (item.getItem() == Items.FIREWORK_CHARGE) {
 					ItemStack charge = item.copy();
-					charge.stackSize = 1;
+					charge.func_190917_f(1);
 					removeItemStack(item, 1, i);
 					return charge;
 				}
@@ -261,7 +261,7 @@ public class ModuleFirework extends ModuleAttachment {
 
 	private void removeItemStack(ItemStack item, int count, int id) {
 		if (!getVehicle().hasCreativeSupplies()) {
-			item.stackSize -= count;
+			item.func_190918_g(count);
 			if (item.func_190916_E() <= 0) {
 				setStack(id, null);
 			}

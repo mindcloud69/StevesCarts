@@ -18,7 +18,7 @@ public class MobChristmasDrop {
 	@SubscribeEvent
 	public void onEntityLivingDeath(LivingDeathEvent event) {
 		EntityLivingBase monster = event.getEntityLiving();
-		if (monster.worldObj.isRemote || !event.getSource().getDamageType().equals("player")) {
+		if (monster.world.isRemote || !event.getSource().getDamageType().equals("player")) {
 			return;
 		}
 		if (monster instanceof EntityMob) {
@@ -34,10 +34,10 @@ public class MobChristmasDrop {
 	}
 
 	private void dropItem(EntityLivingBase monster, ItemStack item) {
-		EntityItem obj = new EntityItem(monster.worldObj, monster.posX, monster.posY, monster.posZ, item);
-		obj.motionX = monster.worldObj.rand.nextGaussian() * 0.05F;
-		obj.motionY = monster.worldObj.rand.nextGaussian() * 0.05F + 0.2F;
-		obj.motionZ = monster.worldObj.rand.nextGaussian() * 0.05F;
-		monster.worldObj.spawnEntityInWorld(obj);
+		EntityItem obj = new EntityItem(monster.world, monster.posX, monster.posY, monster.posZ, item);
+		obj.motionX = monster.world.rand.nextGaussian() * 0.05F;
+		obj.motionY = monster.world.rand.nextGaussian() * 0.05F + 0.2F;
+		obj.motionZ = monster.world.rand.nextGaussian() * 0.05F;
+		monster.world.spawnEntityInWorld(obj);
 	}
 }

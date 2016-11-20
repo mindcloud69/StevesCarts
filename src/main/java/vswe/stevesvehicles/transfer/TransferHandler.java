@@ -104,7 +104,7 @@ public class TransferHandler {
 				// add to an existing ItemStack and a new one.
 				if (inv.getStackInSlot(pos) == null) {
 					ItemStack clone = iStack.copy();
-					clone.stackSize = 0;
+					clone.func_190920_e(0);
 					if (!fake) {
 						inv.setInventorySlotContents(pos, clone);
 					}
@@ -138,9 +138,9 @@ public class TransferHandler {
 				} else {
 					// decrease the items in the stack we want to store and
 					// increase the items in the stack in the cart
-					iStack.stackSize -= stackSize;
+					iStack.func_190918_g(stackSize);;
 					if (!fake) {
-						inv.getStackInSlot(pos).stackSize += stackSize;
+						inv.getStackInSlot(pos).func_190917_f(stackSize);;
 					}
 					// if the stack we want to store is empty we're done and
 					// therefore mark the slot position as invalid to exit the
