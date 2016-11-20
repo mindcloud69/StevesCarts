@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -76,18 +77,21 @@ public class Tank implements IFluidTank {
 						}
 					}
 				}
-			} else if (fluidContent == null) {
-				ItemStack full = FluidUtil.tryFillContainer(item, handler, fluid.amount, null, true).result;
-				if (full != null) {
-					FluidStack fluidContentFilled = FluidUtil.getFluidContained(full);
-					if (fluidContentFilled != null) {
-						owner.addToOutputContainer(tankId, full);
-						if (full.getCount() == 0) {
-							item.shrink(1);
-							if (item.getCount() <= 0) {
-								owner.clearInputContainer(tankId);
+			} else if (fluidContent == null && fluid != null) {
+				FluidActionResult result = FluidUtil.tryFillContainer(item, handler, fluid.amount, null, true);
+				if(result != null){
+					ItemStack full = result.result;
+					if (full != null) {
+						FluidStack fluidContentFilled = FluidUtil.getFluidContained(full);
+						if (fluidContentFilled != null) {
+							owner.addToOutputContainer(tankId, full);
+							if (full.getCount() == 0) {
+								item.shrink(1);
+								if (item.getCount() <= 0) {
+									owner.clearInputContainer(tankId);
+								}
+								drain(fluidContentFilled.amount, true, false);
 							}
-							drain(fluidContentFilled.amount, true, false);
 						}
 					}
 				}

@@ -3,8 +3,6 @@ package vswe.stevesvehicles.client.gui.screen;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,8 +14,6 @@ import vswe.stevesvehicles.network.DataWriter;
 import vswe.stevesvehicles.network.PacketHandler;
 import vswe.stevesvehicles.network.PacketType;
 import vswe.stevesvehicles.tileentity.TileEntityManager;
-
-import vswe.stevesvehicles.client.gui.screen.GuiBase.RenderRotation;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiManager extends GuiBase {
@@ -45,7 +41,7 @@ public abstract class GuiManager extends GuiBase {
 			drawMouseOver(
 					LocalizationManager.CHANGE_TURN_BACK.translate() + "\n" + LocalizationManager.CURRENT_SETTING.translate() + ": "
 							+ (manager.color[i] == 5 ? LocalizationManager.TURN_BACK_DISABLED.translate() : (manager.doReturn[manager.color[i] - 1] ? LocalizationManager.TURN_BACK.translate() : LocalizationManager.CONTINUE_FORWARD.translate())),
-					x, y, getReturnCoordinate(i));
+							x, y, getReturnCoordinate(i));
 			drawMouseOver(LocalizationManager.CHANGE_TRANSFER_SIZE.translate() + "\n" + LocalizationManager.CURRENT_SETTING.translate() + ": " + getMaxSizeOverlay(i), x, y, getTextCoordinate(i));
 			drawMouseOver(LocalizationManager.CHANGE_SIDE.translate() + "\n" + LocalizationManager.CURRENT_SIDE.translate() + ": " + (new String[] { LocalizationManager.RED_SIDE.translate(), LocalizationManager.BLUE_SIDE.translate(),
 					LocalizationManager.YELLOW_SIDE.translate(), LocalizationManager.GREEN_SIDE.translate(), LocalizationManager.DISABLED_SIDE.translate() })[manager.color[i] - 1], x, y, getColorSelectorCoordinate(i));

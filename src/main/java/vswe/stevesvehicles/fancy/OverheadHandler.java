@@ -125,12 +125,12 @@ public class OverheadHandler extends FancyPancyHandler {
 			// check if it's in an inventory
 			if (isObserver && player.openContainer != null
 					&& renderManager.playerViewY == 180 /*
-														 * set to 180 when
-														 * rendering, it might
-														 * be 180 at other
-														 * points but won't be
-														 * the end of the world
-														 */) {
+					 * set to 180 when
+					 * rendering, it might
+					 * be 180 at other
+					 * points but won't be
+					 * the end of the world
+					 */) {
 				return;
 			}
 			renderManager.renderEngine.bindTexture(data.resourceLocation);

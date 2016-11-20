@@ -18,8 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -55,11 +53,10 @@ import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
 import vswe.stevesvehicles.tileentity.toggler.TogglerOption;
 import vswe.stevesvehicles.transfer.TransferHandler;
 import vswe.stevesvehicles.vehicle.entity.LockableEntityDataManager;
-import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 import vswe.stevesvehicles.vehicle.entity.IVehicleEntity;
 import vswe.stevesvehicles.vehicle.version.VehicleVersion;
 
-public class VehicleBase {
+public abstract class VehicleBase {
 	private ForgeChunkManager.Ticket cartTicket;
 	private ModuleWorker workingComponent;
 	public TileEntityCartAssembler placeholderAssembler;
@@ -73,8 +70,6 @@ public class VehicleBase {
 	private VehicleType vehicleType;
 	public static final int MODULAR_SPACE_WIDTH = 443;
 	public static final int MODULAR_SPACE_HEIGHT = 168;
-	public static final DataParameter<Boolean> IS_WORKING = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
 	private static Random rand = new Random();
 	/**
 	 * All Modules that belong to this cart
@@ -121,6 +116,10 @@ public class VehicleBase {
 		loadModules(info, true);
 		this.name = name;
 	}
+
+	protected abstract DataParameter<Boolean> isWorkingParameter();
+
+	protected abstract DataParameter<Boolean> isDisanabledParameter();
 
 	/**
 	 * All Modules that belong to this cart
@@ -424,7 +423,7 @@ public class VehicleBase {
 	 * @return If it's disabled
 	 */
 	public boolean isDisabled() {
-		return entity.getDataManager().get(IS_DISANABLED);
+		return entity.getDataManager().get(isDisanabledParameter());
 	}
 
 	/**
@@ -437,7 +436,7 @@ public class VehicleBase {
 		if (getWorld().isRemote) {
 			return;
 		}
-		entity.getDataManager().set(IS_DISANABLED, disabled);
+		entity.getDataManager().set(isDisanabledParameter(), disabled);
 	}
 
 	/**
@@ -445,7 +444,7 @@ public class VehicleBase {
 	 * determine if a module that requires power should run or not.
 	 */
 	public boolean isEngineBurning() {
-		return entity.getDataManager().get(IS_WORKING);
+		return entity.getDataManager().get(isWorkingParameter());
 	}
 
 	/**
@@ -458,7 +457,7 @@ public class VehicleBase {
 		if (getWorld().isRemote) {
 			return;
 		}
-		entity.getDataManager().set(IS_WORKING, on);
+		entity.getDataManager().set(isWorkingParameter(), on);
 	}
 
 	/**
@@ -1184,7 +1183,7 @@ public class VehicleBase {
 	}
 
 	public void onInteractWith(EntityPlayer player) {
-		player.openGui(player, 0, getWorld(), entity.getEntityId(), 0, 0);
+		player.openGui(StevesVehicles.instance, 0, getWorld(), entity.getEntityId(), 0, 0);
 		vehicleEntity.openInventory(player);
 	}
 
@@ -1271,12 +1270,12 @@ public class VehicleBase {
 			ItemStack item;
 			if (vehicleEntity.getStackInSlot(id).getCount() <= count) {
 				item = vehicleEntity.getStackInSlot(id);
-				vehicleEntity.setInventorySlotContents(id, null);
+				vehicleEntity.setInventorySlotContents(id, ItemStack.EMPTY);
 				return item;
 			} else {
 				item = vehicleEntity.getStackInSlot(id).splitStack(count);
 				if (vehicleEntity.getStackInSlot(id).getCount() == 0) {
-					vehicleEntity.setInventorySlotContents(id, null);
+					vehicleEntity.setInventorySlotContents(id, ItemStack.EMPTY);
 				}
 				return item;
 			}
@@ -1288,7 +1287,7 @@ public class VehicleBase {
 	public ItemStack removeStackFromSlot(int id) {
 		if (vehicleEntity.getStackInSlot(id) != null) {
 			ItemStack item = vehicleEntity.getStackInSlot(id);
-			vehicleEntity.setInventorySlotContents(id, null);
+			vehicleEntity.setInventorySlotContents(id, ItemStack.EMPTY);
 			return item;
 		} else {
 			return null;

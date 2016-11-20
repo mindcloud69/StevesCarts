@@ -16,8 +16,6 @@ import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.buoy.BuoyType;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.tileentity.detector.DetectorType;
-import vswe.stevesvehicles.vehicle.VehicleRegistry;
-import vswe.stevesvehicles.vehicle.VehicleType;
 
 /**
  * Create a new instance of this in your mod

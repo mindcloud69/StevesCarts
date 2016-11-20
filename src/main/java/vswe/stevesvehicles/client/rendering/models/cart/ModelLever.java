@@ -42,7 +42,7 @@ public class ModelLever extends ModelVehicle {
 		base.setRotationPoint(0, // X
 				2F, // Y
 				8.5F // Z
-		);
+				);
 		lever = new ModelRenderer(this, 0, 4);
 		base.addChild(lever);
 		fixSize(lever);
@@ -56,7 +56,7 @@ public class ModelLever extends ModelVehicle {
 		lever.setRotationPoint(0, // X
 				0F, // Y
 				0F // Z
-		);
+				);
 		ModelRenderer handle = new ModelRenderer(this, 4, 4);
 		lever.addChild(handle);
 		fixSize(handle);
@@ -70,7 +70,7 @@ public class ModelLever extends ModelVehicle {
 		handle.setRotationPoint(0, // X
 				0F, // Y
 				0F // Z
-		);
+				);
 	}
 
 	@Override

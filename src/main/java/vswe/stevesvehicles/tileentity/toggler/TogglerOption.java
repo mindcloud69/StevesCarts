@@ -73,9 +73,9 @@ public class TogglerOption {
 		} else {
 			return ColorHelper.ORANGE + LocalizationToggler.ORANGE_SETTING.translate() + ": "
 					+ (shouldActivate(true) ? ColorHelper.GREEN + LocalizationToggler.ACTIVATE_STATE.translate()
-							: shouldDeactivate(true) ? ColorHelper.RED + LocalizationToggler.DEACTIVATE_STATE.translate() : ColorHelper.YELLOW + LocalizationToggler.TOGGLE_STATE.translate())
+					: shouldDeactivate(true) ? ColorHelper.RED + LocalizationToggler.DEACTIVATE_STATE.translate() : ColorHelper.YELLOW + LocalizationToggler.TOGGLE_STATE.translate())
 					+ "\n" + ColorHelper.BLUE + LocalizationToggler.BLUE_SETTING.translate() + ": " + (shouldActivate(false) ? ColorHelper.GREEN + LocalizationToggler.ACTIVATE_STATE.translate()
-							: shouldDeactivate(false) ? ColorHelper.RED + LocalizationToggler.DEACTIVATE_STATE.translate() : ColorHelper.YELLOW + LocalizationToggler.TOGGLE_STATE.translate());
+					: shouldDeactivate(false) ? ColorHelper.RED + LocalizationToggler.DEACTIVATE_STATE.translate() : ColorHelper.YELLOW + LocalizationToggler.TOGGLE_STATE.translate());
 		}
 	}
 }

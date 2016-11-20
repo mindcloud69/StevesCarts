@@ -89,7 +89,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	 * The item that will appear in the output slot when the assembling is done,
 	 * i.e. the cart being assembled
 	 */
-	protected ItemStack outputItem;
+	protected ItemStack outputItem = ItemStack.EMPTY;
 	/**
 	 * Modules that are being removed by the assembler, used when modifying cart
 	 */
@@ -680,7 +680,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		ArrayList<ItemStack> items = new ArrayList<>();
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
 			ItemStack item = getStackInSlot(i);
-			if (item != null) {
+			if (!item.isEmpty()) {
 				if (item.getCount() != getRemovedSize()) {
 					items.add(item);
 				} else if (!isSimulated) {
@@ -701,10 +701,10 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		spareModules.clear();
 		// create the cart
 		outputItem = getCartFromModules(false);
-		if (outputItem != null) {
+		if (!outputItem.isEmpty()) {
 			// if a cart was properly made, remove all the modules
 			for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
-				setInventorySlotContents(i, null);
+				setInventorySlotContents(i, ItemStack.EMPTY);
 			}
 		} else {
 			// if something went wrong, clear the spare modules, no free modules
@@ -725,7 +725,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		ArrayList<ModuleData> modules = new ArrayList<>();
 		for (int i = includeHull ? 0 : 1; i < getSizeInventory() - nonModularSlots(); i++) {
 			ItemStack item = getStackInSlot(i);
-			if (item != null) {
+			if (!item.isEmpty()) {
 				boolean validSize = true;
 				for (int invalidItem : invalid) {
 					if (invalidItem == item.getCount() || (invalidItem > 0 && item.getCount() > 0)) {
@@ -745,7 +745,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	public ModuleDataHull getHullModule() {
-		if (getStackInSlot(0) != null) {
+		if (!getStackInSlot(0).isEmpty()) {
 			ModuleData hullData = ModItems.modules.getModuleData(getStackInSlot(0));
 			if (hullData instanceof ModuleDataHull) {
 				return (ModuleDataHull) hullData;
@@ -760,7 +760,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	public ArrayList<String> getErrors() {
 		ArrayList<String> errors = new ArrayList<>();
-		if (hullSlot.getStack() == null) {
+		if (hullSlot.getStack().isEmpty()) {
 			errors.add(LocalizationAssembler.NO_HULL.translate());
 		} else {
 			ModuleData hullData = ModItems.modules.getModuleData(getStackInSlot(0));
@@ -769,12 +769,12 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 			} else {
 				if (isAssembling) {
 					errors.add(LocalizationAssembler.BUSY_ASSEMBLER.translate());
-				} else if (outputSlot != null && outputSlot.getStack() != null) {
+				} else if (outputSlot != null && !outputSlot.getStack().isEmpty()) {
 					errors.add(LocalizationAssembler.OCCUPIED_DEPARTURE_BAY.translate());
 				}
 				ArrayList<ModuleData> modules = new ArrayList<>();
 				for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
-					if (getStackInSlot(i) != null) {
+					if (!getStackInSlot(i).isEmpty()) {
 						ModuleData data = ModItems.modules.getModuleData(getStackInSlot(i));
 						if (data != null && getStackInSlot(i).getCount() != getRemovedSize()) {
 							modules.add(data);
@@ -793,7 +793,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	public int getTotalCost() {
 		ArrayList<ModuleData> modules = new ArrayList<>();
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
-			if (getStackInSlot(i) != null) {
+			if (!getStackInSlot(i).isEmpty()) {
 				ModuleData data = ModItems.modules.getModuleData(getStackInSlot(i));
 				if (data != null) {
 					modules.add(data);
@@ -884,7 +884,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	public ArrayList<SlotAssembler> getValidSlotFromHullItem(ItemStack hullItem) {
-		if (hullItem != null) {
+		if (!hullItem.isEmpty()) {
 			ModuleData data = ModItems.modules.getModuleData(hullItem);
 			if (data != null && data instanceof ModuleDataHull) {
 				ModuleDataHull hull = (ModuleDataHull) data;
@@ -1083,6 +1083,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	private boolean loaded;
 
+	@Override
 	public void update() {
 		if (!loaded) {
 			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, pos);
@@ -1090,7 +1091,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		}
 		if (!isAssembling && outputSlot != null) {
 			ItemStack itemInSlot = outputSlot.getStack();
-			if (itemInSlot != null && itemInSlot.getItem() == ModItems.vehicles) {
+			if (!itemInSlot.isEmpty() && itemInSlot.getItem() == ModItems.vehicles) {
 				NBTTagCompound info = itemInSlot.getTagCompound();
 				if (info != null && info.hasKey(VehicleBase.NBT_INTERRUPT_MAX_TIME)) {
 					ItemStack newItem = ModuleDataItemHandler.createModularVehicle(ModuleDataItemHandler.getModularItems(itemInSlot));
@@ -1102,7 +1103,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 					}
 					isAssembling = true;
 					outputItem = newItem;
-					outputSlot.putStack(null);
+					outputSlot.putStack(ItemStack.EMPTY);
 				}
 			}
 		}
@@ -1121,14 +1122,14 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 					setAssemblingTime(0);
 					if (!world.isRemote) {
 						deployCart();
-						outputItem = null;
+						outputItem = ItemStack.EMPTY;
 						deploySpares();
 						spareModules.clear();
 					}
 				}
 			}
 		}
-		if (!world.isRemote && fuelSlot != null && fuelSlot.getStack() != null) {
+		if (!world.isRemote && fuelSlot != null && !fuelSlot.getStack().isEmpty()) {
 			int fuel = fuelSlot.getFuelLevel(fuelSlot.getStack());
 			if (fuel > 0 && getFuelLevel() + fuel <= getMaxFuelLevel()) {
 				setFuelLevel(getFuelLevel() + fuel);
@@ -1138,7 +1139,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 					fuelSlot.getStack().shrink(1);
 				}
 				if (fuelSlot.getStack().getCount() <= 0) {
-					fuelSlot.putStack(null);
+					fuelSlot.putStack(ItemStack.EMPTY);
 				}
 			}
 		}
@@ -1148,9 +1149,9 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	public void updateSlots() {
 		if (hullSlot != null) {
-			if (lastHull != null && hullSlot.getStack() == null) {
+			if (lastHull != null && hullSlot.getStack().isEmpty()) {
 				invalidateAll();
-			} else if (lastHull == null && hullSlot.getStack() != null) {
+			} else if (lastHull == null && !hullSlot.getStack().isEmpty()) {
 				validateAll();
 			} else if (lastHull != hullSlot.getStack()) {
 				invalidateAll();
@@ -1290,7 +1291,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	private int[] getModularInfoIds() {
 		List<Integer> dataList = new ArrayList<>();
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
-			if (getStackInSlot(i) != null) {
+			if (!getStackInSlot(i).isEmpty()) {
 				ModuleData data = ModItems.modules.getModuleData(getStackInSlot(i));
 				if (data != null && getStackInSlot(i).getCount() != getRemovedSize()) {
 					dataList.add(getStackInSlot(i).getItemDamage());
@@ -1306,7 +1307,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	public boolean getIsDisassembling() {
 		for (int i = 0; i < getSizeInventory() - nonModularSlots(); i++) {
-			if (getStackInSlot(i) != null && getStackInSlot(i).getCount() <= 0) {
+			if (!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() <= 0) {
 				return true;
 			}
 		}
@@ -1367,7 +1368,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 			}
 		}
 		tagCompound.setTag("Spares", spares);
-		if (outputItem != null) {
+		if (!outputItem.isEmpty()) {
 			NBTTagCompound outputTag = new NBTTagCompound();
 			outputItem.writeToNBT(outputTag);
 			tagCompound.setTag("Output", outputTag);
@@ -1380,10 +1381,8 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	public ItemStack getOutputOnInterrupt() {
-		if (outputItem == null) {
-			return null;
-		} else if (!outputItem.hasTagCompound()) {
-			return null;
+		if (outputItem.isEmpty() || !outputItem.hasTagCompound()) {
+			return ItemStack.EMPTY;
 		} else {
 			NBTTagCompound info = outputItem.getTagCompound();
 			info.setInteger(VehicleBase.NBT_INTERRUPT_TIME, getAssemblingTime());

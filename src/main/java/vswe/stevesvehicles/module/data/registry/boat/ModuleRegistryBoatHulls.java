@@ -23,7 +23,7 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
 				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/boat/wooden_hull.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelWoodenTop.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/wooden_hull_top.png")));
 			}
 		};
 		wood.addVehicles(VehicleRegistry.BOAT);
@@ -33,7 +33,7 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
 				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/boat/standard_hull.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelStandardTop.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/standard_hull_top.png")));
 			}
 		};
 		standard.addVehicles(VehicleRegistry.BOAT);
@@ -43,7 +43,7 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
 				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/boat/reinforced_hull.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelLargeTop.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/reinforced_hull_top.png")));
 			}
 		};
 		reinforced.addVehicles(VehicleRegistry.BOAT);
@@ -53,7 +53,7 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
 				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/boat/galgadorian_hull.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelGalgadorianTop.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/galgadorian_hull_top.png")));
 			}
 		};
 		galgadorian.addVehicles(VehicleRegistry.BOAT);
@@ -63,7 +63,7 @@ public class ModuleRegistryBoatHulls extends ModuleRegistry {
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
 				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/boat/creative_hull.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelCreativeTop.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/creative_hull_top.png")));
 			}
 		};
 		creative.addVehicles(VehicleRegistry.BOAT);

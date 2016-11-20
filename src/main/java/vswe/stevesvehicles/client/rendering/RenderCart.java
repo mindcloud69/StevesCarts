@@ -5,8 +5,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
-import vswe.stevesvehicles.client.rendering.RenderVehicle.MatrixObject;
-
 public class RenderCart extends RenderVehicle {
 	public RenderCart(RenderManager renderManager) {
 		super(renderManager);
@@ -77,5 +75,6 @@ public class RenderCart extends RenderVehicle {
 		if (damageRot > 0.0F) {
 			matrix.roll = MathHelper.sin(damageRot) * damageRot * damageTime / 10.0F * damageDir;
 		}
+		matrix.y += 0.375F;
 	}
 }

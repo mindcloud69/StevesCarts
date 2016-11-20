@@ -62,7 +62,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drillModelIron.png")));
+				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drill_iron.png")));
 				addModel("Plate", new ModelToolPlate());
 			}
 		};
@@ -75,7 +75,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drillModelDiamond.png")));
+				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drill_diamond.png")));
 				addModel("Plate", new ModelToolPlate());
 			}
 		};
@@ -88,7 +88,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drillModelHardened.png")));
+				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drill_hardened.png")));
 				addModel("Plate", new ModelToolPlate());
 			}
 		};
@@ -101,7 +101,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drillModelMagic.png")));
+				addModel("Drill", new ModelDrill(ResourceHelper.getResource("/models/drill_magic.png")));
 				addModel("Plate", new ModelToolPlate());
 			}
 		};
@@ -118,7 +118,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("WoodCutter", new ModelWoodCutter(ResourceHelper.getResource("/models/woodCutterModelDiamond.png")));
+				addModel("WoodCutter", new ModelWoodCutter(ResourceHelper.getResource("/models/cutter_wood_diamond.png")));
 				addModel("Plate", new ModelToolPlate());
 			}
 		};
@@ -131,7 +131,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("WoodCutter", new ModelWoodCutter(ResourceHelper.getResource("/models/woodCutterModelHardened.png")));
+				addModel("WoodCutter", new ModelWoodCutter(ResourceHelper.getResource("/models/cutter_wood_hardened.png")));
 				addModel("Plate", new ModelToolPlate());
 			}
 		};
@@ -145,7 +145,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("WoodCutter", new ModelWoodCutter(ResourceHelper.getResource("/models/woodCutterModelGalgadorian.png")));
+				addModel("WoodCutter", new ModelWoodCutter(ResourceHelper.getResource("/models/cutter_wood_galgadorian.png")));
 				addModel("Plate", new ModelToolPlate());
 			}
 		};
@@ -163,7 +163,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Farmer", new ModelFarmer(ResourceHelper.getResource("/models/farmerModelDiamond.png")));
+				addModel("Farmer", new ModelFarmer(ResourceHelper.getResource("/models/farmer_diamond.png")));
 				setModelMultiplier(0.45F);
 			}
 		};
@@ -176,7 +176,7 @@ public class ModuleRegistryCartTools extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Farmer", new ModelFarmer(ResourceHelper.getResource("/models/farmerModelGalgadorian.png")));
+				addModel("Farmer", new ModelFarmer(ResourceHelper.getResource("/models/farmer_galgadorian.png")));
 				setModelMultiplier(0.45F);
 			}
 		};

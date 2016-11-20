@@ -43,7 +43,7 @@ public class ModelSeat extends ModelVehicle {
 		base.setRotationPoint(0, // X
 				1F, // Y
 				0F // Z
-		);
+				);
 		ModelRenderer back = new ModelRenderer(this, 0, 8);
 		base.addChild(back);
 		fixSize(back);
@@ -57,7 +57,7 @@ public class ModelSeat extends ModelVehicle {
 		back.setRotationPoint(0, // X
 				-8F, // Y
 				3F // Z
-		);
+				);
 	}
 
 	@Override

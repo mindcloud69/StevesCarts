@@ -28,11 +28,11 @@ public class ModelTrackRemover extends ModelVehicle {
 				10, // Size Y
 				1, // Size Z
 				0.0F // Size Increasement
-		);
+				);
 		base.setRotationPoint(0.0F, // X
 				-5.5F, // Y
 				-0.0F // Z
-		);
+				);
 		base.rotateAngleX = (float) Math.PI / 2;
 		ModelRenderer pipe = new ModelRenderer(this, 0, 11);
 		addRenderer(pipe);
@@ -43,11 +43,11 @@ public class ModelTrackRemover extends ModelVehicle {
 				5, // Size Y
 				5, // Size Z
 				0.0F // Size Increasement
-		);
+				);
 		pipe.setRotationPoint(0.0F, // X
 				-9.5F, // Y
 				-0.0F // Z
-		);
+				);
 		pipe.rotateAngleZ = (float) Math.PI / 2;
 		ModelRenderer pipe2 = new ModelRenderer(this, 0, 21);
 		pipe.addChild(pipe2);
@@ -59,11 +59,11 @@ public class ModelTrackRemover extends ModelVehicle {
 				5, // Size Y
 				5, // Size Z
 				0.0F // Size Increasement
-		);
+				);
 		pipe2.setRotationPoint(0.005F, // X
 				-0.005F, // Y
 				-0.005F // Z
-		);
+				);
 		pipe2.rotateAngleZ = (float) -Math.PI / 2;
 		ModelRenderer pipe3 = new ModelRenderer(this, 22, 0);
 		pipe2.addChild(pipe3);
@@ -75,11 +75,11 @@ public class ModelTrackRemover extends ModelVehicle {
 				5, // Size Y
 				5, // Size Z
 				0.0F // Size Increasement
-		);
+				);
 		pipe3.setRotationPoint(14F + 0.005F, // X
 				-0.005F, // Y
 				0.005F // Z
-		);
+				);
 		pipe3.rotateAngleZ = (float) Math.PI / 2;
 		ModelRenderer end = new ModelRenderer(this, 0, 31);
 		pipe3.addChild(end);
@@ -91,11 +91,11 @@ public class ModelTrackRemover extends ModelVehicle {
 				14, // Size Y
 				1, // Size Z
 				0.0F // Size Increasement
-		);
+				);
 		end.setRotationPoint(12F, // X
 				0, // Y
 				-0.0F // Z
-		);
+				);
 		end.rotateAngleY = (float) Math.PI / 2;
 	}
 }

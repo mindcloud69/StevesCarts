@@ -40,7 +40,7 @@ public class ModelToolPlate extends ModelVehicle {
 		drillBase.setRotationPoint(-cartLength / 2 + 1, // X
 				cartOnGround, // Y
 				0.0F // Z
-		);
+				);
 		drillBase.rotateAngleY = ((float) Math.PI / 2F);
 	}
 }

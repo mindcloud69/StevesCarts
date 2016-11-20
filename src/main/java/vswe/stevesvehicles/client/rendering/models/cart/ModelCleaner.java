@@ -40,7 +40,7 @@ public class ModelCleaner extends ModelVehicle {
 		box.setRotationPoint(4.0F, // X
 				-0.0F, // Y
 				-0.0F // Z
-		);
+				);
 		for (int i = 0; i < 2; i++) {
 			ModelRenderer sideTube = new ModelRenderer(this, 0, 14);
 			addRenderer(sideTube);
@@ -54,7 +54,7 @@ public class ModelCleaner extends ModelVehicle {
 			sideTube.setRotationPoint(4, // X
 					-0.0F, // Y
 					-5.0F * (i * 2 - 1) // Z
-			);
+					);
 		}
 		ModelRenderer tube = new ModelRenderer(this, 0, 14);
 		addRenderer(tube);
@@ -68,7 +68,7 @@ public class ModelCleaner extends ModelVehicle {
 		tube.setRotationPoint(-1F, // X
 				0.0F, // Y
 				0 // Z
-		);
+				);
 		tube.rotateAngleY = (float) Math.PI / 2;
 		for (int i = 0; i < 2; i++) {
 			ModelRenderer endTube = new ModelRenderer(this, 0, 14);
@@ -83,7 +83,7 @@ public class ModelCleaner extends ModelVehicle {
 			endTube.setRotationPoint(-7, // X
 					-0.0F, // Y
 					-3.0F * (i * 2 - 1) // Z
-			);
+					);
 			endTube.rotateAngleY = (float) Math.PI / 2;
 		}
 		ModelRenderer connectionTube = new ModelRenderer(this, 0, 20);
@@ -98,7 +98,7 @@ public class ModelCleaner extends ModelVehicle {
 		connectionTube.setRotationPoint(-5F, // X
 				3F, // Y
 				0 // Z
-		);
+				);
 		connectionTube.rotateAngleY = (float) Math.PI / 2;
 		for (int i = 0; i < 2; i++) {
 			ModelRenderer externalTube = new ModelRenderer(this, 0, 14);
@@ -113,7 +113,7 @@ public class ModelCleaner extends ModelVehicle {
 			externalTube.setRotationPoint(-10.95F, // X
 					-0.0F, // Y
 					-3.05F * (i * 2 - 1) // Z
-			);
+					);
 			externalTube.rotateAngleY = (float) Math.PI / 2;
 		}
 	}

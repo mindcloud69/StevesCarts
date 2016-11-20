@@ -4,8 +4,6 @@ import vswe.stevesvehicles.arcade.ArcadeGame;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
-import vswe.stevesvehicles.arcade.invader.Unit.UpdateResult;
-
 public class InvaderGhast extends Unit {
 	private int tentacleTextureId;
 	private int shooting;

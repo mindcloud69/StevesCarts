@@ -11,8 +11,8 @@ import vswe.stevesvehicles.module.common.engine.ModuleSolarCompact;
 
 @SideOnly(Side.CLIENT)
 public class ModelCompactSolarPanel extends ModelVehicle {
-	private static final ResourceLocation TEXTURE_ACTIVE = ResourceHelper.getResource("/models/panelModelSideActive.png");
-	private static final ResourceLocation TEXTURE_IDLE = ResourceHelper.getResource("/models/panelModelSideIdle.png");
+	private static final ResourceLocation TEXTURE_ACTIVE = ResourceHelper.getResource("/models/panel_side_active.png");
+	private static final ResourceLocation TEXTURE_IDLE = ResourceHelper.getResource("/models/panel_side_idle.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {
@@ -60,7 +60,7 @@ public class ModelCompactSolarPanel extends ModelVehicle {
 		base.setRotationPoint(0, // X
 				2F, // Y
 				-9F // Z
-		);
+				);
 		ModelRenderer panelInnerArm = new ModelRenderer(this, 34, 0);
 		anchor.addChild(panelInnerArm);
 		fixSize(panelInnerArm);
@@ -74,7 +74,7 @@ public class ModelCompactSolarPanel extends ModelVehicle {
 		panelInnerArm.setRotationPoint(0, // X
 				-1F, // Y
 				0 // Z
-		);
+				);
 		ModelRenderer panelOuterArm = new ModelRenderer(this, 34, 0);
 		panelInnerArm.addChild(panelOuterArm);
 		fixSize(panelOuterArm);
@@ -88,7 +88,7 @@ public class ModelCompactSolarPanel extends ModelVehicle {
 		panelOuterArm.setRotationPoint(0.001F, // X
 				0.001F, // Y
 				0.001F // Z
-		);
+				);
 		ModelRenderer panelBase = new ModelRenderer(this, 0, 9);
 		panelOuterArm.addChild(panelBase);
 		fixSize(panelBase);
@@ -102,7 +102,7 @@ public class ModelCompactSolarPanel extends ModelVehicle {
 		panelBase.setRotationPoint(0, // X
 				0, // Y
 				-2.8F // Z
-		);
+				);
 		ModelRenderer panelTop = createPanel(panelBase, 10, 4, -0.497F, 0, 15);
 		ModelRenderer panelBot = createPanel(panelBase, 10, 4, -0.494F, 22, 15);
 		ModelRenderer panelLeft = createPanel(panelBase, 6, 4, -0.491F, 0, 20);
@@ -128,7 +128,7 @@ public class ModelCompactSolarPanel extends ModelVehicle {
 		panel.setRotationPoint(0, // X
 				0, // Y
 				offset // Z
-		);
+				);
 		return panel;
 	}
 

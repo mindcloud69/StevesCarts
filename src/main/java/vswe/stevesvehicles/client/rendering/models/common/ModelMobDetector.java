@@ -38,7 +38,7 @@ public class ModelMobDetector extends ModelVehicle {
 		base.setRotationPoint(0.0F, // X
 				-14F, // Y
 				-0.0F // Z
-		);
+				);
 		ModelRenderer body = new ModelRenderer(this, 0, 8);
 		base.addChild(body);
 		fixSize(body);
@@ -52,7 +52,7 @@ public class ModelMobDetector extends ModelVehicle {
 		body.setRotationPoint(0.0F, // X
 				-1.5F, // Y
 				-1.5F // Z
-		);
+				);
 		for (int i = 0; i < 2; i++) {
 			ModelRenderer side = new ModelRenderer(this, 0, 13);
 			body.addChild(side);
@@ -67,7 +67,7 @@ public class ModelMobDetector extends ModelVehicle {
 			side.setRotationPoint(0.0F, // X
 					2F * (i * 2 - 1), // Y
 					-1F // Z
-			);
+					);
 		}
 		for (int i = 0; i < 2; i++) {
 			ModelRenderer side = new ModelRenderer(this, 12, 13);
@@ -83,7 +83,7 @@ public class ModelMobDetector extends ModelVehicle {
 			side.setRotationPoint(3F * (i * 2 - 1), // X
 					0, // Y
 					-1F // Z
-			);
+					);
 			side.rotateAngleZ = (float) (Math.PI / 2);
 		}
 		ModelRenderer receiver = new ModelRenderer(this, 8, 0);
@@ -99,7 +99,7 @@ public class ModelMobDetector extends ModelVehicle {
 		receiver.setRotationPoint(0, // X
 				0, // Y
 				-1F // Z
-		);
+				);
 		receiver.rotateAngleY = (float) (Math.PI / 2);
 		ModelRenderer dot = new ModelRenderer(this, 8, 2);
 		body.addChild(dot);
@@ -114,7 +114,7 @@ public class ModelMobDetector extends ModelVehicle {
 		dot.setRotationPoint(0, // X
 				0, // Y
 				-2F // Z
-		);
+				);
 	}
 
 	@Override

@@ -27,6 +27,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
@@ -68,7 +69,7 @@ public abstract class ModuleBase {
 	private VehicleBase vehicle;
 	// the inventory this module is using, could be an empty array.
 	// getInventorySize is controlling the size of this
-	private ItemStack[] cargo;
+	private NonNullList<ItemStack> cargo;
 	// where in the interface the module is located, used to draw things where
 	// they should be.
 	// the values are calculated in the vehicle on initializing
@@ -103,7 +104,7 @@ public abstract class ModuleBase {
 		// save the vehicle
 		this.vehicle = vehicle;
 		// initialize the inventory of this module
-		cargo = new ItemStack[getInventorySize()];
+		cargo = NonNullList.withSize(getInventorySize(), ItemStack.EMPTY);
 	}
 
 	/**
@@ -418,7 +419,7 @@ public abstract class ModuleBase {
 	 * @return The ItemStack in the slot, could of course be null
 	 */
 	public ItemStack getStack(int slot) {
-		return cargo[slot];
+		return cargo.get(slot);
 	}
 
 	/**
@@ -430,7 +431,7 @@ public abstract class ModuleBase {
 	 *            The ItemStack to be set.
 	 */
 	public void setStack(int slot, ItemStack item) {
-		cargo[slot] = item;
+		cargo.set(slot, item);
 	}
 
 	/**

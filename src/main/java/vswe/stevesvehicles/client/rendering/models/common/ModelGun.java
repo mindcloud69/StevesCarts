@@ -53,7 +53,7 @@ public class ModelGun extends ModelVehicle {
 		gunAnchor.setRotationPoint(2.5F, // X
 				0, // Y
 				0 // Z
-		);
+				);
 		ModelRenderer gun = new ModelRenderer(this, 0, 16);
 		fixSize(gun);
 		gunAnchor.addChild(gun);
@@ -67,7 +67,7 @@ public class ModelGun extends ModelVehicle {
 		gun.setRotationPoint(0, // X
 				-9F, // Y
 				0 // Z
-		);
+				);
 		return gun;
 	}
 

@@ -26,7 +26,7 @@ public class ModuleMonster extends ModuleEntityDetector {
 	public boolean isValidTarget(Entity target) {
 		return (target instanceof EntityMob || target instanceof EntityDragon || target instanceof EntityGhast || target instanceof EntitySlime || target instanceof EntityEnderCrystal || ((target instanceof EntityWolf) && ((EntityWolf) target).isAngry()))
 				&& !(target instanceof EntityEnderman) // projectiles can't hit
-		// them anyways
-		;
+				// them anyways
+				;
 	}
 }

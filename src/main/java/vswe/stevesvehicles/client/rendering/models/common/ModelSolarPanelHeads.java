@@ -12,8 +12,8 @@ import vswe.stevesvehicles.module.common.engine.ModuleSolarTop;
 
 @SideOnly(Side.CLIENT)
 public class ModelSolarPanelHeads extends ModelSolarPanel {
-	private static final ResourceLocation TEXTURE_ACTIVE = ResourceHelper.getResource("/models/panelModelActive.png");
-	private static final ResourceLocation TEXTURE_IDLE = ResourceHelper.getResource("/models/panelModelIdle.png");
+	private static final ResourceLocation TEXTURE_ACTIVE = ResourceHelper.getResource("/models/panel_active.png");
+	private static final ResourceLocation TEXTURE_IDLE = ResourceHelper.getResource("/models/panel_idle.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {
@@ -82,7 +82,7 @@ public class ModelSolarPanelHeads extends ModelSolarPanel {
 		panel.setRotationPoint((float) Math.sin(rotation) * f, // X
 				-5F, // Y
 				(float) Math.cos(rotation) * f // Z
-		);
+				);
 		panel.rotateAngleY = rotation;
 		panels.add(panel);
 	}

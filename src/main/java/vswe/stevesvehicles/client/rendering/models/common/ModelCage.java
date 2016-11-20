@@ -60,7 +60,7 @@ public class ModelCage extends ModelVehicle {
 		bar.setRotationPoint(offsetX, // X
 				-cageHeight / 2F - 4, // Y
 				offsetZ // Z
-		);
+				);
 	}
 
 	private void createTopBarLong(float offsetZ) {
@@ -76,7 +76,7 @@ public class ModelCage extends ModelVehicle {
 		bar.setRotationPoint(0.005F, // X
 				-cageHeight - 4.005F, // Y
 				offsetZ + 0.005F // Z
-		);
+				);
 		bar.rotateAngleZ = (float) (Math.PI / 2);
 	}
 
@@ -93,7 +93,7 @@ public class ModelCage extends ModelVehicle {
 		bar.setRotationPoint(offsetX - 0.005F, // X
 				-cageHeight - 4 + 0.005F, // Y
 				-0.005F // Z
-		);
+				);
 		bar.rotateAngleX = (float) (Math.PI / 2);
 	}
 }

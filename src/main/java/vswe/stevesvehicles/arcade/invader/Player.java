@@ -3,8 +3,6 @@ package vswe.stevesvehicles.arcade.invader;
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 
-import vswe.stevesvehicles.arcade.invader.Unit.UpdateResult;
-
 public class Player extends Unit {
 	public Player(ArcadeInvaders game, int x, int y) {
 		super(game, x, y);

@@ -9,7 +9,7 @@ import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelEngineFrame extends ModelEngineBase {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/engineModelFrame.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/engine_frame.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {
@@ -40,7 +40,7 @@ public class ModelEngineFrame extends ModelEngineBase {
 		left.setRotationPoint(-4F, // X
 				0, // Y
 				0 // Z
-		);
+				);
 		ModelRenderer right = new ModelRenderer(this, 0, 0);
 		anchor.addChild(right);
 		fixSize(right);
@@ -54,7 +54,7 @@ public class ModelEngineFrame extends ModelEngineBase {
 		right.setRotationPoint(4F, // X
 				0, // Y
 				0 // Z
-		);
+				);
 		ModelRenderer top = new ModelRenderer(this, 4, 0);
 		anchor.addChild(top);
 		fixSize(top);
@@ -68,7 +68,7 @@ public class ModelEngineFrame extends ModelEngineBase {
 		top.setRotationPoint(0, // X
 				-3F, // Y
 				0 // Z
-		);
+				);
 		top.rotateAngleZ = (float) Math.PI / 2;
 		ModelRenderer bot = new ModelRenderer(this, 4, 0);
 		anchor.addChild(bot);
@@ -83,7 +83,7 @@ public class ModelEngineFrame extends ModelEngineBase {
 		bot.setRotationPoint(0, // X
 				2F, // Y
 				0 // Z
-		);
+				);
 		bot.rotateAngleZ = (float) Math.PI / 2;
 	}
 }

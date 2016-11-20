@@ -42,8 +42,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/hullModelWooden.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelWoodenTop.png")));
+				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/wooden_hull.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/wooden_hull_top.png")));
 			}
 		};
 		wood.addShapedRecipe("plankWood", null, "plankWood", "plankWood", "plankWood", "plankWood", WOODEN_WHEELS, null, WOODEN_WHEELS);
@@ -53,8 +53,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/hullModelStandard.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelStandardTop.png")));
+				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/standard_hull.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/standard_hull_top.png")));
 			}
 		};
 		standard.addShapedRecipe(Items.IRON_INGOT, null, Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, IRON_WHEELS, null, IRON_WHEELS);
@@ -64,8 +64,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/hullModelLarge.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelLargeTop.png")));
+				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/reinforced_hull.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/reinforced_hull_top.png")));
 			}
 		};
 		reinforced.addShapedRecipe(REINFORCED_METAL, null, REINFORCED_METAL, REINFORCED_METAL, REINFORCED_METAL, REINFORCED_METAL, REINFORCED_WHEELS, null, REINFORCED_WHEELS);
@@ -75,8 +75,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/hullModelGalgadorian.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelGalgadorianTop.png")));
+				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/galgadorian_hull.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/galgadorian_hull_top.png")));
 			}
 		};
 		galgadorian.addShapedRecipe(GALGADORIAN_METAL, null, GALGADORIAN_METAL, GALGADORIAN_METAL, GALGADORIAN_METAL, GALGADORIAN_METAL, GALGADORIAN_WHEELS, null, GALGADORIAN_WHEELS);
@@ -86,8 +86,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Hull", new ModelPumpkinHull(ResourceHelper.getResource("/models/cart/hullModelPumpkin.png"), ResourceHelper.getResource("/models/cart/hullModelWooden.png")));
-				addModel("Top", new ModelPumpkinHullTop(ResourceHelper.getResource("/models/cart/hullModelPumpkinTop.png"), ResourceHelper.getResource("/models/cart/hullModelWoodenTop.png")));
+				addModel("Hull", new ModelPumpkinHull(ResourceHelper.getResource("/models/cart/pumpkin_hull.png"), ResourceHelper.getResource("/models/cart/wooden_hull.png")));
+				addModel("Top", new ModelPumpkinHullTop(ResourceHelper.getResource("/models/cart/pumpkin_hull_top.png"), ResourceHelper.getResource("/models/cart/wooden_hull_top.png")));
 			}
 		};
 		pumpkin.addShapedRecipe("plankWood", null, "plankWood", "plankWood", Blocks.PUMPKIN, "plankWood", WOODEN_WHEELS, null, WOODEN_WHEELS);
@@ -100,8 +100,8 @@ public class ModuleRegistryCartHulls extends ModuleRegistry {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public void loadModels() {
-				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/hullModelPig.png")));
-				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/hullModelPigTop.png")));
+				addModel("Hull", new ModelHull(ResourceHelper.getResource("/models/cart/pig_hull.png")));
+				addModel("Top", new ModelHullTop(ResourceHelper.getResource("/models/cart/pig_hull_top.png")));
 				addModel("Head", new ModelPigHead());
 				addModel("Tail", new ModelPigTail());
 				addModel("Helmet", new ModelPigHelmet(false));

@@ -43,7 +43,7 @@ public class ModelHullTop extends ModelVehicle {
 		top.setRotationPoint(0.0F, // X
 				-4, // Y
 				0.0F // Z
-		);
+				);
 		top.rotateAngleX = (float) -Math.PI / 2;
 	}
 

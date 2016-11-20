@@ -51,7 +51,7 @@ public class ModelShield extends ModelVehicle {
 				shields[i][j].setRotationPoint(0, // X
 						0, // Y
 						0 // Z
-				);
+						);
 			}
 		}
 	}

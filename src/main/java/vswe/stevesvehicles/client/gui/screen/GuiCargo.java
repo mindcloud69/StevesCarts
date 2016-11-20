@@ -1,11 +1,6 @@
 package vswe.stevesvehicles.client.gui.screen;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiCreateFlatWorld;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,8 +15,6 @@ import vswe.stevesvehicles.localization.entry.block.LocalizationManager;
 import vswe.stevesvehicles.tileentity.TileEntityCargo;
 import vswe.stevesvehicles.tileentity.TileEntityManager;
 import vswe.stevesvehicles.tileentity.manager.cargo.CargoItemSelection;
-
-import vswe.stevesvehicles.client.gui.screen.GuiManager.ColorEffect;
 
 @SideOnly(Side.CLIENT)
 public class GuiCargo extends GuiManager {

@@ -13,9 +13,9 @@ public class ModelEngineInside extends ModelEngineBase {
 	private static final ResourceLocation[] TEXTURES;
 	static {
 		TEXTURES = new ResourceLocation[5];
-		TEXTURES[0] = ResourceHelper.getResource("/models/engineModelBack.png");
+		TEXTURES[0] = ResourceHelper.getResource("/models/engine_back.png");
 		for (int i = 1; i < TEXTURES.length; i++) {
-			TEXTURES[i] = ResourceHelper.getResource("/models/engineModelFire" + i + ".png");
+			TEXTURES[i] = ResourceHelper.getResource("/models/engine_fire_" + i + ".png");
 		}
 	}
 
@@ -49,6 +49,6 @@ public class ModelEngineInside extends ModelEngineBase {
 		back.setRotationPoint(0, // X
 				-0.5F, // Y
 				0.3F // Z
-		);
+				);
 	}
 }

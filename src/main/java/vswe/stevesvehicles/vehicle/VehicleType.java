@@ -35,7 +35,7 @@ public class VehicleType {
 	public String getName() {
 		return I18n.translateToLocal(getUnlocalizedName());
 	}
-	
+
 	public String getIcon() {
 		return this.icon;
 	}

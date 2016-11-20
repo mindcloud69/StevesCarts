@@ -6,8 +6,6 @@ import net.minecraft.util.math.MathHelper;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.EntityModularBoat;
 
-import vswe.stevesvehicles.client.rendering.RenderVehicle.MatrixObject;
-
 public class RenderBoat extends RenderVehicle {
 	public RenderBoat(RenderManager renderManager) {
 		super(renderManager);
@@ -24,6 +22,7 @@ public class RenderBoat extends RenderVehicle {
 		if (damageTime > 0.0F) {
 			GlStateManager.rotate(MathHelper.sin(damageTime) * damageTime * damage / 10.0F * boat.getForwardDirection(), 1.0F, 0.0F, 0.0F);
 		}
-		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+		matrix.y += 0.375F;
+		//GlStateManager.scale(-1.0F, -1.0F, 1.0F);
 	}
 }

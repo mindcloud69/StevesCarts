@@ -14,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.Constants;
-import vswe.stevesvehicles.StevesVehicles;
 import vswe.stevesvehicles.item.ItemBlockDetector;
 import vswe.stevesvehicles.item.ItemBlockStorage;
 import vswe.stevesvehicles.item.ItemUpgrade;

@@ -45,7 +45,7 @@ public class ModelCake extends ModelVehicle {
 		cake.setRotationPoint(0, // X
 				-9, // Y
 				0 // Z
-		);
+				);
 		return cake;
 	}
 

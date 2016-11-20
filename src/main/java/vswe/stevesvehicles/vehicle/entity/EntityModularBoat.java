@@ -29,6 +29,7 @@ import vswe.stevesvehicles.vehicle.VehicleBoat;
 
 public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity {
 	private VehicleBase vehicleBase;
+	private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
 	public EntityModularBoat(World world) {
 		super(world);
@@ -55,6 +56,8 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 		if (this.world.isRemote && !(dataManager instanceof LockableEntityDataManager)) {
 			this.overrideDatawatcher();
 		}
+		dataManager.register(VehicleBoat.IS_WORKING, false);
+		dataManager.register(VehicleBoat.IS_DISANABLED, false);
 		super.entityInit();
 	}
 
@@ -431,7 +434,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 
 	@Override
 	public AxisAlignedBB getEntityBoundingBox() {
-		return vehicleBase.isPlaceholder ? null : super.getEntityBoundingBox();
+		return vehicleBase == null || vehicleBase.isPlaceholder ? ZERO_AABB : super.getEntityBoundingBox();
 	}
 
 	@Override

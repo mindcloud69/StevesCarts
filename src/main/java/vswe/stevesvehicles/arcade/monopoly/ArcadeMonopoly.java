@@ -663,7 +663,7 @@ public class ArcadeMonopoly extends ArcadeGame {
 			} else if (getSelectedPlace() instanceof Utility) {
 				getModule().drawString(gui, "Mortgage", 10, 175, 0x404040);
 				getModule().drawSplitString(gui, "The rent depends on the eye count of the dice, if you own one Utility it's " + Utility.getMultiplier(1) + "x the eye count, if you own two it's " + Utility.getMultiplier(2)
-						+ "x and if you own them all it's " + Utility.getMultiplier(3) + "x.", 10, 195, 145, 0x404040);
+				+ "x and if you own them all it's " + Utility.getMultiplier(3) + "x.", 10, 195, 145, 0x404040);
 				getModule().drawString(gui, "Rents", 330, 170, 0x404040);
 			}
 		}

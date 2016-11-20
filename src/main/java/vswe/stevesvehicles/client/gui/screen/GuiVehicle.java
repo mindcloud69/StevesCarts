@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -109,22 +110,19 @@ public class GuiVehicle extends GuiBase {
 		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
-	public static ResourceLocation moduleTexture = ResourceHelper.getResourceFromPath("/atlas/items.png");
-
 	private void renderModuleList(int x, int y) {
 		x -= getGuiLeft();
 		y -= getGuiTop();
 		ArrayList<ModuleDataPair> moduleCounts = vehicle.getModuleCounts();
-		ResourceHelper.bindResource(moduleTexture);
+		ResourceHelper.bindResource(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GL11.glEnable(GL11.GL_BLEND);
 		for (int i = 0; i < moduleCounts.size(); i++) {
 			ModuleDataPair count = moduleCounts.get(i);
 			float alpha = inRect(x, y, getModuleDisplayX(i), getModuleDisplayY(i), 16, 16) ? 1 : 0.5F;
 			GL11.glColor4f(1F, 1F, 1F, alpha);
-			// TODO: Fix icons
-			// this.drawIcon(count.getData().getIcon(), getGuiLeft() +
-			// getModuleDisplayX(i), getGuiTop() + getModuleDisplayY(i), 1, 1,
-			// 0, 0);
+			this.drawModuleIcon(count.getData(), getGuiLeft() +
+					getModuleDisplayX(i), getGuiTop() + getModuleDisplayY(i), 1, 1,
+					0, 0);
 		}
 		GL11.glDisable(GL11.GL_BLEND);
 	}

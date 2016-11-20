@@ -31,7 +31,7 @@ public class ModelTopChest extends ModelVehicle {
 		chestAnchor.setRotationPoint(-2.5F, // X
 				-3, // Y
 				2 // Z
-		);
+				);
 		ModelRenderer base = new ModelRenderer(this, 0, 19);
 		fixSize(base);
 		chestAnchor.addChild(base);
@@ -45,7 +45,7 @@ public class ModelTopChest extends ModelVehicle {
 		base.setRotationPoint(-14.0F, // X
 				-5.5F, // Y
 				-18.5F // Z
-		);
+				);
 		ModelRenderer lid = new ModelRenderer(this, 0, 0);
 		fixSize(lid);
 		chestAnchor.addChild(lid);
@@ -59,7 +59,7 @@ public class ModelTopChest extends ModelVehicle {
 		lid.setRotationPoint(-14.0F, // X
 				-2.5F, // Y
 				5.5F // Z
-		);
+				);
 		ModelRenderer lock = new ModelRenderer(this, 0, 39);
 		fixSize(lock);
 		lid.addChild(lock);
@@ -73,7 +73,7 @@ public class ModelTopChest extends ModelVehicle {
 		lock.setRotationPoint(10.0F, // X
 				-3F, // Y
 				-17.5F // Z
-		);
+				);
 		return lid;
 	}
 

@@ -2,8 +2,6 @@ package vswe.stevesvehicles.arcade.invader;
 
 import vswe.stevesvehicles.client.gui.screen.GuiVehicle;
 
-import vswe.stevesvehicles.arcade.invader.Unit.UpdateResult;
-
 public class Building extends Unit {
 	public Building(ArcadeInvaders game, int x, int y) {
 		super(game, x, y);

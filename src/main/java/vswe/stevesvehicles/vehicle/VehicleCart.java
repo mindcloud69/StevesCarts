@@ -1,10 +1,14 @@
 package vswe.stevesvehicles.vehicle;
 
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
 
-public class VehicleCart extends vswe.stevesvehicles.vehicle.VehicleBase {
+public class VehicleCart extends VehicleBase {
+	public static final DataParameter<Boolean> IS_WORKING = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
 	public VehicleCart(EntityModularCart entity) {
 		super(entity);
 	}
@@ -32,5 +36,15 @@ public class VehicleCart extends vswe.stevesvehicles.vehicle.VehicleBase {
 			getCart().temppushZ = getCart().pushZ;
 			getCart().pushX = getCart().pushZ = 0.0D;
 		}
+	}
+
+	@Override
+	protected DataParameter<Boolean> isWorkingParameter() {
+		return IS_WORKING;
+	}
+
+	@Override
+	protected DataParameter<Boolean> isDisanabledParameter() {
+		return IS_DISANABLED;
 	}
 }

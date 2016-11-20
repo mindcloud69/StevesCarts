@@ -9,7 +9,7 @@ import vswe.stevesvehicles.module.ModuleBase;
 
 @SideOnly(Side.CLIENT)
 public class ModelSolarPanelBase extends ModelSolarPanel {
-	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/panelModelBase.png");
+	private static final ResourceLocation TEXTURE = ResourceHelper.getResource("/models/panel_base.png");
 
 	@Override
 	public ResourceLocation getResource(ModuleBase module) {
@@ -39,7 +39,7 @@ public class ModelSolarPanelBase extends ModelSolarPanel {
 		base.setRotationPoint(0, // X
 				-4.5F, // Y
 				0 // Z
-		);
+				);
 		ModelRenderer moving = createMovingHolder(8, 0);
 		moving.addBox(-2, // X
 				-3.5F, // Y
@@ -61,6 +61,6 @@ public class ModelSolarPanelBase extends ModelSolarPanel {
 		top.setRotationPoint(0, // X
 				-5F, // Y
 				0 // Z
-		);
+				);
 	}
 }

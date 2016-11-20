@@ -73,7 +73,7 @@ public class ModelBridge extends ModelVehicle {
 		side1.setRotationPoint(-11.5F, // X
 				-6.0F, // Y
 				8.0F // Z
-		);
+				);
 		side1.rotateAngleY = ((float) Math.PI / 2F);
 		ModelRenderer side2 = new ModelRenderer(this, 0, 0);
 		addRenderer(side2);
@@ -87,7 +87,7 @@ public class ModelBridge extends ModelVehicle {
 		side2.setRotationPoint(-11.5F, // X
 				-6.0F, // Y
 				-4.0F // Z
-		);
+				);
 		side2.rotateAngleY = ((float) Math.PI / 2F);
 	}
 }

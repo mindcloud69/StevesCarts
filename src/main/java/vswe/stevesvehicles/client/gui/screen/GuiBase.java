@@ -21,6 +21,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevesvehicles.module.data.ModuleData;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiBase extends GuiContainerSpecial {
@@ -40,7 +41,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	public boolean inRect(int x, int y, int[] coords) {
 		return coords != null && x >= coords[0] && x < coords[0] + coords[2] && y >= coords[1] && y < coords[1] + coords[3];
 	}
-	
+
 	public void drawItemStack(ItemStack stack, int x, int y) {
 		GlStateManager.pushMatrix();
 		RenderHelper.enableGUIStandardItemLighting();
@@ -346,6 +347,11 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	 * this.getZLevel(), x + width, y + 0); tessellator.addVertexWithUV(targetX
 	 * + 0, targetY + 0, this.getZLevel(), x + 0, y + 0); tessellator.draw(); }
 	 */
+
+	public void drawModuleIcon(ModuleData icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
+		drawItemStack(icon.getItemStack(), targetX, targetY);
+
+	}
 
 	public void drawRectWithSourceOffset(int x, int y, int u, int v, RenderRotation rotation, int offsetX, int offsetY, int fullWidth, int fullHeight) {
 		int w = fullWidth - offsetX;
