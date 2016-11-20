@@ -66,7 +66,7 @@ public abstract class TileEntityInventory extends TileEntityBase implements IInv
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		inventoryStacks.add(i, itemstack);
+		inventoryStacks.set(i, itemstack);
 		if (itemstack.func_190916_E() > getInventoryStackLimit()) {
 			itemstack.func_190920_e(getInventoryStackLimit());
 		}

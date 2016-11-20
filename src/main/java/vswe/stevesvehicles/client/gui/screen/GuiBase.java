@@ -258,6 +258,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 			}
 			this.myOwnEventButton = -1;
 			this.mouseMovedOrUp(i, j, Mouse.getEventButton());
+			this.mouseReleased(scaleX(i), scaleY(j), Mouse.getEventButton());
 		} else if (this.myOwnEventButton != -1 && this.myOwnTimeyWhineyThingy > 0L) {
 			long k = Minecraft.getSystemTime() - this.myOwnTimeyWhineyThingy;
 			this.mouseClickMove(i, j, this.myOwnEventButton, k);

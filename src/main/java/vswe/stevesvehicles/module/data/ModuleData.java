@@ -505,7 +505,7 @@ public class ModuleData implements IRecipeOutput {
 			}
 			return item;
 		} else {
-			return null;
+			return ItemStack.field_190927_a;
 		}
 	}
 

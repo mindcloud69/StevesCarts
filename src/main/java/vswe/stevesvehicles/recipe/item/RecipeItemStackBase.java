@@ -12,7 +12,7 @@ public abstract class RecipeItemStackBase extends RecipeItem {
 	@Override
 	public boolean matches(ItemStack other) {
 		ItemStack item = getItemStack();
-		return other != null && item.getItem() == other.getItem() && (item.getItemDamage() == OreDictionary.WILDCARD_VALUE || item.getItemDamage() == other.getItemDamage());
+		return !other.func_190926_b() && item.getItem() == other.getItem() && (item.getItemDamage() == OreDictionary.WILDCARD_VALUE || item.getItemDamage() == other.getItemDamage());
 	}
 
 	@Override

@@ -39,6 +39,9 @@ public abstract class ModuleRecipe implements IRecipe {
 
 	@Override
 	public ItemStack getRecipeOutput() {
+		if(getResult() == null){
+			return ItemStack.field_190927_a;
+		}
 		return getResult();
 	}
 

@@ -70,7 +70,7 @@ public class StevesVehicles {
 	// public final String soundPath = "/assets/stevescarts/sounds";
 	public final String textureHeader = "stevescarts";
 	public static final String localStart = "SC2:";
-	@Instance("StevesVehicles")
+	@Instance(Constants.MOD_ID)
 	public static StevesVehicles instance;
 	// public ISimpleBlockRenderingHandler blockRenderer;
 	public int maxDynamites = 50;
