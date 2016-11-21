@@ -24,7 +24,7 @@ public class SlotBarrel extends SlotChest implements ISpecialSlotRender, ISpecia
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean renderSlot(ItemStack slotItem, boolean shouldSlotBeRendered, boolean shouldSlotItemBeRendered, boolean shouldSlotUnderlayBeRendered, boolean shouldSlotOverlayBeRendered, String info) {
+	public boolean renderSlot(ItemStack slotItem, boolean shouldSlotBeRendered, boolean shouldSlotItemBeRendered, boolean shouldSlotUnderlayBeRendered, String info) {
 		return true;
 	}
 
@@ -32,7 +32,7 @@ public class SlotBarrel extends SlotChest implements ISpecialSlotRender, ISpecia
 	@Override
 	public ItemStack getStackToRender(ItemStack slotItem) {
 		if (slotItem != null && slotItem.getCount() == 0) {
-			return null;
+			return ItemStack.EMPTY;
 		} else {
 			return slotItem;
 		}
@@ -40,7 +40,7 @@ public class SlotBarrel extends SlotChest implements ISpecialSlotRender, ISpecia
 
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
-		return getStack() == null || getStack().getCount() > 0;
+		return getStack().isEmpty() || getStack().getCount() > 0;
 	}
 
 	@Override

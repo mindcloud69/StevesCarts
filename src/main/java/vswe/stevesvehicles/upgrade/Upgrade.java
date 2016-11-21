@@ -37,11 +37,6 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 			}
 		}
 	}
-	/*
-	 * @SideOnly(Side.CLIENT) private static IIcon standardSideIcon; //used to
-	 * fix the destroy animation public static IIcon getStandardIcon() { return
-	 * standardSideIcon; }
-	 */
 
 	private String fullUnlocalizedName;
 
@@ -122,21 +117,6 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 		return unlocalizedName;
 	}
 
-	/*
-	 * private IIcon icon;
-	 * @SideOnly(Side.CLIENT) protected void createIcon(IIconRegister register)
-	 * { icon = register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":upgrades/" + getFullRawUnlocalizedName().replace(".", "/").replace(":",
-	 * "/")); }
-	 * @SideOnly(Side.CLIENT) public IIcon getIcon() { return icon; }
-	 * @SideOnly(Side.CLIENT) public IIcon getMainTexture() { return icon; }
-	 * @SideOnly(Side.CLIENT) public IIcon getSideTexture() { return
-	 * standardSideIcon; } public static void registerIcons(IIconRegister
-	 * register) { standardSideIcon =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":upgrades/sides/default"); for (Upgrade upgrade :
-	 * UpgradeRegistry.getAllUpgrades()) { upgrade.createIcon(register); } }
-	 */
 	public String getIcon() {
 		return this.icon;
 	}

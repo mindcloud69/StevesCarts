@@ -111,7 +111,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 		ResourceHelper.bindResource(TEXTURE);
 		drawImage(gui, BARREL_X, BARREL_Y, BARREL_SRC_X, BARREL_SRC_Y, BARREL_SIZE, BARREL_SIZE);
 		ItemStack item = getStoredItem();
-		if (item != null) {
+		if (!item.isEmpty()) {
 			int max = getMaxItems(false);
 			if (max > 0) {
 				int barWidth = BAR_WIDTH * getTotalCount() / max;
@@ -147,7 +147,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	public void drawMouseOver(GuiVehicle gui, int x, int y) {
 		ItemStack item = getStoredItem();
 		if (inRect(x, y, BARREL_X + BOX_X, BARREL_Y + BOX_Y, BOX_WIDTH, BOX_HEIGHT)) {
-			if (item != null) {
+			if (!item.isEmpty()) {
 				List<String> info = null;
 				try {
 					info = getInfo(item);
@@ -167,7 +167,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 			}
 		} else if (inRect(x, y, BARREL_X + SIGN_X, BARREL_Y + SIGN_Y, SIGN_WIDTH, SIGN_HEIGHT)) {
 			String info = LocalizationBarrel.STACKS.translate(getColoredText(formatAmount(getStackCount()), ColorHelper.GREEN));
-			if (item != null) {
+			if (!item.isEmpty()) {
 				int stackSize = item.getMaxStackSize();
 				int max = getMaxItems(false);
 				if (stackSize > 0 && max > 0) {
@@ -177,7 +177,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 			drawStringOnMouseOver(gui, info, x, y);
 		} else if (inRect(x, y, BARREL_X + SMALL_SIGN_X, BARREL_Y + SMALL_SIGN_Y, SMALL_SIGN_WIDTH, SMALL_SIGN_HEIGHT)) {
 			String info = null;
-			if (item != null) {
+			if (!item.isEmpty()) {
 				int max = getMaxItems(false);
 				if (max > 0) {
 					int total = getTotalCount();
@@ -231,7 +231,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	@Override
 	public void drawBackgroundItems(GuiVehicle gui, int x, int y) {
 		ItemStack item = getStoredItem();
-		if (item != null) {
+		if (!item.isEmpty()) {
 			drawItemInInterface(gui, item, BARREL_X + STACK_X, BARREL_Y + STACK_Y);
 		}
 	}
@@ -261,7 +261,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 		}
 		drawScaledCenteredString(gui, str, BARREL_X + STACK_COUNT_X, y, STACK_COUNT_WIDTH, size, 0x000000);
 		ItemStack item = getStoredItem();
-		if (item != null) {
+		if (!item.isEmpty()) {
 			int max = getMaxItems(false);
 			if (max > 0) {
 				int total = getTotalCount();
@@ -290,28 +290,28 @@ public abstract class ModuleBarrel extends ModuleStorage {
 			moveDelay = 0;
 			if (getVehicle().getWorld().isRemote) {
 				ItemStack output = getStack(1);
-				if (output != null && storedItem == null) {
+				if (!output.isEmpty() && storedItem.isEmpty()) {
 					storedItem = output.copy();
 					storedItem.setCount(1);
-				} else if (output == null && storedItem != null && itemCount == 0 && !isLocked) {
-					storedItem = null;
+				} else if (output.isEmpty() && !storedItem.isEmpty() && itemCount == 0 && !isLocked) {
+					storedItem = ItemStack.EMPTY;
 				}
 			} else {
 				int items = getTotalCount();
 				if (items == 0) {
-					if (storedItem != null) {
+					if (!storedItem.isEmpty()) {
 						if (isLocked) {
 							ItemStack itemStack = storedItem.copy();
 							itemStack.setCount(0);
 							setStack(1, itemStack);
 						} else {
-							storedItem = null;
+							storedItem = ItemStack.EMPTY;
 						}
 					}
 				} else {
 					ItemStack input = getStack(0);
 					if (canItemMergeWith(input, storedItem)) {
-						if (storedItem == null) {
+						if (storedItem.isEmpty()) {
 							storedItem = input.copy();
 						}
 						int max = getMaxItems(true);
@@ -319,12 +319,12 @@ public abstract class ModuleBarrel extends ModuleStorage {
 						itemCount += canMove;
 						input.shrink(canMove);
 						if (input.getCount() == 0) {
-							setStack(0, null);
+							setStack(0, ItemStack.EMPTY);
 						}
 					}
 					ItemStack output = getStack(1);
 					if (itemCount > 0 && canItemMergeWith(storedItem, output)) {
-						if (output == null) {
+						if (output.isEmpty()) {
 							output = storedItem.copy();
 							setStack(1, output);
 							output.setCount(0);
@@ -339,14 +339,14 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	}
 
 	private boolean isLocked;
-	private ItemStack storedItem;
+	private ItemStack storedItem = ItemStack.EMPTY;
 	private int itemCount;
 
 	private ItemStack getStoredItem() {
 		ItemStack output = getStack(1);
-		if (output != null) {
+		if (!output.isEmpty()) {
 			return output;
-		} else if (storedItem != null) {
+		} else if (!storedItem.isEmpty()) {
 			return storedItem;
 		} else {
 			return getStack(0);
@@ -368,7 +368,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	public int getTotalCount() {
 		ItemStack input = getStack(0);
 		ItemStack output = getStack(1);
-		return itemCount + (input != null ? input.getCount() : 0) + (output != null ? output.getCount() : 0);
+		return itemCount + input.getCount() + output.getCount();
 	}
 
 	private int getMaxItems(boolean onlyInternal) {
@@ -398,7 +398,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	}
 
 	private boolean canItemMergeWith(ItemStack item, ItemStack slotItem) {
-		return item != null && (slotItem == null || item.isItemEqual(slotItem) && ItemStack.areItemStackTagsEqual(slotItem, item));
+		return !item.isEmpty() && (slotItem.isEmpty() || item.isItemEqual(slotItem) && ItemStack.areItemStackTagsEqual(slotItem, item));
 	}
 
 	private static final String NBT_ITEM = "StoredItem";
@@ -407,7 +407,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 
 	@Override
 	protected void save(NBTTagCompound tagCompound) {
-		if (storedItem != null) {
+		if (!storedItem.isEmpty()) {
 			NBTTagCompound itemCompound = new NBTTagCompound();
 			storedItem.writeToNBT(itemCompound);
 			itemCompound.setShort(NBT_BARREL_COUNT, (short) itemCount);
@@ -426,7 +426,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 				itemCount += 65536;
 			}
 		} else {
-			storedItem = null;
+			storedItem = ItemStack.EMPTY;
 			itemCount = 0;
 		}
 		isLocked = tagCompound.getBoolean(NBT_LOCKED);

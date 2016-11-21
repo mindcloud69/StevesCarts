@@ -2,6 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
+	  "particle": "steves_vehicles:items/components/blank_upgrade",
       "0": "steves_vehicles:items/components/blank_upgrade",
       "1": "steves_vehicles:items/components/blank_upgrade"
     },

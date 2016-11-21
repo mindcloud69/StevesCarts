@@ -12,6 +12,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.FaceBakery;
@@ -31,6 +32,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.ItemLayerModel;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -68,6 +70,17 @@ public class ModelGenerator {
 			return;
 		}
 		ItemModelMesher itemModelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		for (ModeledObject object : ItemModelManager.objects) {
+			Item item;
+			if(object instanceof Item){
+				item = (Item) object;
+			}else if(object instanceof Block){
+				item = Item.getItemFromBlock((Block) object);
+			}else{
+				continue;
+			}
+			object.registerModels(item);
+		}
 		for (Object object : ItemModelManager.items) {
 			if (object instanceof Item && object instanceof TexturedItem) {
 				TexturedItem iTexturedItem = (TexturedItem) object;

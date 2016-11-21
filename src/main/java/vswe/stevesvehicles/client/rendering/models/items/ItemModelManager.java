@@ -22,6 +22,7 @@ import vswe.stevesvehicles.tileentity.detector.DetectorType;
  */
 public class ItemModelManager {
 	public static ArrayList<TexturedItem> items = new ArrayList<>();
+	public static ArrayList<ModeledObject> objects = new ArrayList<>();
 	static ModelGenerator modelGenerator;
 
 	/**
@@ -76,6 +77,18 @@ public class ItemModelManager {
 	public static void registerItem(TexturedItem object) {
 		if (!items.contains(object)) {
 			items.add(object);
+		}
+	}
+	
+	/**
+	 * Use this to register an object to be rendered
+	 *
+	 * @param object
+	 *            the object to load
+	 */
+	public static void register(ModeledObject object) {
+		if (!objects.contains(object)) {
+			objects.add(object);
 		}
 	}
 }

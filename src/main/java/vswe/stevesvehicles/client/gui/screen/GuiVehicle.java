@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -337,22 +339,21 @@ public class GuiVehicle extends GuiBase {
 		}
 		setupScissor(SCROLLABLE_AREA);
 		ItemStack itemstack = slot.getStack();
-		boolean shouldSlotOverlayBeRendered = false;
 		boolean shouldSlotUnderlayBeRendered = false;
-		boolean shouldSlotBeRendered = slot == this.clickedSlot && this.draggedStack != null && !this.isRightMouseClick;
+		boolean shouldSlotBeRendered = slot == this.clickedSlot && !this.draggedStack.isEmpty() && !this.isRightMouseClick;
 		ItemStack itemstack1 = this.mc.player.inventory.getItemStack();
 		String info = null;
-		if (slot == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null) {
+		if (slot == this.clickedSlot && !this.draggedStack.isEmpty() && this.isRightMouseClick && !itemstack.isEmpty()) {
 			itemstack = itemstack.copy();
 			itemstack.setCount(itemstack.getCount() / 2);
-		} else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && itemstack1 != null) {
+		} else if (this.dragSplitting && this.dragSplittingSlots.contains(slot) && !itemstack1.isEmpty()) {
 			if (this.dragSplittingSlots.size() == 1) {
 				return;
 			}
 			if (Container.canAddItemToSlot(slot, itemstack1, true) && this.inventorySlots.canDragIntoSlot(slot)) {
 				itemstack = itemstack1.copy();
 				shouldSlotUnderlayBeRendered = true;
-				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack() == null ? 0 : slot.getStack().getCount());
+				Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack, slot.getStack().getCount());
 				if (itemstack.getCount() > itemstack.getMaxStackSize()) {
 					info = TextFormatting.YELLOW + "" + itemstack.getMaxStackSize();
 					itemstack.setCount(itemstack.getMaxStackSize());
@@ -368,11 +369,8 @@ public class GuiVehicle extends GuiBase {
 		}
 		this.zLevel = 100.0F;
 		this.itemRender.zLevel = 100.0F;
-		if (itemstack == null && isMouseOverSlot(slot, x, y) && slot.canBeHovered()) {
-			shouldSlotOverlayBeRendered = true;
-		}
 		if (!shouldSlotBeRendered) {
-			renderSlot(slot, itemstack, shouldSlotBeRendered, true, shouldSlotUnderlayBeRendered, shouldSlotUnderlayBeRendered, info);
+			renderSlot(slot, itemstack, !shouldSlotBeRendered, true, shouldSlotUnderlayBeRendered, info);
 		}
 		this.itemRender.zLevel = 0.0F;
 		this.zLevel = 0.0F;
@@ -382,7 +380,7 @@ public class GuiVehicle extends GuiBase {
 		return slot instanceof SlotBase;
 	}
 
-	protected void renderSlot(Slot slot, ItemStack slotItem, boolean shouldSlotBeRendered, boolean shouldSlotItemBeRendered, boolean shouldSlotUnderlayBeRendered, boolean shouldSlotOverlayBeRendered, String info) {
+	protected void renderSlot(Slot slot, ItemStack slotItem, boolean shouldSlotBeRendered, boolean shouldSlotItemBeRendered, boolean shouldSlotUnderlayBeRendered, String info) {
 		if (shouldScissorSlot(slot)) {
 			startScissor();
 		}
@@ -390,7 +388,7 @@ public class GuiVehicle extends GuiBase {
 		if (slot instanceof ISpecialSlotRender) {
 			ISpecialSlotRender special = (ISpecialSlotRender) slot;
 			slotItem = special.getStackToRender(slotItem);
-			if (!special.renderSlot(slotItem, shouldSlotBeRendered, shouldSlotItemBeRendered, shouldSlotUnderlayBeRendered, shouldSlotOverlayBeRendered, info)) {
+			if (!special.renderSlot(slotItem, shouldSlotBeRendered, shouldSlotItemBeRendered, shouldSlotUnderlayBeRendered, info)) {
 				render = false;
 			}
 		}
@@ -400,14 +398,9 @@ public class GuiVehicle extends GuiBase {
 					drawRect(slot.xPos, slot.yPos, slot.xPos + SLOT_SIZE, slot.yPos + SLOT_SIZE, SLOT_HOVER_COLOR);
 				}
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
-				if (shouldSlotItemBeRendered && slotItem != null) {
-					itemRender.renderItemAndEffectIntoGUI(slotItem, slot.xPos, slot.yPos);
+				if (shouldSlotItemBeRendered && !slotItem.isEmpty()) {
+					drawItemStack(slotItem, slot.xPos, slot.yPos);
 					itemRender.renderItemOverlayIntoGUI(fontRendererObj, slotItem, slot.xPos, slot.yPos, info);
-				}
-				if (shouldSlotOverlayBeRendered) {
-					GL11.glEnable(GL11.GL_DEPTH_TEST);
-					drawRect(slot.xPos, slot.yPos, slot.xPos + SLOT_SIZE, slot.yPos + SLOT_SIZE, SLOT_HOVER_COLOR);
-					GL11.glEnable(GL11.GL_DEPTH_TEST);
 				}
 			}
 		}
