@@ -31,9 +31,9 @@ public abstract class ContainerBase extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
 		if (getMyInventory() == null) {
-			return null;
+			return ItemStack.EMPTY;
 		}
-		ItemStack itemstack = null;
+		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();
@@ -41,7 +41,7 @@ public abstract class ContainerBase extends Container {
 			if (i < getMyInventory().getSizeInventory()) {
 				if (!mergeItemStack(itemstack1, getMyInventory().getSizeInventory() + 28, getMyInventory().getSizeInventory() + 36, false)) {
 					if (!mergeItemStack(itemstack1, getMyInventory().getSizeInventory(), getMyInventory().getSizeInventory() + 28, false)) {
-						return null;
+						return ItemStack.EMPTY;
 					}
 				}
 			} else if (!mergeItemStack(itemstack1, 0, getMyInventory().getSizeInventory(), false)) {
@@ -55,7 +55,7 @@ public abstract class ContainerBase extends Container {
 			if (itemstack1.getCount() != itemstack.getCount()) {
 				return slot.onTake(player, itemstack1);
 			} else {
-				return null;
+				return ItemStack.EMPTY;
 			}
 		}
 		return itemstack;

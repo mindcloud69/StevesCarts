@@ -315,7 +315,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 		} else {
 			ItemStack item = getStackInSlot(index);
 			if (item != null) {
-				setInventorySlotContents(index, null);
+				setInventorySlotContents(index, ItemStack.EMPTY);
 				return item;
 			} else {
 				return null;

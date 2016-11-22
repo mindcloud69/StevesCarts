@@ -44,7 +44,7 @@ public class InputChest extends SimpleInventoryEffect {
 				cooldown = 20;
 				for (int slotId = 0; slotId < getInventorySize(); slotId++) {
 					ItemStack itemstack = upgrade.getStackInSlot(slotId);
-					if (itemstack != null) {
+					if (!itemstack.isEmpty()) {
 						ModuleData module = ModItems.modules.getModuleData(itemstack);
 						if (module == null) {
 							continue;
@@ -58,7 +58,7 @@ public class InputChest extends SimpleInventoryEffect {
 						int stackSize = itemstack.getCount();
 						TransferHandler.TransferItem(itemstack, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), Slot.class, SlotAssemblerFuel.class, 1);
 						if (itemstack.getCount() == 0) {
-							upgrade.setInventorySlotContents(slotId, null);
+							upgrade.setInventorySlotContents(slotId, ItemStack.EMPTY);
 						}
 						if (stackSize != itemstack.getCount()) {
 							break;

@@ -64,10 +64,10 @@ public class TransferHandler {
 					// item in the slot and the item we want to store, if they
 					// are the same in various different properties they can be
 					// stored together.
-					if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i).getItem() == iStack.getItem() && inv.getStackInSlot(i).isStackable() && inv.getStackInSlot(i).getCount() < inv.getStackInSlot(i).getMaxStackSize()
+					if (!inv.getStackInSlot(i).isEmpty() && inv.getStackInSlot(i).getItem() == iStack.getItem() && inv.getStackInSlot(i).isStackable() && inv.getStackInSlot(i).getCount() < inv.getStackInSlot(i).getMaxStackSize()
 							&& inv.getStackInSlot(i).getCount() < cont.getSlot(i).getSlotStackLimit() && (inv.getStackInSlot(i).getCount() > 0 && iStack.getCount() > 0)
 							&& (!inv.getStackInSlot(i).getHasSubtypes() || inv.getStackInSlot(i).getItemDamage() == iStack.getItemDamage())
-							&& (inv.getStackInSlot(i).getTagCompound() == null || inv.getStackInSlot(i).getTagCompound().equals(iStack.getTagCompound()))) {
+							&& (inv.getStackInSlot(i).hasTagCompound() || inv.getStackInSlot(i).getTagCompound().equals(iStack.getTagCompound()))) {
 						// mark this slot as a good one, break the loop since
 						// we're done here.
 						pos = i;
@@ -84,7 +84,7 @@ public class TransferHandler {
 					if (isSlotOfType(cont.getSlot(i), validSlot) && (invalidSlot == null || !isSlotOfType(cont.getSlot(i), invalidSlot))) {
 						// if this slot is valid for our item and also is empty
 						Slot slot = cont.getSlot(i);
-						if (isItemValidForTransfer(slot, iStack, type) && inv.getStackInSlot(i) == null) {
+						if (isItemValidForTransfer(slot, iStack, type) && inv.getStackInSlot(i).isEmpty()) {
 							// mark this slot as a good one, break the loop
 							// since we're done here.
 							pos = i;
@@ -100,7 +100,7 @@ public class TransferHandler {
 				// first of all, if the slot is empty create an empty ItemStack
 				// there with our item. In this way we can use the same code to
 				// add to an existing ItemStack and a new one.
-				if (inv.getStackInSlot(pos) == null) {
+				if (inv.getStackInSlot(pos).isEmpty()) {
 					ItemStack clone = iStack.copy();
 					clone.setCount(0);
 					if (!fake) {
@@ -140,7 +140,6 @@ public class TransferHandler {
 					;
 					if (!fake) {
 						inv.getStackInSlot(pos).grow(stackSize);
-						;
 					}
 					// if the stack we want to store is empty we're done and
 					// therefore mark the slot position as invalid to exit the

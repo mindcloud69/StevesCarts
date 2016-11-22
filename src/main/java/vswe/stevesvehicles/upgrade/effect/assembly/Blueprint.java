@@ -24,7 +24,7 @@ public class Blueprint extends SimpleInventoryEffect {
 
 	public boolean isValidForBluePrint(ArrayList<ModuleData> modules, ModuleData module) {
 		ItemStack blueprint = upgrade.getStackInSlot(0);
-		if (blueprint != null) {
+		if (!blueprint.isEmpty()) {
 			List<ModuleData> blueprintModules = ModuleDataItemHandler.getModulesFromItem(blueprint);
 			if (blueprintModules == null) {
 				return false;

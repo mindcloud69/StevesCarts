@@ -6,8 +6,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import vswe.stevesvehicles.container.ContainerCartAssembler;
+import vswe.stevesvehicles.container.slots.SlotAssembler;
 import vswe.stevesvehicles.container.slots.SlotCart;
 import vswe.stevesvehicles.container.slots.SlotModule;
+import vswe.stevesvehicles.container.slots.SlotOutput;
 import vswe.stevesvehicles.item.ItemVehicles;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.module.data.ModuleDataItemHandler;
@@ -57,7 +59,7 @@ public class Disassemble extends InventoryEffect {
 		}
 	}
 
-	private ItemStack lastVehicle;
+	private ItemStack lastVehicle = ItemStack.EMPTY;
 
 	@Override
 	public void onInventoryChanged() {
@@ -65,9 +67,9 @@ public class Disassemble extends InventoryEffect {
 		if (!updateCart(upgrade, cart)) {
 			boolean needsToPuke = true;
 			for (int i = 1; i < getInventorySize(); i++) {
-				if (upgrade.getStackInSlot(i) == null) {
+				if (upgrade.getStackInSlot(i).isEmpty()) {
 					ItemStack item = upgrade.getStackInSlot(0);
-					upgrade.setInventorySlotContents(0, null);
+					upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 					upgrade.setInventorySlotContents(i, item);
 					needsToPuke = false;
 					break;
@@ -77,7 +79,7 @@ public class Disassemble extends InventoryEffect {
 				if (!upgrade.getWorld().isRemote) {
 					upgrade.getMaster().puke(upgrade.getStackInSlot(0).copy());
 				}
-				upgrade.setInventorySlotContents(0, null);
+				upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 			}
 		}
 	}
@@ -89,14 +91,14 @@ public class Disassemble extends InventoryEffect {
 
 	private void resetMaster(TileEntityCartAssembler master, boolean full) {
 		for (int i = 0; i < master.getSizeInventory() - master.nonModularSlots(); i++) {
-			if (master.getStackInSlot(i) != null) {
+			if (!master.getStackInSlot(i).isEmpty()) {
 				if (master.getStackInSlot(i).getCount() <= 0) {
-					master.setInventorySlotContents(i, null);
+					master.setInventorySlotContents(i, ItemStack.EMPTY);
 				} else if (full) {
 					if (!master.getWorld().isRemote) {
 						master.puke(master.getStackInSlot(i).copy());
 					}
-					master.setInventorySlotContents(i, null);
+					master.setInventorySlotContents(i, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -104,24 +106,24 @@ public class Disassemble extends InventoryEffect {
 
 	private boolean updateCart(TileEntityUpgrade upgrade, ItemStack cart) {
 		if (upgrade.getMaster() != null) {
-			if (cart == null || cart.getItem() != ModItems.vehicles || cart.getTagCompound() == null || cart.getTagCompound().hasKey(VehicleBase.NBT_INTERRUPT_MAX_TIME)) {
+			if (cart.isEmpty() || cart.getItem() != ModItems.vehicles || cart.getTagCompound() == null || cart.getTagCompound().hasKey(VehicleBase.NBT_INTERRUPT_MAX_TIME)) {
 				resetMaster(upgrade.getMaster(), false);
-				lastVehicle = null;
-				if (cart != null) {
+				lastVehicle = ItemStack.EMPTY;
+				if (!cart.isEmpty()) {
 					upgrade.getMaster().puke(cart);
-					upgrade.setInventorySlotContents(0, null);
+					upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 				}
 			} else {
 				ItemStack last = lastVehicle;
 				lastVehicle = cart.copy();
 				int result = canDisassemble(upgrade);
 				boolean reset = false;
-				if (result > 0 && last != null && !ItemStack.areItemStacksEqual(cart, last)) {
+				if (result > 0 && !last.isEmpty() && !ItemStack.areItemStacksEqual(cart, last)) {
 					result = 2;
 					reset = true;
 				}
 				if (result != 2) {
-					return result == 1 && upgrade.getMaster().getStackInSlot(0) != null;
+					return result == 1 && !upgrade.getMaster().getStackInSlot(0).isEmpty();
 				}
 				if (reset) {
 					resetMaster(upgrade.getMaster(), true);
@@ -129,8 +131,8 @@ public class Disassemble extends InventoryEffect {
 				boolean addedHull = false;
 				List<ItemStack> modules = ModuleDataItemHandler.getModularItems(cart);
 				for (ItemStack item : modules) {
-					item.setCount(0);
-					TransferHandler.TransferItem(item, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), 1);
+					item.setCount(1);
+					TransferHandler.TransferItem(item, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), SlotAssembler.class, SlotOutput.class, 1);
 					if (!addedHull) {
 						addedHull = true;
 						upgrade.getMaster().updateSlots();
@@ -152,12 +154,12 @@ public class Disassemble extends InventoryEffect {
 			return 0;
 		}
 		for (int i = 0; i < upgrade.getMaster().getSizeInventory() - upgrade.getMaster().nonModularSlots(); i++) {
-			if (upgrade.getMaster().getStackInSlot(i) != null && upgrade.getMaster().getStackInSlot(i).getCount() <= 0) {
+			if (!upgrade.getMaster().getStackInSlot(i).isEmpty() && upgrade.getMaster().getStackInSlot(i).getCount() <= 0) {
 				return 1;
 			}
 		}
 		for (int i = 0; i < upgrade.getMaster().getSizeInventory() - upgrade.getMaster().nonModularSlots(); i++) {
-			if (upgrade.getMaster().getStackInSlot(i) != null) {
+			if (!upgrade.getMaster().getStackInSlot(i).isEmpty()) {
 				return 0;
 			}
 		}
@@ -166,11 +168,11 @@ public class Disassemble extends InventoryEffect {
 
 	public void onVehicleCreation(ItemStack vehicle) {
 		ItemStack oldCart = getStack(0);
-		if (oldCart != null && oldCart.getItem() instanceof ItemVehicles) {
+		if (!oldCart.isEmpty() && oldCart.getItem() instanceof ItemVehicles) {
 			if (oldCart.hasDisplayName()) {
 				vehicle.setStackDisplayName(oldCart.getDisplayName());
 			}
 		}
-		setStack(0, null);
+		setStack(0, ItemStack.EMPTY);
 	}
 }

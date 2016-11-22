@@ -76,7 +76,7 @@ public class GuiCartAssembler extends GuiBase {
 
 	private void updateErrorList() {
 		ArrayList<TextWithColor> lines = new ArrayList<>();
-		if (assembler.getStackInSlot(0) == null) {
+		if (assembler.getStackInSlot(0).isEmpty()) {
 			addText(lines, LocalizationAssembler.BASIC_INSTRUCTION.translate());
 			hasErrors = true;
 		} else {
@@ -300,35 +300,11 @@ public class GuiCartAssembler extends GuiBase {
 		GL11.glColor4f(1, 1, 1, 1);
 		ResourceHelper.bindResource(TEXTURE_EXTRA);
 		float assemblingProgress = 0F;
-		String assemblingInfo;
 		if (assembler.getIsAssembling()) {
 			assemblingProgress = assembler.getAssemblingTime() / (float) assembler.getMaxAssemblingTime();
-			assemblingInfo = LocalizationAssembler.PROGRESS.translate() + ": " + formatProgress(assemblingProgress);
-			assemblingInfo += "\n" + LocalizationAssembler.TIME_LEFT.translate() + ": " + formatTime((int) ((assembler.getMaxAssemblingTime() - assembler.getAssemblingTime()) / assembler.getEfficiency()));
-			// won't work, the client won't know about this
-			/*
-			 * assemblingInfo += "\n\nModules:\n"; NBTTagCompound info =
-			 * assembler.outputItem.getTagCompound(); if (info != null) {
-			 * NBTTagByteArray moduleIDTag =
-			 * (NBTTagByteArray)info.getTag("Modules"); byte [] bytes =
-			 * moduleIDTag.byteArray; for (byte id : bytes) { ModuleData module
-			 * = ModuleData.getList().get(id); if (module != null) {
-			 * assemblingInfo += module.getName() + "\n"; } } }
-			 */
-		} else {
-			assemblingInfo = LocalizationAssembler.IDLE_MESSAGE.translate();
 		}
 		drawProgressBar(ASSEMBLING_PROGRESS_RECT, assemblingProgress, PROGRESS_BAR_PROGRESS_SRC_Y, x, y);
 		drawProgressBar(FUEL_PROGRESS_RECT, assembler.getFuelLevel() / (float) assembler.getMaxFuelLevel(), PROGRESS_BAR_FUEL_SRC_Y, x, y);
-		if (!hasErrors) {
-			if (isDisassembling) {
-				drawProgressBarInfo(ASSEMBLE_RECT, x, y, LocalizationAssembler.MODIFY_VEHICLE.translate());
-			} else {
-				drawProgressBarInfo(ASSEMBLE_RECT, x, y, LocalizationAssembler.ASSEMBLE_VEHICLE.translate());
-			}
-		}
-		drawProgressBarInfo(ASSEMBLING_PROGRESS_RECT, x, y, assemblingInfo);
-		drawProgressBarInfo(FUEL_PROGRESS_RECT, x, y, LocalizationAssembler.FUEL_LEVEL.translate() + ": " + assembler.getFuelLevel() + "/" + assembler.getMaxFuelLevel());
 		ResourceHelper.bindResource(TEXTURE_EXTRA);
 		GL11.glColor4f(1, 1, 1, 1);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -350,11 +326,13 @@ public class GuiCartAssembler extends GuiBase {
 				drawRect(target, MODULE_BACKGROUND_SRC_X + (target[2] + TEXTURE_SPACING) * backGroundIndex, MODULE_BACKGROUND_SRC_Y);
 				ItemStack item = moduleData.getItemStack();
 				drawItemStack(item, target[0] + 1, target[1] + 1);
+				/*zLevel = 200.0F;
 				if (hover) {
 					// noinspection unchecked
 					List<String> info = item.getTooltip(this.mc.player, mc.gameSettings.advancedItemTooltips);
 					drawMouseOver(info, x, y);
 				}
+				zLevel = 0F;*/
 				ResourceHelper.bindResource(TEXTURE_EXTRA);
 				GL11.glColor4f(1, 1, 1, 1);
 				GL11.glDisable(GL11.GL_LIGHTING);
@@ -362,6 +340,65 @@ public class GuiCartAssembler extends GuiBase {
 			drawArrowSetting(left + MODULE_ARROW_MODE_X, top + MODULE_ARROW_SETTING_Y, assembler.sortMode.toString(), x, y);
 			if (modulePageCount > 1) {
 				drawArrowSetting(left + MODULE_ARROW_PAGE_X, top + MODULE_ARROW_SETTING_Y, LocalizationAssembler.SEARCH_PAGE.translate() + " " + (currentModulePage + 1), x, y);
+			}
+		}
+	}
+	
+	@Override
+	public void drawScreen(int x, int y, float f) {
+		super.drawScreen(x, y, f);
+		int notScaledX = x;
+		int notScaledY = y;
+		x = scaleX(x);
+		y = scaleY(y);
+		int left = getGuiLeft();
+		int top = getGuiTop();
+		boolean isDisassembling = assembler.getIsDisassembling();
+		if (!hasErrors) {
+			if (isDisassembling) {
+				drawProgressBarInfo(ASSEMBLE_RECT, x, y, notScaledX, notScaledY, LocalizationAssembler.MODIFY_VEHICLE.translate());
+			} else {
+				drawProgressBarInfo(ASSEMBLE_RECT, x, y, notScaledX, notScaledY, LocalizationAssembler.ASSEMBLE_VEHICLE.translate());
+			}
+		}
+		String assemblingInfo;
+		if (assembler.getIsAssembling()) {
+			float assemblingProgress = assembler.getAssemblingTime() / (float) assembler.getMaxAssemblingTime();
+			assemblingInfo = LocalizationAssembler.PROGRESS.translate() + ": " + formatProgress(assemblingProgress);
+			assemblingInfo += "\n" + LocalizationAssembler.TIME_LEFT.translate() + ": " + formatTime((int) ((assembler.getMaxAssemblingTime() - assembler.getAssemblingTime()) / assembler.getEfficiency()));
+			// won't work, the client won't know about this
+			/*
+			 * assemblingInfo += "\n\nModules:\n"; NBTTagCompound info =
+			 * assembler.outputItem.getTagCompound(); if (info != null) {
+			 * NBTTagByteArray moduleIDTag =
+			 * (NBTTagByteArray)info.getTag("Modules"); byte [] bytes =
+			 * moduleIDTag.byteArray; for (byte id : bytes) { ModuleData module
+			 * = ModuleData.getList().get(id); if (module != null) {
+			 * assemblingInfo += module.getName() + "\n"; } } }
+			 */
+		} else {
+			assemblingInfo = LocalizationAssembler.IDLE_MESSAGE.translate();
+		}
+		drawProgressBarInfo(ASSEMBLING_PROGRESS_RECT, x, y, notScaledX, notScaledY, assemblingInfo);
+		drawProgressBarInfo(FUEL_PROGRESS_RECT, x, y, notScaledX, notScaledY, LocalizationAssembler.FUEL_LEVEL.translate() + ": " + assembler.getFuelLevel() + "/" + assembler.getMaxFuelLevel());
+		if (assembler.selectedTab == 1) {
+			int start = currentModulePage * MODULES_PER_LINE * MODULE_LINES;
+			int end = Math.min(start + MODULES_PER_LINE * MODULE_LINES, validModules.size());
+			for (int i = start; i < end; i++) {
+				ModuleData moduleData = validModules.get(i);
+				int id = i - start;
+				int moduleX = id % MODULES_PER_LINE;
+				int moduleY = id / MODULES_PER_LINE;
+				int[] target = { left + MODULE_X + moduleX * MODULE_SPACING, top + MODULE_Y + moduleY * MODULE_SPACING, MODULE_SIZE, MODULE_SIZE };
+				boolean hover = inRect(x, y, target);
+				ItemStack item = moduleData.getItemStack();
+				if (hover) {
+					List<String> info = item.getTooltip(this.mc.player, mc.gameSettings.advancedItemTooltips);
+					drawMouseOver(info, notScaledX, notScaledY);
+				}
+				ResourceHelper.bindResource(TEXTURE_EXTRA);
+				GL11.glColor4f(1, 1, 1, 1);
+				GL11.glDisable(GL11.GL_LIGHTING);
 			}
 		}
 	}
@@ -460,9 +497,9 @@ public class GuiCartAssembler extends GuiBase {
 
 	private static final int[] ASSEMBLE_RECT = new int[] { 390, 160, 80, 11 };
 
-	private void drawProgressBarInfo(int[] rect, int x, int y, String str) {
+	private void drawProgressBarInfo(int[] rect, int x, int y, int notScaledX, int notScaledY, String str) {
 		if (inRect(x - getGuiLeft(), y - getGuiTop(), rect)) {
-			drawMouseOver(str, x, y);
+			drawMouseOver(str, notScaledX, notScaledY);
 		}
 	}
 

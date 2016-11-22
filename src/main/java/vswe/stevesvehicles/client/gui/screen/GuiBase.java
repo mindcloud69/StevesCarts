@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevesvehicles.module.data.ModuleData;
@@ -60,11 +61,9 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		RenderHelper.disableStandardItemLighting();
 	}
 
-	// TODO due to the scaling the mouse over may go outside the screen(since it
-	// doesn't realize the mouse over should go to the left rather than to the
-	// right when close to the right hand edge)
 	public void drawMouseOver(List text, int x, int y) {
-		GL11.glDisable(GL11.GL_LIGHTING);
+		GuiUtils.drawHoveringText(text, x, y, width, height, 300, fontRendererObj);
+		/*GL11.glDisable(GL11.GL_LIGHTING);
 		int var5 = 0;
 		Iterator var6 = text.iterator();
 		while (var6.hasNext()) {
@@ -106,7 +105,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		this.zLevel = 0.0F;
 		itemRender.zLevel = 0.0F;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_LIGHTING);*/
 	}
 
 	public Minecraft getMinecraft() {
@@ -165,7 +164,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		startScaling();
 	}
 
-	private int scaleX(float x) {
+	protected int scaleX(float x) {
 		float scale = getScale();
 		x /= scale;
 		x += getGuiLeft();
@@ -173,7 +172,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		return (int) x;
 	}
 
-	private int scaleY(float y) {
+	protected int scaleY(float y) {
 		float scale = getScale();
 		y /= scale;
 		y += getGuiTop();

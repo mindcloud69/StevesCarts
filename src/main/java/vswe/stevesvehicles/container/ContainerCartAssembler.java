@@ -108,7 +108,7 @@ public class ContainerCartAssembler extends ContainerBase {
 					}
 					for (SlotAssembler slot : oldSlots) {
 						if (slot.getHasStack()) {
-							return null;
+							return ItemStack.EMPTY;
 						}
 					}
 				}

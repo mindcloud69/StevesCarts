@@ -566,7 +566,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 					validateAll();
 					for (SlotAssembler slotAssembler : getSlots()) {
 						if (!slotAssembler.isValid()) {
-							slotAssembler.putStack(null);
+							slotAssembler.putStack(ItemStack.EMPTY);
 						}
 					}
 					lastHull = item;
