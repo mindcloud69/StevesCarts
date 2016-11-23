@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
-public class ModuleRecipeShaped extends ModuleRecipe {
+public class ShapedModuleRecipe extends ModuleRecipe {
 	private int width;
 	private int height;
 	private int recipeStartX;
@@ -13,11 +13,11 @@ public class ModuleRecipeShaped extends ModuleRecipe {
 	private int fullWidth;
 	private int fulLHeight;
 
-	public ModuleRecipeShaped(IRecipeOutput result, int width, int height, Object[] recipe) {
+	public ShapedModuleRecipe(IRecipeOutput result, int width, int height, Object[] recipe) {
 		this(result, 1, width, height, recipe);
 	}
 
-	public ModuleRecipeShaped(IRecipeOutput result, int count, int width, int height, Object[] recipe) {
+	public ShapedModuleRecipe(IRecipeOutput result, int count, int width, int height, Object[] recipe) {
 		super(result, count, recipe);
 		recipeStartX = width;
 		recipeStartY = height;

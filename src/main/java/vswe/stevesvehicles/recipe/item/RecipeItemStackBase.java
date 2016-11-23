@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
 public abstract class RecipeItemStackBase extends RecipeItem {
@@ -16,8 +17,8 @@ public abstract class RecipeItemStackBase extends RecipeItem {
 	}
 
 	@Override
-	public List<ItemStack> getVisualStacks() {
-		List<ItemStack> items = new ArrayList<>();
+	public NonNullList<ItemStack> getVisualStacks() {
+		NonNullList<ItemStack> items = NonNullList.create();
 		items.add(getItemStack());
 		return items;
 	}

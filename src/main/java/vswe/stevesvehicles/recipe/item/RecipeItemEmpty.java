@@ -3,6 +3,7 @@ package vswe.stevesvehicles.recipe.item;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class RecipeItemEmpty extends RecipeItem {
 	@Override
@@ -16,7 +17,7 @@ public class RecipeItemEmpty extends RecipeItem {
 	}
 
 	@Override
-	public List<ItemStack> getVisualStacks() {
-		return null;
+	public NonNullList<ItemStack> getVisualStacks() {
+		return NonNullList.withSize(1, ItemStack.EMPTY);
 	}
 }

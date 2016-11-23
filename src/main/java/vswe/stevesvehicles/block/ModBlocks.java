@@ -18,7 +18,7 @@ import vswe.stevesvehicles.item.ItemBlockDetector;
 import vswe.stevesvehicles.item.ItemBlockStorage;
 import vswe.stevesvehicles.item.ItemUpgrade;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
-import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
+import vswe.stevesvehicles.recipe.ShapedModuleRecipe;
 import vswe.stevesvehicles.tileentity.TileEntityActivator;
 import vswe.stevesvehicles.tileentity.TileEntityCargo;
 import vswe.stevesvehicles.tileentity.TileEntityCartAssembler;
@@ -105,11 +105,11 @@ public enum ModBlocks implements IRecipeOutput {
 	}
 
 	private void addRecipeWithCount(int count, Object... recipe) {
-		GameRegistry.addRecipe(new ModuleRecipeShaped(this, count, 3, 3, recipe));
+		GameRegistry.addRecipe(new ShapedModuleRecipe(this, count, 3, 3, recipe));
 	}
 
 	private void addRecipe(Object... recipe) {
-		GameRegistry.addRecipe(new ModuleRecipeShaped(this, 3, 3, recipe));
+		GameRegistry.addRecipe(new ShapedModuleRecipe(this, 3, 3, recipe));
 	}
 
 	private static final String PLANKS = "plankWood";

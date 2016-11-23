@@ -9,12 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
 
-public class ModuleRecipeShapeless extends ModuleRecipe {
-	public ModuleRecipeShapeless(IRecipeOutput result, int count, Object[] recipe) {
+public class ShapelessModuleRecipe extends ModuleRecipe {
+	public ShapelessModuleRecipe(IRecipeOutput result, int count, Object[] recipe) {
 		super(result, count, recipe);
 	}
 
-	public ModuleRecipeShapeless(IRecipeOutput result, Object[] recipe) {
+	public ShapelessModuleRecipe(IRecipeOutput result, Object[] recipe) {
 		super(result, recipe);
 	}
 

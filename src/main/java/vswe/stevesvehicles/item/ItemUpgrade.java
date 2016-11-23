@@ -28,7 +28,6 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	public ItemUpgrade(Block block) {
 		super(block);
 		setHasSubtypes(true);
-		setMaxDamage(0);
 		setCreativeTab(CreativeTabLoader.blocks);
 		ItemModelManager.registerItem(this);
 	}

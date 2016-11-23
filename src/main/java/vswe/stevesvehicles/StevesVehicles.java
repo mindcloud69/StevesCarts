@@ -46,8 +46,8 @@ import vswe.stevesvehicles.module.common.addon.projectile.EntityCake;
 import vswe.stevesvehicles.module.data.ModuleData;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.network.PacketHandler;
-import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
-import vswe.stevesvehicles.recipe.ModuleRecipeShapeless;
+import vswe.stevesvehicles.recipe.ShapedModuleRecipe;
+import vswe.stevesvehicles.recipe.ShapelessModuleRecipe;
 import vswe.stevesvehicles.registry.RegistrySynchronizer;
 import vswe.stevesvehicles.tab.CreativeTabLoader;
 import vswe.stevesvehicles.tileentity.TileEntityCargo;
@@ -113,8 +113,8 @@ public class StevesVehicles {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		CreativeTabLoader.postInit();
-		RecipeSorter.register(Constants.MOD_ID + ":shaped", ModuleRecipeShaped.class, RecipeSorter.Category.SHAPED, "before:minecraft:shaped before:steves_vehicles:shapeless");
-		RecipeSorter.register(Constants.MOD_ID + ":shapeless", ModuleRecipeShapeless.class, RecipeSorter.Category.SHAPELESS, "after:steves_vehicles:shaped");
+		RecipeSorter.register(Constants.MOD_ID + ":shaped", ShapedModuleRecipe.class, RecipeSorter.Category.SHAPED, "before:minecraft:shaped before:steves_vehicles:shapeless");
+		RecipeSorter.register(Constants.MOD_ID + ":shapeless", ShapelessModuleRecipe.class, RecipeSorter.Category.SHAPELESS, "after:steves_vehicles:shaped");
 		packetHandler.register(new PacketHandler());
 		new OverlayRenderer();
 		new TicketListener();
@@ -134,6 +134,7 @@ public class StevesVehicles {
 		ModItems.addRecipes();
 		ModBlocks.addRecipes();
 		GiftItem.init();
+		UpgradeRegistry.postInit();
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.holiday.HolidayType;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
-import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
-import vswe.stevesvehicles.recipe.ModuleRecipeShapeless;
+import vswe.stevesvehicles.recipe.ShapedModuleRecipe;
+import vswe.stevesvehicles.recipe.ShapelessModuleRecipe;
 
 public enum ComponentTypes implements IRecipeOutput {
 	WOODEN_WHEELS,
@@ -185,7 +185,7 @@ public enum ComponentTypes implements IRecipeOutput {
 
 	public void addShapedRecipeWithSizeAndCount(int width, int height, int count, Object... recipe) {
 		if (ModItems.component.isValid(getItemStack())) {
-			GameRegistry.addRecipe(new ModuleRecipeShaped(this, count, width, height, recipe));
+			GameRegistry.addRecipe(new ShapedModuleRecipe(this, count, width, height, recipe));
 		}
 	}
 
@@ -199,7 +199,7 @@ public enum ComponentTypes implements IRecipeOutput {
 
 	public void addShapelessRecipeWithCount(int count, Object... recipe) {
 		if (ModItems.component.isValid(getItemStack())) {
-			GameRegistry.addRecipe(new ModuleRecipeShapeless(this, count, recipe));
+			GameRegistry.addRecipe(new ShapelessModuleRecipe(this, count, recipe));
 		}
 	}
 

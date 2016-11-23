@@ -18,10 +18,16 @@ public class UpgradeRegistry implements IRegistry<Upgrade> {
 	}
 
 	public static void init() {
-		add(new UpgradeRegistryPower());
-		add(new UpgradeRegistryProduction());
-		add(new UpgradeRegistryControl());
+		ControlUpgrades.registerUpgrades();
+		PowerUpgrades.registerUpgrades();
+		ProductionUpgrades.registerUpgrades();
 		EffectNameLoader.initNames();
+	}
+	
+	public static void postInit() {
+		ControlUpgrades.registerRecipes();
+		PowerUpgrades.registerRecipes();
+		ProductionUpgrades.registerRecipes();
 	}
 
 	private static List<Upgrade> allUpgrades;

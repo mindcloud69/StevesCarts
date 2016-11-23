@@ -10,7 +10,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vswe.stevesvehicles.item.ModItems;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
-import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
+import vswe.stevesvehicles.recipe.ShapedModuleRecipe;
 import vswe.stevesvehicles.upgrade.effect.BaseEffect;
 import vswe.stevesvehicles.upgrade.registry.UpgradeRegistry;
 
@@ -50,9 +50,15 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 
 	private final String unlocalizedName;
 	private ArrayList<EffectType> effects;
+	private final boolean connectToRedstone;
 
 	public Upgrade(String unlocalizedName) {
+		this(unlocalizedName, false);
+	}
+	
+	public Upgrade(String unlocalizedName, boolean connectToRedstone) {
 		this.unlocalizedName = unlocalizedName;
+		this.connectToRedstone = connectToRedstone;
 		effects = new ArrayList<>();
 	}
 
@@ -87,7 +93,7 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 	}
 
 	public Upgrade addShapedRecipeWithSize(int width, int height, Object... recipe) {
-		addRecipe(new ModuleRecipeShaped(this, width, height, recipe));
+		addRecipe(new ShapedModuleRecipe(this, width, height, recipe));
 		return this;
 	}
 
@@ -126,7 +132,7 @@ public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
 	}
 
 	public boolean connectToRedstone() {
-		return false;
+		return connectToRedstone;
 	}
 
 	@Override

@@ -14,8 +14,8 @@ import vswe.stevesvehicles.block.BlockRailAdvancedDetector;
 import vswe.stevesvehicles.block.ModBlocks;
 import vswe.stevesvehicles.localization.entry.block.LocalizationDetector;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
-import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
-import vswe.stevesvehicles.recipe.ModuleRecipeShapeless;
+import vswe.stevesvehicles.recipe.ShapedModuleRecipe;
+import vswe.stevesvehicles.recipe.ShapelessModuleRecipe;
 import vswe.stevesvehicles.tileentity.TileEntityDetector;
 import vswe.stevesvehicles.vehicle.VehicleBase;
 import vswe.stevesvehicles.vehicle.entity.EntityModularCart;
@@ -142,10 +142,10 @@ public enum DetectorType implements IRecipeOutput, IStringSerializable {
 	}
 
 	public void addShapedRecipe(Object... recipe) {
-		GameRegistry.addRecipe(new ModuleRecipeShaped(this, 3, 3, recipe));
+		GameRegistry.addRecipe(new ShapedModuleRecipe(this, 3, 3, recipe));
 	}
 
 	public void addShapelessRecipe(Object... recipe) {
-		GameRegistry.addRecipe(new ModuleRecipeShapeless(this, recipe));
+		GameRegistry.addRecipe(new ShapelessModuleRecipe(this, recipe));
 	}
 }

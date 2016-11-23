@@ -8,7 +8,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
+import net.minecraft.util.NonNullList;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
 import vswe.stevesvehicles.util.Tuple;
 
@@ -30,6 +30,9 @@ public abstract class RecipeItem {
 
 	public static RecipeItem createRecipeItem(Object data) {
 		if (data != null) {
+			if(data instanceof RecipeItem){
+				return (RecipeItem) data;
+			}
 			Class dataClass = data.getClass();
 			Tuple<Class<? extends RecipeItem>, Class> recipeItemClasses = getRecipeClassFromClass(dataClass);
 			if (recipeItemClasses != null) {
@@ -73,5 +76,5 @@ public abstract class RecipeItem {
 
 	public abstract boolean matches(ItemStack other);
 
-	public abstract List<ItemStack> getVisualStacks();
+	public abstract NonNullList<ItemStack> getVisualStacks();
 }

@@ -21,8 +21,8 @@ import vswe.stevesvehicles.localization.entry.info.LocalizationLabel;
 import vswe.stevesvehicles.module.ModuleBase;
 import vswe.stevesvehicles.module.data.registry.ModuleRegistry;
 import vswe.stevesvehicles.recipe.IRecipeOutput;
-import vswe.stevesvehicles.recipe.ModuleRecipeShaped;
-import vswe.stevesvehicles.recipe.ModuleRecipeShapeless;
+import vswe.stevesvehicles.recipe.ShapedModuleRecipe;
+import vswe.stevesvehicles.recipe.ShapelessModuleRecipe;
 import vswe.stevesvehicles.vehicle.VehicleType;
 
 public class ModuleData implements IRecipeOutput {
@@ -427,7 +427,7 @@ public class ModuleData implements IRecipeOutput {
 	}
 
 	public ModuleData addShapedRecipeWithSize(int width, int height, Object... recipe) {
-		addRecipe(new ModuleRecipeShaped(this, width, height, recipe));
+		addRecipe(new ShapedModuleRecipe(this, width, height, recipe));
 		return this;
 	}
 
@@ -441,7 +441,7 @@ public class ModuleData implements IRecipeOutput {
 	}
 
 	public ModuleData addShapelessRecipe(Object... recipe) {
-		addRecipe(new ModuleRecipeShapeless(this, recipe));
+		addRecipe(new ShapelessModuleRecipe(this, recipe));
 		return this;
 	}
 

@@ -6,6 +6,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import vswe.stevesvehicles.recipe.item.RecipeItem;
+import vswe.stevesvehicles.recipe.item.RecipeItemCluster;
 
 public abstract class ModuleRecipe implements IRecipe {
 	private IRecipeOutput result;
@@ -52,6 +53,10 @@ public abstract class ModuleRecipe implements IRecipe {
 
 	public RecipeItem[] getRecipeItems() {
 		return recipe;
+	}
+	
+	public RecipeItemCluster toCluster(){
+		return new RecipeItemCluster(recipe);
 	}
 
 	@Override
