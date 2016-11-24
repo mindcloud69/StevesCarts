@@ -188,10 +188,14 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return 120;
 	}
 
-	// TODO: TEST IT
 	@Override
 	public boolean isEmpty() {
-		return false;
+		for(int i = 0;i < getSizeInventory();i++){
+			if(!getStackInSlot(i).isEmpty()){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -200,7 +204,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (manager != null) {
 			return manager.getStackInSlot(getValidSlotIndex(slot));
 		} else {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
@@ -210,7 +214,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (manager != null) {
 			return manager.decrStackSize(getValidSlotIndex(slot), count);
 		} else {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 

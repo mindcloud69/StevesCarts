@@ -1,4 +1,4 @@
 package stevesvehicles.api;
 
-public interface IMTPlugin {
+public interface ISVPlugin {
 }
