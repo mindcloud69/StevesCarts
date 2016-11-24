@@ -1,0 +1,30 @@
+package stevesvehicles.common.container.slots;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import stevesvehicles.common.transfer.TransferHandler;
+
+public abstract class SlotFake extends SlotBase implements ISpecialItemTransferValidator {
+	public SlotFake(IInventory inventory, int id, int x, int y) {
+		super(inventory, id, x, y);
+	}
+
+	@Override
+	public int getSlotStackLimit() {
+		return 0;
+	}
+
+	@Override
+	public ItemStack onTake(EntityPlayer player, ItemStack item) {
+		if (item != null && player != null && player.inventory != null) {
+			player.inventory.setItemStack(null);
+		}
+		return super.onTake(player, item);
+	}
+
+	@Override
+	public boolean isItemValidForTransfer(ItemStack item, TransferHandler.TransferType type) {
+		return false;
+	}
+}

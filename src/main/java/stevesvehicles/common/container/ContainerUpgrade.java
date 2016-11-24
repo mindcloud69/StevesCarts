@@ -1,0 +1,54 @@
+package stevesvehicles.common.container;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
+import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.upgrades.effects.util.InventoryEffect;
+
+public class ContainerUpgrade extends ContainerBase {
+	@Override
+	public IInventory getMyInventory() {
+		return upgrade;
+	}
+
+	@Override
+	public TileEntityBase getTileEntity() {
+		return upgrade;
+	}
+
+	private TileEntityUpgrade upgrade;
+
+	public ContainerUpgrade(IInventory invPlayer, TileEntityUpgrade upgrade) {
+		this.upgrade = upgrade;
+		if (upgrade.getEffects() == null || upgrade.getInventoryEffect() == null) {
+			return;
+		}
+		InventoryEffect inventory = upgrade.getInventoryEffect();
+		inventory.clear();
+		for (int id = 0; id < inventory.getInventorySize(); id++) {
+			Slot slot = inventory.createSlot(id);
+			addSlotToContainer(slot);
+			inventory.addSlot(slot);
+		}
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, offsetX() + j * 18, i * 18 + offsetY()));
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			addSlotToContainer(new Slot(invPlayer, i, offsetX() + i * 18, 58 + offsetY()));
+		}
+	}
+
+	protected int offsetX() {
+		return 48;
+	}
+
+	protected int offsetY() {
+		return 108;
+	}
+
+	// temporary solution, make a proper one later
+	public Object olddata;
+}

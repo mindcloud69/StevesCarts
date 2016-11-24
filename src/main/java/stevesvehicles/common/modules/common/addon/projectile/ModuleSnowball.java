@@ -1,0 +1,23 @@
+package stevesvehicles.common.modules.common.addon.projectile;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import stevesvehicles.common.vehicles.VehicleBase;
+
+public class ModuleSnowball extends ModuleProjectile {
+	public ModuleSnowball(VehicleBase vehicleBase) {
+		super(vehicleBase);
+	}
+
+	@Override
+	public boolean isValidProjectile(ItemStack item) {
+		return item.getItem() == Items.SNOWBALL;
+	}
+
+	@Override
+	public Entity createProjectile(Entity target, ItemStack item) {
+		return new EntitySnowball(getVehicle().getWorld());
+	}
+}

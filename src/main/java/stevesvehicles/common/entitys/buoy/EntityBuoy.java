@@ -1,0 +1,204 @@
+package stevesvehicles.common.entitys.buoy;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.items.ModItems;
+import io.netty.buffer.ByteBuf;
+
+public class EntityBuoy extends Entity implements IEntityAdditionalSpawnData {
+	private int renderTick;
+	private float renderMultiplier;
+	private BuoyType buoyType = BuoyType.NORMAL;
+
+	public EntityBuoy(World world) {
+		super(world);
+		preventEntitySpawning = true;
+		setSize(1, 2);
+		renderMultiplier = 0.8F + rand.nextFloat() * 0.4F;
+	}
+
+	public EntityBuoy(World world, BlockPos pos, BuoyType buoyType) {
+		this(world);
+		this.posX = pos.getX() + 0.5;
+		this.posY = pos.getY();
+		this.posZ = pos.getZ() + 0.5;
+		this.buoyType = buoyType;
+	}
+
+	@Override
+	public boolean canBeCollidedWith() {
+		return !isDead;
+	}
+
+	// TODO write a proper one
+	@Override
+	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
+		if (!world.isRemote && !isDead) {
+			setDead();
+		}
+		return true;
+	}
+
+	public ItemStack getBuoyItem() {
+		return new ItemStack(ModItems.buoys, 1, buoyType.getMeta());
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return getBuoyItem();
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBox(Entity entity) {
+		return entity.getEntityBoundingBox();
+	}
+
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
+
+	private static final DataParameter<Integer> DW_NEXT_BUOY = EntityDataManager.createKey(EntityBuoy.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> DW_PREV_BUOY = EntityDataManager.createKey(EntityBuoy.class, DataSerializers.VARINT);
+
+	@Override
+	protected void entityInit() {
+		dataManager.register(DW_NEXT_BUOY, new Integer(-1));
+		dataManager.register(DW_PREV_BUOY, new Integer(-1));
+	}
+
+	private static final String NBT_TYPE = "BuoyType";
+	private static final String NBT_NEXT = "Next";
+	private static final String NBT_PREV = "Prev";
+
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound compound) {
+		buoyType = BuoyType.getType(compound.getByte(NBT_TYPE));
+		// readBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
+		// readBuoy(compound, NBT_PREV, DW_PREV_BUOY);
+	}
+
+	private void readBuoy(NBTTagCompound compound, String nbt, int id) {
+		// TODO entity ids aren't persistent from load to load so that can't be
+		// saved, however there may only be one buoy per block so that can be
+		// used to save and load. Can't probably look for the other buoys at
+		// this point (probably has to wait for the first tick or something).
+	}
+
+	private void writeBuoy(NBTTagCompound compound, String nbt, int id) {
+		// TODO entity ids aren't persistent from load to load so that can't be
+		// saved, however there may only be one buoy per block so that can be
+		// used to save and load. Can't probably look for the other buoys at
+		// this point (probably has to wait for the first tick or something).
+	}
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound compound) {
+		compound.setByte(NBT_TYPE, (byte) buoyType.getMeta());
+		// writeBuoy(compound, NBT_NEXT, DW_NEXT_BUOY);
+		// writeBuoy(compound, NBT_PREV, DW_PREV_BUOY);
+	}
+
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		if (world.isRemote) {
+			renderTick++;
+		}
+	}
+
+	public float getLampColor() {
+		return 0.5F;
+	}
+
+	public int getRenderTick() {
+		return renderTick;
+	}
+
+	public float getRenderMultiplier() {
+		return renderMultiplier;
+	}
+
+	public BuoyType getBuoyType() {
+		return buoyType;
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		buffer.writeByte(buoyType.getMeta());
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf additionalData) {
+		buoyType = BuoyType.getType(additionalData.readByte());
+	}
+
+	@Override
+	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
+		if (!world.isRemote) {
+			player.openGui(StevesVehicles.instance, 2, world, getEntityId(), 0, 0);
+		}
+		return EnumActionResult.SUCCESS;
+	}
+
+	private EntityBuoy getBuoy(DataParameter<Integer> id) {
+		int entityId = dataManager.get(id);
+		Entity entity = world.getEntityByID(entityId);
+		if (entity instanceof EntityBuoy && !entity.isDead) {
+			return (EntityBuoy) entity;
+		}
+		return null;
+	}
+
+	public EntityBuoy getNextBuoy() {
+		return getBuoy(DW_NEXT_BUOY);
+	}
+
+	public EntityBuoy getPrevBuoy() {
+		return getBuoy(DW_PREV_BUOY);
+	}
+
+	private void setBuoy(DataParameter<Integer> id, int entityId) {
+		dataManager.set(id, entityId);
+	}
+
+	private void setBuoy(DataParameter<Integer> id, EntityBuoy buoy) {
+		Integer entityId = buoy != null && !buoy.isDead ? buoy.getEntityId() : -1;
+		setBuoy(id, entityId);
+	}
+
+	public void setNextBuoy(EntityBuoy buoy) {
+		setBuoy(DW_NEXT_BUOY, buoy);
+	}
+
+	public void setPrevBuoy(EntityBuoy buoy) {
+		setBuoy(DW_PREV_BUOY, buoy);
+	}
+
+	public void setBuoy(EntityBuoy buoy, boolean next) {
+		if (next) {
+			setNextBuoy(buoy);
+		} else {
+			setPrevBuoy(buoy);
+		}
+	}
+
+	public EntityBuoy getBuoy(boolean next) {
+		return next ? getNextBuoy() : getPrevBuoy();
+	}
+}
