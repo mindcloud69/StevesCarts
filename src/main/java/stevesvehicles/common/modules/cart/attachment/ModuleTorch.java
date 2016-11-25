@@ -3,6 +3,7 @@ package stevesvehicles.common.modules.cart.attachment;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTorch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -16,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
@@ -89,23 +91,27 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 						// check if there's any torches to place
 						for (int i = 0; i < getInventorySize(); i++) {
 							// check if the slot contains torches
-							if (getStack(i) != null) {
-								if (Block.getBlockFromItem(getStack(i).getItem()) == Blocks.TORCH) {
+							EntityPlayer placer = getFakePlayer();
+							ItemStack stack = getStack(i);
+							if (!stack.isEmpty()) {
+								if (Block.getBlockFromItem(stack.getItem()) == Blocks.TORCH) {
+									placer.setHeldItem(EnumHand.MAIN_HAND, stack);
 									if (doPreWork()) {
 										startWorking(3);
 										return true;
 									}
 									// if so place it and remove one torch from
 									// the cart's inventory
-									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, null, EnumHand.MAIN_HAND);
-									getVehicle().getWorld().setBlockState(torch, state);
+									IBlockState state = Blocks.TORCH.getStateForPlacement(world, target, EnumFacing.DOWN, 0, 0, 0, 0, placer, EnumHand.MAIN_HAND);
+									world.setBlockState(target, state);
 									if (!getVehicle().hasCreativeSupplies()) {
-										getStack(i).shrink(1);
-										if (getStack(i).getCount() == 0) {
-											setStack(i, null);
+										stack.shrink(1);
+										if (stack.getCount() == 0) {
+											setStack(i, ItemStack.EMPTY);
 										}
 										this.onInventoryChanged();
 									}
+									placer.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
 									break;
 								}
 							}
@@ -115,7 +121,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 						// this side is already done. This shouldn't really
 						// happen since then it wouldn't be dark enough in the
 						// first place.
-					} else if (getVehicle().getWorld().getBlockState(target).getBlock() == Blocks.TORCH) {
+					} else if (world.getBlockState(target).getBlock() == Blocks.TORCH) {
 						break;
 					}
 				}
@@ -251,7 +257,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 		}
 		int val = 0;
 		for (int i = 0; i < 3; i++) {
-			val |= ((getStack(i) != null ? 1 : 0) << i);
+			val |= ((!getStack(i).isEmpty() ? 1 : 0) << i);
 		}
 		updateDw(TORCHES, val);
 	}

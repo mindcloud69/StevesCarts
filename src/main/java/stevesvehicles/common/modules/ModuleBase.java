@@ -18,9 +18,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.EntityDataManager.DataEntry;
@@ -882,18 +885,7 @@ public abstract class ModuleBase {
 	 */
 	public final void writeToNBT(NBTTagCompound tagCompound) {
 		// write the content of the slots to the tag compound
-		if (getInventorySize() > 0) {
-			NBTTagList items = new NBTTagList();
-			for (int i = 0; i < getInventorySize(); ++i) {
-				if (getStack(i) != null) {
-					NBTTagCompound item = new NBTTagCompound();
-					item.setByte("Slot", (byte) i);
-					getStack(i).writeToNBT(item);
-					items.appendTag(item);
-				}
-			}
-			tagCompound.setTag("Items", items);
-		}
+		ItemStackHelper.saveAllItems(tagCompound, cargo);
 		// writes module specific data
 		save(tagCompound);
 	}
@@ -916,16 +908,7 @@ public abstract class ModuleBase {
 	 */
 	public final void readFromNBT(NBTTagCompound tagCompound) {
 		// read the content of the slots to the tag compound
-		if (getInventorySize() > 0) {
-			NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-			for (int i = 0; i < items.tagCount(); ++i) {
-				NBTTagCompound item = items.getCompoundTagAt(i);
-				int slot = item.getByte("Slot") & 255;
-				if (slot >= 0 && slot < getInventorySize()) {
-					setStack(slot, new ItemStack(item));
-				}
-			}
-		}
+		ItemStackHelper.loadAllItems(tagCompound, cargo);
 		// reads module specific data
 		load(tagCompound);
 	}

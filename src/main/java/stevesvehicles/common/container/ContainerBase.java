@@ -45,9 +45,9 @@ public abstract class ContainerBase extends Container {
 					}
 				}
 			} else if (!mergeItemStack(itemstack1, 0, getMyInventory().getSizeInventory(), false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
-			if (itemstack1.getCount() == 0) {
+			if (itemstack1.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
@@ -77,7 +77,7 @@ public abstract class ContainerBase extends Container {
 			while (item.getCount() > 0 && (!invert && id < end || invert && id >= start)) {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
-				if (slotItem != null && slotItem.getCount() > 0 && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
+				if (!slotItem.isEmpty() && slotItem.getItem() == item.getItem() && (!item.getHasSubtypes() || item.getItemDamage() == slotItem.getItemDamage()) && ItemStack.areItemStackTagsEqual(item, slotItem)) {
 					int size = slotItem.getCount() + item.getCount();
 					int maxLimit = Math.min(item.getMaxStackSize(), slot.getSlotStackLimit());
 					if (size <= maxLimit) {
@@ -108,7 +108,7 @@ public abstract class ContainerBase extends Container {
 			while (!invert && id < end || invert && id >= start) {
 				slot = this.inventorySlots.get(id);
 				slotItem = slot.getStack();
-				if (slotItem == null && TransferHandler.isItemValidForTransfer(slot, item, TransferHandler.TransferType.SHIFT)) {
+				if (slotItem.isEmpty() && TransferHandler.isItemValidForTransfer(slot, item, TransferHandler.TransferType.SHIFT)) {
 					int stackSize = Math.min(slot.getSlotStackLimit(), item.getCount());
 					ItemStack newItem = item.copy();
 					newItem.setCount(stackSize);

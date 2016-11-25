@@ -10,7 +10,7 @@ public interface ITankHolder {
 	public void addToOutputContainer(int tankId, ItemStack item);
 
 	public void onFluidUpdated(int tankId);
-	// TODO:REWRITE
+	// TODO:sprites
 	/*
 	 * @SideOnly(Side.CLIENT) public void drawImage(int tankId, GuiBase gui,
 	 * IIcon icon, int targetX, int targetY, int srcX, int srcY, int sizeX, int

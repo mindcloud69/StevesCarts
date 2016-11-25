@@ -10,6 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -147,9 +148,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound var1 = new NBTTagCompound();
-		this.writeToNBT(var1);
-		return new SPacketUpdateTileEntity(getPos(), 1, var1);
+		return new SPacketUpdateTileEntity(getPos(), 0, writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
@@ -166,24 +165,15 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	}
 
 	public boolean hasInventory() {
-		return inventoryStacks.isEmpty();
+		return !inventoryStacks.isEmpty();
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
-		super.readFromNBT(tagCompound);
 		if (tagCompound.hasKey("Type")) {
 			setType(tagCompound.getByte("Type"));
 		}
-		NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-		for (int i = 0; i < items.tagCount(); ++i) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getByte("Slot") & 255;
-			ItemStack iStack = new ItemStack(item);
-			if (slot >= 0 && slot < getSizeInventory()) {
-				setInventorySlotContents(slot, iStack);
-			}
-		}
+		super.readFromNBT(tagCompound);
 		if (effects != null) {
 			load(tagCompound);
 		}
@@ -222,7 +212,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 
 	@Override
 	public int getSizeInventory() {
-		if (hasInventory()) {
+		if (!hasInventory()) {
 			if (master == null) {
 				return 0;
 			} else {
@@ -246,7 +236,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		if (hasInventory()) {
+		if (!hasInventory()) {
 			if (master == null) {
 				return INVALID_STACK;
 			} else {
@@ -258,7 +248,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 
 	@Override
 	public ItemStack decrStackSize(int index, int size) {
-		if (hasInventory()) {
+		if (!hasInventory()) {
 			if (master == null) {
 				return INVALID_STACK;
 			} else {
@@ -274,7 +264,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack itemStack) {
-		if (hasInventory()) {
+		if (!hasInventory()) {
 			if (master != null) {
 				master.setInventorySlotContents(index, itemStack);
 			} else {

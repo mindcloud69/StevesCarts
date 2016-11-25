@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -52,6 +53,7 @@ import stevesvehicles.common.recipe.ShapedModuleRecipe;
 import stevesvehicles.common.recipe.ShapelessModuleRecipe;
 import stevesvehicles.common.registries.RegistrySynchronizer;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
+import stevesvehicles.common.vehicles.VehicleDataSerializers;
 import stevesvehicles.common.vehicles.VehicleRegistry;
 import stevesvehicles.common.vehicles.entitys.EntityModularBoat;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
@@ -134,6 +136,7 @@ public class StevesVehicles {
 		ModBlocks.addRecipes();
 		GiftItem.init();
 		UpgradeRegistry.postInit();
+		VehicleDataSerializers.init();
 	}
 
 	@SideOnly(Side.CLIENT)

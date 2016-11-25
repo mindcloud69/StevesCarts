@@ -1,10 +1,10 @@
-package stevesvehicles.api.module.container;
+package stevesvehicles.api.modules.container;
 
 import java.util.Collection;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import stevesvehicles.api.module.data.ModuleData;
+import stevesvehicles.api.modules.data.ModuleData;
 
 /**
  * An IModuleContainer provides informations about modules.
@@ -12,7 +12,7 @@ import stevesvehicles.api.module.data.ModuleData;
 public interface IModuleContainer {
 
 	/**
-	 * @return The stack that is used to display this container in a gui or if a module has no parent.
+	 * @return The stack that is used to display this container in a guit.
 	 */
 	ItemStack getParent();
 

@@ -130,20 +130,21 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 			// loop through the slots to search for rails
 			for (int id = 0; id < getInventorySize(); id++) {
 				// check if it has found a standard rail block
-				if (getStack(id) != null) {
-					if (validRail(getStack(id).getItem())) {
+				ItemStack stack = getStack(id);
+				if (!stack.isEmpty()) {
+					if (validRail(stack.getItem())) {
 						// if so this is a valid action to do, if the flag
 						// parameter is true this action should also be done
 						if (flag) {
 							// place the rail
-							getVehicle().getWorld().setBlockState(pos, Block.getBlockFromItem(getStack(id).getItem()).getDefaultState());
+							world.setBlockState(pos, Block.getBlockFromItem(stack.getItem()).getDefaultState());
 							if (!getVehicle().hasCreativeSupplies()) {
 								// remove the placed rail from the cart's
 								// inventory
-								getStack(id).shrink(1);
+								stack.shrink(1);
 								// remove the stack if it's empty
-								if (getStack(id).getCount() == 0) {
-									setStack(id, null);
+								if (stack.getCount() == 0) {
+									setStack(id, ItemStack.EMPTY);
 								}
 								getVehicle().getVehicleEntity().markDirty();
 							}

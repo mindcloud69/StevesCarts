@@ -333,7 +333,7 @@ public abstract class VehicleBase {
 		engineModules = new ArrayList<>();
 		tankModules = new ArrayList<>();
 		int guiData = 0;
-		int dataWatcher = 0;
+		int dataWatcher = entity.getDataManager().getAll().size();
 		// generate all the models this cart should use
 		if (getWorld().isRemote) {
 			generateModels();

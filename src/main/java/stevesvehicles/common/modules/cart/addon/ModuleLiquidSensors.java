@@ -8,6 +8,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -72,6 +73,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 
 	@Override
 	public void initDw() {
+		SENSOR_INFO = createDw(DataSerializers.BYTE);
 		registerDw(SENSOR_INFO, (byte) 1);
 	}
 

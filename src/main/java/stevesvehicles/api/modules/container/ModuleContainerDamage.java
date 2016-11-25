@@ -1,13 +1,13 @@
-package stevesvehicles.api.module.container;
+package stevesvehicles.api.modules.container;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import stevesvehicles.api.module.data.ModuleData;
+import stevesvehicles.api.modules.data.ModuleData;
 
 public class ModuleContainerDamage extends ModuleContainer {
 
-	public ModuleContainerDamage(ItemStack fallbackParent, ModuleData[] datas) {
-		super(fallbackParent, datas);
+	public ModuleContainerDamage(ItemStack parent, ModuleData[] datas) {
+		super(parent, datas);
 	}
 
 	@Override

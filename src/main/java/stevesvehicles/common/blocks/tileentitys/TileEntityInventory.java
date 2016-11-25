@@ -27,7 +27,6 @@ public abstract class TileEntityInventory extends TileEntityBase implements IInv
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		;
 		inventoryStacks.clear();
 		ItemStackHelper.loadAllItems(nbttagcompound, inventoryStacks);
 	}

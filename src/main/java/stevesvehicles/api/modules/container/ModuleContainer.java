@@ -1,4 +1,4 @@
-package stevesvehicles.api.module.container;
+package stevesvehicles.api.modules.container;
 
 import java.util.Collection;
 import java.util.Set;
@@ -6,18 +6,18 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 
 import net.minecraft.item.ItemStack;
-import stevesvehicles.api.module.data.ModuleData;
+import stevesvehicles.api.modules.data.ModuleData;
 
 public class ModuleContainer implements IModuleContainer {
 
 	protected final ItemStack parent;
 	protected final Set<ModuleData> datas;
 
-	public ModuleContainer(ItemStack fallbackParent, ModuleData... datas) {
-		if(fallbackParent == null || fallbackParent.isEmpty()){
-			fallbackParent = ItemStack.EMPTY;
+	public ModuleContainer(ItemStack parent, ModuleData... datas) {
+		if(parent == null || parent.isEmpty()){
+			parent = ItemStack.EMPTY;
 		}
-		this.parent = fallbackParent;
+		this.parent = parent;
 		this.datas = Sets.newHashSet(datas);
 	}
 

@@ -21,6 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -512,7 +514,10 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 		}
 
 		@Override
-		public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand stack) {
+		public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
+			if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand))){
+			 	return EnumActionResult.SUCCESS;
+			}
 			if (!vehicleBase.canInteractWithEntity(player)) {
 				return EnumActionResult.PASS;
 			}

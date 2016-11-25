@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
@@ -55,7 +56,7 @@ public class ModuleOreTracker extends ModuleAddon {
 				return true;
 			} else {
 				ItemStack item = new ItemStack(block);
-				if (item.getItem() != null) {
+				if (!item.isEmpty()) {
 					int[] oreIds = OreDictionary.getOreIDs(item);
 					for (int oreId : oreIds) {
 						if (oreId == -1) {

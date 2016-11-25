@@ -67,7 +67,7 @@ public class TransferHandler {
 					if (!inv.getStackInSlot(i).isEmpty() && inv.getStackInSlot(i).getItem() == iStack.getItem() && inv.getStackInSlot(i).isStackable() && inv.getStackInSlot(i).getCount() < inv.getStackInSlot(i).getMaxStackSize()
 							&& inv.getStackInSlot(i).getCount() < cont.getSlot(i).getSlotStackLimit() && (inv.getStackInSlot(i).getCount() > 0 && iStack.getCount() > 0)
 							&& (!inv.getStackInSlot(i).getHasSubtypes() || inv.getStackInSlot(i).getItemDamage() == iStack.getItemDamage())
-							&& (inv.getStackInSlot(i).hasTagCompound() || inv.getStackInSlot(i).getTagCompound().equals(iStack.getTagCompound()))) {
+							&& (!inv.getStackInSlot(i).hasTagCompound() || inv.getStackInSlot(i).getTagCompound().equals(iStack.getTagCompound()))) {
 						// mark this slot as a good one, break the loop since
 						// we're done here.
 						pos = i;
