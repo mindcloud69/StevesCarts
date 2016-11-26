@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +19,8 @@ import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.workers.tools.ModuleFarmer;
 
+import java.util.Random;
+
 public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	private int tankPosX;
 	private int tankPosY;
@@ -25,6 +28,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	private int fert;
 	private final int fertPerBonemeal = 4;
 	private final int maxStacksOfBones = 1;
+	private final Random random = new Random();
 
 	public ModuleFertilizer(final EntityMinecartModular cart) {
 		super(cart);
@@ -100,40 +104,31 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 		BlockPos next = this.getNextblock();
 		for (int i = -this.range; i <= this.range; ++i) {
 			for (int j = -this.range; j <= this.range; ++j) {
-				this.fertilize(world, next.add(i, -1, j));
+				if(random.nextInt(25) == 0 && this.fertilize(world, next.add(i, 0, j))){
+					break;
+				}
 			}
 		}
 		return false;
 	}
 
-	private void fertilize(World world, BlockPos pos) {
-		IBlockState stateOfTopBlock = world.getBlockState(pos.up());
+	private boolean fertilize(World world, BlockPos pos) {
+		IBlockState stateOfTopBlock = world.getBlockState(pos);
 		Block blockTop = stateOfTopBlock.getBlock();
 		if (this.fert > 0) {
-			/*if (blockTop instanceof BlockCrops && stateOfTopBlock.getValue(BlockCrops.AGE) == 7) {
-				int age = stateOfTopBlock.getValue(BlockCrops.AGE);
-				if ((age > 0 && this.getCart().rand.nextInt(250) == 0) || (age == 0 && this.getCart().rand.nextInt(1000) == 0)) {
-					this.getCart().worldObj.setBlockState(pos.up(), stateOfTopBlock.withProperty(BlockCrops.AGE, age + 1), 3);
-					--this.fert;
-				}
-			} else if (blockTop instanceof BlockSapling && this.getCart().worldObj.getLight(pos.up(2)) >= 9 && this.getCart().rand.nextInt(100) == 0) {
-				if (this.getCart().rand.nextInt(6) == 0) {
-					this.getCart().worldObj.setBlockMetadataWithNotify(pos.up(), stateOfTopBlock | 0x8, 3);
-					((BlockSapling) Blocks.SAPLING).func_149878_d(this.getCart().worldObj, x, y + 1, z, this.getCart().rand);
-				}
-				--this.fert;
-			}*/
-			// I thinks that make the module more useful
 			if(blockTop instanceof IGrowable){
 				IGrowable growable = (IGrowable) blockTop;
 				if(growable.canGrow(world, pos, stateOfTopBlock, false)){
 					if(growable.canUseBonemeal(world, this.getCart().rand, pos, stateOfTopBlock)){
 						growable.grow(world, this.getCart().rand, pos, stateOfTopBlock);
-						--this.fert;
+						ItemDye.spawnBonemealParticles(world, pos, 15);
+						this.fert -= 2;
+						return true;
 					}
 				}
 			}
 		}
+		return false;
 	}
 
 	@Override
