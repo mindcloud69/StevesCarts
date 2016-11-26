@@ -147,11 +147,14 @@ public class BlockCartAssembler extends BlockContainerBase {
 		return new TileEntityCartAssembler();
 	}
 
-	public void onBlockAdded(final World world, final BlockPos pos) {
-		this.updateMultiBlock(world, pos);
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(worldIn, pos, state);
+		this.updateMultiBlock(worldIn, pos);
 	}
 
-	public void breakBlock(final World world, final BlockPos pos, final Block unknown1, final int unknown2) {
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		final TileEntityCartAssembler var7 = (TileEntityCartAssembler) world.getTileEntity(pos);
 		var7.isDead = true;
 		this.updateMultiBlock(world, pos);
@@ -195,4 +198,5 @@ public class BlockCartAssembler extends BlockContainerBase {
 		}
 		super.breakBlock(world, pos, this.getDefaultState());
 	}
+
 }
