@@ -5,7 +5,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import stevesvehicles.api.modules.data.ModuleData;
 
 public class ModuleContainerNBT extends ModuleContainer {
-
 	public ModuleContainerNBT(ItemStack parent, ModuleData[] datas) {
 		super(parent, datas);
 	}

@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import stevesvehicles.api.modules.data.ModuleData;
 
 public class ModuleContainerCapability extends ModuleContainerNBT {
-
 	public ModuleContainerCapability(ItemStack parent, ModuleData[] datas) {
 		super(parent, datas);
 	}

@@ -17,7 +17,7 @@ import stevesvehicles.common.upgrades.effects.time.TimeFlatCart;
 import stevesvehicles.common.upgrades.effects.time.TimeFlatRemoved;
 
 public enum ProductionUpgrades {
-	KNOWLEDGE("module_knowledge"){
+	KNOWLEDGE("module_knowledge") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(Items.BOOK, Blocks.BOOKSHELF, Items.BOOK, Blocks.BOOKSHELF, Blocks.ENCHANTING_TABLE, Blocks.BOOKSHELF, Items.IRON_INGOT, BLANK_UPGRADE, Items.IRON_INGOT);
@@ -29,8 +29,7 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(TimeFlatCart.class, -5000);
 		}
 	},
-	INDUSTRIAL_ESPIONAGE("industrial_espionage"){
-
+	INDUSTRIAL_ESPIONAGE("industrial_espionage") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(Blocks.BOOKSHELF, Items.IRON_INGOT, Blocks.BOOKSHELF, Items.GLOWSTONE_DUST, REINFORCED_METAL, Items.GLOWSTONE_DUST, REINFORCED_METAL, upgrade, REINFORCED_METAL);
@@ -42,8 +41,7 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(TimeFlatCart.class, -14000);
 		}
 	},
-	EXPERIENCED_ASSEMBLER("experienced_assembler"){
-
+	EXPERIENCED_ASSEMBLER("experienced_assembler") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(SIMPLE_PCB, Items.BOOK, SIMPLE_PCB, Items.IRON_INGOT, ADVANCED_PCB, Items.IRON_INGOT, Items.IRON_INGOT, BLANK_UPGRADE, Items.IRON_INGOT);
@@ -55,7 +53,7 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(FuelCost.class, 2F);
 		}
 	},
-	NEW_ERA("new_era"){
+	NEW_ERA("new_era") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(EYE_OF_GALGADOR, Items.BOOK, EYE_OF_GALGADOR, Items.IRON_INGOT, SIMPLE_PCB, Items.IRON_INGOT, EYE_OF_GALGADOR, upgrade, EYE_OF_GALGADOR);
@@ -67,7 +65,7 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(FuelCost.class, 6F);
 		}
 	},
-	QUICK_DEMOLISHER("quick_demolisher"){
+	QUICK_DEMOLISHER("quick_demolisher") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(Blocks.OBSIDIAN, Items.IRON_INGOT, Blocks.OBSIDIAN, Items.IRON_INGOT, Blocks.IRON_BLOCK, Items.IRON_INGOT, Blocks.OBSIDIAN, BLANK_UPGRADE, Blocks.OBSIDIAN);
@@ -78,7 +76,7 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(TimeFlatRemoved.class, -8000);
 		}
 	},
-	ENTROPY("entropy"){
+	ENTROPY("entropy") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(Blocks.LAPIS_BLOCK, Items.IRON_INGOT, null, Items.REDSTONE, EYE_OF_GALGADOR, Items.REDSTONE, null, upgrade, Blocks.LAPIS_BLOCK);
@@ -90,7 +88,7 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(TimeFlat.class, 500);
 		}
 	},
-	CREATIVE_MODE("creative_mode"){
+	CREATIVE_MODE("creative_mode") {
 		@Override
 		protected void registerRecipe() {
 		}
@@ -101,7 +99,7 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(FuelCostFree.class);
 		}
 	},
-	CREATIVE_MODE_DELUXE("creative_mode_deluxe"){
+	CREATIVE_MODE_DELUXE("creative_mode_deluxe") {
 		@Override
 		protected void registerRecipe() {
 		}
@@ -113,7 +111,6 @@ public enum ProductionUpgrades {
 			upgrade.addEffect(FreeModules.class);
 		}
 	};
-
 	private static final UpgradeRegistry registry = new UpgradeRegistry("production");
 	private final String unlocalizedName;
 	private final boolean connectToRedstone;
@@ -132,16 +129,16 @@ public enum ProductionUpgrades {
 
 	protected abstract void addEffects();
 
-	public static void registerUpgrades(){
-		for(ProductionUpgrades upgradeEnum : values()){
+	public static void registerUpgrades() {
+		for (ProductionUpgrades upgradeEnum : values()) {
 			registry.register(upgradeEnum.upgrade = new Upgrade(upgradeEnum.unlocalizedName, upgradeEnum.connectToRedstone));
 			upgradeEnum.addEffects();
 		}
 		UpgradeRegistry.add(registry);
 	}
 
-	public static void registerRecipes(){
-		for(ProductionUpgrades upgrade : values()){
+	public static void registerRecipes() {
+		for (ProductionUpgrades upgrade : values()) {
 			upgrade.registerRecipe();
 		}
 	}

@@ -515,7 +515,7 @@ public class EntityModularCart extends EntityMinecart implements IVehicleEntity 
 
 		@Override
 		public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
-			if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand))){
+			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand))) {
 				return EnumActionResult.SUCCESS;
 			}
 			if (!vehicleBase.canInteractWithEntity(player)) {

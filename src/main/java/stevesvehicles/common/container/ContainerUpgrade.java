@@ -58,7 +58,7 @@ public class ContainerUpgrade extends ContainerBase {
 
 	// temporary solution, make a proper one later
 	public Object olddata;
-	
+
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return container != null && container.isUsableByPlayer(player);
@@ -83,21 +83,17 @@ public class ContainerUpgrade extends ContainerBase {
 
 	@Override
 	public void detectAndSendChanges() {
-        for (int i = 0; i < this.inventorySlots.size(); ++i){
-            ItemStack itemstack = ((Slot)this.inventorySlots.get(i)).getStack();
-            ItemStack itemstack1 = (ItemStack)this.inventoryItemStacks.get(i);
-
-            if (!ItemStack.areItemStacksEqual(itemstack1, itemstack))
-            {
-                itemstack1 = itemstack.isEmpty() ? ItemStack.EMPTY : itemstack.copy();
-                this.inventoryItemStacks.set(i, itemstack1);
-
-                for (int j = 0; j < this.listeners.size(); ++j)
-                {
-                    ((IContainerListener)this.listeners.get(j)).sendSlotContents(this, i, itemstack1);
-                }
-            }
-        }
+		for (int i = 0; i < this.inventorySlots.size(); ++i) {
+			ItemStack itemstack = this.inventorySlots.get(i).getStack();
+			ItemStack itemstack1 = this.inventoryItemStacks.get(i);
+			if (!ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
+				itemstack1 = itemstack.isEmpty() ? ItemStack.EMPTY : itemstack.copy();
+				this.inventoryItemStacks.set(i, itemstack1);
+				for (int j = 0; j < this.listeners.size(); ++j) {
+					this.listeners.get(j).sendSlotContents(this, i, itemstack1);
+				}
+			}
+		}
 		if (container != null) {
 			Iterator<IContainerListener> playerIterator = this.listeners.iterator();
 			while (playerIterator.hasNext()) {

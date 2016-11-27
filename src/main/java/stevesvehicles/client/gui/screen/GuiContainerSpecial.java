@@ -209,9 +209,9 @@ public abstract class GuiContainerSpecial /* extends GuiScreen */ extends GuiCon
 	 * { touchscreenDropSlot = slot; touchscreenValidDropTime = time +
 	 * TOUCHSCREEN_DROP_DELAY_SAME_SLOT; } } } } else if (isItemBeingDragged &&
 	 * slot != null && movingItem != null && movingItem.stackSize >
-	 * draggedItemSlots.size() && Container.canAddItemToSlot(slot, movingItem, true)
-	 * && slot.isItemValid(movingItem) && container.canDragIntoSlot(slot)) {
-	 * draggedItemSlots.add(slot); updateDraggedItemDistribution(); } }
+	 * draggedItemSlots.size() && Container.canAddItemToSlot(slot, movingItem,
+	 * true) && slot.isItemValid(movingItem) && container.canDragIntoSlot(slot))
+	 * { draggedItemSlots.add(slot); updateDraggedItemDistribution(); } }
 	 * @Override protected void mouseReleased(int mouseX, int mouseY, int state)
 	 * { super.mouseReleased(mouseX, mouseY, state); Slot slot =
 	 * getSlotAtPosition(mouseX, mouseY); boolean inInterface = guiLeft <=

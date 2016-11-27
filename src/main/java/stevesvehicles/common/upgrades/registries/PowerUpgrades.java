@@ -16,7 +16,7 @@ import stevesvehicles.common.upgrades.effects.fuel.Solar;
 import stevesvehicles.common.upgrades.effects.fuel.ThermalFuel;
 
 public enum PowerUpgrades {
-	BATTERY("batteries"){
+	BATTERY("batteries") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(Items.REDSTONE, Items.REDSTONE, Items.REDSTONE, Items.REDSTONE, new ItemStack(Items.DYE, 1, 4), Items.REDSTONE, Items.REDSTONE, BLANK_UPGRADE, Items.REDSTONE);
@@ -28,7 +28,7 @@ public enum PowerUpgrades {
 			upgrade.addEffect(Recharger.class, 40);
 		}
 	},
-	CRYSTAL("power_crystal"){
+	CRYSTAL("power_crystal") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(Items.REDSTONE, Items.GLOWSTONE_DUST, Items.REDSTONE, Items.GLOWSTONE_DUST, Blocks.LAPIS_BLOCK, Items.GLOWSTONE_DUST, Items.DIAMOND, BATTERY.upgrade, Items.DIAMOND);
@@ -40,7 +40,7 @@ public enum PowerUpgrades {
 			upgrade.addEffect(Recharger.class, 150);
 		}
 	},
-	CO2("co2_friendly"){
+	CO2("co2_friendly") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(null, Blocks.PISTON, null, SIMPLE_PCB, Blocks.IRON_BARS, SIMPLE_PCB, CLEANING_FAN, BLANK_UPGRADE, CLEANING_FAN);
@@ -51,7 +51,7 @@ public enum PowerUpgrades {
 			upgrade.addEffect(FuelCost.class, 0.5F);
 		}
 	},
-	GENERIC_ENGINE("generic_engine"){
+	GENERIC_ENGINE("generic_engine") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(null, SIMPLE_PCB, null, Blocks.PISTON, Blocks.FURNACE, Blocks.PISTON, Items.IRON_INGOT, BLANK_UPGRADE, Items.IRON_INGOT);
@@ -63,7 +63,7 @@ public enum PowerUpgrades {
 			upgrade.addEffect(FuelCost.class, 1.03F);
 		}
 	},
-	THERMAL_ENGINE("thermal_engine"){
+	THERMAL_ENGINE("thermal_engine") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(Blocks.NETHER_BRICK, ADVANCED_PCB, Blocks.NETHER_BRICK, Blocks.PISTON, Blocks.FURNACE, Blocks.PISTON, Blocks.OBSIDIAN, BLANK_UPGRADE, Blocks.OBSIDIAN);
@@ -75,7 +75,7 @@ public enum PowerUpgrades {
 			upgrade.addEffect(FuelCost.class, 1.03F);
 		}
 	},
-	SOLAR_PANEL("solar_panel"){
+	SOLAR_PANEL("solar_panel") {
 		@Override
 		protected void registerRecipe() {
 			upgrade.addShapedRecipe(SOLAR_PANEL, SOLAR_PANEL, SOLAR_PANEL, Items.REDSTONE, Items.DIAMOND, Items.REDSTONE, Items.REDSTONE, BLANK_UPGRADE, Items.REDSTONE);
@@ -86,7 +86,6 @@ public enum PowerUpgrades {
 			upgrade.addEffect(Solar.class);
 		}
 	};
-
 	private static final UpgradeRegistry registry = new UpgradeRegistry("power");
 	private final String unlocalizedName;
 	private final boolean connectToRedstone;
@@ -105,16 +104,16 @@ public enum PowerUpgrades {
 
 	protected abstract void addEffects();
 
-	public static void registerUpgrades(){
-		for(PowerUpgrades upgradeEnum : values()){
+	public static void registerUpgrades() {
+		for (PowerUpgrades upgradeEnum : values()) {
 			registry.register(upgradeEnum.upgrade = new Upgrade(upgradeEnum.unlocalizedName, upgradeEnum.connectToRedstone));
 			upgradeEnum.addEffects();
 		}
 		UpgradeRegistry.add(registry);
 	}
 
-	public static void registerRecipes(){
-		for(PowerUpgrades upgrade : values()){
+	public static void registerRecipes() {
+		for (PowerUpgrades upgrade : values()) {
 			upgrade.registerRecipe();
 		}
 	}

@@ -5,7 +5,6 @@ import stevesvehicles.api.modules.handlers.IContentHandlerFactory;
 import stevesvehicles.api.modules.handlers.ModuleHandlerType;
 
 public interface ISVRegistry {
-
 	void registerItemContainer(IModuleContainer container);
 
 	/**

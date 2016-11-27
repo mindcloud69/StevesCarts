@@ -9,7 +9,6 @@ import stevesvehicles.api.modules.handlers.ContentHandler;
 import stevesvehicles.api.modules.handlers.IModuleHandler;
 
 public interface IModule {
-
 	/**
 	 * @return The ItemStack from that the module was created.
 	 */
@@ -21,12 +20,13 @@ public interface IModule {
 	void init();
 
 	/**
-	 * Returns true if the  module was already initialized.
+	 * Returns true if the module was already initialized.
 	 */
 	boolean wasInitialized();
 
 	/**
-	 * Add a IContentHandler to this module. This will only work before the module is initialized.
+	 * Add a IContentHandler to this module. This will only work before the
+	 * module is initialized.
 	 */
 	void addContendHandler(ContentHandler handler);
 

@@ -9,12 +9,11 @@ import net.minecraft.item.ItemStack;
 import stevesvehicles.api.modules.data.ModuleData;
 
 public class ModuleContainer implements IModuleContainer {
-
 	protected final ItemStack parent;
 	protected final Set<ModuleData> datas;
 
 	public ModuleContainer(ItemStack parent, ModuleData... datas) {
-		if(parent == null || parent.isEmpty()){
+		if (parent == null || parent.isEmpty()) {
 			parent = ItemStack.EMPTY;
 		}
 		this.parent = parent;
@@ -33,7 +32,7 @@ public class ModuleContainer implements IModuleContainer {
 
 	@Override
 	public boolean matches(ItemStack stack) {
-		if(stack.isEmpty()){
+		if (stack.isEmpty()) {
 			return false;
 		}
 		return stack.getItem() == parent.getItem();

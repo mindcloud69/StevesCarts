@@ -27,7 +27,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiUpgrade;
-import stevesvehicles.common.blocks.ModBlocks;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerUpgrade;
@@ -61,7 +60,6 @@ public class UpgradeContainer implements ISidedInventory, IFluidHandler, IFluidT
 		this.upgrade = upgrade;
 		this.inventoryStacks = DEFAULT_STACKS;
 		this.effects = null;
-
 		if (upgrade != null) {
 			createEffects(upgrade);
 			for (BaseEffect effect : effects) {
@@ -92,7 +90,6 @@ public class UpgradeContainer implements ISidedInventory, IFluidHandler, IFluidT
 		this.master = master;
 		this.inventoryStacks = DEFAULT_STACKS;
 		this.effects = null;
-
 		upgrade = UpgradeRegistry.getUpgradeFromId(tagCompound.getByte("Upgrade"));
 		if (upgrade != null) {
 			createEffects(upgrade);
@@ -121,7 +118,7 @@ public class UpgradeContainer implements ISidedInventory, IFluidHandler, IFluidT
 		ItemStackHelper.loadAllItems(tagCompound, inventoryStacks);
 		if (effects != null) {
 			load(tagCompound);
-		}	
+		}
 	}
 
 	public TileEntityCartAssembler getMaster() {

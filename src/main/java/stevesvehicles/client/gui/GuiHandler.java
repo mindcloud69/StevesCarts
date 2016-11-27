@@ -37,12 +37,12 @@ public class GuiHandler implements IGuiHandler {
 		} else if (id >= 3) {
 			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity instanceof TileEntityCartAssembler) {
-				UpgradeContainer container = ((TileEntityCartAssembler)tileentity).getUpgrade(EnumFacing.VALUES[id-3]);
-				if(container != null){
+				UpgradeContainer container = ((TileEntityCartAssembler) tileentity).getUpgrade(EnumFacing.VALUES[id - 3]);
+				if (container != null) {
 					return container.getGui(player.inventory);
 				}
 			}
-		} 
+		}
 		return null;
 	}
 
@@ -66,12 +66,12 @@ public class GuiHandler implements IGuiHandler {
 		} else if (id >= 3) {
 			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileentity instanceof TileEntityCartAssembler) {
-				UpgradeContainer container = ((TileEntityCartAssembler)tileentity).getUpgrade(EnumFacing.VALUES[id-3]);
-				if(container != null){
+				UpgradeContainer container = ((TileEntityCartAssembler) tileentity).getUpgrade(EnumFacing.VALUES[id - 3]);
+				if (container != null) {
 					return container.getContainer(player.inventory);
 				}
 			}
-		} 
+		}
 		return null;
 	}
 

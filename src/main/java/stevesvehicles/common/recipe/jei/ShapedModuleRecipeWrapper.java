@@ -26,10 +26,8 @@ public class ShapedModuleRecipeWrapper extends BlankRecipeWrapper implements ISh
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 		IStackHelper stackHelper = jeiHelpers.getStackHelper();
-
 		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(recipe.toCluster().getAdvancedVisualStacks());
 		ingredients.setInputLists(ItemStack.class, inputs);
-
 		ItemStack recipeOutput = recipe.getRecipeOutput();
 		if (recipeOutput != null) {
 			ingredients.setOutput(ItemStack.class, recipeOutput);
@@ -45,5 +43,4 @@ public class ShapedModuleRecipeWrapper extends BlankRecipeWrapper implements ISh
 	public int getHeight() {
 		return height;
 	}
-
 }

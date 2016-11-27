@@ -120,9 +120,7 @@ public class GuiVehicle extends GuiBase {
 			ModuleDataPair count = moduleCounts.get(i);
 			float alpha = inRect(x, y, getModuleDisplayX(i), getModuleDisplayY(i), 16, 16) ? 1 : 0.5F;
 			GL11.glColor4f(1F, 1F, 1F, alpha);
-			this.drawModuleIcon(count.getData(), getGuiLeft() +
-					getModuleDisplayX(i), getGuiTop() + getModuleDisplayY(i), 1, 1,
-					0, 0);
+			this.drawModuleIcon(count.getData(), getGuiLeft() + getModuleDisplayX(i), getGuiTop() + getModuleDisplayY(i), 1, 1, 0, 0);
 		}
 		GL11.glDisable(GL11.GL_BLEND);
 	}

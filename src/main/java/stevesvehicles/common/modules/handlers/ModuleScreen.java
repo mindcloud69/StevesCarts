@@ -17,7 +17,7 @@ import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public abstract class ModuleScreen{
+public abstract class ModuleScreen {
 	// the vehicle this module is part of
 	private VehicleBase vehicle;
 	// where in the interface the module is located, used to draw things where
@@ -25,6 +25,7 @@ public abstract class ModuleScreen{
 	// the values are calculated in the vehicle on initializing
 	private int offSetX;
 	private int offSetY;
+
 	/**
 	 * Creates a new instance of this module, the module will be created at the
 	 * given vehicle.

@@ -1,20 +1,14 @@
 package stevesvehicles.common.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 
 public class PropertyUpgrades implements IUnlistedProperty<PropertyUpgrades.Upgrades> {
-
 	@Override
 	public String getName() {
 		return "upgrades";
@@ -34,14 +28,12 @@ public class PropertyUpgrades implements IUnlistedProperty<PropertyUpgrades.Upgr
 	public String valueToString(Upgrades value) {
 		return null;
 	}
-	
-	public static class Upgrades{
-	    public static final Upgrades EMPTY = new Upgrades();
 
-	    static {
-	      EMPTY.upgrades = ImmutableMap.of();
-	    }
-
-	    public Map<EnumFacing, Integer> upgrades = Maps.newLinkedHashMap();
+	public static class Upgrades {
+		public static final Upgrades EMPTY = new Upgrades();
+		static {
+			EMPTY.upgrades = ImmutableMap.of();
+		}
+		public Map<EnumFacing, Integer> upgrades = Maps.newLinkedHashMap();
 	}
 }

@@ -13,29 +13,28 @@ import stevesvehicles.api.modules.handlers.IContentHandlerFactory;
 import stevesvehicles.api.modules.handlers.IModuleHandler;
 
 public class ModuleData extends Impl<ModuleData> {
-
-	public IModule createModule(IModuleContainer container, IModuleHandler handler, ItemStack stack){
+	public IModule createModule(IModuleContainer container, IModuleHandler handler, ItemStack stack) {
 		return null;
 	}
 
-	protected void initOptionalHandlers(IModule module){
-		for(IContentHandlerFactory factory : factorys){
+	protected void initOptionalHandlers(IModule module) {
+		for (IContentHandlerFactory factory : factorys) {
 			ContentHandler handler = factory.createHandler(module);
 		}
 	}
 
 	private final List<IContentHandlerFactory> factorys = new ArrayList<>();
 
-	public void addOptionalHandlers(IContentHandlerFactory... factorys){
-		if(factorys != null){
+	public void addOptionalHandlers(IContentHandlerFactory... factorys) {
+		if (factorys != null) {
 			Collections.addAll(this.factorys, factorys);
 		}
 	}
 
 	/**
-	 *  @return The name of the module in guis or tooltips.
+	 * @return The name of the module in guis or tooltips.
 	 */
-	public String getDisplayName(){
+	public String getDisplayName() {
 		return null;
 	}
 }

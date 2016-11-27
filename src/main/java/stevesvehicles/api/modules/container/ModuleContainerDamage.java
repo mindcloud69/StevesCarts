@@ -5,7 +5,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import stevesvehicles.api.modules.data.ModuleData;
 
 public class ModuleContainerDamage extends ModuleContainer {
-
 	public ModuleContainerDamage(ItemStack parent, ModuleData[] datas) {
 		super(parent, datas);
 	}

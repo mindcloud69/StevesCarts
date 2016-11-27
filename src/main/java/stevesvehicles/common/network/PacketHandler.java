@@ -42,12 +42,12 @@ public class PacketHandler {
 				int z = dr.readSignedInteger();
 				World world = player.world;
 				TileEntityCartAssembler assembler = (TileEntityCartAssembler) world.getTileEntity(new BlockPos(x, y, z));
-				for(int i = 0;i < 6;i++){
+				for (int i = 0; i < 6; i++) {
 					int upgradeType = dr.readByte();
 					EnumFacing facing = EnumFacing.VALUES[i];
-					if(upgradeType >= 0 && upgradeType < 255){
+					if (upgradeType >= 0 && upgradeType < 255) {
 						assembler.addUpgrade(facing, UpgradeRegistry.getUpgradeFromId(upgradeType));
-					}else{
+					} else {
 						assembler.removeUpgrade(facing);
 					}
 				}

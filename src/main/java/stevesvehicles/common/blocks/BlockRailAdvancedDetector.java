@@ -120,7 +120,7 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 							entityCart.releaseCart();
 						}
 						return;
-					} else if(block == ModBlocks.CART_ASSEMBLER.getBlock()){
+					} else if (block == ModBlocks.CART_ASSEMBLER.getBlock()) {
 						TileEntity tileentity = world.getTileEntity(pos.add(i, 0, j));
 						TileEntityCartAssembler assembler = (TileEntityCartAssembler) tileentity;
 						UpgradeContainer container = assembler.getUpgrade(EnumFacing.VALUES[side]);
@@ -175,7 +175,7 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 					Block block = world.getBlockState(pos.add(i, 0, j)).getBlock();
 					if (block == ModBlocks.CARGO_MANAGER.getBlock() || block == ModBlocks.LIQUID_MANAGER.getBlock() || block == ModBlocks.MODULE_TOGGLER.getBlock()) {
 						return false;
-					} else if(block == ModBlocks.CART_ASSEMBLER.getBlock()){
+					} else if (block == ModBlocks.CART_ASSEMBLER.getBlock()) {
 						TileEntity tileentity = world.getTileEntity(pos.add(i, 0, j));
 						TileEntityCartAssembler assembler = (TileEntityCartAssembler) tileentity;
 						UpgradeContainer container = assembler.getUpgrade(side);

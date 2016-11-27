@@ -12,7 +12,6 @@ import stevesvehicles.common.recipe.ShapelessModuleRecipe;
 import stevesvehicles.common.recipe.item.RecipeItem;
 
 public class ModuleRecipeHandler implements IRecipeHandler<ModuleRecipe> {
-
 	private final IJeiHelpers jeiHelpers;
 
 	public ModuleRecipeHandler(IJeiHelpers jeiHelpers) {
@@ -31,9 +30,9 @@ public class ModuleRecipeHandler implements IRecipeHandler<ModuleRecipe> {
 
 	@Override
 	public IRecipeWrapper getRecipeWrapper(ModuleRecipe recipe) {
-		if(recipe instanceof ShapelessModuleRecipe){
+		if (recipe instanceof ShapelessModuleRecipe) {
 			return new ShapelessModuleRecipeWrapper(jeiHelpers, (ShapelessModuleRecipe) recipe);
-		}else{
+		} else {
 			return new ShapedModuleRecipeWrapper(jeiHelpers, (ShapedModuleRecipe) recipe);
 		}
 	}

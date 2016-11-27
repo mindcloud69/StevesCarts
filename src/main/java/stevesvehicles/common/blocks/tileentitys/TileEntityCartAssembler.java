@@ -262,8 +262,8 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		titleBoxes.add(STORAGE_BOX);
 		titleBoxes.add(ADDON_BOX);
 		titleBoxes.add(INFO_BOX);
-		//Add upgrade sides
-		for(EnumFacing facing : EnumFacing.VALUES){
+		// Add upgrade sides
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			upgrades.put(facing, null);
 		}
 		/// create the engine slots
@@ -341,7 +341,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	 */
 	public Upgrade removeUpgrade(EnumFacing side) {
 		UpgradeContainer container = upgrades.remove(side);
-		if(container == null){
+		if (container == null) {
 			return null;
 		}
 		return container.getUpgrade();
@@ -365,8 +365,8 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	 */
 	public Collection<UpgradeContainer> getUpgrades() {
 		List<UpgradeContainer> containers = new ArrayList<>();
-		for(UpgradeContainer container : upgrades.values()){
-			if(container != null){
+		for (UpgradeContainer container : upgrades.values()) {
+			if (container != null) {
 				containers.add(container);
 			}
 		}
@@ -383,7 +383,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		ArrayList<BaseEffect> lst = new ArrayList<>();
 		// go through all the upgrades attached to the cart assembler
 		for (UpgradeContainer container : getUpgrades()) {
-			if(container != null){
+			if (container != null) {
 				List<BaseEffect> effects = container.getEffects();
 				if (effects != null) {
 					lst.addAll(effects);
@@ -1041,7 +1041,8 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof Manager) {
 				UpgradeContainer container = effect.getUpgrade();
-				BlockPos tilePos = pos.offset(container.getFacing());;
+				BlockPos tilePos = pos.offset(container.getFacing());
+				;
 				TileEntity managerTile = world.getTileEntity(pos);
 				if (managerTile != null && managerTile instanceof TileEntityManager) {
 					ManagerTransfer transfer = new ManagerTransfer();
@@ -1103,7 +1104,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	@Override
 	public void update() {
-		for(UpgradeContainer container : getUpgrades()){
+		for (UpgradeContainer container : getUpgrades()) {
 			container.update();
 		}
 		if (!isAssembling && outputSlot != null) {
@@ -1340,13 +1341,13 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	public boolean hasCustomName() {
 		return false;
 	}
-	
+
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		NBTTagCompound tagCompound = super.getUpdateTag();
 		NBTTagList upgrades = new NBTTagList();
-		for(UpgradeContainer container : this.upgrades.values()){
-			if(container != null){
+		for (UpgradeContainer container : this.upgrades.values()) {
+			if (container != null) {
 				NBTTagCompound upgrade = container.writeToNBT(new NBTTagCompound());
 				upgrade.setByte("Side", (byte) container.getFacing().ordinal());
 				upgrades.appendTag(upgrade);
@@ -1383,7 +1384,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		setAssemblingTime(tagCompound.getInteger("currentTime"));
 		isAssembling = tagCompound.getBoolean("isAssembling");
 		NBTTagList upgrades = tagCompound.getTagList("Upgrades", 10);
-		for(int i = 0;i < upgrades.tagCount();i++){
+		for (int i = 0; i < upgrades.tagCount(); i++) {
 			NBTTagCompound upgrade = upgrades.getCompoundTagAt(i);
 			EnumFacing side = EnumFacing.VALUES[upgrade.getByte("Side")];
 			this.upgrades.put(side, new UpgradeContainer(side, this, upgrade));
@@ -1416,8 +1417,8 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		tagCompound.setInteger("currentTime", getAssemblingTime());
 		tagCompound.setBoolean("isAssembling", isAssembling);
 		NBTTagList upgrades = new NBTTagList();
-		for(UpgradeContainer container : this.upgrades.values()){
-			if(container != null){
+		for (UpgradeContainer container : this.upgrades.values()) {
+			if (container != null) {
 				NBTTagCompound upgrade = container.writeToNBT(new NBTTagCompound());
 				upgrade.setByte("Side", (byte) container.getFacing().ordinal());
 				upgrades.appendTag(upgrade);

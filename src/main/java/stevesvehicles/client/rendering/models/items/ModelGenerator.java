@@ -67,18 +67,18 @@ public class ModelGenerator {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void bakeModels(ModelBakeEvent event) {
-		event.getModelRegistry().putObject(new  ModelResourceLocation(ModBlocks.CART_ASSEMBLER.getBlock().getRegistryName(), "normal"), new ModelAssembler());
+		event.getModelRegistry().putObject(new ModelResourceLocation(ModBlocks.CART_ASSEMBLER.getBlock().getRegistryName(), "normal"), new ModelAssembler());
 		if (Minecraft.getMinecraft().getRenderItem() == null || Minecraft.getMinecraft().getRenderItem().getItemModelMesher() == null) {
 			return;
 		}
 		ItemModelMesher itemModelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		for (ModeledObject object : ItemModelManager.objects) {
 			Item item;
-			if(object instanceof Item){
+			if (object instanceof Item) {
 				item = (Item) object;
-			}else if(object instanceof Block){
+			} else if (object instanceof Block) {
 				item = Item.getItemFromBlock((Block) object);
-			}else{
+			} else {
 				continue;
 			}
 			object.registerModels(item);

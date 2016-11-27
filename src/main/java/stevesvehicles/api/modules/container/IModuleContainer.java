@@ -10,7 +10,6 @@ import stevesvehicles.api.modules.data.ModuleData;
  * An IModuleContainer provides informations about modules.
  */
 public interface IModuleContainer {
-
 	/**
 	 * @return The stack that is used to display this container in a guit.
 	 */

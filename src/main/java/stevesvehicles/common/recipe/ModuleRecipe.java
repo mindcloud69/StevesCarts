@@ -55,7 +55,7 @@ public abstract class ModuleRecipe implements IRecipe {
 		return recipe;
 	}
 
-	public RecipeItemCluster toCluster(){
+	public RecipeItemCluster toCluster() {
 		return new RecipeItemCluster(recipe);
 	}
 

@@ -1,6 +1,5 @@
 package stevesvehicles.client.rendering.models.blocks;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Function;
@@ -15,7 +14,6 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -28,17 +26,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.common.blocks.BlockCartAssembler;
 import stevesvehicles.common.blocks.PropertyUpgrades.Upgrades;
-import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.upgrades.Upgrade;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
 public class ModelAssembler implements IBakedModel {
-
 	private static IModel upgradeModel;
 	private static IModel upgradeTopModel;
 	private static IModel upgradeBotModel;
-	
+
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void bakeModels(ModelBakeEvent event) {
@@ -46,10 +42,10 @@ public class ModelAssembler implements IBakedModel {
 		upgradeTopModel = null;
 		upgradeBotModel = null;
 	}
-	
+
 	@Override
 	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
-		if(upgradeModel == null){
+		if (upgradeModel == null) {
 			upgradeModel = ModelLoaderRegistry.getModelOrMissing(new ResourceLocation(Constants.MOD_ID, "block/upgrade"));
 			upgradeTopModel = ModelLoaderRegistry.getModelOrMissing(new ResourceLocation(Constants.MOD_ID, "block/upgrade_top"));
 			upgradeBotModel = ModelLoaderRegistry.getModelOrMissing(new ResourceLocation(Constants.MOD_ID, "block/upgrade_bot"));
@@ -58,9 +54,9 @@ public class ModelAssembler implements IBakedModel {
 		Function<ResourceLocation, TextureAtlasSprite> textureGetter = (ResourceLocation r) -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(r.toString());
 		IBakedModel assemblerModel = ModelLoaderRegistry.getModelOrMissing(new ResourceLocation(Constants.MOD_ID, "block/assembler")).bake(ModelRotation.X0_Y0, DefaultVertexFormats.BLOCK, textureGetter);
 		List<BakedQuad> quads = assemblerModel.getQuads(state, side, rand);
-		if(state instanceof IExtendedBlockState){
-			Upgrades upgrades = ((IExtendedBlockState)state).getValue(BlockCartAssembler.UPGRADES);
-			for(EnumFacing facing : EnumFacing.VALUES){
+		if (state instanceof IExtendedBlockState) {
+			Upgrades upgrades = ((IExtendedBlockState) state).getValue(BlockCartAssembler.UPGRADES);
+			for (EnumFacing facing : EnumFacing.VALUES) {
 				Integer type = upgrades.upgrades.get(facing);
 				Upgrade upgrade = type == null ? null : UpgradeRegistry.getUpgradeFromId(type);
 				addUpgradeQuads(quads, facing, upgrade, state, side, rand);
@@ -68,12 +64,12 @@ public class ModelAssembler implements IBakedModel {
 		}
 		return quads;
 	}
-	
-	private void addUpgradeQuads(List<BakedQuad> quads, EnumFacing upgradeSide, Upgrade upgrade, IBlockState state, EnumFacing side, long rand){
+
+	private void addUpgradeQuads(List<BakedQuad> quads, EnumFacing upgradeSide, Upgrade upgrade, IBlockState state, EnumFacing side, long rand) {
 		Function<ResourceLocation, TextureAtlasSprite> textureGetter;
-		if(upgrade == null){
+		if (upgrade == null) {
 			textureGetter = (ResourceLocation r) -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(r.toString());
-		}else{
+		} else {
 			textureGetter = (ResourceLocation r) -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(upgrade.getIcon());
 		}
 		switch (upgradeSide) {

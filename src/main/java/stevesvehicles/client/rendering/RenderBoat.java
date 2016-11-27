@@ -23,6 +23,6 @@ public class RenderBoat extends RenderVehicle {
 			GlStateManager.rotate(MathHelper.sin(damageTime) * damageTime * damage / 10.0F * boat.getForwardDirection(), 1.0F, 0.0F, 0.0F);
 		}
 		matrix.y += 0.375F;
-		//GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+		// GlStateManager.scale(-1.0F, -1.0F, 1.0F);
 	}
 }

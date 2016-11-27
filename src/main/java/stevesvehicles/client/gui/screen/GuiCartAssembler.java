@@ -326,13 +326,12 @@ public class GuiCartAssembler extends GuiBase {
 				drawRect(target, MODULE_BACKGROUND_SRC_X + (target[2] + TEXTURE_SPACING) * backGroundIndex, MODULE_BACKGROUND_SRC_Y);
 				ItemStack item = moduleData.getItemStack();
 				drawItemStack(item, target[0] + 1, target[1] + 1);
-				/*zLevel = 200.0F;
-				if (hover) {
-					// noinspection unchecked
-					List<String> info = item.getTooltip(this.mc.player, mc.gameSettings.advancedItemTooltips);
-					drawMouseOver(info, x, y);
-				}
-				zLevel = 0F;*/
+				/*
+				 * zLevel = 200.0F; if (hover) { // noinspection unchecked
+				 * List<String> info = item.getTooltip(this.mc.player,
+				 * mc.gameSettings.advancedItemTooltips); drawMouseOver(info, x,
+				 * y); } zLevel = 0F;
+				 */
 				ResourceHelper.bindResource(TEXTURE_EXTRA);
 				GL11.glColor4f(1, 1, 1, 1);
 				GL11.glDisable(GL11.GL_LIGHTING);

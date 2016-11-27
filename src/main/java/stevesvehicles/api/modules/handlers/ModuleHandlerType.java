@@ -4,13 +4,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * A ModuleHandlerType is used to differentiate between different {@link IModuleHandler}s. This is necessary for models and other things.
+ * A ModuleHandlerType is used to differentiate between different
+ * {@link IModuleHandler}s. This is necessary for models and other things.
  */
 public class ModuleHandlerType {
-
 	public static final ModuleHandlerType TILE_ENTITY = new ModuleHandlerType("tile_entity");
 	public static final ModuleHandlerType ENTITY = new ModuleHandlerType("entity");
-
 	@Nullable
 	protected final ModuleHandlerType parentType;
 	protected final Class<? extends IModuleHandler> handlerClass;
@@ -29,12 +28,12 @@ public class ModuleHandlerType {
 	}
 
 	@Nullable
-	public ModuleHandlerType getParentType(){
+	public ModuleHandlerType getParentType() {
 		return parentType;
 	}
 
-	public ModuleHandlerType getSuperParentType(){
-		if(parentType == null){
+	public ModuleHandlerType getSuperParentType() {
+		if (parentType == null) {
 			return this;
 		}
 		return parentType.getSuperParentType();

@@ -8,7 +8,7 @@ import stevesvehicles.common.vehicles.entitys.IVehicleEntity;
 public class VehicleType {
 	private Class<? extends IVehicleEntity> clazz;
 	private final String unlocalizedName;
-	@SideOnly(Side.CLIENT) 
+	@SideOnly(Side.CLIENT)
 	private String icon;
 
 	public VehicleType(Class<? extends IVehicleEntity> clazz, String unlocalizedName) {

@@ -1,6 +1,6 @@
 package stevesvehicles.common.utils;
 
-//TODO: Use Pair ?
+// TODO: Use Pair ?
 public class Tuple<T, S> {
 	private T firstObject;
 	private S secondObject;

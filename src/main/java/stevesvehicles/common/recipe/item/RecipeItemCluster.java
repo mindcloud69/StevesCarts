@@ -46,14 +46,14 @@ public class RecipeItemCluster extends RecipeItem {
 
 	public NonNullList<Object> getAdvancedVisualStacks() {
 		NonNullList<Object> items = NonNullList.withSize(9, ItemStack.EMPTY);
-		for (int i = 0;i < elements.length;i++) {
+		for (int i = 0; i < elements.length; i++) {
 			RecipeItem element = elements[i];
 			List<ItemStack> elementItems = element.getVisualStacks();
 			if (elementItems != null) {
 				int size = elementItems.size();
-				if(size > 1){
+				if (size > 1) {
 					items.set(i, elementItems);
-				}else{
+				} else {
 					items.set(i, elementItems.get(0));
 				}
 			}

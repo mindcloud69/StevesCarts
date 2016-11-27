@@ -190,8 +190,8 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	@Override
 	public boolean isEmpty() {
-		for(int i = 0;i < getSizeInventory();i++){
-			if(!getStackInSlot(i).isEmpty()){
+		for (int i = 0; i < getSizeInventory(); i++) {
+			if (!getStackInSlot(i).isEmpty()) {
 				return false;
 			}
 		}

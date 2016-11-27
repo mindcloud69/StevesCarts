@@ -62,49 +62,35 @@ public abstract class GuiBase extends GuiContainerSpecial {
 
 	public void drawMouseOver(List text, int x, int y) {
 		GuiUtils.drawHoveringText(text, x, y, width, height, 300, fontRendererObj);
-		/*GL11.glDisable(GL11.GL_LIGHTING);
-		int var5 = 0;
-		Iterator var6 = text.iterator();
-		while (var6.hasNext()) {
-			String var7 = (String) var6.next();
-			int var8 = this.getFontRenderer().getStringWidth(var7);
-			if (var8 > var5) {
-				var5 = var8;
-			}
-		}
-		int var15 = x + 10;
-		int var16 = y;
-		int var9 = 8;
-		if (text.size() > 1) {
-			var9 += 2 + (text.size() - 1) * 10;
-		}
-		this.zLevel = 300.0F;
-		itemRender.zLevel = 300.0F;
-		int var10 = -267386864;
-		this.drawGradientRect(var15 - 3, var16 - 4, var15 + var5 + 3, var16 - 3, var10, var10);
-		this.drawGradientRect(var15 - 3, var16 + var9 + 3, var15 + var5 + 3, var16 + var9 + 4, var10, var10);
-		this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 + var9 + 3, var10, var10);
-		this.drawGradientRect(var15 - 4, var16 - 3, var15 - 3, var16 + var9 + 3, var10, var10);
-		this.drawGradientRect(var15 + var5 + 3, var16 - 3, var15 + var5 + 4, var16 + var9 + 3, var10, var10);
-		int var11 = 1347420415;
-		int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
-		this.drawGradientRect(var15 - 3, var16 - 3 + 1, var15 - 3 + 1, var16 + var9 + 3 - 1, var11, var12);
-		this.drawGradientRect(var15 + var5 + 2, var16 - 3 + 1, var15 + var5 + 3, var16 + var9 + 3 - 1, var11, var12);
-		this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 - 3 + 1, var11, var11);
-		this.drawGradientRect(var15 - 3, var16 + var9 + 2, var15 + var5 + 3, var16 + var9 + 3, var12, var12);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		for (int var13 = 0; var13 < text.size(); ++var13) {
-			String var14 = (String) text.get(var13);
-			this.getFontRenderer().drawStringWithShadow(var14, var15, var16, -1);
-			if (var13 == 0) {
-				var16 += 2;
-			}
-			var16 += 10;
-		}
-		this.zLevel = 0.0F;
-		itemRender.zLevel = 0.0F;
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_LIGHTING);*/
+		/*
+		 * GL11.glDisable(GL11.GL_LIGHTING); int var5 = 0; Iterator var6 =
+		 * text.iterator(); while (var6.hasNext()) { String var7 = (String)
+		 * var6.next(); int var8 = this.getFontRenderer().getStringWidth(var7);
+		 * if (var8 > var5) { var5 = var8; } } int var15 = x + 10; int var16 =
+		 * y; int var9 = 8; if (text.size() > 1) { var9 += 2 + (text.size() - 1)
+		 * * 10; } this.zLevel = 300.0F; itemRender.zLevel = 300.0F; int var10 =
+		 * -267386864; this.drawGradientRect(var15 - 3, var16 - 4, var15 + var5
+		 * + 3, var16 - 3, var10, var10); this.drawGradientRect(var15 - 3, var16
+		 * + var9 + 3, var15 + var5 + 3, var16 + var9 + 4, var10, var10);
+		 * this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 +
+		 * var9 + 3, var10, var10); this.drawGradientRect(var15 - 4, var16 - 3,
+		 * var15 - 3, var16 + var9 + 3, var10, var10);
+		 * this.drawGradientRect(var15 + var5 + 3, var16 - 3, var15 + var5 + 4,
+		 * var16 + var9 + 3, var10, var10); int var11 = 1347420415; int var12 =
+		 * (var11 & 16711422) >> 1 | var11 & -16777216;
+		 * this.drawGradientRect(var15 - 3, var16 - 3 + 1, var15 - 3 + 1, var16
+		 * + var9 + 3 - 1, var11, var12); this.drawGradientRect(var15 + var5 +
+		 * 2, var16 - 3 + 1, var15 + var5 + 3, var16 + var9 + 3 - 1, var11,
+		 * var12); this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3,
+		 * var16 - 3 + 1, var11, var11); this.drawGradientRect(var15 - 3, var16
+		 * + var9 + 2, var15 + var5 + 3, var16 + var9 + 3, var12, var12);
+		 * GL11.glDisable(GL11.GL_DEPTH_TEST); for (int var13 = 0; var13 <
+		 * text.size(); ++var13) { String var14 = (String) text.get(var13);
+		 * this.getFontRenderer().drawStringWithShadow(var14, var15, var16, -1);
+		 * if (var13 == 0) { var16 += 2; } var16 += 10; } this.zLevel = 0.0F;
+		 * itemRender.zLevel = 0.0F; GL11.glEnable(GL11.GL_DEPTH_TEST);
+		 * GL11.glEnable(GL11.GL_LIGHTING);
+		 */
 	}
 
 	public Minecraft getMinecraft() {
@@ -247,7 +233,7 @@ public abstract class GuiBase extends GuiContainerSpecial {
 	protected void mouseMovedOrUp(int x, int y, final int button) {
 		x = this.scaleX(x);
 		y = this.scaleY(y);
-		//super.mouseMovedOrUp(x, y, button);
+		// super.mouseMovedOrUp(x, y, button);
 		this.mouseMoved(x, y, button);
 		this.mouseDragged(x, y, button);
 	}
@@ -348,7 +334,6 @@ public abstract class GuiBase extends GuiContainerSpecial {
 
 	public void drawModuleIcon(ModuleData icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
 		drawItemStack(icon.getItemStack(), targetX, targetY);
-
 	}
 
 	public void drawRectWithSourceOffset(int x, int y, int u, int v, RenderRotation rotation, int offsetX, int offsetY, int fullWidth, int fullHeight) {

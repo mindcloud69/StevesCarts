@@ -8,12 +8,13 @@ import stevesvehicles.api.modules.container.IModuleContainer;
 import stevesvehicles.api.modules.data.ModuleData;
 
 /**
- *  An IModuleHandler handle modules in an ItemStack or something else that use the forge capability system.
+ * An IModuleHandler handle modules in an ItemStack or something else that use
+ * the forge capability system.
  */
 public interface IModuleHandler {
-
 	/**
-	 * Create and add modules to this handler with the {@link ModuleData}s from the container.
+	 * Create and add modules to this handler with the {@link ModuleData}s from
+	 * the container.
 	 * 
 	 * @return True if the modules were added to the handler.
 	 */
@@ -46,7 +47,7 @@ public interface IModuleHandler {
 	 * 
 	 * If at this position is no module, it will return false.
 	 * 
-	 * @return True if the module was removed from the handler. 
+	 * @return True if the module was removed from the handler.
 	 */
 	boolean removeModule(int position);
 
@@ -57,7 +58,7 @@ public interface IModuleHandler {
 
 	/**
 	 * 
-	 * @return The type of this handler. Need to be 
+	 * @return The type of this handler. Need to be
 	 */
 	ModuleHandlerType getType();
 }

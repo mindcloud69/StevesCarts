@@ -79,7 +79,7 @@ public class Tank implements IFluidTank {
 				}
 			} else if (fluidContent == null && fluid != null) {
 				FluidActionResult result = FluidUtil.tryFillContainer(item, handler, fluid.amount, null, true);
-				if(result != null){
+				if (result != null) {
 					ItemStack full = result.result;
 					if (full != null) {
 						FluidStack fluidContentFilled = FluidUtil.getFluidContained(full);

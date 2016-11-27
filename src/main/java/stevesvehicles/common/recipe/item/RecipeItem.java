@@ -29,7 +29,7 @@ public abstract class RecipeItem {
 
 	public static RecipeItem createRecipeItem(Object data) {
 		if (data != null) {
-			if(data instanceof RecipeItem){
+			if (data instanceof RecipeItem) {
 				return (RecipeItem) data;
 			}
 			Class dataClass = data.getClass();

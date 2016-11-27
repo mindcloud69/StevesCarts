@@ -22,10 +22,8 @@ public class ShapelessModuleRecipeWrapper extends BlankRecipeWrapper implements 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 		IStackHelper stackHelper = jeiHelpers.getStackHelper();
-
 		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(recipe.toCluster().getAdvancedVisualStacks());
 		ingredients.setInputLists(ItemStack.class, inputs);
-
 		ItemStack recipeOutput = recipe.getRecipeOutput();
 		if (recipeOutput != null) {
 			ingredients.setOutput(ItemStack.class, recipeOutput);

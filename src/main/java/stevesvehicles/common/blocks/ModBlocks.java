@@ -23,7 +23,6 @@ import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
 import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.items.ItemBlockDetector;
 import stevesvehicles.common.items.ItemBlockStorage;
-import stevesvehicles.common.items.ItemUpgrade;
 import stevesvehicles.common.recipe.IRecipeOutput;
 import stevesvehicles.common.recipe.ShapedModuleRecipe;
 
@@ -78,7 +77,7 @@ public enum ModBlocks implements IRecipeOutput {
 					Item item = blockInfo.createItem(block);
 					item.setRegistryName(block.getRegistryName());
 					GameRegistry.register(item);
-					blockBase.setUnlocalizedName(Constants.MOD_ID +":tile.common:" + blockInfo.unlocalizedName);
+					blockBase.setUnlocalizedName(Constants.MOD_ID + ":tile.common:" + blockInfo.unlocalizedName);
 					blockInfo.block = block;
 					if (blockInfo.tileEntityClazz != null) {
 						GameRegistry.registerTileEntity(blockInfo.tileEntityClazz, blockInfo.tileEntityName);

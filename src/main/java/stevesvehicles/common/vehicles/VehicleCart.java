@@ -9,6 +9,7 @@ import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 public class VehicleCart extends VehicleBase {
 	public static final DataParameter<Boolean> IS_WORKING = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityModularCart.class, DataSerializers.BOOLEAN);
+
 	public VehicleCart(EntityModularCart entity) {
 		super(entity);
 	}
