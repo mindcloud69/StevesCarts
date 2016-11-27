@@ -1,6 +1,5 @@
 package stevesvehicles.api.modules.handlers;
 
-import akka.actor.ExtendedActorSystem;
 import stevesvehicles.api.modules.IModule;
 
 public interface IContentHandlerFactory {

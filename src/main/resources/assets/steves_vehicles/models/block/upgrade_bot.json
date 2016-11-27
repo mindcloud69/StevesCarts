@@ -1,0 +1,14 @@
+{
+	"textures": {
+		"0": "steves_vehicles:blocks/assembler/bot"
+	},
+	"elements": [
+		{
+			"from": [ 3, 0, 3 ],
+			"to": [ 13, 2, 13 ],
+			"faces": {
+				"down": { "uv": [ 3, 3, 13, 13 ], "texture": "#0", "rotation": 270 }
+			}
+		}
+	]
+}

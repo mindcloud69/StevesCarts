@@ -1,0 +1,14 @@
+{
+	"textures": {
+		"0": "steves_vehicles:blocks/assembler/top"
+	},
+	"elements": [
+		{
+			"from": [ 3, 14, 3 ],
+			"to": [ 13, 16, 13 ],
+			"faces": {
+				"up": { "uv": [ 13, 13, 3, 3 ], "texture": "#0", "rotation": 270 }
+			}
+		}
+	]
+}

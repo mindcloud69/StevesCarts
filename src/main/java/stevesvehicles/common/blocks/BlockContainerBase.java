@@ -37,7 +37,7 @@ public abstract class BlockContainerBase extends BlockContainer implements IBloc
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
+		return EnumBlockRenderType.MODEL;//0,0625
 	}
 
 	@Override

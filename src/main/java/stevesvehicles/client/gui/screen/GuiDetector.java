@@ -14,7 +14,6 @@ import stevesvehicles.client.gui.detector.DropDownMenuFlow;
 import stevesvehicles.client.gui.detector.DropDownMenuModules;
 import stevesvehicles.client.gui.detector.DropDownMenuStates;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDetector;
-import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
 import stevesvehicles.common.blocks.tileentitys.detector.LogicObject;
 import stevesvehicles.common.container.ContainerDetector;
 
@@ -40,7 +39,7 @@ public class GuiDetector extends GuiBase {
 	@Override
 	public void drawGuiForeground(int x, int y) {
 		GL11.glDisable(GL11.GL_LIGHTING);
-		getFontRenderer().drawString(DetectorType.getTypeFromInt(detector.getBlockMetadata()).getTranslatedName(), 8, 6, 0x404040);
+		getFontRenderer().drawString(detector.getType().getTranslatedName(), 8, 6, 0x404040);
 		boolean isAnyMenuDown = false;
 		for (DropDownMenu menu : menus) {
 			if (menu.getScroll() != 0) {

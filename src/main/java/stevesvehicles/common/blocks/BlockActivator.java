@@ -1,5 +1,6 @@
 package stevesvehicles.common.blocks;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -10,6 +11,12 @@ public class BlockActivator extends BlockContainerBase {
 	public BlockActivator() {
 		super(Material.ROCK);
 		setCreativeTab(CreativeTabLoader.blocks);
+	}
+
+	@Override
+	public SoundType getSoundType() {
+		// TODO Auto-generated method stub
+		return super.getSoundType();
 	}
 
 	/*

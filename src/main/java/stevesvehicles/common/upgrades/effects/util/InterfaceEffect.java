@@ -4,12 +4,12 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.client.gui.screen.GuiUpgrade;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.container.ContainerUpgrade;
 import stevesvehicles.common.upgrades.effects.BaseEffect;
 
 public abstract class InterfaceEffect extends BaseEffect {
-	public InterfaceEffect(TileEntityUpgrade upgrade) {
+	public InterfaceEffect(UpgradeContainer upgrade) {
 		super(upgrade);
 	}
 

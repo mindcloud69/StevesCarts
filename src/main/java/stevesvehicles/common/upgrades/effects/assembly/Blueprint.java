@@ -5,14 +5,14 @@ import java.util.List;
 
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.container.slots.SlotCart;
 import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.ModuleDataItemHandler;
 import stevesvehicles.common.upgrades.effects.util.SimpleInventoryEffect;
 
 public class Blueprint extends SimpleInventoryEffect {
-	public Blueprint(TileEntityUpgrade upgrade) {
+	public Blueprint(UpgradeContainer upgrade) {
 		super(upgrade, 1, 1);
 	}
 

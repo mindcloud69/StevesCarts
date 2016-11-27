@@ -71,7 +71,11 @@ public class OperatorObject {
 	}
 
 	public static Collection<OperatorObject> getOperatorList(int meta) {
-		return DetectorType.getTypeFromInt(meta).getOperators().values();
+		return getOperatorList(DetectorType.getTypeFromInt(meta));
+	}
+
+	public static Collection<OperatorObject> getOperatorList(DetectorType type) {
+		return type.getOperators().values();
 	}
 
 	public static HashMap<Byte, OperatorObject> getAllOperators() {

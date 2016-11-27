@@ -94,6 +94,7 @@ public final class ModItems {
 		component = GameRegistry.register(new ItemCartComponent(), new ResourceLocation(Constants.MOD_ID, COMPONENTS_NAME));
 		modules = GameRegistry.register(new ItemVehicleModule(), new ResourceLocation(Constants.MOD_ID, MODULES_NAME));
 		buoys = GameRegistry.register(new ItemBuoy(), new ResourceLocation(Constants.MOD_ID, BUOY_NAME));
+		upgrades = GameRegistry.register(new ItemUpgrade());
 		for (ModuleData module : ModuleRegistry.getAllModules()) {
 			if (!module.getIsLocked()) {
 				validModules.put(module.getFullRawUnlocalizedName(), config.get("EnabledModules", module.getName().replace(" ", "").replace(":", "_"), module.getEnabledByDefault()).getBoolean(true));
@@ -108,7 +109,6 @@ public final class ModItems {
 
 	public static void postBlockInit(Configuration config) {
 		detectors = (ItemBlockDetector) new ItemStack(ModBlocks.DETECTOR_UNIT.getBlock()).getItem();
-		upgrades = (ItemUpgrade) new ItemStack(ModBlocks.UPGRADE.getBlock()).getItem();
 		storage = (ItemBlockStorage) new ItemStack(ModBlocks.STORAGE.getBlock()).getItem();
 		for (int i = 0; i < ItemBlockStorage.blocks.length; i++) {
 			ItemStack storage = new ItemStack(ModItems.storage, 1, i);

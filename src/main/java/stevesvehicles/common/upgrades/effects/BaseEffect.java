@@ -1,12 +1,12 @@
 package stevesvehicles.common.upgrades.effects;
 
 import net.minecraft.nbt.NBTTagCompound;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 
 public abstract class BaseEffect {
-	protected final TileEntityUpgrade upgrade;
+	protected final UpgradeContainer upgrade;
 
-	public BaseEffect(TileEntityUpgrade upgrade) {
+	public BaseEffect(UpgradeContainer upgrade) {
 		this.upgrade = upgrade;
 	}
 
@@ -25,7 +25,7 @@ public abstract class BaseEffect {
 	public void save(NBTTagCompound compound) {
 	}
 
-	public final TileEntityUpgrade getUpgrade() {
+	public final UpgradeContainer getUpgrade() {
 		return upgrade;
 	}
 }

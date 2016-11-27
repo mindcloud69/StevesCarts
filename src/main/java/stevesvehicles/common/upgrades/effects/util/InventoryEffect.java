@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 
 public abstract class InventoryEffect extends InterfaceEffect {
 	protected ArrayList<Slot> slots;
 
-	public InventoryEffect(TileEntityUpgrade upgrade) {
+	public InventoryEffect(UpgradeContainer upgrade) {
 		super(upgrade);
 		slots = new ArrayList<>();
 	}

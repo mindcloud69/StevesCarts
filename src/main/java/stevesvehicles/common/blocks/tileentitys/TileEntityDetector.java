@@ -90,6 +90,10 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 		}
 	}
 
+	public DetectorType getType(){
+		return world.getBlockState(pos).getValue(DetectorType.SATE);
+	}
+
 	@Override
 	public void receivePacket(DataReader dr, EntityPlayer player) {
 		// add object

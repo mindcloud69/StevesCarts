@@ -3,7 +3,6 @@ package stevesvehicles.common.modules.cart.attachment;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -17,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;

@@ -5,11 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import stevesvehicles.api.modules.handlers.ContentHandler;
-import stevesvehicles.api.modules.handlers.IContentHandlerFactory;
 import stevesvehicles.api.modules.handlers.IModuleHandler;
-import stevesvehicles.common.utils.NBTHelper;
 
 public interface IModule {
 
@@ -17,22 +14,22 @@ public interface IModule {
 	 * @return The ItemStack from that the module was created.
 	 */
 	ItemStack getItemParent();
-	
+
 	/**
 	 * Initialize a module.
 	 */
 	void init();
-	
+
 	/**
 	 * Returns true if the  module was already initialized.
 	 */
 	boolean wasInitialized();
-	
+
 	/**
 	 * Add a IContentHandler to this module. This will only work before the module is initialized.
 	 */
 	void addContendHandler(ContentHandler handler);
-	
+
 	@Nullable
 	<H> List<H> getHandlers(Class<? extends H> handlerClass);
 
@@ -50,7 +47,7 @@ public interface IModule {
 	 * @return The position of this module in the handler.
 	 */
 	int getPosition();
-	
+
 	NBTTagCompound writeToNBT(NBTTagCompound tagCompound);
 
 	void readFromNBT(NBTTagCompound tagCompound);

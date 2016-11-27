@@ -1,10 +1,9 @@
-package stevesvehicles.common.blocks.tileentitys;
+package stevesvehicles.common.blocks.tileentitys.assembler;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,11 +13,10 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
@@ -29,8 +27,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiUpgrade;
-import stevesvehicles.common.blocks.BlockUpgrade;
 import stevesvehicles.common.blocks.ModBlocks;
+import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerUpgrade;
 import stevesvehicles.common.tanks.Tank;
@@ -43,78 +41,100 @@ import stevesvehicles.common.upgrades.effects.util.TankEffect;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 import stevesvehicles.common.utils.NBTHelper;
 
-public class TileEntityUpgrade extends TileEntityInventory implements ISidedInventory, IFluidHandler, IFluidTank, ITickable {
+public class UpgradeContainer implements ISidedInventory, IFluidHandler, IFluidTank, ITickable {
+	public static final ItemStack INVALID_STACK = ItemStack.EMPTY;
+	protected NonNullList<ItemStack> inventoryStacks;
 	public static final NonNullList<ItemStack> DEFAULT_STACKS = NonNullList.withSize(0, INVALID_STACK);
-	private TileEntityCartAssembler master;
-	private int type;
+	private final TileEntityCartAssembler master;
+	private final EnumFacing facing;
+	private final Upgrade upgrade;
 	private List<BaseEffect> effects;
 	private InterfaceEffect interfaceEffect;
 	private InventoryEffect inventoryEffect;
 	private TankEffect tankEffect;
-	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
 	// INVENTORY STUFF BELOW
 	private int[] slotsForSide;
 
-	public TileEntityUpgrade() {
-		super(DEFAULT_STACKS);
-	}
+	public UpgradeContainer(EnumFacing facing, TileEntityCartAssembler master, Upgrade upgrade) {
+		this.facing = facing;
+		this.master = master;
+		this.upgrade = upgrade;
+		inventoryStacks = DEFAULT_STACKS;
 
-	public void setMaster(TileEntityCartAssembler master, EnumFacing side) {
-		if (this.master != master) {
-			if (!world.isRemote) {
-				IBlockState state = world.getBlockState(pos);
-				if (side != null) {
-					state = blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side);
-					world.setBlockState(pos, state);
+		if (upgrade != null) {
+			createEffects(upgrade);
+			for (BaseEffect effect : effects) {
+				if (effect instanceof InterfaceEffect) {
+					interfaceEffect = (InterfaceEffect) effect;
+				}
+				if (effect instanceof InventoryEffect) {
+					inventoryEffect = (InventoryEffect) effect;
+				}
+				if (effect instanceof TankEffect) {
+					tankEffect = (TankEffect) effect;
 				}
 			}
+			int inventorySize = inventoryEffect != null ? inventoryEffect.getInventorySize() : 0;
+			slotsForSide = new int[inventorySize];
+			init();
+			if (inventorySize > 0) {
+				inventoryStacks = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
+				for (int i = 0; i < slotsForSide.length; i++) {
+					slotsForSide[i] = i;
+				}
+			}
+		} else {
+			effects = null;
 		}
-		this.master = master;
 	}
 
-	public EnumFacing getSide() {
-		return world.getBlockState(pos).getValue(BlockUpgrade.FACING);
+	public UpgradeContainer(EnumFacing facing, TileEntityCartAssembler master, NBTTagCompound tagCompound) {
+		this.facing = facing;
+		this.master = master;
+
+		upgrade = UpgradeRegistry.getUpgradeFromId(tagCompound.getByte("Upgrade"));
+		if (upgrade != null) {
+			createEffects(upgrade);
+			for (BaseEffect effect : effects) {
+				if (effect instanceof InterfaceEffect) {
+					interfaceEffect = (InterfaceEffect) effect;
+				}
+				if (effect instanceof InventoryEffect) {
+					inventoryEffect = (InventoryEffect) effect;
+				}
+				if (effect instanceof TankEffect) {
+					tankEffect = (TankEffect) effect;
+				}
+			}
+			int inventorySize = inventoryEffect != null ? inventoryEffect.getInventorySize() : 0;
+			slotsForSide = new int[inventorySize];
+			init();
+			if (inventorySize > 0) {
+				inventoryStacks = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
+				for (int i = 0; i < slotsForSide.length; i++) {
+					slotsForSide[i] = i;
+				}
+			}
+		} else {
+			effects = null;
+			inventoryStacks = DEFAULT_STACKS;
+		}
+		inventoryStacks.clear();
+		ItemStackHelper.loadAllItems(tagCompound, inventoryStacks);
+		if (effects != null) {
+			load(tagCompound);
+		}	
 	}
 
 	public TileEntityCartAssembler getMaster() {
 		return master;
 	}
 
-	private boolean initialized;
-
-	public void setType(int type) {
-		this.type = type;
-		if (!initialized) {
-			initialized = true;
-			Upgrade upgrade = getUpgrade();
-			if (upgrade != null) {
-				createEffects(upgrade);
-				for (BaseEffect effect : effects) {
-					if (effect instanceof InterfaceEffect) {
-						interfaceEffect = (InterfaceEffect) effect;
-					}
-					if (effect instanceof InventoryEffect) {
-						inventoryEffect = (InventoryEffect) effect;
-					}
-					if (effect instanceof TankEffect) {
-						tankEffect = (TankEffect) effect;
-					}
-				}
-				int inventorySize = inventoryEffect != null ? inventoryEffect.getInventorySize() : 0;
-				slotsForSide = new int[inventorySize];
-				init();
-				if (inventorySize > 0) {
-					inventoryStacks = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
-					for (int i = 0; i < slotsForSide.length; i++) {
-						slotsForSide[i] = i;
-					}
-				}
-			} else {
-				effects = null;
-				inventoryStacks = DEFAULT_STACKS;
-			}
-		}
+	public EnumFacing getFacing() {
+		return facing;
 	}
+
+	private boolean initialized;
 
 	private void createEffects(Upgrade upgrade) {
 		effects = new ArrayList<>();
@@ -139,71 +159,35 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 		}
 	}
 
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		NBTTagCompound tagCompound = super.getUpdateTag();
-		tagCompound.setByte("Type", (byte) getType());
-		return tagCompound;
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(getPos(), 0, writeToNBT(new NBTTagCompound()));
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
-
 	public Upgrade getUpgrade() {
-		return UpgradeRegistry.getUpgradeFromId(type);
-	}
-
-	public int getType() {
-		return type;
+		return upgrade;
 	}
 
 	public boolean hasInventory() {
 		return !inventoryStacks.isEmpty();
 	}
 
-	@Override
-	public void readFromNBT(NBTTagCompound tagCompound) {
-		if (tagCompound.hasKey("Type")) {
-			setType(tagCompound.getByte("Type"));
-		}
-		super.readFromNBT(tagCompound);
-		if (effects != null) {
-			load(tagCompound);
-		}
-	}
-
-	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
-		super.writeToNBT(tagCompound);
-		tagCompound.setByte("Type", (byte) getType());
+		ItemStackHelper.saveAllItems(tagCompound, inventoryStacks);
+		tagCompound.setByte("Upgrade", (byte) UpgradeRegistry.getIdFromUpgrade(upgrade));
 		if (effects != null) {
 			save(tagCompound);
 		}
 		return tagCompound;
 	}
 
-	@Override
 	public void initGuiData(Container con, IContainerListener crafting) {
 		if (effects != null && interfaceEffect != null) {
 			interfaceEffect.checkGuiData((ContainerUpgrade) con, crafting, true);
 		}
 	}
 
-	@Override
 	public void checkGuiData(Container con, IContainerListener crafting) {
 		if (effects != null && interfaceEffect != null) {
 			interfaceEffect.checkGuiData((ContainerUpgrade) con, crafting, false);
 		}
 	}
 
-	@Override
 	public void receiveGuiData(int id, short data) {
 		if (effects != null && interfaceEffect != null) {
 			interfaceEffect.receiveGuiData(id, data);
@@ -219,7 +203,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 				return master.getSizeInventory();
 			}
 		}
-		return super.getSizeInventory();
+		return inventoryStacks.size();
 	}
 
 	@Override
@@ -231,7 +215,12 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 				return master.isEmpty();
 			}
 		}
-		return super.isEmpty();
+		for (ItemStack itemstack : inventoryStacks) {
+			if (!itemstack.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -243,21 +232,21 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 				return master.getStackInSlot(index);
 			}
 		}
-		return super.getStackInSlot(index);
+		return inventoryStacks.get(index);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int size) {
+	public ItemStack decrStackSize(int index, int count) {
 		if (!hasInventory()) {
 			if (master == null) {
 				return INVALID_STACK;
 			} else {
-				return master.decrStackSize(index, size);
+				return master.decrStackSize(index, count);
 			}
 		} else if (index < 0 || index >= getSizeInventory()) {
 			return null;
 		}
-		ItemStack stack = super.decrStackSize(index, size);
+		ItemStack stack = ItemStackHelper.getAndSplit(inventoryStacks, index, count);
 		markDirty();
 		return stack;
 	}
@@ -271,7 +260,10 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 				return;
 			}
 		}
-		super.setInventorySlotContents(index, itemStack);
+		inventoryStacks.set(index, itemStack);
+		if (itemStack.getCount() > getInventoryStackLimit()) {
+			itemStack.setCount(getInventoryStackLimit());
+		}
 		markDirty();
 	}
 
@@ -303,13 +295,7 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 		if (!hasInventory()) {
 			return null;
 		} else {
-			ItemStack item = getStackInSlot(index);
-			if (item != null) {
-				setInventorySlotContents(index, ItemStack.EMPTY);
-				return item;
-			} else {
-				return null;
-			}
+			return ItemStackHelper.getAndRemove(inventoryStacks, index);
 		}
 	}
 
@@ -507,12 +493,10 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 	}
 
 	@SideOnly(Side.CLIENT)
-	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
 		return new GuiUpgrade(inv, this);
 	}
 
-	@Override
 	public ContainerBase getContainer(InventoryPlayer inv) {
 		return new ContainerUpgrade(inv, this);
 	}
@@ -533,5 +517,15 @@ public class TileEntityUpgrade extends TileEntityInventory implements ISidedInve
 
 	@Override
 	public void clear() {
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return null;
+	}
+
+	@Override
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return true;
 	}
 }

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -16,11 +17,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.common.blocks.BlockCartAssembler;
 import stevesvehicles.common.blocks.ModBlocks;
 import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
+import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerBuoy;
 import stevesvehicles.common.container.ContainerVehicle;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.registries.RegistrySynchronizer;
+import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.entitys.EntityModularBoat;
 import stevesvehicles.common.vehicles.entitys.IVehicleEntity;
@@ -38,7 +41,17 @@ public class PacketHandler {
 				int y = dr.readSignedInteger();
 				int z = dr.readSignedInteger();
 				World world = player.world;
-				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, new BlockPos(x, y, z));
+				TileEntityCartAssembler assembler = (TileEntityCartAssembler) world.getTileEntity(new BlockPos(x, y, z));
+				for(int i = 0;i < 6;i++){
+					int upgradeType = dr.readByte();
+					EnumFacing facing = EnumFacing.VALUES[i];
+					if(upgradeType >= 0 && upgradeType < 255){
+						assembler.addUpgrade(facing, UpgradeRegistry.getUpgradeFromId(upgradeType));
+					}else{
+						assembler.removeUpgrade(facing);
+					}
+				}
+				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(assembler);
 			} else if (type == PacketType.VEHICLE) {
 				int entityId = dr.readInteger();
 				World world = player.world;

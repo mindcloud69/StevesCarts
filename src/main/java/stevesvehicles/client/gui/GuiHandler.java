@@ -3,11 +3,14 @@ package stevesvehicles.client.gui;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import stevesvehicles.client.gui.screen.GuiBuoy;
 import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
+import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.container.ContainerBuoy;
 import stevesvehicles.common.entitys.buoy.EntityBuoy;
 import stevesvehicles.common.vehicles.VehicleBase;
@@ -31,7 +34,15 @@ public class GuiHandler implements IGuiHandler {
 			if (entity instanceof EntityBuoy) {
 				return new GuiBuoy((EntityBuoy) entity);
 			}
-		}
+		} else if (id >= 3) {
+			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
+			if (tileentity instanceof TileEntityCartAssembler) {
+				UpgradeContainer container = ((TileEntityCartAssembler)tileentity).getUpgrade(EnumFacing.VALUES[id-3]);
+				if(container != null){
+					return container.getGui(player.inventory);
+				}
+			}
+		} 
 		return null;
 	}
 
@@ -52,7 +63,15 @@ public class GuiHandler implements IGuiHandler {
 			if (entity instanceof EntityBuoy) {
 				return new ContainerBuoy((EntityBuoy) entity);
 			}
-		}
+		} else if (id >= 3) {
+			TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
+			if (tileentity instanceof TileEntityCartAssembler) {
+				UpgradeContainer container = ((TileEntityCartAssembler)tileentity).getUpgrade(EnumFacing.VALUES[id-3]);
+				if(container != null){
+					return container.getContainer(player.inventory);
+				}
+			}
+		} 
 		return null;
 	}
 

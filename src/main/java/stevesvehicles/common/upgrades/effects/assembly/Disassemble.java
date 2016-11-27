@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.container.ContainerCartAssembler;
 import stevesvehicles.common.container.slots.SlotAssembler;
 import stevesvehicles.common.container.slots.SlotCart;
@@ -20,7 +20,7 @@ import stevesvehicles.common.upgrades.effects.util.InventoryEffect;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class Disassemble extends InventoryEffect {
-	public Disassemble(TileEntityUpgrade upgrade) {
+	public Disassemble(UpgradeContainer upgrade) {
 		super(upgrade);
 	}
 
@@ -75,7 +75,7 @@ public class Disassemble extends InventoryEffect {
 				}
 			}
 			if (needsToPuke) {
-				if (!upgrade.getWorld().isRemote) {
+				if (!upgrade.getMaster().getWorld().isRemote) {
 					upgrade.getMaster().puke(upgrade.getStackInSlot(0).copy());
 				}
 				upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
@@ -103,9 +103,9 @@ public class Disassemble extends InventoryEffect {
 		}
 	}
 
-	private boolean updateCart(TileEntityUpgrade upgrade, ItemStack cart) {
+	private boolean updateCart(UpgradeContainer upgrade, ItemStack cart) {
 		if (upgrade.getMaster() != null) {
-			if (cart.isEmpty() || cart.getItem() != ModItems.vehicles || cart.getTagCompound() == null || cart.getTagCompound().hasKey(VehicleBase.NBT_INTERRUPT_MAX_TIME)) {
+			if (cart.isEmpty() || cart.getItem() != ModItems.vehicles || !cart.hasTagCompound() || cart.getTagCompound().hasKey(VehicleBase.NBT_INTERRUPT_MAX_TIME)) {
 				resetMaster(upgrade.getMaster(), false);
 				lastVehicle = ItemStack.EMPTY;
 				if (!cart.isEmpty()) {
@@ -142,7 +142,7 @@ public class Disassemble extends InventoryEffect {
 		return true;
 	}
 
-	public int canDisassemble(TileEntityUpgrade upgrade) {
+	public int canDisassemble(UpgradeContainer upgrade) {
 		int disassembleCount = 0;
 		for (BaseEffect effect : upgrade.getMaster().getEffects()) {
 			if (effect instanceof Disassemble) {

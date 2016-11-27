@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import stevesvehicles.api.modules.IModule;
@@ -16,12 +15,12 @@ public class ContentHandler<M extends IModule, C> {
 
 	protected M parent;
 	protected Class<? extends C> contentClass;
-	
+
 	public ContentHandler(M parent, Class<? extends C> contentClass) {
 		this.parent = parent;
 		this.contentClass = contentClass;
 	}
-	
+
 	/**
 	 * @return The module from that the handler is from.
 	 */

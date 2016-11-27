@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.container.ContainerCartAssembler;
 import stevesvehicles.common.container.slots.SlotAssemblerFuel;
 import stevesvehicles.common.container.slots.SlotModule;
@@ -18,7 +18,7 @@ import stevesvehicles.common.upgrades.effects.BaseEffect;
 import stevesvehicles.common.upgrades.effects.util.SimpleInventoryEffect;
 
 public class InputChest extends SimpleInventoryEffect {
-	public InputChest(TileEntityUpgrade upgrade, Integer inventoryWidth, Integer inventoryHeight) {
+	public InputChest(UpgradeContainer upgrade, Integer inventoryWidth, Integer inventoryHeight) {
 		super(upgrade, inventoryWidth, inventoryHeight);
 	}
 
@@ -36,7 +36,7 @@ public class InputChest extends SimpleInventoryEffect {
 
 	@Override
 	public void update() {
-		if (!upgrade.getWorld().isRemote && upgrade.getMaster() != null) {
+		if (!upgrade.getMaster().getWorld().isRemote && upgrade.getMaster() != null) {
 			if (cooldown > 0) {
 				cooldown--;
 			} else {

@@ -18,7 +18,7 @@ public class DropDownMenuFlow extends DropDownMenu {
 		super.drawMain(gui, x, y);
 		ResourceHelper.bindResource(GuiDetector.TEXTURE);
 		int flowPosId = 0;
-		for (OperatorObject operator : OperatorObject.getOperatorList(gui.getDetector().getBlockMetadata())) {
+		for (OperatorObject operator : OperatorObject.getOperatorList(gui.getDetector().getType())) {
 			if (operator.inTab()) {
 				drawContent(gui, flowPosId, operator.getId());
 				flowPosId++;
@@ -29,7 +29,7 @@ public class DropDownMenuFlow extends DropDownMenu {
 	@Override
 	public void drawMouseOver(GuiDetector gui, int x, int y) {
 		int flowPosId = 0;
-		for (OperatorObject operator : OperatorObject.getOperatorList(gui.getDetector().getBlockMetadata())) {
+		for (OperatorObject operator : OperatorObject.getOperatorList(gui.getDetector().getType())) {
 			if (operator.inTab()) {
 				int[] target = getContentRect(flowPosId);
 				if (gui.drawMouseOver(operator.getName(), x, y, target)) {
@@ -45,7 +45,7 @@ public class DropDownMenuFlow extends DropDownMenu {
 		super.onClick(gui, x, y);
 		if (getScroll() != 0) {
 			int flowPosId = 0;
-			for (OperatorObject operator : OperatorObject.getOperatorList(gui.getDetector().getBlockMetadata())) {
+			for (OperatorObject operator : OperatorObject.getOperatorList(gui.getDetector().getType())) {
 				if (operator.inTab()) {
 					int[] target = getContentRect(flowPosId);
 					if (gui.inRect(x, y, target)) {

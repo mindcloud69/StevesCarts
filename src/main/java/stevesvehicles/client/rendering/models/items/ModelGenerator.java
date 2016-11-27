@@ -37,6 +37,8 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.client.rendering.models.blocks.ModelAssembler;
+import stevesvehicles.common.blocks.ModBlocks;
 import stevesvehicles.common.core.Constants;
 
 public class ModelGenerator {
@@ -65,6 +67,7 @@ public class ModelGenerator {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void bakeModels(ModelBakeEvent event) {
+		event.getModelRegistry().putObject(new  ModelResourceLocation(ModBlocks.CART_ASSEMBLER.getBlock().getRegistryName(), "normal"), new ModelAssembler());
 		if (Minecraft.getMinecraft().getRenderItem() == null || Minecraft.getMinecraft().getRenderItem().getItemModelMesher() == null) {
 			return;
 		}

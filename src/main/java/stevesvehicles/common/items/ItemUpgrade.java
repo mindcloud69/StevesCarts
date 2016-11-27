@@ -12,34 +12,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.client.rendering.models.items.ItemModelManager;
 import stevesvehicles.client.rendering.models.items.TexturedItem;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
 import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.core.tabs.CreativeTabLoader;
 import stevesvehicles.common.upgrades.Upgrade;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
-public class ItemUpgrade extends ItemBlock implements TexturedItem {
-	public ItemUpgrade(Block block) {
-		super(block);
+public class ItemUpgrade extends Item implements TexturedItem {
+	public ItemUpgrade() {
+		setRegistryName(new ResourceLocation(Constants.MOD_ID, "upgrade"));
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabLoader.blocks);
 		ItemModelManager.registerItem(this);
 	}
-	/*
-	 * @Override
-	 * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int dmg){ Upgrade
-	 * upgrade = UpgradeRegistry.getUpgradeFromId(dmg); if (upgrade != null) {
-	 * return upgrade.getIcon(); } return null; }
-	 * @Override
-	 * @SideOnly(Side.CLIENT) public void registerIcons(IIconRegister register)
-	 * { Upgrade.registerIcons(register); }
-	 */
 
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
@@ -78,22 +69,6 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 		for (Upgrade upgrade : UpgradeRegistry.getAllUpgrades()) {
 			lst.add(upgrade.getItemStack());
 		}
-	}
-
-	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-		if (super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)) {
-			TileEntity tile = world.getTileEntity(pos);
-			if (tile != null && tile instanceof TileEntityUpgrade) {
-				TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
-				upgrade.setType(stack.getItemDamage());
-				if (upgrade.getMaster() != null) {
-					upgrade.getMaster().onUpgradeUpdate();
-				}
-			}
-			return true;
-		}
-		return false;
 	}
 
 	@SideOnly(Side.CLIENT)

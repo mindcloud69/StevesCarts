@@ -3,141 +3,58 @@ package stevesvehicles.common.blocks;
 import java.util.ArrayList;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.server.permission.context.BlockPosContext;
+import stevesvehicles.client.gui.GuiHandler;
+import stevesvehicles.client.rendering.models.items.ModeledObject;
+import stevesvehicles.common.blocks.PropertyUpgrades.Upgrades;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
+import stevesvehicles.common.core.StevesVehicles;
 import stevesvehicles.common.core.tabs.CreativeTabLoader;
+import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.network.PacketHandler;
+import stevesvehicles.common.upgrades.Upgrade;
+import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
 public class BlockCartAssembler extends BlockContainerBase {
+	public static final PropertyUpgrades UPGRADES = new PropertyUpgrades();
+
 	public BlockCartAssembler() {
 		super(Material.ROCK);
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	/*
-	 * private IIcon topIcon; private IIcon botIcon; private IIcon sideIcons [];
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public IIcon getIcon(int side, int meta) { if (side == 0) {
-	 * return botIcon; }else if(side == 1) { return topIcon; }else { return
-	 * sideIcons[side - 2]; } }
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public void registerBlockIcons(IIconRegister register) {
-	 * topIcon = register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":assembler/top"); botIcon =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":assembler/bot"); sideIcons = new IIcon[4]; for (int i = 1; i <= 4; i++)
-	 * { sideIcons[i-1] =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":assembler/side_" + i); } }
-	 */
-	public void updateMultiBlock(World world, BlockPos pos) {
-		TileEntityCartAssembler master = (TileEntityCartAssembler) world.getTileEntity(pos);
-		if (master != null) {
-			master.clearUpgrades();
-		}
-		checkForUpgrades(world, pos);
+	public void updateMultiBlock(TileEntityCartAssembler assembler) {
+		World world = assembler.getWorld();
+		BlockPos pos = assembler.getPos();
 		if (!world.isRemote) {
-			PacketHandler.sendBlockInfoToClients(world, new byte[] {}, pos);
-		}
-		if (master != null) {
-			master.onUpgradeUpdate();
-		}
-	}
-
-	private void checkForUpgrades(World world, BlockPos pos) {
-		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-			this.checkForUpgrade(world, pos.offset(facing), facing);
-		}
-	}
-
-	private TileEntityCartAssembler checkForUpgrade(World world, BlockPos pos, EnumFacing facing) {
-		TileEntity tile = world.getTileEntity(pos);
-		if (tile != null && tile instanceof TileEntityUpgrade) {
-			TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
-			ArrayList<TileEntityCartAssembler> masters = getMasters(world, pos);
-			if (masters.size() == 1) {
-				TileEntityCartAssembler master = masters.get(0);
-				master.addUpgrade(upgrade);
-				upgrade.setMaster(master, facing);
-				return master;
-			} else {
-				for (TileEntityCartAssembler master : masters) {
-					master.removeUpgrade(upgrade);
-					master.onUpgradeUpdate();
-				}
-				upgrade.setMaster(null, null);
+			byte[] data = new byte[]{-1, -1, -1, -1, -1, -1};
+			for(UpgradeContainer container : assembler.getUpgrades()){
+				data[container.getFacing().ordinal()] = (byte) UpgradeRegistry.getIdFromUpgrade(container.getUpgrade());
 			}
+			PacketHandler.sendBlockInfoToClients(world, data, pos);
+		}else{
+			world.markBlockRangeForRenderUpdate(pos, pos);
 		}
-		return null;
-	}
-
-	private ArrayList<TileEntityCartAssembler> getMasters(World world, BlockPos pos) {
-		ArrayList<TileEntityCartAssembler> masters = new ArrayList<>();
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				for (int k = -1; k <= 1; k++) {
-					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						TileEntityCartAssembler temp = getMaster(world, pos.add(i, j, k));
-						if (temp != null) {
-							masters.add(temp);
-						}
-					}
-				}
-			}
-		}
-		return masters;
-	}
-
-	private TileEntityCartAssembler getValidMaster(World world, BlockPos pos) {
-		TileEntityCartAssembler master = null;
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				for (int k = -1; k <= 1; k++) {
-					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						TileEntityCartAssembler temp = getMaster(world, pos.add(i, j, k));
-						if (temp != null) {
-							if (master != null) {
-								return null;
-							} else {
-								master = temp;
-							}
-						}
-					}
-				}
-			}
-		}
-		return master;
-	}
-
-	private TileEntityCartAssembler getMaster(World world, BlockPos pos) {
-		TileEntity tile = world.getTileEntity(pos);
-		if (tile != null && tile instanceof TileEntityCartAssembler) {
-			TileEntityCartAssembler master = (TileEntityCartAssembler) tile;
-			if (!master.isDead) {
-				return master;
-			}
-		}
-		return null;
-	}
-
-	public void addUpgrade(World world, BlockPos pos) {
-		TileEntityCartAssembler master = getValidMaster(world, pos);
-		if (master != null) {
-			updateMultiBlock(world, master.getPos());
-		}
-	}
-
-	public void removeUpgrade(World world, BlockPos pos) {
-		TileEntityCartAssembler master = getValidMaster(world, pos);
-		if (master != null) {
-			updateMultiBlock(world, master.getPos());
+		if (assembler != null) {
+			assembler.onUpgradeUpdate();
 		}
 	}
 
@@ -147,8 +64,63 @@ public class BlockCartAssembler extends BlockContainerBase {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		updateMultiBlock(world, pos);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(hitY > 0.1875 && hitY < 0.8125){
+			if(side == EnumFacing.NORTH || side == EnumFacing.SOUTH){
+				if(hitX > 0.1875 && hitX < 0.8125){
+					onUpgradeActivated(world, pos, state, player, hand, side);
+					return true;
+				}
+			}else if(side == EnumFacing.EAST || side == EnumFacing.WEST){
+				if(hitZ > 0.1875 && hitZ < 0.8125){
+					onUpgradeActivated(world, pos, state, player, hand, side);
+					return true;
+				}
+			}
+		}else if(hitY == 1 || hitY == 0){
+			if(hitZ > 0.1875 && hitZ < 0.8125 && hitX > 0.1875 && hitX < 0.8125){
+				onUpgradeActivated(world, pos, state, player, hand, side);
+				return true;
+			}
+		}
+		if (!world.isRemote) {
+			player.openGui(StevesVehicles.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
+		}
+		return true;
+	}
+
+	private void onUpgradeActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side){
+		TileEntityCartAssembler assembler = (TileEntityCartAssembler) world.getTileEntity(pos);
+		UpgradeContainer container = assembler.getUpgrade(side);
+		if(container == null){
+			ItemStack itemStack = player.getHeldItem(hand);
+			if(!itemStack.isEmpty()){
+				if(itemStack.getItem() == ModItems.upgrades){
+					assembler.addUpgrade(side, UpgradeRegistry.getUpgradeFromId(itemStack.getItemDamage()));
+					updateMultiBlock(assembler);
+					if(!player.capabilities.isCreativeMode){
+						itemStack.shrink(1);
+					}
+					return;
+				}
+			}
+		}else{
+			if(player.isSneaking()) {
+				Upgrade upgrade = assembler.removeUpgrade(side);
+				updateMultiBlock(assembler);
+				if(upgrade != null){
+					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(ModItems.upgrades, 1, UpgradeRegistry.getIdFromUpgrade(upgrade)));
+				}
+				return;
+			}
+		}
+		if (!world.isRemote) {
+			if(container != null && !container.useStandardInterface()){
+				player.openGui(StevesVehicles.instance, 3 + side.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+			}else{
+				player.openGui(StevesVehicles.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
+			}
+		}
 	}
 
 	@Override
@@ -157,9 +129,18 @@ public class BlockCartAssembler extends BlockContainerBase {
 		if (te instanceof TileEntityCartAssembler) {
 			TileEntityCartAssembler assembler = (TileEntityCartAssembler) te;
 			assembler.isDead = true;
-			updateMultiBlock(world, pos);
+			for(UpgradeContainer upgradeContainer : assembler.getUpgrades()){
+				if(upgradeContainer != null){
+					ItemStack upgradeItem = new ItemStack(ModItems.upgrades, 1, UpgradeRegistry.getIdFromUpgrade(upgradeContainer.getUpgrade()));
+					EntityItem entityItem = new EntityItem(world, (double) pos.getX() + 0.2F, (double) pos.getY() + 0.2F, pos.getZ() + 0.2F, upgradeItem);
+					entityItem.motionX = world.rand.nextGaussian() * 0.05F;
+					entityItem.motionY = world.rand.nextGaussian() * 0.25F;
+					entityItem.motionZ = world.rand.nextGaussian() * 0.05F;
+					world.spawnEntity(entityItem);
+				}
+			}
 			ItemStack outputItem = assembler.getOutputOnInterrupt();
-			if (outputItem != null) {
+			if (!outputItem.isEmpty()) {
 				EntityItem entityItem = new EntityItem(world, (double) pos.getX() + 0.2F, (double) pos.getY() + 0.2F, pos.getZ() + 0.2F, outputItem.copy());
 				entityItem.motionX = world.rand.nextGaussian() * 0.05F;
 				entityItem.motionY = world.rand.nextGaussian() * 0.25F;
@@ -168,5 +149,24 @@ public class BlockCartAssembler extends BlockContainerBase {
 			}
 		}
 		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[]{UPGRADES});
+	}
+
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		TileEntity tile = world.getTileEntity(pos);
+		Upgrades upgrades = Upgrades.EMPTY;
+		if(tile instanceof TileEntityCartAssembler){
+			TileEntityCartAssembler assembler = (TileEntityCartAssembler) tile;
+			upgrades = new Upgrades();
+			for(UpgradeContainer container : assembler.getUpgrades()){
+				upgrades.upgrades.put(container.getFacing(), UpgradeRegistry.getIdFromUpgrade(container.getUpgrade()));
+			}
+		}
+		return ((IExtendedBlockState)state).withProperty(UPGRADES, upgrades);
 	}
 }

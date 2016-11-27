@@ -19,7 +19,6 @@ import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDetector;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDistributor;
 import stevesvehicles.common.blocks.tileentitys.TileEntityLiquid;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
 import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
 import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.items.ItemBlockDetector;
@@ -39,12 +38,6 @@ public enum ModBlocks implements IRecipeOutput {
 		@Override
 		protected Item createItem(Block block) {
 			return new ItemBlockDetector(block);
-		}
-	},
-	UPGRADE("upgrade", BlockUpgrade.class, TileEntityUpgrade.class, "upgrade") {
-		@Override
-		protected Item createItem(Block block) {
-			return new ItemUpgrade(block);
 		}
 	},
 	LIQUID_MANAGER("liquid_manager", BlockLiquidManager.class, TileEntityLiquid.class, "liquid"),

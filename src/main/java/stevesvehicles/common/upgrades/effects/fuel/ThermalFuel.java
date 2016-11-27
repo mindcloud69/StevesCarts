@@ -2,11 +2,11 @@ package stevesvehicles.common.upgrades.effects.fuel;
 
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.upgrades.effects.util.TankEffect;
 
 public class ThermalFuel extends TankEffect {
-	public ThermalFuel(TileEntityUpgrade upgrade) {
+	public ThermalFuel(UpgradeContainer upgrade) {
 		super(upgrade);
 	}
 
@@ -20,7 +20,7 @@ public class ThermalFuel extends TankEffect {
 	@Override
 	public void update() {
 		super.update();
-		if (!upgrade.getWorld().isRemote && upgrade.getMaster() != null) {
+		if (!upgrade.getMaster().getWorld().isRemote && upgrade.getMaster() != null) {
 			if (upgrade.getFluid() != null && upgrade.getFluid().getFluid().equals(FluidRegistry.LAVA)) {
 				int fuelspace = upgrade.getMaster().getMaxFuelLevel() - upgrade.getMaster().getFuelLevel();
 				int unitspace = Math.min(fuelspace / LAVA_EFFICIENCY, 200);

@@ -2,6 +2,8 @@ package stevesvehicles.common.blocks.tileentitys;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.BlockRailBase;
@@ -29,8 +31,7 @@ import stevesvehicles.client.gui.assembler.TitleBox;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiCartAssembler;
 import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
-import stevesvehicles.common.blocks.BlockCartAssembler;
-import stevesvehicles.common.blocks.ModBlocks;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.blocks.tileentitys.manager.ManagerTransfer;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerCartAssembler;
@@ -49,6 +50,7 @@ import stevesvehicles.common.modules.datas.ModuleType;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
 import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.transfer.TransferHandler;
+import stevesvehicles.common.upgrades.Upgrade;
 import stevesvehicles.common.upgrades.effects.BaseEffect;
 import stevesvehicles.common.upgrades.effects.assembly.Disassemble;
 import stevesvehicles.common.upgrades.effects.assembly.FreeModules;
@@ -207,7 +209,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	/**
 	 * A list of all the upgrades currently attached to this Cart Assembler
 	 */
-	private List<TileEntityUpgrade> upgrades;
+	private final EnumMap<EnumFacing, UpgradeContainer> upgrades;
 	/**
 	 * Used to properly detach any upgrades when the Cart Assembler block is
 	 * broken
@@ -240,7 +242,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	public TileEntityCartAssembler() {
 		super(0);
 		// create all the lists for everything
-		upgrades = new ArrayList<>();
+		upgrades = new EnumMap(EnumFacing.class);
 		spareModules = new ArrayList<>();
 		dropDownItems = new ArrayList<>();
 		slots = new ArrayList<>();
@@ -260,6 +262,10 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		titleBoxes.add(STORAGE_BOX);
 		titleBoxes.add(ADDON_BOX);
 		titleBoxes.add(INFO_BOX);
+		//Add upgrade sides
+		for(EnumFacing facing : EnumFacing.VALUES){
+			upgrades.put(facing, null);
+		}
 		/// create the engine slots
 		for (int i = 0; i < MAX_ENGINE_SLOTS; i++) {
 			SlotAssembler slot = new SlotAssembler(this, slotID++, ENGINE_BOX.getX() + 2 + 18 * i, ENGINE_BOX.getY(), ModuleType.ENGINE, false, i);
@@ -321,18 +327,34 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	 * @param upgrade
 	 *            The upgrade to be added
 	 */
-	public void addUpgrade(TileEntityUpgrade upgrade) {
-		upgrades.add(upgrade);
+	public UpgradeContainer addUpgrade(EnumFacing side, Upgrade upgrade) {
+		UpgradeContainer container = new UpgradeContainer(side, this, upgrade);
+		upgrades.put(side, container);
+		return container;
 	}
 
 	/**
 	 * Remove an upgrade from the list of upgrades for this Cart Assembler
 	 * 
-	 * @param upgrade
-	 *            The upgrade to be removed
+	 * @param side
+	 *            The side of the upgrade to be get
 	 */
-	public void removeUpgrade(TileEntityUpgrade upgrade) {
-		upgrades.remove(upgrade);
+	public Upgrade removeUpgrade(EnumFacing side) {
+		UpgradeContainer container = upgrades.remove(side);
+		if(container == null){
+			return null;
+		}
+		return container.getUpgrade();
+	}
+
+	/**
+	 * Get an upgrade from the list of upgrades for this Cart Assembler
+	 * 
+	 * @param side
+	 *            The side of the upgrade to be get
+	 */
+	public UpgradeContainer getUpgrade(EnumFacing side) {
+		return upgrades.get(side);
 	}
 
 	/**
@@ -341,8 +363,14 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	 * 
 	 * @return A list of the tile entities
 	 */
-	public List<TileEntityUpgrade> getUpgradeTiles() {
-		return upgrades;
+	public Collection<UpgradeContainer> getUpgrades() {
+		List<UpgradeContainer> containers = new ArrayList<>();
+		for(UpgradeContainer container : upgrades.values()){
+			if(container != null){
+				containers.add(container);
+			}
+		}
+		return containers;
 	}
 
 	/**
@@ -354,10 +382,12 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	public ArrayList<BaseEffect> getEffects() {
 		ArrayList<BaseEffect> lst = new ArrayList<>();
 		// go through all the upgrades attached to the cart assembler
-		for (TileEntityUpgrade tile : upgrades) {
-			List<BaseEffect> effects = tile.getEffects();
-			if (effects != null) {
-				lst.addAll(effects);
+		for (UpgradeContainer container : getUpgrades()) {
+			if(container != null){
+				List<BaseEffect> effects = container.getEffects();
+				if (effects != null) {
+					lst.addAll(effects);
+				}
 			}
 		}
 		return lst;
@@ -984,21 +1014,17 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	private void deployCart() {
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof Deployer) {
-				TileEntityUpgrade tile = effect.getUpgrade();
-				BlockPos pos = tile.getPos();
-				pos = pos.add(pos);
-				pos = pos.add(-this.pos.getX(), -this.pos.getY(), -this.pos.getZ());
-				if (tile.getPos().getY() > this.pos.getY()) {
-					pos.up();
-				}
+				UpgradeContainer container = effect.getUpgrade();
+				BlockPos pos = getPos();
+				pos.offset(container.getFacing());
 				if (BlockRailBase.isRailBlock(world, pos)) {
 					try {
 						NBTTagCompound info = outputItem.getTagCompound();
 						if (info != null) {
 							EntityModularCart cart = new EntityModularCart(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, info, outputItem.hasDisplayName() ? outputItem.getDisplayName() : null);
 							world.spawnEntity(cart);
-							cart.temppushX = tile.getPos().getX() - pos.getX();
-							cart.temppushZ = tile.getPos().getZ() - pos.getZ();
+							cart.temppushX = pos.getX();
+							cart.temppushZ = pos.getZ();
 							managerInteract(cart, true);
 							return;
 						}
@@ -1014,14 +1040,8 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	public void managerInteract(EntityModularCart cart, boolean toCart) {
 		for (BaseEffect effect : getEffects()) {
 			if (effect instanceof Manager) {
-				TileEntityUpgrade tile = effect.getUpgrade();
-				BlockPos tilePos = tile.getPos();
-				BlockPos pos = tilePos;
-				pos = pos.add(pos);
-				pos = pos.add(-this.pos.getX(), -this.pos.getY(), -this.pos.getZ());
-				if (tile.getPos().getY() > this.pos.getY()) {
-					pos.up();
-				}
+				UpgradeContainer container = effect.getUpgrade();
+				BlockPos tilePos = pos.offset(container.getFacing());;
 				TileEntity managerTile = world.getTileEntity(pos);
 				if (managerTile != null && managerTile instanceof TileEntityManager) {
 					ManagerTransfer transfer = new ManagerTransfer();
@@ -1081,14 +1101,8 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		world.spawnEntity(entityitem);
 	}
 
-	private boolean loaded;
-
 	@Override
 	public void update() {
-		if (!loaded) {
-			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, pos);
-			loaded = true;
-		}
 		if (!isAssembling && outputSlot != null) {
 			ItemStack itemInSlot = outputSlot.getStack();
 			if (!itemInSlot.isEmpty() && itemInSlot.getItem() == ModItems.vehicles) {
@@ -1350,6 +1364,12 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		maxAssemblingTime = tagCompound.getInteger("maxTime");
 		setAssemblingTime(tagCompound.getInteger("currentTime"));
 		isAssembling = tagCompound.getBoolean("isAssembling");
+		NBTTagList upgrades = tagCompound.getTagList("Upgrades", 10);
+		for(int i = 0;i < upgrades.tagCount();i++){
+			NBTTagCompound upgrade = upgrades.getCompoundTagAt(i);
+			EnumFacing side = EnumFacing.VALUES[upgrade.getByte("Side")];
+			this.upgrades.put(side, new UpgradeContainer(side, this, upgrade));
+		}
 	}
 
 	/**
@@ -1377,6 +1397,15 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		tagCompound.setInteger("maxTime", maxAssemblingTime);
 		tagCompound.setInteger("currentTime", getAssemblingTime());
 		tagCompound.setBoolean("isAssembling", isAssembling);
+		NBTTagList upgrades = new NBTTagList();
+		for(UpgradeContainer container : this.upgrades.values()){
+			if(container != null){
+				NBTTagCompound upgrade = container.writeToNBT(new NBTTagCompound());
+				upgrade.setByte("Side", (byte) container.getFacing().ordinal());
+				upgrades.appendTag(upgrade);
+			}
+		}
+		tagCompound.setTag("Upgrades", upgrades);
 		return tagCompound;
 	}
 

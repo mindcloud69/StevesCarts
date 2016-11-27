@@ -3,8 +3,6 @@ package stevesvehicles.api.modules.handlers;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
 import stevesvehicles.api.modules.IModule;
 import stevesvehicles.api.modules.container.IModuleContainer;
 import stevesvehicles.api.modules.data.ModuleData;

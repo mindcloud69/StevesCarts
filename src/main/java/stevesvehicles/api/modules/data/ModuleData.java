@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import mezz.jei.util.ModRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
 import stevesvehicles.api.modules.IModule;
@@ -18,15 +17,15 @@ public class ModuleData extends Impl<ModuleData> {
 	public IModule createModule(IModuleContainer container, IModuleHandler handler, ItemStack stack){
 		return null;
 	}
-	
+
 	protected void initOptionalHandlers(IModule module){
 		for(IContentHandlerFactory factory : factorys){
 			ContentHandler handler = factory.createHandler(module);
 		}
 	}
-	
+
 	private final List<IContentHandlerFactory> factorys = new ArrayList<>();
-	
+
 	public void addOptionalHandlers(IContentHandlerFactory... factorys){
 		if(factorys != null){
 			Collections.addAll(this.factorys, factorys);

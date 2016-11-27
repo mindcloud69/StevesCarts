@@ -14,9 +14,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import stevesvehicles.common.blocks.tileentitys.TileEntityActivator;
+import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDetector;
 import stevesvehicles.common.blocks.tileentitys.TileEntityManager;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
 import stevesvehicles.common.core.tabs.CreativeTabLoader;
 import stevesvehicles.common.modules.datas.ModuleDataItemHandler;
@@ -119,29 +120,29 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 							entityCart.releaseCart();
 						}
 						return;
-					} else if (block == ModBlocks.UPGRADE.getBlock()) {
+					} else if(block == ModBlocks.CART_ASSEMBLER.getBlock()){
 						TileEntity tileentity = world.getTileEntity(pos.add(i, 0, j));
-						TileEntityUpgrade upgrade = (TileEntityUpgrade) tileentity;
-						if (upgrade != null && upgrade.getEffects() != null) {
-							for (BaseEffect effect : upgrade.getEffects()) {
+						TileEntityCartAssembler assembler = (TileEntityCartAssembler) tileentity;
+						UpgradeContainer container = assembler.getUpgrade(EnumFacing.VALUES[side]);
+						if (container != null && container.getEffects() != null) {
+							for (BaseEffect effect : container.getEffects()) {
 								if (effect instanceof Transposer) {
-									if (upgrade.getMaster() != null) {
-										for (TileEntityUpgrade tile : upgrade.getMaster().getUpgradeTiles()) {
-											if (tile.getEffects() != null) {
-												for (BaseEffect effect2 : tile.getEffects()) {
-													if (effect2 instanceof Disassemble) {
-														if (tile.getStackInSlot(0) == null) {
-															tile.setInventorySlotContents(0, ModuleDataItemHandler.createModularVehicle(entityCart.getVehicle()));
-															upgrade.getMaster().managerInteract(entityCart, false);
-															for (int p = 0; p < entityCart.getSizeInventory(); p++) {
-																ItemStack item = entityCart.removeStackFromSlot(p);
-																if (item != null) {
-																	upgrade.getMaster().puke(item);
-																}
+									TileEntityCartAssembler master = container.getMaster();
+									for (UpgradeContainer container2 : master.getUpgrades()) {
+										if (container2.getEffects() != null) {
+											for (BaseEffect effect2 : container2.getEffects()) {
+												if (effect2 instanceof Disassemble) {
+													if (container2.getStackInSlot(0) == null) {
+														container2.setInventorySlotContents(0, ModuleDataItemHandler.createModularVehicle(entityCart.getVehicle()));
+														master.managerInteract(entityCart, false);
+														for (int p = 0; p < entityCart.getSizeInventory(); p++) {
+															ItemStack item = entityCart.removeStackFromSlot(p);
+															if (item != null) {
+																master.puke(item);
 															}
-															entityCart.setDead();
-															return;
 														}
+														entityCart.setDead();
+														return;
 													}
 												}
 											}
@@ -174,19 +175,19 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 					Block block = world.getBlockState(pos.add(i, 0, j)).getBlock();
 					if (block == ModBlocks.CARGO_MANAGER.getBlock() || block == ModBlocks.LIQUID_MANAGER.getBlock() || block == ModBlocks.MODULE_TOGGLER.getBlock()) {
 						return false;
-					} else if (block == ModBlocks.UPGRADE.getBlock()) {
+					} else if(block == ModBlocks.CART_ASSEMBLER.getBlock()){
 						TileEntity tileentity = world.getTileEntity(pos.add(i, 0, j));
-						TileEntityUpgrade upgrade = (TileEntityUpgrade) tileentity;
-						if (upgrade != null && upgrade.getEffects() != null) {
-							for (BaseEffect effect : upgrade.getEffects()) {
+						TileEntityCartAssembler assembler = (TileEntityCartAssembler) tileentity;
+						UpgradeContainer container = assembler.getUpgrade(side);
+						if (container != null && container.getEffects() != null) {
+							for (BaseEffect effect : container.getEffects()) {
 								if (effect instanceof Transposer) {
-									if (upgrade.getMaster() != null) {
-										for (TileEntityUpgrade tile : upgrade.getMaster().getUpgradeTiles()) {
-											if (tile.getEffects() != null) {
-												for (BaseEffect effect2 : tile.getEffects()) {
-													if (effect2 instanceof Disassemble) {
-														return false;
-													}
+									TileEntityCartAssembler master = container.getMaster();
+									for (UpgradeContainer container2 : master.getUpgrades()) {
+										if (container2.getEffects() != null) {
+											for (BaseEffect effect2 : container2.getEffects()) {
+												if (effect2 instanceof Disassemble) {
+													return false;
 												}
 											}
 										}

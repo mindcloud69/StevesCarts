@@ -32,7 +32,7 @@ public class ItemModelManager {
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			modelGenerator = new ModelGenerator();
 			ModelLoader.setCustomMeshDefinition(ModItems.modules, new TexturedItemMeshDefinition());
-			ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(ModBlocks.UPGRADE.getBlock()), new TexturedItemMeshDefinition());
+			ModelLoader.setCustomMeshDefinition(ModItems.upgrades, new TexturedItemMeshDefinition());
 			ModelLoader.setCustomMeshDefinition(ModItems.vehicles, new VehicleMeshDefinition());
 			for (BuoyType type : BuoyType.values()) {
 				registerItemModel(ModItems.buoys, type.ordinal());

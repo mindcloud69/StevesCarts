@@ -1,12 +1,12 @@
 package stevesvehicles.common.upgrades.effects.util;
 
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 
 public abstract class SimpleInventoryEffect extends InventoryEffect {
 	private int inventoryWidth;
 	private int inventoryHeight;
 
-	public SimpleInventoryEffect(TileEntityUpgrade upgrade, Integer inventoryWidth, Integer inventoryHeight) {
+	public SimpleInventoryEffect(UpgradeContainer upgrade, Integer inventoryWidth, Integer inventoryHeight) {
 		super(upgrade);
 		this.inventoryWidth = inventoryWidth;
 		this.inventoryHeight = inventoryHeight;

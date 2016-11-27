@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
-import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;

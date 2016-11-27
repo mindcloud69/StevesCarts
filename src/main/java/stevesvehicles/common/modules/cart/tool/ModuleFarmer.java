@@ -323,7 +323,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	public boolean haveSupplies() {
 		for (int i = 0; i < getInventorySize(); i++) {
 			ItemStack item = getStack(i);
-			if (item != null && isSeedValidHandler(item)) {
+			if (!item.isEmpty() && isSeedValidHandler(item)) {
 				return true;
 			}
 		}

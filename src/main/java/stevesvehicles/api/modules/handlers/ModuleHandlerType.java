@@ -39,7 +39,7 @@ public class ModuleHandlerType {
 		}
 		return parentType.getSuperParentType();
 	}
-	
+
 	public Class<? extends IModuleHandler> getHandlerClass() {
 		return handlerClass;
 	}

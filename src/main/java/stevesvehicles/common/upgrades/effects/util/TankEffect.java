@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiUpgrade;
-import stevesvehicles.common.blocks.tileentitys.TileEntityUpgrade;
+import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.container.ContainerUpgrade;
 import stevesvehicles.common.container.slots.SlotLiquidOutput;
 import stevesvehicles.common.container.slots.SlotLiquidUpgradeInput;
@@ -19,7 +19,7 @@ import stevesvehicles.common.tanks.Tank;
 import stevesvehicles.common.transfer.TransferHandler;
 
 public abstract class TankEffect extends InventoryEffect implements ITankHolder {
-	public TankEffect(TileEntityUpgrade upgrade) {
+	public TankEffect(UpgradeContainer upgrade) {
 		super(upgrade);
 	}
 
@@ -90,7 +90,7 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 		int meta = 3;
 		FluidStack oldFluid = (FluidStack) con.olddata;
 		if ((isNew || oldFluid != null) && tank.getFluid() == null) {
-			upgrade.updateGuiData(con, crafting, id, (short) -1);
+			upgrade.getMaster().updateGuiData(con, crafting, id, (short) -1);
 			changed = true;
 		} else if (tank.getFluid() != null) {
 			// TODO: rework gui data system
@@ -152,7 +152,7 @@ public abstract class TankEffect extends InventoryEffect implements ITankHolder 
 		} else {
 			return;
 		}
-		if (!upgrade.getWorld().isRemote && slots != null && slots.size() >= 2) {
+		if (!upgrade.getMaster().getWorld().isRemote && slots != null && slots.size() >= 2) {
 			tank.containerTransfer();
 		}
 	}
