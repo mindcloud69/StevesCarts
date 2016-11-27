@@ -8,6 +8,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -92,12 +93,13 @@ public class BlockCartAssembler extends BlockContainerBase {
 	private void onUpgradeActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side){
 		TileEntityCartAssembler assembler = (TileEntityCartAssembler) world.getTileEntity(pos);
 		UpgradeContainer container = assembler.getUpgrade(side);
+		ItemStack itemStack = player.getHeldItem(hand);
 		if(container == null){
-			ItemStack itemStack = player.getHeldItem(hand);
 			if(!itemStack.isEmpty()){
 				if(itemStack.getItem() == ModItems.upgrades){
 					assembler.addUpgrade(side, UpgradeRegistry.getUpgradeFromId(itemStack.getItemDamage()));
 					updateMultiBlock(assembler);
+					player.playSound(SoundEvents.ENTITY_ITEMFRAME_ADD_ITEM, 1.0F, 1.0F);
 					if(!player.capabilities.isCreativeMode){
 						itemStack.shrink(1);
 					}
@@ -105,10 +107,11 @@ public class BlockCartAssembler extends BlockContainerBase {
 				}
 			}
 		}else{
-			if(player.isSneaking()) {
+			if(player.isSneaking() && itemStack.isEmpty()) {
 				Upgrade upgrade = assembler.removeUpgrade(side);
 				updateMultiBlock(assembler);
-				if(upgrade != null){
+				player.playSound(SoundEvents.ENTITY_ITEMFRAME_REMOVE_ITEM, 1.0F, 1.0F);
+				if(upgrade != null && !world.isRemote){
 					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(ModItems.upgrades, 1, UpgradeRegistry.getIdFromUpgrade(upgrade)));
 				}
 				return;

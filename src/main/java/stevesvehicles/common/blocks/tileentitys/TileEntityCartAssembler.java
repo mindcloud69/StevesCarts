@@ -1016,7 +1016,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 			if (effect instanceof Deployer) {
 				UpgradeContainer container = effect.getUpgrade();
 				BlockPos pos = getPos();
-				pos.offset(container.getFacing());
+				pos = pos.offset(container.getFacing());
 				if (BlockRailBase.isRailBlock(world, pos)) {
 					try {
 						NBTTagCompound info = outputItem.getTagCompound();
@@ -1103,6 +1103,9 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	@Override
 	public void update() {
+		for(UpgradeContainer container : getUpgrades()){
+			container.update();
+		}
 		if (!isAssembling && outputSlot != null) {
 			ItemStack itemInSlot = outputSlot.getStack();
 			if (!itemInSlot.isEmpty() && itemInSlot.getItem() == ModItems.vehicles) {
