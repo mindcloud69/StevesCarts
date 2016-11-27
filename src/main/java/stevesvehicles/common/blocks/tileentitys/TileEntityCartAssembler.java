@@ -1337,6 +1337,21 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	public boolean hasCustomName() {
 		return false;
 	}
+	
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound tagCompound = super.getUpdateTag();
+		NBTTagList upgrades = new NBTTagList();
+		for(UpgradeContainer container : this.upgrades.values()){
+			if(container != null){
+				NBTTagCompound upgrade = container.writeToNBT(new NBTTagCompound());
+				upgrade.setByte("Side", (byte) container.getFacing().ordinal());
+				upgrades.appendTag(upgrade);
+			}
+		}
+		tagCompound.setTag("Upgrades", upgrades);
+		return tagCompound;
+	}
 
 	/**
 	 * Reads a tile entity from NBT.

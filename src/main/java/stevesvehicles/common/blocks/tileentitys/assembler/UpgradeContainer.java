@@ -59,7 +59,8 @@ public class UpgradeContainer implements ISidedInventory, IFluidHandler, IFluidT
 		this.facing = facing;
 		this.master = master;
 		this.upgrade = upgrade;
-		inventoryStacks = DEFAULT_STACKS;
+		this.inventoryStacks = DEFAULT_STACKS;
+		this.effects = null;
 
 		if (upgrade != null) {
 			createEffects(upgrade);
@@ -83,14 +84,14 @@ public class UpgradeContainer implements ISidedInventory, IFluidHandler, IFluidT
 					slotsForSide[i] = i;
 				}
 			}
-		} else {
-			effects = null;
 		}
 	}
 
 	public UpgradeContainer(EnumFacing facing, TileEntityCartAssembler master, NBTTagCompound tagCompound) {
 		this.facing = facing;
 		this.master = master;
+		this.inventoryStacks = DEFAULT_STACKS;
+		this.effects = null;
 
 		upgrade = UpgradeRegistry.getUpgradeFromId(tagCompound.getByte("Upgrade"));
 		if (upgrade != null) {
@@ -115,9 +116,6 @@ public class UpgradeContainer implements ISidedInventory, IFluidHandler, IFluidT
 					slotsForSide[i] = i;
 				}
 			}
-		} else {
-			effects = null;
-			inventoryStacks = DEFAULT_STACKS;
 		}
 		inventoryStacks.clear();
 		ItemStackHelper.loadAllItems(tagCompound, inventoryStacks);
