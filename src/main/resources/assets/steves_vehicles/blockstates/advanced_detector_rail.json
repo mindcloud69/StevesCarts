@@ -14,139 +14,71 @@
         "layer0": "steves_vehicles:blocks/rails/detector"
       }
     },
-    "powered=true,shape=north_south": {
+    "shape=north_south": {
       "model": "normal_rail_flat",
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector"
       }
     },
-    "powered=true,shape=east_west": {
+    "shape=east_west": {
       "model": "normal_rail_flat",
       "y": 90,
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector"
       }
     },
-    "powered=true,shape=ascending_east": {
+    "shape=ascending_east": {
       "model": "normal_rail_raised_ne",
       "y": 90,
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector"
       }
     },
-    "powered=true,shape=ascending_west": {
+    "shape=ascending_west": {
       "model": "normal_rail_raised_sw",
       "y": 90,
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector"
       }
     },
-    "powered=true,shape=ascending_north": {
+    "shape=ascending_north": {
       "model": "normal_rail_raised_ne",
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector"
       }
     },
-    "powered=true,shape=ascending_south": {
+    "shape=ascending_south": {
       "model": "normal_rail_raised_sw",
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector"
       }
     },
-    "powered=true,shape=south_east": {
+    "shape=south_east": {
       "model": "normal_rail_curved",
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector_corner"
       }
     },
-    "powered=true,shape=south_west": {
+    "shape=south_west": {
       "model": "normal_rail_curved",
       "y": 90,
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector_corner"
       }
     },
-    "powered=true,shape=north_west": {
+    "shape=north_west": {
       "model": "normal_rail_curved",
       "y": 180,
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector_corner"
       }
     },
-    "powered=true,shape=north_east": {
-      "model": "normal_rail_curved",
-      "y": 270,
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector_corner"
-      }
-    },
-
-    "powered=false,shape=north_south": {
-      "model": "normal_rail_flat",
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector"
-      }
-    },
-    "powered=false,shape=east_west": {
-      "model": "normal_rail_flat",
-      "y": 90,
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector"
-      }
-    },
-    "powered=false,shape=ascending_east": {
-      "model": "normal_rail_raised_ne",
-      "y": 90,
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector"
-      }
-    },
-    "powered=false,shape=ascending_west": {
-      "model": "normal_rail_raised_sw",
-      "y": 90,
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector"
-      }
-    },
-    "powered=false,shape=ascending_north": {
-      "model": "normal_rail_raised_ne",
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector"
-      }
-    },
-    "powered=false,shape=ascending_south": {
-      "model": "normal_rail_raised_sw",
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector"
-      }
-    },
-    "powered=false,shape=south_east": {
-      "model": "normal_rail_curved",
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector_corner"
-      }
-    },
-    "powered=false,shape=south_west": {
-      "model": "normal_rail_curved",
-      "y": 90,
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector_corner"
-      }
-    },
-    "powered=false,shape=north_west": {
-      "model": "normal_rail_curved",
-      "y": 180,
-      "textures": {
-        "rail": "steves_vehicles:blocks/rails/detector_corner"
-      }
-    },
-    "powered=false,shape=north_east": {
+    "shape=north_east": {
       "model": "normal_rail_curved",
       "y": 270,
       "textures": {
         "rail": "steves_vehicles:blocks/rails/detector_corner"
       }
     }
-
   }
 }

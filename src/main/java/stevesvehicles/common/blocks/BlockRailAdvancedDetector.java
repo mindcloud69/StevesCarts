@@ -1,8 +1,8 @@
 package stevesvehicles.common.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockRailDetector;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,27 +26,15 @@ import stevesvehicles.common.upgrades.effects.assembly.Disassemble;
 import stevesvehicles.common.upgrades.effects.external.Transposer;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
-public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlockBase {
-	// private IIcon normalIcon;
-	// private IIcon cornerIcon;
+public class BlockRailAdvancedDetector extends BlockRailSpecialBase implements IBlockBase {
 	private String unlocalizedName;
-
+	
 	public BlockRailAdvancedDetector() {
+		super(false);
 		setCreativeTab(CreativeTabLoader.blocks);
 		setSoundType(SoundType.METAL);
 	}
 
-	/*
-	 * @Override public IIcon getIcon(int side, int meta) { return meta >= 6 ?
-	 * cornerIcon : normalIcon; }
-	 * @Override
-	 * @SideOnly(Side.CLIENT) public void registerBlockIcons(IIconRegister
-	 * register) { normalIcon =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":rails/detector"); cornerIcon =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":rails/detector_corner"); }
-	 */
 	@Override
 	public String getUnlocalizedName() {
 		return unlocalizedName;
@@ -56,11 +44,6 @@ public class BlockRailAdvancedDetector extends BlockRailDetector implements IBlo
 	public BlockRailAdvancedDetector setUnlocalizedName(String name) {
 		this.unlocalizedName = name;
 		return this;
-	}
-
-	@Override
-	public boolean canMakeSlopes(IBlockAccess world, BlockPos pos) {
-		return false;
 	}
 
 	@Override

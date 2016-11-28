@@ -14,15 +14,7 @@ public class BlockMetalStorage extends Block implements IBlockBase {
 		setResistance(10.0F);
 		setSoundType(SoundType.METAL);
 	}
-
-	/*
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public IIcon getIcon(int side, int meta) { meta %=
-	 * ModItems.storage.icons.length; return ModItems.storage.icons[meta]; }
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public void registerBlockIcons(IIconRegister register) { // do
-	 * nothing here }
-	 */
+	
 	@Override
 	public int damageDropped(IBlockState state) {
 		return getMetaFromState(state);

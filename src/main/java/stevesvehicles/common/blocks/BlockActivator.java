@@ -14,27 +14,6 @@ public class BlockActivator extends BlockContainerBase {
 	}
 
 	@Override
-	public SoundType getSoundType() {
-		// TODO Auto-generated method stub
-		return super.getSoundType();
-	}
-
-	/*
-	 * private IIcon topIcon; private IIcon botIcon; private IIcon sideIcon;
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public IIcon getIcon(int side, int meta) { if (side == 0) {
-	 * return botIcon; } else if (side == 1) { return topIcon; } else { return
-	 * sideIcon; } }
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public void registerBlockIcons(IIconRegister register) {
-	 * topIcon = register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":toggler/top"); botIcon =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":toggler/bot"); sideIcon =
-	 * register.registerIcon(StevesVehicles.instance.textureHeader +
-	 * ":toggler/side"); }
-	 */
-	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityActivator();
 	}

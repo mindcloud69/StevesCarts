@@ -22,15 +22,6 @@ public class BlockDetector extends BlockContainerBase {
 		setCreativeTab(CreativeTabLoader.blocks);
 	}
 
-	/*
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public IIcon getIcon(int side, int meta) { return
-	 * DetectorType.getTypeFromMeta(meta).getIcon(side); }
-	 * @SideOnly(Side.CLIENT)
-	 * @Override public void registerBlockIcons(IIconRegister register) { for
-	 * (DetectorType type : DetectorType.values()) {
-	 * type.registerIcons(register); } }
-	 */
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, NonNullList list) {
 		for (DetectorType type : DetectorType.values()) {
