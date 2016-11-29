@@ -88,11 +88,6 @@ public class DataReader extends DataInputStream {
 		}
 	}
 
-	/**
-	 * Reads a compressed int from the buffer. To do so it maximally reads 5
-	 * byte-sized chunks whose most significant bit dictates whether another
-	 * byte should be read.
-	 */
 	public int readVarInt() throws IOException {
 		int varInt = 0;
 		int size = 0;

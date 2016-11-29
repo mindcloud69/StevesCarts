@@ -5,7 +5,7 @@ import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.api.network.packets.IPacketServer;
 
 public enum PacketType implements IPacketProvider {
-	VEHICLE, BLOCK, REGISTRY, BOAT_MOVEMENT, BUOY, GUI_DATA;
+	VEHICLE, BLOCK, REGISTRY, BOAT_MOVEMENT, BUOY, GUI_DATA, CUSTOM, STREAMABLE;
 
 	public static final PacketType[] VALUES = values();
 	private IPacketServer packetServer;

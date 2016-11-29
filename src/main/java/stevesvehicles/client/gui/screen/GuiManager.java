@@ -255,20 +255,20 @@ public abstract class GuiManager extends GuiBase {
 	protected void sendPacket(TileEntityManager.PacketId id, boolean dif) {
 		DataWriter dw = getDataWriter(id);
 		dw.writeBoolean(dif);
-		PacketHandler.sendPacketToServer(dw);
+		PacketHandler.sendCustomToServer(dw);
 	}
 
 	protected void sendPacket(TileEntityManager.PacketId id, int railId) {
 		DataWriter dw = getDataWriter(id);
 		dw.writeByte(railId);
-		PacketHandler.sendPacketToServer(dw);
+		PacketHandler.sendCustomToServer(dw);
 	}
 
 	protected void sendPacket(TileEntityManager.PacketId id, int railId, boolean dif) {
 		DataWriter dw = getDataWriter(id);
 		dw.writeByte(railId);
 		dw.writeBoolean(dif);
-		PacketHandler.sendPacketToServer(dw);
+		PacketHandler.sendCustomToServer(dw);
 	}
 
 	protected void setColor(int color) {

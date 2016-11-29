@@ -1,5 +1,6 @@
 package stevesvehicles.common.vehicles.entitys;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -18,14 +19,18 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.common.entitys.buoy.EntityBuoy;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketStreamable;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.VehicleBoat;
 import io.netty.buffer.ByteBuf;
 
-public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity {
+public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity, IStreamable {
 	private VehicleBase vehicleBase;
 	private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
@@ -279,37 +284,41 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity 
 					delay++;
 				} else {
 					delay = 0;
-					DataWriter dw = PacketHandler.getDataWriter(PacketType.BOAT_MOVEMENT);
-					dw.writeInteger(Float.floatToIntBits((float) posX));
-					dw.writeInteger(Float.floatToIntBits((float) posY));
-					dw.writeInteger(Float.floatToIntBits((float) posZ));
-					dw.writeInteger(Float.floatToIntBits(rotationYaw));
-					dw.writeInteger(Float.floatToIntBits((float) motionX));
-					dw.writeInteger(Float.floatToIntBits((float) motionY));
-					dw.writeInteger(Float.floatToIntBits((float) motionZ));
-					PacketHandler.sendPacketToServer(dw);
+					PacketHandler.sendToServer(new PacketStreamable(this, getEntityId()));
 				}
 			} else {
 				delay++;
 			}
 		}
 	}
-
-	public void onMovementPacket(DataReader dr) {
+	
+	@Override
+	public void readData(DataReader data) throws IOException {
 		if (delay >= SYNC_DELAY - ALLOWED_SYNC_DELAY_JITTER) {
 			delay = 0;
-			double tempX = Float.intBitsToFloat(dr.readSignedInteger());
-			double tempY = Float.intBitsToFloat(dr.readSignedInteger());
-			double tempZ = Float.intBitsToFloat(dr.readSignedInteger());
+			double tempX = Float.intBitsToFloat(data.readInt());
+			double tempY = Float.intBitsToFloat(data.readInt());
+			double tempZ = Float.intBitsToFloat(data.readInt());
 			tempX = restrictMovement(tempX, posX, MAX_MOVEMENT);
 			tempY = restrictMovement(tempY, posY, MAX_MOVEMENT);
 			tempZ = restrictMovement(tempZ, posZ, MAX_MOVEMENT);
 			move(MoverType.SELF, tempX - posX, tempY - posY, tempZ - posZ);
-			rotationYaw = Float.intBitsToFloat(dr.readSignedInteger());
-			motionX = restrictMovement(Float.intBitsToFloat(dr.readSignedInteger()), motionX, MAX_SPEED);
-			motionY = restrictMovement(Float.intBitsToFloat(dr.readSignedInteger()), motionY, MAX_SPEED);
-			motionZ = restrictMovement(Float.intBitsToFloat(dr.readSignedInteger()), motionZ, MAX_SPEED);
+			rotationYaw = Float.intBitsToFloat(data.readInt());
+			motionX = restrictMovement(Float.intBitsToFloat(data.readInt()), motionX, MAX_SPEED);
+			motionY = restrictMovement(Float.intBitsToFloat(data.readInt()), motionY, MAX_SPEED);
+			motionZ = restrictMovement(Float.intBitsToFloat(data.readInt()), motionZ, MAX_SPEED);
 		}
+	}
+	
+	@Override
+	public void writeData(DataWriter data) throws IOException {
+		data.writeInt(Float.floatToIntBits((float) posX));
+		data.writeInt(Float.floatToIntBits((float) posY));
+		data.writeInt(Float.floatToIntBits((float) posZ));
+		data.writeInt(Float.floatToIntBits(rotationYaw));
+		data.writeInt(Float.floatToIntBits((float) motionX));
+		data.writeInt(Float.floatToIntBits((float) motionY));
+		data.writeInt(Float.floatToIntBits((float) motionZ));
 	}
 
 	private double restrictMovement(double target, double source, double maxDifference) {

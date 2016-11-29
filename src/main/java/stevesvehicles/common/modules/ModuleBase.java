@@ -1089,21 +1089,11 @@ public abstract class ModuleBase {
 	}
 
 	protected void sendPacketToServer(DataWriter dw) {
-		PacketHandler.sendPacketToServer(dw);
+		PacketHandler.sendCustomToServer(dw);
 	}
 
 	protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {
 		PacketHandler.sendPacketToPlayer(dw, player);
-	}
-
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
-	}
-
-	public static void delegateReceivedPacket(VehicleBase vehicle, DataReader dr, EntityPlayer player) throws IOException {
-		int id = dr.readByte();
-		if (id >= 0 && id < vehicle.getModules().size()) {
-			vehicle.getModules().get(id).receivePacket(dr, player);
-		}
 	}
 
 	/**

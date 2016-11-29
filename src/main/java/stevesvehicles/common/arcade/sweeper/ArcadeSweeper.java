@@ -188,7 +188,7 @@ public class ArcadeSweeper extends ArcadeGame {
 					DataWriter dw = getDataWriter();
 					dw.writeByte(currentGameType);
 					dw.writeShort(val);
-					sendPacketToServer(dw);
+					sendCustomToServer(dw);
 				}
 			} else {
 				if (result == Tile.TileOpenResult.BLOB) {

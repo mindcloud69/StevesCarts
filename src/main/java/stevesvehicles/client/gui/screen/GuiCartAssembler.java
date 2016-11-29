@@ -627,7 +627,7 @@ public class GuiCartAssembler extends GuiBase {
 		if (inRect(x, y, ASSEMBLE_RECT)) {
 			DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
 			dw.writeByte(0);
-			PacketHandler.sendPacketToServer(dw);
+			PacketHandler.sendCustomToServer(dw);
 		} else if (inRect(x, y, BLACK_BACKGROUND)) {
 			if (assembler.selectedTab == 0) {
 				if (button == 0) {
@@ -660,7 +660,7 @@ public class GuiCartAssembler extends GuiBase {
 							DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
 							dw.writeByte(2);
 							dw.writeShort(moduleId);
-							PacketHandler.sendPacketToServer(dw);
+							PacketHandler.sendCustomToServer(dw);
 						}
 					}
 				}
@@ -709,7 +709,7 @@ public class GuiCartAssembler extends GuiBase {
 						DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
 						dw.writeByte(1);
 						dw.writeByte(i);
-						PacketHandler.sendPacketToServer(dw);
+						PacketHandler.sendCustomToServer(dw);
 					}
 				}
 			}

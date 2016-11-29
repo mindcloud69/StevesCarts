@@ -32,7 +32,7 @@ public class DataWriter extends DataOutputStream {
 		}
 	}
 
-	public void writeItemStacks(ItemStack[] itemStacks) throws IOException {
+	public void writeItemStacks(ItemStack... itemStacks) throws IOException {
 		writeVarInt(itemStacks.length);
 		for (ItemStack itemstack : itemStacks) {
 			writeItemStack(itemstack);
@@ -75,13 +75,6 @@ public class DataWriter extends DataOutputStream {
 		}
 	}
 
-	/**
-	 * Writes a compressed int to the buffer. The smallest number of bytes to
-	 * fit the passed int will be written. Of each such byte only 7 bits will be
-	 * used to describe the actual value since its most significant bit dictates
-	 * whether the next byte is part of that same int. Micro-optimization for
-	 * int values that are expected to have values below 128.
-	 */
 	public void writeVarInt(int varInt) throws IOException {
 		while ((varInt & -128) != 0) {
 			writeByte(varInt & 127 | 128);

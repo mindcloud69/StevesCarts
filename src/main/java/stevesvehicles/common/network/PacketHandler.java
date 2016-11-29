@@ -10,6 +10,8 @@ import java.util.Map;
 import com.google.common.collect.MultimapBuilder.SortedSetMultimapBuilder;
 
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
@@ -45,9 +47,11 @@ import stevesvehicles.common.container.ContainerBuoy;
 import stevesvehicles.common.container.ContainerVehicle;
 import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.modules.ModuleBase;
+import stevesvehicles.common.network.packets.CustomPacket;
 import stevesvehicles.common.network.packets.PacketBuoy;
 import stevesvehicles.common.network.packets.PacketCartAssembler;
 import stevesvehicles.common.network.packets.PacketGuiData;
+import stevesvehicles.common.network.packets.PacketVehicle;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.packets.IPacket;
@@ -70,8 +74,10 @@ public class PacketHandler {
 		registerClientPacket(new PacketCartAssembler());
 		registerClientPacket(new PacketBuoy());
 		registerClientPacket(new PacketGuiData());
+		registerClientPacket(new PacketVehicle());
 		//Server Packets
 		registerServerPacket(new PacketBuoy());
+		registerServerPacket(new PacketVehicle());
 	}
 
 	public void registerProvider(IPacketProvider provider){
@@ -86,14 +92,7 @@ public class PacketHandler {
 		try {
 			DataReader dr = new DataReader(event.getPacket().payload());
 			PacketType type = dr.readEnum(PacketType.class);
-			if (type == PacketType.VEHICLE) {
-				int entityId = dr.readInteger();
-				World world = player.world;
-				VehicleBase vehicle = getVehicle(entityId, world);
-				if (vehicle != null) {
-					receivePacketAtVehicle(vehicle, dr, player);
-				}
-			} else if (type == PacketType.REGISTRY) {
+			if (type == PacketType.REGISTRY) {
 				RegistrySynchronizer.onPacket(dr);
 			}
 		} catch (Exception ex) {
@@ -111,26 +110,12 @@ public class PacketHandler {
 			World world = player.world;
 			if (type == PacketType.BLOCK || type == PacketType.VEHICLE || type == PacketType.BUOY) {
 				Container container = player.openContainer;
-				if (container instanceof ContainerPlayer) {
-					int entityId = dr.readInteger();
-					VehicleBase vehicle = getVehicle(entityId, world);
-					if (vehicle != null) {
-						receivePacketAtVehicle(vehicle, dr, player);
-					}
-				} else if (container instanceof ContainerVehicle) {
-					ContainerVehicle containerVehicle = (ContainerVehicle) container;
-					VehicleBase vehicle = containerVehicle.getVehicle();
-					receivePacketAtVehicle(vehicle, dr, player);
-				} else if (container instanceof ContainerBase) {
+				if (container instanceof ContainerBase) {
 					ContainerBase containerBase = (ContainerBase) container;
 					TileEntityBase base = containerBase.getTileEntity();
 					if (base != null) {
 						base.receivePacket(dr, player);
 					}
-				}
-			} else if (type == PacketType.BOAT_MOVEMENT) {
-				if (player.getRidingEntity() instanceof EntityModularBoat) {
-					((EntityModularBoat) player.getRidingEntity()).onMovementPacket(dr);
 				}
 			}
 		} catch (Exception ex) {
@@ -139,11 +124,7 @@ public class PacketHandler {
 		}
 	}
 
-	private void receivePacketAtVehicle(VehicleBase vehicle, DataReader dr, EntityPlayer player) {
-		ModuleBase.delegateReceivedPacket(vehicle, dr, player);
-	}
-
-	private VehicleBase getVehicle(int id, World world) {
+	public static VehicleBase getVehicle(int id, World world) {
 		Entity entity = world.getEntityByID(id);
 		if (entity instanceof IVehicleEntity) {
 			return ((IVehicleEntity) entity).getVehicle();
@@ -157,8 +138,10 @@ public class PacketHandler {
 		return dw;
 	}
 
-	public static void sendPacketToServer(DataWriter dw) {
-		dw.sendToServer();
+	@SideOnly(Side.CLIENT)
+	public static void sendToServer(DataWriter dw) {
+		ByteBufOutputStream buf = new ByteBufOutputStream(Unpooled.buffer());
+		sendToServer(new CustomPacket(buf));
 	}
 
 	public static void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {

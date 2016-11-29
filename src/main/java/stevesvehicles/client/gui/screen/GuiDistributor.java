@@ -172,7 +172,7 @@ public class GuiDistributor extends GuiBase {
 						dw.writeByte(activeId);
 						dw.writeByte(side.getId());
 						dw.writeBoolean(true);
-						PacketHandler.sendPacketToServer(dw);
+						PacketHandler.sendCustomToServer(dw);
 						break;
 					}
 				}
@@ -192,7 +192,7 @@ public class GuiDistributor extends GuiBase {
 									dw.writeByte(activeId);
 									dw.writeByte(side.getId());
 									dw.writeBoolean(false);
-									PacketHandler.sendPacketToServer(dw);
+									PacketHandler.sendCustomToServer(dw);
 									break;
 								}
 							}

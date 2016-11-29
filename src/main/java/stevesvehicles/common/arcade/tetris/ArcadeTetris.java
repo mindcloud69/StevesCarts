@@ -197,7 +197,7 @@ public class ArcadeTetris extends ArcadeGame {
 			int val = score / 100;
 			DataWriter dw = getDataWriter();
 			dw.writeShort(val);
-			sendPacketToServer(dw);
+			sendCustomToServer(dw);
 			newHighScore = true;
 		}
 	}

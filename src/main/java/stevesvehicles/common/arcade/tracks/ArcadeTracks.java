@@ -434,7 +434,7 @@ public class ArcadeTracks extends ArcadeGame {
 		DataWriter dw = getDataWriter();
 		dw.writeByte(story);
 		dw.writeByte(level);
-		sendPacketToServer(dw);
+		sendCustomToServer(dw);
 	}
 
 	public int[] getMenuArea() {

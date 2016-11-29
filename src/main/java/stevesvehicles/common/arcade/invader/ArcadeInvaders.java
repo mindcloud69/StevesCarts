@@ -267,7 +267,7 @@ public class ArcadeInvaders extends ArcadeGame {
 				int val = score;
 				DataWriter dw = getDataWriter();
 				dw.writeShort(val);
-				sendPacketToServer(dw);
+				sendCustomToServer(dw);
 			}
 		}
 

@@ -191,7 +191,7 @@ public abstract class ArcadeGame {
 	}
 
 	protected void sendPacketToServer(DataWriter dw) {
-		PacketHandler.sendPacketToServer(dw);
+		PacketHandler.sendCustomToServer(dw);
 	}
 
 	protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {

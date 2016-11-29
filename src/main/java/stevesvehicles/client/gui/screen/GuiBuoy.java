@@ -677,6 +677,6 @@ public class GuiBuoy extends GuiBase {
 		int entityId = buoy != null && !buoy.isDead ? buoy.getEntityId() : -1;
 		dw.writeInteger(entityId);
 		dw.writeBoolean(next);
-		PacketHandler.sendPacketToServer(dw);
+		PacketHandler.sendCustomToServer(dw);
 	}
 }

@@ -1,6 +1,8 @@
 package stevesvehicles.common.blocks.tileentitys;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -13,6 +15,8 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
@@ -21,9 +25,11 @@ import stevesvehicles.common.blocks.tileentitys.detector.LogicObjectOperator;
 import stevesvehicles.common.blocks.tileentitys.detector.OperatorObject;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerDetector;
+import stevesvehicles.common.network.PacketHandler;
+import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public class TileEntityDetector extends TileEntityBase implements ITickable {
+public class TileEntityDetector extends TileEntityBase implements ITickable, IStreamable {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
@@ -95,18 +101,39 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 	public DetectorType getType() {
 		return world.getBlockState(pos).getValue(DetectorType.SATE);
 	}
-
+	
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void writeData(DataWriter data) throws IOException {
+		LogicObject parent = mainObj.getParent();
+		if (parent != null) {
+			List<LogicObject> objects = new ArrayList<>();
+			mainObj.fillTree(objects, parent);
+			data.writeBoolean(true);
+			data.writeByte(objects.size());
+			for (LogicObject object : objects) {
+				data.writeByte(object.getParent().getId());
+				data.writeByte(object.getType());
+				data.writeShort(object.getData());
+			}
+			PacketHandler.sendCustomToServer(data);
+		} else {
+			data.writeBoolean(false);
+			data.writeByte(mainObj.getId());
+			PacketHandler.sendCustomToServer(data);
+		}
+	}
+	
+	@Override
+	public void readData(DataReader data, EntityPlayer player) throws IOException {
 		// add object
-		if (dr.readBoolean()) {
-			int count = dr.readByte();
+		if (data.readBoolean()) {
+			int count = data.readByte();
 			for (int i = 0; i < count; i++) {
-				createObject(dr);
+				createObject(data);
 			}
 			// remove object
 		} else {
-			removeObject(mainObj, dr.readByte());
+			removeObject(mainObj, data.readByte());
 		}
 	}
 

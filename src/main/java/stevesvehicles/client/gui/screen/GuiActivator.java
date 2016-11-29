@@ -90,7 +90,7 @@ public class GuiActivator extends GuiBase {
 				DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
 				dw.writeBoolean(button == 0);
 				dw.writeByte(i);
-				PacketHandler.sendPacketToServer(dw);
+				PacketHandler.sendCustomToServer(dw);
 			}
 		}
 	}
