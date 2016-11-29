@@ -1,5 +1,6 @@
 package stevesvehicles.common.blocks.tileentitys;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +10,8 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.gui.screen.GuiActivator;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.localization.entry.block.LocalizationToggler;
@@ -20,7 +23,6 @@ import stevesvehicles.common.modules.common.addon.ModuleInvisible;
 import stevesvehicles.common.modules.common.addon.ModuleShield;
 import stevesvehicles.common.modules.common.addon.chunk.ModuleChunkLoader;
 import stevesvehicles.common.modules.common.attachment.ModuleCage;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 /**
@@ -94,7 +96,7 @@ public class TileEntityActivator extends TileEntityBase {
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		boolean leftClick = dr.readBoolean();
 		int optionId = dr.readByte();
 		if (optionId >= 0 && optionId < options.size()) {
@@ -110,23 +112,30 @@ public class TileEntityActivator extends TileEntityBase {
 	}
 
 	@Override
-	public void checkGuiData(Container con, IContainerListener crafting) {
+	public void updateGuiData(DataWriter writer, Container container) throws IOException {
 		for (int i = 0; i < options.size(); i++) {
 			int option = options.get(i).getOption();
-			int lastOption = ((ContainerActivator) con).lastOptions.get(i);
-			// if an update has been made, send the new data
-			if (option != lastOption) {
-				updateGuiData(con, crafting, i, (short) option);
-				((ContainerActivator) con).lastOptions.set(i, option);
-			}
+			writer.writeInt(option);
+			((ContainerActivator) container).lastOptions.set(i, option);
 		}
 	}
 
 	@Override
-	public void receiveGuiData(int id, short data) {
-		// if it's a valid id, update the option associated with that id
-		if (id >= 0 && id < options.size()) {
-			options.get(id).setOption(data);
+	public boolean checkGuiData(Container con) {
+		for (int i = 0; i < options.size(); i++) {
+			int option = options.get(i).getOption();
+			int lastOption = ((ContainerActivator) con).lastOptions.get(i);
+			if (option != lastOption) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void receiveGuiData(DataReader reader) throws IOException {
+		for(TogglerOption option : options){
+			option.setOption(reader.readInt());
 		}
 	}
 

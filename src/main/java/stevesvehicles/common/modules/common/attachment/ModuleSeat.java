@@ -1,15 +1,17 @@
 package stevesvehicles.common.modules.common.attachment;
 
+import java.io.IOException;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationTravel;
 import stevesvehicles.common.modules.cart.attachment.ModuleAttachment;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleSeat extends ModuleAttachment {
@@ -85,7 +87,7 @@ public class ModuleSeat extends ModuleAttachment {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, BUTTON_RECT)) {
 				sendPacketToServer(getDataWriter());
@@ -94,7 +96,7 @@ public class ModuleSeat extends ModuleAttachment {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		if (player != null) {
 			if (getVehicle().getEntity().getControllingPassenger() == null) {
 				player.startRiding(getVehicle().getEntity());

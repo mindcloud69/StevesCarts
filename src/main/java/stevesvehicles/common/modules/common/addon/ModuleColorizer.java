@@ -1,16 +1,18 @@
 package stevesvehicles.common.modules.common.addon;
 
+import java.io.IOException;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.VehicleDataSerializers;
 
@@ -108,7 +110,7 @@ public class ModuleColorizer extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			for (int i = 0; i < 3; i++) {
 				if (inRect(x, y, getMovableMarker(i)) || inRect(x, y, getArea(i))) {
@@ -120,7 +122,7 @@ public class ModuleColorizer extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (markerMoving != -1) {
 			moveMarker(x);
 		}
@@ -129,7 +131,7 @@ public class ModuleColorizer extends ModuleAddon {
 		}
 	}
 
-	private void moveMarker(int x) {
+	private void moveMarker(int x) throws IOException {
 		int tempColor = (int) ((x - MARKER_OFFSET_X) / (SCROLL_WIDTH / 255F));
 		if (tempColor < 0) {
 			tempColor = 0;
@@ -154,7 +156,7 @@ public class ModuleColorizer extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
 		if (id >= 0 && id < 3) {
 			setColorVal(id, dr.readByte());

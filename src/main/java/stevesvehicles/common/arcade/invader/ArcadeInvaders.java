@@ -14,8 +14,6 @@ import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.arcade.LocalizationInvaders;
 import stevesvehicles.common.arcade.ArcadeGame;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ArcadeInvaders extends ArcadeGame {

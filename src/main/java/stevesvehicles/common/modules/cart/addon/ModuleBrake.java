@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.cart.addon;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +10,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -17,8 +20,6 @@ import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartTravel;
 import stevesvehicles.common.modules.cart.ILeverModule;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleBrake extends ModuleAddon implements ILeverModule {
@@ -106,7 +107,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, START_STOP_RECT)) {
 				DataWriter dw = getDataWriter();
@@ -121,7 +122,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		if (dr.readBoolean()) {
 			setForceStopping(!isForceStopping());
 		} else {

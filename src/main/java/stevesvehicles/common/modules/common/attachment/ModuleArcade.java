@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.common.attachment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationTravel;
@@ -19,8 +22,6 @@ import stevesvehicles.common.arcade.sweeper.ArcadeSweeper;
 import stevesvehicles.common.arcade.tetris.ArcadeTetris;
 import stevesvehicles.common.arcade.tracks.ArcadeTracks;
 import stevesvehicles.common.modules.cart.attachment.ModuleAttachment;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleArcade extends ModuleAttachment {
@@ -273,7 +274,7 @@ public class ModuleArcade extends ModuleAttachment {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		ArcadeGame.delegateReceivedPacket(games, dr, player);
 	}
 
@@ -305,7 +306,7 @@ public class ModuleArcade extends ModuleAttachment {
 	}
 
 	@Override
-	public DataWriter getDataWriter() {
+	public DataWriter getDataWriter() throws IOException {
 		return super.getDataWriter();
 	}
 }

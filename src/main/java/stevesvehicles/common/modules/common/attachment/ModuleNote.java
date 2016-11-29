@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.common.attachment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
@@ -12,13 +13,13 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
 import stevesvehicles.common.modules.cart.attachment.ModuleAttachment;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleNote extends ModuleAttachment {
@@ -172,10 +173,14 @@ public class ModuleNote extends ModuleAttachment {
 					trackPacketID = 2;
 				}
 				if (trackPacketID != -1) {
-					DataWriter dw = getDataWriter(PacketId.GLOBAL);
-					dw.writeByte(i);
-					dw.writeByte(trackPacketID);
-					sendPacketToServer(dw);
+					try{
+						DataWriter dw = getDataWriter(PacketId.GLOBAL);
+						dw.writeByte(i);
+						dw.writeByte(trackPacketID);
+						sendPacketToServer(dw);
+					}catch(IOException e){
+						e.printStackTrace();
+					}
 				}
 			}
 			if (!tooLongTrack) {
@@ -193,23 +198,27 @@ public class ModuleNote extends ModuleAttachment {
 			}
 			generateScrollX();
 			generateScrollY();
-			if (createTrack.down) {
-				createTrack.down = false;
-				DataWriter dw = getDataWriter(PacketId.GLOBAL);
-				dw.writeByte(0);
-				sendPacketToServer(dw);
-			}
-			if (removeTrack.down) {
-				removeTrack.down = false;
-				DataWriter dw = getDataWriter(PacketId.GLOBAL);
-				dw.writeByte(1);
-				sendPacketToServer(dw);
-			}
-			if (speedButton.down) {
-				speedButton.down = false;
-				DataWriter dw = getDataWriter(PacketId.GLOBAL);
-				dw.writeByte(2);
-				sendPacketToServer(dw);
+			try{
+				if (createTrack.down) {
+					createTrack.down = false;
+					DataWriter dw = getDataWriter(PacketId.GLOBAL);
+					dw.writeByte(0);
+					sendPacketToServer(dw);
+				}
+				if (removeTrack.down) {
+					removeTrack.down = false;
+					DataWriter dw = getDataWriter(PacketId.GLOBAL);
+					dw.writeByte(1);
+					sendPacketToServer(dw);
+				}
+				if (speedButton.down) {
+					speedButton.down = false;
+					DataWriter dw = getDataWriter(PacketId.GLOBAL);
+					dw.writeByte(2);
+					sendPacketToServer(dw);
+				}
+			}catch(IOException e){
+				e.printStackTrace();
 			}
 			for (int i = 0; i < instrumentButtons.size(); i++) {
 				if (instrumentButtons.get(i).down && i != currentInstrument) {
@@ -670,7 +679,7 @@ public class ModuleNote extends ModuleAttachment {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int buttonId) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int buttonId) throws IOException {
 		if (buttonId == 0) {
 			for (Button button : buttons) {
 				button.clicked(x, y);
@@ -779,9 +788,9 @@ public class ModuleNote extends ModuleAttachment {
 		updateDw(PLAYING, val);
 	}
 
-	private DataWriter getDataWriter(PacketId id) {
+	private DataWriter getDataWriter(PacketId id) throws IOException {
 		DataWriter dw = getDataWriter();
-		dw.writeEnum(id);
+		dw.writeEnum(id, PacketId.values());
 		return dw;
 	}
 
@@ -790,9 +799,9 @@ public class ModuleNote extends ModuleAttachment {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		int trackID;
-		PacketId id = dr.readEnum(PacketId.class);
+		PacketId id = dr.readEnum(PacketId.values());
 		switch (id) {
 			case GLOBAL:
 				int subId = dr.readByte();

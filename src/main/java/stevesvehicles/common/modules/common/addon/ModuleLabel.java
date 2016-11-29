@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.common.addon;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +10,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
@@ -16,8 +19,6 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotChest;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.common.engine.ModuleEngine;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleLabel extends ModuleAddon {
@@ -179,7 +180,7 @@ public class ModuleLabel extends ModuleAddon {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		for (int i = 0; i < labels.size(); i++) {
 			int[] rect = getBoxArea(i);
 			if (inRect(x, y, rect)) {
@@ -192,7 +193,7 @@ public class ModuleLabel extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		toggleActive(dr.readByte());
 	}
 

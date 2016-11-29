@@ -19,8 +19,6 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.common.entitys.buoy.EntityBuoy;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;

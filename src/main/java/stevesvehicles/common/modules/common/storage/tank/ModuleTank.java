@@ -1,5 +1,7 @@
 package stevesvehicles.common.modules.common.storage.tank;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,6 +15,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.ColorHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
@@ -21,8 +25,6 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotLiquidInput;
 import stevesvehicles.common.container.slots.SlotLiquidOutput;
 import stevesvehicles.common.modules.common.storage.ModuleStorage;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.tanks.ITankHolder;
 import stevesvehicles.common.tanks.Tank;
 import stevesvehicles.common.vehicles.VehicleBase;
@@ -246,7 +248,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		if ((getFluid() != null
 				|| tank.isLocked() /*
 				 * just to allow the user to unlock it if
@@ -278,7 +280,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (inRect(x, y, TANK_BOUNDS)) {
 			DataWriter dw = getDataWriter();
 			dw.writeBoolean(button == 0);

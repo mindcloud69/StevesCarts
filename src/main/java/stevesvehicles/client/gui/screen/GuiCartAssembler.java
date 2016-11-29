@@ -30,7 +30,6 @@ import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.ModuleDataHull;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleType;

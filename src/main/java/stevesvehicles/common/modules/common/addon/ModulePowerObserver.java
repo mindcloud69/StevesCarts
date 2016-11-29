@@ -1,17 +1,19 @@
 package stevesvehicles.common.modules.common.addon;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationUtility;
 import stevesvehicles.common.modules.common.engine.ModuleEngine;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModulePowerObserver extends ModuleAddon {
@@ -173,9 +175,9 @@ public class ModulePowerObserver extends ModuleAddon {
 	private short[] areaData = new short[4];
 	private short[] powerLevel = new short[4];
 
-	private DataWriter getDataWriter(PacketId id) {
+	private DataWriter getDataWriter(PacketId id) throws IOException {
 		DataWriter dw = getDataWriter();
-		dw.writeEnum(id);
+		dw.writeEnum(id, PacketId.values());
 		return dw;
 	}
 
@@ -184,8 +186,8 @@ public class ModulePowerObserver extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
-		PacketId id = dr.readEnum(PacketId.class);
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+		PacketId id = dr.readEnum(PacketId.values());
 		int area = dr.readByte();
 		int engine;
 		switch (id) {
@@ -218,7 +220,7 @@ public class ModulePowerObserver extends ModuleAddon {
 	private int currentEngine = -1;
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button != -1) {
 			if (button == 0) {
 				for (int i = 0; i < 4; i++) {
@@ -237,7 +239,7 @@ public class ModulePowerObserver extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		for (int i = 0; i < 4; i++) {
 			int[] rect = getPowerRect(i);
 			if (inRect(x, y, rect)) {

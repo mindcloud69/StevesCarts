@@ -14,7 +14,7 @@ public class BlockMetalStorage extends Block implements IBlockBase {
 		setResistance(10.0F);
 		setSoundType(SoundType.METAL);
 	}
-	
+
 	@Override
 	public int damageDropped(IBlockState state) {
 		return getMetaFromState(state);

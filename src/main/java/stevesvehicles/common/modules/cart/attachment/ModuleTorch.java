@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.cart.attachment;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -16,6 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
@@ -26,8 +29,6 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotTorch;
 import stevesvehicles.common.modules.ISuppliesModule;
 import stevesvehicles.common.modules.cart.ModuleWorker;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
@@ -182,7 +183,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		lightLimit = dr.readByte();
 		if (lightLimit < 0) {
 			lightLimit = 0;
@@ -194,7 +195,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	boolean markerMoving = false;
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, boxRect)) {
 				generatePacket(x);
@@ -204,7 +205,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	}
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (markerMoving) {
 			generatePacket(x);
 		}
@@ -213,7 +214,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 		}
 	}
 
-	private void generatePacket(int x) {
+	private void generatePacket(int x) throws IOException {
 		int xInBox = x - boxRect[0];
 		int val = xInBox / 3;
 		if (val < 0) {

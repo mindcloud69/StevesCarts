@@ -14,6 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -25,6 +26,7 @@ import stevesvehicles.common.core.StevesVehicles;
 import stevesvehicles.common.core.tabs.CreativeTabLoader;
 import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.network.PacketHandler;
+import stevesvehicles.common.network.packets.PacketCartAssembler;
 import stevesvehicles.common.upgrades.Upgrade;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
@@ -40,11 +42,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 		World world = assembler.getWorld();
 		BlockPos pos = assembler.getPos();
 		if (!world.isRemote) {
-			byte[] data = new byte[] { -1, -1, -1, -1, -1, -1 };
-			for (UpgradeContainer container : assembler.getUpgrades()) {
-				data[container.getFacing().ordinal()] = (byte) UpgradeRegistry.getIdFromUpgrade(container.getUpgrade());
-			}
-			PacketHandler.sendBlockInfoToClients(world, data, pos);
+			PacketHandler.sendToNetwork(new PacketCartAssembler(assembler), pos, (WorldServer) world);
 		} else {
 			world.markBlockRangeForRenderUpdate(pos, pos);
 		}

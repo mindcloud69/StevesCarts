@@ -1,5 +1,6 @@
 package stevesvehicles.common.blocks.tileentitys;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +12,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +24,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.gui.assembler.ModuleSortMode;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoInteger;
@@ -48,7 +50,6 @@ import stevesvehicles.common.modules.datas.ModuleDataHull;
 import stevesvehicles.common.modules.datas.ModuleDataItemHandler;
 import stevesvehicles.common.modules.datas.ModuleType;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.transfer.TransferHandler;
 import stevesvehicles.common.upgrades.Upgrade;
 import stevesvehicles.common.upgrades.effects.BaseEffect;
@@ -550,7 +551,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
 		if (id == 0) {
 			// if a player clicked the assemble button, try to assemble the cart
@@ -834,55 +835,32 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	@Override
-	public void initGuiData(Container con, IContainerListener crafting) {
-		updateGuiData(con, crafting, 0, getShortFromInt(true, maxAssemblingTime));
-		updateGuiData(con, crafting, 1, getShortFromInt(false, maxAssemblingTime));
-		updateGuiData(con, crafting, 2, getShortFromInt(true, getAssemblingTime()));
-		updateGuiData(con, crafting, 3, getShortFromInt(false, getAssemblingTime()));
-		updateGuiData(con, crafting, 4, (short) (isAssembling ? 1 : 0));
-		updateGuiData(con, crafting, 5, getShortFromInt(true, getFuelLevel()));
-		updateGuiData(con, crafting, 6, getShortFromInt(false, getFuelLevel()));
-	}
-
-	@Override
-	public void checkGuiData(Container container, IContainerListener crafting) {
+	public void updateGuiData(DataWriter writer, Container container) throws IOException {
+		writer.writeInt(maxAssemblingTime);
+		writer.writeInt(getAssemblingTime());
+		writer.writeBoolean(isAssembling);
+		writer.writeInt(getFuelLevel());
 		ContainerCartAssembler con = (ContainerCartAssembler) container;
-		if (con.lastMaxAssemblingTime != maxAssemblingTime) {
-			updateGuiData(con, crafting, 0, getShortFromInt(true, maxAssemblingTime));
-			updateGuiData(con, crafting, 1, getShortFromInt(false, maxAssemblingTime));
-			con.lastMaxAssemblingTime = maxAssemblingTime;
-		}
-		if (con.lastIsAssembling != isAssembling) {
-			updateGuiData(con, crafting, 4, (short) (isAssembling ? 1 : 0));
-			con.lastIsAssembling = isAssembling;
-		}
-		if (con.lastFuelLevel != getFuelLevel()) {
-			updateGuiData(con, crafting, 5, getShortFromInt(true, getFuelLevel()));
-			updateGuiData(con, crafting, 6, getShortFromInt(false, getFuelLevel()));
-			con.lastFuelLevel = getFuelLevel();
-		}
+		con.lastMaxAssemblingTime = maxAssemblingTime;
+		con.lastIsAssembling = isAssembling;
+		con.lastFuelLevel = getFuelLevel();
 	}
 
 	@Override
-	public void receiveGuiData(int id, short data) {
-		if (id == 0) {
-			maxAssemblingTime = getIntFromShort(true, maxAssemblingTime, data);
-		} else if (id == 1) {
-			maxAssemblingTime = getIntFromShort(false, maxAssemblingTime, data);
-		} else if (id == 2) {
-			setAssemblingTime(getIntFromShort(true, getAssemblingTime(), data));
-		} else if (id == 3) {
-			setAssemblingTime(getIntFromShort(false, getAssemblingTime(), data));
-		} else if (id == 4) {
-			isAssembling = data != 0;
-			if (!isAssembling) {
-				setAssemblingTime(0);
-			}
-		} else if (id == 5) {
-			setFuelLevel(getIntFromShort(true, getFuelLevel(), data));
-		} else if (id == 6) {
-			setFuelLevel(getIntFromShort(false, getFuelLevel(), data));
+	public boolean checkGuiData(Container container) {
+		ContainerCartAssembler con = (ContainerCartAssembler) container;
+		return con.lastMaxAssemblingTime != maxAssemblingTime || con.lastIsAssembling != isAssembling || con.lastFuelLevel != getFuelLevel();
+	}
+
+	@Override
+	public void receiveGuiData(DataReader reader) throws IOException {
+		maxAssemblingTime = reader.readInt();
+		setAssemblingTime(reader.readInt());
+		isAssembling = reader.readBoolean();
+		if (!isAssembling) {
+			setAssemblingTime(0);
 		}
+		setFuelLevel(reader.readInt());
 	}
 
 	private void invalidateAll() {

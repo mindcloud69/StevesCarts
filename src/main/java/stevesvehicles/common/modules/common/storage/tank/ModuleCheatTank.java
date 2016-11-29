@@ -1,10 +1,12 @@
 package stevesvehicles.common.modules.common.storage.tank;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.ColorHelper;
 import stevesvehicles.client.localization.entry.module.LocalizationTank;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleCheatTank extends ModuleTank {
@@ -36,7 +38,7 @@ public class ModuleCheatTank extends ModuleTank {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		int button = dr.readBoolean() ? 0 : 1;
 		boolean isShift = dr.readBoolean();
 		if (button != 0) {

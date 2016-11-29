@@ -26,7 +26,6 @@ import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSetting;
 import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSide;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerDistributor;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.tanks.Tank;
 
 public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, ITickable {

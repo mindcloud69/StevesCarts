@@ -11,7 +11,6 @@ import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.localization.entry.block.LocalizationManager;
 import stevesvehicles.common.blocks.tileentitys.TileEntityManager;
 import stevesvehicles.common.container.ContainerManager;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 

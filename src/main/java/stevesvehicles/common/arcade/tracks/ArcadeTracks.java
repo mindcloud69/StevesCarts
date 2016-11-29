@@ -13,8 +13,6 @@ import stevesvehicles.client.localization.entry.arcade.LocalizationTrack;
 import stevesvehicles.common.arcade.ArcadeGame;
 import stevesvehicles.common.core.StevesVehicles;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ArcadeTracks extends ArcadeGame {

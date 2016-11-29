@@ -22,7 +22,6 @@ import stevesvehicles.client.localization.PlainText;
 import stevesvehicles.common.container.ContainerBuoy;
 import stevesvehicles.common.entitys.buoy.EntityBuoy;
 import stevesvehicles.common.modules.datas.ModuleDataPair;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;

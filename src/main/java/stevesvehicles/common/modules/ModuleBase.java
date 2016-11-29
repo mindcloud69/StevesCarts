@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +34,8 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -45,8 +48,6 @@ import stevesvehicles.common.container.ContainerVehicle;
 import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;
@@ -948,9 +949,10 @@ public abstract class ModuleBase {
 	 *            The y coordinate of the mouse
 	 * @param button
 	 *            The button that was pressed on the mouse
+	 * @throws IOException 
 	 */
 	@SideOnly(Side.CLIENT)
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 	}
 
 	/**
@@ -965,9 +967,10 @@ public abstract class ModuleBase {
 	 * @param button
 	 *            The button that was released, or -1 if the cursor is just
 	 *            being moved
+	 * @throws IOException 
 	 */
 	@SideOnly(Side.CLIENT)
-	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) throws IOException {
 	}
 
 	/**
@@ -1072,16 +1075,16 @@ public abstract class ModuleBase {
 		return false;
 	}
 
-	protected DataWriter getDataWriter(boolean hasInterfaceOpen) {
+	protected DataWriter getDataWriter(boolean hasInterfaceOpen) throws IOException {
 		DataWriter dw = PacketHandler.getDataWriter(PacketType.VEHICLE);
 		if (!hasInterfaceOpen) {
-			dw.writeInteger(getVehicle().getEntity().getEntityId());
+			dw.writeInt(getVehicle().getEntity().getEntityId());
 		}
 		dw.writeByte(getPositionId());
 		return dw;
 	}
 
-	protected DataWriter getDataWriter() {
+	protected DataWriter getDataWriter() throws IOException {
 		return getDataWriter(true);
 	}
 
@@ -1093,10 +1096,10 @@ public abstract class ModuleBase {
 		PacketHandler.sendPacketToPlayer(dw, player);
 	}
 
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 	}
 
-	public static void delegateReceivedPacket(VehicleBase vehicle, DataReader dr, EntityPlayer player) {
+	public static void delegateReceivedPacket(VehicleBase vehicle, DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
 		if (id >= 0 && id < vehicle.getModules().size()) {
 			vehicle.getModules().get(id).receivePacket(dr, player);

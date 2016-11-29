@@ -3,6 +3,8 @@ package stevesvehicles.api;
 import stevesvehicles.api.modules.container.IModuleContainer;
 import stevesvehicles.api.modules.handlers.IContentHandlerFactory;
 import stevesvehicles.api.modules.handlers.ModuleHandlerType;
+import stevesvehicles.api.network.packets.IPacketClient;
+import stevesvehicles.api.network.packets.IPacketServer;
 
 public interface ISVRegistry {
 	void registerItemContainer(IModuleContainer container);
@@ -16,4 +18,9 @@ public interface ISVRegistry {
 	 * Register a IContentHandlerFactory.
 	 */
 	void registerContentFactory(Class contentClass, IContentHandlerFactory factory);
+
+	void registerClientPackets(IPacketClient... packets);
+
+	void registerServerPackets(IPacketServer... packets);
+
 }

@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.cart.tool;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -7,6 +8,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -20,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import stevesvehicles.client.gui.screen.GuiVehicle;
@@ -33,7 +36,6 @@ import stevesvehicles.common.modules.cart.addon.ModuleIncinerator;
 import stevesvehicles.common.modules.cart.addon.ModuleLiquidSensors;
 import stevesvehicles.common.modules.cart.addon.ModuleOreTracker;
 import stevesvehicles.common.modules.common.storage.chest.ModuleChest;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
@@ -463,7 +465,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, TOGGLE_BOX_RECT)) {
 				sendPacketToServer(getDataWriter());

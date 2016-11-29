@@ -1,5 +1,7 @@
 package stevesvehicles.common.modules.cart.attachment;
 
+import java.io.IOException;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -17,13 +19,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartTravel;
 import stevesvehicles.common.modules.cart.ILeverModule;
 import stevesvehicles.common.modules.common.engine.ModuleEngine;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 public class ModuleAdvancedControl extends ModuleAttachment implements ILeverModule {
@@ -157,9 +159,9 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 		}
 	}
 
-	private DataWriter getDataWriter(PacketId id, boolean hasInterfaceOpen) {
+	private DataWriter getDataWriter(PacketId id, boolean hasInterfaceOpen) throws IOException {
 		DataWriter dw = getDataWriter(hasInterfaceOpen);
-		dw.writeEnum(id);
+		dw.writeEnum(id, PacketId.values());
 		return dw;
 	}
 
@@ -168,13 +170,13 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
-		PacketId id = dr.readEnum(PacketId.class);
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException{
+		PacketId id = dr.readEnum(PacketId.values());
 		switch (id) {
 			case ENGINE:
 				engineInformation = new int[getVehicle().getEngines().size()];
 				for (int i = 0; i < engineInformation.length; i++) {
-					engineInformation[i] = dr.readInteger();
+					engineInformation[i] = dr.readInt();
 				}
 				break;
 			case KEY:
@@ -185,8 +187,8 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 				}
 				break;
 			case DISTANCE:
-				odo = dr.readInteger();
-				trip = dr.readInteger();
+				odo = dr.readInt();
+				trip = dr.readInt();
 				break;
 			case RESET:
 				trip = 0;
@@ -292,22 +294,26 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	}
 
 	private void encodeKeys() {
-		Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
-		if (riddenByEntity instanceof EntityPlayer && riddenByEntity == getClientPlayer()) {
-			net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getMinecraft();
-			byte oldVal = keyInformation;
-			keyInformation = 0;
-			keyInformation |= (byte) ((minecraft.gameSettings.keyBindForward.isKeyDown() ? 1 : 0));
-			keyInformation |= (byte) ((minecraft.gameSettings.keyBindLeft.isKeyDown() ? 1 : 0) << 1);
-			keyInformation |= (byte) ((minecraft.gameSettings.keyBindRight.isKeyDown() ? 1 : 0) << 2);
-			keyInformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 3);
-			keyInformation |= (byte) ((minecraft.gameSettings.keyBindJump.isKeyDown() ? 1 : 0) << 4);
-			keyInformation |= (byte) ((minecraft.gameSettings.keyBindSneak.isKeyDown() ? 1 : 0) << 5);
-			if (oldVal != keyInformation) {
-				DataWriter dw = getDataWriter(PacketId.KEY, false);
-				dw.writeByte(keyInformation);
-				sendPacketToServer(dw);
+		try{
+			Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
+			if (riddenByEntity instanceof EntityPlayer && riddenByEntity == getClientPlayer()) {
+				net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getMinecraft();
+				byte oldVal = keyInformation;
+				keyInformation = 0;
+				keyInformation |= (byte) ((minecraft.gameSettings.keyBindForward.isKeyDown() ? 1 : 0));
+				keyInformation |= (byte) ((minecraft.gameSettings.keyBindLeft.isKeyDown() ? 1 : 0) << 1);
+				keyInformation |= (byte) ((minecraft.gameSettings.keyBindRight.isKeyDown() ? 1 : 0) << 2);
+				keyInformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 3);
+				keyInformation |= (byte) ((minecraft.gameSettings.keyBindJump.isKeyDown() ? 1 : 0) << 4);
+				keyInformation |= (byte) ((minecraft.gameSettings.keyBindSneak.isKeyDown() ? 1 : 0) << 5);
+				if (oldVal != keyInformation) {
+					DataWriter dw = getDataWriter(PacketId.KEY, false);
+					dw.writeByte(keyInformation);
+					sendPacketToServer(dw);
+				}
 			}
+		}catch(IOException e){
+			e.printStackTrace();
 		}
 	}
 
@@ -339,18 +345,26 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	private double trip;
 
 	private void sendTripPacket(EntityPlayer player) {
-		DataWriter dw = getDataWriter(PacketId.DISTANCE, false);
-		dw.writeInteger((int) odo);
-		dw.writeInteger((int) trip);
-		sendPacketToPlayer(dw, player);
+		try{
+			DataWriter dw = getDataWriter(PacketId.DISTANCE, false);
+			dw.writeInt((int) odo);
+			dw.writeInt((int) trip);
+			sendPacketToPlayer(dw, player);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 	private void sendEnginePacket(EntityPlayer player) {
-		DataWriter dw = getDataWriter(PacketId.ENGINE, false);
-		for (ModuleEngine moduleEngine : getVehicle().getEngines()) {
-			dw.writeInteger(moduleEngine.getTotalFuel());
+		try {
+			DataWriter dw = getDataWriter(PacketId.ENGINE, false);
+			for (ModuleEngine moduleEngine : getVehicle().getEngines()) {
+					dw.writeInt(moduleEngine.getTotalFuel());
+			}
+			sendPacketToPlayer(dw, player);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		sendPacketToPlayer(dw, player);
 	}
 
 	private void setSpeedSetting(int val) {
@@ -423,7 +437,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, BUTTON_RECT)) {
 				sendPacketToServer(getDataWriter(PacketId.RESET, true));

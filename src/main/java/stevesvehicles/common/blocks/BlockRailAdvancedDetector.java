@@ -1,7 +1,6 @@
 package stevesvehicles.common.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRailDetector;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
@@ -28,7 +27,7 @@ import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 public class BlockRailAdvancedDetector extends BlockRailSpecialBase implements IBlockBase {
 	private String unlocalizedName;
-	
+
 	public BlockRailAdvancedDetector() {
 		super(false);
 		setCreativeTab(CreativeTabLoader.blocks);

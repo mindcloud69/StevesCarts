@@ -1,16 +1,18 @@
 package stevesvehicles.common.modules.cart.addon;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartDrillUtility;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.cart.tool.ModuleDrill;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleDrillIntelligence extends ModuleAddon {
@@ -188,7 +190,7 @@ public class ModuleDrillIntelligence extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		swapActiveness(dr.readByte());
 	}
 
@@ -213,7 +215,7 @@ public class ModuleDrillIntelligence extends ModuleAddon {
 	private int lastId;
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == -1 && clicked) {
 			int w = getDrillWidth();
 			int h = getDrillHeight();
@@ -239,7 +241,7 @@ public class ModuleDrillIntelligence extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			int w = getDrillWidth();
 			int h = getDrillHeight();

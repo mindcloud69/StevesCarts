@@ -1,5 +1,7 @@
 package stevesvehicles.common.blocks.tileentitys;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -7,9 +9,10 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.common.container.ContainerBase;
-import stevesvehicles.common.network.DataReader;
 
 public abstract class TileEntityBase extends TileEntity {
 	public TileEntityBase() {
@@ -24,7 +27,7 @@ public abstract class TileEntityBase extends TileEntity {
 	 * @param player
 	 *            The player associated with the client sending the packet
 	 */
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 	}
 
 	/**
@@ -69,8 +72,13 @@ public abstract class TileEntityBase extends TileEntity {
 	 *            The container on the server for the player
 	 * @param crafting
 	 *            The player
+	 * @deprecated use updateGuiData at opening of a container
 	 */
+	@Deprecated
 	public void initGuiData(Container con, IContainerListener crafting) {
+	}
+
+	public void updateGuiData(DataWriter writer, Container container) throws IOException {
 	}
 
 	/**
@@ -78,10 +86,9 @@ public abstract class TileEntityBase extends TileEntity {
 	 * 
 	 * @param con
 	 *            The container on the server for the player
-	 * @param crafting
-	 *            The player
 	 */
-	public void checkGuiData(Container con, IContainerListener crafting) {
+	public boolean checkGuiData(Container con){
+		return false;
 	}
 
 	/**
@@ -93,7 +100,7 @@ public abstract class TileEntityBase extends TileEntity {
 	 * @param data
 	 *            The data itself
 	 */
-	public void receiveGuiData(int id, short data) {
+	public void receiveGuiData(DataReader reader) throws IOException {
 	}
 
 	/**

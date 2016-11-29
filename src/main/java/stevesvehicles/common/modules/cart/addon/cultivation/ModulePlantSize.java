@@ -1,16 +1,18 @@
 package stevesvehicles.common.modules.cart.addon.cultivation;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartCultivationUtil;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModulePlantSize extends ModuleAddon {
@@ -71,7 +73,7 @@ public class ModulePlantSize extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0 || button == 1) {
 			if (inRect(x, y, box)) {
 				DataWriter dw = getDataWriter();
@@ -82,7 +84,7 @@ public class ModulePlantSize extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		if (dr.readBoolean()) {
 			size--;
 			if (size < 1) {

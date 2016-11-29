@@ -1,5 +1,7 @@
 package stevesvehicles.common.blocks.tileentitys;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -7,9 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.common.blocks.tileentitys.manager.ManagerTransfer;
 import stevesvehicles.common.container.ContainerManager;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 public abstract class TileEntityManager extends TileEntityInventory implements ITickable {
@@ -190,7 +192,7 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 		TRANSFER_DIRECTION, RETURN_MODE, LAYOUT_TYPE, VEHICLE_PART, COLOR, AMOUNT
 	}
 
-	protected void receivePacket(PacketId id, DataReader dr) {
+	protected void receivePacket(PacketId id, DataReader dr) throws IOException {
 		int railId;
 		int difference;
 		switch (id) {
@@ -262,8 +264,8 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
-		PacketId id = dr.readEnum(PacketId.class);
+	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+		PacketId id = dr.readEnum(PacketId.values());
 		receivePacket(id, dr);
 	}
 
@@ -308,7 +310,7 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 			con.lastAmount = amountShort;
 		}
 	}
-
+	
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {

@@ -1,5 +1,6 @@
 package stevesvehicles.common.arcade;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
@@ -9,14 +10,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.sounds.SoundHandler;
 import stevesvehicles.common.core.StevesVehicles;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 
 public abstract class ArcadeGame {
@@ -178,12 +179,12 @@ public abstract class ArcadeGame {
 		}
 	}
 
-	public static void delegateReceivedPacket(ArrayList<ArcadeGame> games, DataReader dr, EntityPlayer player) {
+	public static void delegateReceivedPacket(ArrayList<ArcadeGame> games, DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
 		games.get(id).receivePacket(dr, player);
 	}
 
-	protected DataWriter getDataWriter() {
+	protected DataWriter getDataWriter() throws IOException {
 		DataWriter dw = getModule().getDataWriter();
 		dw.writeByte(this.id);
 		return dw;

@@ -1,17 +1,39 @@
 package stevesvehicles.common.network;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.collect.MultimapBuilder.SortedSetMultimapBuilder;
+
+import io.netty.buffer.ByteBufInputStream;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.server.management.PlayerChunkMap;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.common.blocks.BlockCartAssembler;
@@ -21,7 +43,17 @@ import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerBuoy;
 import stevesvehicles.common.container.ContainerVehicle;
+import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.modules.ModuleBase;
+import stevesvehicles.common.network.packets.PacketBuoy;
+import stevesvehicles.common.network.packets.PacketCartAssembler;
+import stevesvehicles.common.network.packets.PacketGuiData;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.packets.IPacket;
+import stevesvehicles.api.network.packets.IPacketClient;
+import stevesvehicles.api.network.packets.IPacketProvider;
+import stevesvehicles.api.network.packets.IPacketServer;
 import stevesvehicles.common.registries.RegistrySynchronizer;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 import stevesvehicles.common.vehicles.VehicleBase;
@@ -29,6 +61,24 @@ import stevesvehicles.common.vehicles.entitys.EntityModularBoat;
 import stevesvehicles.common.vehicles.entitys.IVehicleEntity;
 
 public class PacketHandler {
+	private static final List<IPacketProvider> PROVIDERS = new LinkedList<>();
+	int ids;
+
+	public PacketHandler() {
+		channel.register(this);
+		//Client Packets
+		registerClientPacket(new PacketCartAssembler());
+		registerClientPacket(new PacketBuoy());
+		registerClientPacket(new PacketGuiData());
+		//Server Packets
+		registerServerPacket(new PacketBuoy());
+	}
+
+	public void registerProvider(IPacketProvider provider){
+		PROVIDERS.add(ids++, provider);
+		provider.setPacketID(ids);
+	}
+
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
@@ -36,23 +86,7 @@ public class PacketHandler {
 		try {
 			DataReader dr = new DataReader(event.getPacket().payload());
 			PacketType type = dr.readEnum(PacketType.class);
-			if (type == PacketType.BLOCK) {
-				int x = dr.readSignedInteger();
-				int y = dr.readSignedInteger();
-				int z = dr.readSignedInteger();
-				World world = player.world;
-				TileEntityCartAssembler assembler = (TileEntityCartAssembler) world.getTileEntity(new BlockPos(x, y, z));
-				for (int i = 0; i < 6; i++) {
-					int upgradeType = dr.readByte();
-					EnumFacing facing = EnumFacing.VALUES[i];
-					if (upgradeType >= 0 && upgradeType < 255) {
-						assembler.addUpgrade(facing, UpgradeRegistry.getUpgradeFromId(upgradeType));
-					} else {
-						assembler.removeUpgrade(facing);
-					}
-				}
-				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(assembler);
-			} else if (type == PacketType.VEHICLE) {
+			if (type == PacketType.VEHICLE) {
 				int entityId = dr.readInteger();
 				World world = player.world;
 				VehicleBase vehicle = getVehicle(entityId, world);
@@ -61,11 +95,6 @@ public class PacketHandler {
 				}
 			} else if (type == PacketType.REGISTRY) {
 				RegistrySynchronizer.onPacket(dr);
-			} else if (type == PacketType.BUOY) {
-				Container container = player.openContainer;
-				if (container instanceof ContainerBuoy) {
-					((ContainerBuoy) container).receiveInfo(dr, false);
-				}
 			}
 		} catch (Exception ex) {
 			System.out.println("The client failed to process a packet.");
@@ -92,9 +121,6 @@ public class PacketHandler {
 					ContainerVehicle containerVehicle = (ContainerVehicle) container;
 					VehicleBase vehicle = containerVehicle.getVehicle();
 					receivePacketAtVehicle(vehicle, dr, player);
-				} else if (container instanceof ContainerBuoy) {
-					ContainerBuoy containerBuoy = (ContainerBuoy) container;
-					containerBuoy.receiveInfo(dr, true);
 				} else if (container instanceof ContainerBase) {
 					ContainerBase containerBase = (ContainerBase) container;
 					TileEntityBase base = containerBase.getTileEntity();
@@ -139,18 +165,124 @@ public class PacketHandler {
 		dw.sendToPlayer((EntityPlayerMP) player);
 	}
 
-	public static void sendBlockInfoToClients(World world, byte[] data, int x, int y, int z) {
-		DataWriter dw = getDataWriter(PacketType.BLOCK);
-		dw.writeInteger(x);
-		dw.writeInteger(y);
-		dw.writeInteger(z);
-		for (byte b : data) {
-			dw.writeByte(b);
-		}
-		dw.sendToAllPlayersAround(world, x, y, z, 64);
+	private final static FMLEventChannel channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(Constants.MOD_ID);
+
+	public static void registerClientPacket(IPacketClient packet) {
+		packet.getProvider().setPacketClient(packet);
 	}
 
-	public static void sendBlockInfoToClients(World world, byte[] data, BlockPos pos) {
-		sendBlockInfoToClients(world, data, pos.getX(), pos.getY(), pos.getZ());
+	public static void registerServerPacket(IPacketServer packet) {
+		packet.getProvider().setPacketServer(packet);
+	}
+
+	public static void sendToNetwork(IPacketClient packet, BlockPos pos, WorldServer world) {
+		if (packet == null) {
+			return;
+		}
+		WorldServer worldServer = world;
+		PlayerChunkMap playerManager = worldServer.getPlayerChunkMap();
+		int chunkX = pos.getX() >> 4;
+		int chunkZ = pos.getZ() >> 4;
+		for (Object playerObj : world.playerEntities) {
+			if (playerObj instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) playerObj;
+				if (playerManager.isPlayerWatchingChunk(player, chunkX, chunkZ)) {
+					sendToPlayer(packet, player);
+				}
+			}
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void sendToServer(IPacketServer packet) {
+		NetHandlerPlayClient netHandler = Minecraft.getMinecraft().getConnection();
+		if (netHandler != null) {
+			netHandler.sendPacket(packet.getPacket());
+		}
+	}
+
+	public static void sendToPlayer(IPacketClient packet, EntityPlayer entityplayer) {
+		if (!(entityplayer instanceof EntityPlayerMP) || entityplayer instanceof FakePlayer) {
+			return;
+		}
+		EntityPlayerMP player = (EntityPlayerMP) entityplayer;
+		sendPacket(packet.getPacket(), player);
+	}
+
+	public static void sendPacket(FMLProxyPacket packet, EntityPlayerMP player) {
+		channel.sendTo(packet, player);
+	}
+
+	@SubscribeEvent
+	public void onPacket(ServerCustomPacketEvent event) {
+		DataReader data = getStream(event.getPacket());
+		EntityPlayerMP player = ((NetHandlerPlayServer) event.getHandler()).playerEntity;
+		try {
+			byte packetIdOrdinal = data.readByte();
+			IPacketProvider packet = PROVIDERS.get(packetIdOrdinal);
+			IPacketServer packetHandler = packet.getServerPacket();
+			checkThreadAndEnqueue(packetHandler, data, player, player.getServerWorld());
+		} catch (IOException e) {
+			//TODO: create Log
+			//Log.err("Failed to read packet.", e);
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onPacket(ClientCustomPacketEvent event) {
+		DataReader data = getStream(event.getPacket());
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		try {
+			byte packetIdOrdinal = data.readByte();
+			IPacketProvider packet = PROVIDERS.get(packetIdOrdinal);
+			IPacketClient packetHandler = packet.getClientPacket();
+			checkThreadAndEnqueue(packetHandler, data, player, Minecraft.getMinecraft());
+		} catch (IOException e) {
+			//TODO: create Log
+			//Log.err("Failed to read packet.", e);
+		}
+	}
+
+	private static DataReader getStream(FMLProxyPacket fmlPacket) {
+		InputStream is = new ByteBufInputStream(fmlPacket.payload());
+		return new DataReader(is);
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static void checkThreadAndEnqueue(final IPacketClient packet, final DataReader data, final EntityPlayer player, IThreadListener threadListener) {
+		if (!threadListener.isCallingFromMinecraftThread()) {
+			threadListener.addScheduledTask(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						packet.readData(data);
+						packet.onPacketData(data, player);
+					} catch (IOException e) {
+						//TODO: create Log
+						//Log.err("Network Error", e);
+					}
+				}
+			});
+		}
+	}
+
+	private static void checkThreadAndEnqueue(final IPacketServer packet, final DataReader data, final EntityPlayerMP player, IThreadListener threadListener) {
+		if (!threadListener.isCallingFromMinecraftThread()) {
+			threadListener.addScheduledTask(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						packet.readData(data);
+						packet.onPacketData(data, player);
+					} catch (IOException e) {
+						//TODO: create Log
+						//Log.err("Network Error", e);
+					}
+				}
+			});
+		}
 	}
 }

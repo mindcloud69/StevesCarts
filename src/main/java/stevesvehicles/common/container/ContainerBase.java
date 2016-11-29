@@ -10,7 +10,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
+import stevesvehicles.common.network.PacketHandler;
+import stevesvehicles.common.network.packets.PacketGuiData;
 import stevesvehicles.common.transfer.TransferHandler;
 
 public abstract class ContainerBase extends Container {
@@ -134,30 +137,15 @@ public abstract class ContainerBase extends Container {
 	}
 
 	@Override
-	public void addListener(IContainerListener listener) {
-		super.addListener(listener);
-		if (getTileEntity() != null) {
-			getTileEntity().initGuiData(this, listener);
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int id, int val) {
-		val &= 65535;
-		if (getTileEntity() != null) {
-			getTileEntity().receiveGuiData(id, (short) val);
-		}
-	}
-
-	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (getTileEntity() != null) {
-			Iterator<IContainerListener> playerIterator = this.listeners.iterator();
-			while (playerIterator.hasNext()) {
-				IContainerListener player = playerIterator.next();
-				getTileEntity().checkGuiData(this, player);
+			if(getTileEntity().checkGuiData(this)){
+				Iterator<IContainerListener> playerIterator = this.listeners.iterator();
+				while (playerIterator.hasNext()) {
+					IContainerListener player = playerIterator.next();
+					PacketHandler.registerClientPacket(new PacketGuiData(getTileEntity(), this));
+				}
 			}
 		}
 	}

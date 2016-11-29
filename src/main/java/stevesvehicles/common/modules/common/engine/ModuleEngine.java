@@ -1,15 +1,17 @@
 package stevesvehicles.common.modules.common.engine;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationEngine;
 import stevesvehicles.common.modules.ModuleBase;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public abstract class ModuleEngine extends ModuleBase {
@@ -128,7 +130,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (inRect(x, y, priorityButton)) {
 			if (button == 0 || button == 1) {
 				DataWriter dw = getDataWriter();
@@ -139,7 +141,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		int priority = getPriority();
 		priority += dr.readBoolean() ? 1 : -1;
 		priority %= 4;

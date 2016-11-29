@@ -1,16 +1,18 @@
 package stevesvehicles.common.modules.common.addon.chunk;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationIndependence;
 import stevesvehicles.common.modules.IActivatorModule;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
@@ -102,7 +104,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, TOGGLE_BOX_RECT)) {
 				sendPacketToServer(getDataWriter());
@@ -111,7 +113,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		setChunkLoading(!isLoadingChunk());
 	}
 

@@ -1,15 +1,17 @@
 package stevesvehicles.common.modules.common.addon;
 
+import java.io.IOException;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.VehicleDataSerializers;
 
@@ -73,7 +75,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, BUTTON)) {
 				sendPacketToServer(getDataWriter());

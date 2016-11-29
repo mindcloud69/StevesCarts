@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.common.attachment;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -18,8 +21,6 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotExplosion;
 import stevesvehicles.common.items.ComponentTypes;
 import stevesvehicles.common.modules.cart.attachment.ModuleAttachment;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleDynamite extends ModuleAttachment {
@@ -124,7 +125,7 @@ public class ModuleDynamite extends ModuleAttachment {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (getFuse() == 0 && (inRect(x, y, getMovableMarker()) || inRect(x, y, FUSE_AREA))) {
 				markerMoving = true;
@@ -134,7 +135,7 @@ public class ModuleDynamite extends ModuleAttachment {
 	}
 
 	@Override
-	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) {
+	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (getFuse() != 0) {
 			markerMoving = false;
 		} else if (markerMoving) {
@@ -145,7 +146,7 @@ public class ModuleDynamite extends ModuleAttachment {
 		}
 	}
 
-	private void moveMarker(int x) {
+	private void moveMarker(int x) throws IOException {
 		int tempFuse = MAX_FUSE_LENGTH - (int) ((x - FUSE_START_X) / (105F / MAX_FUSE_LENGTH));
 		if (tempFuse < 2) {
 			tempFuse = 2;
@@ -274,7 +275,7 @@ public class ModuleDynamite extends ModuleAttachment {
 	private static final int MAX_FUSE_LENGTH = 150;
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		setFuseLength(dr.readByte());
 	}
 

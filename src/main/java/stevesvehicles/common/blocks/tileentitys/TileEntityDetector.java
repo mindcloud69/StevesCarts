@@ -1,5 +1,7 @@
 package stevesvehicles.common.blocks.tileentitys;
 
+import java.io.IOException;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
@@ -18,7 +21,6 @@ import stevesvehicles.common.blocks.tileentitys.detector.LogicObjectOperator;
 import stevesvehicles.common.blocks.tileentitys.detector.OperatorObject;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerDetector;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class TileEntityDetector extends TileEntityBase implements ITickable {
@@ -95,7 +97,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		// add object
 		if (dr.readBoolean()) {
 			int count = dr.readByte();
@@ -108,7 +110,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 		}
 	}
 
-	private void createObject(DataReader dr) {
+	private void createObject(DataReader dr) throws IOException {
 		byte lowestId = (byte) -1;
 		for (int i = 0; i < 128; i++) {
 			if (!isIdOccupied(mainObj, i)) {

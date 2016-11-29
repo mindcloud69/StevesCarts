@@ -11,7 +11,6 @@ import stevesvehicles.client.localization.entry.block.LocalizationToggler;
 import stevesvehicles.common.blocks.tileentitys.TileEntityActivator;
 import stevesvehicles.common.blocks.tileentitys.toggler.TogglerOption;
 import stevesvehicles.common.container.ContainerActivator;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 

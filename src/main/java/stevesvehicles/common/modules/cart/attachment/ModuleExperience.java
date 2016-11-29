@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.cart.attachment;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -9,10 +10,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartCleaning;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleExperience extends ModuleAttachment {
@@ -109,7 +110,7 @@ public class ModuleExperience extends ModuleAttachment {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (inRect(x, y, CONTAINER_RECT)) {
 			sendPacketToServer(getDataWriter());
 		}
@@ -136,7 +137,7 @@ public class ModuleExperience extends ModuleAttachment {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException{
 		player.addExperience(Math.min(experienceAmount, 50));
 		experienceAmount -= Math.min(experienceAmount, 50);
 	}

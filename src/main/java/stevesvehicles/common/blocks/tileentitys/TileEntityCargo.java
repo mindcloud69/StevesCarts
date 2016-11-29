@@ -1,5 +1,6 @@
 package stevesvehicles.common.blocks.tileentitys;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiCargo;
 import stevesvehicles.client.localization.entry.block.LocalizationCargo;
@@ -39,7 +41,6 @@ import stevesvehicles.common.container.slots.SlotTorch;
 import stevesvehicles.common.items.ComponentTypes;
 import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
-import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.transfer.TransferHandler;
 
 public class TileEntityCargo extends TileEntityManager {
@@ -102,9 +103,11 @@ public class TileEntityCargo extends TileEntityManager {
 	protected boolean isTargetValid(ManagerTransfer transfer) {
 		return target[transfer.getSetting()] >= 0 && target[transfer.getSetting()] < itemSelections.size();
 	}
+	
+	re
 
 	@Override
-	protected void receivePacket(PacketId id, DataReader dr) {
+	protected void receivePacket(PacketId id, DataReader dr) throws IOException {
 		if (id == PacketId.VEHICLE_PART) {
 			int railId = dr.readByte();
 			int dif = dr.readBoolean() ? 1 : -1;

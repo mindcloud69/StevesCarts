@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.common.attachment;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,13 +26,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationTravel;
 import stevesvehicles.common.modules.IActivatorModule;
 import stevesvehicles.common.modules.cart.attachment.ModuleAttachment;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleCage extends ModuleAttachment implements IActivatorModule {
@@ -98,7 +99,7 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			if (inRect(x, y, TOGGLE_BOX_RECT)) {
 				DataWriter dw = getDataWriter();
@@ -113,7 +114,7 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		if (dr.readBoolean()) {
 			disablePickup = !disablePickup;
 		} else {

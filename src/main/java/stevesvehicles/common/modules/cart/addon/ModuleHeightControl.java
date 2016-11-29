@@ -1,18 +1,20 @@
 package stevesvehicles.common.modules.cart.addon;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.ColorHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartRails;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleHeightControl extends ModuleAddon {
@@ -140,7 +142,7 @@ public class ModuleHeightControl extends ModuleAddon {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			int arrow = -1;
 			if (inRect(x, y, ARROW_MIDDLE)) {
@@ -160,7 +162,7 @@ public class ModuleHeightControl extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		int arrow = dr.readByte();
 		boolean isShift = dr.readBoolean();
 		if (arrow == 0) {

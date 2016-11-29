@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.common.attachment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,6 +15,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -22,8 +25,6 @@ import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.client.localization.entry.module.LocalizationShooter;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.common.addon.mobdetector.ModuleEntityDetector;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleShooterAdvanced extends ModuleShooter {
@@ -97,7 +98,7 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	}
 
 	@Override
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (button == 0) {
 			for (int i = 0; i < detectors.size(); i++) {
 				if (inRect(x, y, getSelectionBox(i))) {
@@ -199,7 +200,7 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		switchOption(dr.readByte());
 	}
 

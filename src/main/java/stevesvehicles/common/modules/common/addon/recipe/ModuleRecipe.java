@@ -1,5 +1,6 @@
 package stevesvehicles.common.modules.common.addon.recipe;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -10,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationProduction;
@@ -19,8 +22,6 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotChest;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public abstract class ModuleRecipe extends ModuleAddon {
@@ -174,7 +175,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void mouseClicked(GuiVehicle gui, int x, int y, int button) {
+	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
 		if (canUseAdvancedFeatures()) {
 			if (inRect(x, y, getArea())) {
 				DataWriter dw = getDataWriter(PacketId.TARGET);
@@ -202,9 +203,9 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		}
 	}
 
-	private DataWriter getDataWriter(PacketId id) {
+	private DataWriter getDataWriter(PacketId id) throws IOException {
 		DataWriter dw = getDataWriter();
-		dw.writeEnum(id);
+		dw.writeEnum(id, PacketId.values());
 		return dw;
 	}
 
@@ -213,9 +214,9 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
 		if (canUseAdvancedFeatures()) {
-			PacketId id = dr.readEnum(PacketId.class);
+			PacketId id = dr.readEnum(PacketId.values());
 			switch (id) {
 				case TARGET:
 					dirty = true;

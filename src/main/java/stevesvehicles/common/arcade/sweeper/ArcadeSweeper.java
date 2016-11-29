@@ -11,8 +11,6 @@ import stevesvehicles.client.localization.entry.arcade.LocalizationSweeper;
 import stevesvehicles.common.arcade.ArcadeGame;
 import stevesvehicles.common.arcade.sweeper.Tile.TILE_STATE;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
-import stevesvehicles.common.network.DataReader;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ArcadeSweeper extends ArcadeGame {

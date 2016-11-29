@@ -14,7 +14,6 @@ import stevesvehicles.common.blocks.tileentitys.TileEntityManager;
 import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSetting;
 import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSide;
 import stevesvehicles.common.container.ContainerDistributor;
-import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 
