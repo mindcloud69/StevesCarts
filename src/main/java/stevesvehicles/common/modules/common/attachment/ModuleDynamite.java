@@ -275,7 +275,7 @@ public class ModuleDynamite extends ModuleAttachment {
 	private static final int MAX_FUSE_LENGTH = 150;
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		setFuseLength(dr.readByte());
 	}
 

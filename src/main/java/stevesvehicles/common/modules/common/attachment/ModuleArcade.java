@@ -274,8 +274,8 @@ public class ModuleArcade extends ModuleAttachment {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
-		ArcadeGame.delegateReceivedPacket(games, dr, player);
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
+		ArcadeGame.reatPacketData(games, dr, player);
 	}
 
 	@Override

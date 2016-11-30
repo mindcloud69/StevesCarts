@@ -1,10 +1,14 @@
 package stevesvehicles.common.arcade.sweeper;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.arcade.LocalizationSweeper;
@@ -185,10 +189,14 @@ public class ArcadeSweeper extends ArcadeGame {
 				if (highscore[currentGameType] > ticks / 20) {
 					highscoreTicks = 1;
 					int val = ticks / 20;
-					DataWriter dw = getDataWriter();
-					dw.writeByte(currentGameType);
-					dw.writeShort(val);
-					sendCustomToServer(dw);
+					try{
+						DataWriter dw = getDataWriter();
+						dw.writeByte(currentGameType);
+						dw.writeShort(val);
+						sendPacketToServer(dw);
+					}catch(IOException e){
+						e.printStackTrace();
+					}
 				}
 			} else {
 				if (result == Tile.TileOpenResult.BLOB) {
@@ -238,7 +246,7 @@ public class ArcadeSweeper extends ArcadeGame {
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		highscore[dr.readByte()] = dr.readShort();
 	}
 

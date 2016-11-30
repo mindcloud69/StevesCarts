@@ -8,7 +8,6 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -23,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import stevesvehicles.client.gui.screen.GuiVehicle;
@@ -38,7 +39,7 @@ import stevesvehicles.common.modules.cart.addon.ModuleOreTracker;
 import stevesvehicles.common.modules.common.storage.chest.ModuleChest;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
+public abstract class ModuleDrill extends ModuleTool implements IActivatorModule, IStreamable {
 	private DataParameter<Boolean> IS_MINING;
 	private DataParameter<Boolean> IS_ENABLED;
 
@@ -474,7 +475,11 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	public void writeData(DataWriter data) throws IOException {
+	}
+
+	@Override
+	public void readData(DataReader data, EntityPlayer player) throws IOException {
 		setDrillEnabled(!isDrillEnabled());
 	}
 

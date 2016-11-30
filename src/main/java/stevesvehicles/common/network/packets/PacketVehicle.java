@@ -2,11 +2,15 @@ package stevesvehicles.common.network.packets;
 
 import java.io.IOException;
 
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
@@ -15,42 +19,63 @@ import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.api.network.packets.IPacketClient;
 import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.api.network.packets.IPacketServer;
-import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
-import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerVehicle;
+import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public class PacketVehicle extends Packet implements IPacketServer, IPacketClient {
+public class PacketVehicle implements IPacketServer, IPacketClient {
 
-	public int entityId;
-	public int positionId;
-	
+	public DataWriter dataWriter;
+
 	public PacketVehicle() {
-		this.entityId = -1;
-		this.positionId = 0;
 	}
-	
-	public PacketVehicle(ModuleBase module, boolean hasInterfaceOpen) {
-		if(!hasInterfaceOpen){
-			this.entityId = module.getVehicle().getEntity().getEntityId();
-		}else{
-			this.entityId = -1;
-		}
-		this.positionId = module.getPositionId();
+
+	public PacketVehicle(ModuleBase module, boolean hasInterfaceOpen) throws IOException {
+		this.dataWriter = createWriter(module, hasInterfaceOpen);
+		module.writeData(dataWriter);
 	}
-	
-	@Override
-	protected void writeData(DataWriter data) throws IOException {
-		data.writeInt(entityId);
-		data.writeInt(positionId);
+
+	public PacketVehicle(ModuleBase module, DataWriter dataWriter) throws IOException {
+		this.dataWriter = dataWriter;
+		module.writeData(dataWriter);
 	}
-	
+
 	@Override
 	public IPacketProvider getProvider() {
 		return PacketType.VEHICLE;
+	}
+
+	public static DataWriter createWriter(ModuleBase module, boolean hasInterfaceOpen) throws IOException{
+		int entityId;
+		if(!hasInterfaceOpen){
+			entityId = module.getVehicle().getEntity().getEntityId();
+		}else{
+			entityId = -1;
+		}
+		ByteBufOutputStream buf = new ByteBufOutputStream(Unpooled.buffer());
+		DataWriter data = new DataWriter(buf);
+		data.writeByte(PacketType.VEHICLE.getPacketID());
+		data.writeInt(entityId);
+		data.writeInt(module.getPositionId());
+		return data;
+	}
+
+	@Override
+	public final FMLProxyPacket getPacket() {
+		try {
+			dataWriter.close();
+		} catch (IOException e) {
+			//TODO: create Log
+			//Log.err("Failed to write packet.", e);
+		}
+		return new FMLProxyPacket(new PacketBuffer(dataWriter.getOut().buffer()), Constants.MOD_ID);
+	}
+
+	@Override
+	public void readData(DataReader data) throws IOException {
 	}
 
 	@Override
@@ -61,12 +86,12 @@ public class PacketVehicle extends Packet implements IPacketServer, IPacketClien
 			int entityId = data.readInt();
 			VehicleBase vehicle = PacketHandler.getVehicle(entityId, world);
 			if (vehicle != null) {
-				receivePacketAtVehicle(vehicle, data, player);
+				readVehiclePacket(vehicle, data, player);
 			}
 		} else if (container instanceof ContainerVehicle) {
 			ContainerVehicle containerVehicle = (ContainerVehicle) container;
 			VehicleBase vehicle = containerVehicle.getVehicle();
-			receivePacketAtVehicle(vehicle, data, player);
+			readVehiclePacket(vehicle, data, player);
 		}
 	}
 
@@ -77,11 +102,11 @@ public class PacketVehicle extends Packet implements IPacketServer, IPacketClien
 		World world = player.world;
 		VehicleBase vehicle = PacketHandler.getVehicle(entityId, world);
 		if (vehicle != null) {
-			receivePacketAtVehicle(vehicle, data, player);
+			readVehiclePacket(vehicle, data, player);
 		}
 	}
-	
-	private void receivePacketAtVehicle(VehicleBase vehicle, DataReader data, EntityPlayer player) throws IOException {
+
+	private void readVehiclePacket(VehicleBase vehicle, DataReader data, EntityPlayer player) throws IOException {
 		int id = data.readByte();
 		if (id >= 0 && id < vehicle.getModules().size()) {
 			ModuleBase module = vehicle.getModules().get(id);

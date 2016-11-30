@@ -193,7 +193,7 @@ public class ModuleLabel extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		toggleActive(dr.readByte());
 	}
 

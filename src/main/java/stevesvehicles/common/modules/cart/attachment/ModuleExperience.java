@@ -137,7 +137,7 @@ public class ModuleExperience extends ModuleAttachment {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException{
+	public void readData(DataReader dr, EntityPlayer player) throws IOException{
 		player.addExperience(Math.min(experienceAmount, 50));
 		experienceAmount -= Math.min(experienceAmount, 50);
 	}

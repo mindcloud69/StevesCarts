@@ -18,20 +18,20 @@ public class PacketStreamable extends Packet implements IPacketServer {
 
 	public Object object;
 	public IStreamable streamable;
-	
+
 	public PacketStreamable() {
 	}
-	
+
 	public PacketStreamable(IStreamable streamable, BlockPos pos) {
 		this.streamable = streamable;
 		this.object = pos;
 	}
-	
+
 	public PacketStreamable(IStreamable streamable, int entityID) {
 		this.streamable = streamable;
 		this.object = new Integer(entityID);
 	}
-	
+
 	@Override
 	protected void writeData(DataWriter data) throws IOException {
 		if(object instanceof BlockPos){
@@ -46,7 +46,7 @@ public class PacketStreamable extends Packet implements IPacketServer {
 		}
 		streamable.writeData(data);
 	}
-	
+
 	@Override
 	public IPacketProvider getProvider() {
 		return PacketType.STREAMABLE;

@@ -3,10 +3,8 @@ package stevesvehicles.common.blocks.tileentitys;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -93,22 +91,6 @@ public class TileEntityActivator extends TileEntityBase {
 			nbttagcompound.setByte(option.getName(), (byte) option.getOption());
 		}
 		return nbttagcompound;
-	}
-
-	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
-		boolean leftClick = dr.readBoolean();
-		int optionId = dr.readByte();
-		if (optionId >= 0 && optionId < options.size()) {
-			options.get(optionId).changeOption(leftClick);
-		}
-	}
-
-	@Override
-	public void initGuiData(Container con, IContainerListener crafting) {
-		for (int i = 0; i < options.size(); i++) {
-			updateGuiData(con, crafting, i, (short) options.get(i).getOption());
-		}
 	}
 
 	@Override

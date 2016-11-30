@@ -2,10 +2,10 @@ package stevesvehicles.api.network;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 
+import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -15,8 +15,12 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class DataWriter extends DataOutputStream {
 
-	public DataWriter(OutputStream out) {
+	public DataWriter(ByteBufOutputStream out) {
 		super(out);
+	}
+
+	public ByteBufOutputStream getOut(){
+		return (ByteBufOutputStream) out;
 	}
 
 	public void writeItemStack(ItemStack itemstack) throws IOException {

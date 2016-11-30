@@ -101,7 +101,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable, ISt
 	public DetectorType getType() {
 		return world.getBlockState(pos).getValue(DetectorType.SATE);
 	}
-	
+
 	@Override
 	public void writeData(DataWriter data) throws IOException {
 		LogicObject parent = mainObj.getParent();
@@ -122,7 +122,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable, ISt
 			PacketHandler.sendCustomToServer(data);
 		}
 	}
-	
+
 	@Override
 	public void readData(DataReader data, EntityPlayer player) throws IOException {
 		// add object

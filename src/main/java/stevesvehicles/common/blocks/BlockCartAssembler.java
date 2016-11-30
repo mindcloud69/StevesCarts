@@ -26,7 +26,7 @@ import stevesvehicles.common.core.StevesVehicles;
 import stevesvehicles.common.core.tabs.CreativeTabLoader;
 import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.packets.PacketCartAssembler;
+import stevesvehicles.common.network.packets.PacketUpgrades;
 import stevesvehicles.common.upgrades.Upgrade;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
@@ -42,7 +42,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 		World world = assembler.getWorld();
 		BlockPos pos = assembler.getPos();
 		if (!world.isRemote) {
-			PacketHandler.sendToNetwork(new PacketCartAssembler(assembler), pos, (WorldServer) world);
+			PacketHandler.sendToNetwork(new PacketUpgrades(assembler), pos, (WorldServer) world);
 		} else {
 			world.markBlockRangeForRenderUpdate(pos, pos);
 		}

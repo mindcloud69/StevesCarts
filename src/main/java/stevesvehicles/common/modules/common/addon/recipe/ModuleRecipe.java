@@ -214,7 +214,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		if (canUseAdvancedFeatures()) {
 			PacketId id = dr.readEnum(PacketId.values());
 			switch (id) {

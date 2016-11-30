@@ -10,13 +10,14 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.VehicleDataSerializers;
 
-public class ModuleColorizer extends ModuleAddon {
+public class ModuleColorizer extends ModuleAddon implements IStreamable {
 	private DataParameter<int[]> COLORS;
 
 	public ModuleColorizer(VehicleBase vehicleBase) {
@@ -156,7 +157,11 @@ public class ModuleColorizer extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void writeData(DataWriter data) throws IOException {
+	}
+
+	@Override
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
 		if (id >= 0 && id < 3) {
 			setColorVal(id, dr.readByte());

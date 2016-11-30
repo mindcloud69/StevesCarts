@@ -183,8 +183,8 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
-		lightLimit = dr.readByte();
+	public void readData(DataReader data, EntityPlayer player) throws IOException {
+		lightLimit = data.readByte();
 		if (lightLimit < 0) {
 			lightLimit = 0;
 		} else if (lightLimit > 15) {

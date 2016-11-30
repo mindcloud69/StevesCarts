@@ -1,5 +1,6 @@
 package stevesvehicles.client.gui.screen;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.ModuleDataHull;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketCartAssembler;
 import stevesvehicles.common.vehicles.VehicleType;
 
 @SideOnly(Side.CLIENT)
@@ -572,7 +573,7 @@ public class GuiCartAssembler extends GuiBase {
 	}
 
 	@Override
-	public void mouseMoved(int x0, int y0, int button) {
+	public void mouseMoved(int x0, int y0, int button) throws IOException {
 		super.mouseMoved(x0, y0, button);
 		int x = x0 - getGuiLeft();
 		int y = y0 - getGuiTop();
@@ -620,14 +621,12 @@ public class GuiCartAssembler extends GuiBase {
 	private static final int[] BLACK_BACKGROUND = new int[] { 145, 15, 222, 148 };
 
 	@Override
-	public void mouseClick(int x0, int y0, int button) {
+	public void mouseClick(int x0, int y0, int button) throws IOException {
 		super.mouseClick(x0, y0, button);
 		int x = x0 - getGuiLeft();
 		int y = y0 - getGuiTop();
 		if (inRect(x, y, ASSEMBLE_RECT)) {
-			DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-			dw.writeByte(0);
-			PacketHandler.sendCustomToServer(dw);
+			PacketHandler.sendToServer(new PacketCartAssembler(assembler, (byte) 0, (short) 0));
 		} else if (inRect(x, y, BLACK_BACKGROUND)) {
 			if (assembler.selectedTab == 0) {
 				if (button == 0) {
@@ -657,10 +656,7 @@ public class GuiCartAssembler extends GuiBase {
 					if (inRect(x, y, target)) {
 						int moduleId = ModuleRegistry.getIdFromModule(moduleData);
 						if (moduleId >= 0) {
-							DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-							dw.writeByte(2);
-							dw.writeShort(moduleId);
-							PacketHandler.sendCustomToServer(dw);
+							PacketHandler.sendToServer(new PacketCartAssembler(assembler, (byte) 2, (short) moduleId));
 						}
 					}
 				}
@@ -706,10 +702,7 @@ public class GuiCartAssembler extends GuiBase {
 				int size = 18;
 				if (inRect(x, y, new int[] { targetX, targetY, size, size })) {
 					if (slot.getStack() != null && ((i != 0 && slot.getStack().getCount() <= 0) || assembler.isInFreeMode())) {
-						DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-						dw.writeByte(1);
-						dw.writeByte(i);
-						PacketHandler.sendCustomToServer(dw);
+						PacketHandler.sendToServer(new PacketCartAssembler(assembler, (byte) 1, (short) i));
 					}
 				}
 			}

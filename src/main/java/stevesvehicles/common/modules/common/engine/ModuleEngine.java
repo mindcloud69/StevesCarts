@@ -141,7 +141,7 @@ public abstract class ModuleEngine extends ModuleBase {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int priority = getPriority();
 		priority += dr.readBoolean() ? 1 : -1;
 		priority %= 4;

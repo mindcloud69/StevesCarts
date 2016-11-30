@@ -36,6 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -49,7 +50,7 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketVehicle;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
@@ -62,7 +63,7 @@ import stevesvehicles.common.vehicles.entitys.EntityModularCart;
  * @author Vswe
  *
  */
-public abstract class ModuleBase {
+public abstract class ModuleBase implements IStreamable {
 	// the vehicle this module is part of
 	private VehicleBase vehicle;
 	// the inventory this module is using, could be an empty array.
@@ -1076,24 +1077,39 @@ public abstract class ModuleBase {
 	}
 
 	protected DataWriter getDataWriter(boolean hasInterfaceOpen) throws IOException {
-		DataWriter dw = PacketHandler.getDataWriter(PacketType.VEHICLE);
-		if (!hasInterfaceOpen) {
-			dw.writeInt(getVehicle().getEntity().getEntityId());
-		}
-		dw.writeByte(getPositionId());
-		return dw;
+		return PacketVehicle.createWriter(this, hasInterfaceOpen);
 	}
 
 	protected DataWriter getDataWriter() throws IOException {
 		return getDataWriter(true);
 	}
 
-	protected void sendPacketToServer(DataWriter dw) {
-		PacketHandler.sendCustomToServer(dw);
+	protected void sendPacketToServer()  {
+		sendPacketToServer(true);
+	}
+
+	protected void sendPacketToServer(boolean hasInterfaceOpen) {
+		try {
+			PacketHandler.sendToServer(new PacketVehicle(this, true));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void sendPacketToServer(DataWriter dw) throws IOException {
+		PacketHandler.sendToServer(new PacketVehicle(this, dw));
 	}
 
 	protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {
 		PacketHandler.sendPacketToPlayer(dw, player);
+	}
+
+	@Override
+	public void writeData(DataWriter data) throws IOException {
+	}
+
+	@Override
+	public void readData(DataReader data, EntityPlayer player) throws IOException {
 	}
 
 	/**

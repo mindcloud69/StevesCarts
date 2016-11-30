@@ -310,7 +310,7 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 			con.lastAmount = amountShort;
 		}
 	}
-	
+
 	@Override
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {

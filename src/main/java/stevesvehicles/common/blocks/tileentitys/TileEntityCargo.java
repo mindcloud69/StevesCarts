@@ -103,7 +103,7 @@ public class TileEntityCargo extends TileEntityManager {
 	protected boolean isTargetValid(ManagerTransfer transfer) {
 		return target[transfer.getSetting()] >= 0 && target[transfer.getSetting()] < itemSelections.size();
 	}
-	
+
 	re
 
 	@Override

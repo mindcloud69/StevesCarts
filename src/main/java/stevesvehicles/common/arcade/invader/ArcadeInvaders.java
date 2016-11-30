@@ -1,5 +1,6 @@
 package stevesvehicles.common.arcade.invader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
@@ -9,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.arcade.LocalizationInvaders;
@@ -265,14 +268,18 @@ public class ArcadeInvaders extends ArcadeGame {
 			if (score > highscore) {
 				newHighscore = true;
 				int val = score;
-				DataWriter dw = getDataWriter();
-				dw.writeShort(val);
-				sendCustomToServer(dw);
+				try{
+					DataWriter dw = getDataWriter();
+					dw.writeShort(val);
+					sendPacketToServer(dw);
+				}catch(IOException e){
+					e.printStackTrace();
+				}
 			}
 		}
 
 		@Override
-		public void receivePacket(DataReader dr, EntityPlayer player) {
+		public void readData(DataReader dr, EntityPlayer player) throws IOException {
 			highscore = dr.readShort();
 		}
 

@@ -114,7 +114,7 @@ public class ModuleCage extends ModuleAttachment implements IActivatorModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		if (dr.readBoolean()) {
 			disablePickup = !disablePickup;
 		} else {

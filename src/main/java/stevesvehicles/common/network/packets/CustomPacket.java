@@ -3,13 +3,10 @@ package stevesvehicles.common.network.packets;
 import java.io.IOException;
 
 import io.netty.buffer.ByteBufOutputStream;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IPacket;
 import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.api.network.packets.IPacketServer;
 import stevesvehicles.common.core.Constants;
@@ -19,7 +16,7 @@ public class CustomPacket implements IPacketServer {
 
 	private final IPacketProvider id = getProvider();
 	private final ByteBufOutputStream buf;
-	
+
 	public CustomPacket(ByteBufOutputStream buf) {
 		this.buf = buf;
 	}
@@ -40,6 +37,6 @@ public class CustomPacket implements IPacketServer {
 
 	@Override
 	public void onPacketData(DataReader data, EntityPlayerMP player) throws IOException {
-		
+
 	}
 }

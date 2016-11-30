@@ -141,7 +141,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	public void readData(DataReader dr, EntityPlayer player) {
 		updateDw(STATUS, getShieldStatus());
 	}
 

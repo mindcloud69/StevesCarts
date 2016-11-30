@@ -9,13 +9,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartCultivationUtil;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public class ModulePlantSize extends ModuleAddon {
+public class ModulePlantSize extends ModuleAddon implements IStreamable {
 	public ModulePlantSize(VehicleBase vehicleBase) {
 		super(vehicleBase);
 	}
@@ -84,7 +85,11 @@ public class ModulePlantSize extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void writeData(DataWriter data) throws IOException {
+	}
+
+	@Override
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		if (dr.readBoolean()) {
 			size--;
 			if (size < 1) {

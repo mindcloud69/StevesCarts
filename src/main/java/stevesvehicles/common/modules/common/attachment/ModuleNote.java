@@ -799,7 +799,7 @@ public class ModuleNote extends ModuleAttachment {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int trackID;
 		PacketId id = dr.readEnum(PacketId.values());
 		switch (id) {

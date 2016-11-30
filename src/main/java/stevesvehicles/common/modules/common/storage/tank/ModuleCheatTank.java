@@ -38,7 +38,7 @@ public class ModuleCheatTank extends ModuleTank {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	protected void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int button = dr.readBoolean() ? 0 : 1;
 		boolean isShift = dr.readBoolean();
 		if (button != 0) {
@@ -50,7 +50,7 @@ public class ModuleCheatTank extends ModuleTank {
 			updateAmount();
 			updateDw();
 		} else {
-			super.receivePacket(dr, player);
+			super.readData(dr, player);
 		}
 	}
 

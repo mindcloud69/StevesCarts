@@ -162,7 +162,7 @@ public class ModuleHeightControl extends ModuleAddon {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int arrow = dr.readByte();
 		boolean isShift = dr.readBoolean();
 		if (arrow == 0) {

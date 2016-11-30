@@ -1,10 +1,14 @@
 package stevesvehicles.common.arcade.tetris;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.arcade.LocalizationStacker;
@@ -195,15 +199,19 @@ public class ArcadeTetris extends ArcadeGame {
 	private void newHighScore() {
 		if (score > highscore) {
 			int val = score / 100;
-			DataWriter dw = getDataWriter();
-			dw.writeShort(val);
-			sendCustomToServer(dw);
+			try{
+				DataWriter dw = getDataWriter();
+				dw.writeShort(val);
+				sendPacketToServer(dw);
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 			newHighScore = true;
 		}
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		highscore = dr.readShort() * 100;
 	}
 

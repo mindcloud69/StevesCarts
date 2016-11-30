@@ -113,7 +113,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		setChunkLoading(!isLoadingChunk());
 	}
 

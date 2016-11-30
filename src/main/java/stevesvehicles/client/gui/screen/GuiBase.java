@@ -227,10 +227,10 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		this.mouseClick(x, y, button);
 	}
 
-	public void mouseClick(int x, int y, int button) {
+	public void mouseClick(int x, int y, int button) throws IOException {
 	}
 
-	protected void mouseMovedOrUp(int x, int y, final int button) {
+	protected void mouseMovedOrUp(int x, int y, final int button)  throws IOException {
 		x = this.scaleX(x);
 		y = this.scaleY(y);
 		// super.mouseMovedOrUp(x, y, button);
@@ -278,11 +278,15 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		x = scaleX(x);
 		y = scaleY(y);
 		super.mouseClickMove(x, y, button, timeSinceClick);
-		this.mouseMoved(x, y, button);
+		try{
+			this.mouseMoved(x, y, button);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 		this.mouseDragged(x, y, button);
 	}
 
-	public void mouseMoved(int x, int y, int button) {
+	public void mouseMoved(int x, int y, int button)  throws IOException {
 	}
 
 	public void mouseDragged(int x, int y, int button) {

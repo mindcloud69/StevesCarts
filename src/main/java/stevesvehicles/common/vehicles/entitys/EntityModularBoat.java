@@ -24,7 +24,6 @@ import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.common.entitys.buoy.EntityBuoy;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.network.packets.PacketStreamable;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.VehicleBoat;
@@ -291,9 +290,9 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity,
 			}
 		}
 	}
-	
+
 	@Override
-	public void readData(DataReader data) throws IOException {
+	public void readData(DataReader data, EntityPlayer player) throws IOException {
 		if (delay >= SYNC_DELAY - ALLOWED_SYNC_DELAY_JITTER) {
 			delay = 0;
 			double tempX = Float.intBitsToFloat(data.readInt());
@@ -309,7 +308,7 @@ public class EntityModularBoat extends EntityBoatBase implements IVehicleEntity,
 			motionZ = restrictMovement(Float.intBitsToFloat(data.readInt()), motionZ, MAX_SPEED);
 		}
 	}
-	
+
 	@Override
 	public void writeData(DataWriter data) throws IOException {
 		data.writeInt(Float.floatToIntBits((float) posX));

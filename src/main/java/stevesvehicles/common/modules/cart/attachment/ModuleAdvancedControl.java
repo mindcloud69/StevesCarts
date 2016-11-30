@@ -170,7 +170,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException{
+	public void readData(DataReader dr, EntityPlayer player) throws IOException{
 		PacketId id = dr.readEnum(PacketId.values());
 		switch (id) {
 			case ENGINE:
@@ -182,7 +182,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 			case KEY:
 				Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
 				if (riddenByEntity instanceof EntityPlayer && riddenByEntity == player) {
-					keyInformation = (byte) dr.readByte();
+					keyInformation = dr.readByte();
 					((EntityModularCart) getVehicle().getEntity()).resetRailDirection();
 				}
 				break;
@@ -359,7 +359,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 		try {
 			DataWriter dw = getDataWriter(PacketId.ENGINE, false);
 			for (ModuleEngine moduleEngine : getVehicle().getEngines()) {
-					dw.writeInt(moduleEngine.getTotalFuel());
+				dw.writeInt(moduleEngine.getTotalFuel());
 			}
 			sendPacketToPlayer(dw, player);
 		} catch (IOException e) {

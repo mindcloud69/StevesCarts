@@ -49,7 +49,7 @@ import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.network.packets.CustomPacket;
 import stevesvehicles.common.network.packets.PacketBuoy;
-import stevesvehicles.common.network.packets.PacketCartAssembler;
+import stevesvehicles.common.network.packets.PacketUpgrades;
 import stevesvehicles.common.network.packets.PacketGuiData;
 import stevesvehicles.common.network.packets.PacketVehicle;
 import stevesvehicles.api.network.DataReader;
@@ -71,7 +71,7 @@ public class PacketHandler {
 	public PacketHandler() {
 		channel.register(this);
 		//Client Packets
-		registerClientPacket(new PacketCartAssembler());
+		registerClientPacket(new PacketUpgrades());
 		registerClientPacket(new PacketBuoy());
 		registerClientPacket(new PacketGuiData());
 		registerClientPacket(new PacketVehicle());
@@ -139,7 +139,7 @@ public class PacketHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void sendToServer(DataWriter dw) {
+	public static void sendCustomToServer(DataWriter dw) {
 		ByteBufOutputStream buf = new ByteBufOutputStream(Unpooled.buffer());
 		sendToServer(new CustomPacket(buf));
 	}

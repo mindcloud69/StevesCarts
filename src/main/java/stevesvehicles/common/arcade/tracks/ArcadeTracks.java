@@ -1,5 +1,6 @@
 package stevesvehicles.common.arcade.tracks;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
+import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.arcade.LocalizationTrack;
@@ -431,10 +434,14 @@ public class ArcadeTracks extends ArcadeGame {
 	}
 
 	private void sendPacket(int story, int level) {
-		DataWriter dw = getDataWriter();
-		dw.writeByte(story);
-		dw.writeByte(level);
-		sendCustomToServer(dw);
+		try{
+			DataWriter dw = getDataWriter();
+			dw.writeByte(story);
+			dw.writeByte(level);
+			sendPacketToServer(dw);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 	public int[] getMenuArea() {
@@ -671,7 +678,7 @@ public class ArcadeTracks extends ArcadeGame {
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int story = dr.readByte();
 		int level = dr.readByte();
 		unlockedLevels[story] = level;

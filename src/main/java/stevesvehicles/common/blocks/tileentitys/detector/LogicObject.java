@@ -19,7 +19,6 @@ import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
-import stevesvehicles.common.network.packets.PacketStreamable;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public abstract class LogicObject {
@@ -56,7 +55,6 @@ public abstract class LogicObject {
 			dw.writeByte(id);
 			PacketHandler.sendCustomToServer(dw);
 		}
-		PacketHandler.sendToServer(new PacketStreamable(streamable, pos));
 	}
 
 	public void fillTree(List<LogicObject> objects, LogicObject parent) {

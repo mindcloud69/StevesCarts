@@ -200,7 +200,7 @@ public class ModuleShooterAdvanced extends ModuleShooter {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	protected void readData(DataReader dr, EntityPlayer player) throws IOException {
 		switchOption(dr.readByte());
 	}
 

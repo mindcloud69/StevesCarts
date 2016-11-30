@@ -1,5 +1,6 @@
 package stevesvehicles.client.gui.screen;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
@@ -168,7 +169,7 @@ public class GuiVehicle extends GuiBase {
 	private int[] scrollBox = new int[] { 450, 15, 18, 225 };
 
 	@Override
-	public void mouseClick(int x, int y, int button) {
+	public void mouseClick(int x, int y, int button) throws IOException {
 		super.mouseClick(x, y, button);
 		ModuleBase thief = vehicle.getInterfaceThief();
 		if (thief != null) {
@@ -188,7 +189,7 @@ public class GuiVehicle extends GuiBase {
 	}
 
 	@Override
-	public void mouseMoved(int x, int y, int button) {
+	public void mouseMoved(int x, int y, int button) throws IOException {
 		super.mouseMoved(x, y, button);
 		if (isScrolling) {
 			int temp = y - getGuiTop() - 12 - (scrollBox[1] + 2);
@@ -307,11 +308,11 @@ public class GuiVehicle extends GuiBase {
 		}
 	}
 
-	private void handleModuleMouseClicked(ModuleBase module, int x, int y, int button) {
+	private void handleModuleMouseClicked(ModuleBase module, int x, int y, int button) throws IOException {
 		module.mouseClicked(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY(), button);
 	}
 
-	private void handleModuleMouseMoved(ModuleBase module, int x, int y, int button) {
+	private void handleModuleMouseMoved(ModuleBase module, int x, int y, int button) throws IOException {
 		module.mouseMovedOrUp(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY(), button);
 	}
 

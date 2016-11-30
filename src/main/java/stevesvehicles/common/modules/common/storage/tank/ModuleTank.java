@@ -248,7 +248,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		if ((getFluid() != null
 				|| tank.isLocked() /*
 				 * just to allow the user to unlock it if

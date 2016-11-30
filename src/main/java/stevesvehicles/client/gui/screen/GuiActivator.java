@@ -1,5 +1,7 @@
 package stevesvehicles.client.gui.screen;
 
+import java.io.IOException;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,7 +14,7 @@ import stevesvehicles.common.blocks.tileentitys.TileEntityActivator;
 import stevesvehicles.common.blocks.tileentitys.toggler.TogglerOption;
 import stevesvehicles.common.container.ContainerActivator;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketActivator;
 
 @SideOnly(Side.CLIENT)
 public class GuiActivator extends GuiBase {
@@ -80,17 +82,14 @@ public class GuiActivator extends GuiBase {
 	}
 
 	@Override
-	public void mouseClick(int x, int y, int button) {
+	public void mouseClick(int x, int y, int button) throws IOException {
 		super.mouseClick(x, y, button);
 		x -= getGuiLeft();
 		y -= getGuiTop();
 		for (int i = 0; i < activator.getOptions().size(); i++) {
 			int[] box = getBoxRect(i);
 			if (inRect(x, y, box)) {
-				DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-				dw.writeBoolean(button == 0);
-				dw.writeByte(i);
-				PacketHandler.sendCustomToServer(dw);
+				PacketHandler.sendToServer(new PacketActivator(activator, i, button == 0));
 			}
 		}
 	}

@@ -215,7 +215,7 @@ public class ModuleShooter extends ModuleAttachment implements ISuppliesModule {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		if (dr.readBoolean()) {
 			byte info = getActivePipes();
 			info ^= 1 << dr.readByte();

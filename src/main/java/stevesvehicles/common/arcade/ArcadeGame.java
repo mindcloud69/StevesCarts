@@ -75,7 +75,7 @@ public abstract class ArcadeGame {
 	public void load(NBTTagCompound tagCompound) {
 	}
 
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 	}
 
 	public void checkGuiData(Object[] info) {
@@ -179,9 +179,9 @@ public abstract class ArcadeGame {
 		}
 	}
 
-	public static void delegateReceivedPacket(ArrayList<ArcadeGame> games, DataReader dr, EntityPlayer player) throws IOException {
+	public static void reatPacketData(ArrayList<ArcadeGame> games, DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
-		games.get(id).receivePacket(dr, player);
+		games.get(id).readData(dr, player);
 	}
 
 	protected DataWriter getDataWriter() throws IOException {

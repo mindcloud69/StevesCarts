@@ -210,7 +210,7 @@ public abstract class ModuleBarrel extends ModuleStorage {
 	}
 
 	@Override
-	protected void receivePacket(DataReader dr, EntityPlayer player) {
+	public void readData(DataReader dr, EntityPlayer player) {
 		isLocked = !isLocked;
 	}
 
