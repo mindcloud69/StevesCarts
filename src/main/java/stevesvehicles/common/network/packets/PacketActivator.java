@@ -14,7 +14,6 @@ import stevesvehicles.common.blocks.tileentitys.toggler.TogglerOption;
 import stevesvehicles.common.network.PacketType;
 
 public class PacketActivator extends PacketPositioned implements IPacketServer {
-
 	private int option;
 	private boolean isActive;
 
@@ -46,7 +45,7 @@ public class PacketActivator extends PacketPositioned implements IPacketServer {
 	@Override
 	public void onPacketData(DataReader data, EntityPlayerMP player) throws IOException {
 		TileEntity tile = player.world.getTileEntity(getPos());
-		if(tile instanceof TileEntityActivator){
+		if (tile instanceof TileEntityActivator) {
 			TileEntityActivator activator = (TileEntityActivator) tile;
 			List<TogglerOption> options = activator.getOptions();
 			boolean leftClick = data.readBoolean();

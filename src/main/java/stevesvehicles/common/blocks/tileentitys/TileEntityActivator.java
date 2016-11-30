@@ -116,7 +116,7 @@ public class TileEntityActivator extends TileEntityBase {
 
 	@Override
 	public void receiveGuiData(DataReader reader) throws IOException {
-		for(TogglerOption option : options){
+		for (TogglerOption option : options) {
 			option.setOption(reader.readInt());
 		}
 	}

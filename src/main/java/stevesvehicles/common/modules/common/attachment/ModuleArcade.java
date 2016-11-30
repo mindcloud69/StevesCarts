@@ -309,4 +309,9 @@ public class ModuleArcade extends ModuleAttachment {
 	public DataWriter getDataWriter() throws IOException {
 		return super.getDataWriter();
 	}
+
+	@Override
+	public void sendPacketToServer(DataWriter dw) throws IOException {
+		super.sendPacketToServer(dw);
+	}
 }

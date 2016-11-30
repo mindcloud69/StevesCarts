@@ -13,7 +13,6 @@ import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.common.core.Constants;
 
 public abstract class Packet implements IPacket {
-
 	private final IPacketProvider id = getProvider();
 
 	@Override
@@ -24,8 +23,8 @@ public abstract class Packet implements IPacket {
 			data.writeByte(id.getPacketID());
 			writeData(data);
 		} catch (IOException e) {
-			//TODO: create Log
-			//Log.err("Failed to write packet.", e);
+			// TODO: create Log
+			// Log.err("Failed to write packet.", e);
 		}
 		return new FMLProxyPacket(new PacketBuffer(buf.buffer()), Constants.MOD_ID);
 	}

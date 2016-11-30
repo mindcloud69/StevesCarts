@@ -20,17 +20,6 @@ public abstract class TileEntityBase extends TileEntity {
 	}
 
 	/**
-	 * Called when this tile entity receives a packet from the client.
-	 * 
-	 * @param dr
-	 *            The data reader with the packet data
-	 * @param player
-	 *            The player associated with the client sending the packet
-	 */
-	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
-	}
-
-	/**
 	 * Returns a new interface for this tile entity
 	 * 
 	 * @param inv
@@ -87,7 +76,7 @@ public abstract class TileEntityBase extends TileEntity {
 	 * @param con
 	 *            The container on the server for the player
 	 */
-	public boolean checkGuiData(Container con){
+	public boolean checkGuiData(Container con) {
 		return false;
 	}
 

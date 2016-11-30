@@ -34,5 +34,4 @@ public abstract class PacketPositioned extends Packet {
 		data.writeInt(pos.getY());
 		data.writeInt(pos.getZ());
 	}
-
 }

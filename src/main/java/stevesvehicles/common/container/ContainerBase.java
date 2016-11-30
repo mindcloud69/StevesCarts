@@ -137,7 +137,7 @@ public abstract class ContainerBase extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (getTileEntity() != null) {
-			if(getTileEntity().checkGuiData(this)){
+			if (getTileEntity().checkGuiData(this)) {
 				Iterator<IContainerListener> playerIterator = this.listeners.iterator();
 				while (playerIterator.hasNext()) {
 					IContainerListener player = playerIterator.next();

@@ -551,7 +551,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
 		if (id == 0) {
 			// if a player clicked the assemble button, try to assemble the cart

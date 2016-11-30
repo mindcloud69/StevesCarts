@@ -170,7 +170,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	}
 
 	@Override
-	public void readData(DataReader dr, EntityPlayer player) throws IOException{
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		PacketId id = dr.readEnum(PacketId.values());
 		switch (id) {
 			case ENGINE:
@@ -294,7 +294,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	}
 
 	private void encodeKeys() {
-		try{
+		try {
 			Entity riddenByEntity = getVehicle().getEntity().getRidingEntity();
 			if (riddenByEntity instanceof EntityPlayer && riddenByEntity == getClientPlayer()) {
 				net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getMinecraft();
@@ -312,7 +312,7 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 					sendPacketToServer(dw);
 				}
 			}
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -345,12 +345,12 @@ public class ModuleAdvancedControl extends ModuleAttachment implements ILeverMod
 	private double trip;
 
 	private void sendTripPacket(EntityPlayer player) {
-		try{
+		try {
 			DataWriter dw = getDataWriter(PacketId.DISTANCE, false);
 			dw.writeInt((int) odo);
 			dw.writeInt((int) trip);
 			sendPacketToPlayer(dw, player);
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

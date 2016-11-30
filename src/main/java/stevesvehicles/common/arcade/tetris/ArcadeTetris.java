@@ -199,11 +199,11 @@ public class ArcadeTetris extends ArcadeGame {
 	private void newHighScore() {
 		if (score > highscore) {
 			int val = score / 100;
-			try{
+			try {
 				DataWriter dw = getDataWriter();
 				dw.writeShort(val);
 				sendPacketToServer(dw);
-			}catch(IOException e){
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			newHighScore = true;

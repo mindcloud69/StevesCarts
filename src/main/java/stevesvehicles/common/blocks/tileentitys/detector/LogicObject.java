@@ -10,7 +10,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.gui.screen.GuiDetector;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.modulestate.ModuleState;
@@ -18,7 +17,7 @@ import stevesvehicles.common.blocks.tileentitys.detector.modulestate.registry.Mo
 import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketDetector;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public abstract class LogicObject {
@@ -36,24 +35,13 @@ public abstract class LogicObject {
 		children = new ArrayList<>();
 	}
 
-	public void setParentAndUpdate(LogicObject parent) throws IOException {
+	public void setParentAndUpdate(LogicObject parent, TileEntityDetector detector) throws IOException {
 		if (parent != null) {
 			List<LogicObject> objects = new ArrayList<>();
 			fillTree(objects, parent);
-			DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-			dw.writeBoolean(true);
-			dw.writeByte(objects.size());
-			for (LogicObject object : objects) {
-				dw.writeByte(object.parent.id);
-				dw.writeByte(object.getType());
-				dw.writeShort(object.data);
-			}
-			PacketHandler.sendCustomToServer(dw);
+			PacketHandler.sendToServer(new PacketDetector(detector, objects));
 		} else {
-			DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-			dw.writeBoolean(false);
-			dw.writeByte(id);
-			PacketHandler.sendCustomToServer(dw);
+			PacketHandler.sendToServer(new PacketDetector(detector, id));
 		}
 	}
 

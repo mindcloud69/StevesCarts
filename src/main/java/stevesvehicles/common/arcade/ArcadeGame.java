@@ -18,7 +18,6 @@ import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.sounds.SoundHandler;
 import stevesvehicles.common.core.StevesVehicles;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
-import stevesvehicles.common.network.PacketHandler;
 
 public abstract class ArcadeGame {
 	private ModuleArcade module;
@@ -190,12 +189,8 @@ public abstract class ArcadeGame {
 		return dw;
 	}
 
-	protected void sendPacketToServer(DataWriter dw) {
-		PacketHandler.sendCustomToServer(dw);
-	}
-
-	protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {
-		PacketHandler.sendPacketToPlayer(dw, player);
+	protected void sendPacketToServer(DataWriter dw) throws IOException {
+		module.sendPacketToServer(dw);
 	}
 
 	private ResourceLocation texture;

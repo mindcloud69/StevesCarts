@@ -173,12 +173,12 @@ public class ModuleNote extends ModuleAttachment {
 					trackPacketID = 2;
 				}
 				if (trackPacketID != -1) {
-					try{
+					try {
 						DataWriter dw = getDataWriter(PacketId.GLOBAL);
 						dw.writeByte(i);
 						dw.writeByte(trackPacketID);
 						sendPacketToServer(dw);
-					}catch(IOException e){
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}
@@ -198,7 +198,7 @@ public class ModuleNote extends ModuleAttachment {
 			}
 			generateScrollX();
 			generateScrollY();
-			try{
+			try {
 				if (createTrack.down) {
 					createTrack.down = false;
 					DataWriter dw = getDataWriter(PacketId.GLOBAL);
@@ -217,7 +217,7 @@ public class ModuleNote extends ModuleAttachment {
 					dw.writeByte(2);
 					sendPacketToServer(dw);
 				}
-			}catch(IOException e){
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			for (int i = 0; i < instrumentButtons.size(); i++) {

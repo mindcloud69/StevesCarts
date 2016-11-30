@@ -19,7 +19,6 @@ import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
 public class PacketUpgrades extends PacketPositioned implements IPacketClient {
-
 	private Map<EnumFacing, Byte> upgrades;
 
 	public PacketUpgrades() {
@@ -31,17 +30,17 @@ public class PacketUpgrades extends PacketPositioned implements IPacketClient {
 		super(assembler.getPos());
 		upgrades = new HashMap<>();
 		Collection<UpgradeContainer> containers = assembler.getUpgrades();
-		if(!containers.isEmpty()){
+		if (!containers.isEmpty()) {
 			for (UpgradeContainer container : containers) {
-				upgrades.put(container.getFacing(), (byte)UpgradeRegistry.getIdFromUpgrade(container.getUpgrade()));
+				upgrades.put(container.getFacing(), (byte) UpgradeRegistry.getIdFromUpgrade(container.getUpgrade()));
 			}
 		}
-		for(EnumFacing facing : EnumFacing.VALUES){
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			UpgradeContainer container = assembler.getUpgrade(facing);
-			if(container != null){
-				upgrades.put(facing, (byte)UpgradeRegistry.getIdFromUpgrade(container.getUpgrade()));
-			}else{
-				upgrades.put(facing, (byte)-1);
+			if (container != null) {
+				upgrades.put(facing, (byte) UpgradeRegistry.getIdFromUpgrade(container.getUpgrade()));
+			} else {
+				upgrades.put(facing, (byte) -1);
 			}
 		}
 	}
@@ -64,7 +63,7 @@ public class PacketUpgrades extends PacketPositioned implements IPacketClient {
 	@Override
 	public void readData(DataReader data) throws IOException {
 		super.readData(data);
-		for(EnumFacing facing : EnumFacing.VALUES){
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			upgrades.put(facing, data.readByte());
 		}
 	}
@@ -72,7 +71,7 @@ public class PacketUpgrades extends PacketPositioned implements IPacketClient {
 	@Override
 	protected void writeData(DataWriter data) throws IOException {
 		super.writeData(data);
-		for(EnumFacing facing : EnumFacing.VALUES){
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			data.writeByte(upgrades.get(facing));
 		}
 	}

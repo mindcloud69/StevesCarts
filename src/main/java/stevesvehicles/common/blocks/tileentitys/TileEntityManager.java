@@ -188,7 +188,7 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 		return false;
 	}
 
-	public enum PacketId {
+	public static enum PacketId {
 		TRANSFER_DIRECTION, RETURN_MODE, LAYOUT_TYPE, VEHICLE_PART, COLOR, AMOUNT
 	}
 
@@ -263,8 +263,7 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 		}
 	}
 
-	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) throws IOException {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		PacketId id = dr.readEnum(PacketId.values());
 		receivePacket(id, dr);
 	}

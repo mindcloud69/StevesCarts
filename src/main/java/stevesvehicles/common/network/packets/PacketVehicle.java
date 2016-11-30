@@ -27,7 +27,6 @@ import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class PacketVehicle implements IPacketServer, IPacketClient {
-
 	public DataWriter dataWriter;
 
 	public PacketVehicle() {
@@ -48,11 +47,11 @@ public class PacketVehicle implements IPacketServer, IPacketClient {
 		return PacketType.VEHICLE;
 	}
 
-	public static DataWriter createWriter(ModuleBase module, boolean hasInterfaceOpen) throws IOException{
+	public static DataWriter createWriter(ModuleBase module, boolean hasInterfaceOpen) throws IOException {
 		int entityId;
-		if(!hasInterfaceOpen){
+		if (!hasInterfaceOpen) {
 			entityId = module.getVehicle().getEntity().getEntityId();
-		}else{
+		} else {
 			entityId = -1;
 		}
 		ByteBufOutputStream buf = new ByteBufOutputStream(Unpooled.buffer());
@@ -68,8 +67,8 @@ public class PacketVehicle implements IPacketServer, IPacketClient {
 		try {
 			dataWriter.close();
 		} catch (IOException e) {
-			//TODO: create Log
-			//Log.err("Failed to write packet.", e);
+			// TODO: create Log
+			// Log.err("Failed to write packet.", e);
 		}
 		return new FMLProxyPacket(new PacketBuffer(dataWriter.getOut().buffer()), Constants.MOD_ID);
 	}
@@ -110,7 +109,7 @@ public class PacketVehicle implements IPacketServer, IPacketClient {
 		int id = data.readByte();
 		if (id >= 0 && id < vehicle.getModules().size()) {
 			ModuleBase module = vehicle.getModules().get(id);
-			if(module instanceof IStreamable){
+			if (module instanceof IStreamable) {
 				((IStreamable) module).readData(data, player);
 			}
 		}

@@ -41,7 +41,7 @@ public class ContainerBuoy extends ContainerBase {
 	public void addListener(IContainerListener listener) {
 		super.addListener(listener);
 		if (listener instanceof EntityPlayer) {
-			if(((EntityPlayer) listener).getEntityWorld().isRemote){
+			if (((EntityPlayer) listener).getEntityWorld().isRemote) {
 				PacketHandler.sendToPlayer(new PacketBuoy(), (EntityPlayer) listener);
 			}
 		}

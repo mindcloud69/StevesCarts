@@ -22,5 +22,4 @@ public interface ISVRegistry {
 	void registerClientPackets(IPacketClient... packets);
 
 	void registerServerPackets(IPacketServer... packets);
-
 }

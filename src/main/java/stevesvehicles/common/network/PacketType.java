@@ -5,8 +5,7 @@ import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.api.network.packets.IPacketServer;
 
 public enum PacketType implements IPacketProvider {
-	VEHICLE, BLOCK, REGISTRY, BUOY, GUI_DATA, CUSTOM, STREAMABLE, ACTIVATOR, UPGRADES, ASSEMBLER;
-
+	VEHICLE, REGISTRY, BUOY, GUI_DATA, CUSTOM, STREAMABLE, ACTIVATOR, UPGRADES, ASSEMBLER, MANAGER, DETECTOR, DISTRIBUTOR;
 	public static final PacketType[] VALUES = values();
 	private IPacketServer packetServer;
 	private IPacketClient packetClient;
@@ -39,7 +38,7 @@ public enum PacketType implements IPacketProvider {
 
 	@Override
 	public void setPacketID(int packetID) {
-		if(this.packetID >= 0){
+		if (this.packetID >= 0) {
 			return;
 		}
 		this.packetID = packetID;

@@ -1,5 +1,6 @@
 package stevesvehicles.client.gui.screen;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
@@ -124,7 +125,7 @@ public class GuiDetector extends GuiBase {
 	}
 
 	@Override
-	public void mouseClick(int x, int y, int button) {
+	public void mouseClick(int x, int y, int button) throws IOException {
 		super.mouseClick(x, y, button);
 		x -= getGuiLeft();
 		y -= getGuiTop();
@@ -146,7 +147,7 @@ public class GuiDetector extends GuiBase {
 	}
 
 	@Override
-	public void mouseMoved(int x, int y, int button) {
+	public void mouseMoved(int x, int y, int button) throws IOException {
 		super.mouseMoved(x, y, button);
 		x -= getGuiLeft();
 		y -= getGuiTop();
@@ -156,9 +157,9 @@ public class GuiDetector extends GuiBase {
 		}
 	}
 
-	private boolean removeObject(int x, int y, LogicObject object) {
+	private boolean removeObject(int x, int y, LogicObject object) throws IOException {
 		if (inRect(x, y, object.getRect()) && object.canBeRemoved()) {
-			object.setParentAndUpdate(null);
+			object.setParentAndUpdate(null, detector);
 			return true;
 		}
 		for (LogicObject child : object.getChildren()) {
@@ -169,10 +170,10 @@ public class GuiDetector extends GuiBase {
 		return false;
 	}
 
-	private boolean pickupObject(int x, int y, LogicObject object) {
+	private boolean pickupObject(int x, int y, LogicObject object) throws IOException {
 		if (inRect(x, y, object.getRect()) && object.canBeRemoved()) {
 			currentObject = object;
-			object.setParentAndUpdate(null);
+			object.setParentAndUpdate(null, detector);
 			return true;
 		}
 		for (LogicObject child : object.getChildren()) {
@@ -183,7 +184,7 @@ public class GuiDetector extends GuiBase {
 		return false;
 	}
 
-	private boolean dropOnObject(int x, int y, LogicObject object, LogicObject drop) {
+	private boolean dropOnObject(int x, int y, LogicObject object, LogicObject drop) throws IOException {
 		if (inRect(x, y, object.getRect())) {
 			/*
 			 * if (isShiftKeyDown() && drop.hasRoomForChild() &&
@@ -194,7 +195,7 @@ public class GuiDetector extends GuiBase {
 			 * object.setParentAndUpdate(detector, drop); }else{}
 			 */
 			if (object.hasRoomForChild() && object.isChildValid(drop)) {
-				drop.setParentAndUpdate(object);
+				drop.setParentAndUpdate(object, detector);
 			}
 			// }
 			return true;

@@ -8,44 +8,37 @@ import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.api.network.packets.IPacketServer;
-import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
+import stevesvehicles.common.blocks.tileentitys.TileEntityDistributor;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketCartAssembler extends PacketPositioned implements IPacketServer {
-	private byte packetID;
-	private short param;
+public class PacketDistributor extends PacketPositioned implements IPacketServer {
+	private int activeId;
+	private int sideId;
+	private boolean bool;
 
-	public PacketCartAssembler() {
-	}
-
-	public PacketCartAssembler(TileEntityCartAssembler assembler, byte packetID, short param) {
-		super(assembler.getPos());
-		this.packetID = packetID;
-		this.param = param;
+	public PacketDistributor(TileEntityDistributor distributor, int activeId, int sideId, boolean bool) {
+		super(distributor.getPos());
 	}
 
 	@Override
 	protected void writeData(DataWriter data) throws IOException {
 		super.writeData(data);
-		data.writeByte(packetID);
-		if (packetID == 1) {
-			data.writeByte(param);
-		} else if (packetID == 2) {
-			data.writeShort(param);
-		}
+		data.writeByte(activeId);
+		data.writeByte(sideId);
+		data.writeBoolean(bool);
 	}
 
 	@Override
 	public void onPacketData(DataReader data, EntityPlayerMP player) throws IOException {
 		TileEntity tile = player.world.getTileEntity(getPos());
-		if (tile instanceof TileEntityCartAssembler) {
-			TileEntityCartAssembler assembler = (TileEntityCartAssembler) tile;
-			assembler.readData(data, player);
+		if (tile instanceof TileEntityDistributor) {
+			TileEntityDistributor distributor = (TileEntityDistributor) tile;
+			distributor.readData(data, player);
 		}
 	}
 
 	@Override
 	public IPacketProvider getProvider() {
-		return PacketType.ASSEMBLER;
+		return PacketType.DISTRIBUTOR;
 	}
 }

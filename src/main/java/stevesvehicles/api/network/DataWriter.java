@@ -14,12 +14,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class DataWriter extends DataOutputStream {
-
 	public DataWriter(ByteBufOutputStream out) {
 		super(out);
 	}
 
-	public ByteBufOutputStream getOut(){
+	public ByteBufOutputStream getOut() {
 		return (ByteBufOutputStream) out;
 	}
 

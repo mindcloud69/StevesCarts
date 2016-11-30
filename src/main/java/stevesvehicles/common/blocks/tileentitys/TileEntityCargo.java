@@ -104,8 +104,6 @@ public class TileEntityCargo extends TileEntityManager {
 		return target[transfer.getSetting()] >= 0 && target[transfer.getSetting()] < itemSelections.size();
 	}
 
-	re
-
 	@Override
 	protected void receivePacket(PacketId id, DataReader dr) throws IOException {
 		if (id == PacketId.VEHICLE_PART) {

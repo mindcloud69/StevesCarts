@@ -1,5 +1,7 @@
 package stevesvehicles.client.gui.screen;
 
+import java.io.IOException;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
@@ -12,7 +14,7 @@ import stevesvehicles.client.localization.entry.block.LocalizationManager;
 import stevesvehicles.common.blocks.tileentitys.TileEntityManager;
 import stevesvehicles.common.container.ContainerManager;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketManager;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiManager extends GuiBase {
@@ -223,7 +225,7 @@ public abstract class GuiManager extends GuiBase {
 	}
 
 	@Override
-	public void mouseClick(int x, int y, int button) {
+	public void mouseClick(int x, int y, int button) throws IOException {
 		super.mouseClick(x, y, button);
 		if (button == 0 || button == 1) {
 			x -= getGuiLeft();
@@ -253,22 +255,15 @@ public abstract class GuiManager extends GuiBase {
 	}
 
 	protected void sendPacket(TileEntityManager.PacketId id, boolean dif) {
-		DataWriter dw = getDataWriter(id);
-		dw.writeBoolean(dif);
-		PacketHandler.sendCustomToServer(dw);
+		PacketHandler.sendToServer(new PacketManager(manager, id, 0, dif));
 	}
 
 	protected void sendPacket(TileEntityManager.PacketId id, int railId) {
-		DataWriter dw = getDataWriter(id);
-		dw.writeByte(railId);
-		PacketHandler.sendCustomToServer(dw);
+		PacketHandler.sendToServer(new PacketManager(manager, id, railId, false));
 	}
 
 	protected void sendPacket(TileEntityManager.PacketId id, int railId, boolean dif) {
-		DataWriter dw = getDataWriter(id);
-		dw.writeByte(railId);
-		dw.writeBoolean(dif);
-		PacketHandler.sendCustomToServer(dw);
+		PacketHandler.sendToServer(new PacketManager(manager, id, railId, dif));
 	}
 
 	protected void setColor(int color) {
@@ -290,12 +285,6 @@ public abstract class GuiManager extends GuiBase {
 			this.green = green / 255F;
 			this.blue = blue / 255F;
 		}
-	}
-
-	protected DataWriter getDataWriter(TileEntityManager.PacketId id) {
-		DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-		dw.writeEnum(id);
-		return dw;
 	}
 
 	private TileEntityManager manager;

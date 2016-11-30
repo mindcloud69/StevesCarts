@@ -189,12 +189,12 @@ public class ArcadeSweeper extends ArcadeGame {
 				if (highscore[currentGameType] > ticks / 20) {
 					highscoreTicks = 1;
 					int val = ticks / 20;
-					try{
+					try {
 						DataWriter dw = getDataWriter();
 						dw.writeByte(currentGameType);
 						dw.writeShort(val);
 						sendPacketToServer(dw);
-					}catch(IOException e){
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}

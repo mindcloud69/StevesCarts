@@ -15,7 +15,6 @@ import stevesvehicles.api.network.packets.IPacketServer;
 import stevesvehicles.common.network.PacketType;
 
 public class PacketStreamable extends Packet implements IPacketServer {
-
 	public Object object;
 	public IStreamable streamable;
 
@@ -34,13 +33,13 @@ public class PacketStreamable extends Packet implements IPacketServer {
 
 	@Override
 	protected void writeData(DataWriter data) throws IOException {
-		if(object instanceof BlockPos){
+		if (object instanceof BlockPos) {
 			data.writeInt(0);
 			BlockPos pos = (BlockPos) object;
 			data.writeInt(pos.getX());
 			data.writeInt(pos.getY());
 			data.writeInt(pos.getZ());
-		}else if(object instanceof Integer){
+		} else if (object instanceof Integer) {
 			data.writeInt(1);
 			data.writeInt(((Integer) object).intValue());
 		}
@@ -56,20 +55,20 @@ public class PacketStreamable extends Packet implements IPacketServer {
 	public void onPacketData(DataReader data, EntityPlayerMP player) throws IOException {
 		World world = player.world;
 		int type = data.readInt();
-		if(type == 0){
+		if (type == 0) {
 			BlockPos pos = new BlockPos(data.readInt(), data.readInt(), data.readInt());
 			TileEntity tile = world.getTileEntity(pos);
-			if(streamable instanceof IStreamable){
+			if (streamable instanceof IStreamable) {
 				streamable = (IStreamable) tile;
 			}
-		}else if(type == 1){
+		} else if (type == 1) {
 			int entityID = data.readInt();
 			Entity entity = world.getEntityByID(entityID);
-			if(entity instanceof IStreamable){
+			if (entity instanceof IStreamable) {
 				streamable = (IStreamable) entity;
 			}
 		}
-		if(streamable != null){
+		if (streamable != null) {
 			streamable.readData(data, player);
 		}
 	}

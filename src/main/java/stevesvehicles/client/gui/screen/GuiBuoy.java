@@ -23,7 +23,7 @@ import stevesvehicles.common.container.ContainerBuoy;
 import stevesvehicles.common.entitys.buoy.EntityBuoy;
 import stevesvehicles.common.modules.datas.ModuleDataPair;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketBuoy;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.entitys.EntityModularBoat;
 
@@ -673,10 +673,7 @@ public class GuiBuoy extends GuiBase {
 	}
 
 	private void sendSetBuoyToServer(EntityBuoy buoy, boolean next) {
-		DataWriter dw = PacketHandler.getDataWriter(PacketType.BUOY);
 		int entityId = buoy != null && !buoy.isDead ? buoy.getEntityId() : -1;
-		dw.writeInteger(entityId);
-		dw.writeBoolean(next);
-		PacketHandler.sendCustomToServer(dw);
+		PacketHandler.sendToServer(new PacketBuoy(entityId, next));
 	}
 }

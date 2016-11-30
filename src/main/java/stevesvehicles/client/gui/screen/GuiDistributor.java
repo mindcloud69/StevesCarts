@@ -1,5 +1,6 @@
 package stevesvehicles.client.gui.screen;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
@@ -15,7 +16,7 @@ import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSetting;
 import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSide;
 import stevesvehicles.common.container.ContainerDistributor;
 import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
+import stevesvehicles.common.network.packets.PacketDistributor;
 
 @SideOnly(Side.CLIENT)
 public class GuiDistributor extends GuiBase {
@@ -141,7 +142,7 @@ public class GuiDistributor extends GuiBase {
 	private int activeId = -1;
 
 	@Override
-	public void mouseClick(int x, int y, int button) {
+	public void mouseClick(int x, int y, int button) throws IOException {
 		super.mouseClick(x, y, button);
 		x -= getGuiLeft();
 		y -= getGuiTop();
@@ -158,7 +159,7 @@ public class GuiDistributor extends GuiBase {
 	}
 
 	@Override
-	public void mouseMoved(int x, int y, int button) {
+	public void mouseMoved(int x, int y, int button) throws IOException {
 		super.mouseMoved(x, y, button);
 		x -= getGuiLeft();
 		y -= getGuiTop();
@@ -168,11 +169,7 @@ public class GuiDistributor extends GuiBase {
 				if (side.isEnabled(distributor)) {
 					int[] box = getSideBoxRect(id++);
 					if (inRect(x, y, box)) {
-						DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-						dw.writeByte(activeId);
-						dw.writeByte(side.getId());
-						dw.writeBoolean(true);
-						PacketHandler.sendCustomToServer(dw);
+						PacketHandler.sendToServer(new PacketDistributor(distributor, activeId, side.getId(), true));
 						break;
 					}
 				}
@@ -188,11 +185,7 @@ public class GuiDistributor extends GuiBase {
 							if (side.isSet(setting.getId())) {
 								int[] settingsBox = getActiveSettingBoxRect(id, settingCount++);
 								if (inRect(x, y, settingsBox)) {
-									DataWriter dw = PacketHandler.getDataWriter(PacketType.BLOCK);
-									dw.writeByte(activeId);
-									dw.writeByte(side.getId());
-									dw.writeBoolean(false);
-									PacketHandler.sendCustomToServer(dw);
+									PacketHandler.sendToServer(new PacketDistributor(distributor, activeId, side.getId(), false));
 									break;
 								}
 							}

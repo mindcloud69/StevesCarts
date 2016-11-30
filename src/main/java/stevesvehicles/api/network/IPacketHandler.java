@@ -11,7 +11,6 @@ import stevesvehicles.api.network.packets.IPacketClient;
 import stevesvehicles.api.network.packets.IPacketServer;
 
 public interface IPacketHandler {
-
 	void sendToNetwork(IPacketClient packet, BlockPos pos, WorldServer world);
 
 	@SideOnly(Side.CLIENT)

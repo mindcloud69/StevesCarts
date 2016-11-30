@@ -31,9 +31,10 @@ public class RegistrySynchronizer {
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
-		DataWriter dw = PacketHandler.getDataWriter(PacketType.REGISTRY);
-		writeSynchronizedData(dw);
-		PacketHandler.sendPacketToPlayer(dw, player);
+		// TODO: new registries
+		// DataWriter dw = PacketHandler.getDataWriter(PacketType.REGISTRY);
+		// writeSynchronizedData(dw);
+		// PacketHandler.sendPacketToPlayer(dw, player);
 	}
 
 	private static void writeSynchronizedData(DataWriter dw) {

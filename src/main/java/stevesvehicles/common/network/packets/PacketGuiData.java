@@ -12,8 +12,7 @@ import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketGuiData extends PacketPositioned implements IPacketClient{
-
+public class PacketGuiData extends PacketPositioned implements IPacketClient {
 	public TileEntityBase tileEntity;
 	public Container container;
 
@@ -45,7 +44,7 @@ public class PacketGuiData extends PacketPositioned implements IPacketClient{
 	@Override
 	public void onPacketData(DataReader data, EntityPlayer player) throws IOException {
 		TileEntity tileEntity = player.world.getTileEntity(getPos());
-		if(tileEntity instanceof TileEntityBase){
+		if (tileEntity instanceof TileEntityBase) {
 			TileEntityBase baseTile = (TileEntityBase) tileEntity;
 			baseTile.receiveGuiData(data);
 		}

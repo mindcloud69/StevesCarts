@@ -434,12 +434,12 @@ public class ArcadeTracks extends ArcadeGame {
 	}
 
 	private void sendPacket(int story, int level) {
-		try{
+		try {
 			DataWriter dw = getDataWriter();
 			dw.writeByte(story);
 			dw.writeByte(level);
 			sendPacketToServer(dw);
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

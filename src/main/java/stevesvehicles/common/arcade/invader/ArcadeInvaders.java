@@ -268,11 +268,11 @@ public class ArcadeInvaders extends ArcadeGame {
 			if (score > highscore) {
 				newHighscore = true;
 				int val = score;
-				try{
+				try {
 					DataWriter dw = getDataWriter();
 					dw.writeShort(val);
 					sendPacketToServer(dw);
-				}catch(IOException e){
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}

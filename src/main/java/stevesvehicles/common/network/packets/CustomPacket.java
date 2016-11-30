@@ -13,7 +13,6 @@ import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.network.PacketType;
 
 public class CustomPacket implements IPacketServer {
-
 	private final IPacketProvider id = getProvider();
 	private final ByteBufOutputStream buf;
 
@@ -37,6 +36,5 @@ public class CustomPacket implements IPacketServer {
 
 	@Override
 	public void onPacketData(DataReader data, EntityPlayerMP player) throws IOException {
-
 	}
 }

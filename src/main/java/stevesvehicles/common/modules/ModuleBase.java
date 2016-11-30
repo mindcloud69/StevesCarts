@@ -950,7 +950,7 @@ public abstract class ModuleBase implements IStreamable {
 	 *            The y coordinate of the mouse
 	 * @param button
 	 *            The button that was pressed on the mouse
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@SideOnly(Side.CLIENT)
 	public void mouseClicked(GuiVehicle gui, int x, int y, int button) throws IOException {
@@ -968,7 +968,7 @@ public abstract class ModuleBase implements IStreamable {
 	 * @param button
 	 *            The button that was released, or -1 if the cursor is just
 	 *            being moved
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@SideOnly(Side.CLIENT)
 	public void mouseMovedOrUp(GuiVehicle gui, int x, int y, int button) throws IOException {
@@ -1084,7 +1084,7 @@ public abstract class ModuleBase implements IStreamable {
 		return getDataWriter(true);
 	}
 
-	protected void sendPacketToServer()  {
+	protected void sendPacketToServer() {
 		sendPacketToServer(true);
 	}
 
@@ -1100,8 +1100,8 @@ public abstract class ModuleBase implements IStreamable {
 		PacketHandler.sendToServer(new PacketVehicle(this, dw));
 	}
 
-	protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) {
-		PacketHandler.sendPacketToPlayer(dw, player);
+	protected void sendPacketToPlayer(DataWriter dw, EntityPlayer player) throws IOException {
+		PacketHandler.sendToPlayer(new PacketVehicle(this, dw), player);
 	}
 
 	@Override

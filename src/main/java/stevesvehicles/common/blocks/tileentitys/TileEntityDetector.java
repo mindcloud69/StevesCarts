@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -29,7 +30,7 @@ import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public class TileEntityDetector extends TileEntityBase implements ITickable, IStreamable {
+public class TileEntityDetector extends TileEntityBase implements ITickable {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public GuiBase getGui(InventoryPlayer inv) {
@@ -102,29 +103,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable, ISt
 		return world.getBlockState(pos).getValue(DetectorType.SATE);
 	}
 
-	@Override
-	public void writeData(DataWriter data) throws IOException {
-		LogicObject parent = mainObj.getParent();
-		if (parent != null) {
-			List<LogicObject> objects = new ArrayList<>();
-			mainObj.fillTree(objects, parent);
-			data.writeBoolean(true);
-			data.writeByte(objects.size());
-			for (LogicObject object : objects) {
-				data.writeByte(object.getParent().getId());
-				data.writeByte(object.getType());
-				data.writeShort(object.getData());
-			}
-			PacketHandler.sendCustomToServer(data);
-		} else {
-			data.writeBoolean(false);
-			data.writeByte(mainObj.getId());
-			PacketHandler.sendCustomToServer(data);
-		}
-	}
-
-	@Override
-	public void readData(DataReader data, EntityPlayer player) throws IOException {
+	public void handlePacket(DataReader data, EntityPlayer player) throws IOException {
 		// add object
 		if (data.readBoolean()) {
 			int count = data.readByte();
@@ -195,8 +174,31 @@ public class TileEntityDetector extends TileEntityBase implements ITickable, ISt
 	}
 
 	@Override
-	public void checkGuiData(Container con, IContainerListener crafting) {
+	public boolean checkGuiData(Container con) {
+		return checkLogicObjects(con, mainObj, ((ContainerDetector) con).mainObj);
+	}
+
+	@Override
+	public void updateGuiData(DataWriter writer, Container container) throws IOException {
 		sendUpdatedLogicObjects(con, crafting, mainObj, ((ContainerDetector) con).mainObj);
+	}
+
+	private boolean checkLogicObjects(Container con, LogicObject real, LogicObject cache) {
+		if (!real.equals(cache)) {
+			return true;
+		}
+		if (real.getChildren().size() > cache.getChildren().size()) {
+			return true;
+		}
+		if (real.getChildren().size() < cache.getChildren().size()) {
+			return true;
+		}
+		for (int i = 0; i < real.getChildren().size(); i++) {
+			if (checkLogicObjects(con, real.getChildren().get(i), cache.getChildren().get(i))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void sendUpdatedLogicObjects(Container con, IContainerListener crafting, LogicObject real, LogicObject cache) {
@@ -204,7 +206,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable, ISt
 			LogicObject parent = cache.getParent();
 			cache.setParent(null);
 			LogicObject clone = real.copy(parent);
-			removeLogicObject(con, crafting, cache);
+			removeLogicObject(con, crafting, cache);EntityPlayerMP
 			sendLogicObject(con, crafting, clone);
 			cache = clone;
 		}

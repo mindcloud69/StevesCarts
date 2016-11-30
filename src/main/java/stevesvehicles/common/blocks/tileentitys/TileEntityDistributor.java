@@ -1,5 +1,6 @@
 package stevesvehicles.common.blocks.tileentitys;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,7 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiDistributor;
 import stevesvehicles.client.localization.entry.block.LocalizationDistributor;
@@ -80,8 +82,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		dirty = true;
 	}
 
-	@Override
-	public void receivePacket(DataReader dr, EntityPlayer player) {
+	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int settingId = dr.readByte();
 		int sideId = dr.readByte();
 		if (settingId >= 0 && settingId < DistributorSetting.settings.size() && sideId >= 0 && sideId < getSides().size()) {
