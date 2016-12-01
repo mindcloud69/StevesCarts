@@ -98,7 +98,8 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public void initGuiData(Container con, IContainerListener crafting) {
 	}
 
-	@Override
+	//TODO: rewrite
+	/*@Override
 	public void checkGuiData(Container con, IContainerListener crafting) {
 		ContainerDistributor distributor = (ContainerDistributor) con;
 		for (int i = 0; i < getSides().size(); i++) {
@@ -124,7 +125,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		} else {
 			side.setLowShortData(data);
 		}
-	}
+	}*/
 
 	private TileEntityManager[] inventories;
 	public boolean hasTop;

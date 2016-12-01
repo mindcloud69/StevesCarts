@@ -1,13 +1,9 @@
 package stevesvehicles.common.blocks.tileentitys;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -17,7 +13,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
@@ -26,8 +21,6 @@ import stevesvehicles.common.blocks.tileentitys.detector.LogicObjectOperator;
 import stevesvehicles.common.blocks.tileentitys.detector.OperatorObject;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerDetector;
-import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class TileEntityDetector extends TileEntityBase implements ITickable {
@@ -180,7 +173,8 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 
 	@Override
 	public void updateGuiData(DataWriter writer, Container container) throws IOException {
-		sendUpdatedLogicObjects(con, crafting, mainObj, ((ContainerDetector) con).mainObj);
+		//TODO: rewrite
+		//sendUpdatedLogicObjects(con, crafting, mainObj, ((ContainerDetector) con).mainObj);
 	}
 
 	private boolean checkLogicObjects(Container con, LogicObject real, LogicObject cache) {
@@ -206,7 +200,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 			LogicObject parent = cache.getParent();
 			cache.setParent(null);
 			LogicObject clone = real.copy(parent);
-			removeLogicObject(con, crafting, cache);EntityPlayerMP
+			removeLogicObject(con, crafting, cache);
 			sendLogicObject(con, crafting, clone);
 			cache = clone;
 		}
@@ -241,7 +235,8 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 	private short oldData;
 	private boolean hasOldData;
 
-	@Override
+	//TODO: rewrite
+	/*@Override
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {
 			oldData = data;
@@ -258,7 +253,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 			removeObject(mainObj, data);
 			recalculateTree();
 		}
-	}
+	}*/
 
 	public void recalculateTree() {
 		mainObj.generatePosition(5, 60, 245, 0);

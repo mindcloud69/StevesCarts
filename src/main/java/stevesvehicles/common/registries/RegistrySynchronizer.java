@@ -19,8 +19,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.common.core.StevesVehicles;
-import stevesvehicles.common.network.PacketHandler;
-import stevesvehicles.common.network.PacketType;
 
 @Deprecated
 public class RegistrySynchronizer {
@@ -39,8 +37,8 @@ public class RegistrySynchronizer {
 
 	private static void writeSynchronizedData(DataWriter dw) {
 		for (RegistryLoader registryLoader : RegistryLoader.registryLoaderList) {
-			dw.writeShort((short) registryLoader.nextId);
-			dw.writeShort(registryLoader.nameToIdMapping.size());
+			//dw.writeShort((short) registryLoader.nextId);
+			//dw.writeShort(registryLoader.nameToIdMapping.size());
 			// WHAT THE SERIOUSLY FUCK, for some reason the entrySet() returns a
 			// set of objects. When it's used in RegistryLoader it returns a set
 			// of Map.Entry<String, Integer> :S
@@ -49,8 +47,8 @@ public class RegistrySynchronizer {
 				if (StevesVehicles.debugMode) {
 					System.out.println("Sending registry data from server. (K = " + entry.getKey() + ", V = " + entry.getValue() + ")");
 				}
-				dw.writeString(entry.getKey());
-				dw.writeShort(entry.getValue());
+				//dw.writeString(entry.getKey());
+				//dw.writeShort(entry.getValue());
 			}
 		}
 	}
@@ -58,24 +56,24 @@ public class RegistrySynchronizer {
 	public static void onPacket(DataReader reader) {
 		for (RegistryLoader registryLoader : RegistryLoader.registryLoaderList) {
 			registryLoader.clearLoadedRegistryData();
-			registryLoader.nextId = reader.readShort();
-			int count = reader.readShort();
-			for (int i = 0; i < count; i++) {
-				String name = reader.readString();
-				int id = reader.readShort();
+			//registryLoader.nextId = reader.readShort();
+			//int count = reader.readShort();
+			//for (int i = 0; i < count; i++) {
+			//String name = reader.readString();
+			/*int id = reader.readShort();
 				if (StevesVehicles.debugMode) {
 					System.out.println("Receiving registry data at client. (K = " + name + ", V = " + id + ")");
 				}
-				registryLoader.nameToIdMapping.put(name, id); // WHAT THE
-				// SERIOUSLY
-				// FUCK 2, for
-				// some reason
-				// it has no
-				// clue
-				// nameToIdMapping
-				// is a <String,
-				// Integer>
-			}
+				registryLoader.nameToIdMapping.put(name, id);*/ // WHAT THE
+			// SERIOUSLY
+			// FUCK 2, for
+			// some reason
+			// it has no
+			// clue
+			// nameToIdMapping
+			// is a <String,
+			// Integer>
+			//}
 			registryLoader.loadFromRegistries();
 		}
 	}

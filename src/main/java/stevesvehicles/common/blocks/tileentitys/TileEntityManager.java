@@ -11,7 +11,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.common.blocks.tileentitys.manager.ManagerTransfer;
-import stevesvehicles.common.container.ContainerManager;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 public abstract class TileEntityManager extends TileEntityInventory implements ITickable {
@@ -270,10 +269,11 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 
 	@Override
 	public void initGuiData(Container con, IContainerListener crafting) {
-		checkGuiData((ContainerManager) con, crafting, true);
+		//	checkGuiData((ContainerManager) con, crafting, true);
 	}
 
-	@Override
+	//TODO: rewrite
+	/*@Override
 	public void checkGuiData(Container con, IContainerListener crafting) {
 		checkGuiData((ContainerManager) con, crafting, false);
 	}
@@ -332,7 +332,7 @@ public abstract class TileEntityManager extends TileEntityInventory implements I
 				amount[i] = (data & (15 << (i * 4))) >> (i * 4);
 			}
 		}
-	}
+	}*/
 
 	public int moveProgressScaled(int i) {
 		return (moveTime * i) / 24;
