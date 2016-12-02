@@ -16,9 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.IStreamable;
-import stevesvehicles.api.network.packets.IPacketClient;
+import stevesvehicles.api.network.packets.IClientPacket;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.container.ContainerVehicle;
 import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.modules.ModuleBase;
@@ -26,7 +26,7 @@ import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public class PacketVehicle implements IPacketServer, IPacketClient {
+public class PacketVehicle implements IServerPacket, IClientPacket {
 	public DataWriter dataWriter;
 
 	public PacketVehicle() {

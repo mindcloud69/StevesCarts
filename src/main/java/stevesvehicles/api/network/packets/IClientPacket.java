@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
 
-public interface IPacketClient extends IPacket {
+public interface IClientPacket extends IPacket {
 	@SideOnly(Side.CLIENT)
 	void onPacketData(DataReader data, EntityPlayer player) throws IOException;
 }

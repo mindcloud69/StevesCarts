@@ -2,8 +2,6 @@ package stevesvehicles.common.core;
 
 import java.util.EnumSet;
 
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
@@ -14,7 +12,6 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,42 +56,29 @@ import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.NAME, version = Constants.version)
 public class StevesVehicles {
-	public static boolean debugMode = false;
-	public static boolean hasGreenScreen = false;
-	public static boolean freezeCartSimulation = false;
-	public static boolean renderSteve = false;
-	public static boolean arcadeDevOperator = false;
 	public static EnumSet<HolidayType> holidays = EnumSet.allOf(HolidayType.class);
-	public static final String CHANNEL = "SC2";
-	public final String texturePath = "/assets/stevescarts/textures";
 	// public final String soundPath = "/assets/stevescarts/sounds";
 	public static final String localStart = "SC2:";
 	@Instance(Constants.MOD_ID)
 	public static StevesVehicles instance;
-	// public ISimpleBlockRenderingHandler blockRenderer;
-	public int maxDynamites = 50;
-	public boolean useArcadeSounds;
-	public boolean useArcadeMobSounds;
-	public static FMLEventChannel packetHandler;
-	public static Logger logger;
+	public static SVRegistry registry;
+	public static Config config;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// TODO make sure everything here is called in the correct order and
 		// still allow other mods to hook into it and still maintaining the
 		// correct sequence
-		packetHandler = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNEL);
 		VehicleRegistry.init();
 		ModuleRegistry.init();
 		UpgradeRegistry.init();
 		ModuleStateRegistry.init();
 		CreativeTabLoader.init();
-		logger = event.getModLog();
+		Log.logger = event.getModLog();
+
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
-		maxDynamites = Math.min(maxDynamites, config.get("Settings", "MaximumNumberOfDynamites", maxDynamites).getInt(maxDynamites));
-		useArcadeSounds = config.get("Settings", "useArcadeSounds", true).getBoolean(true);
-		useArcadeMobSounds = config.get("Settings", "useTetrisMobSounds", true).getBoolean(true);
+		StevesVehicles.config = new Config(config);
 		ModItems.preBlockInit(config);
 		ItemBlockStorage.init();
 		ModBlocks.init();
@@ -112,10 +96,11 @@ public class StevesVehicles {
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
+		config.loadConfig(true);
 		CreativeTabLoader.postInit();
 		RecipeSorter.register(Constants.MOD_ID + ":shaped", ShapedModuleRecipe.class, RecipeSorter.Category.SHAPED, "before:minecraft:shaped before:steves_vehicles:shapeless");
 		RecipeSorter.register(Constants.MOD_ID + ":shapeless", ShapelessModuleRecipe.class, RecipeSorter.Category.SHAPELESS, "after:steves_vehicles:shaped");
-		packetHandler.register(new PacketHandler());
+		PacketHandler.init();
 		new OverlayRenderer();
 		new TicketListener();
 		new ChunkListener();
@@ -136,6 +121,7 @@ public class StevesVehicles {
 		GiftItem.init();
 		UpgradeRegistry.postInit();
 		VehicleDataSerializers.init();
+		registry = new SVRegistry();
 	}
 
 	@SideOnly(Side.CLIENT)

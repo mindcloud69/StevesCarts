@@ -7,11 +7,11 @@ import net.minecraft.tileentity.TileEntity;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketCartAssembler extends PacketPositioned implements IPacketServer {
+public class PacketCartAssembler extends PacketPositioned implements IServerPacket {
 	private byte packetID;
 	private short param;
 

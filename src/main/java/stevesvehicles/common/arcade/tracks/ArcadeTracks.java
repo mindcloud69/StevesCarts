@@ -14,7 +14,7 @@ import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.arcade.LocalizationTrack;
 import stevesvehicles.common.arcade.ArcadeGame;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
 import stevesvehicles.common.vehicles.VehicleBase;
 
@@ -97,7 +97,7 @@ public class ArcadeTracks extends ArcadeGame {
 	private void loadUserMaps() {
 		userList.clearList();
 		userMaps = TrackLevel.loadMapsFromFolder();
-		if (StevesVehicles.arcadeDevOperator) {
+		if (Constants.arcadeDevOperator) {
 			for (int i = 0; i < TrackStory.stories.size(); i++) {
 				for (int j = 0; j < TrackStory.stories.get(i).getLevels().size(); j++) {
 					userMaps.add(TrackStory.stories.get(i).getLevels().get(j));
@@ -883,7 +883,7 @@ public class ArcadeTracks extends ArcadeGame {
 
 	@SideOnly(Side.CLIENT)
 	private boolean save(String name) {
-		if (StevesVehicles.arcadeDevOperator) {
+		if (Constants.arcadeDevOperator) {
 			if (name.startsWith(" ")) {
 				name = name.substring(1);
 			} else {

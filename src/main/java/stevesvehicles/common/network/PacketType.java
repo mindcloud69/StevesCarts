@@ -1,33 +1,33 @@
 package stevesvehicles.common.network;
 
-import stevesvehicles.api.network.packets.IPacketClient;
+import stevesvehicles.api.network.packets.IClientPacket;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 
 public enum PacketType implements IPacketProvider {
 	VEHICLE, REGISTRY, BUOY, GUI_DATA, CUSTOM, STREAMABLE, ACTIVATOR, UPGRADES, ASSEMBLER, MANAGER, DETECTOR, DISTRIBUTOR;
 	public static final PacketType[] VALUES = values();
-	private IPacketServer packetServer;
-	private IPacketClient packetClient;
+	private IServerPacket packetServer;
+	private IClientPacket packetClient;
 	private int packetID = -1;
 
 	@Override
-	public void setPacketClient(IPacketClient packetClient) {
+	public void setPacketClient(IClientPacket packetClient) {
 		this.packetClient = packetClient;
 	}
 
 	@Override
-	public void setPacketServer(IPacketServer packetServer) {
+	public void setPacketServer(IServerPacket packetServer) {
 		this.packetServer = packetServer;
 	}
 
 	@Override
-	public IPacketServer getServerPacket() {
+	public IServerPacket getServerPacket() {
 		return packetServer;
 	}
 
 	@Override
-	public IPacketClient getClientPacket() {
+	public IClientPacket getClientPacket() {
 		return packetClient;
 	}
 

@@ -8,14 +8,17 @@ import net.minecraft.tileentity.TileEntity;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.blocks.tileentitys.TileEntityActivator;
 import stevesvehicles.common.blocks.tileentitys.toggler.TogglerOption;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketActivator extends PacketPositioned implements IPacketServer {
+public class PacketActivator extends PacketPositioned implements IServerPacket {
 	private int option;
 	private boolean isActive;
+
+	public PacketActivator() {
+	}
 
 	public PacketActivator(TileEntityActivator tile, int option, boolean isActive) {
 		super(tile.getPos());

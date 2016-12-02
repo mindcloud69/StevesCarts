@@ -7,13 +7,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IPacketClient;
+import stevesvehicles.api.network.packets.IClientPacket;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.container.ContainerBuoy;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketBuoy extends Packet implements IPacketClient, IPacketServer {
+public class PacketBuoy extends Packet implements IClientPacket, IServerPacket {
 	private int entityId;
 	private boolean next;
 

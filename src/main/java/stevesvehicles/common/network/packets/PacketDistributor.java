@@ -7,14 +7,17 @@ import net.minecraft.tileentity.TileEntity;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDistributor;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketDistributor extends PacketPositioned implements IPacketServer {
+public class PacketDistributor extends PacketPositioned implements IServerPacket {
 	private int activeId;
 	private int sideId;
 	private boolean bool;
+
+	public PacketDistributor() {
+	}
 
 	public PacketDistributor(TileEntityDistributor distributor, int activeId, int sideId, boolean bool) {
 		super(distributor.getPos());

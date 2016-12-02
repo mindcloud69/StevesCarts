@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Constants;
 
 @Deprecated
 public class RegistrySynchronizer {
@@ -44,7 +44,7 @@ public class RegistrySynchronizer {
 			// of Map.Entry<String, Integer> :S
 			for (Object o : registryLoader.nameToIdMapping.entrySet()) {
 				Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) o;
-				if (StevesVehicles.debugMode) {
+				if (Constants.debugMode) {
 					System.out.println("Sending registry data from server. (K = " + entry.getKey() + ", V = " + entry.getValue() + ")");
 				}
 				//dw.writeString(entry.getKey());

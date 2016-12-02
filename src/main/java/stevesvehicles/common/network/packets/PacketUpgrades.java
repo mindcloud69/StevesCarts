@@ -9,7 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IPacketClient;
+import stevesvehicles.api.network.packets.IClientPacket;
 import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.common.blocks.BlockCartAssembler;
 import stevesvehicles.common.blocks.ModBlocks;
@@ -18,7 +18,7 @@ import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
-public class PacketUpgrades extends PacketPositioned implements IPacketClient {
+public class PacketUpgrades extends PacketPositioned implements IClientPacket {
 	private Map<EnumFacing, Byte> upgrades;
 
 	public PacketUpgrades() {

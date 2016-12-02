@@ -3,11 +3,11 @@ package stevesvehicles.api;
 import stevesvehicles.api.modules.container.IModuleContainer;
 import stevesvehicles.api.modules.handlers.IContentHandlerFactory;
 import stevesvehicles.api.modules.handlers.ModuleHandlerType;
-import stevesvehicles.api.network.packets.IPacketClient;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IClientPacket;
+import stevesvehicles.api.network.packets.IServerPacket;
 
 public interface ISVRegistry {
-	void registerItemContainer(IModuleContainer container);
+	void registerModuleContainer(IModuleContainer container);
 
 	/**
 	 * Register a ModuleHandlerType.
@@ -19,7 +19,7 @@ public interface ISVRegistry {
 	 */
 	void registerContentFactory(Class contentClass, IContentHandlerFactory factory);
 
-	void registerClientPackets(IPacketClient... packets);
+	void registerClientPackets(IClientPacket... packets);
 
-	void registerServerPackets(IPacketServer... packets);
+	void registerServerPackets(IServerPacket... packets);
 }

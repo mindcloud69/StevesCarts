@@ -7,16 +7,16 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.packets.IPacketClient;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IClientPacket;
+import stevesvehicles.api.network.packets.IServerPacket;
 
 public interface IPacketHandler {
-	void sendToNetwork(IPacketClient packet, BlockPos pos, WorldServer world);
+	void sendToNetwork(IClientPacket packet, BlockPos pos, WorldServer world);
 
 	@SideOnly(Side.CLIENT)
-	void sendToServer(IPacketServer packet);
+	void sendToServer(IServerPacket packet);
 
-	void sendToPlayer(IPacketClient packet, EntityPlayer entityplayer);
+	void sendToPlayer(IClientPacket packet, EntityPlayer entityplayer);
 
 	void sendPacket(FMLProxyPacket packet, EntityPlayerMP player);
 }

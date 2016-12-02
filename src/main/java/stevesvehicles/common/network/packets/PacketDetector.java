@@ -8,14 +8,17 @@ import net.minecraft.tileentity.TileEntity;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.LogicObject;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketDetector extends PacketPositioned implements IPacketServer {
+public class PacketDetector extends PacketPositioned implements IServerPacket {
 	private List<LogicObject> objects;
 	private int id;
+
+	public PacketDetector() {
+	}
 
 	public PacketDetector(TileEntityDetector detector, List<LogicObject> objects) {
 		super(detector.getPos());

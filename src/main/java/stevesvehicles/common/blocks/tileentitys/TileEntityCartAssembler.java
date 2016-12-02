@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.gui.assembler.ModuleSortMode;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoInteger;
@@ -550,7 +551,6 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 		}
 	}
 
-	@Override
 	public void readData(DataReader dr, EntityPlayer player) throws IOException {
 		int id = dr.readByte();
 		if (id == 0) {

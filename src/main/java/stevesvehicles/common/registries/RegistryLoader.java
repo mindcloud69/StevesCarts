@@ -7,7 +7,7 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Constants;
 
 @Deprecated
 public class RegistryLoader<R extends IRegistry<E>, E> {
@@ -118,7 +118,7 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 				NBTTagCompound moduleCompound = tags.getCompoundTagAt(i);
 				String key = moduleCompound.getString(NBT_KEY);
 				int value = moduleCompound.getShort(NBT_VALUE);
-				if (StevesVehicles.debugMode) {
+				if (Constants.debugMode) {
 					System.out.println("Loaded name to id mapping. (K = " + key + ", V = " + value + ")"); // TODO
 				}
 				// Move
@@ -147,7 +147,7 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 				if (id == null) {
 					id = nextId++;
 					nameToIdMapping.put(code, id);
-					if (StevesVehicles.debugMode) {
+					if (Constants.debugMode) {
 						System.out.println("Added new name to id mapping. (K = " + code + ", V = " + id + ")"); // TODO
 					}
 					// Move
@@ -164,7 +164,7 @@ public class RegistryLoader<R extends IRegistry<E>, E> {
 
 	public void add(R registry) {
 		if (registries.containsKey(registry.getCode())) {
-			if (StevesVehicles.debugMode) {
+			if (Constants.debugMode) {
 				System.err.println("A registry with this code has already been registered. Failed to register a second registry with code " + registry.getCode());
 			}
 		} else {

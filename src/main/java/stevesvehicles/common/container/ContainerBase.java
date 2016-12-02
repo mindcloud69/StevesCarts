@@ -141,7 +141,9 @@ public abstract class ContainerBase extends Container {
 				Iterator<IContainerListener> playerIterator = this.listeners.iterator();
 				while (playerIterator.hasNext()) {
 					IContainerListener player = playerIterator.next();
-					PacketHandler.registerClientPacket(new PacketGuiData(getTileEntity(), this));
+					if(player instanceof EntityPlayer){
+						PacketHandler.sendToPlayer(new PacketGuiData(getTileEntity(), this), (EntityPlayer) player);
+					}
 				}
 			}
 		}

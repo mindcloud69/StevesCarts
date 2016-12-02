@@ -1,13 +1,13 @@
 package stevesvehicles.api.network.packets;
 
 public interface IPacketProvider {
-	void setPacketClient(IPacketClient packetClient);
+	void setPacketClient(IClientPacket packetClient);
 
-	void setPacketServer(IPacketServer packetServer);
+	void setPacketServer(IServerPacket packetServer);
 
-	IPacketServer getServerPacket();
+	IServerPacket getServerPacket();
 
-	IPacketClient getClientPacket();
+	IClientPacket getClientPacket();
 
 	int getPacketID();
 

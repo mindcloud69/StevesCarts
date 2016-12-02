@@ -26,7 +26,7 @@ import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.container.ContainerCartAssembler;
 import stevesvehicles.common.container.slots.SlotAssembler;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.modules.datas.ModuleData;
 import stevesvehicles.common.modules.datas.ModuleDataHull;
@@ -527,7 +527,7 @@ public class GuiCartAssembler extends GuiBase {
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 			GL11.glPushMatrix();
-			GL11.glTranslatef(left + 512 / 2, top + (StevesVehicles.renderSteve ? 50 : 100), 100.0F);
+			GL11.glTranslatef(left + 512 / 2, top + (Constants.renderSteve ? 50 : 100), 100.0F);
 			float scale = 50.0F;
 			GL11.glScalef(-scale, scale, scale);
 			GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -538,7 +538,7 @@ public class GuiCartAssembler extends GuiBase {
 			GL11.glRotatef(assembler.getYaw(), 0.0F, 1.0F, 0.0F);
 			RenderManager manager = Minecraft.getMinecraft().getRenderManager();
 			manager.playerViewY = 180.0F;
-			if (StevesVehicles.renderSteve) {
+			if (Constants.renderSteve) {
 				EntityPlayer player = Minecraft.getMinecraft().player;
 				ItemStack stack = player.getHeldItemMainhand();
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));

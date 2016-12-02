@@ -1,18 +1,14 @@
 package stevesvehicles.common.container;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.container.slots.SlotAssembler;
@@ -50,29 +46,6 @@ public class ContainerCartAssembler extends ContainerBase {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return assembler.isUsableByPlayer(player);
-	}
-
-	@Override
-	public void addListener(IContainerListener listener) {
-		super.addListener(listener);
-		assembler.initGuiData(this, listener);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int id, int data) {
-		data &= 65535;
-		assembler.receiveGuiData(id, (short) data);
-	}
-
-	@Override
-	public void detectAndSendChanges() {
-		super.detectAndSendChanges();
-		Iterator<IContainerListener> players = listeners.iterator();
-		while (players.hasNext()) {
-			IContainerListener player = players.next();
-			assembler.checkGuiData(this, player);
-		}
 	}
 
 	protected int offsetX() {

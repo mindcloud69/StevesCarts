@@ -11,10 +11,10 @@ import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IPacketServer;
+import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.network.PacketType;
 
-public class PacketStreamable extends Packet implements IPacketServer {
+public class PacketStreamable extends Packet implements IServerPacket {
 	public Object object;
 	public IStreamable streamable;
 

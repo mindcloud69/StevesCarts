@@ -7,4 +7,10 @@ public class Constants {
 	public static final String UNKNOWN_ITEM = "item.unknown";
 	public static final String version = /* @v */"2.0.0.b16";
 	public static final boolean inDev = /* @d */false;
+	//Only for testing
+	public static boolean debugMode = false;
+	public static boolean hasGreenScreen = false;
+	public static boolean freezeCartSimulation = false;
+	public static boolean renderSteve = false;
+	public static boolean arcadeDevOperator = false;
 }
