@@ -2,7 +2,7 @@ package stevesvehicles.common.arcade.tetris;
 
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.common.arcade.ArcadeGame;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Config;
 
 public class TetrisPiece {
 	private TetrisPiecePart[] parts;
@@ -163,7 +163,7 @@ public class TetrisPiece {
 							isGameOver = true;
 						}
 					}
-					if (StevesVehicles.instance.useArcadeMobSounds) {
+					if (Config.useArcadeMobSounds) {
 						if (sound != null) {
 							ArcadeGame.playDefaultSound(sound, volume, (game.getModule().getVehicle().getRandom().nextFloat() - game.getModule().getVehicle().getRandom().nextFloat()) * 0.2F + 1.0F);
 						}

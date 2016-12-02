@@ -26,7 +26,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.network.DataReader;
 import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.gui.assembler.ModuleSortMode;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoInteger;
@@ -43,7 +42,7 @@ import stevesvehicles.common.container.slots.SlotAssembler;
 import stevesvehicles.common.container.slots.SlotAssemblerFuel;
 import stevesvehicles.common.container.slots.SlotHull;
 import stevesvehicles.common.container.slots.SlotOutput;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Constants;
 import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.datas.ModuleData;
@@ -1197,7 +1196,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 			if (placeholder == null) {
 				return;
 			}
-			if (!StevesVehicles.freezeCartSimulation) {
+			if (!Constants.freezeCartSimulation) {
 				int minRoll = -5;
 				int maxRoll = 25;
 				if (shouldSpin) {
@@ -1274,7 +1273,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 
 	private void updateRenderMenu() {
 		dropDownItems = new ArrayList<>();
-		if (StevesVehicles.hasGreenScreen) {
+		if (Constants.hasGreenScreen) {
 			dropDownItems.add(new SimulationInfoInteger(LocalizationAssembler.INFO_BACKGROUND, null, 0, 3, 1));
 		}
 		if (placeholder != null) {
@@ -1455,7 +1454,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	public int getBackground() {
-		if (StevesVehicles.hasGreenScreen) {
+		if (Constants.hasGreenScreen) {
 			return ((SimulationInfoInteger) getDropDown().get(0)).getValue();
 		} else {
 			return 1;

@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotCakeDynamite;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Config;
 import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.vehicles.VehicleBase;
 
@@ -12,7 +12,7 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 	private int dynamiteCount;
 
 	private int getMaxDynamiteCount() {
-		return Math.min(StevesVehicles.instance.maxDynamites, 25);
+		return Math.min(Config.maxDynamites, 25);
 	}
 
 	public ModuleCakeServerDynamite(VehicleBase vehicleBase) {

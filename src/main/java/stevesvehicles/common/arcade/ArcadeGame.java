@@ -16,7 +16,7 @@ import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.sounds.SoundHandler;
-import stevesvehicles.common.core.StevesVehicles;
+import stevesvehicles.common.core.Config;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
 
 public abstract class ArcadeGame {
@@ -38,7 +38,7 @@ public abstract class ArcadeGame {
 
 	@SideOnly(Side.CLIENT)
 	public void update() {
-		if (StevesVehicles.instance.useArcadeSounds) {
+		if (Config.useArcadeSounds) {
 			// ((EntityModularCart)getModule().getVehicle().getEntity()).silent();
 			// //TODO
 		}
@@ -89,14 +89,14 @@ public abstract class ArcadeGame {
 
 	@SideOnly(Side.CLIENT)
 	public static void playSound(String sound, float volume, float pitch) {
-		if (StevesVehicles.instance.useArcadeSounds && sound != null) {
+		if (Config.useArcadeSounds && sound != null) {
 			SoundHandler.playSound(sound, SoundCategory.AMBIENT, volume, pitch);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void playDefaultSound(String sound, float volume, float pitch) {
-		if (StevesVehicles.instance.useArcadeSounds && sound != null) {
+		if (Config.useArcadeSounds && sound != null) {
 			SoundHandler.playDefaultSound(sound, SoundCategory.AMBIENT, volume, pitch);
 		}
 	}
