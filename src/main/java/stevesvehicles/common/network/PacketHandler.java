@@ -46,7 +46,6 @@ import stevesvehicles.common.vehicles.entitys.IVehicleEntity;
 public class PacketHandler {
 	private final static FMLEventChannel channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(Constants.MOD_ID);
 	private final static List<IPacketProvider> PROVIDERS = new LinkedList<>();
-	private static int ids;
 
 	public static void init(){
 		new PacketHandler();
@@ -71,8 +70,8 @@ public class PacketHandler {
 
 	public static IPacketProvider registerProvider(IPacketProvider provider) {
 		if(!PROVIDERS.contains(provider)){
-			PROVIDERS.add(ids++, provider);
-			provider.setPacketID(ids);
+			PROVIDERS.add(provider);
+			provider.setPacketID(PROVIDERS.indexOf(provider));
 		}
 		return provider;
 	}

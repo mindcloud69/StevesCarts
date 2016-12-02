@@ -36,14 +36,6 @@ public class PacketManager extends PacketPositioned implements IServerPacket {
 	}
 
 	@Override
-	public void readData(DataReader data) throws IOException {
-		super.readData(data);
-		id = data.readEnum(PacketId.values());
-		railId = data.readInt();
-		dif = data.readBoolean();
-	}
-
-	@Override
 	public void onPacketData(DataReader data, EntityPlayerMP player) throws IOException {
 		TileEntity tile = player.world.getTileEntity(getPos());
 		if (tile instanceof TileEntityManager) {
