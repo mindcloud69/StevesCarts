@@ -69,6 +69,6 @@ public class SVRegistry implements ISVRegistry {
 
 	@Override
 	public void registerModuleTypes(IModuleType... types) {
-		
+
 	}
 }

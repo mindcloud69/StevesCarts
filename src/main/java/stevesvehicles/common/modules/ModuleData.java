@@ -7,16 +7,15 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.api.modules.Module;
 import stevesvehicles.api.modules.container.IModuleContainer;
 import stevesvehicles.api.modules.data.ILocalizedText;
+import stevesvehicles.api.modules.data.IModelData;
 import stevesvehicles.api.modules.data.IModuleData;
 import stevesvehicles.api.modules.data.IModuleDataGroup;
 import stevesvehicles.api.modules.data.IModuleSide;
@@ -27,15 +26,7 @@ import stevesvehicles.api.modules.handlers.IModuleHandler;
 import stevesvehicles.api.modules.handlers.ModuleHandlerType;
 import stevesvehicles.client.gui.ColorHelper;
 import stevesvehicles.client.localization.entry.info.LocalizationLabel;
-import stevesvehicles.client.rendering.models.ModelVehicle;
-import stevesvehicles.common.items.ModItems;
-import stevesvehicles.common.modules.datas.ModuleDataGroup;
-import stevesvehicles.common.modules.datas.ModuleSide;
 import stevesvehicles.common.modules.datas.ModuleType;
-import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
-import stevesvehicles.common.recipe.ShapedModuleRecipe;
-import stevesvehicles.common.recipe.ShapelessModuleRecipe;
-import stevesvehicles.common.vehicles.VehicleType;
 
 public class ModuleData extends Impl<IModuleData> implements IModuleData{
 	private final Class<? extends Module> moduleClass;
@@ -53,16 +44,10 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 	private boolean defaultLock;
 	private boolean hasRecipe;
 	private ArrayList<ILocalizedText> message;
-	private ArrayList<ModuleHandlerType> validVehicles;
+	private ArrayList<ModuleHandlerType> validHandlers;
 	private boolean extraData;
 	@SideOnly(Side.CLIENT)
-	private HashMap<String, ModelVehicle> models;
-	@SideOnly(Side.CLIENT)
-	private HashMap<String, ModelVehicle> modelsPlaceholder;
-	@SideOnly(Side.CLIENT)
-	private ArrayList<String> removedModels;
-	@SideOnly(Side.CLIENT)
-	private float modelMultiplier;
+	private HashMap<ModuleHandlerType, IModelData> modelDatas;
 
 	public ModuleData(String unlocalizedName, Class<? extends Module> moduleClass, int modularCost) {
 		this.moduleClass = moduleClass;
@@ -82,91 +67,113 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 		System.out.println("Created " + this.unlocalizedName + "(" + this.moduleClass.getName() + ") with type " + this.moduleType.getName());
 	}
 
+	@Override
 	public final Class<? extends Module> getModuleClass() {
 		return moduleClass;
 	}
 
+	@Override
 	public final String getRawUnlocalizedName() {
 		return unlocalizedName;
 	}
 
+	@Override
 	public final String getFullRawUnlocalizedName() {
 		return fullUnlocalizedName;
 	}
 
+	@Override
 	public final void setFullRawUnlocalizedName(String val) {
 		fullUnlocalizedName = val;
 	}
 
+	@Override
 	public final int getCost() {
 		return modularCost;
 	}
 
+	@Override
 	public final IModuleType getModuleType() {
 		return moduleType;
 	}
 
+	@Override
 	public boolean getIsValid() {
 		return isValid;
 	}
 
+	@Override
 	public boolean getIsLocked() {
 		return isLocked;
 	}
 
+	@Override
 	public ModuleData lock() {
 		isLocked = true;
 		return this;
 	}
 
+	@Override
 	public boolean getEnabledByDefault() {
 		return !defaultLock;
 	}
 
+	@Override
 	public ModuleData lockByDefault() {
 		defaultLock = true;
 		return this;
 	}
 
+	@Override
 	public ModuleData setAllowDuplicate(boolean b) {
 		allowDuplicate = b;
 		return this;
 	}
 
+	@Override
 	public boolean getAllowDuplicate() {
 		return allowDuplicate;
 	}
 
+	@Override
 	public ModuleData setHasExtraData(boolean val) {
 		extraData = val;
 		return this;
 	}
 
+	@Override
 	public boolean hasExtraData() {
 		return extraData;
 	}
 
+	@Override
 	public void addDefaultExtraData(NBTTagCompound compound) {
 	}
 
+	@Override
 	public void addExtraData(NBTTagCompound compound, Module module) {
 	}
 
+	@Override
 	public void readExtraData(NBTTagCompound compound, Module moduleBase) {
 	}
 
+	@Override
 	public String getModuleInfoText(NBTTagCompound compound) {
 		return null;
 	}
 
+	@Override
 	public String getCartInfoText(String name, NBTTagCompound compound) {
 		return name;
 	}
 
+	@Override
 	public ArrayList<IModuleSide> getSides() {
 		return sides;
 	}
 
+	@Override
 	public ModuleData addSides(IModuleSide... sides) {
 		if (this.sides == null) {
 			this.sides = new ArrayList<>();
@@ -175,11 +182,13 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 		return this;
 	}
 
+	@Override
 	public ModuleData addParent(IModuleData parent) {
 		this.parent = parent;
 		return this;
 	}
 
+	@Override
 	public ModuleData addMessage(ILocalizedText s) {
 		if (message == null) {
 			message = new ArrayList<>();
@@ -188,6 +197,7 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 		return this;
 	}
 
+	@Override
 	public void addNemesis(IModuleData nemesis) {
 		if (this.nemesis == null) {
 			this.nemesis = new ArrayList<>();
@@ -195,6 +205,7 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 		this.nemesis.add(nemesis);
 	}
 
+	@Override
 	public IModuleData addRequirement(IModuleDataGroup requirement) {
 		if (this.requirement == null) {
 			this.requirement = new ArrayList<>();
@@ -209,112 +220,63 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 	}
 
 	@SideOnly(Side.CLIENT)
-	public float getModelMultiplier() {
-		return modelMultiplier;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public ModuleData setModelMultiplier(float val) {
-		modelMultiplier = val;
-		return this;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public ModuleData addModel(String tag, ModelVehicle model) {
-		addModel(tag, model, false);
-		addModel(tag, model, true);
-		return this;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public ModuleData addModel(String tag, ModelVehicle model, boolean placeholder) {
-		if (placeholder) {
-			if (modelsPlaceholder == null) {
-				modelsPlaceholder = new HashMap<>();
-			}
-			modelsPlaceholder.put(tag, model);
-		} else {
-			if (models == null) {
-				models = new HashMap<>();
-			}
-			models.put(tag, model);
+	@Override
+	public IModuleData addModelData(ModuleHandlerType type, IModelData modelData) {
+		if(!modelDatas.containsKey(type)){
+			modelDatas.put(type, modelData);
 		}
-		return this;
+		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public HashMap<String, ModelVehicle> getModels(boolean placeholder) {
-		if (placeholder) {
-			return modelsPlaceholder;
-		} else {
-			return models;
-		}
+	@Override
+	public IModelData getModelData(ModuleHandlerType type) {
+		return modelDatas.get(type);
 	}
 
-	@SideOnly(Side.CLIENT)
-	public boolean haveModels(boolean placeholder) {
-		if (placeholder) {
-			return modelsPlaceholder != null;
-		} else {
-			return models != null;
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public ModuleData removeModel(String tag) {
-		if (removedModels == null) {
-			removedModels = new ArrayList<>();
-		}
-		if (!removedModels.contains(tag)) {
-			removedModels.add(tag);
-		}
-		return this;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public ArrayList<String> getRemovedModels() {
-		return removedModels;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public boolean haveRemovedModels() {
-		return removedModels != null;
-	}
-
+	@Override
 	public String getName() {
 		return I18n.translateToLocal(getUnlocalizedName());
 	}
 
+	@Override
 	public String getUnlocalizedName() {
 		return getUnlocalizedNameForItem() + ".name";
 	}
 
+	@Override
 	public String getUnlocalizedNameForItem() {
 		return "steves_vehicles:item." + getFullRawUnlocalizedName();
 	}
 
+	@Override
 	public IModuleData getParent() {
 		return parent;
 	}
 
+	@Override
 	public ArrayList<IModuleData> getNemesis() {
 		return nemesis;
 	}
 
+	@Override
 	public ArrayList<IModuleDataGroup> getRequirement() {
 		return requirement;
 	}
 
+	@Override
 	public boolean getHasRecipe() {
 		return hasRecipe;
 	}
 
+	@Override
 	public void addSpecificInformation(List<String> list) {
 		list.add(ColorHelper.LIGHT_GRAY + LocalizationLabel.MODULAR_COST.translate() + ": " + modularCost);
 	}
 
 	public static final String NBT_MODULE_EXTRA_DATA = "ExtraData";
 
+	@Override
 	public final void addInformation(List<String> list, NBTTagCompound compound) {
 		addSpecificInformation(list);
 		if (compound != null && compound.hasKey(NBT_MODULE_EXTRA_DATA)) {
@@ -364,21 +326,21 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 			if (getAllowDuplicate()) {
 				list.add(ColorHelper.LIME + LocalizationLabel.DUPLICATES.translate());
 			}
-			if (validVehicles == null || validVehicles.isEmpty()) {
+			if (validHandlers == null || validHandlers.isEmpty()) {
 				list.add(ColorHelper.RED + LocalizationLabel.MISSING_VEHICLE_ERROR.translate());
 			} else {
 				String vehicleText = "";
-				for (int i = 0; i < validVehicles.size(); i++) {
-					ModuleHandlerType vehicle = validVehicles.get(i);
+				for (int i = 0; i < validHandlers.size(); i++) {
+					ModuleHandlerType vehicle = validHandlers.get(i);
 					if (i == 0) {
 						vehicleText += vehicle.getName();
-					} else if (i == validVehicles.size() - 1) {
+					} else if (i == validHandlers.size() - 1) {
 						vehicleText += " " + LocalizationLabel.AND.translate() + " " + vehicle.getName();
 					} else {
 						vehicleText += ", " + vehicle.getName();
 					}
 				}
-				list.add(ColorHelper.MAGENTA + LocalizationLabel.VEHICLE_TYPES.translate(vehicleText, String.valueOf(validVehicles.size())));
+				list.add(ColorHelper.MAGENTA + LocalizationLabel.VEHICLE_TYPES.translate(vehicleText, String.valueOf(validHandlers.size())));
 			}
 		}
 		list.add(ColorHelper.LIGHT_BLUE + LocalizationLabel.TYPE.translate() + ": " + moduleType.getName());
@@ -387,6 +349,7 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 
 	private static final int MAX_MESSAGE_ROW_LENGTH = 30;
 
+	@Override
 	public void addExtraMessage(List<String> list) {
 		if (message != null) {
 			list.add("");
@@ -416,38 +379,27 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 		list.add(ColorHelper.GRAY + "\u00a7o" + str + "\u00a7r");
 	}
 
-	public ModuleData addVehicles(ModuleHandlerType... types) {
-		if (validVehicles == null) {
-			validVehicles = new ArrayList<>();
+	@Override
+	public ModuleData addHandlers(ModuleHandlerType... types) {
+		if (validHandlers == null) {
+			validHandlers = new ArrayList<>();
 		}
 		for (ModuleHandlerType type : types) {
-			if (validVehicles.size() > 0 && moduleType == ModuleType.HULL) {
+			if (validHandlers.size() > 0 && moduleType == ModuleType.HULL) {
 				System.err.println("You can't add more than one vehicle type to a hull module. Failed to add type " + type.getUnlocalizedName() + " to " + getRawUnlocalizedName());
 				break;
 			}
-			validVehicles.add(type);
+			validHandlers.add(type);
 		}
 		return this;
 	}
 
-	public ArrayList<ModuleHandlerType> getValidVehicles() {
-		return validVehicles;
+	@Override
+	public ArrayList<ModuleHandlerType> getValidHandlers() {
+		return validHandlers;
 	}
 
-	@SideOnly(Side.CLIENT)
-	protected void loadModels() {
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void loadClientValues() {
-		modelMultiplier = 0.75F;
-		loadModels();
-		// TODO do this in a nicer way
-		if (sides != null && sides.contains(ModuleSide.TOP)) {
-			removeModel("Rails");
-		}
-	}
-
+	@Override
 	public Module createModule(IModuleContainer container, IModuleHandler handler, ItemStack stack) {
 		return null;
 	}
@@ -460,6 +412,7 @@ public class ModuleData extends Impl<IModuleData> implements IModuleData{
 
 	private final List<IContentHandlerFactory> factorys = new ArrayList<>();
 
+	@Override
 	public void addOptionalHandlers(IContentHandlerFactory... factorys) {
 		if (factorys != null) {
 			Collections.addAll(this.factorys, factorys);

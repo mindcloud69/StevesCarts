@@ -1,7 +1,6 @@
 package stevesvehicles.api.modules.data;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,6 @@ import stevesvehicles.api.modules.container.IModuleContainer;
 import stevesvehicles.api.modules.handlers.IContentHandlerFactory;
 import stevesvehicles.api.modules.handlers.IModuleHandler;
 import stevesvehicles.api.modules.handlers.ModuleHandlerType;
-import stevesvehicles.client.rendering.models.ModelVehicle;
 
 public interface IModuleData extends IForgeRegistryEntry<IModuleData> {
 	public static void addNemesis(IModuleData m1, IModuleData m2) {
@@ -74,33 +72,6 @@ public interface IModuleData extends IForgeRegistryEntry<IModuleData> {
 
 	IModuleData addRequirement(IModuleDataGroup requirement);
 
-	@SideOnly(Side.CLIENT)
-	float getModelMultiplier();
-
-	@SideOnly(Side.CLIENT)
-	IModuleData setModelMultiplier(float val);
-
-	@SideOnly(Side.CLIENT)
-	IModuleData addModel(String tag, ModelVehicle model);
-
-	@SideOnly(Side.CLIENT)
-	IModuleData addModel(String tag, ModelVehicle model, boolean placeholder);
-
-	@SideOnly(Side.CLIENT)
-	HashMap<String, ModelVehicle> getModels(boolean placeholder);
-
-	@SideOnly(Side.CLIENT)
-	boolean haveModels(boolean placeholder);
-
-	@SideOnly(Side.CLIENT)
-	IModuleData removeModel(String tag);
-
-	@SideOnly(Side.CLIENT)
-	ArrayList<String> getRemovedModels();
-
-	@SideOnly(Side.CLIENT)
-	boolean haveRemovedModels();
-
 	String getName();
 
 	String getUnlocalizedName();
@@ -121,14 +92,20 @@ public interface IModuleData extends IForgeRegistryEntry<IModuleData> {
 
 	void addExtraMessage(List<String> list);
 
-	IModuleData addVehicles(ModuleHandlerType... types);
+	/* HANDLER TYPES */
+	IModuleData addHandlers(ModuleHandlerType... types);
 
-	ArrayList<ModuleHandlerType> getValidVehicles();
-
-	@SideOnly(Side.CLIENT)
-	void loadClientValues();
+	ArrayList<ModuleHandlerType> getValidHandlers();
 
 	Module createModule(IModuleContainer container, IModuleHandler handler, ItemStack stack);
 
+	/* OPTIONAL HANDLERS*/
 	void addOptionalHandlers(IContentHandlerFactory... factorys);
+
+	/* MODLES */
+	@SideOnly(Side.CLIENT)
+	IModuleData addModelData(ModuleHandlerType type, IModelData modelData);
+
+	@SideOnly(Side.CLIENT)
+	IModelData getModelData(ModuleHandlerType type);
 }

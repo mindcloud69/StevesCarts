@@ -32,6 +32,7 @@ public enum ModuleType implements IModuleType{
 		return clazz;
 	}
 
+	@Override
 	public String getName() {
 		return name.translate();
 	}

@@ -3,7 +3,6 @@ package stevesvehicles.common.blocks.tileentitys;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import net.minecraft.command.server.CommandTeleport;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
