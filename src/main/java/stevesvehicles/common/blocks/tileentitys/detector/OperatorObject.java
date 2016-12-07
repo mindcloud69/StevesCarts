@@ -6,7 +6,7 @@ import java.util.HashMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.localization.entry.block.LocalizationDetector;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDetector;
 import stevesvehicles.common.vehicles.VehicleBase;

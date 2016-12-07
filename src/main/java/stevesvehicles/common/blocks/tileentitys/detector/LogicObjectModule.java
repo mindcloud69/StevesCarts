@@ -40,10 +40,7 @@ public class LogicObjectModule extends LogicObject {
 		gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y, 1 + backgroundIndex * 17, 203, getWidth(), getHeight());
 		ModuleData module = ModuleRegistry.getModuleFromId(data);
 		if (module != null) {
-			ResourceHelper.bindResource(GuiDetector.MODULE_TEXTURE);
-			// TODO:sprites
-			// gui.drawIcon(module.getIcon(), gui.getGuiLeft() + x,
-			// gui.getGuiTop() + y, 1F, 1F, 0F, 0F);
+			gui.drawItemStack(module.getItemStack(), gui.getGuiLeft() + x, gui.getGuiTop() + y);
 		}
 		super.draw(gui, mouseX, mouseY);
 	}

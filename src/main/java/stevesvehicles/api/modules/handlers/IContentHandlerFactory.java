@@ -1,7 +1,8 @@
 package stevesvehicles.api.modules.handlers;
 
-import stevesvehicles.api.modules.IModule;
+import stevesvehicles.api.modules.Module;
+import stevesvehicles.common.modules.ModuleBase;
 
 public interface IContentHandlerFactory {
-	<M extends IModule, C, H extends ContentHandler<M, C>> H createHandler(M module);
+	<M extends Module, C, H extends ContentHandler<M, C>> H createHandler(M module);
 }

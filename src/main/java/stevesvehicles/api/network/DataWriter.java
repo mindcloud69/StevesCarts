@@ -3,8 +3,6 @@ package stevesvehicles.api.network;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
-
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -55,26 +53,6 @@ public class DataWriter extends DataOutputStream {
 		for (int i = 0; i < size; i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
 			writeItemStack(stack);
-		}
-	}
-
-	public void writeStreamable(IStreamable streamable) throws IOException {
-		if (streamable != null) {
-			writeBoolean(true);
-			streamable.writeData(this);
-		} else {
-			writeBoolean(false);
-		}
-	}
-
-	public <T extends IStreamable> void writeStreamables(List<T> streamables) throws IOException {
-		if (streamables == null) {
-			writeVarInt(0);
-		} else {
-			writeVarInt(streamables.size());
-			for (IStreamable streamable : streamables) {
-				writeStreamable(streamable);
-			}
 		}
 	}
 

@@ -1,6 +1,6 @@
 package stevesvehicles.client.gui.assembler;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 
 public class TitleBox {
 	private ILocalizedText name;

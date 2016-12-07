@@ -834,7 +834,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	@Override
-	public void updateGuiData(DataWriter writer, Container container) throws IOException {
+	public void writeGuiData(DataWriter writer, Container container) throws IOException {
 		writer.writeInt(maxAssemblingTime);
 		writer.writeInt(getAssemblingTime());
 		writer.writeBoolean(isAssembling);
@@ -852,7 +852,7 @@ public class TileEntityCartAssembler extends TileEntityInventory implements ISid
 	}
 
 	@Override
-	public void receiveGuiData(DataReader reader) throws IOException {
+	public void readGuiData(DataReader reader) throws IOException {
 		maxAssemblingTime = reader.readInt();
 		setAssemblingTime(reader.readInt());
 		isAssembling = reader.readBoolean();

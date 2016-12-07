@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiCartAssembler;
-import stevesvehicles.client.localization.ILocalizedText;
 
 public abstract class SimulationInfo {
 	private ILocalizedText name;

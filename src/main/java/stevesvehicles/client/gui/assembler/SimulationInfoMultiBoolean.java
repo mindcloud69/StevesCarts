@@ -2,8 +2,8 @@ package stevesvehicles.client.gui.assembler;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.gui.screen.GuiCartAssembler;
-import stevesvehicles.client.localization.ILocalizedText;
 
 public class SimulationInfoMultiBoolean extends SimulationInfo {
 	private boolean[] values;

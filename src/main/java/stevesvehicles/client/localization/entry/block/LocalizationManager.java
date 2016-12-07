@@ -1,6 +1,6 @@
 package stevesvehicles.client.localization.entry.block;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.localization.LocalizedTextSimple;
 
 public final class LocalizationManager {

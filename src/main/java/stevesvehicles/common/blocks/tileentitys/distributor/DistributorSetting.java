@@ -2,7 +2,7 @@ package stevesvehicles.common.blocks.tileentitys.distributor;
 
 import java.util.ArrayList;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.localization.entry.block.LocalizationDistributor;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDistributor;
 import stevesvehicles.common.blocks.tileentitys.TileEntityManager;

@@ -1,6 +1,6 @@
 package stevesvehicles.common.modules.common.addon;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 
 public abstract class LabelInformation {
 	private ILocalizedText name;

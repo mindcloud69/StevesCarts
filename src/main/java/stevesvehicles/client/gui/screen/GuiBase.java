@@ -111,18 +111,22 @@ public abstract class GuiBase extends GuiContainerSpecial {
 		this.guiTop = (this.height - this.ySize) / 2;
 	}
 
+	@Override
 	public int getXSize() {
 		return xSize;
 	}
 
+	@Override
 	public int getYSize() {
 		return ySize;
 	}
 
+	@Override
 	public int getGuiLeft() {
 		return guiLeft;
 	}
 
+	@Override
 	public int getGuiTop() {
 		return guiTop;
 	}

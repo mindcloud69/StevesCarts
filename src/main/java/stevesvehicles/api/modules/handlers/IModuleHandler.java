@@ -3,15 +3,16 @@ package stevesvehicles.api.modules.handlers;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.NonNullList;
-import stevesvehicles.api.modules.IModule;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import stevesvehicles.api.modules.Module;
 import stevesvehicles.api.modules.container.IModuleContainer;
-import stevesvehicles.api.modules.data.ModuleData;
+import stevesvehicles.common.modules.ModuleData;
 
 /**
  * An IModuleHandler handle modules in an ItemStack or something else that use
  * the forge capability system.
  */
-public interface IModuleHandler {
+public interface IModuleHandler<P extends ICapabilityProvider> {
 	/**
 	 * Create and add modules to this handler with the {@link ModuleData}s from
 	 * the container.
@@ -25,7 +26,7 @@ public interface IModuleHandler {
 	 * 
 	 * @return True if the module was added to the handler.
 	 */
-	boolean addModule(IModule module);
+	boolean addModule(Module module);
 
 	/**
 	 * Get the module that is at that position at the module list.
@@ -33,14 +34,14 @@ public interface IModuleHandler {
 	 * If at this position is no module, it will return null.
 	 */
 	@Nullable
-	IModule getModule(int position);
+	Module getModule(int position);
 
 	/**
 	 * Remove a specific module from this handler.
 	 * 
 	 * @return True if the module was removed from the handler.
 	 */
-	boolean removeModule(IModule module);
+	boolean removeModule(Module module);
 
 	/**
 	 * Remove the module from this handler that is at this specific position.
@@ -54,11 +55,19 @@ public interface IModuleHandler {
 	/**
 	 * @return All modules that this handler contains.
 	 */
-	NonNullList<IModule> getModules();
+	NonNullList<Module> getModules();
 
 	/**
 	 * 
 	 * @return The type of this handler. Need to be
 	 */
 	ModuleHandlerType getType();
+
+	/**
+	 * 
+	 * @return True if this handler is a place holder for a gui or somthing like this.
+	 */
+	boolean isPlaceholder();
+
+	P getProvider();
 }

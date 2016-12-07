@@ -2,7 +2,6 @@ package stevesvehicles.client.gui.detector;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.LogicObjectModule;
 import stevesvehicles.common.modules.datas.ModuleData;
@@ -17,12 +16,10 @@ public class DropDownMenuModules extends DropDownMenuPages {
 	@Override
 	public void drawMain(GuiDetector gui, int x, int y) {
 		super.drawMain(gui, x, y);
-		ResourceHelper.bindResource(GuiDetector.MODULE_TEXTURE);
 		int modulePosId = 0;
 		for (ModuleData module : ModuleRegistry.getAllModules()) {
 			if (module.getIsValid()) {
-				// TODO: sprites
-				// drawContent(gui, modulePosId, module.getIcon());
+				drawContent(gui, modulePosId, module);
 				modulePosId++;
 			}
 		}
@@ -60,15 +57,20 @@ public class DropDownMenuModules extends DropDownMenuPages {
 		}
 	}
 
-	// TODO:sprites
-	/*
-	 * private void drawContent(GuiDetector gui, int index, IIcon icon) { int[]
-	 * rect = getContentRect(index); if (rect == null) { return; } int gap =
-	 * rect[1] - getMainRect()[1] + rect[3]; if (gap > 0) { int height =
-	 * Math.min(rect[3], gap); int offset = rect[3] - height; gui.drawIcon(icon,
-	 * gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1] + offset, rect[2] /
-	 * 16F, height / 16F, 0F, offset / 16F); } }
-	 */
+	private void drawContent(GuiDetector gui, int index, ModuleData data) {
+		int[] rect = getContentRect(index);
+		if (rect == null) {
+			return;
+		}
+		int gap = rect[1] - getMainRect()[1] + rect[3];
+		if (gap > 0) {
+			int height = Math.min(rect[3], gap);
+			int offset = rect[3] - height;
+			//gui.drawIcon(data, gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1] + offset, rect[2] / 16F, height / 16F, 0F, offset / 16F);
+			gui.drawItemStack(data.getItemStack(), gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1] + offset);
+		}
+	}
+
 	@Override
 	protected int getPageCount() {
 		int count = 0;

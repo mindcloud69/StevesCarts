@@ -151,7 +151,7 @@ public class GuiDetector extends GuiBase {
 		super.mouseMoved(x, y, button);
 		x -= getGuiLeft();
 		y -= getGuiTop();
-		if (button != -1 && currentObject != null) {
+		if (button != 0 && currentObject != null) {
 			dropOnObject(x, y, detector.mainObj, currentObject);
 			currentObject = null;
 		}

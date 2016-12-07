@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.localization.entry.info.LocalizationLabel;
 
 public class ModuleDataGroup {

@@ -172,8 +172,7 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 	}
 
 	@Override
-	public void updateGuiData(DataWriter writer, Container container) throws IOException {
-		//TODO: rewrite
+	public void writeGuiData(DataWriter writer, Container container) throws IOException {
 		//sendUpdatedLogicObjects(con, crafting, mainObj, ((ContainerDetector) con).mainObj);
 	}
 
@@ -235,7 +234,6 @@ public class TileEntityDetector extends TileEntityBase implements ITickable {
 	private short oldData;
 	private boolean hasOldData;
 
-	//TODO: rewrite
 	/*@Override
 	public void receiveGuiData(int id, short data) {
 		if (id == 0) {

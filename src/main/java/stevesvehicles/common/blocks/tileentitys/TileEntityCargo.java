@@ -7,7 +7,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -23,7 +22,6 @@ import stevesvehicles.common.blocks.tileentitys.manager.cargo.CargoItemSelection
 import stevesvehicles.common.blocks.tileentitys.manager.cargo.CargoItemSelectionModule;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerCargo;
-import stevesvehicles.common.container.ContainerManager;
 import stevesvehicles.common.container.slots.ISlotExplosions;
 import stevesvehicles.common.container.slots.SlotArrow;
 import stevesvehicles.common.container.slots.SlotBridge;
@@ -125,7 +123,7 @@ public class TileEntityCargo extends TileEntityManager {
 		}
 	}
 
-	@Override
+	/*@Override
 	public void checkGuiData(ContainerManager conManager, IContainerListener crafting, boolean isNew) {
 		super.checkGuiData(conManager, crafting, isNew);
 		ContainerCargo con = (ContainerCargo) conManager;
@@ -148,7 +146,7 @@ public class TileEntityCargo extends TileEntityManager {
 		} else {
 			super.receiveGuiData(id, data);
 		}
-	}
+	}*/
 
 	public int getAmount(int id) {
 		int val = getAmountId(id);

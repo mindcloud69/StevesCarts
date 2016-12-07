@@ -28,7 +28,7 @@ public class PacketGuiData extends PacketPositioned implements IClientPacket {
 	@Override
 	protected void writeData(DataWriter data) throws IOException {
 		super.writeData(data);
-		tileEntity.updateGuiData(data, container);
+		tileEntity.writeGuiData(data, container);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class PacketGuiData extends PacketPositioned implements IClientPacket {
 		TileEntity tileEntity = player.world.getTileEntity(getPos());
 		if (tileEntity instanceof TileEntityBase) {
 			TileEntityBase baseTile = (TileEntityBase) tileEntity;
-			baseTile.receiveGuiData(data);
+			baseTile.readGuiData(data);
 		}
 	}
 }

@@ -14,7 +14,7 @@ import stevesvehicles.common.recipe.ShapedModuleRecipe;
 import stevesvehicles.common.upgrades.effects.BaseEffect;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 
-public class Upgrade implements IRecipeOutput, Comparable<Upgrade> {
+public class Upgrade /*extends IForgeRegistryEntry.Impl<ModuleData>*/ implements IRecipeOutput, Comparable<Upgrade> {
 	// private static HashMap<Byte, IIcon> sides;
 	private static HashMap<Class<? extends BaseEffect>, IEffectInfo> effectInfo;
 	private String icon;

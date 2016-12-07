@@ -1,9 +1,10 @@
 package stevesvehicles.common.modules.datas;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
+import stevesvehicles.api.modules.data.IModuleSide;
 import stevesvehicles.client.localization.entry.info.LocalizationLabel;
 
-public enum ModuleSide {
+public enum ModuleSide implements IModuleSide {
 	TOP(LocalizationLabel.TOP), CENTER(LocalizationLabel.CENTER), BOTTOM(LocalizationLabel.BOTTOM), BACK(LocalizationLabel.BACK), LEFT(LocalizationLabel.LEFT), RIGHT(LocalizationLabel.RIGHT), FRONT(LocalizationLabel.FRONT);
 	private ILocalizedText name;
 

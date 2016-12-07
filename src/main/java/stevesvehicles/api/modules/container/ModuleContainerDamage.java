@@ -2,10 +2,10 @@ package stevesvehicles.api.modules.container;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import stevesvehicles.api.modules.data.ModuleData;
+import stevesvehicles.common.modules.ModuleData;
 
 public class ModuleContainerDamage extends ModuleContainer {
-	public ModuleContainerDamage(ItemStack parent, ModuleData[] datas) {
+	public ModuleContainerDamage(ItemStack parent, ModuleData... datas) {
 		super(parent, datas);
 	}
 

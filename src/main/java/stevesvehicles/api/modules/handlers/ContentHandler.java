@@ -6,13 +6,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import stevesvehicles.api.modules.IModule;
+import stevesvehicles.api.modules.Module;
 
 /**
  * An ContentHandler handle a specific type of contend in a module. You can use
  * the IContentHandlerFactory to create {@link ContentHandler}s
  */
-public class ContentHandler<M extends IModule, C> {
+public class ContentHandler<M extends Module, C> {
 	protected M parent;
 	protected Class<? extends C> contentClass;
 

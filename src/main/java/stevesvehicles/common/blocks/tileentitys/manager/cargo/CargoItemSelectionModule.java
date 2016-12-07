@@ -1,7 +1,7 @@
 package stevesvehicles.common.blocks.tileentitys.manager.cargo;
 
 import net.minecraft.item.ItemStack;
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.common.modules.datas.ModuleData;
 
 public class CargoItemSelectionModule extends CargoItemSelection {

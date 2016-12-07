@@ -21,6 +21,7 @@ import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.container.ContainerVehicle;
 import stevesvehicles.common.core.Constants;
+import stevesvehicles.common.core.Log;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.PacketType;
@@ -67,8 +68,7 @@ public class PacketVehicle implements IServerPacket, IClientPacket {
 		try {
 			dataWriter.close();
 		} catch (IOException e) {
-			// TODO: create Log
-			// Log.err("Failed to write packet.", e);
+			Log.err("Failed to write packet.", e);
 		}
 		return new FMLProxyPacket(new PacketBuffer(dataWriter.getOut().buffer()), Constants.MOD_ID);
 	}

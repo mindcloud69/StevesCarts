@@ -3,6 +3,7 @@ package stevesvehicles.common.blocks.tileentitys;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import net.minecraft.command.server.CommandTeleport;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,7 +95,7 @@ public class TileEntityActivator extends TileEntityBase {
 	}
 
 	@Override
-	public void updateGuiData(DataWriter writer, Container container) throws IOException {
+	public void writeGuiData(DataWriter writer, Container container) throws IOException {
 		for (int i = 0; i < options.size(); i++) {
 			int option = options.get(i).getOption();
 			writer.writeInt(option);
@@ -115,7 +116,7 @@ public class TileEntityActivator extends TileEntityBase {
 	}
 
 	@Override
-	public void receiveGuiData(DataReader reader) throws IOException {
+	public void readGuiData(DataReader reader) throws IOException {
 		for (TogglerOption option : options) {
 			option.setOption(reader.readInt());
 		}

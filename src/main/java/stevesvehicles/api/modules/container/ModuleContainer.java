@@ -6,7 +6,7 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 
 import net.minecraft.item.ItemStack;
-import stevesvehicles.api.modules.data.ModuleData;
+import stevesvehicles.common.modules.ModuleData;
 
 public class ModuleContainer implements IModuleContainer {
 	protected final ItemStack parent;

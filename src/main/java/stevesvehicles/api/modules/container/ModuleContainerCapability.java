@@ -1,10 +1,10 @@
 package stevesvehicles.api.modules.container;
 
 import net.minecraft.item.ItemStack;
-import stevesvehicles.api.modules.data.ModuleData;
+import stevesvehicles.common.modules.ModuleData;
 
 public class ModuleContainerCapability extends ModuleContainerNBT {
-	public ModuleContainerCapability(ItemStack parent, ModuleData[] datas) {
+	public ModuleContainerCapability(ItemStack parent, ModuleData... datas) {
 		super(parent, datas);
 	}
 

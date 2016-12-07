@@ -1,6 +1,6 @@
 package stevesvehicles.common.arcade.tracks;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 
 public class LevelMessage {
 	private int x;

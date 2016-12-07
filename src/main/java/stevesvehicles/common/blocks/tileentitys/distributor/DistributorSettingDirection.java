@@ -1,6 +1,6 @@
 package stevesvehicles.common.blocks.tileentitys.distributor;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.common.blocks.tileentitys.TileEntityManager;
 
 /**

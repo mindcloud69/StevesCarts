@@ -1,5 +1,7 @@
 package stevesvehicles.client.localization;
 
+import stevesvehicles.api.modules.data.ILocalizedText;
+
 public class PlainText implements ILocalizedText {
 	private String text;
 

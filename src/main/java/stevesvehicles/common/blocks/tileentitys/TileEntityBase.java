@@ -67,7 +67,7 @@ public abstract class TileEntityBase extends TileEntity {
 	public void initGuiData(Container con, IContainerListener crafting) {
 	}
 
-	public void updateGuiData(DataWriter writer, Container container) throws IOException {
+	public void writeGuiData(DataWriter writer, Container container) throws IOException {
 	}
 
 	/**
@@ -89,7 +89,7 @@ public abstract class TileEntityBase extends TileEntity {
 	 * @param data
 	 *            The data itself
 	 */
-	public void receiveGuiData(DataReader reader) throws IOException {
+	public void readGuiData(DataReader reader) throws IOException {
 	}
 
 	/**

@@ -4,7 +4,7 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import stevesvehicles.api.modules.data.ModuleData;
+import stevesvehicles.common.modules.ModuleData;
 
 /**
  * An IModuleContainer provides informations about modules.

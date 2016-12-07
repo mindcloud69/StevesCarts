@@ -42,4 +42,13 @@ public class ModuleHandlerType {
 	public Class<? extends IModuleHandler> getHandlerClass() {
 		return handlerClass;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getUnlocalizedName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
 import java.util.Collection;
-import java.util.List;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -61,30 +59,6 @@ public class DataReader extends DataInputStream {
 		for (int i = 0; i < size; i++) {
 			ItemStack stack = readItemStack();
 			inventory.setInventorySlotContents(i, stack);
-		}
-	}
-
-	public <T extends IStreamable> T readStreamable(Class<T> streamableClass) throws IOException {
-		if (readBoolean()) {
-			try {
-				T streamable = streamableClass.newInstance();
-				streamable.readData(this);
-				return streamable;
-			} catch (IllegalAccessException | InstantiationException | IOException e) {
-				throw new InvalidObjectException("Failed to read Streamable for class " + streamableClass + " with error " + e);
-			}
-		}
-		return null;
-	}
-
-	public <T extends IStreamable> void readStreamables(List<T> outputList, Class<T> streamableClass) throws IOException {
-		outputList.clear();
-		int length = readVarInt();
-		if (length > 0) {
-			for (int i = 0; i < length; i++) {
-				T streamable = readStreamable(streamableClass);
-				outputList.add(streamable);
-			}
 		}
 	}
 

@@ -5,7 +5,7 @@ import net.minecraft.util.text.translation.I18n;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.common.vehicles.VehicleBase;
 
-public abstract class ModuleState {
+public abstract class ModuleState /*extends IForgeRegistryEntry.Impl<ModuleData>*/{
 	private String fullUnlocalizedName;
 	private final String unlocalizedName;
 	private ResourceLocation texture;

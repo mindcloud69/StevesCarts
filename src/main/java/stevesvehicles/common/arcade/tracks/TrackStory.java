@@ -2,7 +2,7 @@ package stevesvehicles.common.arcade.tracks;
 
 import java.util.ArrayList;
 
-import stevesvehicles.client.localization.ILocalizedText;
+import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.localization.entry.arcade.stories.LocalizationTheBeginning;
 
 public class TrackStory {

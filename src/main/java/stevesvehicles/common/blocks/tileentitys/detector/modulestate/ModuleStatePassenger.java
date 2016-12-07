@@ -13,7 +13,7 @@ public class ModuleStatePassenger extends ModuleState {
 
 	@Override
 	public boolean isValid(VehicleBase vehicle) {
-		Entity passenger = vehicle.getEntity().getPassengers().get(0);
+		Entity passenger = vehicle.getEntity().getControllingPassenger();
 		return passenger != null && passengerClass.isAssignableFrom(passenger.getClass()) && isPassengerValid(passenger);
 	}
 

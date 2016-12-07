@@ -494,12 +494,6 @@ public abstract class ModuleScreen {
 		return false;
 	}
 
-	public void openInventory(EntityPlayer player) {
-	}
-
-	public void closeInventory(EntityPlayer player) {
-	}
-
 	/**
 	 * Initializing any server/client buttons
 	 */
@@ -749,16 +743,6 @@ public abstract class ModuleScreen {
 			return net.minecraft.client.Minecraft.getMinecraft().player;
 		}
 		return null;
-	}
-
-	/**
-	 * Used to render graphical overlays on the screen
-	 * 
-	 * @param minecraft
-	 *            The mincraft instance to use with the rendering
-	 */
-	@SideOnly(Side.CLIENT)
-	public void renderOverlay(net.minecraft.client.Minecraft minecraft) {
 	}
 
 	/**
