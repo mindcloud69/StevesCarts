@@ -23,7 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.modules.data.ILocalizedText;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.info.LocalizationMessage;
 import stevesvehicles.client.rendering.models.common.ModelEggBasket;
 import stevesvehicles.client.rendering.models.common.ModelExtractingChests;

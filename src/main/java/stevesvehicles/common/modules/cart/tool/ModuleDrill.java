@@ -21,9 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import stevesvehicles.client.gui.screen.GuiVehicle;
@@ -37,6 +34,9 @@ import stevesvehicles.common.modules.cart.addon.ModuleIncinerator;
 import stevesvehicles.common.modules.cart.addon.ModuleLiquidSensors;
 import stevesvehicles.common.modules.cart.addon.ModuleOreTracker;
 import stevesvehicles.common.modules.common.storage.chest.ModuleChest;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
+import stevesvehicles.common.network.IStreamable;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule, IStreamable {

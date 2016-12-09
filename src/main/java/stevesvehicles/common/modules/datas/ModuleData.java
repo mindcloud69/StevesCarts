@@ -11,11 +11,10 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.gui.ColorHelper;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.info.LocalizationLabel;
 import stevesvehicles.client.rendering.models.ModelVehicle;
 import stevesvehicles.common.items.ModItems;
@@ -26,7 +25,7 @@ import stevesvehicles.common.recipe.ShapedModuleRecipe;
 import stevesvehicles.common.recipe.ShapelessModuleRecipe;
 import stevesvehicles.common.vehicles.VehicleType;
 
-public class ModuleData extends IForgeRegistryEntry.Impl<ModuleData> implements IRecipeOutput {
+public class ModuleData implements IRecipeOutput {
 	private final Class<? extends ModuleBase> moduleClass;
 	private final String unlocalizedName;
 	private String fullUnlocalizedName;

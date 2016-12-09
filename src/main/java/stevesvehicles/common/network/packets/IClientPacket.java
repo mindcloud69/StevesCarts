@@ -1,11 +1,11 @@
-package stevesvehicles.api.network.packets;
+package stevesvehicles.common.network.packets;
 
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
+import stevesvehicles.common.network.DataReader;
 
 public interface IClientPacket extends IPacket {
 	@SideOnly(Side.CLIENT)

@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiCartAssembler;
+import stevesvehicles.client.localization.ILocalizedText;
 
 public abstract class SimulationInfo {
 	private ILocalizedText name;
@@ -131,6 +131,5 @@ public abstract class SimulationInfo {
 		return gui.inRect(mouseX, mouseY, new int[] { x, y, 10, 10 });
 	}
 
-	@SideOnly(Side.CLIENT)
-	public abstract void onMouseClick(GuiCartAssembler gui, int i, int x, int y);
+	public abstract void onMouseClick(GuiCartAssembler guiCartAssembler, int i, int x, int y);
 }

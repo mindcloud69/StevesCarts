@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import stevesvehicles.api.modules.data.ILocalizedText;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.container.slots.SlotAssembler;

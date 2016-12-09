@@ -10,8 +10,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
@@ -19,6 +17,8 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotChest;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.common.engine.ModuleEngine;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleLabel extends ModuleAddon {

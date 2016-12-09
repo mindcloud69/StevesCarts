@@ -15,8 +15,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -25,6 +23,8 @@ import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.client.localization.entry.module.LocalizationShooter;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.common.addon.mobdetector.ModuleEntityDetector;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleShooterAdvanced extends ModuleShooter {

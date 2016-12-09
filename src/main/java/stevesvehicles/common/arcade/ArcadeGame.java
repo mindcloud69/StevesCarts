@@ -10,14 +10,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.modules.data.ILocalizedText;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.sounds.SoundHandler;
 import stevesvehicles.common.core.Config;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 
 public abstract class ArcadeGame {
 	private ModuleArcade module;

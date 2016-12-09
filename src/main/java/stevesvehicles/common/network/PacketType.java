@@ -1,8 +1,8 @@
 package stevesvehicles.common.network;
 
-import stevesvehicles.api.network.packets.IClientPacket;
-import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IServerPacket;
+import stevesvehicles.common.network.packets.IClientPacket;
+import stevesvehicles.common.network.packets.IPacketProvider;
+import stevesvehicles.common.network.packets.IServerPacket;
 
 public enum PacketType implements IPacketProvider {
 	VEHICLE, REGISTRY, BUOY, GUI_DATA, CUSTOM, STREAMABLE, ACTIVATOR, UPGRADES, ASSEMBLER, MANAGER, DETECTOR, DISTRIBUTOR;

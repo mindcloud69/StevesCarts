@@ -5,12 +5,10 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.LogicObject;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketType;
 
 public class PacketDetector extends PacketPositioned implements IServerPacket {

@@ -1,4 +1,4 @@
-package stevesvehicles.api.network.packets;
+package stevesvehicles.common.network.packets;
 
 public interface IPacketProvider {
 	void setPacketClient(IClientPacket packetClient);

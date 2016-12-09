@@ -7,14 +7,12 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IClientPacket;
-import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.common.blocks.BlockCartAssembler;
 import stevesvehicles.common.blocks.ModBlocks;
 import stevesvehicles.common.blocks.tileentitys.TileEntityCartAssembler;
 import stevesvehicles.common.blocks.tileentitys.assembler.UpgradeContainer;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketType;
 import stevesvehicles.common.upgrades.registries.UpgradeRegistry;
 

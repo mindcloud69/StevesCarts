@@ -6,11 +6,9 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IPacket;
-import stevesvehicles.api.network.packets.IPacketProvider;
 import stevesvehicles.common.core.Constants;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 
 public abstract class Packet implements IPacket {
 	private final IPacketProvider id = getProvider();

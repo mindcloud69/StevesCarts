@@ -9,13 +9,13 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
 import stevesvehicles.common.modules.IActivatorModule;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleInvisible extends ModuleAddon implements IActivatorModule {

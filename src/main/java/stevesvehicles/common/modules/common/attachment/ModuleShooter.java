@@ -16,8 +16,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
@@ -32,6 +30,8 @@ import stevesvehicles.common.modules.cart.attachment.ModuleAttachment;
 import stevesvehicles.common.modules.common.addon.enchanter.EnchantmentInfo;
 import stevesvehicles.common.modules.common.addon.enchanter.ModuleEnchants;
 import stevesvehicles.common.modules.common.addon.projectile.ModuleProjectile;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 // TODO this module has so many numbers that should be replaced with constants

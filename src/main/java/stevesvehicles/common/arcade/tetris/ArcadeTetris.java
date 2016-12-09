@@ -7,14 +7,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.arcade.LocalizationStacker;
 import stevesvehicles.common.arcade.ArcadeGame;
 import stevesvehicles.common.arcade.tracks.TrackStory;
 import stevesvehicles.common.modules.common.attachment.ModuleArcade;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ArcadeTetris extends ArcadeGame {

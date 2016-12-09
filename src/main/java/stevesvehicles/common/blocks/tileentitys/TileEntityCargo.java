@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiCargo;
 import stevesvehicles.client.localization.entry.block.LocalizationCargo;
@@ -39,6 +38,7 @@ import stevesvehicles.common.container.slots.SlotTorch;
 import stevesvehicles.common.items.ComponentTypes;
 import stevesvehicles.common.items.ModItems;
 import stevesvehicles.common.modules.datas.registries.ModuleRegistry;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.transfer.TransferHandler;
 
 public class TileEntityCargo extends TileEntityManager {

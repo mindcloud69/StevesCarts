@@ -17,8 +17,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoMultiBoolean;
@@ -29,6 +27,8 @@ import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.container.slots.SlotTorch;
 import stevesvehicles.common.modules.ISuppliesModule;
 import stevesvehicles.common.modules.cart.ModuleWorker;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleTorch extends ModuleWorker implements ISuppliesModule {

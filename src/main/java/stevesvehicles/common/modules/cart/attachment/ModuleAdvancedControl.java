@@ -19,13 +19,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartTravel;
 import stevesvehicles.common.modules.cart.ILeverModule;
 import stevesvehicles.common.modules.common.engine.ModuleEngine;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 public class ModuleAdvancedControl extends ModuleAttachment implements ILeverModule {

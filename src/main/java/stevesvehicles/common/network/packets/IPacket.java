@@ -1,9 +1,9 @@
-package stevesvehicles.api.network.packets;
+package stevesvehicles.common.network.packets;
 
 import java.io.IOException;
 
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-import stevesvehicles.api.network.DataReader;
+import stevesvehicles.common.network.DataReader;
 
 public interface IPacket {
 	void readData(DataReader reader) throws IOException;

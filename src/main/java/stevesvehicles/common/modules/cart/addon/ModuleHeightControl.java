@@ -8,13 +8,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.ColorHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartRails;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleHeightControl extends ModuleAddon {

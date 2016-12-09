@@ -9,10 +9,10 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.common.container.ContainerBase;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 
 public abstract class TileEntityBase extends TileEntity {
 	public TileEntityBase() {

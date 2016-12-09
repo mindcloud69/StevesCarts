@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import stevesvehicles.common.modules.datas.ModuleData;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiBase extends GuiContainerSpecial {
+public abstract class GuiBase extends GuiContainer {
 	public GuiBase(Container container) {
 		super(container);
 	}

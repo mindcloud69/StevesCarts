@@ -5,12 +5,9 @@ import java.io.IOException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IClientPacket;
-import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.container.ContainerBuoy;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketType;
 
 public class PacketBuoy extends Packet implements IClientPacket, IServerPacket {

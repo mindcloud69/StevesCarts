@@ -2,8 +2,8 @@ package stevesvehicles.common.network.packets;
 
 import java.io.IOException;
 import net.minecraft.util.math.BlockPos;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 
 public abstract class PacketPositioned extends Packet {
 	private BlockPos pos;

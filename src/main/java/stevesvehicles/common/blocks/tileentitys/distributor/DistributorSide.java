@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import stevesvehicles.api.modules.data.ILocalizedText;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.block.LocalizationDistributor;
 import stevesvehicles.common.blocks.tileentitys.TileEntityDistributor;
 

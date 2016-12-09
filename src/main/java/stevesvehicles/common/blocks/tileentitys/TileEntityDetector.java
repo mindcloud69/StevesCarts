@@ -11,8 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiDetector;
 import stevesvehicles.common.blocks.tileentitys.detector.DetectorType;
@@ -21,6 +19,8 @@ import stevesvehicles.common.blocks.tileentitys.detector.LogicObjectOperator;
 import stevesvehicles.common.blocks.tileentitys.detector.OperatorObject;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerDetector;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class TileEntityDetector extends TileEntityBase implements ITickable {

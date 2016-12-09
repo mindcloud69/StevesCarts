@@ -4,12 +4,10 @@ import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.blocks.tileentitys.TileEntityManager;
 import stevesvehicles.common.blocks.tileentitys.TileEntityManager.PacketId;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.network.PacketType;
 
 public class PacketManager extends PacketPositioned implements IServerPacket {

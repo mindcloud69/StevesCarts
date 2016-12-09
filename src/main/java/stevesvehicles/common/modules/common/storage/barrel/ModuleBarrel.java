@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.ColorHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
@@ -20,6 +19,7 @@ import stevesvehicles.client.localization.entry.module.LocalizationBarrel;
 import stevesvehicles.common.container.slots.SlotBarrel;
 import stevesvehicles.common.container.slots.SlotBase;
 import stevesvehicles.common.modules.common.storage.ModuleStorage;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 // TODO what should happen when a cart with a barrel is broken? Currently it

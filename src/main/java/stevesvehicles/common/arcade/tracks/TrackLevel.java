@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.modules.data.ILocalizedText;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.arcade.LocalizationTrack;
 
 public class TrackLevel {

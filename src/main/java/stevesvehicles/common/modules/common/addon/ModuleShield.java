@@ -10,13 +10,13 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.client.localization.entry.module.LocalizationIndependence;
 import stevesvehicles.common.modules.IActivatorModule;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleShield extends ModuleAddon implements IActivatorModule {

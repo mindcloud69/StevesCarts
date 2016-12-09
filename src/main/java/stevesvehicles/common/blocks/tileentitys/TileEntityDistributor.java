@@ -20,7 +20,6 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.gui.screen.GuiDistributor;
 import stevesvehicles.client.localization.entry.block.LocalizationDistributor;
@@ -28,6 +27,7 @@ import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSetting;
 import stevesvehicles.common.blocks.tileentitys.distributor.DistributorSide;
 import stevesvehicles.common.container.ContainerBase;
 import stevesvehicles.common.container.ContainerDistributor;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.tanks.Tank;
 
 public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, ITickable {

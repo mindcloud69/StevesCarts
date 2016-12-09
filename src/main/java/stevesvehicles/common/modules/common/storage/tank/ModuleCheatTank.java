@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.ColorHelper;
 import stevesvehicles.client.localization.entry.module.LocalizationTank;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleCheatTank extends ModuleTank {

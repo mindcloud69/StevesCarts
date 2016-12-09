@@ -1,4 +1,4 @@
-package stevesvehicles.api.network;
+package stevesvehicles.common.network;
 
 import java.io.IOException;
 

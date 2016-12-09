@@ -19,7 +19,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.modules.data.ILocalizedText;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.LocalizedTextAdvanced;
 import stevesvehicles.client.rendering.models.items.ItemModelManager;
 import stevesvehicles.client.rendering.models.items.TexturedItem;

@@ -6,10 +6,8 @@ import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IServerPacket;
 import stevesvehicles.common.core.Constants;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.network.PacketType;
 
 public class CustomPacket implements IServerPacket {

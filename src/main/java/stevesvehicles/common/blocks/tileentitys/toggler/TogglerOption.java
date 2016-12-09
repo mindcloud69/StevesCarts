@@ -1,7 +1,7 @@
 package stevesvehicles.common.blocks.tileentitys.toggler;
 
-import stevesvehicles.api.modules.data.ILocalizedText;
 import stevesvehicles.client.gui.ColorHelper;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.block.LocalizationToggler;
 import stevesvehicles.common.modules.ModuleBase;
 

@@ -8,10 +8,10 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiBuoy;
 import stevesvehicles.common.blocks.tileentitys.TileEntityBase;
 import stevesvehicles.common.entitys.buoy.EntityBuoy;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.network.PacketHandler;
 import stevesvehicles.common.network.packets.PacketBuoy;
 

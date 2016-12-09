@@ -1,8 +1,6 @@
 package stevesvehicles.common.modules.datas;
 
-import stevesvehicles.api.modules.Module;
-import stevesvehicles.api.modules.data.ILocalizedText;
-import stevesvehicles.api.modules.data.IModuleType;
+import stevesvehicles.client.localization.ILocalizedText;
 import stevesvehicles.client.localization.entry.info.LocalizationCategory;
 import stevesvehicles.common.modules.ModuleBase;
 import stevesvehicles.common.modules.cart.attachment.ModuleAttachment;
@@ -12,7 +10,7 @@ import stevesvehicles.common.modules.common.engine.ModuleEngine;
 import stevesvehicles.common.modules.common.hull.ModuleHull;
 import stevesvehicles.common.modules.common.storage.ModuleStorage;
 
-public enum ModuleType implements IModuleType{
+public enum ModuleType{
 	HULL(ModuleHull.class, LocalizationCategory.HULL),
 	ENGINE(ModuleEngine.class, LocalizationCategory.ENGINE),
 	TOOL(ModuleTool.class, LocalizationCategory.TOOL),
@@ -32,14 +30,7 @@ public enum ModuleType implements IModuleType{
 		return clazz;
 	}
 
-	@Override
 	public String getName() {
 		return name.translate();
-	}
-
-	@Override
-	public Class<? extends Module> getModuleClass() {
-		//TODO:FIX
-		return null;
 	}
 }

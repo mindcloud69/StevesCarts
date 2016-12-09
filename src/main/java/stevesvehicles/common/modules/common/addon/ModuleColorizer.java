@@ -8,12 +8,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.IStreamable;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationVisual;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
+import stevesvehicles.common.network.IStreamable;
 import stevesvehicles.common.vehicles.VehicleBase;
 import stevesvehicles.common.vehicles.VehicleDataSerializers;
 

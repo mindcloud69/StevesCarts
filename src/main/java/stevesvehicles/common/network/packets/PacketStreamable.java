@@ -7,11 +7,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
-import stevesvehicles.api.network.IStreamable;
-import stevesvehicles.api.network.packets.IPacketProvider;
-import stevesvehicles.api.network.packets.IServerPacket;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
+import stevesvehicles.common.network.IStreamable;
 import stevesvehicles.common.network.PacketType;
 
 public class PacketStreamable extends Packet implements IServerPacket {

@@ -16,9 +16,9 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.StartupQuery;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.common.core.Constants;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 
 @Deprecated
 public class RegistrySynchronizer {

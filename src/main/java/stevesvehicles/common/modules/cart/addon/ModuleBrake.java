@@ -10,8 +10,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.ResourceHelper;
 import stevesvehicles.client.gui.assembler.SimulationInfo;
 import stevesvehicles.client.gui.assembler.SimulationInfoBoolean;
@@ -20,6 +18,8 @@ import stevesvehicles.client.localization.entry.block.LocalizationAssembler;
 import stevesvehicles.client.localization.entry.module.cart.LocalizationCartTravel;
 import stevesvehicles.common.modules.cart.ILeverModule;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleBrake extends ModuleAddon implements ILeverModule {

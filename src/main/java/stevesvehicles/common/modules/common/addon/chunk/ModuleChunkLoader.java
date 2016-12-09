@@ -8,11 +8,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
 import stevesvehicles.client.gui.screen.GuiVehicle;
 import stevesvehicles.client.localization.entry.module.LocalizationIndependence;
 import stevesvehicles.common.modules.IActivatorModule;
 import stevesvehicles.common.modules.common.addon.ModuleAddon;
+import stevesvehicles.common.network.DataReader;
 import stevesvehicles.common.vehicles.VehicleBase;
 
 public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {

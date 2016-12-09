@@ -8,8 +8,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stevesvehicles.api.network.DataReader;
-import stevesvehicles.api.network.DataWriter;
 import stevesvehicles.client.gui.screen.GuiActivator;
 import stevesvehicles.client.gui.screen.GuiBase;
 import stevesvehicles.client.localization.entry.block.LocalizationToggler;
@@ -21,6 +19,8 @@ import stevesvehicles.common.modules.common.addon.ModuleInvisible;
 import stevesvehicles.common.modules.common.addon.ModuleShield;
 import stevesvehicles.common.modules.common.addon.chunk.ModuleChunkLoader;
 import stevesvehicles.common.modules.common.attachment.ModuleCage;
+import stevesvehicles.common.network.DataReader;
+import stevesvehicles.common.network.DataWriter;
 import stevesvehicles.common.vehicles.entitys.EntityModularCart;
 
 /**
