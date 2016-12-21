@@ -40,17 +40,15 @@ public class ModuleCleaner extends ModuleBase {
 		for (Entity e : list) {
 			if (e instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) e;
-				if ((Integer)ObfuscationReflectionHelper.getPrivateValue(EntityItem.class, eItem, 1) <= 10) {
-					final double difX = this.getCart().posX - eItem.posX;
-					final double difY = this.getCart().posY - eItem.posY;
-					final double difZ = this.getCart().posZ - eItem.posZ;
-					final EntityItem entityItem = eItem;
-					entityItem.motionX += this.calculatemotion(difX);
-					final EntityItem entityItem2 = eItem;
-					entityItem2.motionY += this.calculatemotion(difY);
-					final EntityItem entityItem3 = eItem;
-					entityItem3.motionZ += this.calculatemotion(difZ);
-				}
+				final double difX = this.getCart().posX - eItem.posX;
+				final double difY = this.getCart().posY - eItem.posY;
+				final double difZ = this.getCart().posZ - eItem.posZ;
+				final EntityItem entityItem = eItem;
+				entityItem.motionX += this.calculatemotion(difX);
+				final EntityItem entityItem2 = eItem;
+				entityItem2.motionY += this.calculatemotion(difY);
+				final EntityItem entityItem3 = eItem;
+				entityItem3.motionZ += this.calculatemotion(difZ);
 			}
 		}
 	}
@@ -60,7 +58,7 @@ public class ModuleCleaner extends ModuleBase {
 		for (int e = 0; e < list.size(); ++e) {
 			if (list.get(e) instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) list.get(e);
-				if ((Integer)ObfuscationReflectionHelper.getPrivateValue(EntityItem.class, eItem, 1) <= 10 && !eItem.isDead) {
+				if (!eItem.isDead) {
 					final int stackSize = eItem.getEntityItem().stackSize;
 					this.getCart().addItemToChest(eItem.getEntityItem());
 					if (stackSize != eItem.getEntityItem().stackSize) {
