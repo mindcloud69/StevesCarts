@@ -215,14 +215,14 @@ public class GuiCartAssembler extends GuiBase {
 		float assemblingProgress = 0.0f;
 		String assemblingInfo;
 		if (this.assembler.getIsAssembling()) {
-			assemblingProgress = this.assembler.getAssemblingTime() / this.assembler.getMaxAssemblingTime();
+			assemblingProgress = (float)this.assembler.getAssemblingTime() / (float)this.assembler.getMaxAssemblingTime();
 			assemblingInfo = Localization.GUI.ASSEMBLER.ASSEMBLE_PROGRESS.translate() + ": " + this.formatProgress(assemblingProgress);
 			assemblingInfo = assemblingInfo + "\n" + Localization.GUI.ASSEMBLER.TIME_LEFT.translate() + ": " + this.formatTime((int) ((this.assembler.getMaxAssemblingTime() - this.assembler.getAssemblingTime()) / this.assembler.getEfficiency()));
 		} else {
 			assemblingInfo = Localization.GUI.ASSEMBLER.IDLE_MESSAGE.translate();
 		}
 		this.drawProgressBar(assemblingProgRect, assemblingProgress, 22, x, y);
-		this.drawProgressBar(fuelProgRect, this.assembler.getFuelLevel() / this.assembler.getMaxFuelLevel(), 31, x, y);
+		this.drawProgressBar(fuelProgRect, (float)this.assembler.getFuelLevel() / (float)this.assembler.getMaxFuelLevel(), 31, x, y);
 		this.renderDropDownMenu(x, y);
 		this.render3DCart();
 		if (!this.hasErrors) {
