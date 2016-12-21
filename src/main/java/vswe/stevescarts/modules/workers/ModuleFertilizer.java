@@ -121,7 +121,6 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 				if(growable.canGrow(world, pos, stateOfTopBlock, false)){
 					if(growable.canUseBonemeal(world, this.getCart().rand, pos, stateOfTopBlock)){
 						growable.grow(world, this.getCart().rand, pos, stateOfTopBlock);
-						ItemDye.spawnBonemealParticles(world, pos, 15);
 						this.fert -= 2;
 						return true;
 					}
