@@ -1,6 +1,6 @@
 [
 {
-  "modid": "StevesCarts",
+  "modid": "stevescarts",
   "name": "Steve's Carts 2",
   "description": "A carttastic mod adding a near infinite number of carts possible to the game, through the creation of  modular carts.",
   "version": "${version}",
