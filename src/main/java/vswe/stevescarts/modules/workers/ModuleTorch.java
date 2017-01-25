@@ -62,7 +62,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	public boolean work() {
 		final BlockPos next = this.getLastblock();
 		final EntityMinecartModular cart = getCart();
-		final World world = cart.worldObj;
+		final World world = cart.world;
 		final int x = next.getX();
 		final int y = next.getY();
 		final int z = next.getZ();
@@ -217,7 +217,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void update() {
 		super.update();
-		this.light = this.getCart().worldObj.getLightFor(EnumSkyBlock.BLOCK, new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z()));
+		this.light = this.getCart().world.getLightFor(EnumSkyBlock.BLOCK, new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z()));
 	}
 
 	@Override
@@ -238,7 +238,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	}
 
 	private void calculateTorches() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		int val = 0;

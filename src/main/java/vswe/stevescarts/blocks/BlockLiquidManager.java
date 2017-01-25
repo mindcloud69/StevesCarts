@@ -45,7 +45,7 @@ public class BlockLiquidManager extends BlockContainerBase {
 						if (var9.hasTagCompound()) {
 							var14.getEntityItem().setTagCompound(var9.getTagCompound().copy());
 						}
-						par1World.spawnEntityInWorld(var14);
+						par1World.spawnEntity(var14);
 					}
 				}
 			}

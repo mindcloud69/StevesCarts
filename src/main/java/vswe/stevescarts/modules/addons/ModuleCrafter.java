@@ -21,7 +21,7 @@ public class ModuleCrafter extends ModuleRecipe {
 	@Override
 	public void update() {
 		if (this.cooldown <= 0) {
-			if (!this.getCart().worldObj.isRemote && this.getValidSlot() != null) {
+			if (!this.getCart().world.isRemote && this.getValidSlot() != null) {
 				final ItemStack result = this.dummy.getResult();
 				if (result != null && this.getCart().getModules() != null) {
 					if (result.stackSize == 0) {
@@ -124,7 +124,7 @@ public class ModuleCrafter extends ModuleRecipe {
 
 	@Override
 	public void onInventoryChanged() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			this.dummy.update();
 		}
 	}

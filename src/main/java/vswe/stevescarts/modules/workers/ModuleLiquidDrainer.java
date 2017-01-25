@@ -31,7 +31,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 
 	public void handleLiquid(final ModuleDrill drill, BlockPos pos) {
 		final ArrayList<BlockPos> checked = new ArrayList<>();
-		final int result = this.drainAt(getCart().worldObj, drill, checked, pos, 0);
+		final int result = this.drainAt(getCart().world, drill, checked, pos, 0);
 		if (result > 0 && this.doPreWork()) {
 			drill.kill();
 			this.startWorking((int) (2.5f * result));
@@ -106,7 +106,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		}
 		if (b instanceof IFluidBlock) {
 			final IFluidBlock liquid = (IFluidBlock) b;
-			return liquid.drain(this.getCart().worldObj, pos, doDrain);
+			return liquid.drain(this.getCart().world, pos, doDrain);
 		}
 		return null;
 	}

@@ -130,7 +130,7 @@ public class ModuleDynamite extends ModuleBase {
 		} else {
 			final float f = this.explosionSize();
 			this.setStack(0, null);
-			this.getCart().worldObj.createExplosion(null, this.getCart().posX, this.getCart().posY, this.getCart().posZ, f, true);
+			this.getCart().world.createExplosion(null, this.getCart().posX, this.getCart().posY, this.getCart().posZ, f, true);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class ModuleDynamite extends ModuleBase {
 	}
 
 	public void createExplosives() {
-		if (this.isPlaceholder() || this.getCart().worldObj.isRemote) {
+		if (this.isPlaceholder() || this.getCart().world.isRemote) {
 			return;
 		}
 		int f = 8;

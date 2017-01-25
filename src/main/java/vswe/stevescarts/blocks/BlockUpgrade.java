@@ -154,7 +154,7 @@ public class BlockUpgrade extends BlockContainerBase {
 							if (var9.hasTagCompound()) {
 								var14.getEntityItem().setTagCompound(var9.getTagCompound().copy());
 							}
-							world.spawnEntityInWorld(var14);
+							world.spawnEntity(var14);
 						}
 					}
 				}

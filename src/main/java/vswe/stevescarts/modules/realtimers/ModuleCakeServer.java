@@ -34,7 +34,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote) {
+		if (!this.getCart().world.isRemote) {
 			if (this.getCart().hasCreativeSupplies()) {
 				if (this.cooldown >= 20) {
 					if (this.getCakeBuffer() < 66) {
@@ -154,7 +154,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 	@Override
 	public boolean onInteractFirst(final EntityPlayer entityplayer) {
 		if (this.getCakeBuffer() > 0) {
-			if (!this.getCart().worldObj.isRemote && entityplayer.canEat(false)) {
+			if (!this.getCart().world.isRemote && entityplayer.canEat(false)) {
 				this.setCakeBuffer(this.getCakeBuffer() - 1);
 				entityplayer.getFoodStats().addStats(2, 0.1f);
 			}

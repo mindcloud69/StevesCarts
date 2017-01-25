@@ -32,34 +32,34 @@ public class EntityEasterEgg extends EntityEgg {
 		if (result.entityHit != null) {
 			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0f);
 		}
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			if (this.rand.nextInt(8) == 0) {
 				if (this.rand.nextInt(32) == 0) {
-					final EntityPig entitypig = new EntityPig(this.worldObj);
+					final EntityPig entitypig = new EntityPig(this.world);
 					entitypig.setGrowingAge(-24000);
 					entitypig.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0f);
-					this.worldObj.spawnEntityInWorld(entitypig);
+					this.world.spawnEntity(entitypig);
 				} else {
-					final EntityChicken entitychicken = new EntityChicken(this.worldObj);
+					final EntityChicken entitychicken = new EntityChicken(this.world);
 					entitychicken.setGrowingAge(-24000);
 					entitychicken.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0f);
-					this.worldObj.spawnEntityInWorld(entitychicken);
+					this.world.spawnEntity(entitychicken);
 				}
 			} else {
 				final ArrayList<ItemStack> items = GiftItem.generateItems(this.rand, GiftItem.EasterList, 25 + this.rand.nextInt(300), 1);
 				for (final ItemStack item : items) {
-					final EntityItem eItem = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, item);
+					final EntityItem eItem = new EntityItem(this.world, this.posX, this.posY, this.posZ, item);
 					eItem.motionX = this.rand.nextGaussian() * 0.05000000074505806;
 					eItem.motionY = this.rand.nextGaussian() * 0.25;
 					eItem.motionZ = this.rand.nextGaussian() * 0.05000000074505806;
-					this.worldObj.spawnEntityInWorld(eItem);
+					this.world.spawnEntity(eItem);
 				}
 			}
 		}
 		for (int j = 0; j < 8; ++j) {
-			this.worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
+			this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
 		}
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			this.setDead();
 		}
 	}

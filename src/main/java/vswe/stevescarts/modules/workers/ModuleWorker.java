@@ -67,12 +67,12 @@ public abstract class ModuleWorker extends ModuleBase {
 
 	private BlockPos getNextblock(final boolean flag) {
 		BlockPos pos = getCart().getPosition();
-		if (BlockRailBase.isRailBlock(getCart().worldObj, pos.down())) {
+		if (BlockRailBase.isRailBlock(getCart().world, pos.down())) {
 			pos = pos.down();
 		}
-		IBlockState blockState = getCart().worldObj.getBlockState(pos);
+		IBlockState blockState = getCart().world.getBlockState(pos);
 		if (BlockRailBase.isRailBlock(blockState)) {
-			int meta = ((BlockRailBase) blockState.getBlock()).getRailDirection(getCart().worldObj, pos, blockState, getCart()).getMetadata();
+			int meta = ((BlockRailBase) blockState.getBlock()).getRailDirection(getCart().world, pos, blockState, getCart()).getMetadata();
 			if (meta >= 2 && meta <= 5) {
 				pos = pos.up();
 			}
@@ -100,7 +100,7 @@ public abstract class ModuleWorker extends ModuleBase {
 		if (result) {
 			final int coordX = pos.getX() - (this.getCart().x() - pos.getX());
 			final int coordZ = pos.getY() - (this.getCart().z() - pos.getY());
-			final Block block = this.getCart().worldObj.getBlockState(new BlockPos(coordX, pos.getY(), coordZ)).getBlock();
+			final Block block = this.getCart().world.getBlockState(new BlockPos(coordX, pos.getY(), coordZ)).getBlock();
 			final boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE;
 			final boolean isLava = block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
 			final boolean isOther = block != null && block instanceof IFluidBlock;

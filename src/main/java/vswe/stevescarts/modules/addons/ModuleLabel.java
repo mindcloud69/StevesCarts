@@ -190,7 +190,7 @@ public class ModuleLabel extends ModuleAddon {
 
 	@Override
 	public void update() {
-		if (!this.isPlaceholder() && !this.getCart().worldObj.isRemote) {
+		if (!this.isPlaceholder() && !this.getCart().world.isRemote) {
 			if (this.delay <= 0) {
 				if (this.isActive(3)) {
 					int data = 0;

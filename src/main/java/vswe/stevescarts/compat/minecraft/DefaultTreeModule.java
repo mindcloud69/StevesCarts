@@ -19,12 +19,12 @@ public class DefaultTreeModule implements ITreeModule {
 
 	@Override
 	public boolean isLeaves(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
-		return blockState.getBlock().isLeaves(blockState, cart.worldObj, pos);
+		return blockState.getBlock().isLeaves(blockState, cart.world, pos);
 	}
 
 	@Override
 	public boolean isWood(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
-		return blockState.getBlock().isWood(cart.worldObj, pos);
+		return blockState.getBlock().isWood(cart.world, pos);
 	}
 
 	@Override

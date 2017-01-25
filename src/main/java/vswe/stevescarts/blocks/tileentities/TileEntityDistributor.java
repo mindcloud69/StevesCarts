@@ -179,7 +179,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	private TileEntityManager generateManager(final int y) {
-		final TileEntity TE = this.worldObj.getTileEntity(this.pos.up(y));
+		final TileEntity TE = this.world.getTileEntity(this.pos.up(y));
 		if (TE != null && TE instanceof TileEntityManager) {
 			return (TileEntityManager) TE;
 		}
@@ -187,8 +187,8 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
+		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
 
 	private int translateSlotId(final int slot) {

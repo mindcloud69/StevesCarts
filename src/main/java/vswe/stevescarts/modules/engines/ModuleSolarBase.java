@@ -60,11 +60,11 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	private void updateLight() {
-		if(!this.getCart().worldObj.isDaytime()){
+		if(!this.getCart().world.isDaytime()){
 			this.light = 0;
 		}else{
-			this.light = this.getCart().worldObj.getLight(this.getCart().getPosition());
-			if (this.light == 15 && !this.getCart().worldObj.canBlockSeeSky(this.getCart().getPosition())) {
+			this.light = this.getCart().world.getLight(this.getCart().getPosition());
+			if (this.light == 15 && !this.getCart().world.canBlockSeeSky(this.getCart().getPosition())) {
 				this.light = 14;
 			}
 		}
@@ -73,7 +73,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	private void updateDataForModel() {
 		if (this.isPlaceholder()) {
 			this.light = (this.getSimInfo().getMaxLight() ? 15 : 14);
-		} else if (this.getCart().worldObj.isRemote) {
+		} else if (this.getCart().world.isRemote) {
 			this.light = this.getDw(LIGHT);
 		} else {
 			this.updateDw(LIGHT, this.light);
@@ -85,7 +85,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	private void chargeSolar() {
-		if (this.light == 15 && this.getCart().worldObj.rand.nextInt(8) < 4) {
+		if (this.light == 15 && this.getCart().world.rand.nextInt(8) < 4) {
 			this.setFuelLevel(this.getFuelLevel() + this.getGenSpeed());
 			if (this.getFuelLevel() > this.getMaxCapacity()) {
 				this.setFuelLevel(this.getMaxCapacity());
@@ -140,7 +140,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	public void updateSolarModel() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			this.updateDataForModel();
 		}
 		this.panelCoolDown += (this.maxLight ? 1 : -1);
@@ -153,7 +153,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 			this.down = !this.down;
 		}
 		this.upState = this.updatePanels();
-		if (!this.getCart().worldObj.isRemote) {
+		if (!this.getCart().world.isRemote) {
 			this.updateDw(UP_STATE, this.upState);
 		}
 	}

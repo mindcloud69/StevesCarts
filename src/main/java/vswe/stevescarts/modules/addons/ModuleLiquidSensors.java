@@ -123,7 +123,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 	}
 
 	public boolean isDangerous(final ModuleDrill drill, BlockPos pos, boolean isUp) {
-		final Block block = this.getCart().worldObj.getBlockState(pos).getBlock();
+		final Block block = this.getCart().world.getBlockState(pos).getBlock();
 		if (block == Blocks.LAVA) {
 			this.handleLiquid(drill, pos);
 			return true;
@@ -153,10 +153,10 @@ public class ModuleLiquidSensors extends ModuleAddon {
 			this.handleLiquid(drill, pos);
 			return true;
 		}
-		IBlockState state = getCart().worldObj.getBlockState(pos);
+		IBlockState state = getCart().world.getBlockState(pos);
 		int m = state.getBlock().getMetaFromState(state);
 		if ((m & 0x8) == 0x8) {
-			if (block.isBlockSolid(this.getCart().worldObj, pos.down(), EnumFacing.UP)) {
+			if (block.isBlockSolid(this.getCart().world, pos.down(), EnumFacing.UP)) {
 				this.handleLiquid(drill, pos);
 				return true;
 			}
@@ -165,7 +165,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 			if (isWater && (m & 0x7) == 0x7) {
 				return false;
 			}
-			if (isLava && (m & 0x7) == 0x7 && !this.getCart().worldObj.provider.isSkyColored()) {
+			if (isLava && (m & 0x7) == 0x7 && !this.getCart().world.provider.isSkyColored()) {
 				return false;
 			}
 			if (isLava && (m & 0x7) == 0x6) {

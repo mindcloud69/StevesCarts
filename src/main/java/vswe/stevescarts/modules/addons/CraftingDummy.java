@@ -52,13 +52,13 @@ public class CraftingDummy extends InventoryCrafting {
 	}
 
 	public ItemStack getResult() {
-		return CraftingManager.getInstance().findMatchingRecipe(this, this.module.getCart().worldObj);
+		return CraftingManager.getInstance().findMatchingRecipe(this, this.module.getCart().world);
 	}
 
 	public IRecipe getRecipe() {
 		for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); ++i) {
 			final IRecipe irecipe = CraftingManager.getInstance().getRecipeList().get(i);
-			if (irecipe.matches(this, this.module.getCart().worldObj)) {
+			if (irecipe.matches(this, this.module.getCart().world)) {
 				return irecipe;
 			}
 		}

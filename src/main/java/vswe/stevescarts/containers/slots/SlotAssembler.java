@@ -51,8 +51,8 @@ public class SlotAssembler extends Slot {
 	}
 
 	private void invalidationCheck() {
-		this.xDisplayPosition = -3000;
-		this.yDisplayPosition = -3000;
+		this.xPos = -3000;
+		this.yPos = -3000;
 		if (this.openingAnimation > 8) {
 			this.openingAnimation = 8;
 		}
@@ -66,8 +66,8 @@ public class SlotAssembler extends Slot {
 			}
 		} else if (this.isValid()) {
 			if (this.openingAnimation == 8) {
-				this.xDisplayPosition = this.x;
-				this.yDisplayPosition = this.y;
+				this.xPos = this.x;
+				this.yPos = this.y;
 				++this.openingAnimation;
 			} else if (this.openingAnimation < 8) {
 				++this.openingAnimation;

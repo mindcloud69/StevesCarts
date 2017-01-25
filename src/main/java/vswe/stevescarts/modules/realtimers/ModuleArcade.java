@@ -31,7 +31,7 @@ public class ModuleArcade extends ModuleBase {
 	}
 
 	private boolean isGameActive() {
-		return this.getCart().worldObj.isRemote && this.currentGame != null;
+		return this.getCart().world.isRemote && this.currentGame != null;
 	}
 
 	@Override

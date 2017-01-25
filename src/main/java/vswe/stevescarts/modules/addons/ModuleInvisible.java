@@ -68,7 +68,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 	@Override
 	public void update() {
 		super.update();
-		if (!this.isVisible() && !this.getCart().hasFuelForModule() && !this.getCart().worldObj.isRemote) {
+		if (!this.isVisible() && !this.getCart().hasFuelForModule() && !this.getCart().world.isRemote) {
 			this.setIsVisible(true);
 		}
 	}

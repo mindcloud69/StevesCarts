@@ -19,7 +19,7 @@ public class ModuleCleaner extends ModuleBase {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		if (this.getCart().hasFuel()) {
@@ -36,7 +36,7 @@ public class ModuleCleaner extends ModuleBase {
 	}
 
 	private void suck() {
-		final List<Entity> list = this.getCart().worldObj.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
+		final List<Entity> list = this.getCart().world.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
 		for (Entity e : list) {
 			if (e instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) e;
@@ -54,7 +54,7 @@ public class ModuleCleaner extends ModuleBase {
 	}
 
 	private void clean() {
-		final List<Entity> list = this.getCart().worldObj.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(1.0, 0.5, 1.0));
+		final List<Entity> list = this.getCart().world.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(1.0, 0.5, 1.0));
 		for (int e = 0; e < list.size(); ++e) {
 			if (list.get(e) instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) list.get(e);
@@ -63,7 +63,7 @@ public class ModuleCleaner extends ModuleBase {
 					this.getCart().addItemToChest(eItem.getEntityItem());
 					if (stackSize != eItem.getEntityItem().stackSize) {
 						//TODO
-						//this.getCart().worldObj.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
+						//this.getCart().world.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
 						if (eItem.getEntityItem().stackSize <= 0) {
 							eItem.setDead();
 						}
@@ -79,7 +79,7 @@ public class ModuleCleaner extends ModuleBase {
 					this.getCart().addItemToChest(iItem);
 					if (iItem.stackSize <= 0) {
 						//TODO
-						//this.getCart().worldObj.playSound((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
+						//this.getCart().world.playSound((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
 						eItem2.setDead();
 					} else if (this.failPickup(iItem)) {
 						eItem2.setDead();
@@ -95,13 +95,13 @@ public class ModuleCleaner extends ModuleBase {
 		if (x == 0 && z == 0) {
 			return false;
 		}
-		if (this.getCart().worldObj.isRemote) {}
-		final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, item.copy());
+		if (this.getCart().world.isRemote) {}
+		final EntityItem entityitem = new EntityItem(this.getCart().world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, item.copy());
 		entityitem.setPickupDelay(35);
 		entityitem.motionX = x / 3.0f;
 		entityitem.motionY = 0.15000000596046448;
 		entityitem.motionZ = z / 3.0f;
-		this.getCart().worldObj.spawnEntityInWorld(entityitem);
+		this.getCart().world.spawnEntity(entityitem);
 		return true;
 	}
 

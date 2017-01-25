@@ -15,7 +15,7 @@ public class ModuleMelter extends ModuleAddon {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		if (this.getCart().hasFuel()) {
@@ -46,7 +46,7 @@ public class ModuleMelter extends ModuleAddon {
 			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
 				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
 					BlockPos pos = cartPos.add(x, y, z);
-					final Block b = this.getCart().worldObj.getBlockState(cartPos).getBlock();
+					final Block b = this.getCart().world.getBlockState(cartPos).getBlock();
 					this.melt(b, cartPos);
 				}
 			}
@@ -55,7 +55,7 @@ public class ModuleMelter extends ModuleAddon {
 
 	protected boolean melt(final Block b, BlockPos pos) {
 		if (b == Blocks.SNOW) {
-			this.getCart().worldObj.setBlockToAir(pos);
+			this.getCart().world.setBlockToAir(pos);
 			return true;
 		}
 		return false;

@@ -113,7 +113,7 @@ public abstract class ContainerBase extends Container {
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer entityplayer) {
-		return this.getTileEntity() != null && this.getTileEntity().isUseableByPlayer(entityplayer);
+		return this.getTileEntity() != null && this.getTileEntity().isUsableByPlayer(entityplayer);
 	}
 
 	@Override

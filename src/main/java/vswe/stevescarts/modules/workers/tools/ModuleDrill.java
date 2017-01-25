@@ -73,7 +73,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 
 	@Override
 	public boolean work() {
-		World world = getCart().worldObj;
+		World world = getCart().world;
 		if (!this.isDrillEnabled()) {
 			this.stopDrill();
 			this.stopWorking();
@@ -109,7 +109,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	protected int[] mineRange() {
 		BlockPos next = this.getNextblock();
 		final int yTarget = this.getCart().getYTarget();
-		if (BlockRailBase.isRailBlock(this.getCart().worldObj, next) || BlockRailBase.isRailBlock(this.getCart().worldObj, next.down())) {
+		if (BlockRailBase.isRailBlock(this.getCart().world, next) || BlockRailBase.isRailBlock(this.getCart().world, next.down())) {
 			return new int[] { 0, this.blocksOnTop() - 1, 1 };
 		}
 		if (next.getY() > yTarget) {
@@ -233,7 +233,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			entityitem.motionX = (this.getCart().x() - Coords.getX()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
 			entityitem.motionZ = (this.getCart().z() - Coords.getZ()) / 10.0f;
-			world.spawnEntityInWorld(entityitem);
+			world.spawnEntity(entityitem);
 			return true;
 		}
 		if (iStack.stackSize != size) {
@@ -241,7 +241,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			entityitem.motionX = (this.getCart().z() - Coords.getZ()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
 			entityitem.motionZ = (this.getCart().x() - Coords.getX()) / 10.0f;
-			world.spawnEntityInWorld(entityitem);
+			world.spawnEntity(entityitem);
 			return true;
 		}
 		return false;
@@ -308,7 +308,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 				++this.miningCoolDown;
 			}
 		}
-		if (!this.getCart().worldObj.isRemote && this.liquidsensors != null) {
+		if (!this.getCart().world.isRemote && this.liquidsensors != null) {
 			byte data = this.sensorLight;
 			if (this.isDrillSpinning()) {
 				data |= 0x4;

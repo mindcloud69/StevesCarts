@@ -179,7 +179,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Override
 	public void updateEntity() {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			this.updateLayout();
 			return;
 		}
@@ -402,8 +402,8 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	@Override
-	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64.0;
+	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
+		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64.0;
 	}
 
 	public ItemStack getStackInSlotOnClosing(final int par1) {

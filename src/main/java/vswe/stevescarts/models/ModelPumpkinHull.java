@@ -22,7 +22,7 @@ public class ModelPumpkinHull extends ModelHull {
 	}
 
 	private boolean isActive(final ModuleBase module) {
-		final long time = module.getCart().worldObj.getWorldInfo().getWorldTime() % 24000L;
+		final long time = module.getCart().world.getWorldInfo().getWorldTime() % 24000L;
 		return time >= 12000L && time <= 18000L;
 	}
 }

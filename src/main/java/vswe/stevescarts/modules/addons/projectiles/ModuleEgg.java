@@ -18,6 +18,6 @@ public class ModuleEgg extends ModuleProjectile {
 
 	@Override
 	public Entity createProjectile(final Entity target, final ItemStack item) {
-		return new EntityEgg(this.getCart().worldObj);
+		return new EntityEgg(this.getCart().world);
 	}
 }

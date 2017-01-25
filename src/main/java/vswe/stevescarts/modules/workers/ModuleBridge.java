@@ -48,7 +48,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
-		World world = getCart().worldObj;
+		World world = getCart().world;
 		BlockPos next = this.getNextblock();
 		if (this.getCart().getYTarget() < next.getY()) {
 			next = next.down(2);

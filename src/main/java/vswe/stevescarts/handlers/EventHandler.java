@@ -45,7 +45,7 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 	@SideOnly(Side.CLIENT)
 	private void renderOverlay() {
 		final Minecraft minecraft = Minecraft.getMinecraft();
-		final EntityPlayer player = minecraft.thePlayer;
+		final EntityPlayer player = minecraft.player;
 		if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityMinecartModular) {
 			((EntityMinecartModular) player.getRidingEntity()).renderOverlay(minecraft);
 		}

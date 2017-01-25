@@ -192,7 +192,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer) {
+		if (!this.getCart().world.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer) {
 			if (this.enginePacketTimer == 0) {
 				this.sendEnginePacket((EntityPlayer) this.getCart().getControllingPassenger());
 				this.enginePacketTimer = 15;
@@ -209,14 +209,14 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 			this.enginePacketTimer = 0;
 			this.tripPacketTimer = 0;
 		}
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			this.encodeKeys();
 		}
 		if (!this.lastBackKey && this.isBackKeyDown()) {
 			this.turnback();
 		}
 		this.lastBackKey = this.isBackKeyDown();
-		if (!this.getCart().worldObj.isRemote) {
+		if (!this.getCart().world.isRemote) {
 			if (this.speedChangeCooldown == 0) {
 				if (!this.isJumpKeyDown() || !this.isBackKeyDown()) {
 					if (this.isJumpKeyDown()) {
@@ -471,7 +471,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	@Override
 	public void postUpdate() {
-		//		if (this.getCart().worldObj.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer && this.getCart().getControllingPassenger() == this.getClientPlayer()) {
+		//		if (this.getCart().world.isRemote && this.getCart().getControllingPassenger() != null && this.getCart().getControllingPassenger() instanceof EntityPlayer && this.getCart().getControllingPassenger() == this.getClientPlayer()) {
 		//			KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode(), false);
 		//		}
 	}

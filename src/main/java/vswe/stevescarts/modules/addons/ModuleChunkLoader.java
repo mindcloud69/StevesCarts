@@ -52,7 +52,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 		if (!this.rdyToInit) {
 			this.rdyToInit = true;
 		}
-		if (this.isLoadingChunk() && !this.getCart().hasFuelForModule() && !this.getCart().worldObj.isRemote) {
+		if (this.isLoadingChunk() && !this.getCart().hasFuelForModule() && !this.getCart().world.isRemote) {
 			this.setChunkLoading(false);
 		}
 	}
@@ -60,7 +60,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 	public void setChunkLoading(final boolean val) {
 		if (!this.isPlaceholder()) {
 			this.updateDw(LOADING_CHUNK, val);
-			if (!this.getCart().worldObj.isRemote && this.rdyToInit) {
+			if (!this.getCart().world.isRemote && this.rdyToInit) {
 				if (val) {
 					this.getCart().initChunkLoading();
 				} else {

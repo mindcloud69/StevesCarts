@@ -89,7 +89,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 
 	@Override
 	public boolean work() {
-		World world = getCart().worldObj;
+		World world = getCart().world;
 		BlockPos next = this.getNextblock();
 		for (int i = -this.getRange(); i <= this.getRange(); ++i) {
 			for (int j = -this.getRange(); j <= this.getRange(); ++j) {
@@ -186,7 +186,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 						entityitem.motionX = (pos.getX() - cart.x()) / 10.0f;
 						entityitem.motionY = 0.15000000596046448;
 						entityitem.motionZ = (pos.getZ() - cart.z()) / 10.0f;
-						world.spawnEntityInWorld(entityitem);
+						world.spawnEntity(entityitem);
 					}
 				}
 				world.setBlockToAir(pos);
@@ -261,7 +261,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote) {
+		if (!this.getCart().world.isRemote) {
 			this.setFarming(this.farming - 1);
 		} else {
 			final float up = -3.926991f;

@@ -37,7 +37,7 @@ public class PacketHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onClientPacket(final FMLNetworkEvent.ClientCustomPacketEvent event) {
-		final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+		final EntityPlayer player = FMLClientHandler.instance().getClient().player;
 		int idForCrash = -1;
 		try {
 			final byte[] bytes = event.getPacket().payload().array();
@@ -52,7 +52,7 @@ public class PacketHandler {
 				for (int i = 0; i < len; ++i) {
 					data[i] = reader.readByte();
 				}
-				final World world = player.worldObj;
+				final World world = player.world;
 				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, new BlockPos(x, y, z));
 			} else {
 				final int entityid = reader.readInt();
@@ -61,7 +61,7 @@ public class PacketHandler {
 				for (int j = 0; j < len2; ++j) {
 					data2[j] = reader.readByte();
 				}
-				final World world2 = player.worldObj;
+				final World world2 = player.world;
 				final EntityMinecartModular cart = this.getCart(entityid, world2);
 				if (cart != null) {
 					this.receivePacketAtCart(cart, id, data2, player);
@@ -80,7 +80,7 @@ public class PacketHandler {
 			final byte[] bytes = event.getPacket().payload().array();
 			final ByteArrayDataInput reader = ByteStreams.newDataInput(bytes);
 			final int id = idForCrash = reader.readByte();
-			final World world = player.worldObj;
+			final World world = player.world;
 			if (player.openContainer instanceof ContainerPlayer) {
 				final int entityid = reader.readInt();
 				final int len = bytes.length - 5;

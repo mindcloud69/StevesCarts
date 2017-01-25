@@ -180,7 +180,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 						if (var9.hasTagCompound()) {
 							var14.getEntityItem().setTagCompound(var9.getTagCompound().copy());
 						}
-						world.spawnEntityInWorld(var14);
+						world.spawnEntity(var14);
 					}
 				}
 			}
@@ -193,7 +193,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 				if (outputItem.hasTagCompound()) {
 					eItem.getEntityItem().setTagCompound(outputItem.getTagCompound().copy());
 				}
-				world.spawnEntityInWorld(eItem);
+				world.spawnEntity(eItem);
 			}
 		}
 		super.breakBlock(world, pos, this.getDefaultState());

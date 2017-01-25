@@ -750,7 +750,7 @@ public abstract class ModuleBase {
 	@SideOnly(Side.CLIENT)
 	protected EntityPlayer getClientPlayer() {
 		if (Minecraft.getMinecraft() != null) {
-			return Minecraft.getMinecraft().thePlayer;
+			return Minecraft.getMinecraft().player;
 		}
 		return null;
 	}
@@ -780,10 +780,10 @@ public abstract class ModuleBase {
 	}
 
 	protected boolean countsAsAir(final BlockPos pos) {
-		if (this.getCart().worldObj.isAirBlock(pos)) {
+		if (this.getCart().world.isAirBlock(pos)) {
 			return true;
 		}
-		final IBlockState b = this.getCart().worldObj.getBlockState(pos);
+		final IBlockState b = this.getCart().world.getBlockState(pos);
 		return b instanceof BlockSnow || b instanceof BlockFlower || b instanceof BlockVine;
 	}
 
@@ -810,7 +810,7 @@ public abstract class ModuleBase {
 	}
 
 	protected FakePlayer getFakePlayer() {
-		return FakePlayerFactory.getMinecraft((WorldServer) this.getCart().worldObj);
+		return FakePlayerFactory.getMinecraft((WorldServer) this.getCart().world);
 	}
 
 	public boolean disableStandardKeyFunctionality() {

@@ -134,7 +134,7 @@ public abstract class ModuleTool extends ModuleWorker {
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote && this.useDurability()) {
+		if (!this.getCart().world.isRemote && this.useDurability()) {
 			if (this.isActuallyRepairing()) {
 				final int dif = 1;
 				this.remainingRepairUnits -= dif;
@@ -251,7 +251,7 @@ public abstract class ModuleTool extends ModuleWorker {
 	public boolean shouldSilkTouch(IBlockState blockState, BlockPos pos) {
 		final boolean doSilkTouch = false;
 		try {
-			if (this.enchanter != null && this.enchanter.useSilkTouch() && blockState.getBlock().canSilkHarvest(this.getCart().worldObj, pos, blockState, null)) {
+			if (this.enchanter != null && this.enchanter.useSilkTouch() && blockState.getBlock().canSilkHarvest(this.getCart().world, pos, blockState, null)) {
 				return true;
 			}
 		} catch (Exception ex) {}

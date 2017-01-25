@@ -294,7 +294,7 @@ public class GuiCartAssembler extends GuiBase {
 		GL11.glRotatef(this.assembler.getYaw(), 0.0f, 1.0f, 0.0f);
 		Minecraft.getMinecraft().getRenderManager().playerViewY = 180.0f;
 		if (Constants.renderSteve) {
-			final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+			final EntityPlayer player = Minecraft.getMinecraft().player;
 			final ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));
 			final float temp = player.rotationPitch;

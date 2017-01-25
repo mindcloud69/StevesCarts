@@ -14,7 +14,7 @@ public class ModuleSnowCannon extends ModuleAddon {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		if (this.getCart().hasFuel()) {
@@ -45,8 +45,8 @@ public class ModuleSnowCannon extends ModuleAddon {
 			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
 				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
 					BlockPos pos = cartPos.add(x, y, z);
-					if (this.countsAsAir(pos) && this.getCart().worldObj.getBiomeForCoordsBody(pos).getTemperature() <= 1.0f && Blocks.SNOW.canPlaceBlockAt(this.getCart().worldObj, pos)) {
-						this.getCart().worldObj.setBlockState(pos, Blocks.SNOW.getDefaultState());
+					if (this.countsAsAir(pos) && this.getCart().world.getBiomeForCoordsBody(pos).getTemperature() <= 1.0f && Blocks.SNOW.canPlaceBlockAt(this.getCart().world, pos)) {
+						this.getCart().world.setBlockState(pos, Blocks.SNOW.getDefaultState());
 					}
 				}
 			}

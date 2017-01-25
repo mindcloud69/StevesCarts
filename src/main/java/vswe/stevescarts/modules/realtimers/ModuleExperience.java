@@ -23,8 +23,8 @@ public class ModuleExperience extends ModuleBase {
 
 	@Override
 	public void update() {
-		if (!this.getCart().worldObj.isRemote) {
-			final List list = this.getCart().worldObj.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
+		if (!this.getCart().world.isRemote) {
+			final List list = this.getCart().world.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
 			for (int e = 0; e < list.size(); ++e) {
 				if (list.get(e) instanceof EntityXPOrb) {
 					this.experienceAmount += ((EntityXPOrb) list.get(e)).getXpValue();

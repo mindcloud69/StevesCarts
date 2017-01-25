@@ -225,7 +225,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		if (moduleIDTag == null) {
 			return;
 		}
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			this.moduleLoadingData = moduleIDTag.getByteArray();
 		} else {
 			this.moduleLoadingData = CartVersion.updateCart(this, moduleIDTag.getByteArray());
@@ -291,7 +291,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		int guidata = 0;
 		int datawatcher = dataManager.getAll().size();
 		int packets = 0;
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			this.generateModels();
 		}
 		for (final ModuleBase module2 : this.modules) {
@@ -368,7 +368,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public void setDead() {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			for (int var1 = 0; var1 < this.getSizeInventory(); ++var1) {
 				this.setInventorySlotContents(var1, null);
 			}
@@ -393,7 +393,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	protected void entityInit() {
-		if(this.worldObj.isRemote && !(dataManager instanceof EntityDataManagerLockable)){
+		if(this.world.isRemote && !(dataManager instanceof EntityDataManagerLockable)){
 			this.overrideDatawatcher();
 		}
 		super.entityInit();
@@ -407,7 +407,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			final ModuleEngine engine = this.getCurrentEngine();
 			if (engine != null) {
 				engine.consumeFuel(consumption);
-				if (!this.isPlaceholder && this.worldObj.isRemote && this.hasFuel() && !this.isDisabled()) {
+				if (!this.isPlaceholder && this.world.isRemote && this.hasFuel() && !this.isDisabled()) {
 					engine.smoke();
 				}
 			}
@@ -528,12 +528,12 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 						}
 						final ItemStack itemStack = itemstack;
 						itemStack.stackSize -= j;
-						final EntityItem entityitem = new EntityItem(this.worldObj, this.posX + f, this.posY + f2, this.posZ + f3, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
+						final EntityItem entityitem = new EntityItem(this.world, this.posX + f, this.posY + f2, this.posZ + f3, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
 						final float f4 = 0.05f;
 						entityitem.motionX = (float) this.rand.nextGaussian() * f4;
 						entityitem.motionY = (float) this.rand.nextGaussian() * f4 + 0.2f;
 						entityitem.motionZ = (float) this.rand.nextGaussian() * f4;
-						this.worldObj.spawnEntityInWorld(entityitem);
+						this.world.spawnEntity(entityitem);
 					}
 				}
 			}
@@ -649,10 +649,10 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				module.moveMinecartOnRail(pos);
 			}
 		}
-		IBlockState blockState = worldObj.getBlockState(pos);
-		IBlockState stateBelow = worldObj.getBlockState(pos.down());
+		IBlockState blockState = world.getBlockState(pos);
+		IBlockState stateBelow = world.getBlockState(pos.down());
 		int metaBelow = stateBelow.getBlock().getMetaFromState(stateBelow);
-		EnumRailDirection railDirection = ((BlockRailBase) blockState.getBlock()).getRailDirection(worldObj, pos, blockState, this);
+		EnumRailDirection railDirection = ((BlockRailBase) blockState.getBlock()).getRailDirection(world, pos, blockState, this);
 		this.cornerFlip = ((railDirection == EnumRailDirection.SOUTH_EAST || railDirection == EnumRailDirection.SOUTH_WEST) && this.motionX < 0.0)
 				|| ((railDirection == EnumRailDirection.NORTH_EAST || railDirection == EnumRailDirection.NORTH_WEST) && this.motionX > 0.0);
 		if (blockState.getBlock() != ModBlocks.ADVANCED_DETECTOR.getBlock() && this.isDisabled()) {
@@ -844,7 +844,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		}
 		double d2 = this.pushX * this.pushX + this.pushZ * this.pushZ;
 		if (d2 > 1.0E-4 && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001) {
-			d2 = MathHelper.sqrt_double(d2);
+			d2 = MathHelper.sqrt(d2);
 			this.pushX /= d2;
 			this.pushZ /= d2;
 			if (this.pushX * this.motionX + this.pushZ * this.motionZ < 0.0) {
@@ -866,7 +866,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			this.motionY = 0.0;
 			this.motionZ = 0.0;
 		} else if (this.engineFlag) {
-			d0 = MathHelper.sqrt_double(d0);
+			d0 = MathHelper.sqrt(d0);
 			this.pushX /= d0;
 			this.pushZ /= d0;
 			final double d2 = this.getPushFactor();
@@ -966,7 +966,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public void onUpdate() {
 		super.onUpdate();
 		this.onCartUpdate();
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			this.updateSounds();
 		}
 	}
@@ -1019,7 +1019,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
-	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
+	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
 		return entityplayer.getDistanceSq(this.x(), this.y(), this.z()) <= 64.0;
 	}
 
@@ -1046,7 +1046,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				return EnumActionResult.SUCCESS;
 			}
 		}
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			if (!this.isDisabled() && !isPassenger(entityplayer)) {
 				this.temppushX = this.posX - entityplayer.posX;
 				this.temppushZ = this.posZ - entityplayer.posZ;
@@ -1055,7 +1055,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				this.pushX = this.temppushX;
 				this.pushZ = this.temppushZ;
 			}
-			FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 0, this.worldObj, this.getEntityId(), 0, 0);
+			FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 0, this.world, this.getEntityId(), 0, 0);
 			this.openInventory(entityplayer);
 		}
 		return EnumActionResult.SUCCESS;
@@ -1075,7 +1075,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public void loadChunks(final ForgeChunkManager.Ticket ticket, final int chunkX, final int chunkZ) {
-		if (this.worldObj.isRemote || ticket == null) {
+		if (this.world.isRemote || ticket == null) {
 			return;
 		}
 		if (this.cartTicket == null) {
@@ -1089,10 +1089,10 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public void initChunkLoading() {
-		if (this.worldObj.isRemote || this.cartTicket != null) {
+		if (this.world.isRemote || this.cartTicket != null) {
 			return;
 		}
-		this.cartTicket = ForgeChunkManager.requestTicket(StevesCarts.instance, this.worldObj, ForgeChunkManager.Type.ENTITY);
+		this.cartTicket = ForgeChunkManager.requestTicket(StevesCarts.instance, this.world, ForgeChunkManager.Type.ENTITY);
 		if (this.cartTicket != null) {
 			this.cartTicket.bindEntity(this);
 			this.cartTicket.setChunkListDepth(9);
@@ -1101,7 +1101,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public void dropChunkLoading() {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			return;
 		}
 		if (this.cartTicket != null) {
@@ -1131,7 +1131,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		if (this.isPlaceholder) {
 			return;
 		}
-		if (!this.worldObj.isRemote && this.hasFuel()) {
+		if (!this.world.isRemote && this.hasFuel()) {
 			if (this.workingTime <= 0) {
 				final ModuleWorker oldComponent = this.workingComponent;
 				if (this.workingComponent != null) {
@@ -1208,15 +1208,15 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public int x() {
-		return MathHelper.floor_double(this.posX);
+		return MathHelper.floor(this.posX);
 	}
 
 	public int y() {
-		return MathHelper.floor_double(this.posY);
+		return MathHelper.floor(this.posY);
 	}
 
 	public int z() {
-		return MathHelper.floor_double(this.posZ);
+		return MathHelper.floor(this.posZ);
 	}
 
 	public void addItemToChest(final ItemStack iStack) {
@@ -1567,7 +1567,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		} else if (this.keepSilent == 1) {
 			this.keepSilent = 0;
 			Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecart(this));
-			Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecartRiding(Minecraft.getMinecraft().thePlayer, this));
+			Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecartRiding(Minecraft.getMinecraft().player, this));
 		}
 	}
 

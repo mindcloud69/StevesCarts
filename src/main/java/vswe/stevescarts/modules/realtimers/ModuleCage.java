@@ -151,10 +151,10 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 	}
 
 	private void pickUpCreature(final int searchDistance) {
-		if (this.getCart().worldObj.isRemote || !this.isCageEmpty()) {
+		if (this.getCart().world.isRemote || !this.isCageEmpty()) {
 			return;
 		}
-		final List<EntityLivingBase> entities = this.getCart().worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getCart().getEntityBoundingBox().expand(searchDistance, 4.0, searchDistance));
+		final List<EntityLivingBase> entities = this.getCart().world.getEntitiesWithinAABB(EntityLivingBase.class, this.getCart().getEntityBoundingBox().expand(searchDistance, 4.0, searchDistance));
 		Collections.sort( entities, this.sorter);
 		for (EntityLivingBase target : entities) {
 			if (!(target instanceof EntityPlayer) && !(target instanceof EntityIronGolem) && !(target instanceof EntityDragon) && !(target instanceof EntitySlime) && !(target instanceof EntityWaterMob) && !(target instanceof EntityWither) && !(target instanceof EntityEnderman) && (!(target instanceof EntitySpider) || target instanceof EntityCaveSpider) && !(target instanceof EntityGiantZombie) && !(target instanceof EntityFlying)) {

@@ -642,14 +642,14 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 					if (tilePos.getY() > pos.getY()) {
 						++yPos;
 					}
-					if (!BlockRailBase.isRailBlock(worldObj, new BlockPos(xPos, yPos, zPos))) {
+					if (!BlockRailBase.isRailBlock(world, new BlockPos(xPos, yPos, zPos))) {
 						continue;
 					}
 					try {
 						final NBTTagCompound info = this.outputItem.getTagCompound();
 						if (info != null) {
-							final EntityMinecartModular cart = new EntityMinecartModular(this.worldObj, xPos + 0.5f, yPos + 0.5f, zPos + 0.5f, info, this.outputItem.getDisplayName());
-							this.worldObj.spawnEntityInWorld(cart);
+							final EntityMinecartModular cart = new EntityMinecartModular(this.world, xPos + 0.5f, yPos + 0.5f, zPos + 0.5f, info, this.outputItem.getDisplayName());
+							this.world.spawnEntity(cart);
 							cart.temppushX = tilePos.getX() - pos.getX();
 							cart.temppushZ = tilePos.getZ() - pos.getZ();
 							this.managerInteract(cart, true);
@@ -676,7 +676,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 					if (tilePos.getY() > pos.getY()) {
 						++yPos;
 					}
-					final TileEntity managerentity = this.worldObj.getTileEntity(new BlockPos(xPos, yPos, zPos));
+					final TileEntity managerentity = this.world.getTileEntity(new BlockPos(xPos, yPos, zPos));
 					if (managerentity == null || !(managerentity instanceof TileEntityManager)) {
 						continue;
 					}
@@ -723,17 +723,17 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public void puke(final ItemStack item) {
-		final EntityItem entityitem = new EntityItem(this.worldObj, pos.getX(), pos.getY() + 0.25, pos.getZ(), item);
-		entityitem.motionX = (0.5f - this.worldObj.rand.nextFloat()) / 10.0f;
+		final EntityItem entityitem = new EntityItem(this.world, pos.getX(), pos.getY() + 0.25, pos.getZ(), item);
+		entityitem.motionX = (0.5f - this.world.rand.nextFloat()) / 10.0f;
 		entityitem.motionY = 0.15000000596046448;
-		entityitem.motionZ = (0.5f - this.worldObj.rand.nextFloat()) / 10.0f;
-		this.worldObj.spawnEntityInWorld(entityitem);
+		entityitem.motionZ = (0.5f - this.world.rand.nextFloat()) / 10.0f;
+		this.world.spawnEntity(entityitem);
 	}
 
 	@Override
 	public void updateEntity() {
 		if (!this.loaded) {
-			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(worldObj, pos);
+			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, pos);
 			this.loaded = true;
 		}
 		if (!this.isAssembling && this.outputSlot != null && this.outputSlot.getStack() != null) {
@@ -779,7 +779,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 			if (this.getAssemblingTime() >= this.maxAssemblingTime) {
 				this.isAssembling = false;
 				this.setAssemblingTime(0);
-				if (!this.worldObj.isRemote) {
+				if (!this.world.isRemote) {
 					this.deployCart();
 					this.outputItem = null;
 					this.deploySpares();
@@ -787,7 +787,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 				}
 			}
 		}
-		if (!this.worldObj.isRemote && this.fuelSlot != null && this.fuelSlot.getStack() != null) {
+		if (!this.world.isRemote && this.fuelSlot != null && this.fuelSlot.getStack() != null) {
 			final int fuel = this.fuelSlot.getFuelLevel(this.fuelSlot.getStack());
 			if (fuel > 0 && this.getFuelLevel() + fuel <= this.getMaxFuelLevel()) {
 				this.setFuelLevel(this.getFuelLevel() + fuel);
@@ -856,7 +856,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	private void handlePlaceholder() {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			if (this.placeholder == null) {
 				return;
 			}
@@ -897,7 +897,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 
 	public void createPlaceholder() {
 		if (this.placeholder == null) {
-			this.placeholder = new EntityMinecartModular(this.worldObj, this, this.getModularInfoBytes());
+			this.placeholder = new EntityMinecartModular(this.world, this, this.getModularInfoBytes());
 			this.updateRenderMenu();
 			this.isErrorListOutdated = true;
 		}
@@ -955,8 +955,8 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	@Override
-	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
+		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
 
 	@Override

@@ -123,7 +123,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 			if (this.hasProjectileItem()) {
 				this.shootAtTarget(target);
 			} else {
-				this.getCart().worldObj.playEvent(1001, getCart().getPosition(), 0);
+				this.getCart().world.playEvent(1001, getCart().getPosition(), 0);
 			}
 		}
 	}
@@ -137,7 +137,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 		final double disX = target.posX - this.getCart().posX;
 		final double disY = target.posY + target.getEyeHeight() - 0.699999988079071 - projectile.posY;
 		final double disZ = target.posZ - this.getCart().posZ;
-		final double dis = MathHelper.sqrt_double(disX * disX + disZ * disZ);
+		final double dis = MathHelper.sqrt(disX * disX + disZ * disZ);
 		if (dis >= 1.0E-7) {
 			final float theta = (float) (Math.atan2(disZ, disX) * 180.0 / 3.141592653589793) - 90.0f;
 			final float phi = (float) (-(Math.atan2(disY, dis) * 180.0 / 3.141592653589793));
@@ -150,11 +150,11 @@ public class ModuleShooterAdv extends ModuleShooter {
 			this.setHeading(projectile, disX, disY + disD5, disZ, 1.6f, 0.0f);
 		}
 		BlockPos pos = getCart().getPosition();
-		this.getCart().worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0f, 1.0f / (this.getCart().rand.nextFloat() * 0.4f + 0.8f), false);
+		this.getCart().world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0f, 1.0f / (this.getCart().rand.nextFloat() * 0.4f + 0.8f), false);
 		this.setProjectileDamage(projectile);
 		this.setProjectileOnFire(projectile);
 		this.setProjectileKnockback(projectile);
-		this.getCart().worldObj.spawnEntityInWorld(projectile);
+		this.getCart().world.spawnEntity(projectile);
 		this.damageEnchant();
 	}
 
@@ -163,7 +163,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 	}
 
 	private Entity getTarget() {
-		final List<Entity> entities = this.getCart().worldObj.getEntitiesWithinAABB(Entity.class, this.getCart().getEntityBoundingBox().expand(this.getTargetDistance(), 4.0, this.getTargetDistance()));
+		final List<Entity> entities = this.getCart().world.getEntitiesWithinAABB(Entity.class, this.getCart().getEntityBoundingBox().expand(this.getTargetDistance(), 4.0, this.getTargetDistance()));
 		Collections.sort(entities, this.sorter);
 		for (final Entity target : entities) {
 			if (target != this.getCart() && this.canSee(target)) {
@@ -181,7 +181,7 @@ public class ModuleShooterAdv extends ModuleShooter {
 	}
 
 	private boolean canSee(final Entity target) {
-		return target != null && this.getCart().worldObj.rayTraceBlocks(new Vec3d(this.getCart().posX, this.getCart().posY + this.getCart().getEyeHeight(), this.getCart().posZ), new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ)) == null;
+		return target != null && this.getCart().world.rayTraceBlocks(new Vec3d(this.getCart().posX, this.getCart().posY + this.getCart().getEyeHeight(), this.getCart().posZ), new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ)) == null;
 	}
 
 	@Override

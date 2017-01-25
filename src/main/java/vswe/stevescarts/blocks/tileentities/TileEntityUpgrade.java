@@ -65,15 +65,15 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public void setMaster(final TileEntityCartAssembler master, EnumFacing side) {
 		this.master = master;
 		if(side != null){
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
+			world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
 		} else {
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
+			world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
 		}
 
 	}
 
 	public EnumFacing getSide() {
-		return worldObj.getBlockState(pos).getValue(BlockUpgrade.FACING);
+		return world.getBlockState(pos).getValue(BlockUpgrade.FACING);
 	}
 
 	public TileEntityCartAssembler getMaster() {
@@ -87,7 +87,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public void setType(final int type, boolean setBlockState) {
 		this.type = type;
 		if(setBlockState){
-			worldObj.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
+			world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
 		}
 		if (!this.initialized) {
 			this.initialized = true;
@@ -187,8 +187,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	@Override
-	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
+		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
 
 	@Override
@@ -565,7 +565,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public void update() {
 		super.update();
 		if(shouldSetType){
-			worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
 			shouldSetType = false;
 		}
 	}

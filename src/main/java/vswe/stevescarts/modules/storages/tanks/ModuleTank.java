@@ -88,7 +88,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 		super.update();
 		if (this.tick-- <= 0) {
 			this.tick = 5;
-			if (!this.getCart().worldObj.isRemote) {
+			if (!this.getCart().world.isRemote) {
 				this.tank.containerTransfer();
 			} else if (!this.isPlaceholder()) {
 				if (this.getDw(FLUID_NAME).isEmpty()) {
@@ -117,7 +117,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 
 	@Override
 	public void onFluidUpdated(final int tankid) {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		this.updateDw();
@@ -164,12 +164,12 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 
 	@Override
 	public int fill(final FluidStack resource, final boolean doFill) {
-		return this.tank.fill(resource, doFill, this.getCart().worldObj.isRemote);
+		return this.tank.fill(resource, doFill, this.getCart().world.isRemote);
 	}
 
 	@Override
 	public FluidStack drain(final int maxDrain, final boolean doDrain) {
-		return this.tank.drain(maxDrain, doDrain, this.getCart().worldObj.isRemote);
+		return this.tank.drain(maxDrain, doDrain, this.getCart().world.isRemote);
 	}
 
 	@Override

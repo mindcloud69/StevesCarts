@@ -88,10 +88,10 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 			oZ = ((this.getCart().motionZ > 0.0) ? -1 : 1);
 		}
 		if (this.getCart().rand.nextInt(2) == 0) {
-			this.getCart().worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.getCart().posX + oX * 0.85, this.getCart().posY + 0.12, this.getCart().posZ + oZ * 0.85, 0.0, 0.0, 0.0);
+			this.getCart().world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.getCart().posX + oX * 0.85, this.getCart().posY + 0.12, this.getCart().posZ + oZ * 0.85, 0.0, 0.0, 0.0);
 		}
 		if (this.getCart().rand.nextInt(30) == 0) {
-			this.getCart().worldObj.spawnParticle(EnumParticleTypes.FLAME, this.getCart().posX + oX * 0.75, this.getCart().posY + 0.15, this.getCart().posZ + oZ * 0.75, this.getCart().motionX, this.getCart().motionY, this.getCart().motionZ);
+			this.getCart().world.spawnParticle(EnumParticleTypes.FLAME, this.getCart().posX + oX * 0.75, this.getCart().posY + 0.15, this.getCart().posZ + oZ * 0.75, this.getCart().motionX, this.getCart().motionY, this.getCart().motionZ);
 		}
 	}
 

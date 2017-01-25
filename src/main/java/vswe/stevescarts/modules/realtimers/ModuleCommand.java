@@ -64,7 +64,7 @@ public abstract class ModuleCommand extends ModuleBase implements ICommandSender
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(final int var1, final String var2) {
+	public boolean canUseCommand(final int var1, final String var2) {
 		return var1 <= 2;
 	}
 
@@ -77,12 +77,12 @@ public abstract class ModuleCommand extends ModuleBase implements ICommandSender
 	}
 
 	private void executeCommand() {
-		if (!this.getCart().worldObj.isRemote) {}
+		if (!this.getCart().world.isRemote) {}
 	}
 
 	@Override
 	public void moveMinecartOnRail(BlockPos pos) {
-		if (this.getCart().worldObj.getBlockState(pos).getBlock() == Blocks.DETECTOR_RAIL) {
+		if (this.getCart().world.getBlockState(pos).getBlock() == Blocks.DETECTOR_RAIL) {
 			this.executeCommand();
 		}
 	}

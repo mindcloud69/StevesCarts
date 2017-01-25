@@ -72,7 +72,7 @@ public class ModuleFirework extends ModuleBase {
 	}
 
 	public void fire() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		final ItemStack firework = this.getFirework();
@@ -263,7 +263,7 @@ public class ModuleFirework extends ModuleBase {
 	}
 
 	private void launchFirework(final ItemStack firework) {
-		final EntityFireworkRocket rocket = new EntityFireworkRocket(this.getCart().worldObj, this.getCart().posX, this.getCart().posY + 1.0, this.getCart().posZ, firework);
-		this.getCart().worldObj.spawnEntityInWorld(rocket);
+		final EntityFireworkRocket rocket = new EntityFireworkRocket(this.getCart().world, this.getCart().posX, this.getCart().posY + 1.0, this.getCart().posZ, firework);
+		this.getCart().world.spawnEntity(rocket);
 	}
 }

@@ -100,7 +100,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
-		World world = getCart().worldObj;
+		World world = getCart().world;
 		BlockPos next = this.getNextblock();
 		for (int i = -this.range; i <= this.range; ++i) {
 			for (int j = -this.range; j <= this.range; ++j) {
@@ -154,7 +154,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	}
 
 	private void loadSupplies() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		if (this.getStack(0) != null) {

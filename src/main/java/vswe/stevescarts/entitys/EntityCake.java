@@ -33,13 +33,13 @@ public class EntityCake extends EntityEgg {
 				final EntityPlayer player = (EntityPlayer) data.entityHit;
 				player.getFoodStats().addStats(14, 0.7f);
 			}
-		} else if (this.worldObj.isAirBlock(pos) && this.worldObj.isSideSolid(pos.down(), EnumFacing.UP)) {
-			this.worldObj.setBlockState(pos, Blocks.CAKE.getDefaultState());
+		} else if (this.world.isAirBlock(pos) && this.world.isSideSolid(pos.down(), EnumFacing.UP)) {
+			this.world.setBlockState(pos, Blocks.CAKE.getDefaultState());
 		}
 		for (int j = 0; j < 8; ++j) {
-			this.worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
+			this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
 		}
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			this.setDead();
 		}
 	}

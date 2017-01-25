@@ -32,7 +32,7 @@ public class ModuleRemover extends ModuleWorker {
 	@Override
 	public boolean work() {
 		EntityMinecartModular cart = getCart();
-		World world = cart.worldObj;
+		World world = cart.world;
 		if (remove.getY() != -1 && (remove.getX() != cart.x() || remove.getZ() != cart.z()) && this.removeRail(world, remove, true)) {
 			return false;
 		}
@@ -54,7 +54,7 @@ public class ModuleRemover extends ModuleWorker {
 	}
 
 	private boolean isRailAtCoords(World world, BlockPos coords) {
-		return BlockRailBase.isRailBlock(world, coords.up()) || BlockRailBase.isRailBlock(this.getCart().worldObj, coords) || BlockRailBase.isRailBlock(this.getCart().worldObj, coords.down());
+		return BlockRailBase.isRailBlock(world, coords.up()) || BlockRailBase.isRailBlock(this.getCart().world, coords) || BlockRailBase.isRailBlock(this.getCart().world, coords.down());
 	}
 
 	private boolean removeRail(World world, BlockPos pos, final boolean flag) {

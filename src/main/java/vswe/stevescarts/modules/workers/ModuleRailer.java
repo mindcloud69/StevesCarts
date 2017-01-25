@@ -51,7 +51,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
-		World world = getCart().worldObj;
+		World world = getCart().world;
 		BlockPos next = this.getNextblock();
 		final int x = next.getX();
 		final int y = next.getY();
@@ -105,7 +105,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 			for (int l = 0; l < this.getInventorySize(); ++l) {
 				if (this.getStack(l) != null && this.validRail(this.getStack(l).getItem())) {
 					if (flag) {
-						this.getCart().worldObj.setBlockState(new BlockPos(i, j, k), Block.getBlockFromItem(this.getStack(l).getItem()).getStateFromMeta(getStack(l).getItemDamage()));
+						this.getCart().world.setBlockState(new BlockPos(i, j, k), Block.getBlockFromItem(this.getStack(l).getItem()).getStateFromMeta(getStack(l).getItemDamage()));
 						if (!this.getCart().hasCreativeSupplies()) {
 							final ItemStack stack = this.getStack(l);
 							--stack.stackSize;
@@ -142,7 +142,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	}
 
 	private void calculateRails() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		byte valid = 0;

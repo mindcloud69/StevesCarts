@@ -42,14 +42,14 @@ public class ModuleOreTracker extends ModuleAddon {
 		if (first && !this.isOre(current)) {
 			return null;
 		}
-		if (drill.isValidBlock(getCart().worldObj, current, 0, 1, true) == null) {
+		if (drill.isValidBlock(getCart().world, current, 0, 1, true) == null) {
 			return null;
 		}
 		return current;
 	}
 
 	private boolean isOre(BlockPos pos) {
-		final Block b = this.getCart().worldObj.getBlockState(pos).getBlock();
+		final Block b = this.getCart().world.getBlockState(pos).getBlock();
 		if (b == null || b == Blocks.AIR) {
 			return false;
 		}

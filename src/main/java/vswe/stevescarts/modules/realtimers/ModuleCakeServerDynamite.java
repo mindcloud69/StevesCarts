@@ -37,13 +37,13 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 	}
 
 	private void explode() {
-		this.getCart().worldObj.createExplosion(null, this.getCart().posX, this.getCart().posY, this.getCart().posZ, this.dynamiteCount * 0.8f, true);
+		this.getCart().world.createExplosion(null, this.getCart().posX, this.getCart().posY, this.getCart().posZ, this.dynamiteCount * 0.8f, true);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote) {
+		if (!this.getCart().world.isRemote) {
 			final ItemStack item = this.getStack(0);
 			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && this.dynamiteCount < this.getMaxDynamiteCount()) {
 				final int count = Math.min(this.getMaxDynamiteCount() - this.dynamiteCount, item.stackSize);

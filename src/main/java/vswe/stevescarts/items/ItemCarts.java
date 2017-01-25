@@ -56,10 +56,10 @@ public class ItemCarts extends ItemMinecart {
 					if (info != null && !info.hasKey("maxTime")) {
 						try {
 							final EntityMinecartModular cart = new EntityMinecartModular(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, info, stack.getDisplayName());
-							world.spawnEntityInWorld(cart);
+							world.spawnEntity(cart);
 						} catch (Exception e){
 							e.printStackTrace();
-							player.addChatComponentMessage(new TextComponentString("The cart failed to be placed into the world, this is due to an issue with one or more modules. "
+							player.sendMessage(new TextComponentString("The cart failed to be placed into the world, this is due to an issue with one or more modules. "
 								+ "Please post your log on the issue tracker here: " + TextFormatting.BLUE + " https://github.com/modmuss50/SC2/issues"));
 							StevesCarts.logger.error(" --------------- Broken cart info --------------- ");
 							StevesCarts.logger.error(info);

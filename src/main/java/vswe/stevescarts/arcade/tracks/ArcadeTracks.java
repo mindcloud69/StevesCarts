@@ -103,7 +103,7 @@ public class ArcadeTracks extends ArcadeGame {
 			this.unlockedLevels[i] = -1;
 		}
 		this.loadStories();
-		if (this.getModule().getCart().worldObj.isRemote) {
+		if (this.getModule().getCart().world.isRemote) {
 			this.loadUserMaps();
 		}
 	}
@@ -237,7 +237,7 @@ public class ArcadeTracks extends ArcadeGame {
 			} else {
 				this.getModule().drawString(gui, Localization.ARCADE.SAVE.translate(), menu[0] + 3, menu[1] + 3, 4210752);
 			}
-			this.getModule().drawString(gui, this.saveName + ((this.saveName.length() < 15 && this.getModule().getCart().worldObj.getWorldTime() % 20L < 10L) ? "|"
+			this.getModule().drawString(gui, this.saveName + ((this.saveName.length() < 15 && this.getModule().getCart().world.getWorldTime() % 20L < 10L) ? "|"
 					: ""), menu[0] + 5, menu[1] + 16, 16777215);
 		} else if (this.isMenuOpen) {
 			for (final ScrollableList list : this.lists) {
@@ -590,7 +590,7 @@ public class ArcadeTracks extends ArcadeGame {
 			}
 			case 9: {
 				this.userList.clear();
-				if (this.getModule().getCart().worldObj.isRemote) {
+				if (this.getModule().getCart().world.isRemote) {
 					this.loadUserMaps();
 					break;
 				}

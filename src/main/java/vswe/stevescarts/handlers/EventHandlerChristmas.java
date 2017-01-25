@@ -25,7 +25,7 @@ public class EventHandlerChristmas {
 	@SubscribeEvent
 	public void onEntityLivingDeath(final LivingDeathEvent event) {
 		final EntityLivingBase monster = event.getEntityLiving();
-		if (monster.worldObj.isRemote || !event.getSource().getDamageType().equals("player")) {
+		if (monster.world.isRemote || !event.getSource().getDamageType().equals("player")) {
 			return;
 		}
 		if (monster instanceof EntityMob && Math.random() < 0.1) {
@@ -49,7 +49,7 @@ public class EventHandlerChristmas {
 						final ItemStack itemStack = item;
 						--itemStack.stackSize;
 					}
-					if (!player.worldObj.isRemote) {
+					if (!player.world.isRemote) {
 						villager.setProfession(TradeHandler.santaProfession);
 						try {
 							ReflectionHelper.findMethod(EntityVillager.class, villager, new String[] { "populateBuyingList" }).invoke(null);
@@ -82,10 +82,10 @@ public class EventHandlerChristmas {
 	}
 
 	private void dropItem(final EntityLivingBase monster, final ItemStack item) {
-		final EntityItem obj = new EntityItem(monster.worldObj, monster.posX, monster.posY, monster.posZ, item);
-		obj.motionX = monster.worldObj.rand.nextGaussian() * 0.05000000074505806;
-		obj.motionY = monster.worldObj.rand.nextGaussian() * 0.05000000074505806 + 0.20000000298023224;
-		obj.motionZ = monster.worldObj.rand.nextGaussian() * 0.05000000074505806;
-		monster.worldObj.spawnEntityInWorld(obj);
+		final EntityItem obj = new EntityItem(monster.world, monster.posX, monster.posY, monster.posZ, item);
+		obj.motionX = monster.world.rand.nextGaussian() * 0.05000000074505806;
+		obj.motionY = monster.world.rand.nextGaussian() * 0.05000000074505806 + 0.20000000298023224;
+		obj.motionZ = monster.world.rand.nextGaussian() * 0.05000000074505806;
+		monster.world.spawnEntity(obj);
 	}
 }

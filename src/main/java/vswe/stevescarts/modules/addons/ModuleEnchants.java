@@ -89,7 +89,7 @@ public class ModuleEnchants extends ModuleAddon {
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote) {
+		if (!this.getCart().world.isRemote) {
 			for (int i = 0; i < 3; ++i) {
 				if (this.getStack(i) != null && this.getStack(i).stackSize > 0) {
 					final int stacksize = this.getStack(i).stackSize;

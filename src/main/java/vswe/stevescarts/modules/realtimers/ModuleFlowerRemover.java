@@ -25,7 +25,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			this.bladeangle += this.getBladeSpindSpeed();
 			if (this.getCart().hasFuel()) {
 				this.bladespeed = Math.min(1.0f, this.bladespeed + 0.005f);
@@ -64,10 +64,10 @@ public class ModuleFlowerRemover extends ModuleBase {
 				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
 					BlockPos pos = cartPos.add(x, y, z);
 					if (this.isFlower(pos)) {
-						IBlockState state = getCart().worldObj.getBlockState(pos);
+						IBlockState state = getCart().world.getBlockState(pos);
 						if (state != null) {
-							this.addStuff(state.getBlock().getDrops(this.getCart().worldObj, pos, state, 0));
-							this.getCart().worldObj.setBlockToAir(pos);
+							this.addStuff(state.getBlock().getDrops(this.getCart().world, pos, state, 0));
+							this.getCart().world.setBlockToAir(pos);
 						}
 					}
 				}
@@ -76,21 +76,21 @@ public class ModuleFlowerRemover extends ModuleBase {
 	}
 
 	private void shearEntities() {
-		final List<EntityLiving> entities = this.getCart().worldObj.getEntitiesWithinAABB(EntityLiving.class, this.getCart().getEntityBoundingBox().expand(this.getBlocksOnSide(), this.getBlocksFromLevel() + 2.0f, this.getBlocksOnSide()));
+		final List<EntityLiving> entities = this.getCart().world.getEntitiesWithinAABB(EntityLiving.class, this.getCart().getEntityBoundingBox().expand(this.getBlocksOnSide(), this.getBlocksFromLevel() + 2.0f, this.getBlocksOnSide()));
 		for (EntityLiving target : entities) {
 			if (target instanceof IShearable) {
 				BlockPos pos = target.getPosition();
 				final IShearable shearable = (IShearable) target;
-				if (!shearable.isShearable((ItemStack) null, this.getCart().worldObj, pos)) {
+				if (!shearable.isShearable((ItemStack) null, this.getCart().world, pos)) {
 					continue;
 				}
-				this.addStuff(shearable.onSheared((ItemStack) null, this.getCart().worldObj, pos, 0));
+				this.addStuff(shearable.onSheared((ItemStack) null, this.getCart().world, pos, 0));
 			}
 		}
 	}
 
 	private boolean isFlower(BlockPos pos) {
-		IBlockState state = this.getCart().worldObj.getBlockState(pos);
+		IBlockState state = this.getCart().world.getBlockState(pos);
 		return state != null && state.getBlock() instanceof BlockFlower;
 	}
 
@@ -98,11 +98,11 @@ public class ModuleFlowerRemover extends ModuleBase {
 		for (final ItemStack iStack : stuff) {
 			this.getCart().addItemToChest(iStack);
 			if (iStack.stackSize != 0) {
-				final EntityItem entityitem = new EntityItem(this.getCart().worldObj, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+				final EntityItem entityitem = new EntityItem(this.getCart().world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
 				entityitem.motionX = 0.0;
 				entityitem.motionY = 0.15000000596046448;
 				entityitem.motionZ = 0.0;
-				this.getCart().worldObj.spawnEntityInWorld(entityitem);
+				this.getCart().world.spawnEntity(entityitem);
 			}
 		}
 	}

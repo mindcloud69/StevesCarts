@@ -124,7 +124,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	@Override
 	public boolean work() {
-		World world = getCart().worldObj;
+		World world = getCart().world;
 		BlockPos next = this.getNextblock();
 		final int size = this.getPlantSize();
 		this.destroyLeaveBlockOnTrack(world, next);
@@ -179,7 +179,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			if (this.doPreWork()) {
 				for(ITreeModule module : treeModules){
 					if(module.isSapling(sapling)){
-						if (module.plantSapling(getCart().worldObj, pos, sapling, getFakePlayer())) {
+						if (module.plantSapling(getCart().world, pos, sapling, getFakePlayer())) {
 							if (sapling.stackSize == 0) {
 								this.setStack(saplingSlotId, null);
 							}
@@ -292,7 +292,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				entityitem.motionX = (here.getX() - this.getCart().x()) / 10.0f;
 				entityitem.motionY = 0.15000000596046448;
 				entityitem.motionZ = (here.getZ() - this.getCart().z()) / 10.0f;
-				world.spawnEntityInWorld(entityitem);
+				world.spawnEntity(entityitem);
 			}
 			first = false;
 		}

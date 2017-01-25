@@ -14,11 +14,11 @@ public class ModuleMelterExtreme extends ModuleMelter {
 	protected boolean melt(final Block b, BlockPos pos) {
 		if (!super.melt(b, pos)) {
 			if (b == Blocks.SNOW) {
-				this.getCart().worldObj.setBlockToAir(pos);
+				this.getCart().world.setBlockToAir(pos);
 				return true;
 			}
 			if (b == Blocks.ICE) {
-				this.getCart().worldObj.setBlockState(pos, Blocks.WATER.getDefaultState());
+				this.getCart().world.setBlockState(pos, Blocks.WATER.getDefaultState());
 				return true;
 			}
 		}

@@ -29,7 +29,7 @@ public class ModuleRocket extends ModuleBase {
 		if (this.isPlaceholder()) {
 			return;
 		}
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			if (!this.flying && this.getDw(UNKNOWN) != 0) {
 				this.takeOff();
 			} else if (!this.isLanding && this.getDw(UNKNOWN) > 1) {
@@ -59,12 +59,12 @@ public class ModuleRocket extends ModuleBase {
 			BlockPos pos = getCart().getPosition();
 			if (this.isLanding) {
 				this.getCart().posY = this.landY;
-				if (BlockRailBase.isRailBlock(getCart().worldObj, pos)) {
+				if (BlockRailBase.isRailBlock(getCart().world, pos)) {
 					this.done();
 					this.updateDw(UNKNOWN, 0);
 				}
 			}
-			if (!this.isLanding && this.getCart().posY - this.groundY > 2.0 && BlockRailBase.isRailBlock(this.getCart().worldObj, pos.add(landDirX, 0, landDirZ))) {
+			if (!this.isLanding && this.getCart().posY - this.groundY > 2.0 && BlockRailBase.isRailBlock(this.getCart().world, pos.add(landDirX, 0, landDirZ))) {
 				this.land();
 				this.updateDw(UNKNOWN, 2);
 			}

@@ -86,10 +86,10 @@ public class TileEntityDetector extends TileEntityBase {
 	@Override
 	public void updateEntity() {
 		if (this.activeTimer > 0 && --this.activeTimer == 0) {
-			IBlockState blockState = worldObj.getBlockState(pos);
+			IBlockState blockState = world.getBlockState(pos);
 			Block block = blockState.getBlock();
 			DetectorType.getTypeFromSate(blockState).deactivate(this);
-			this.worldObj.setBlockState(pos, block.getStateFromMeta(block.getMetaFromState(blockState) & 0xFFFFFFF7), 3);
+			this.world.setBlockState(pos, block.getStateFromMeta(block.getMetaFromState(blockState) & 0xFFFFFFF7), 3);
 		}
 	}
 
@@ -246,7 +246,7 @@ public class TileEntityDetector extends TileEntityBase {
 
 	public void handleCart(final EntityMinecartModular cart) {
 		final boolean truthValue = this.evaluate(cart, 0);
-		IBlockState blockState = worldObj.getBlockState(pos);
+		IBlockState blockState = world.getBlockState(pos);
 		int meta = blockState.getBlock().getMetaFromState(blockState);
 		final boolean isOn = (meta & 0x8) != 0x0;
 		if (truthValue != isOn) {
@@ -257,7 +257,7 @@ public class TileEntityDetector extends TileEntityBase {
 				DetectorType.getTypeFromSate(blockState).deactivate(this);
 				meta &= 0xFFFFFFF7;
 			}
-			this.worldObj.setBlockState(pos, blockState.getBlock().getStateFromMeta(meta), 3);
+			this.world.setBlockState(pos, blockState.getBlock().getStateFromMeta(meta), 3);
 		}
 		if (truthValue) {
 			this.activeTimer = 20;
@@ -265,7 +265,7 @@ public class TileEntityDetector extends TileEntityBase {
 	}
 
 	@Override
-	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
-		return this.worldObj.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
+		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
 }

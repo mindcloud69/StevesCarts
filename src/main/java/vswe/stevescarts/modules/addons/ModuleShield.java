@@ -46,7 +46,7 @@ public class ModuleShield extends ModuleAddon implements IActivatorModule {
 	@Override
 	public void update() {
 		super.update();
-		if (this.hasShield() && !this.getCart().hasFuelForModule() && !this.getCart().worldObj.isRemote) {
+		if (this.hasShield() && !this.getCart().hasFuelForModule() && !this.getCart().world.isRemote) {
 			this.setShieldStatus(false);
 		}
 		if (this.shield) {

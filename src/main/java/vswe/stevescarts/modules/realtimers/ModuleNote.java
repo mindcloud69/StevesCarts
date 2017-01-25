@@ -85,7 +85,7 @@ public class ModuleNote extends ModuleBase {
 		this.maximumNotesPerTrack = (int) Math.pow(2.0, 12.0) - 1;
 		this.maximumTracksPerModule = (int) Math.pow(2.0, 4.0) - 1;
 		this.tracks = new ArrayList<>();
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			this.buttons = new ArrayList<>();
 			this.createTrack = new Button(this.notemapX - 60, this.notemapY - 20);
 			this.createTrack.text = Localization.MODULES.ATTACHMENTS.CREATE_TRACK.translate();
@@ -110,7 +110,7 @@ public class ModuleNote extends ModuleBase {
 	}
 
 	private void updateSpeedButton() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			this.speedButton.imageID = 14 - this.speedSetting;
 			this.speedButton.text = Localization.MODULES.ATTACHMENTS.NOTE_DELAY.translate(String.valueOf(this.getTickDelay()));
 		}
@@ -177,7 +177,7 @@ public class ModuleNote extends ModuleBase {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			this.tooLongTrack = false;
 			this.veryLongTrack = false;
 			for (int i = 0; i < this.tracks.size(); ++i) {
@@ -275,7 +275,7 @@ public class ModuleNote extends ModuleBase {
 					}
 				}
 				if (!found) {
-					if (!this.getCart().worldObj.isRemote) {
+					if (!this.getCart().world.isRemote) {
 						this.setPlaying(false);
 					}
 					this.playProgress = 0;
@@ -797,7 +797,7 @@ public class ModuleNote extends ModuleBase {
 			if (this.instrumentId == 0) {
 				return;
 			}
-			if (!ModuleNote.this.getCart().worldObj.isRemote) {
+			if (!ModuleNote.this.getCart().world.isRemote) {
 				if (volume > 0.0f) {
 					final float calculatedPitch = (float) Math.pow(2.0, (this.pitch - 12) / 12.0);
 					SoundEvent event = SoundEvents.BLOCK_NOTE_HARP;
@@ -810,7 +810,7 @@ public class ModuleNote extends ModuleBase {
 					} else if (this.instrumentId == 5) {
 						event = SoundEvents.BLOCK_NOTE_BASS;
 					}
-					getCart().worldObj.playSound(null, getCart().getPosition(), event, SoundCategory.RECORDS, volume, calculatedPitch);
+					getCart().world.playSound(null, getCart().getPosition(), event, SoundCategory.RECORDS, volume, calculatedPitch);
 				}
 			} else {
 				double oX = 0.0;
@@ -821,8 +821,8 @@ public class ModuleNote extends ModuleBase {
 				if (ModuleNote.this.getCart().motionZ != 0.0) {
 					oZ = ((ModuleNote.this.getCart().motionZ > 0.0) ? -1 : 1);
 				}
-				ModuleNote.this.getCart().worldObj.spawnParticle(EnumParticleTypes.NOTE, ModuleNote.this.getCart().x() + oZ * 1.0 + 0.5, ModuleNote.this.getCart().y() + 1.2, ModuleNote.this.getCart().z() + oX * 1.0 + 0.5, this.pitch / 24.0, 0.0, 0.0);
-				ModuleNote.this.getCart().worldObj.spawnParticle(EnumParticleTypes.NOTE, ModuleNote.this.getCart().x() + oZ * -1.0 + 0.5, ModuleNote.this.getCart().y() + 1.2, ModuleNote.this.getCart().z() + oX * -1.0 + 0.5, this.pitch / 24.0, 0.0, 0.0);
+				ModuleNote.this.getCart().world.spawnParticle(EnumParticleTypes.NOTE, ModuleNote.this.getCart().x() + oZ * 1.0 + 0.5, ModuleNote.this.getCart().y() + 1.2, ModuleNote.this.getCart().z() + oX * 1.0 + 0.5, this.pitch / 24.0, 0.0, 0.0);
+				ModuleNote.this.getCart().world.spawnParticle(EnumParticleTypes.NOTE, ModuleNote.this.getCart().x() + oZ * -1.0 + 0.5, ModuleNote.this.getCart().y() + 1.2, ModuleNote.this.getCart().z() + oX * -1.0 + 0.5, this.pitch / 24.0, 0.0, 0.0);
 			}
 		}
 
@@ -846,7 +846,7 @@ public class ModuleNote extends ModuleBase {
 		public Track() {
 			this.notes = new ArrayList<>();
 			this.volume = 3;
-			if (ModuleNote.this.getCart().worldObj.isRemote) {
+			if (ModuleNote.this.getCart().world.isRemote) {
 				final int ID = ModuleNote.this.tracks.size() + 1;
 				this.addButton = new TrackButton(ModuleNote.this.notemapX - 60, ID - 1);
 				this.addButton.text = Localization.MODULES.ATTACHMENTS.ADD_NOTE.translate(String.valueOf(ID));
@@ -887,7 +887,7 @@ public class ModuleNote extends ModuleBase {
 				this.notes.remove(this.notes.size() - 1);
 			}
 			this.volume = (val & ~ModuleNote.this.maximumNotesPerTrack) >> 12;
-			if (ModuleNote.this.getCart().worldObj.isRemote) {
+			if (ModuleNote.this.getCart().world.isRemote) {
 				this.volumeButton.imageID = 4 + this.volume;
 				this.volumeButton.text = this.getVolumeText();
 			}

@@ -254,8 +254,8 @@ public class GuiMinecart extends GuiBase {
 				module.handleScroll(rect);
 				final boolean drawAll = rect[3] == 16;
 				if (drawAll) {
-					slot.xDisplayPosition = slot.getX() + module.getX() + 1;
-					slot.yDisplayPosition = slot.getY() + module.getY() + 1 - this.cart.getRealScrollY();
+					slot.xPos = slot.getX() + module.getX() + 1;
+					slot.yPos = slot.getY() + module.getY() + 1 - this.cart.getRealScrollY();
 				} else {
 					this.resetSlot(slot);
 				}
@@ -268,8 +268,8 @@ public class GuiMinecart extends GuiBase {
 	}
 
 	private void resetSlot(final SlotBase slot) {
-		slot.xDisplayPosition = -9001;
-		slot.yDisplayPosition = -9001;
+		slot.xPos = -9001;
+		slot.yPos = -9001;
 	}
 
 	private void drawModuleBackground(final ModuleBase module, final int x, final int y) {

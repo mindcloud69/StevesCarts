@@ -65,7 +65,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		super.updateEntity();
 		if (this.tick-- <= 0) {
 			this.tick = 5;
-			if (!this.worldObj.isRemote) {
+			if (!this.world.isRemote) {
 				for (int i = 0; i < 4; ++i) {
 					this.tanks[i].containerTransfer();
 				}
@@ -79,7 +79,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		if (resource != null && resource.amount > 0) {
 			final FluidStack fluid = resource.copy();
 			for (int i = 0; i < 4; ++i) {
-				final int tempAmount = this.tanks[i].fill(fluid, doFill, this.worldObj.isRemote);
+				final int tempAmount = this.tanks[i].fill(fluid, doFill, this.world.isRemote);
 				amount += tempAmount;
 				final FluidStack fluidStack = fluid;
 				fluidStack.amount -= tempAmount;
@@ -95,7 +95,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		if (tankIndex < 0 || tankIndex >= 4) {
 			return 0;
 		}
-		return this.tanks[tankIndex].fill(resource, doFill, this.worldObj.isRemote);
+		return this.tanks[tankIndex].fill(resource, doFill, this.world.isRemote);
 	}
 
 	@Override
@@ -115,9 +115,9 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 			ret.amount = 0;
 		}
 		for (int i = 0; i < 4; ++i) {
-			FluidStack temp = this.tanks[i].drain(maxDrain, false, this.worldObj.isRemote);
+			FluidStack temp = this.tanks[i].drain(maxDrain, false, this.world.isRemote);
 			if (temp != null && (ret == null || ret.isFluidEqual(temp))) {
-				temp = this.tanks[i].drain(maxDrain, doDrain, this.worldObj.isRemote);
+				temp = this.tanks[i].drain(maxDrain, doDrain, this.world.isRemote);
 				if (ret == null) {
 					ret = temp;
 				} else {

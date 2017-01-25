@@ -18,6 +18,6 @@ public class ModuleSnowball extends ModuleProjectile {
 
 	@Override
 	public Entity createProjectile(final Entity target, final ItemStack item) {
-		return new EntitySnowball(this.getCart().worldObj);
+		return new EntitySnowball(this.getCart().world);
 	}
 }

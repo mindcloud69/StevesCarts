@@ -244,7 +244,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().worldObj.isRemote) {
+		if (!this.getCart().world.isRemote) {
 			if (this.arrowTick > 0) {
 				--this.arrowTick;
 			} else {
@@ -322,13 +322,13 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 				this.setProjectileDamage(projectile);
 				this.setProjectileOnFire(projectile);
 				this.setProjectileKnockback(projectile);
-				this.getCart().worldObj.spawnEntityInWorld(projectile);
+				this.getCart().world.spawnEntity(projectile);
 				hasShot = true;
 				this.damageEnchant();
 			}
 		}
 		if (hasShot) {
-			this.getCart().worldObj.playEvent(1002, this.getCart().getPosition(), 0);
+			this.getCart().world.playEvent(1002, this.getCart().getPosition(), 0);
 		}
 	}
 
@@ -369,7 +369,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 			((IProjectile) projectile).setThrowableHeading(motionX, motionY, motionZ, motionMult, motionNoise);
 		} else if (projectile instanceof EntityFireball) {
 			final EntityFireball fireball = (EntityFireball) projectile;
-			final double totalMotion = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
+			final double totalMotion = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
 			fireball.accelerationX = motionX / totalMotion * 0.1;
 			fireball.accelerationY = motionY / totalMotion * 0.1;
 			fireball.accelerationZ = motionZ / totalMotion * 0.1;
@@ -382,7 +382,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 				return module.createProjectile(target, item);
 			}
 		}
-		return new EntityArrow(this.getCart().worldObj) {
+		return new EntityArrow(this.getCart().world) {
 			@Override
 			protected ItemStack getArrowStack() {
 				return item;

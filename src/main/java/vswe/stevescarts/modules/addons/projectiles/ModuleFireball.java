@@ -18,6 +18,6 @@ public class ModuleFireball extends ModuleProjectile {
 
 	@Override
 	public Entity createProjectile(final Entity target, final ItemStack item) {
-		return new EntitySmallFireball(this.getCart().worldObj);
+		return new EntitySmallFireball(this.getCart().world);
 	}
 }

@@ -22,7 +22,7 @@ public class ModuleSmelter extends ModuleRecipe {
 
 	@Override
 	public void update() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			return;
 		}
 		if (this.getCart().hasFuelForModule() && this.energyBuffer < 10) {
@@ -128,7 +128,7 @@ public class ModuleSmelter extends ModuleRecipe {
 
 	@Override
 	public void onInventoryChanged() {
-		if (this.getCart().worldObj.isRemote) {
+		if (this.getCart().world.isRemote) {
 			if (this.getStack(0) != null) {
 				this.setStack(1, FurnaceRecipes.instance().getSmeltingResult(this.getStack(0)));
 			} else {

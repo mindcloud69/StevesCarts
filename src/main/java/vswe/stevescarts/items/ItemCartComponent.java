@@ -209,7 +209,7 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 			}
 			world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
-				world.spawnEntityInWorld(new EntityEasterEgg(world, player));
+				world.spawnEntity(new EntityEasterEgg(world, player));
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 		}

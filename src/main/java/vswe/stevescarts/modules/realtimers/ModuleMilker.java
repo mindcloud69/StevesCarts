@@ -27,7 +27,7 @@ public class ModuleMilker extends ModuleBase {
 	public void update() {
 		super.update();
 		if (this.cooldown <= 0) {
-			if (!this.getCart().worldObj.isRemote && this.getCart().hasFuel()) {
+			if (!this.getCart().world.isRemote && this.getCart().hasFuel()) {
 				this.generateMilk();
 				this.depositeMilk();
 			}
