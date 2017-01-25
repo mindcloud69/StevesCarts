@@ -93,7 +93,7 @@ public class ClientProxy extends CommonProxy {
 		registerItemModel(ModBlocks.EXTERNAL_DISTRIBUTOR.getBlock(), 0);
 		registerItemModel(ModBlocks.DETECTOR_UNIT.getBlock(), 0);
 		for (int i = 0; i < 5; ++i) {
-			ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockDetector", "detectortype=" + DetectorType.getTypeFromint(i).getName());
+			ModelResourceLocation location = new ModelResourceLocation("stevescarts:BlockDetector", "detectortype=" + DetectorType.getTypeFromint(i).getName() + ",powered=false");
 			ModelLoader.setCustomModelResourceLocation(ModItems.detectors, i, location);
 		}
 	}
