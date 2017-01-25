@@ -259,7 +259,7 @@ public class ModuleState {
 		}
 
 		public boolean isPassengerValid(final Entity passenger) {
-			return true;
+			return passengerClass.isAssignableFrom(passenger.getClass());
 		}
 	}
 
