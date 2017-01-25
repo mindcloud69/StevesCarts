@@ -60,7 +60,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	private void updateLight() {
-		if(!this.getCart().world.isDaytime()){
+		if(!this.getCart().world.isDaytime() || this.getCart().world.isRaining()){
 			this.light = 0;
 		}else{
 			this.light = this.getCart().world.getLight(this.getCart().getPosition());
