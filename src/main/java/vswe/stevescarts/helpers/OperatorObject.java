@@ -15,8 +15,8 @@ public class OperatorObject {
 	private Localization.GUI.DETECTOR name;
 	private int childs;
 
-	public static Collection<OperatorObject> getOperatorList(final int meta) {
-		return DetectorType.getTypeFromint(meta).getOperators().values();
+	public static Collection<OperatorObject> getOperatorList(DetectorType type) {
+		return type.getOperators().values();
 	}
 
 	public static HashMap<Byte, OperatorObject> getAllOperators() {

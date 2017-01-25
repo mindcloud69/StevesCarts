@@ -76,6 +76,12 @@
           "west": "stevescarts:blocks/detector_redstone_green"
         }
       }
+    },
+    "powered": {
+      "true": {
+      },
+      "false": {
+      }
     }
   }
 }

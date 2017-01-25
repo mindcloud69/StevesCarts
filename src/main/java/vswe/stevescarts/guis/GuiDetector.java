@@ -77,7 +77,7 @@ public class GuiDetector extends GuiBase {
 			}
 		} else if (this.flowMenu.getScroll() != 0) {
 			int flowPosId = 0;
-			for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getBlockMetadata())) {
+			for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getType())) {
 				if (operator.inTab()) {
 					final int[] target = this.flowMenu.getContentRect(flowPosId);
 					if (this.drawMouseOver(operator.getName(), x, y, target)) {
@@ -126,7 +126,7 @@ public class GuiDetector extends GuiBase {
 		this.flowMenu.drawMain(this, x, y);
 		ResourceHelper.bindResource(GuiDetector.texture);
 		int flowPosId = 0;
-		for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getBlockMetadata())) {
+		for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getType())) {
 			if (operator.inTab()) {
 				final int[] src = this.getOperatorTexture(operator.getID());
 				this.flowMenu.drawContent(this, flowPosId, src[0], src[1]);
@@ -205,7 +205,7 @@ public class GuiDetector extends GuiBase {
 					++statePosId;
 				}
 				int flowPosId = 0;
-				for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getBlockMetadata())) {
+				for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getType())) {
 					if (operator.inTab()) {
 						final int[] target3 = this.flowMenu.getContentRect(flowPosId);
 						if (this.inRect(x, y, target3)) {

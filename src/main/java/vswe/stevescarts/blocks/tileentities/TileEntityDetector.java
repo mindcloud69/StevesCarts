@@ -7,8 +7,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vswe.stevescarts.blocks.BlockDetector;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDetector;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -89,7 +92,7 @@ public class TileEntityDetector extends TileEntityBase {
 			IBlockState blockState = world.getBlockState(pos);
 			Block block = blockState.getBlock();
 			DetectorType.getTypeFromSate(blockState).deactivate(this);
-			this.world.setBlockState(pos, block.getStateFromMeta(block.getMetaFromState(blockState) & 0xFFFFFFF7), 3);
+			this.world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, false), 3);
 		}
 	}
 
@@ -247,18 +250,19 @@ public class TileEntityDetector extends TileEntityBase {
 	public void handleCart(final EntityMinecartModular cart) {
 		final boolean truthValue = this.evaluate(cart, 0);
 		IBlockState blockState = world.getBlockState(pos);
-		int meta = blockState.getBlock().getMetaFromState(blockState);
-		final boolean isOn = (meta & 0x8) != 0x0;
-		if (truthValue != isOn) {
-			if (truthValue) {
-				DetectorType.getTypeFromSate(blockState).activate(this, cart);
-				meta |= 0x8;
-			} else {
-				DetectorType.getTypeFromSate(blockState).deactivate(this);
-				meta &= 0xFFFFFFF7;
-			}
-			this.world.setBlockState(pos, blockState.getBlock().getStateFromMeta(meta), 3);
+		boolean isOn = blockState.getValue(DetectorType.POWERED);
+		boolean power = false;
+		if (truthValue) {
+			DetectorType.getTypeFromSate(blockState).activate(this, cart);
+			power = true;
+		} else {
+			DetectorType.getTypeFromSate(blockState).deactivate(this);
+			power &= false;
 		}
+		if(power != isOn){
+			this.world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, power), 3);
+		}
+
 		if (truthValue) {
 			this.activeTimer = 20;
 		}
@@ -267,5 +271,14 @@ public class TileEntityDetector extends TileEntityBase {
 	@Override
 	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
 		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return false;
+	}
+
+	public DetectorType getType(){
+		return world.getBlockState(pos).getValue(DetectorType.SATE);
 	}
 }

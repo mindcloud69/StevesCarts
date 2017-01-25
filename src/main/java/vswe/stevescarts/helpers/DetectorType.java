@@ -3,6 +3,7 @@ package vswe.stevescarts.helpers;
 import java.util.HashMap;
 import java.util.Locale;
 
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
@@ -67,6 +68,7 @@ public enum DetectorType implements IStringSerializable {
 	private HashMap<Byte, OperatorObject> operators;
 
 	public static PropertyEnum<DetectorType> SATE = PropertyEnum.create("detectortype", DetectorType.class);
+	public static PropertyBool POWERED = PropertyBool.create("powered");
 
 	DetectorType(final int meta, final boolean acceptCart, final boolean stopCart, final boolean emitRedstone, final String[] textures) {
 		this.meta = meta;
