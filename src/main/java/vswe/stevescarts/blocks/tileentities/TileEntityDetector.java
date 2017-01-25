@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.BlockDetector;
+import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDetector;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -91,8 +92,10 @@ public class TileEntityDetector extends TileEntityBase {
 		if (this.activeTimer > 0 && --this.activeTimer == 0) {
 			IBlockState blockState = world.getBlockState(pos);
 			Block block = blockState.getBlock();
-			DetectorType.getTypeFromSate(blockState).deactivate(this);
-			this.world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, false), 3);
+			if(block == ModBlocks.DETECTOR_UNIT.getBlock()){
+				DetectorType.getTypeFromSate(blockState).deactivate(this);
+				this.world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, false), 3);
+			}
 		}
 	}
 

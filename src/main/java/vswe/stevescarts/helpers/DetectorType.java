@@ -10,6 +10,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import vswe.stevescarts.StevesCarts;
+import vswe.stevescarts.blocks.BlockDetector;
 import vswe.stevescarts.blocks.BlockRailAdvDetector;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
