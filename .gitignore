@@ -12,6 +12,4 @@
 !/gradle.properties
 !/gradlew
 !/gradlew.bat
-!/export.py
-!/export.lnk
-!/build.lnk
+!/build.conf
