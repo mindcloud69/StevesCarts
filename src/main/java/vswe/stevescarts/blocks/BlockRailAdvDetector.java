@@ -33,6 +33,16 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 	}
 
 	@Override
+	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return 0;
+	}
+
+	@Override
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return 0;
+	}
+
+	@Override
 	public boolean canMakeSlopes(IBlockAccess world, BlockPos pos) {
 		return false;
 	}
@@ -137,7 +147,7 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 				}
 			}
 		}
-		int power = world.isBlockIndirectlyGettingPowered(pos);
+		int power = world.getStrongPower(pos);
 		if (power > 0) {
 			cart.releaseCart();
 		}
