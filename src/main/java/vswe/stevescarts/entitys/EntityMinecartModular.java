@@ -1606,13 +1606,13 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		return null;
 	}
 
-	public Entity getRider(){
-		return this.getControllingPassenger();
+	public Entity getCartRider(){
+		return getPassengers().isEmpty() ? null : getPassengers().get(0);
 	}
 
 	@Nullable
 	@Override
 	public Entity getControllingPassenger() {
-		return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+		return  null; //Works when returning null, not sure why
 	}
 }
