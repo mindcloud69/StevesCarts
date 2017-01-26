@@ -30,7 +30,7 @@ import vswe.stevescarts.upgrades.AssemblerUpgrade;
 public class BlockUpgrade extends BlockContainerBase {
 
 	public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, AssemblerUpgrade.getUpgradesList().size());
+	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 20); //Set to number of upgrades
 
 	public BlockUpgrade() {
 		super(Material.ROCK);
