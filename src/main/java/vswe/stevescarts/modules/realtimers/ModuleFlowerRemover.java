@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
@@ -91,7 +92,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 
 	private boolean isFlower(BlockPos pos) {
 		IBlockState state = this.getCart().world.getBlockState(pos);
-		return state != null && state.getBlock() instanceof BlockFlower;
+		return state != null && state.getBlock() instanceof IPlantable;
 	}
 
 	private void addStuff(final List<ItemStack> stuff) {
