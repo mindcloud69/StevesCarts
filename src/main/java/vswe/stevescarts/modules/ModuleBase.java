@@ -53,7 +53,6 @@ public abstract class ModuleBase {
 	private int offSetX;
 	private int offSetY;
 	private int guiDataOffset;
-	private int dataWatcherOffset;
 	private int packetOffset;
 	private ArrayList<ButtonBase> buttons;
 	protected int slotGlobalStart;
@@ -598,19 +597,15 @@ public abstract class ModuleBase {
 		return 0;
 	}
 
-	public int getDataWatcherStart() {
-		return this.dataWatcherOffset;
-	}
-
-	public void setDataWatcherStart(final int val) {
-		this.dataWatcherOffset = val;
+	public int getNextDataWatcher(){
+		return cart.getDataManager().getAll().size() + 1;
 	}
 
 	public void initDw() {
 	}
 
 	private int getDwId(int id) {
-		id += this.getDataWatcherStart();
+		id += this.getNextDataWatcher();
 		return id;
 	}
 

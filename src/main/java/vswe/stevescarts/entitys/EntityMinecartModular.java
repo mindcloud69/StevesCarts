@@ -289,7 +289,6 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		final int y = 0;
 		final int maxH = 0;
 		int guidata = 0;
-		int datawatcher = dataManager.getAll().size();
 		int packets = 0;
 		if (this.world.isRemote) {
 			this.generateModels();
@@ -341,8 +340,6 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 						slots = module3.generateSlots(slots);
 					}
 				}
-				module3.setDataWatcherStart(datawatcher);
-				datawatcher += module3.numberOfDataWatchers();
 				if (module3.numberOfDataWatchers() > 0) {
 					module3.initDw();
 				}
@@ -1614,5 +1611,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public Entity getControllingPassenger() {
 		return  null; //Works when returning null, not sure why
+	}
+
+	public EntityDataManager getDataManager(){
+		return dataManager;
 	}
 }
