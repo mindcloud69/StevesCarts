@@ -41,7 +41,7 @@ import vswe.stevescarts.upgrades.InterfaceEffect;
 import vswe.stevescarts.upgrades.InventoryEffect;
 
 public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder, ITickable {
-	public Tank tank;
+	public Tank tank = new Tank(this, 0, 0);
 	private TileEntityCartAssembler master;
 	private int type;
 	private boolean initialized;
