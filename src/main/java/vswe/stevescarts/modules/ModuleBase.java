@@ -597,17 +597,9 @@ public abstract class ModuleBase {
 		return 0;
 	}
 
-	public int getNextDataWatcher(){
-		return cart.getDataManager().getAll().size() + 1;
-	}
-
 	public void initDw() {
 	}
 
-	private int getDwId(int id) {
-		id += this.getNextDataWatcher();
-		return id;
-	}
 
 	protected final <T> void registerDw(DataParameter<T> key, T value){
 		for(DataEntry entry : this.getCart().getDataManager().getAll()){
@@ -626,9 +618,8 @@ public abstract class ModuleBase {
 		return this.getCart().getDataManager().get(key);
 	}
 
-	private int ids = 0;
 	protected <T> DataParameter<T> createDw(DataSerializer<T> serializer){
-		return serializer.createKey(getDwId(ids++));
+		return serializer.createKey(cart.getNextDataWatcher());
 	}
 	
 	public int numberOfGuiData() {

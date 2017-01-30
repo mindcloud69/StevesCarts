@@ -1616,4 +1616,10 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public EntityDataManager getDataManager(){
 		return dataManager;
 	}
+
+	int base = 0;
+	public int getNextDataWatcher(){
+		base++;
+		return getDataManager().getAll().size() + base + 1;
+	}
 }
