@@ -58,6 +58,7 @@ public class StevesCarts {
 		StevesCarts.packetHandler = NetworkRegistry.INSTANCE.newEventDrivenChannel("SC2");
 		final Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
+		SCConfig.load(config);
 		this.maxDynamites = Math.min(this.maxDynamites, config.get("Settings", "MaximumNumberOfDynamites", this.maxDynamites).getInt(this.maxDynamites));
 		this.useArcadeSounds = config.get("Settings", "useArcadeSounds", true).getBoolean(true);
 		this.useArcadeMobSounds = config.get("Settings", "useTetrisMobSounds", true).getBoolean(true);

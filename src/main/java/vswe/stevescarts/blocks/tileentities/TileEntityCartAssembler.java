@@ -21,6 +21,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.Constants;
+import vswe.stevescarts.SCConfig;
 import vswe.stevescarts.blocks.BlockCartAssembler;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.containers.ContainerBase;
@@ -309,6 +310,9 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	}
 
 	public int generateAssemblingTime() {
+		if(SCConfig.disableTimedCrafting){
+			return 1;
+		}
 		return this.generateAssemblingTime(this.getModules(true, new int[] { getKeepSize(), getRemovedSize() }), this.getModules(true, new int[] { getKeepSize(), 1 }));
 	}
 
