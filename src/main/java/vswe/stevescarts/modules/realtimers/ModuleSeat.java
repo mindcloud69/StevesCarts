@@ -127,6 +127,6 @@ public class ModuleSeat extends ModuleBase {
 
 	@Override
 	public float mountedOffset(final Entity rider) {
-		return 0.1f;
+		return -0.1f;
 	}
 }
