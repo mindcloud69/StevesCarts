@@ -17,7 +17,7 @@ public class ModulePig extends ModuleHull {
 	/**
 	 * Only used for getting the texture of the armor.
 	 */
-	private LayerBipedArmor fakeArmorLayer;
+	private LayerBipedArmor fakeArmorLayer = new LayerBipedArmor(null);
 
 	public ModulePig(final EntityMinecartModular cart) {
 		super(cart);
