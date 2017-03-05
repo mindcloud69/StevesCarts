@@ -1,3 +1,7 @@
+itemGroup.SC2Modules=Steve's Carts 2 Modules
+itemGroup.SC2Items=Steve's Carts 2 Components
+itemGroup.SC2Blocks=Steve's Carts 2 Blocks
+
 # ======================================
 				BLOCK GUI
 # ======================================
@@ -300,13 +304,14 @@ item.SC2:planter_range_extender.name=种植范围拓展器
 item.SC2:tree_exotic.name=树木: 异域
 item.SC2:smelter.name=熔炉
 item.SC2:projectile_cake.name=投掷物: 蛋糕
-item.SC2:trick_or_treat_cake_server.name=讨唐蛋糕服务器
+item.SC2:trick_or_treat_cake_server.name=捣蛋蛋糕服务器
 item.SC2:cake_server.name=蛋糕服务器
 item.SC2:creative_incinerator.name=创造焚化炉
 item.SC2:creative_supplies.name=创造供应
+item.SC2:color_randomizer.name=颜色定制组件
 
 # Components
-item.SC2:unknowncomponent.name=位置SC2组件
+item.SC2:unknowncomponent.name=未知SC2组件
 item.SC2:wooden_wheels.name=木轮
 item.SC2:iron_wheels.name=铁轮
 item.SC2:red_pigment.name=红色颜料
@@ -323,7 +328,7 @@ item.SC2:wheel.name=车轮
 item.SC2:saw_blade.name=锯齿
 item.SC2:advanced_pcb.name=高级印刷电路板
 item.SC2:wood_cutting_core.name=伐木核心
-item.SC2:raw_hardener.name未加工硬化剂
+item.SC2:raw_hardener.name=未加工硬化剂
 item.SC2:refined_hardener.name=强化硬化剂
 item.SC2:hardened_mesh.name=硬化丝网
 item.SC2:stabilized_metal.name=稳定金属
@@ -349,7 +354,7 @@ item.SC2:cleaning_fan.name=清理风扇
 item.SC2:cleaning_core.name=清理核心
 item.SC2:cleaning_tube.name=清理管道
 item.SC2:fuse.name=引信
-item.SC2:solar_panel.name=太阳能板
+item.SC2:solar_panel.name=升级: 太阳能板
 item.SC2:eye_of_galgador.name=混合晶化眼
 item.SC2:lump_of_galgador.name=混合晶化团
 item.SC2:galgadorian_metal.name=混合晶化锭
@@ -467,7 +472,7 @@ info.SC2:moduleGroupToolShooter=[%1:工具|工具] 或 [%1:发射器|发射器]
 # Messages
 info.SC2:pigExtraMessage=In memory of Vswe's Thunderpig arena victory. Thanks everyone who donated during the 2013 Minecraft Marathon
 info.SC2:oceanExtraMessage=Room for an average sized ocean
-info.SC2:alphaExtraMessage=1 year in alpha
+info.SC2:alphaExtraMessage=一年都处于alpha版本
 info.SC2:storageEmpty=空
 info.SC2:storageFull=满
 info.SC2:giftStorageFull=可能包含惊喜
@@ -498,7 +503,7 @@ info.SC2:impossibleCombinationError=模块组合无效. 这不太可能.
 info.SC2:complexityOverloadError=[%1] 对这个车壳来说太复杂了.
 info.SC2:missingParentError=[%1] 需要 [%2] 才能正常运行!
 info.SC2:presentNemesisError=[%1] 无法与 [%2] 一起运行
-info.SC2:presentDuplicateError[%1] 不允许添加两次.
+info.SC2:presentDuplicateError=[%1] is not allowed to be added twice.
 info.SC2:sideClashError=[%1] 和 [%2] 会在 [%3] 中冲突
 # need beta 3 for these ones to show up (remove this note)
 info.SC2:toolUnbreakable=耐久
@@ -588,8 +593,9 @@ modules.addons.SC2:recipeChangeLimit=[%1->增加|减少] 存储物品.
 modules.addons.SC2:recipeChangeLimit10=Shift点击改变10.
 modules.addons.SC2:recipeChangeLimit64=Ctrl点击改变64.
 modules.addons.SC2:shieldToggle=[%1->激活|取消激活]护盾
+modules.addons.SC2:buttonRandomize=Randomize Color
 
-#Engines
+# Engines
 modules.engines.SC2:creativePowerLevel=能量等级: [%1]
 modules.engines.SC2:coalEngineTitle=煤炭引擎
 modules.engines.SC2:outOfFuel=燃料缺乏
@@ -634,7 +640,7 @@ modules.tools.SC2:cutterTitle=伐木器
 # Attachments
 modules.attachments.SC2:fertilizers=施肥器
 modules.attachments.SC2:railerTitle=铺轨器
-modules.attachments.SC2:controlSystemTitle=Adv Control Sys
+modules.attachments.SC2:controlSystemTitle=高级控制系统
 modules.attachments.SC2:controlSystemDistanceUnits=[%1->|k|M|G|T|P]m
 modules.attachments.SC2:controlSystemOdoMeter=ODO
 modules.attachments.SC2:controlSystemTripMeter=TRIP
@@ -666,7 +672,7 @@ modules.attachments.SC2:noteAdd=添加音符至音轨 #[%1]
 modules.attachments.SC2:noteRemove=移除音轨最右边的音符 #[%1]
 modules.attachments.SC2:noteVolume=音轨音量: [%1->柔和|低|中|高]
 # need beta 3 for these ones to show up (remove this note)
-modules.attachments.SC2:seatStateMessage=[%1->This cart is occupied|Mount cart|Dismount cart]
+modules.attachments.SC2:seatStateMessage=[%1->这辆矿车目前正在被占用|安装|拆卸]
 modules.attachments.SC2:controlSystemReset=重置里程表
 # end of beta 3 requirement (remove this note)
 
@@ -694,8 +700,8 @@ arcade.SC2:creeperCurrentMap=当前 [%1]
 arcade.SC2:creeperHighScores=高分
 arcade.SC2:creeperHighScore=[%1]: [%2]s
 arcade.SC2:mobStacker=怪物栈式存储器
-arcade.SC2:stackerRemovedLines=Removed lines: [%1]
-arcade.SC2:stackerRemovedLinesCombo=Removed [%1->single|double|triple|quadruple] lines: [%2]
+arcade.SC2:stackerRemovedLines=移除线路：[%1]
+arcade.SC2:stackerRemovedLinesCombo=移除[%1->单条|双条|三条|四条]线路：[%2]
 arcade.SC2:instructionRotate=旋转
 arcade.SC2:instructionDrop=丢
 arcade.SC2:trackOperator=轨道调度员
@@ -749,6 +755,7 @@ stories.beginning.SC2:outOfReach=只是够不到...
 stories.beginning.SC2:outOfReach2=...但这阻止不了你.
 stories.beginning.SC2:longJourney=经过一段漫长的旅行,史蒂夫终于看到旅途的终点...
 stories.beginning.SC2:end=...但是一切并不总是尽如人意. 当你在等待更多故事时,你可以创造并分享更多地图. 点击菜单中的地图编辑来创造更多的地图吧.
+stories.beginning.SC2:thanks=感谢你的玩耍 :)
 stories.beginning.SC2:level1=全新一天
 stories.beginning.SC2:level2=操作员
 stories.beginning.SC2:level3=逃离循环
