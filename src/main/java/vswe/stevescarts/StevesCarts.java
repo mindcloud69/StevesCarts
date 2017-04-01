@@ -32,6 +32,8 @@ import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.plugins.PluginLoader;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
+import javax.annotation.Nonnull;
+
 @Mod(modid = Constants.MOD_ID, name = Constants.NAME, version = Constants.VERSION)
 public class StevesCarts {
 	@SidedProxy(clientSide = "vswe.stevescarts.ClientProxy", serverSide = "vswe.stevescarts.CommonProxy")
@@ -104,7 +106,8 @@ public class StevesCarts {
 
 	public class WoodFuelHandler implements IFuelHandler {
 		@Override
-		public int getBurnTime(final ItemStack fuel) {
+		public int getBurnTime(@Nonnull
+			                       ItemStack fuel) {
 			if (fuel != null && fuel.getItem() != null && fuel.getItem() == ModItems.component) {
 				if (ItemCartComponent.isWoodLog(fuel)) {
 					return 150;

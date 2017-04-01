@@ -171,7 +171,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				List<ItemStack> stuff;
 				if (this.shouldSilkTouch(blockState, pos)) {
 					stuff = new ArrayList<>();
-					final ItemStack stack = this.getSilkTouchedItem(blockState);
+					@Nonnull ItemStack stack = this.getSilkTouchedItem(blockState);
 					if (stack != null) {
 						stuff.add(stack);
 					}
@@ -179,7 +179,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
 					stuff = block.getDrops(world, pos, blockState, fortune);
 				}
-				for (final ItemStack iStack : stuff) {
+				for (@Nonnull ItemStack iStack : stuff) {
 					cart.addItemToChest(iStack);
 					if (iStack.stackSize != 0) {
 						final EntityItem entityitem = new EntityItem(world, cart.posX, cart.posY, cart.posZ, iStack);
@@ -200,7 +200,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		return 25;
 	}
 
-	public boolean isSeedValidHandler(final ItemStack seed) {
+	public boolean isSeedValidHandler(@Nonnull ItemStack seed) {
 		for (final ICropModule module : this.plantModules) {
 			if (module.isSeedValid(seed)) {
 				return true;
@@ -209,7 +209,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		return false;
 	}
 
-	protected IBlockState getCropFromSeedHandler(final ItemStack seed, World world, BlockPos pos) {
+	protected IBlockState getCropFromSeedHandler(@Nonnull ItemStack seed, World world, BlockPos pos) {
 		for (final ICropModule module : this.plantModules) {
 			if (module.isSeedValid(seed)) {
 				return module.getCropFromSeed(seed, world, pos);
@@ -288,7 +288,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	@Override
 	public boolean haveSupplies() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			final ItemStack item = this.getStack(i);
+			@Nonnull ItemStack item = this.getStack(i);
 			if (item != null && this.isSeedValidHandler(item)) {
 				return true;
 			}

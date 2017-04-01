@@ -8,7 +8,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
 
 public class ShapedRecipes2 extends ShapedRecipes {
-	public ShapedRecipes2(final int par1, final int par2, final ItemStack[] par3ArrayOfItemStack, final ItemStack par4ItemStack) {
+	public ShapedRecipes2(final int par1, final int par2, @Nonnull ItemStack[] par3ArrayOfItemStack, @Nonnull ItemStack par4ItemStack) {
 		super(par1, par2, par3ArrayOfItemStack, par4ItemStack);
 	}
 
@@ -40,7 +40,7 @@ public class ShapedRecipes2 extends ShapedRecipes {
 						var9 = this.recipeItems[var7 + var8 * this.recipeWidth];
 					}
 				}
-				final ItemStack var10 = par1InventoryCrafting.getStackInRowAndColumn(var5, var6);
+				@Nonnull ItemStack var10 = par1InventoryCrafting.getStackInRowAndColumn(var5, var6);
 				if (var10 != null || var9 != null) {
 					if ((var10 == null && var9 != null) || (var10 != null && var9 == null)) {
 						return false;

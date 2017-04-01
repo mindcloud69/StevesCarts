@@ -90,7 +90,7 @@ public class ItemCarts extends ItemMinecart {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack item, final EntityPlayer player, final List list, final boolean useExtraInfo) {
+	public void addInformation(@Nonnull ItemStack item, final EntityPlayer player, final List list, final boolean useExtraInfo) {
 		CartVersion.updateItemStack(item);
 		final NBTTagCompound info = item.getTagCompound();
 		if (info != null) {

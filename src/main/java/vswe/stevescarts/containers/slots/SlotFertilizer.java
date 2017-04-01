@@ -10,7 +10,7 @@ public class SlotFertilizer extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return itemstack.getItem() == Items.BONE || (itemstack.getItem() == Items.DYE && itemstack.getItemDamage() == 15);
 	}
 }

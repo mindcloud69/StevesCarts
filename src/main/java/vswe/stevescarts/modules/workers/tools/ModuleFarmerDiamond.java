@@ -21,7 +21,7 @@ public class ModuleFarmerDiamond extends ModuleFarmer {
 	}
 
 	@Override
-	public int getRepairItemUnits(final ItemStack item) {
+	public int getRepairItemUnits(@Nonnull ItemStack item) {
 		if (item != null && item.getItem() == Items.DIAMOND) {
 			return 150000;
 		}

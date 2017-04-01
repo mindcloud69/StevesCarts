@@ -10,7 +10,7 @@ public class SlotCake extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return itemstack != null && itemstack.getItem() == Items.CAKE;
 	}
 }

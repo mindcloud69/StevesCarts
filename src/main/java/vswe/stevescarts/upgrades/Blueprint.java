@@ -27,7 +27,7 @@ public class Blueprint extends SimpleInventoryEffect {
 	}
 
 	public boolean isValidForBluePrint(final TileEntityUpgrade upgrade, final ArrayList<ModuleData> modules, final ModuleData module) {
-		final ItemStack blueprint = upgrade.getStackInSlot(0);
+		@Nonnull ItemStack blueprint = upgrade.getStackInSlot(0);
 		if (blueprint == null) {
 			return false;
 		}

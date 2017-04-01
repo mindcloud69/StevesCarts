@@ -214,8 +214,8 @@ public class ModuleData {
 	public static void init() {
 		final String planks = "plankWood";
 		final String wood = "logWood";
-		final ItemStack woodSingleSlab = new ItemStack(Blocks.WOODEN_SLAB, 1, -1);
-		final ItemStack bonemeal = new ItemStack(Items.DYE, 1, 15);
+		@Nonnull ItemStack woodSingleSlab = new ItemStack(Blocks.WOODEN_SLAB, 1, -1);
+		@Nonnull ItemStack bonemeal = new ItemStack(Items.DYE, 1, 15);
 		ModuleData.moduleGroups = new Class[] { ModuleHull.class, ModuleEngine.class, ModuleTool.class, ModuleStorage.class, ModuleAddon.class };
 		ModuleData.moduleGroupNames = new Localization.MODULE_INFO[] { Localization.MODULE_INFO.HULL_CATEGORY, Localization.MODULE_INFO.ENGINE_CATEGORY, Localization.MODULE_INFO.TOOL_CATEGORY,
 				Localization.MODULE_INFO.STORAGE_CATEGORY, Localization.MODULE_INFO.ADDON_CATEGORY, Localization.MODULE_INFO.ATTACHMENT_CATEGORY };
@@ -506,7 +506,7 @@ public class ModuleData {
 			{ ComponentTypes.LIQUID_CLEANING_TUBE.getItemStack(), null, ComponentTypes.LIQUID_CLEANING_TUBE.getItemStack() } });
 		addNemesis(frontTank, cleanerliquid);
 		addNemesis(frontChest, cleanerliquid);
-		final ItemStack yellowWool = new ItemStack(Blocks.WOOL, 1, 4);
+		@Nonnull ItemStack yellowWool = new ItemStack(Blocks.WOOL, 1, 4);
 		final ModuleData eggBasket = new ModuleData(74, "Egg Basket", ModuleEggBasket.class, 14) {
 			@Override
 			public String getModuleInfoText(final byte b) {
@@ -876,7 +876,7 @@ public class ModuleData {
 		return name;
 	}
 
-	public static ArrayList<ItemStack> getModularItems(final ItemStack cart) {
+	public static ArrayList<ItemStack> getModularItems(@Nonnull ItemStack cart) {
 		final ArrayList<ItemStack> modules = new ArrayList<>();
 		if (cart != null && cart.getItem() == ModItems.carts && cart.getTagCompound() != null) {
 			final NBTTagCompound info = cart.getTagCompound();
@@ -884,7 +884,7 @@ public class ModuleData {
 				final byte[] IDs = info.getByteArray("Modules");
 				for (int i = 0; i < IDs.length; ++i) {
 					final byte id = IDs[i];
-					final ItemStack module = new ItemStack(ModItems.modules, 1, id);
+					@Nonnull ItemStack module = new ItemStack(ModItems.modules, 1, id);
 					ModItems.modules.addExtraDataToModule(module, info, i);
 					modules.add(module);
 				}
@@ -894,7 +894,7 @@ public class ModuleData {
 	}
 
 	public static ItemStack createModularCart(final EntityMinecartModular parentcart) {
-		final ItemStack cart = new ItemStack(ModItems.carts, 1);
+		@Nonnull ItemStack cart = new ItemStack(ModItems.carts, 1);
 		final NBTTagCompound save = new NBTTagCompound();
 		final byte[] moduleIDs = new byte[parentcart.getModules().size()];
 		for (int i = 0; i < parentcart.getModules().size(); ++i) {
@@ -914,7 +914,7 @@ public class ModuleData {
 	}
 
 	public static ItemStack createModularCartFromItems(final ArrayList<ItemStack> modules) {
-		final ItemStack cart = new ItemStack(ModItems.carts, 1);
+		@Nonnull ItemStack cart = new ItemStack(ModItems.carts, 1);
 		final NBTTagCompound save = new NBTTagCompound();
 		final byte[] moduleIDs = new byte[modules.size()];
 		for (int i = 0; i < moduleIDs.length; ++i) {
@@ -927,7 +927,7 @@ public class ModuleData {
 		return cart;
 	}
 
-	public static boolean isItemOfModularType(final ItemStack itemstack, final Class<? extends ModuleBase> validClass) {
+	public static boolean isItemOfModularType(@Nonnull ItemStack itemstack, final Class<? extends ModuleBase> validClass) {
 		if (itemstack.getItem() == ModItems.modules) {
 			final ModuleData module = ModItems.modules.getModuleData(itemstack);
 			if (module != null && validClass.isAssignableFrom(module.moduleClass)) {
@@ -958,7 +958,7 @@ public class ModuleData {
 	}
 
 	public ItemStack getItemStack() {
-		final ItemStack module = new ItemStack(ModItems.modules, 1, this.id);
+		@Nonnull ItemStack module = new ItemStack(ModItems.modules, 1, this.id);
 		if (this.isUsingExtraData()) {
 			final NBTTagCompound save = new NBTTagCompound();
 			save.setByte("Data", this.getDefaultExtraData());
@@ -967,7 +967,7 @@ public class ModuleData {
 		return module;
 	}
 
-	public static boolean isValidModuleItem(final int validGroup, final ItemStack itemstack) {
+	public static boolean isValidModuleItem(final int validGroup, @Nonnull ItemStack itemstack) {
 		if (itemstack.getItem() == ModItems.modules) {
 			final ModuleData module = ModItems.modules.getModuleData(itemstack);
 			return isValidModuleItem(validGroup, module);

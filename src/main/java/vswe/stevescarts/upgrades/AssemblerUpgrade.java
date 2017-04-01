@@ -56,7 +56,7 @@ public class AssemblerUpgrade {
 			{ Blocks.BOOKSHELF, ComponentTypes.REINFORCED_METAL.getItemStack(), Blocks.BOOKSHELF },
 			{ ComponentTypes.EYE_OF_GALGADOR.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.EYE_OF_GALGADOR.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), knowledge.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } });
-		final ItemStack[] books = new ItemStack[5];
+		@Nonnull ItemStack[] books = new ItemStack[5];
 		for (int i = 0; i < 5; ++i) {
 			books[i] = Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(Enchantments.EFFICIENCY, i + 1));
 		}

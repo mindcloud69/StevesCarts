@@ -168,7 +168,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 					amount = 3;
 				}
 				if (this.fert <= 4 * (192 - amount) && this.getStack(0).stackSize > 0) {
-					final ItemStack stack = this.getStack(0);
+					@Nonnull ItemStack stack = this.getStack(0);
 					--stack.stackSize;
 					this.fert += amount * 4;
 				}

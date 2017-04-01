@@ -12,19 +12,19 @@ public class SlotFuel extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return this.getItemBurnTime(itemstack) > 0;
 	}
 
-	private boolean isValid(final ItemStack itemstack) {
+	private boolean isValid(@Nonnull ItemStack itemstack) {
 		return !FluidContainerRegistry.isFilledContainer(itemstack);
 	}
 
-	private int getItemBurnTime(final ItemStack itemstack) {
+	private int getItemBurnTime(@Nonnull ItemStack itemstack) {
 		return this.isValid(itemstack) ? TileEntityFurnace.getItemBurnTime(itemstack) : 0;
 	}
 
-	public static int getItemBurnTime(final ModuleCoalBase engine, final ItemStack itemstack) {
+	public static int getItemBurnTime(final ModuleCoalBase engine, @Nonnull ItemStack itemstack) {
 		return (int) (TileEntityFurnace.getItemBurnTime(itemstack) * engine.getFuelMultiplier());
 	}
 }

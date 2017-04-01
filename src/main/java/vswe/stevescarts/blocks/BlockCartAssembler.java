@@ -160,7 +160,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 		this.updateMultiBlock(world, pos);
 		if (var7 != null) {
 			for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
-				final ItemStack var9 = var7.removeStackFromSlot(var8);
+				@Nonnull ItemStack var9 = var7.removeStackFromSlot(var8);
 				if (var9 != null) {
 					final float var10 = world.rand.nextFloat() * 0.8f + 0.1f;
 					final float var11 = world.rand.nextFloat() * 0.8f + 0.1f;
@@ -170,7 +170,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 						if (var13 > var9.stackSize) {
 							var13 = var9.stackSize;
 						}
-						final ItemStack itemStack = var9;
+						@Nonnull ItemStack itemStack = var9;
 						itemStack.stackSize -= var13;
 						final EntityItem var14 = new EntityItem(world, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 						final float var15 = 0.05f;
@@ -184,7 +184,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 					}
 				}
 			}
-			final ItemStack outputItem = var7.getOutputOnInterupt();
+			@Nonnull ItemStack outputItem = var7.getOutputOnInterupt();
 			if (outputItem != null) {
 				final EntityItem eItem = new EntityItem(world, pos.getX() + 0.20000000298023224, pos.getY() + 0.20000000298023224, pos.getZ() + 0.2f, outputItem);
 				eItem.motionX = (float) world.rand.nextGaussian() * 0.05f;

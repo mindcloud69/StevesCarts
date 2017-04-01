@@ -32,7 +32,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	}
 
 
-	public String getName(final ItemStack item) {
+	public String getName(@Nonnull ItemStack item) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
 		if (upgrade != null) {
 			return upgrade.getName();
@@ -41,7 +41,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	}
 
 	@Override
-	public String getUnlocalizedName(final ItemStack item) {
+	public String getUnlocalizedName(@Nonnull ItemStack item) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
 		if (upgrade != null) {
 			return "item.SC2:" + upgrade.getRawName();
@@ -53,7 +53,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-			final ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());
+			@Nonnull ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());
 			par3List.add(iStack);
 		}
 	}
@@ -73,7 +73,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+	public void addInformation(@Nonnull ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(par1ItemStack.getItemDamage());
 		if (upgrade != null) {
 			for (final BaseEffect effect : upgrade.getEffects()) {

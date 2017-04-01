@@ -24,7 +24,7 @@ public abstract class ContainerBase extends Container {
 		ItemStack itemstack = null;
 		final Slot slot = this.inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
-			final ItemStack itemstack2 = slot.getStack();
+			@Nonnull ItemStack itemstack2 = slot.getStack();
 			itemstack = itemstack2.copy();
 			if (i < this.getMyInventory().getSizeInventory()) {
 				if (!this.mergeItemStack(itemstack2, this.getMyInventory().getSizeInventory() + 28, this.getMyInventory().getSizeInventory() + 36, false) && !this.mergeItemStack(itemstack2, this.getMyInventory().getSizeInventory(), this.getMyInventory().getSizeInventory() + 28, false)) {
@@ -47,7 +47,7 @@ public abstract class ContainerBase extends Container {
 	}
 
 	@Override
-	protected boolean mergeItemStack(final ItemStack par1ItemStack, final int par2, final int par3, final boolean par4) {
+	protected boolean mergeItemStack(@Nonnull ItemStack par1ItemStack, final int par2, final int par3, final boolean par4) {
 		if (this.getMyInventory() == null) {
 			return false;
 		}
@@ -59,7 +59,7 @@ public abstract class ContainerBase extends Container {
 		if (par1ItemStack.isStackable()) {
 			while (par1ItemStack.stackSize > 0 && ((!par4 && var6 < par3) || (par4 && var6 >= par2))) {
 				final Slot var7 = this.inventorySlots.get(var6);
-				final ItemStack var8 = var7.getStack();
+				@Nonnull ItemStack var8 = var7.getStack();
 				if (var8 != null && var8.stackSize > 0 && var8.getItem() == par1ItemStack.getItem() && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(par1ItemStack, var8)) {
 					final int var9 = var8.stackSize + par1ItemStack.stackSize;
 					final int maxLimit = Math.min(par1ItemStack.getMaxStackSize(), var7.getSlotStackLimit());
@@ -90,10 +90,10 @@ public abstract class ContainerBase extends Container {
 			}
 			while ((!par4 && var6 < par3) || (par4 && var6 >= par2)) {
 				final Slot var7 = this.inventorySlots.get(var6);
-				final ItemStack var8 = var7.getStack();
+				@Nonnull ItemStack var8 = var7.getStack();
 				if (var8 == null && TransferHandler.isItemValidForTransfer(var7, par1ItemStack, TransferHandler.TRANSFER_TYPE.SHIFT)) {
 					final int stackSize = Math.min(var7.getSlotStackLimit(), par1ItemStack.stackSize);
-					final ItemStack newItem = par1ItemStack.copy();
+					@Nonnull ItemStack newItem = par1ItemStack.copy();
 					newItem.stackSize = stackSize;
 					par1ItemStack.stackSize -= stackSize;
 					var7.putStack(newItem);

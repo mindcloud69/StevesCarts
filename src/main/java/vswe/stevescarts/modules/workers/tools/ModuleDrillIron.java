@@ -36,7 +36,7 @@ public class ModuleDrillIron extends ModuleDrill {
 	}
 
 	@Override
-	public int getRepairItemUnits(final ItemStack item) {
+	public int getRepairItemUnits(@Nonnull ItemStack item) {
 		if (item != null && item.getItem() == Items.IRON_INGOT) {
 			return 20000;
 		}

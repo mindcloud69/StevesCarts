@@ -16,7 +16,7 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	}
 
 	@Override
-	public void onPickupFromSlot(final EntityPlayer par1EntityPlayer, final ItemStack par2ItemStack) {
+	public void onPickupFromSlot(final EntityPlayer par1EntityPlayer, @Nonnull ItemStack par2ItemStack) {
 		super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
 		if (par2ItemStack != null && par1EntityPlayer != null && par1EntityPlayer.inventory != null) {
 			par1EntityPlayer.inventory.setItemStack(null);
@@ -24,7 +24,7 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	}
 
 	@Override
-	public boolean isItemValidForTransfer(final ItemStack item, final TransferHandler.TRANSFER_TYPE type) {
+	public boolean isItemValidForTransfer(@Nonnull ItemStack item, final TransferHandler.TRANSFER_TYPE type) {
 		return false;
 	}
 }

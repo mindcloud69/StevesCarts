@@ -315,7 +315,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		}
 	}
 
-	protected boolean canCraftMoreOfResult(final ItemStack result) {
+	protected boolean canCraftMoreOfResult(@Nonnull ItemStack result) {
 		if (this.mode == 0) {
 			return true;
 		}
@@ -324,7 +324,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		}
 		int count = 0;
 		for (int i = 0; i < this.outputSlots.size(); ++i) {
-			final ItemStack item = this.outputSlots.get(i).getStack();
+			@Nonnull ItemStack item = this.outputSlots.get(i).getStack();
 			if (item != null && item.isItemEqual(result) && ItemStack.areItemStackTagsEqual(item, result)) {
 				count += item.stackSize;
 				if (count >= this.maxItemCount) {

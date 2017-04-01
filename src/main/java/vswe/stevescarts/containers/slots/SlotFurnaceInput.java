@@ -10,7 +10,7 @@ public class SlotFurnaceInput extends SlotFake {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return FurnaceRecipes.instance().getSmeltingResult(itemstack) != null;
 	}
 }

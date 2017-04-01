@@ -30,7 +30,7 @@ public class ModuleSmelter extends ModuleRecipe {
 		}
 		if (this.cooldown <= 0) {
 			if (this.energyBuffer == 10) {
-				final ItemStack recipe = this.getStack(0);
+				@Nonnull ItemStack recipe = this.getStack(0);
 				ItemStack result = null;
 				if (recipe != null) {
 					result = FurnaceRecipes.instance().getSmeltingResult(recipe);
@@ -43,14 +43,14 @@ public class ModuleSmelter extends ModuleRecipe {
 					if (this.canCraftMoreOfResult(result)) {
 						final ArrayList<ItemStack> originals = new ArrayList<>();
 						for (int i = 0; i < this.allTheSlots.size(); ++i) {
-							final ItemStack item = this.allTheSlots.get(i).getStack();
+							@Nonnull ItemStack item = this.allTheSlots.get(i).getStack();
 							originals.add((item == null) ? null : item.copy());
 						}
 						int i = 0;
 						while (i < this.inputSlots.size()) {
-							final ItemStack item = this.inputSlots.get(i).getStack();
+							@Nonnull ItemStack item = this.inputSlots.get(i).getStack();
 							if (item != null && item.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item, recipe)) {
-								final ItemStack itemStack = item;
+								@Nonnull ItemStack itemStack = item;
 								if (--itemStack.stackSize <= 0) {
 									this.inputSlots.get(i).putStack(null);
 								}

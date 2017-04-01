@@ -19,7 +19,7 @@ public class CreativeTabSC2 extends CreativeTabs {
 		return this.item;
 	}
 
-	public void setIcon(final ItemStack item) {
+	public void setIcon(@Nonnull ItemStack item) {
 		this.item = item;
 	}
 

@@ -45,7 +45,7 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 		return ComponentTypes.values()[dmg].getName();
 	}
 
-	public String getName(final ItemStack par1ItemStack) {
+	public String getName(@Nonnull ItemStack par1ItemStack) {
 		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
 			return "Unknown SC2 Component";
 		}
@@ -85,7 +85,7 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 	//	}
 
 	@Override
-	public String getUnlocalizedName(final ItemStack item) {
+	public String getUnlocalizedName(@Nonnull ItemStack item) {
 		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || this.getName(item.getItemDamage()) == null) {
 			return this.getUnlocalizedName();
 		}
@@ -99,7 +99,7 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+	public void addInformation(@Nonnull ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
 			if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartComponent) {
 				par3List.add("Component id " + par1ItemStack.getItemDamage());
@@ -113,14 +113,14 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
 		for (int i = 0; i < size(); ++i) {
-			final ItemStack iStack = new ItemStack(par1, 1, i);
+			@Nonnull ItemStack iStack = new ItemStack(par1, 1, i);
 			if (this.isValid(iStack)) {
 				par3List.add(iStack);
 			}
 		}
 	}
 
-	public boolean isValid(final ItemStack item) {
+	public boolean isValid(@Nonnull ItemStack item) {
 		if (item == null || !(item.getItem() instanceof ItemCartComponent) || this.getName(item.getItemDamage()) == null) {
 			return false;
 		}
@@ -141,19 +141,19 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 		return new ItemStack(ModItems.component, count, 72 + type * 2 + (isLog ? 0 : 1));
 	}
 
-	public static boolean isWoodLog(final ItemStack item) {
+	public static boolean isWoodLog(@Nonnull ItemStack item) {
 		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 0;
 	}
 
-	public static boolean isWoodTwig(final ItemStack item) {
+	public static boolean isWoodTwig(@Nonnull ItemStack item) {
 		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 1;
 	}
 
-	private boolean isEdibleEgg(final ItemStack item) {
+	private boolean isEdibleEgg(@Nonnull ItemStack item) {
 		return item != null && item.getItemDamage() >= 66 && item.getItemDamage() < 70;
 	}
 
-	private boolean isThrowableEgg(final ItemStack item) {
+	private boolean isThrowableEgg(@Nonnull ItemStack item) {
 		return item != null && item.getItemDamage() == 70;
 	}
 
@@ -188,12 +188,12 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 	}
 
 	@Override
-	public int getMaxItemUseDuration(final ItemStack item) {
+	public int getMaxItemUseDuration(@Nonnull ItemStack item) {
 		return this.isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
 	}
 
 	@Override
-	public EnumAction getItemUseAction(final ItemStack item) {
+	public EnumAction getItemUseAction(@Nonnull ItemStack item) {
 		return this.isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
 	}
 

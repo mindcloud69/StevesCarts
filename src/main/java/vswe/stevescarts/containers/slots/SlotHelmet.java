@@ -11,7 +11,7 @@ public class SlotHelmet extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return itemstack.getItem() instanceof ItemArmor && ((ItemArmor) itemstack.getItem()).armorType == EntityEquipmentSlot.HEAD;
 	}
 }

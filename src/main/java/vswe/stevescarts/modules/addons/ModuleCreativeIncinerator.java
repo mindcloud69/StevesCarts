@@ -14,7 +14,7 @@ public class ModuleCreativeIncinerator extends ModuleIncinerator {
 	}
 
 	@Override
-	protected boolean isItemValid(final ItemStack item) {
+	protected boolean isItemValid(@Nonnull ItemStack item) {
 		return item != null;
 	}
 

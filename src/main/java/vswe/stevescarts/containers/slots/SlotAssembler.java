@@ -33,7 +33,7 @@ public class SlotAssembler extends Slot {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return itemstack != null && this.isValid && ModuleData.isValidModuleItem(this.groupID, itemstack) && (!this.getHasStack() || (this.getStack().stackSize > 0 && itemstack.stackSize > 0));
 	}
 

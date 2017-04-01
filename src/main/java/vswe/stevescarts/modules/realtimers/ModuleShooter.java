@@ -273,10 +273,10 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		}
 		for (int i = 0; i < this.getInventorySize(); ++i) {
 			if (this.getStack(i) != null && this.isValidProjectileItem(this.getStack(i))) {
-				final ItemStack projectile = this.getStack(i).copy();
+				@Nonnull ItemStack projectile = this.getStack(i).copy();
 				projectile.stackSize = 1;
 				if (flag && !this.getCart().hasCreativeSupplies()) {
-					final ItemStack stack = this.getStack(i);
+					@Nonnull ItemStack stack = this.getStack(i);
 					--stack.stackSize;
 					if (this.getStack(i).stackSize == 0) {
 						this.setStack(i, null);
@@ -376,7 +376,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		}
 	}
 
-	protected Entity getProjectile(final Entity target, final ItemStack item) {
+	protected Entity getProjectile(final Entity target, @Nonnull ItemStack item) {
 		for (final ModuleProjectile module : this.projectiles) {
 			if (module.isValidProjectile(item)) {
 				return module.createProjectile(target, item);
@@ -390,7 +390,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		};
 	}
 
-	public boolean isValidProjectileItem(final ItemStack item) {
+	public boolean isValidProjectileItem(@Nonnull ItemStack item) {
 		for (final ModuleProjectile module : this.projectiles) {
 			if (module.isValidProjectile(item)) {
 				return true;

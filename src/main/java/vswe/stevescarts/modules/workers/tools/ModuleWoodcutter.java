@@ -103,7 +103,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public List<ItemStack> getTierDrop(List<ItemStack> baseItems) {
 		List<ItemStack> nerfedItems = new ArrayList<>();
-		for (final ItemStack item : baseItems) {
+		for (@Nonnull ItemStack item : baseItems) {
 			if (item != null) {
 				this.dropItemByMultiplierChance(nerfedItems, item, this.getPercentageDropChance());
 			}
@@ -111,7 +111,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return nerfedItems;
 	}
 
-	private void dropItemByMultiplierChance(List<ItemStack> items, final ItemStack item, int percentage) {
+	private void dropItemByMultiplierChance(List<ItemStack> items, @Nonnull ItemStack item, int percentage) {
 		int drop = 0;
 		while (percentage > 0) {
 			if (this.getCart().rand.nextInt(100) < percentage) {
@@ -253,7 +253,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		List<ItemStack> stuff;
 		if (shouldSilkTouch(blockState, here)) {
 			stuff = new ArrayList<>();
-			final ItemStack stack = this.getSilkTouchedItem(blockState);
+			@Nonnull ItemStack stack = this.getSilkTouchedItem(blockState);
 			if (stack != null) {
 				stuff.add(stack);
 			}
@@ -282,7 +282,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		List<ItemStack> nerfedstuff = this.getTierDrop(stuff);
 		boolean first = true;
-		for (final ItemStack iStack : nerfedstuff) {
+		for (@Nonnull ItemStack iStack : nerfedstuff) {
 			this.getCart().addItemToChest(iStack, Slot.class, SlotFuel.class);
 			if (iStack.stackSize != 0) {
 				if (first) {
@@ -380,7 +380,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return false;
 	}
 
-	public boolean isSaplingHandler(final ItemStack sapling) {
+	public boolean isSaplingHandler(@Nonnull ItemStack sapling) {
 		for (final ITreeModule module : this.treeModules) {
 			if (module.isSapling(sapling)) {
 				return true;

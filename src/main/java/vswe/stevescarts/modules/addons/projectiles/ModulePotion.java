@@ -11,13 +11,13 @@ public class ModulePotion extends ModuleProjectile {
 	}
 
 	@Override
-	public boolean isValidProjectile(final ItemStack item) {
+	public boolean isValidProjectile(@Nonnull ItemStack item) {
 		//		return item.getItem() == Items.POTIONITEM && ItemPotion.isSplash(item.getItemDamage());
 		return false; //TODO
 	}
 
 	@Override
-	public Entity createProjectile(final Entity target, final ItemStack item) {
+	public Entity createProjectile(final Entity target, @Nonnull ItemStack item) {
 		final EntityPotion potion = new EntityPotion(this.getCart().world);
 		potion.setItem(item);
 		return potion;

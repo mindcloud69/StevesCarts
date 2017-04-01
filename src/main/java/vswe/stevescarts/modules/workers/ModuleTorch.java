@@ -86,7 +86,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 								IBlockState state = Blocks.TORCH.getStateForPlacement(world, pos, EnumFacing.DOWN, 0, 0, 0, 0, getFakePlayer(), EnumHand.MAIN_HAND);
 								world.setBlockState(new BlockPos(xTorch, y + level, zTorch), state);
 								if (!cart.hasCreativeSupplies()) {
-									final ItemStack stack = this.getStack(i);
+									@Nonnull ItemStack stack = this.getStack(i);
 									stack.shrink(1);
 									if (this.getStack(i).getCount() == 0) {
 										this.setStack(i, ItemStack.EMPTY);
@@ -270,7 +270,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean haveSupplies() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			final ItemStack item = this.getStack(i);
+			@Nonnull ItemStack item = this.getStack(i);
 			if (item != null && Block.getBlockFromItem(item.getItem()) == Blocks.TORCH) {
 				return true;
 			}

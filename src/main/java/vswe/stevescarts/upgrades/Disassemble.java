@@ -60,12 +60,12 @@ public class Disassemble extends InventoryEffect {
 
 	@Override
 	public void onInventoryChanged(final TileEntityUpgrade upgrade) {
-		final ItemStack cart = upgrade.getStackInSlot(0);
+		@Nonnull ItemStack cart = upgrade.getStackInSlot(0);
 		if (!this.updateCart(upgrade, cart)) {
 			boolean needsToPuke = true;
 			for (int i = 1; i < this.getInventorySize(); ++i) {
 				if (upgrade.getStackInSlot(i) == null) {
-					final ItemStack item = upgrade.getStackInSlot(0);
+					@Nonnull ItemStack item = upgrade.getStackInSlot(0);
 					upgrade.setInventorySlotContents(0, null);
 					upgrade.setInventorySlotContents(i, item);
 					needsToPuke = false;
@@ -101,7 +101,7 @@ public class Disassemble extends InventoryEffect {
 		}
 	}
 
-	private void setLastCart(final TileEntityUpgrade upgrade, final ItemStack cart) {
+	private void setLastCart(final TileEntityUpgrade upgrade, @Nonnull ItemStack cart) {
 		if (cart == null) {
 			upgrade.getCompound().setShort("id", (short) 0);
 		} else {
@@ -113,7 +113,7 @@ public class Disassemble extends InventoryEffect {
 		return ItemStack.loadItemStackFromNBT(upgrade.getCompound());
 	}
 
-	private boolean updateCart(final TileEntityUpgrade upgrade, final ItemStack cart) {
+	private boolean updateCart(final TileEntityUpgrade upgrade, @Nonnull ItemStack cart) {
 		if (upgrade.getMaster() != null) {
 			if (cart == null || cart.getItem() != ModItems.carts || cart.getTagCompound() == null || cart.getTagCompound().hasKey("maxTime")) {
 				this.resetMaster(upgrade.getMaster(), false);
@@ -123,7 +123,7 @@ public class Disassemble extends InventoryEffect {
 					upgrade.setInventorySlotContents(0, null);
 				}
 			} else {
-				final ItemStack last = this.getLastCart(upgrade);
+				@Nonnull ItemStack last = this.getLastCart(upgrade);
 				this.setLastCart(upgrade, cart);
 				int result = this.canDisassemble(upgrade);
 				boolean reset = false;
@@ -139,7 +139,7 @@ public class Disassemble extends InventoryEffect {
 				}
 				boolean addedHull = false;
 				final ArrayList<ItemStack> modules = ModuleData.getModularItems(cart);
-				for (final ItemStack item : modules) {
+				for (@Nonnull ItemStack item : modules) {
 					item.stackSize = 0;
 					TransferHandler.TransferItem(item, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), 1);
 					if (!addedHull) {

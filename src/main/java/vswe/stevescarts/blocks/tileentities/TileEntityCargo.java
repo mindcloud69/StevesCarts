@@ -259,7 +259,7 @@ public class TileEntityCargo extends TileEntityManager {
 		this.latestTransferToBeUsed = transfer;
 		for (int i = 0; i < fromInv.getSizeInventory(); ++i) {
 			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
-				final ItemStack iStack = fromInv.getStackInSlot(i);
+				@Nonnull ItemStack iStack = fromInv.getStackInSlot(i);
 				final int stacksize = iStack.stackSize;
 				int maxNumber;
 				if (this.getAmountType(transfer.getSetting()) == 1) {
@@ -290,7 +290,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slotId, final ItemStack item) {
+	public boolean isItemValidForSlot(final int slotId, @Nonnull ItemStack item) {
 		return true;
 	}
 

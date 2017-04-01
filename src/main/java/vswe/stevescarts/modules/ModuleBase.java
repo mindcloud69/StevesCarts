@@ -201,11 +201,11 @@ public abstract class ModuleBase {
 		this.cargo[slot] = item;
 	}
 
-	public void addStack(final int slotStart, final int slotEnd, final ItemStack item) {
+	public void addStack(final int slotStart, final int slotEnd, @Nonnull ItemStack item) {
 		this.getCart().addItemToChest(item, this.slotGlobalStart + slotStart, this.slotGlobalStart + slotEnd);
 	}
 
-	public void addStack(final int slot, final ItemStack item) {
+	public void addStack(final int slot, @Nonnull ItemStack item) {
 		this.addStack(slot, slot, item);
 	}
 
@@ -281,7 +281,7 @@ public abstract class ModuleBase {
 		}
 	}
 
-	public void drawItemInInterface(final GuiMinecart gui, final ItemStack item, final int x, final int y) {
+	public void drawItemInInterface(final GuiMinecart gui, @Nonnull ItemStack item, final int x, final int y) {
 		final int[] rect = { x, y, 16, 16 };
 		this.handleScroll(rect);
 		if (rect[3] == 16) {

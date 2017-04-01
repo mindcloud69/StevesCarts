@@ -231,7 +231,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public void setInventorySlotContents(final int slot, final ItemStack itemstack) {
+	public void setInventorySlotContents(final int slot, @Nonnull ItemStack itemstack) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
 			manager.setInventorySlotContents(this.translateSlotId(slot), itemstack);
@@ -376,17 +376,17 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack item, EnumFacing side) {
+	public boolean canInsertItem(final int slot, @Nonnull ItemStack item, EnumFacing side) {
 		return true;
 	}
 
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack item, EnumFacing side) {
+	public boolean canExtractItem(final int slot, @Nonnull ItemStack item, EnumFacing side) {
 		return true;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slotId, final ItemStack item) {
+	public boolean isItemValidForSlot(final int slotId, @Nonnull ItemStack item) {
 		return true;
 	}
 

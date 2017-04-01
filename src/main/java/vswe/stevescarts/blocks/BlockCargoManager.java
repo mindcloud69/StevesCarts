@@ -74,7 +74,7 @@ public class BlockCargoManager extends BlockContainerBase {
 		final TileEntityCargo var7 = (TileEntityCargo) par1World.getTileEntity(pos);
 		if (var7 != null) {
 			for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
-				final ItemStack var9 = var7.getStackInSlot(var8);
+				@Nonnull ItemStack var9 = var7.getStackInSlot(var8);
 				if (var9 != null) {
 					final float var10 = par1World.rand.nextFloat() * 0.8f + 0.1f;
 					final float var11 = par1World.rand.nextFloat() * 0.8f + 0.1f;
@@ -84,7 +84,7 @@ public class BlockCargoManager extends BlockContainerBase {
 						if (var13 > var9.stackSize) {
 							var13 = var9.stackSize;
 						}
-						final ItemStack itemStack = var9;
+						@Nonnull ItemStack itemStack = var9;
 						itemStack.stackSize -= var13;
 						final EntityItem var14 = new EntityItem(par1World, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 						final float var15 = 0.05f;

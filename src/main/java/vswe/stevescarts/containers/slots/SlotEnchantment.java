@@ -15,7 +15,7 @@ public class SlotEnchantment extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return EnchantmentInfo.isItemValid(this.enabledTypes, itemstack);
 	}
 }

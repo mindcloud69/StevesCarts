@@ -89,8 +89,8 @@ public class ContainerCartAssembler extends ContainerBase {
 			final Slot hullSlot = this.inventorySlots.get(slotID);
 			if (hullSlot != null && hullSlot instanceof SlotHull) {
 				final InventoryPlayer playerInventory = player.inventory;
-				final ItemStack playerItem = playerInventory.getItemStack();
-				final ItemStack slotItem = hullSlot.getStack();
+				@Nonnull ItemStack playerItem = playerInventory.getItemStack();
+				@Nonnull ItemStack slotItem = hullSlot.getStack();
 				final ArrayList<SlotAssembler> newSlots = this.assembler.getValidSlotFromHullItem(playerItem);
 				final ArrayList<SlotAssembler> oldSlots = this.assembler.getValidSlotFromHullItem(slotItem);
 				if (oldSlots != null) {

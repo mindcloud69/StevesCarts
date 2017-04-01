@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import vswe.stevescarts.items.ModItems;
 
 public final class RecipeHelper {
-	public static void addRecipe(final ItemStack item, final Object[][] recipe) {
+	public static void addRecipe(@Nonnull ItemStack item, final Object[][] recipe) {
 		if (recipe != null && item != null) {
 			if (item.getItem() == ModItems.component && !ModItems.component.isValid(item)) {
 				return;
@@ -21,7 +21,7 @@ public final class RecipeHelper {
 			final String[] parts = new String[recipe.length];
 			boolean isOreDict = false;
 			boolean isSpecial = false;
-			final ItemStack[] items = new ItemStack[recipe.length * recipe[0].length];
+			@Nonnull ItemStack[] items = new ItemStack[recipe.length * recipe[0].length];
 			for (int i = 0; i < recipe.length; ++i) {
 				parts[i] = "";
 				for (int j = 0; j < recipe[i].length; ++j) {

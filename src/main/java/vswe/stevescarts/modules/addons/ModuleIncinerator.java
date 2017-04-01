@@ -12,7 +12,7 @@ public class ModuleIncinerator extends ModuleAddon {
 		super(cart);
 	}
 
-	public void incinerate(final ItemStack item) {
+	public void incinerate(@Nonnull ItemStack item) {
 		if (this.isItemValid(item)) {
 			if (this.getIncinerationCost() != 0) {
 				int amount = item.stackSize * this.getIncinerationCost();
@@ -30,7 +30,7 @@ public class ModuleIncinerator extends ModuleAddon {
 		return 3;
 	}
 
-	protected boolean isItemValid(final ItemStack item) {
+	protected boolean isItemValid(@Nonnull ItemStack item) {
 		if (item != null) {
 			for (int i = 0; i < this.getInventorySize(); ++i) {
 				if (this.getStack(i) != null && item.isItemEqual(this.getStack(i))) {

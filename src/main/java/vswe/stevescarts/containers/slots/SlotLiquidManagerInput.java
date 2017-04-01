@@ -16,11 +16,11 @@ public class SlotLiquidManagerInput extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return isItemStackValid(itemstack, this.manager, this.tankid);
 	}
 
-	public static boolean isItemStackValid(final ItemStack itemstack, final TileEntityLiquid manager, final int tankid) {
+	public static boolean isItemStackValid(@Nonnull ItemStack itemstack, final TileEntityLiquid manager, final int tankid) {
 		if (tankid < 0 || tankid >= 4) {
 			return FluidContainerRegistry.isContainer(itemstack);
 		}

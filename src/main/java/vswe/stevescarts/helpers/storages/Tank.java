@@ -55,7 +55,7 @@ public class Tank implements IFluidTank {
 	}
 
 	public void containerTransfer() {
-		final ItemStack item = this.owner.getInputContainer(this.tankid);
+		@Nonnull ItemStack item = this.owner.getInputContainer(this.tankid);
 		if (item != null) {
 			if (FluidContainerRegistry.isFilledContainer(item)) {
 				final FluidStack fluidContent = FluidContainerRegistry.getFluidForFilledItem(item);
@@ -69,7 +69,7 @@ public class Tank implements IFluidTank {
 							this.owner.addToOutputContainer(this.tankid, containerStack);
 						}
 						if (containerStack == null || containerStack.stackSize == 0) {
-							final ItemStack itemStack = item;
+							@Nonnull ItemStack itemStack = item;
 							--itemStack.stackSize;
 							if (item.stackSize <= 0) {
 								this.owner.clearInputContainer(this.tankid);
@@ -79,13 +79,13 @@ public class Tank implements IFluidTank {
 					}
 				}
 			} else if (FluidContainerRegistry.isEmptyContainer(item)) {
-				final ItemStack full = FluidContainerRegistry.fillFluidContainer(this.fluid, item);
+				@Nonnull ItemStack full = FluidContainerRegistry.fillFluidContainer(this.fluid, item);
 				if (full != null) {
 					final FluidStack fluidContent2 = FluidContainerRegistry.getFluidForFilledItem(full);
 					if (fluidContent2 != null) {
 						this.owner.addToOutputContainer(this.tankid, full);
 						if (full.stackSize == 0) {
-							final ItemStack itemStack2 = item;
+							@Nonnull ItemStack itemStack2 = item;
 							--itemStack2.stackSize;
 							if (item.stackSize <= 0) {
 								this.owner.clearInputContainer(this.tankid);

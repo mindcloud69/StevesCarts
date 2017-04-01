@@ -12,12 +12,12 @@ public class ModuleSnowball extends ModuleProjectile {
 	}
 
 	@Override
-	public boolean isValidProjectile(final ItemStack item) {
+	public boolean isValidProjectile(@Nonnull ItemStack item) {
 		return item.getItem() == Items.SNOWBALL;
 	}
 
 	@Override
-	public Entity createProjectile(final Entity target, final ItemStack item) {
+	public Entity createProjectile(final Entity target, @Nonnull ItemStack item) {
 		return new EntitySnowball(this.getCart().world);
 	}
 }

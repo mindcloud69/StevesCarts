@@ -151,7 +151,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		for (int i = 0; i < items.tagCount(); ++i) {
 			final NBTTagCompound item = items.getCompoundTagAt(i);
 			final int slot = item.getByte("Slot") & 0xFF;
-			final ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
+			@Nonnull ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
 			if (slot >= 0 && slot < this.getSizeInventory()) {
 				this.setInventorySlotContents(slot, iStack);
 			}
@@ -168,7 +168,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		final NBTTagList items = new NBTTagList();
 		if (this.inventoryStacks != null) {
 			for (int i = 0; i < this.inventoryStacks.length; ++i) {
-				final ItemStack iStack = this.inventoryStacks[i];
+				@Nonnull ItemStack iStack = this.inventoryStacks[i];
 				if (iStack != null) {
 					final NBTTagCompound item = new NBTTagCompound();
 					item.setByte("Slot", (byte) i);
@@ -281,12 +281,12 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 				return null;
 			}
 			if (this.inventoryStacks[i].stackSize <= j) {
-				final ItemStack itemstack = this.inventoryStacks[i];
+				@Nonnull ItemStack itemstack = this.inventoryStacks[i];
 				this.inventoryStacks[i] = null;
 				this.markDirty();
 				return itemstack;
 			}
-			final ItemStack itemstack2 = this.inventoryStacks[i].splitStack(j);
+			@Nonnull ItemStack itemstack2 = this.inventoryStacks[i].splitStack(j);
 			if (this.inventoryStacks[i].stackSize == 0) {
 				this.inventoryStacks[i] = null;
 			}
@@ -303,7 +303,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	@Override
-	public void setInventorySlotContents(final int i, final ItemStack itemstack) {
+	public void setInventorySlotContents(final int i, @Nonnull ItemStack itemstack) {
 		if (this.inventoryStacks == null) {
 			if (this.master != null) {
 				this.master.setInventorySlotContents(i, itemstack);
@@ -346,7 +346,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 			return this.master.getStackInSlot(i);
 		} else {
-			final ItemStack item = this.getStackInSlot(i);
+			@Nonnull ItemStack item = this.getStackInSlot(i);
 			if (item != null) {
 				this.setInventorySlotContents(i, null);
 				return item;
@@ -366,7 +366,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slot, final ItemStack item) {
+	public boolean isItemValidForSlot(final int slot, @Nonnull ItemStack item) {
 		if (this.getUpgrade() != null) {
 			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
 			if (inv != null) {
@@ -401,7 +401,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	@Override
-	public boolean canInsertItem(final int slot, final ItemStack item, EnumFacing side) {
+	public boolean canInsertItem(final int slot, @Nonnull ItemStack item, EnumFacing side) {
 		if (this.getUpgrade() != null) {
 			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
 			if (inv != null) {
@@ -412,7 +412,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	@Override
-	public boolean canExtractItem(final int slot, final ItemStack item, EnumFacing side) {
+	public boolean canExtractItem(final int slot, @Nonnull ItemStack item, EnumFacing side) {
 		if (this.getUpgrade() != null) {
 			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
 			if (inv != null) {
@@ -486,7 +486,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	@Override
-	public void addToOutputContainer(final int tankid, final ItemStack item) {
+	public void addToOutputContainer(final int tankid, @Nonnull ItemStack item) {
 		TransferHandler.TransferItem(item, this, 1, 1, new ContainerUpgrade(null, this), Slot.class, null, -1);
 	}
 

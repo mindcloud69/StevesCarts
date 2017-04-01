@@ -109,7 +109,7 @@ public enum ModBlocks {
 			{ null, Items.REDSTONE, null } });
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.ADVANCED_DETECTOR.block, 2), new Object[][] { { Items.IRON_INGOT, Blocks.STONE_PRESSURE_PLATE, Items.IRON_INGOT },
 			{ Items.IRON_INGOT, Items.REDSTONE, Items.IRON_INGOT }, { Items.IRON_INGOT, Blocks.STONE_PRESSURE_PLATE, Items.IRON_INGOT } });
-		final ItemStack unit = new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 1);
+		@Nonnull ItemStack unit = new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 1);
 		RecipeHelper.addRecipe(unit, new Object[][] { { Blocks.COBBLESTONE, Blocks.STONE_PRESSURE_PLATE, Blocks.COBBLESTONE },
 			{ Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT }, { Blocks.COBBLESTONE, Items.REDSTONE, Blocks.COBBLESTONE } });
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 0), new Object[][] { { ComponentTypes.SIMPLE_PCB.getItemStack() }, { unit } });
@@ -119,7 +119,7 @@ public enum ModBlocks {
 			{ null, ComponentTypes.SIMPLE_PCB.getItemStack(), null } });
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 4), new Object[][] { { Items.REDSTONE, Items.REDSTONE, Items.REDSTONE }, { Items.REDSTONE, unit, Items.REDSTONE },
 			{ Items.REDSTONE, Items.REDSTONE, Items.REDSTONE } });
-		final ItemStack advtank = new ItemStack(ModItems.modules, 1, 66);
+		@Nonnull ItemStack advtank = new ItemStack(ModItems.modules, 1, 66);
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.LIQUID_MANAGER.block, 1), new Object[][] { { advtank, Items.IRON_INGOT, advtank },
 			{ Items.IRON_INGOT, ComponentTypes.TANK_VALVE, Items.IRON_INGOT }, { advtank, Items.IRON_INGOT, advtank } });
 	}

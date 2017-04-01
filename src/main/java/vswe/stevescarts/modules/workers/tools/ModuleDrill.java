@@ -166,7 +166,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		}
 		if (storage != null) {
 			for (int i = 0; i < ((IInventory) storage).getSizeInventory(); ++i) {
-				final ItemStack iStack = ((IInventory) storage).getStackInSlot(i);
+				@Nonnull ItemStack iStack = ((IInventory) storage).getStackInSlot(i);
 				if (iStack != null) {
 					if (!this.minedItem(world, iStack, next)) {
 						return false;
@@ -177,7 +177,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		}
 		final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
 		if (this.shouldSilkTouch(blockState, coord)) {
-			final ItemStack item = this.getSilkTouchedItem(blockState);
+			@Nonnull ItemStack item = this.getSilkTouchedItem(blockState);
 			if (item != null && !this.minedItem(world, item, next)) {
 				return false;
 			}
@@ -203,7 +203,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		return true;
 	}
 
-	protected boolean minedItem(World world, final ItemStack iStack, BlockPos Coords) {
+	protected boolean minedItem(World world, @Nonnull ItemStack iStack, BlockPos Coords) {
 		if (iStack == null || iStack.stackSize <= 0) {
 			return true;
 		}

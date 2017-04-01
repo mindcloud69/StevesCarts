@@ -16,7 +16,7 @@ public class SlotExplosion extends SlotBase implements ISlotExplosions {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return ComponentTypes.DYNAMITE.isStackOfType(itemstack);
 	}
 }

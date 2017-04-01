@@ -39,7 +39,7 @@ public abstract class CartVersion {
 		return data;
 	}
 
-	public static void updateItemStack(final ItemStack item) {
+	public static void updateItemStack(@Nonnull ItemStack item) {
 		if (item != null && item.getItem() instanceof ItemCarts) {
 			final NBTTagCompound info = item.getTagCompound();
 			if (info != null) {
@@ -52,7 +52,7 @@ public abstract class CartVersion {
 		}
 	}
 
-	public static void addVersion(final ItemStack item) {
+	public static void addVersion(@Nonnull ItemStack item) {
 		if (item != null && item.getItem() instanceof ItemCarts) {
 			final NBTTagCompound info = item.getTagCompound();
 			if (info != null) {

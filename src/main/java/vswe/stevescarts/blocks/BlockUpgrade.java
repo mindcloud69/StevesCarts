@@ -134,7 +134,7 @@ public class BlockUpgrade extends BlockContainerBase {
 			}
 			if (upgrade.hasInventory()) {
 				for (int var8 = 0; var8 < upgrade.getSizeInventory(); ++var8) {
-					final ItemStack var9 = upgrade.getStackInSlotOnClosing(var8);
+					@Nonnull ItemStack var9 = upgrade.getStackInSlotOnClosing(var8);
 					if (var9 != null) {
 						final float var10 = world.rand.nextFloat() * 0.8f + 0.1f;
 						final float var11 = world.rand.nextFloat() * 0.8f + 0.1f;
@@ -144,7 +144,7 @@ public class BlockUpgrade extends BlockContainerBase {
 							if (var13 > var9.stackSize) {
 								var13 = var9.stackSize;
 							}
-							final ItemStack itemStack = var9;
+							@Nonnull ItemStack itemStack = var9;
 							itemStack.stackSize -= var13;
 							final EntityItem var14 = new EntityItem(world, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 							final float var15 = 0.05f;

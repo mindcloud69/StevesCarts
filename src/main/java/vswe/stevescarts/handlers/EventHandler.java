@@ -63,10 +63,10 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 		this.onCrafting(event.player, event.crafting, event.craftMatrix);
 	}
 
-	private void onCrafting(final EntityPlayer player, final ItemStack item, final IInventory craftMatrix) {
+	private void onCrafting(final EntityPlayer player, @Nonnull ItemStack item, final IInventory craftMatrix) {
 		if (item.getItem() == ModItems.component || item.getItem() == ModItems.modules) {
 			for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
-				final ItemStack sItem = craftMatrix.getStackInSlot(i);
+				@Nonnull ItemStack sItem = craftMatrix.getStackInSlot(i);
 				if (sItem != null && sItem.getItem().getContainerItem() != null) {
 					craftMatrix.setInventorySlotContents(i, null);
 				}

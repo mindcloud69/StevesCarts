@@ -54,7 +54,7 @@ public class ModulePig extends ModuleHull {
 	}
 
 	public boolean hasHelment() {
-		final ItemStack item = this.getHelmet();
+		@Nonnull ItemStack item = this.getHelmet();
 		return item != null && item.getItem() instanceof ItemArmor && ((ItemArmor) item.getItem()).armorType == EntityEquipmentSlot.HEAD;
 	}
 
@@ -63,7 +63,7 @@ public class ModulePig extends ModuleHull {
 		if (!this.hasHelment()) {
 			return null;
 		}
-		final ItemStack item = this.getHelmet();
+		@Nonnull ItemStack item = this.getHelmet();
 		if (item.getItem() == null) {
 			return null;
 		}
@@ -78,7 +78,7 @@ public class ModulePig extends ModuleHull {
 	@SideOnly(Side.CLIENT)
 	public int getHelmetColor(final boolean isOverlay) {
 		if (this.hasHelment()) {
-			final ItemStack item = this.getHelmet();
+			@Nonnull ItemStack item = this.getHelmet();
 			return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(item, isOverlay ? 1 : 0);
 		}
 		return -1;
@@ -87,7 +87,7 @@ public class ModulePig extends ModuleHull {
 	@SideOnly(Side.CLIENT)
 	public boolean getHelmetMultiRender() {
 		if (this.hasHelment()) {
-			final ItemStack item = this.getHelmet();
+			@Nonnull ItemStack item = this.getHelmet();
 			//TODO: Do we need this still
 			//return ((ItemArmor) item.getItem()).requiresMultipleRenderPasses();
 		}

@@ -44,11 +44,11 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 	public void update() {
 		super.update();
 		if (!this.getCart().world.isRemote) {
-			final ItemStack item = this.getStack(0);
+			@Nonnull ItemStack item = this.getStack(0);
 			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && this.dynamiteCount < this.getMaxDynamiteCount()) {
 				final int count = Math.min(this.getMaxDynamiteCount() - this.dynamiteCount, item.stackSize);
 				this.dynamiteCount += count;
-				final ItemStack itemStack = item;
+				@Nonnull ItemStack itemStack = item;
 				itemStack.stackSize -= count;
 				if (item.stackSize == 0) {
 					this.setStack(0, null);

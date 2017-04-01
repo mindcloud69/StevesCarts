@@ -19,7 +19,7 @@ public class GiftItem {
 	public static ArrayList<GiftItem> ChristmasList;
 	public static ArrayList<GiftItem> EasterList;
 
-	public GiftItem(final ItemStack item, final int costPerItem, final int chanceWeight) {
+	public GiftItem(@Nonnull ItemStack item, final int costPerItem, final int chanceWeight) {
 		this.item = item;
 		this.chanceWeight = chanceWeight;
 		this.costPerItem = costPerItem;
@@ -81,8 +81,8 @@ public class GiftItem {
 								}
 							}
 						}
-						final ItemStack copy;
-						final ItemStack item = copy = gift2.item.copy();
+						@Nonnull ItemStack copy;
+						@Nonnull ItemStack item = copy = gift2.item.copy();
 						copy.stackSize *= setSize;
 						items.add(item);
 						value -= setSize * gift2.costPerItem;

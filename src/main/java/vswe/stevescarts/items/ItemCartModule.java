@@ -26,7 +26,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 		ItemModelManager.registerItem(this);
 	}
 
-	public String getName(final ItemStack par1ItemStack) {
+	public String getName(@Nonnull ItemStack par1ItemStack) {
 		final ModuleData data = this.getModuleData(par1ItemStack, true);
 		if (data == null) {
 			return "Unknown SC2 module";
@@ -40,7 +40,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 	}
 
 	@Override
-	public String getUnlocalizedName(final ItemStack item) {
+	public String getUnlocalizedName(@Nonnull ItemStack item) {
 		final ModuleData data = this.getModuleData(item, true);
 		if (data != null) {
 			return "item.SC2:" + data.getRawName();
@@ -60,7 +60,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+	public void addInformation(@Nonnull ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		final ModuleData module = this.getModuleData(par1ItemStack, true);
 		if (module != null) {
 			module.addInformation(par3List, par1ItemStack.getTagCompound());
@@ -71,18 +71,18 @@ public class ItemCartModule extends Item implements TexturedItem {
 		}
 	}
 
-	public ModuleData getModuleData(final ItemStack itemstack) {
+	public ModuleData getModuleData(@Nonnull ItemStack itemstack) {
 		return this.getModuleData(itemstack, false);
 	}
 
-	public ModuleData getModuleData(final ItemStack itemstack, final boolean ignoreSize) {
+	public ModuleData getModuleData(@Nonnull ItemStack itemstack, final boolean ignoreSize) {
 		if (itemstack != null && itemstack.getItem() instanceof ItemCartModule && (ignoreSize || itemstack.stackSize != TileEntityCartAssembler.getRemovedSize())) {
 			return ModuleData.getList().get((byte) itemstack.getItemDamage());
 		}
 		return null;
 	}
 
-	public void addExtraDataToCart(final NBTTagCompound save, final ItemStack module, final int i) {
+	public void addExtraDataToCart(final NBTTagCompound save, @Nonnull ItemStack module, final int i) {
 		if (module.getTagCompound() != null && module.getTagCompound().hasKey("Data")) {
 			save.setByte("Data" + i, module.getTagCompound().getByte("Data"));
 		} else {
@@ -99,7 +99,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 		}
 	}
 
-	public void addExtraDataToModule(final ItemStack module, final NBTTagCompound info, final int i) {
+	public void addExtraDataToModule(@Nonnull ItemStack module, final NBTTagCompound info, final int i) {
 		NBTTagCompound save = module.getTagCompound();
 		if (save == null) {
 			module.setTagCompound(save = new NBTTagCompound());

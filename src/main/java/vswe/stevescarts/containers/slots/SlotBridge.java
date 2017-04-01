@@ -12,17 +12,17 @@ public class SlotBridge extends SlotBase implements ISpecialItemTransferValidato
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return isBridgeMaterial(itemstack);
 	}
 
-	public static boolean isBridgeMaterial(final ItemStack itemstack) {
+	public static boolean isBridgeMaterial(@Nonnull ItemStack itemstack) {
 		final Block b = Block.getBlockFromItem(itemstack.getItem());
 		return b == Blocks.PLANKS || b == Blocks.BRICK_BLOCK || b == Blocks.STONE || (b == Blocks.STONEBRICK && itemstack.getItemDamage() == 0);
 	}
 
 	@Override
-	public boolean isItemValidForTransfer(final ItemStack item, final TransferHandler.TRANSFER_TYPE type) {
+	public boolean isItemValidForTransfer(@Nonnull ItemStack item, final TransferHandler.TRANSFER_TYPE type) {
 		return this.isItemValid(item) && type != TransferHandler.TRANSFER_TYPE.OTHER;
 	}
 }

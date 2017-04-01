@@ -22,7 +22,7 @@ public class ModuleCrafter extends ModuleRecipe {
 	public void update() {
 		if (this.cooldown <= 0) {
 			if (!this.getCart().world.isRemote && this.getValidSlot() != null) {
-				final ItemStack result = this.dummy.getResult();
+				@Nonnull ItemStack result = this.dummy.getResult();
 				if (result != null && this.getCart().getModules() != null) {
 					if (result.stackSize == 0) {
 						result.stackSize = 1;
@@ -31,24 +31,24 @@ public class ModuleCrafter extends ModuleRecipe {
 					if (this.canCraftMoreOfResult(result)) {
 						final ArrayList<ItemStack> originals = new ArrayList<>();
 						for (int i = 0; i < this.allTheSlots.size(); ++i) {
-							final ItemStack item = this.allTheSlots.get(i).getStack();
+							@Nonnull ItemStack item = this.allTheSlots.get(i).getStack();
 							originals.add((item == null) ? null : item.copy());
 						}
 						final ArrayList<ItemStack> containers = new ArrayList<>();
 						boolean valid = true;
 						boolean edited = false;
 						for (int j = 0; j < 9; ++j) {
-							final ItemStack recipe = this.getStack(j);
+							@Nonnull ItemStack recipe = this.getStack(j);
 							if (recipe != null) {
 								valid = false;
 								for (int k = 0; k < this.inputSlots.size(); ++k) {
-									final ItemStack item2 = this.inputSlots.get(k).getStack();
+									@Nonnull ItemStack item2 = this.inputSlots.get(k).getStack();
 									if (item2 != null && item2.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item2, recipe)) {
 										edited = true;
 										if (item2.getItem().hasContainerItem(item2)) {
 											containers.add(item2.getItem().getContainerItem(item2));
 										}
-										final ItemStack itemStack = item2;
+										@Nonnull ItemStack itemStack = item2;
 										--itemStack.stackSize;
 										if (item2.stackSize <= 0) {
 											this.inputSlots.get(k).putStack(null);
@@ -69,7 +69,7 @@ public class ModuleCrafter extends ModuleRecipe {
 							} else {
 								edited = true;
 								for (int j = 0; j < containers.size(); ++j) {
-									final ItemStack container = containers.get(j);
+									@Nonnull ItemStack container = containers.get(j);
 									if (container != null) {
 										this.getCart().addItemToChest(container, this.getValidSlot(), null);
 										if (container.stackSize > 0) {

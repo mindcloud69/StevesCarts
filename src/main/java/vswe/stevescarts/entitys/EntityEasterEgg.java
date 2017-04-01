@@ -47,7 +47,7 @@ public class EntityEasterEgg extends EntityEgg {
 				}
 			} else {
 				final ArrayList<ItemStack> items = GiftItem.generateItems(this.rand, GiftItem.EasterList, 25 + this.rand.nextInt(300), 1);
-				for (final ItemStack item : items) {
+				for (@Nonnull ItemStack item : items) {
 					final EntityItem eItem = new EntityItem(this.world, this.posX, this.posY, this.posZ, item);
 					eItem.motionX = this.rand.nextGaussian() * 0.05000000074505806;
 					eItem.motionY = this.rand.nextGaussian() * 0.25;

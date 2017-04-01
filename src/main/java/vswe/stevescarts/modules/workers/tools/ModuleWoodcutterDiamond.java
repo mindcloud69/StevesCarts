@@ -26,7 +26,7 @@ public class ModuleWoodcutterDiamond extends ModuleWoodcutter {
 	}
 
 	@Override
-	public int getRepairItemUnits(final ItemStack item) {
+	public int getRepairItemUnits(@Nonnull ItemStack item) {
 		if (item != null && item.getItem() == Items.DIAMOND) {
 			return 160000;
 		}

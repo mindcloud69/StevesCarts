@@ -411,7 +411,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	public ItemStack getStackInSlotOnClosing(final int par1) {
 		if (!this.cargoItemStacks.get(par1).isEmpty()) {
-			final ItemStack var2 = this.cargoItemStacks.get(par1);
+			@Nonnull ItemStack var2 = this.cargoItemStacks.get(par1);
 			this.cargoItemStacks.set(par1, ItemStack.EMPTY);
 			return var2;
 		}

@@ -43,10 +43,10 @@ public class EventHandlerChristmas {
 		if (target instanceof EntityVillager) {
 			final EntityVillager villager = (EntityVillager) target;
 			if (villager.getProfessionForge() != TradeHandler.santaProfession) {
-				final ItemStack item = player.getHeldItem(EnumHand.MAIN_HAND);
+				@Nonnull ItemStack item = player.getHeldItem(EnumHand.MAIN_HAND);
 				if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == ComponentTypes.WARM_HAT.getId()) {
 					if (!player.capabilities.isCreativeMode) {
-						final ItemStack itemStack = item;
+						@Nonnull ItemStack itemStack = item;
 						--itemStack.stackSize;
 					}
 					if (!player.world.isRemote) {
@@ -72,7 +72,7 @@ public class EventHandlerChristmas {
 			final EntityPlayer player = event.player;
 			if (Constants.isChristmas && player.isPlayerFullyAsleep()) {
 				for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-					final ItemStack item = player.inventory.getStackInSlot(i);
+					@Nonnull ItemStack item = player.inventory.getStackInSlot(i);
 					if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == 56) {
 						item.setItemDamage(item.getItemDamage() + 1);
 					}
@@ -81,7 +81,7 @@ public class EventHandlerChristmas {
 		}
 	}
 
-	private void dropItem(final EntityLivingBase monster, final ItemStack item) {
+	private void dropItem(final EntityLivingBase monster, @Nonnull ItemStack item) {
 		final EntityItem obj = new EntityItem(monster.world, monster.posX, monster.posY, monster.posZ, item);
 		obj.motionX = monster.world.rand.nextGaussian() * 0.05000000074505806;
 		obj.motionY = monster.world.rand.nextGaussian() * 0.05000000074505806 + 0.20000000298023224;

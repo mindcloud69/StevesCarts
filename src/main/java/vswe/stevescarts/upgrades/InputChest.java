@@ -45,7 +45,7 @@ public class InputChest extends SimpleInventoryEffect {
 			} else {
 				comp.setByte("TransferCooldown", (byte) 20);
 				for (int slotId = 0; slotId < upgrade.getUpgrade().getInventorySize(); ++slotId) {
-					final ItemStack itemstack = upgrade.getStackInSlot(slotId);
+					@Nonnull ItemStack itemstack = upgrade.getStackInSlot(slotId);
 					if (itemstack != null) {
 						final ModuleData module = ModItems.modules.getModuleData(itemstack);
 						if (module != null) {

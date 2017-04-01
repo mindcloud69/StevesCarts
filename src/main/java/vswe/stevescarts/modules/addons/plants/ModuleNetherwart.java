@@ -18,12 +18,12 @@ public class ModuleNetherwart extends ModuleAddon implements ICropModule {
 	}
 
 	@Override
-	public boolean isSeedValid(final ItemStack seed) {
+	public boolean isSeedValid(@Nonnull ItemStack seed) {
 		return seed.getItem() == Items.NETHER_WART;
 	}
 
 	@Override
-	public IBlockState getCropFromSeed(final ItemStack seed, World world, BlockPos pos) {
+	public IBlockState getCropFromSeed(@Nonnull ItemStack seed, World world, BlockPos pos) {
 		return Blocks.NETHER_WART.getDefaultState();
 	}
 

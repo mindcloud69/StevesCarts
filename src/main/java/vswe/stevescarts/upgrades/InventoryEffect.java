@@ -36,7 +36,7 @@ public abstract class InventoryEffect extends InterfaceEffect {
 		this.slots.clear();
 	}
 
-	public boolean isItemValid(final int slotId, final ItemStack item) {
+	public boolean isItemValid(final int slotId, @Nonnull ItemStack item) {
 		return slotId >= 0 && slotId < this.slots.size() && this.slots.get(slotId).isItemValid(item);
 	}
 

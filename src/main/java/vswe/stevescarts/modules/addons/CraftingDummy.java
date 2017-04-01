@@ -44,7 +44,7 @@ public class CraftingDummy extends InventoryCrafting {
 	}
 
 	@Override
-	public void setInventorySlotContents(final int par1, final ItemStack par2ItemStack) {
+	public void setInventorySlotContents(final int par1, @Nonnull ItemStack par2ItemStack) {
 	}
 
 	public void update() {

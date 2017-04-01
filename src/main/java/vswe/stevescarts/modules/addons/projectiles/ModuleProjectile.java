@@ -10,7 +10,7 @@ public abstract class ModuleProjectile extends ModuleAddon {
 		super(cart);
 	}
 
-	public abstract boolean isValidProjectile(final ItemStack p0);
+	public abstract boolean isValidProjectile(@Nonnull ItemStack p0);
 
-	public abstract Entity createProjectile(final Entity p0, final ItemStack p1);
+	public abstract Entity createProjectile(final Entity p0, @Nonnull ItemStack p1);
 }

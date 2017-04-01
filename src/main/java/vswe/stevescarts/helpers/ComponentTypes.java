@@ -115,7 +115,7 @@ public enum ComponentTypes {
 		return this.id;
 	}
 
-	public boolean isStackOfType(final ItemStack itemstack) {
+	public boolean isStackOfType(@Nonnull ItemStack itemstack) {
 		return itemstack != null && itemstack.getItem() == ModItems.component && itemstack.getItemDamage() == this.id;
 	}
 

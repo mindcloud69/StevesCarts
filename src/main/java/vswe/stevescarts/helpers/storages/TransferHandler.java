@@ -18,7 +18,7 @@ public class TransferHandler {
 		return slotType.isInstance(slot);
 	}
 
-	public static boolean isItemValidForTransfer(final Slot slot, final ItemStack item, final TRANSFER_TYPE type) {
+	public static boolean isItemValidForTransfer(final Slot slot, @Nonnull ItemStack item, final TRANSFER_TYPE type) {
 		if (slot instanceof ISpecialItemTransferValidator) {
 			final ISpecialItemTransferValidator specSlot = (ISpecialItemTransferValidator) slot;
 			return specSlot.isItemValidForTransfer(item, type);
@@ -38,7 +38,7 @@ public class TransferHandler {
 		TransferItem(iStack, inv, 0, inv.getSizeInventory() - 1, cont, validSlot, invalidSlot, maxItems);
 	}
 
-	public static void TransferItem(final ItemStack iStack,
+	public static void TransferItem(@Nonnull ItemStack iStack,
 			final IInventory inv,
 			final int start,
 			final int end,
@@ -88,7 +88,7 @@ public class TransferHandler {
 			if (pos != -1) {
 				ItemStack existingItem = null;
 				if (inv.getStackInSlot(pos).isEmpty()) {
-					final ItemStack clone = iStack.copy();
+					@Nonnull ItemStack clone = iStack.copy();
 					clone.setCount(0);
 					if (!fake) {
 						inv.setInventorySlotContents(pos, clone);
@@ -117,7 +117,7 @@ public class TransferHandler {
 				} else {
 					iStack.shrink(stackSize);
 					if (!fake) {
-						final ItemStack stackInSlot = inv.getStackInSlot(pos);
+						@Nonnull ItemStack stackInSlot = inv.getStackInSlot(pos);
 						stackInSlot.grow(stackSize);
 					}
 					if (iStack.getCount() != 0 && !killMe && maxItems != 0) {

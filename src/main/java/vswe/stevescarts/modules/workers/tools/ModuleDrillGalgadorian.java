@@ -34,7 +34,7 @@ public class ModuleDrillGalgadorian extends ModuleDrill {
 	}
 
 	@Override
-	public int getRepairItemUnits(final ItemStack item) {
+	public int getRepairItemUnits(@Nonnull ItemStack item) {
 		return 0;
 	}
 

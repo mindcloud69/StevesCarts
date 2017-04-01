@@ -12,7 +12,7 @@ public class SlotCartDisassemble extends SlotCart {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		if (this.inventory instanceof TileEntityUpgrade) {
 			final TileEntityUpgrade upgrade = (TileEntityUpgrade) this.inventory;
 			if (upgrade.getUpgrade() != null) {

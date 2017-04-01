@@ -107,7 +107,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 					if (flag) {
 						this.getCart().world.setBlockState(new BlockPos(i, j, k), Block.getBlockFromItem(this.getStack(l).getItem()).getStateFromMeta(getStack(l).getItemDamage()));
 						if (!this.getCart().hasCreativeSupplies()) {
-							final ItemStack stack = this.getStack(l);
+							@Nonnull ItemStack stack = this.getStack(l);
 							--stack.stackSize;
 							if (this.getStack(l).stackSize == 0) {
 								this.setStack(l, null);
@@ -180,7 +180,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean haveSupplies() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			final ItemStack item = this.getStack(i);
+			@Nonnull ItemStack item = this.getStack(i);
 			if (item != null && this.validRail(item.getItem())) {
 				return true;
 			}

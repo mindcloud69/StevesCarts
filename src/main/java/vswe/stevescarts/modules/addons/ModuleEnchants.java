@@ -99,7 +99,7 @@ public class ModuleEnchants extends ModuleAddon {
 						for (int j = 0; j < 3; ++j) {
 							if (i != j && this.enchants[i] != null && this.enchants[j] != null && this.enchants[i].getEnchantment() == this.enchants[j].getEnchantment()) {
 								this.enchants[i] = null;
-								final ItemStack stack = this.getStack(i);
+								@Nonnull ItemStack stack = this.getStack(i);
 								++stack.stackSize;
 								valid = false;
 								break;

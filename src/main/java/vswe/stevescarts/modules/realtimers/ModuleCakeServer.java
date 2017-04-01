@@ -45,7 +45,7 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 					++this.cooldown;
 				}
 			}
-			final ItemStack item = this.getStack(0);
+			@Nonnull ItemStack item = this.getStack(0);
 			if (item != null && item.getItem().equals(Items.CAKE) && this.getCakeBuffer() + 6 <= 66) {
 				this.setCakeBuffer(this.getCakeBuffer() + 6);
 				this.setStack(0, null);

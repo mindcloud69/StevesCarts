@@ -96,7 +96,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 	}
 
 	private void addStuff(final List<ItemStack> stuff) {
-		for (final ItemStack iStack : stuff) {
+		for (@Nonnull ItemStack iStack : stuff) {
 			this.getCart().addItemToChest(iStack);
 			if (iStack.stackSize != 0) {
 				final EntityItem entityitem = new EntityItem(this.getCart().world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);

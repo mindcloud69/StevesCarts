@@ -9,7 +9,7 @@ public class SlotCartCrafter extends SlotFake {
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return true;
 	}
 }

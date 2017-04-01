@@ -54,7 +54,7 @@ public class ItemBlockStorage extends ItemBlock {
 	//		}
 	//	}
 
-	public String getName(final ItemStack item) {
+	public String getName(@Nonnull ItemStack item) {
 		if (item == null) {
 			return "Unknown";
 		}
@@ -64,7 +64,7 @@ public class ItemBlockStorage extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(final ItemStack item) {
+	public String getUnlocalizedName(@Nonnull ItemStack item) {
 		if (item != null) {
 			final StringBuilder append = new StringBuilder().append("item.");
 			final StevesCarts instance = StevesCarts.instance;

@@ -66,7 +66,7 @@ public class ModuleRemover extends ModuleWorker {
 					return true;
 				}
 				final int rInt = this.getCart().rand.nextInt(100);
-				final ItemStack iStack = new ItemStack(Blocks.RAIL, 1, 0);
+				@Nonnull ItemStack iStack = new ItemStack(Blocks.RAIL, 1, 0);
 				this.getCart().addItemToChest(iStack);
 				if (iStack.stackSize == 0) {
 					world.setBlockToAir(pos);

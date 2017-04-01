@@ -46,13 +46,13 @@ public class ModuleMilker extends ModuleBase {
 			}
 			if (this.milkbuffer == 1000) {
 				for (int i = 0; i < this.getInventorySize(); ++i) {
-					final ItemStack bucket = this.getStack(i);
+					@Nonnull ItemStack bucket = this.getStack(i);
 					if (!bucket.isEmpty() && bucket.getItem() == Items.BUCKET) {
-						final ItemStack milk = new ItemStack(Items.MILK_BUCKET);
+						@Nonnull ItemStack milk = new ItemStack(Items.MILK_BUCKET);
 						this.getCart().addItemToChest(milk);
 						if (milk.getCount() <= 0) {
 							this.milkbuffer = 0;
-							final ItemStack itemStack = bucket;
+							@Nonnull ItemStack itemStack = bucket;
 							itemStack.shrink(1);
 							if (itemStack.getCount() <= 0) {
 								this.setStack(i, ItemStack.EMPTY);

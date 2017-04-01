@@ -28,7 +28,7 @@ public class DefaultTreeModule implements ITreeModule {
 	}
 
 	@Override
-	public boolean isSapling(final ItemStack sapling) {
+	public boolean isSapling(@Nonnull ItemStack sapling) {
 		if (sapling != null) {
 			if (this.isStackSapling(sapling)) {
 				return true;
@@ -46,7 +46,7 @@ public class DefaultTreeModule implements ITreeModule {
 		return stack.getItem().onItemUse(stack, fakePlayer, world, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS;
 	}
 
-	private boolean isStackSapling(final ItemStack sapling) {
+	private boolean isStackSapling(@Nonnull ItemStack sapling) {
 		final int[] ids = OreDictionary.getOreIDs(sapling);
 		for (int id : ids) {
 			final String name = OreDictionary.getOreName(id);

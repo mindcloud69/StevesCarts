@@ -75,7 +75,7 @@ public class ModuleCleaner extends ModuleBase {
 				final EntityArrow eItem2 = (EntityArrow) list.get(e);
 				if (Math.pow(eItem2.motionX, 2.0) + Math.pow(eItem2.motionY, 2.0) + Math.pow(eItem2.motionZ, 2.0) < 0.2 && eItem2.arrowShake <= 0 && !eItem2.isDead) {
 					eItem2.arrowShake = 3;
-					final ItemStack iItem = new ItemStack(Items.ARROW, 1);
+					@Nonnull ItemStack iItem = new ItemStack(Items.ARROW, 1);
 					this.getCart().addItemToChest(iItem);
 					if (iItem.stackSize <= 0) {
 						//TODO
@@ -89,7 +89,7 @@ public class ModuleCleaner extends ModuleBase {
 		}
 	}
 
-	private boolean failPickup(final ItemStack item) {
+	private boolean failPickup(@Nonnull ItemStack item) {
 		final int x = this.normalize(this.getCart().pushZ);
 		final int z = this.normalize(this.getCart().pushX);
 		if (x == 0 && z == 0) {
