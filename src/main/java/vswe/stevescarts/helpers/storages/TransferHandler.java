@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.containers.slots.ISpecialItemTransferValidator;
 import vswe.stevescarts.containers.slots.ISpecialSlotValidator;
 
+import javax.annotation.Nonnull;
+
 public class TransferHandler {
 	public static boolean isSlotOfType(final Slot slot, final Class slotType) {
 		if (slot instanceof ISpecialSlotValidator) {
@@ -24,15 +26,15 @@ public class TransferHandler {
 		return slot.isItemValid(item);
 	}
 
-	public static void TransferItem(final ItemStack iStack, final IInventory inv, final Container cont, final int maxItems) {
+	public static void TransferItem(@Nonnull ItemStack iStack, final IInventory inv, final Container cont, final int maxItems) {
 		TransferItem(iStack, inv, cont, Slot.class, null, maxItems);
 	}
 
-	public static void TransferItem(final ItemStack iStack, final IInventory inv, final Container cont, final Class validSlot, final int maxItems, final TRANSFER_TYPE type) {
+	public static void TransferItem(@Nonnull  ItemStack iStack, final IInventory inv, final Container cont, final Class validSlot, final int maxItems, final TRANSFER_TYPE type) {
 		TransferItem(iStack, inv, 0, inv.getSizeInventory() - 1, cont, validSlot, null, maxItems, type, false);
 	}
 
-	public static void TransferItem(final ItemStack iStack, final IInventory inv, final Container cont, final Class validSlot, final Class invalidSlot, final int maxItems) {
+	public static void TransferItem(@Nonnull  ItemStack iStack, final IInventory inv, final Container cont, final Class validSlot, final Class invalidSlot, final int maxItems) {
 		TransferItem(iStack, inv, 0, inv.getSizeInventory() - 1, cont, validSlot, invalidSlot, maxItems);
 	}
 
@@ -47,7 +49,7 @@ public class TransferHandler {
 		TransferItem(iStack, inv, start, end, cont, validSlot, invalidSlot, maxItems, TRANSFER_TYPE.OTHER, false);
 	}
 
-	public static void TransferItem(final ItemStack iStack,
+	public static void TransferItem(@Nonnull  ItemStack iStack,
 			final IInventory inv,
 			int start,
 			int end,
@@ -65,7 +67,7 @@ public class TransferHandler {
 		do {
 			pos = -1;
 			for (int i = startEmpty; i <= end; ++i) {
-				if (isSlotOfType(cont.getSlot(i), validSlot) && (invalidSlot == null || !isSlotOfType(cont.getSlot(i), invalidSlot)) && inv.getStackInSlot(i) != null && inv.getStackInSlot(i).getItem() == iStack.getItem() && inv.getStackInSlot(i).isStackable() && inv.getStackInSlot(i).stackSize < inv.getStackInSlot(i).getMaxStackSize() && inv.getStackInSlot(i).stackSize < cont.getSlot(i).getSlotStackLimit() && inv.getStackInSlot(i).stackSize > 0 && iStack.stackSize > 0 && (!inv.getStackInSlot(i).getHasSubtypes() || inv.getStackInSlot(i).getItemDamage() == iStack.getItemDamage()) && (inv.getStackInSlot(i).getTagCompound() == null || inv.getStackInSlot(i).getTagCompound().equals(iStack.getTagCompound()))) {
+				if (isSlotOfType(cont.getSlot(i), validSlot) && (invalidSlot == null || !isSlotOfType(cont.getSlot(i), invalidSlot)) && !inv.getStackInSlot(i).isEmpty() && inv.getStackInSlot(i).getItem() == iStack.getItem() && inv.getStackInSlot(i).isStackable() && inv.getStackInSlot(i).getCount() < inv.getStackInSlot(i).getMaxStackSize() && inv.getStackInSlot(i).getCount() < cont.getSlot(i).getSlotStackLimit() && inv.getStackInSlot(i).getCount() > 0 && iStack.getCount() > 0 && (!inv.getStackInSlot(i).getHasSubtypes() || inv.getStackInSlot(i).getItemDamage() == iStack.getItemDamage()) && (inv.getStackInSlot(i).getTagCompound() == null || inv.getStackInSlot(i).getTagCompound().equals(iStack.getTagCompound()))) {
 					pos = i;
 					startEmpty = pos + 1;
 					break;
@@ -75,7 +77,7 @@ public class TransferHandler {
 				for (int i = startOccupied; i <= end; ++i) {
 					if (isSlotOfType(cont.getSlot(i), validSlot) && (invalidSlot == null || !isSlotOfType(cont.getSlot(i), invalidSlot))) {
 						final Slot slot = cont.getSlot(i);
-						if (isItemValidForTransfer(slot, iStack, type) && inv.getStackInSlot(i) == null) {
+						if (isItemValidForTransfer(slot, iStack, type) && inv.getStackInSlot(i).isEmpty()) {
 							pos = i;
 							startOccupied = pos + 1;
 							break;
@@ -85,9 +87,9 @@ public class TransferHandler {
 			}
 			if (pos != -1) {
 				ItemStack existingItem = null;
-				if (inv.getStackInSlot(pos) == null) {
+				if (inv.getStackInSlot(pos).isEmpty()) {
 					final ItemStack clone = iStack.copy();
-					clone.stackSize = 0;
+					clone.setCount(0);
 					if (!fake) {
 						inv.setInventorySlotContents(pos, clone);
 					}
@@ -95,12 +97,12 @@ public class TransferHandler {
 				} else {
 					existingItem = inv.getStackInSlot(pos);
 				}
-				int stackSize = iStack.stackSize;
-				if (stackSize > existingItem.getMaxStackSize() - existingItem.stackSize) {
-					stackSize = existingItem.getMaxStackSize() - existingItem.stackSize;
+				int stackSize = iStack.getCount();
+				if (stackSize > existingItem.getMaxStackSize() - existingItem.getCount()) {
+					stackSize = existingItem.getMaxStackSize() - existingItem.getCount();
 				}
-				if (stackSize > cont.getSlot(pos).getSlotStackLimit() - existingItem.stackSize) {
-					stackSize = cont.getSlot(pos).getSlotStackLimit() - existingItem.stackSize;
+				if (stackSize > cont.getSlot(pos).getSlotStackLimit() - existingItem.getCount()) {
+					stackSize = cont.getSlot(pos).getSlotStackLimit() - existingItem.getCount();
 				}
 				boolean killMe = false;
 				if (maxItems != -1) {
@@ -113,12 +115,12 @@ public class TransferHandler {
 				if (stackSize <= 0) {
 					pos = -1;
 				} else {
-					iStack.stackSize -= stackSize;
+					iStack.shrink(stackSize);
 					if (!fake) {
 						final ItemStack stackInSlot = inv.getStackInSlot(pos);
-						stackInSlot.stackSize += stackSize;
+						stackInSlot.grow(stackSize);
 					}
-					if (iStack.stackSize != 0 && !killMe && maxItems != 0) {
+					if (iStack.getCount() != 0 && !killMe && maxItems != 0) {
 						continue;
 					}
 					pos = -1;

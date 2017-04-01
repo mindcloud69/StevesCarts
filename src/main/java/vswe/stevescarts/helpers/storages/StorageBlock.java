@@ -11,7 +11,7 @@ public class StorageBlock {
 	public StorageBlock(final String name, final ItemStack item) {
 		this.name = name;
 		this.item = item.copy();
-		this.item.stackSize = 9;
+		this.item.setCount(9);
 	}
 
 	public String getName() {

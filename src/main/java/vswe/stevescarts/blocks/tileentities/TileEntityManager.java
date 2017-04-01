@@ -1,5 +1,6 @@
 package vswe.stevescarts.blocks.tileentities;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -22,7 +24,7 @@ import vswe.stevescarts.helpers.storages.TransferManager;
 
 public abstract class TileEntityManager extends TileEntityBase implements IInventory {
 	private TransferManager standardTransferHandler;
-	private ItemStack[] cargoItemStacks;
+	private NonNullList<ItemStack> cargoItemStacks;
 	public int layoutType;
 	public int moveTime;
 	public boolean[] toCart;
@@ -35,30 +37,31 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		this.doReturn = new boolean[] { false, false, false, false };
 		this.amount = new int[] { 0, 0, 0, 0 };
 		this.color = new int[] { 1, 2, 3, 4 };
-		this.cargoItemStacks = new ItemStack[this.getSizeInventory()];
+		this.cargoItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 		this.moveTime = 0;
 		this.standardTransferHandler = new TransferManager();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(final int i) {
-		return this.cargoItemStacks[i];
+		return this.cargoItemStacks.get(i);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack itemstack = ItemStackHelper.getAndSplit(cargoItemStacks, index, count);
-		if (itemstack != null) {
+		if (!itemstack.isEmpty()) {
 			this.markDirty();
 		}
 		return itemstack;
 	}
 
 	@Override
-	public void setInventorySlotContents(final int i, final ItemStack itemstack) {
-		this.cargoItemStacks[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
-			itemstack.stackSize = this.getInventoryStackLimit();
+	public void setInventorySlotContents(final int i, @Nonnull
+		ItemStack itemstack) {
+		this.cargoItemStacks.set(i, itemstack);
+		if (!itemstack.isEmpty() && itemstack.getCount() > this.getInventoryStackLimit()) {
+			itemstack.setCount(this.getInventoryStackLimit());
 		}
 		this.markDirty();
 	}
@@ -67,12 +70,12 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		final NBTTagList nbttaglist = nbttagcompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-		this.cargoItemStacks = new ItemStack[this.getSizeInventory()];
+		this.cargoItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
 			final NBTTagCompound nbttagcompound2 = nbttaglist.getCompoundTagAt(i);
 			final byte byte0 = nbttagcompound2.getByte("Slot");
-			if (byte0 >= 0 && byte0 < this.cargoItemStacks.length) {
-				this.cargoItemStacks[byte0] = ItemStack.loadItemStackFromNBT(nbttagcompound2);
+			if (byte0 >= 0 && byte0 < this.cargoItemStacks.size()) {
+				this.cargoItemStacks.set(byte0, new ItemStack(nbttagcompound2));
 			}
 		}
 		this.moveTime = nbttagcompound.getByte("movetime");
@@ -112,11 +115,11 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		nbttagcompound.setByte("tocart", temp);
 		nbttagcompound.setByte("doReturn", temp2);
 		final NBTTagList nbttaglist = new NBTTagList();
-		for (int j = 0; j < this.cargoItemStacks.length; ++j) {
-			if (this.cargoItemStacks[j] != null) {
+		for (int j = 0; j < this.cargoItemStacks.size(); ++j) {
+			if (!this.cargoItemStacks.get(j).isEmpty()) {
 				final NBTTagCompound nbttagcompound2 = new NBTTagCompound();
 				nbttagcompound2.setByte("Slot", (byte) j);
-				this.cargoItemStacks[j].writeToNBT(nbttagcompound2);
+				this.cargoItemStacks.get(j).writeToNBT(nbttagcompound2);
 				nbttaglist.appendTag(nbttagcompound2);
 			}
 		}
@@ -407,9 +410,9 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	public ItemStack getStackInSlotOnClosing(final int par1) {
-		if (this.cargoItemStacks[par1] != null) {
-			final ItemStack var2 = this.cargoItemStacks[par1];
-			this.cargoItemStacks[par1] = null;
+		if (!this.cargoItemStacks.get(par1).isEmpty()) {
+			final ItemStack var2 = this.cargoItemStacks.get(par1);
+			this.cargoItemStacks.set(par1, ItemStack.EMPTY);
 			return var2;
 		}
 		return null;
@@ -437,7 +440,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Override
 	public int getSizeInventory() {
-		return cargoItemStacks.length;
+		return cargoItemStacks.size();
 	}
 
 	@Nullable

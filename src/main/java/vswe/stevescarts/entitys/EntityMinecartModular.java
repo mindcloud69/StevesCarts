@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import io.netty.buffer.ByteBuf;
@@ -514,17 +515,17 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			this.entityDropItem(this.getCartItem(), 0.0f);
 			for (int i = 0; i < this.getSizeInventory(); ++i) {
 				final ItemStack itemstack = this.getStackInSlot(i);
-				if (itemstack != null) {
+				if (!itemstack.isEmpty()) {
 					final float f = this.rand.nextFloat() * 0.8f + 0.1f;
 					final float f2 = this.rand.nextFloat() * 0.8f + 0.1f;
 					final float f3 = this.rand.nextFloat() * 0.8f + 0.1f;
-					while (itemstack.stackSize > 0) {
+					while (itemstack.getCount() > 0) {
 						int j = this.rand.nextInt(21) + 10;
-						if (j > itemstack.stackSize) {
-							j = itemstack.stackSize;
+						if (j > itemstack.getCount()) {
+							j = itemstack.getCount();
 						}
 						final ItemStack itemStack = itemstack;
-						itemStack.stackSize -= j;
+						itemStack.shrink(j);
 						final EntityItem entityitem = new EntityItem(this.world, this.posX + f, this.posY + f2, this.posZ + f3, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
 						final float f4 = 0.05f;
 						entityitem.motionX = (float) this.rand.nextGaussian() * f4;
@@ -825,6 +826,16 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
+	public boolean isEmpty() {
+		if (this.modules != null) {
+			for (final ModuleBase module : this.modules) {
+				//TODO 1.11
+			}
+		}
+		return false;
+	}
+
+	@Override
 	protected void moveAlongTrack(BlockPos pos, IBlockState state) {
 		if (!getPassengers().isEmpty()) {
 			Entity riddenByEntity = getPassengers().get(0);
@@ -1023,10 +1034,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer entityplayer,
 			Vec3d vec,
-			@Nullable
-			ItemStack stack,
 			EnumHand hand) {
-		if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, entityplayer, stack, hand))){
+		if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, entityplayer, hand))){
 			return EnumActionResult.SUCCESS;
 		}
 		if (this.isPlaceholder) {
@@ -1229,8 +1238,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack removeStackFromSlot(int index) {
-		if (this.getStackInSlot(index) != null) {
+		if (!this.getStackInSlot(index).isEmpty()) {
 			final ItemStack var2 = this.getStackInSlot(index);
 			this.setInventorySlotContents(index, null);
 			return var2;
@@ -1239,6 +1249,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getStackInSlot(int i) {
 		if (this.modules != null) {
 			for (final ModuleBase module : this.modules) {
@@ -1252,7 +1263,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
-	public void setInventorySlotContents(int i, final ItemStack item) {
+	public void setInventorySlotContents(int i, @Nonnull ItemStack item) {
 		if (this.modules != null) {
 			for (final ModuleBase module : this.modules) {
 				if (i < module.getInventorySize()) {
@@ -1265,21 +1276,22 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack decrStackSize(final int i, final int n) {
 		if (this.modules == null) {
-			return null;
+			return ItemStack.EMPTY;
 		}
-		if (this.getStackInSlot(i) == null) {
-			return null;
+		if (this.getStackInSlot(i).isEmpty()) {
+			return ItemStack.EMPTY;
 		}
-		if (this.getStackInSlot(i).stackSize <= n) {
+		if (this.getStackInSlot(i).getCount() <= n) {
 			final ItemStack item = this.getStackInSlot(i);
-			this.setInventorySlotContents(i, null);
+			this.setInventorySlotContents(i, ItemStack.EMPTY);
 			return item;
 		}
 		final ItemStack item = this.getStackInSlot(i).splitStack(n);
-		if (this.getStackInSlot(i).stackSize == 0) {
-			this.setInventorySlotContents(i, null);
+		if (this.getStackInSlot(i).getCount() == 0) {
+			this.setInventorySlotContents(i, ItemStack.EMPTY);
 		}
 		return item;
 	}

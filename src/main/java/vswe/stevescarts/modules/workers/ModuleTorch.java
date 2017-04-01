@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -77,18 +78,18 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 					if (world.isAirBlock(pos) && Blocks.TORCH.canPlaceBlockAt(world, pos)) {
 						int i = 0;
 						while (i < this.getInventorySize()) {
-							if (this.getStack(i) != null && Block.getBlockFromItem(this.getStack(i).getItem()) == Blocks.TORCH) {
+							if (!this.getStack(i).isEmpty() && Block.getBlockFromItem(this.getStack(i).getItem()) == Blocks.TORCH) {
 								if (this.doPreWork()) {
 									this.startWorking(3);
 									return true;
 								}
-								IBlockState state = Blocks.TORCH.getStateForPlacement(world, pos, EnumFacing.DOWN, 0, 0, 0, 0, null, new ItemStack(Blocks.TORCH));
+								IBlockState state = Blocks.TORCH.getStateForPlacement(world, pos, EnumFacing.DOWN, 0, 0, 0, 0, getFakePlayer(), EnumHand.MAIN_HAND);
 								world.setBlockState(new BlockPos(xTorch, y + level, zTorch), state);
 								if (!cart.hasCreativeSupplies()) {
 									final ItemStack stack = this.getStack(i);
-									--stack.stackSize;
-									if (this.getStack(i).stackSize == 0) {
-										this.setStack(i, null);
+									stack.shrink(1);
+									if (this.getStack(i).getCount() == 0) {
+										this.setStack(i, ItemStack.EMPTY);
 									}
 									this.onInventoryChanged();
 									break;

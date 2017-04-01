@@ -47,6 +47,8 @@ import vswe.stevescarts.helpers.SimulationInfo;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.data.ModuleData;
 
+import javax.annotation.Nonnull;
+
 public abstract class ModuleBase {
 	private EntityMinecartModular cart;
 	private ItemStack[] cargo;
@@ -190,11 +192,12 @@ public abstract class ModuleBase {
 	public void moveMinecartOnRail(BlockPos pos) {
 	}
 
+	@Nonnull
 	public ItemStack getStack(final int slot) {
 		return this.cargo[slot];
 	}
 
-	public void setStack(final int slot, final ItemStack item) {
+	public void setStack(final int slot, @Nonnull ItemStack item) {
 		this.cargo[slot] = item;
 	}
 
@@ -422,7 +425,7 @@ public abstract class ModuleBase {
 				final NBTTagCompound item = items.getCompoundTagAt(i);
 				final int slot = item.getByte("Slot") & 0xFF;
 				if (slot >= 0 && slot < this.getInventorySize()) {
-					this.setStack(slot, ItemStack.loadItemStackFromNBT(item));
+					this.setStack(slot, new ItemStack(item));
 				}
 			}
 		}

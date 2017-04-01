@@ -48,7 +48,7 @@ repositories {
 
 
 dependencies {
-	compile ('net.sengir.forestry:forestry_1.10.2:5.2.16.326:api'){
+	compile ('net.sengir.forestry:forestry_1.11.2:5.3.2.67:api'){
 		transitive = false;
 	}
 }
