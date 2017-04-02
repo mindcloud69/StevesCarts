@@ -13,7 +13,7 @@ import vswe.stevescarts.containers.slots.SlotLiquidOutput;
 import vswe.stevescarts.containers.slots.SlotLiquidUpgradeInput;
 import vswe.stevescarts.guis.GuiUpgrade;
 import vswe.stevescarts.helpers.ResourceHelper;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 
 public abstract class TankEffect extends InventoryEffect {
 	private static final int tankInterfaceX = 35;
@@ -121,7 +121,7 @@ public abstract class TankEffect extends InventoryEffect {
 
 	@Override
 	public void init(final TileEntityUpgrade upgrade) {
-		upgrade.tank = new Tank(upgrade, this.getTankSize(), 0);
+		upgrade.tank = new SCTank(upgrade, this.getTankSize(), 0);
 		upgrade.getCompound().setByte("Tick", (byte) 0);
 	}
 

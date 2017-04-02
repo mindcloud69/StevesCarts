@@ -4,8 +4,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import reborncore.RebornRegistry;
+import vswe.stevescarts.Constants;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.DetectorType;
@@ -32,9 +35,9 @@ public final class ModItems {
 		(ModItems.carts = new ItemCarts()).setUnlocalizedName("SC2:ModularCart");
 		ModItems.component = new ItemCartComponent();
 		ModItems.modules = new ItemCartModule();
-		GameRegistry.registerItem(ModItems.carts, "ModularCart");
-		GameRegistry.registerItem(ModItems.component, "ModuleComponents");
-		GameRegistry.registerItem(ModItems.modules, "CartModule");
+		RebornRegistry.registerItem(ModItems.carts, new ResourceLocation(Constants.MOD_ID, "modularcart"));
+		RebornRegistry.registerItem(ModItems.component, new ResourceLocation(Constants.MOD_ID, "modulecomponents"));
+		RebornRegistry.registerItem(ModItems.modules, new ResourceLocation(Constants.MOD_ID, "cartmodule"));
 		ModuleData.init();
 		for (final ModuleData module : ModuleData.getList().values()) {
 			if (!module.getIsLocked()) {

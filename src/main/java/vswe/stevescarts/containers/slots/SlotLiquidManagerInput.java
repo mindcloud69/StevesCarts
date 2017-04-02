@@ -3,7 +3,7 @@ package vswe.stevescarts.containers.slots;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +30,7 @@ public class SlotLiquidManagerInput extends SlotBase {
 		if (tankid < 0 || tankid >= 4) {
 			return FluidContainerRegistry.isContainer(itemstack);
 		}
-		final Tank tank = manager.getTanks()[tankid];
+		final SCTank tank = manager.getTanks()[tankid];
 		return (FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null) || (FluidContainerRegistry.isFilledContainer(itemstack) && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))));
 	}
 }

@@ -12,11 +12,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
+import reborncore.common.util.Tank;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDistributor;
@@ -25,12 +27,12 @@ import vswe.stevescarts.guis.GuiDistributor;
 import vswe.stevescarts.helpers.DistributorSetting;
 import vswe.stevescarts.helpers.DistributorSide;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
-public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler {
+public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory {
 	private ArrayList<DistributorSide> sides;
 	private boolean dirty;
 	private boolean dirty2;
@@ -210,6 +212,11 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return false;
+	}
+
+	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(final int slot) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
@@ -281,25 +288,25 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return false;
 	}
 
-	@Override
-	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
-		final IFluidTank[] tanks = this.getTanks(from);
-		int amount = 0;
-		for (final IFluidTank tank : tanks) {
-			amount += tank.fill(resource, doFill);
-		}
-		return amount;
-	}
-
-	@Override
-	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
-		return this.drain(from, null, maxDrain, doDrain);
-	}
-
-	@Override
-	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
-		return this.drain(from, resource, (resource == null) ? 0 : resource.amount, doDrain);
-	}
+//	@Override
+//	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
+//		final IFluidTank[] tanks = this.getTanks(from);
+//		int amount = 0;
+//		for (final IFluidTank tank : tanks) {
+//			amount += tank.fill(resource, doFill);
+//		}
+//		return amount;
+//	}
+//
+//	@Override
+//	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
+//		return this.drain(from, null, maxDrain, doDrain);
+//	}
+//
+//	@Override
+//	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
+//		return this.drain(from, resource, (resource == null) ? 0 : resource.amount, doDrain);
+//	}
 
 	private FluidStack drain(final EnumFacing from, final FluidStack resource, int maxDrain, final boolean doDrain) {
 		FluidStack ret = resource;
@@ -331,7 +338,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return ret;
 	}
 
-	private IFluidTank[] getTanks(final EnumFacing direction) {
+	private SCTank[] getTanks(final EnumFacing direction) {
 		final TileEntityManager[] invs = this.getInventories();
 		if (invs.length > 0) {
 			for (final DistributorSide side : this.getSides()) {
@@ -345,17 +352,17 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 					} else if (this.hasBot) {
 						this.populateTanks(tanks, side, invs[0], false);
 					}
-					return tanks.toArray(new IFluidTank[tanks.size()]);
+					return tanks.toArray(new SCTank[tanks.size()]);
 				}
 			}
 		}
-		return new IFluidTank[0];
+		return new SCTank[0];
 	}
 
 	private void populateTanks(final ArrayList<IFluidTank> tanks, final DistributorSide side, final TileEntityManager manager, final boolean top) {
 		if (manager != null && manager instanceof TileEntityLiquid) {
 			final TileEntityLiquid fluid = (TileEntityLiquid) manager;
-			final Tank[] managerTanks = fluid.getTanks();
+			final SCTank[] managerTanks = fluid.getTanks();
 			for (int i = 0; i < 4; ++i) {
 				if (this.isChunkValid(side, manager, i, top) && !tanks.contains(managerTanks[i])) {
 					tanks.add(managerTanks[i]);
@@ -398,25 +405,25 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return true;
 	}
 
-	@Override
-	public boolean canFill(final EnumFacing from, final Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
-		final IFluidTank[] tanks = this.getTanks(from);
-		final FluidTankInfo[] infos = new FluidTankInfo[tanks.length];
-		for (int i = 0; i < infos.length; ++i) {
-			infos[i] = new FluidTankInfo(tanks[i].getFluid(), tanks[i].getCapacity());
-		}
-		return infos;
-	}
+//	@Override
+//	public boolean canFill(final EnumFacing from, final Fluid fluid) {
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
+//		return true;
+//	}
+//
+//	@Override
+//	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
+//		final IFluidTank[] tanks = this.getTanks(from);
+//		final FluidTankInfo[] infos = new FluidTankInfo[tanks.length];
+//		for (int i = 0; i < infos.length; ++i) {
+//			infos[i] = new FluidTankInfo(tanks[i].getFluid(), tanks[i].getCapacity());
+//		}
+//		return infos;
+//	}
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
@@ -473,6 +480,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
 		}
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return true;
+		}
 		return super.hasCapability(capability, facing);
 	}
 
@@ -480,6 +490,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) new SidedInvWrapper(this, facing);
+		}
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return (T) this.getTanks(facing);
 		}
 		return super.getCapability(capability, facing);
 	}

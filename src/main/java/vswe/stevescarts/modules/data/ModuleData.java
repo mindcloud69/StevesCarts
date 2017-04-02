@@ -345,7 +345,7 @@ public class ModuleData {
 			{ Blocks.CRAFTING_TABLE, ComponentTypes.FUSE.getItemStack(), Blocks.CRAFTING_TABLE },
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), Items.FLINT_AND_STEEL, ComponentTypes.SIMPLE_PCB.getItemStack() } });
 		final ModuleData cheatengine = new ModuleData(61, "Creative Engine", ModuleCheatEngine.class, 1);
-		final ModuleData internalTank = new ModuleData(63, "Internal Tank", ModuleInternalTank.class, 37).setAllowDuplicate().addRecipe(new Object[][] {
+		final ModuleData internalTank = new ModuleData(63, "Internal SCTank", ModuleInternalTank.class, 37).setAllowDuplicate().addRecipe(new Object[][] {
 			{ ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack() },
 			{ ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_VALVE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack() },
 			{ ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack() } });
@@ -353,20 +353,20 @@ public class ModuleData {
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() },
 			{ ComponentTypes.LARGE_TANK_PANE.getItemStack(), ComponentTypes.TANK_VALVE.getItemStack(), ComponentTypes.LARGE_TANK_PANE.getItemStack() },
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() } });
-		final ModuleData topTank = new ModuleData(65, "Top Tank", ModuleTopTank.class, 22).addSide(SIDE.TOP).addRecipe(new Object[][] {
+		final ModuleData topTank = new ModuleData(65, "Top SCTank", ModuleTopTank.class, 22).addSide(SIDE.TOP).addRecipe(new Object[][] {
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() },
 			{ ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_VALVE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack() },
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() } });
-		final ModuleData advancedTank = new ModuleData(66, "Advanced Tank", ModuleAdvancedTank.class, 54).addSides(new SIDE[] { SIDE.TOP, SIDE.CENTER }).addRecipe(new Object[][] {
+		final ModuleData advancedTank = new ModuleData(66, "Advanced SCTank", ModuleAdvancedTank.class, 54).addSides(new SIDE[] { SIDE.TOP, SIDE.CENTER }).addRecipe(new Object[][] {
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() },
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.TANK_VALVE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() },
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() } });
-		final ModuleData frontTank = new ModuleData(67, "Front Tank", ModuleFrontTank.class, 15).addSide(SIDE.FRONT).addRecipe(new Object[][] {
+		final ModuleData frontTank = new ModuleData(67, "Front SCTank", ModuleFrontTank.class, 15).addSide(SIDE.FRONT).addRecipe(new Object[][] {
 			{ ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.LARGE_TANK_PANE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack() },
 			{ ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_VALVE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack() },
 			{ ComponentTypes.LARGE_TANK_PANE.getItemStack(), ComponentTypes.LARGE_TANK_PANE.getItemStack(), ComponentTypes.LARGE_TANK_PANE.getItemStack() } });
-		final ModuleData creativeTank = new ModuleData(72, "Creative Tank", ModuleCheatTank.class, 1).setAllowDuplicate().addMessage(Localization.MODULE_INFO.OCEAN_MESSAGE);
-		final ModuleData topTankOpen = new ModuleData(73, "Open Tank", ModuleOpenTank.class, 31).addSide(SIDE.TOP).addRecipe(new Object[][] {
+		final ModuleData creativeTank = new ModuleData(72, "Creative SCTank", ModuleCheatTank.class, 1).setAllowDuplicate().addMessage(Localization.MODULE_INFO.OCEAN_MESSAGE);
+		final ModuleData topTankOpen = new ModuleData(73, "Open SCTank", ModuleOpenTank.class, 31).addSide(SIDE.TOP).addRecipe(new Object[][] {
 			{ ComponentTypes.TANK_PANE.getItemStack(), null, ComponentTypes.TANK_PANE.getItemStack() },
 			{ ComponentTypes.TANK_PANE.getItemStack(), ComponentTypes.TANK_VALVE.getItemStack(), ComponentTypes.TANK_PANE.getItemStack() },
 			{ ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack(), ComponentTypes.HUGE_TANK_PANE.getItemStack() } });

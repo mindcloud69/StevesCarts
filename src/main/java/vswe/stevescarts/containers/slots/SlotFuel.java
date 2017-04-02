@@ -3,7 +3,7 @@ package vswe.stevescarts.containers.slots;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.modules.engines.ModuleCoalBase;
 
 import javax.annotation.Nonnull;
@@ -23,7 +23,7 @@ public class SlotFuel extends SlotBase {
 	private boolean isValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return !FluidContainerRegistry.isFilledContainer(itemstack);
+		return FluidUtils.getFluidStackInContainer(itemstack) == null;
 	}
 
 	private int getItemBurnTime(

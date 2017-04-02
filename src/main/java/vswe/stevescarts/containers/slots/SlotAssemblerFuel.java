@@ -3,7 +3,7 @@ package vswe.stevescarts.containers.slots;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 
 import javax.annotation.Nonnull;
@@ -25,7 +25,7 @@ public class SlotAssemblerFuel extends SlotAssembler {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return itemstack.getItem() == Items.COAL || (this.getAssembler().isCombustionFuelValid() && !FluidContainerRegistry.isFilledContainer(itemstack) && TileEntityFurnace.getItemBurnTime(itemstack) > 0);
+		return itemstack.getItem() == Items.COAL || (this.getAssembler().isCombustionFuelValid() && FluidUtils.getFluidStackInContainer(itemstack) != null && TileEntityFurnace.getItemBurnTime(itemstack) > 0);
 	}
 
 	public int getFuelLevel(

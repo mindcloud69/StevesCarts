@@ -2,14 +2,14 @@ package vswe.stevescarts.containers.slots;
 
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 
 import javax.annotation.Nonnull;
 
 public class SlotLiquidUpgradeInput extends SlotLiquidInput {
 	private TileEntityUpgrade upgrade;
 
-	public SlotLiquidUpgradeInput(final TileEntityUpgrade upgrade, final Tank tank, final int maxsize, final int i, final int j, final int k) {
+	public SlotLiquidUpgradeInput(final TileEntityUpgrade upgrade, final SCTank tank, final int maxsize, final int i, final int j, final int k) {
 		super(upgrade, tank, maxsize, i, j, k);
 		this.upgrade = upgrade;
 	}

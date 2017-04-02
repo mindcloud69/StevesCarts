@@ -3,15 +3,15 @@ package vswe.stevescarts.containers.slots;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 
 import javax.annotation.Nonnull;
 
 public class SlotLiquidInput extends SlotBase {
-	private Tank tank;
+	private SCTank tank;
 	private int maxsize;
 
-	public SlotLiquidInput(final IInventory iinventory, final Tank tank, final int maxsize, final int i, final int j, final int k) {
+	public SlotLiquidInput(final IInventory iinventory, final SCTank tank, final int maxsize, final int i, final int j, final int k) {
 		super(iinventory, i, j, k);
 		this.tank = tank;
 		this.maxsize = maxsize;

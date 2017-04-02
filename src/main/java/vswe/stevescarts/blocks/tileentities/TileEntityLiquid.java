@@ -6,9 +6,15 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
+import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerLiquid;
 import vswe.stevescarts.containers.ContainerManager;
@@ -19,15 +25,16 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiLiquid;
 import vswe.stevescarts.helpers.storages.ITankHolder;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.modules.storages.tanks.ModuleTank;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
-public class TileEntityLiquid extends TileEntityManager implements IFluidHandler, ITankHolder {
-	Tank[] tanks;
+public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
+	SCTank[] tanks;
 	private int tick;
 	private static final int[] topSlots;
 	private static final int[] botSlots;
@@ -45,13 +52,13 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	public TileEntityLiquid() {
-		this.tanks = new Tank[4];
+		this.tanks = new SCTank[4];
 		for (int i = 0; i < 4; ++i) {
-			this.tanks[i] = new Tank(this, 32000, i);
+			this.tanks[i] = new SCTank(this, 32000, i);
 		}
 	}
 
-	public Tank[] getTanks() {
+	public SCTank[] getTanks() {
 		return this.tanks;
 	}
 
@@ -66,69 +73,6 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 				}
 			}
 		}
-	}
-
-	@Override
-	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
-		int amount = 0;
-		if (resource != null && resource.amount > 0) {
-			final FluidStack fluid = resource.copy();
-			for (int i = 0; i < 4; ++i) {
-				final int tempAmount = this.tanks[i].fill(fluid, doFill, this.world.isRemote);
-				amount += tempAmount;
-				final FluidStack fluidStack = fluid;
-				fluidStack.amount -= tempAmount;
-				if (fluid.amount <= 0) {
-					break;
-				}
-			}
-		}
-		return amount;
-	}
-
-	public int fill(final int tankIndex, final FluidStack resource, final boolean doFill) {
-		if (tankIndex < 0 || tankIndex >= 4) {
-			return 0;
-		}
-		return this.tanks[tankIndex].fill(resource, doFill, this.world.isRemote);
-	}
-
-	@Override
-	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
-		return this.drain(from, null, maxDrain, doDrain);
-	}
-
-	@Override
-	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
-		return this.drain(from, resource, (resource == null) ? 0 : resource.amount, doDrain);
-	}
-
-	private FluidStack drain(final EnumFacing from, final FluidStack resource, int maxDrain, final boolean doDrain) {
-		FluidStack ret = resource;
-		if (ret != null) {
-			ret = ret.copy();
-			ret.amount = 0;
-		}
-		for (int i = 0; i < 4; ++i) {
-			FluidStack temp = this.tanks[i].drain(maxDrain, false, this.world.isRemote);
-			if (temp != null && (ret == null || ret.isFluidEqual(temp))) {
-				temp = this.tanks[i].drain(maxDrain, doDrain, this.world.isRemote);
-				if (ret == null) {
-					ret = temp;
-				} else {
-					final FluidStack fluidStack = ret;
-					fluidStack.amount += temp.amount;
-				}
-				maxDrain -= temp.amount;
-				if (maxDrain <= 0) {
-					break;
-				}
-			}
-		}
-		if (ret != null && ret.amount == 0) {
-			return null;
-		}
-		return ret;
 	}
 
 	@Override
@@ -247,7 +191,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		drainAmount = drainedFluid.amount;
 		if (this.isFluidValid(sideId, drainedFluid)) {
 			for (int i = 0; i < this.tanks.length; ++i) {
-				final Tank tank = this.tanks[i];
+				final SCTank tank = this.tanks[i];
 				if (this.isTankValid(i, sideId)) {
 					final FluidStack fluidStack = drainedFluid;
 					fluidStack.amount -= tank.fill(drainedFluid, doDrain);
@@ -268,7 +212,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	private boolean isFluidValid(final int sideId, final FluidStack fluid) {
 		@Nonnull
 		ItemStack filter = this.getStackInSlot(sideId * 3 + 2);
-		final FluidStack filterFluid = FluidContainerRegistry.getFluidForFilledItem(filter);
+		final FluidStack filterFluid = FluidUtils.getFluidStackInContainer(filter);
 		return filterFluid == null || filterFluid.isFluidEqual(fluid);
 	}
 
@@ -450,23 +394,21 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		return side == 0 && this.isOutput(slot);
 	}
 
-	@Override
-	public boolean canFill(final EnumFacing from, final Fluid fluid) {
-		return true;
-	}
 
 	@Override
-	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
-		final FluidTankInfo[] info = new FluidTankInfo[this.tanks.length];
-		for (int i = 0; i < this.tanks.length; ++i) {
-			info[i] = new FluidTankInfo(this.tanks[i].getFluid(), this.tanks[i].getCapacity());
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return true;
 		}
-		return info;
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return (T) this.getTanks();
+		}
+		return super.getCapability(capability, facing);
 	}
 
 	static {

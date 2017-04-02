@@ -22,13 +22,13 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.helpers.storages.ITankHolder;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 import vswe.stevescarts.modules.storages.ModuleStorage;
 
 import javax.annotation.Nonnull;
 
 public abstract class ModuleTank extends ModuleStorage implements IFluidTank, ITankHolder {
-	protected Tank tank;
+	protected SCTank tank;
 	private int tick;
 	protected int[] tankBounds;
 	private DataParameter<String> FLUID_NAME;
@@ -37,7 +37,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	public ModuleTank(final EntityMinecartModular cart) {
 		super(cart);
 		this.tankBounds = new int[] { 35, 20, 36, 51 };
-		this.tank = new Tank(this, this.getTankSize(), 0);
+		this.tank = new SCTank(this, this.getTankSize(), 0);
 	}
 
 	protected abstract int getTankSize();

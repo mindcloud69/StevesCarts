@@ -105,7 +105,7 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 	}
 
 	public void renderLiquidCuboid(final FluidStack liquid, final int tankSize, final float x, final float y, final float z, final float sizeX, final float sizeY, final float sizeZ, float mult) {
-		//		final IconData data = Tank.getIconAndTexture(liquid);
+		//		final IconData data = SCTank.getIconAndTexture(liquid);
 		//		if (data == null || data.getIcon() == null) {
 		//			return;
 		//		}
@@ -114,7 +114,7 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 		//			GL11.glPushMatrix();
 		//			GL11.glTranslatef(x * mult, (y + sizeY * (1.0f - filled) / 2.0f) * mult, z * mult);
 		//			ResourceHelper.bindResource(data.getResource());
-		//			Tank.applyColorFilter(liquid);
+		//			SCTank.applyColorFilter(liquid);
 		//			final float scale = 0.5f;
 		//			GL11.glScalef(scale, scale, scale);
 		//			GL11.glDisable(2896);

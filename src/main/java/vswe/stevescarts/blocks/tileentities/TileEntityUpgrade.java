@@ -13,7 +13,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,7 +27,7 @@ import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiUpgrade;
 import vswe.stevescarts.helpers.NBTHelper;
 import vswe.stevescarts.helpers.storages.ITankHolder;
-import vswe.stevescarts.helpers.storages.Tank;
+import vswe.stevescarts.helpers.storages.SCTank;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 import vswe.stevescarts.upgrades.InterfaceEffect;
@@ -34,8 +36,8 @@ import vswe.stevescarts.upgrades.InventoryEffect;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder, ITickable {
-	public Tank tank = new Tank(this, 0, 0);
+public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, ITankHolder, ITickable {
+	public SCTank tank = new SCTank(this, 0, 0);
 	private TileEntityCartAssembler master;
 	private int type;
 	private boolean initialized;
@@ -146,7 +148,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			final NBTTagCompound item = items.getCompoundTagAt(i);
 			final int slot = item.getByte("Slot") & 0xFF;
 			@Nonnull
-			ItemStack iStack = ItemStack.loadItemStackFromNBT(item);
+			ItemStack iStack = new ItemStack(item);
 			if (slot >= 0 && slot < this.getSizeInventory()) {
 				this.setInventorySlotContents(slot, iStack);
 			}
@@ -243,6 +245,16 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			return 0;
 		}
 		return this.master.getSizeInventory();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		for (ItemStack stack : inventoryStacks) {
+			if (!stack.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -426,57 +438,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		return this.getMaster() != null && this.getMaster().canExtractItem(slot, item, side);
 	}
 
-	@Override
-	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
-		return this.fill(resource, doFill);
-	}
-
-	@Override
-	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
-		if (resource != null && resource.isFluidEqual(this.getFluid())) {
-			return this.drain(from, resource.amount, doDrain);
-		}
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
-		return this.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public FluidStack getFluid() {
-		if (this.tank == null) {
-			return null;
-		}
-		return this.tank.getFluid();
-	}
-
-	@Override
-	public int getCapacity() {
-		if (this.tank == null) {
-			return 0;
-		}
-		return this.tank.getCapacity();
-	}
-
-	@Override
-	public int fill(final FluidStack resource, final boolean doFill) {
-		if (this.tank == null) {
-			return 0;
-		}
-		final int result = this.tank.fill(resource, doFill);
-		return result;
-	}
-
-	@Override
-	public FluidStack drain(final int maxDrain, final boolean doDrain) {
-		if (this.tank == null) {
-			return null;
-		}
-		final FluidStack result = this.tank.drain(maxDrain, doDrain);
-		return result;
-	}
 
 	@Override
 	@Nonnull
@@ -511,28 +472,19 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	//	}
 
 	@Override
-	public int getFluidAmount() {
-		return (this.tank == null) ? 0 : this.tank.getFluidAmount();
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return true;
+		}
+		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public FluidTankInfo getInfo() {
-		return (this.tank == null) ? null : this.tank.getInfo();
-	}
-
-	@Override
-	public boolean canFill(final EnumFacing from, final Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
-		return new FluidTankInfo[] { this.getInfo() };
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return (T) tank;
+		}
+		return super.getCapability(capability, facing);
 	}
 
 	@Override

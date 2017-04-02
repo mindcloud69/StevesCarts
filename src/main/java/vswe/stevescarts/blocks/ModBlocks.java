@@ -7,6 +7,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import reborncore.RebornRegistry;
 import vswe.stevescarts.blocks.tileentities.*;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.RecipeHelper;
@@ -15,6 +16,7 @@ import vswe.stevescarts.items.ItemBlockStorage;
 import vswe.stevescarts.items.ItemUpgrade;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 
 public enum ModBlocks {
@@ -69,7 +71,7 @@ public enum ModBlocks {
 					final Block blockBase = (Block) blockInstance;
 					final Block block = (Block) blockInstance;
 					block.setHardness(2.0f);
-					GameRegistry.registerBlock(block, blockInfo.itemClazz, blockInfo.name);
+					RebornRegistry.registerBlock(block, blockInfo.itemClazz, blockInfo.name);
 					blockBase.setUnlocalizedName("SC2:" + blockInfo.name);
 					blockInfo.block = block;
 					if (blockInfo.tileEntityClazz != null) {
