@@ -1,10 +1,5 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -21,6 +16,11 @@ import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.mobdetectors.ModuleMobdetector;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ModuleShooterAdv extends ModuleShooter {
 	private ArrayList<ModuleMobdetector> detectors;
@@ -205,8 +205,8 @@ public class ModuleShooterAdv extends ModuleShooter {
 	public void initDw() {
 		OPTION = createDw(DataSerializers.BYTE);
 		RIFLE_DIRECTION = createDw(DataSerializers.BYTE);
-		registerDw(OPTION, (byte)0);
-		registerDw(RIFLE_DIRECTION, (byte)0);
+		registerDw(OPTION, (byte) 0);
+		registerDw(RIFLE_DIRECTION, (byte) 0);
 	}
 
 	private void switchOption(final int id) {

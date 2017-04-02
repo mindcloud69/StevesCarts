@@ -7,6 +7,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CreativeTabSC2 extends CreativeTabs {
+	@Nonnull
 	private ItemStack item;
 
 	public CreativeTabSC2(final String label) {
@@ -15,11 +16,14 @@ public class CreativeTabSC2 extends CreativeTabs {
 
 	@Override
 	@SideOnly(Side.CLIENT)
+	@Nonnull
 	public ItemStack getIconItemStack() {
 		return this.item;
 	}
 
-	public void setIcon(@Nonnull ItemStack item) {
+	public void setIcon(
+		@Nonnull
+			ItemStack item) {
 		this.item = item;
 	}
 

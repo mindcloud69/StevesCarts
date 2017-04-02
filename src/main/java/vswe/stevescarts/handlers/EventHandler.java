@@ -1,7 +1,5 @@
 package vswe.stevescarts.handlers;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.items.ModItems;
+
+import java.util.List;
 
 public class EventHandler implements ForgeChunkManager.LoadingCallback {
 	public EventHandler() {
@@ -63,10 +63,13 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 		this.onCrafting(event.player, event.crafting, event.craftMatrix);
 	}
 
-	private void onCrafting(final EntityPlayer player, @Nonnull ItemStack item, final IInventory craftMatrix) {
+	private void onCrafting(final EntityPlayer player,
+	                        @Nonnull
+		                        ItemStack item, final IInventory craftMatrix) {
 		if (item.getItem() == ModItems.component || item.getItem() == ModItems.modules) {
 			for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
-				@Nonnull ItemStack sItem = craftMatrix.getStackInSlot(i);
+				@Nonnull
+				ItemStack sItem = craftMatrix.getStackInSlot(i);
 				if (sItem != null && sItem.getItem().getContainerItem() != null) {
 					craftMatrix.setInventorySlotContents(i, null);
 				}

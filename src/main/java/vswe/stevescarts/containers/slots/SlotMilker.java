@@ -10,7 +10,9 @@ public class SlotMilker extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
 		return itemstack != null && itemstack.getItem() == Items.BUCKET;
 	}
 }

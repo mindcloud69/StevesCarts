@@ -1,8 +1,5 @@
 package vswe.stevescarts.helpers;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,15 +8,21 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class GiftItem {
 	private int chanceWeight;
 	private int costPerItem;
+	@Nonnull
 	private ItemStack item;
 	private boolean fixedSize;
 	public static ArrayList<GiftItem> ChristmasList;
 	public static ArrayList<GiftItem> EasterList;
 
-	public GiftItem(@Nonnull ItemStack item, final int costPerItem, final int chanceWeight) {
+	public GiftItem(
+		@Nonnull
+			ItemStack item, final int costPerItem, final int chanceWeight) {
 		this.item = item;
 		this.chanceWeight = chanceWeight;
 		this.costPerItem = costPerItem;
@@ -81,8 +84,10 @@ public class GiftItem {
 								}
 							}
 						}
-						@Nonnull ItemStack copy;
-						@Nonnull ItemStack item = copy = gift2.item.copy();
+						@Nonnull
+						ItemStack copy;
+						@Nonnull
+						ItemStack item = copy = gift2.item.copy();
 						copy.stackSize *= setSize;
 						items.add(item);
 						value -= setSize * gift2.costPerItem;

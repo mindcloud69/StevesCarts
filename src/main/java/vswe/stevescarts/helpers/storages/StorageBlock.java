@@ -6,9 +6,12 @@ import vswe.stevescarts.helpers.RecipeHelper;
 
 public class StorageBlock {
 	private String name;
+	@Nonnull
 	private ItemStack item;
 
-	public StorageBlock(final String name, @Nonnull ItemStack item) {
+	public StorageBlock(final String name,
+	                    @Nonnull
+		                    ItemStack item) {
 		this.name = name;
 		this.item = item.copy();
 		this.item.setCount(9);
@@ -19,7 +22,8 @@ public class StorageBlock {
 	}
 
 	public void loadRecipe(final int i) {
-		@Nonnull ItemStack block = new ItemStack(ModBlocks.STORAGE.getBlock(), 1, i);
+		@Nonnull
+		ItemStack block = new ItemStack(ModBlocks.STORAGE.getBlock(), 1, i);
 		RecipeHelper.addRecipe(block, new Object[][] { { this.item, this.item, this.item }, { this.item, this.item, this.item }, { this.item, this.item, this.item } });
 		RecipeHelper.addRecipe(this.item, new Object[][] { { block } });
 	}

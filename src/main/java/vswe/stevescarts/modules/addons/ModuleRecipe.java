@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.addons;
 
-import java.util.ArrayList;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -17,6 +15,9 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 public abstract class ModuleRecipe extends ModuleAddon {
 	private int target;
@@ -141,7 +142,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 					str = null;
 				} else {
 					str = Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT.translate((i == 0) ? "0"
-							: "1") + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_10.translate() + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_64.translate();
+					                                                                          : "1") + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_10.translate() + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_64.translate();
 				}
 				if (str != null) {
 					this.drawStringOnMouseOver(gui, str, x, y, this.getControlRect(i));
@@ -315,7 +316,9 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		}
 	}
 
-	protected boolean canCraftMoreOfResult(@Nonnull ItemStack result) {
+	protected boolean canCraftMoreOfResult(
+		@Nonnull
+			ItemStack result) {
 		if (this.mode == 0) {
 			return true;
 		}
@@ -324,9 +327,10 @@ public abstract class ModuleRecipe extends ModuleAddon {
 		}
 		int count = 0;
 		for (int i = 0; i < this.outputSlots.size(); ++i) {
-			@Nonnull ItemStack item = this.outputSlots.get(i).getStack();
-			if (item != null && item.isItemEqual(result) && ItemStack.areItemStackTagsEqual(item, result)) {
-				count += item.stackSize;
+			@Nonnull
+			ItemStack item = this.outputSlots.get(i).getStack();
+			if (!item.isEmpty() && item.isItemEqual(result) && ItemStack.areItemStackTagsEqual(item, result)) {
+				count += item.getCount();
 				if (count >= this.maxItemCount) {
 					return false;
 				}

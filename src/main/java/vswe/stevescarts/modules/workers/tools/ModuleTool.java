@@ -36,7 +36,9 @@ public abstract class ModuleTool extends ModuleWorker {
 
 	public abstract String getRepairItemName();
 
-	public abstract int getRepairItemUnits(@Nonnull ItemStack p0);
+	public abstract int getRepairItemUnits(
+		@Nonnull
+			ItemStack p0);
 
 	public abstract int getRepairSpeed();
 
@@ -72,7 +74,9 @@ public abstract class ModuleTool extends ModuleWorker {
 		}
 	}
 
-	public boolean isValidRepairMaterial(@Nonnull ItemStack item) {
+	public boolean isValidRepairMaterial(
+		@Nonnull
+			ItemStack item) {
 		return this.getRepairItemUnits(item) > 0;
 	}
 
@@ -149,7 +153,8 @@ public abstract class ModuleTool extends ModuleWorker {
 					final int n = units / this.getRepairSpeed();
 					this.remainingRepairUnits = n;
 					this.maximumRepairUnits = n;
-					@Nonnull ItemStack stack = this.getStack(0);
+					@Nonnull
+					ItemStack stack = this.getStack(0);
 					--stack.stackSize;
 					if (this.getStack(0).stackSize <= 0) {
 						this.setStack(0, null);
@@ -258,6 +263,7 @@ public abstract class ModuleTool extends ModuleWorker {
 		return false;
 	}
 
+	@Nonnull
 	public ItemStack getSilkTouchedItem(IBlockState blockState) {
 		Block block = blockState.getBlock();
 		ItemStack stack = new ItemStack(block, 1, 0);

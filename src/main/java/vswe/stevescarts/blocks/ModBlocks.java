@@ -1,7 +1,5 @@
 package vswe.stevescarts.blocks;
 
-import java.lang.reflect.Constructor;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,19 +7,15 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
-import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
-import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
-import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
-import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
-import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
-import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.blocks.tileentities.*;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.items.ItemBlockDetector;
 import vswe.stevescarts.items.ItemBlockStorage;
 import vswe.stevescarts.items.ItemUpgrade;
 import vswe.stevescarts.items.ModItems;
+
+import java.lang.reflect.Constructor;
 
 public enum ModBlocks {
 	CARGO_MANAGER("BlockCargoManager", BlockCargoManager.class, TileEntityCargo.class, "cargo"),
@@ -55,10 +49,10 @@ public enum ModBlocks {
 	}
 
 	ModBlocks(final String name,
-			final Class<? extends Block> clazz,
-			final Class<? extends TileEntity> tileEntityClazz,
-			final String tileEntityName,
-			final Class<? extends ItemBlock> itemClazz) {
+	          final Class<? extends Block> clazz,
+	          final Class<? extends TileEntity> tileEntityClazz,
+	          final String tileEntityName,
+	          final Class<? extends ItemBlock> itemClazz) {
 		this.name = name;
 		this.clazz = clazz;
 		this.tileEntityClazz = tileEntityClazz;
@@ -109,7 +103,8 @@ public enum ModBlocks {
 			{ null, Items.REDSTONE, null } });
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.ADVANCED_DETECTOR.block, 2), new Object[][] { { Items.IRON_INGOT, Blocks.STONE_PRESSURE_PLATE, Items.IRON_INGOT },
 			{ Items.IRON_INGOT, Items.REDSTONE, Items.IRON_INGOT }, { Items.IRON_INGOT, Blocks.STONE_PRESSURE_PLATE, Items.IRON_INGOT } });
-		@Nonnull ItemStack unit = new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 1);
+		@Nonnull
+		ItemStack unit = new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 1);
 		RecipeHelper.addRecipe(unit, new Object[][] { { Blocks.COBBLESTONE, Blocks.STONE_PRESSURE_PLATE, Blocks.COBBLESTONE },
 			{ Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT }, { Blocks.COBBLESTONE, Items.REDSTONE, Blocks.COBBLESTONE } });
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 0), new Object[][] { { ComponentTypes.SIMPLE_PCB.getItemStack() }, { unit } });
@@ -119,7 +114,8 @@ public enum ModBlocks {
 			{ null, ComponentTypes.SIMPLE_PCB.getItemStack(), null } });
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.DETECTOR_UNIT.block, 1, 4), new Object[][] { { Items.REDSTONE, Items.REDSTONE, Items.REDSTONE }, { Items.REDSTONE, unit, Items.REDSTONE },
 			{ Items.REDSTONE, Items.REDSTONE, Items.REDSTONE } });
-		@Nonnull ItemStack advtank = new ItemStack(ModItems.modules, 1, 66);
+		@Nonnull
+		ItemStack advtank = new ItemStack(ModItems.modules, 1, 66);
 		RecipeHelper.addRecipe(new ItemStack(ModBlocks.LIQUID_MANAGER.block, 1), new Object[][] { { advtank, Items.IRON_INGOT, advtank },
 			{ Items.IRON_INGOT, ComponentTypes.TANK_VALVE, Items.IRON_INGOT }, { advtank, Items.IRON_INGOT, advtank } });
 	}

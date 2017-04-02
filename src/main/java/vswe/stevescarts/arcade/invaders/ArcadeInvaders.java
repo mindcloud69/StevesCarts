@@ -1,19 +1,18 @@
 package vswe.stevescarts.arcade.invaders;
 
-import java.util.ArrayList;
-
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 import vswe.stevescarts.arcade.ArcadeGame;
 import vswe.stevescarts.arcade.tracks.TrackStory;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.realtimers.ModuleArcade;
+
+import java.util.ArrayList;
 
 public class ArcadeInvaders extends ArcadeGame {
 	protected ArrayList<Unit> invaders;

@@ -1,10 +1,9 @@
 package vswe.stevescarts.arcade.monopoly;
 
-import java.util.EnumSet;
-
 import org.lwjgl.opengl.GL11;
-
 import vswe.stevescarts.guis.GuiMinecart;
+
+import java.util.EnumSet;
 
 public class Place {
 	protected ArcadeMonopoly game;

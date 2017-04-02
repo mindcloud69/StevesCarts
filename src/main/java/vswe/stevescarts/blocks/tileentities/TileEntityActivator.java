@@ -1,7 +1,5 @@
 package vswe.stevescarts.blocks.tileentities;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -21,6 +19,8 @@ import vswe.stevescarts.modules.addons.ModuleInvisible;
 import vswe.stevescarts.modules.addons.ModuleShield;
 import vswe.stevescarts.modules.realtimers.ModuleCage;
 import vswe.stevescarts.modules.workers.tools.ModuleDrill;
+
+import java.util.ArrayList;
 
 public class TileEntityActivator extends TileEntityBase {
 	private ArrayList<ActivatorOption> options;

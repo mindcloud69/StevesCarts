@@ -8,7 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.items.ItemBlockStorage;
 
-public class BlockMetalStorage extends Block  {
+public class BlockMetalStorage extends Block {
 
 	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, ItemBlockStorage.blocks.length);
 
@@ -17,7 +17,6 @@ public class BlockMetalStorage extends Block  {
 		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0));
 	}
-
 
 	public int damageDropped(final int meta) {
 		return meta;

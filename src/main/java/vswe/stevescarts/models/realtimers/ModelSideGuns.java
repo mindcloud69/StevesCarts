@@ -124,7 +124,7 @@ public class ModelSideGuns extends ModelCartbase {
 			missilePart2.setRotationPoint(1.75f, 0.0f, 0.0f);
 		}
 		return new ModelRenderer[] { handle, base, gun, back, backAttacher, stabalizer, missileStands[0], missileStands[1], missileStands[2], missileStands[3], missileStands[4], missileStands[5],
-				missleArmBase, missleArm, missleArmBaseFake, missleArmFake, missiles[0], missiles[1] };
+			missleArmBase, missleArm, missleArmBaseFake, missleArmFake, missiles[0], missiles[1] };
 	}
 
 	@Override

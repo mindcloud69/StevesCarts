@@ -4,6 +4,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.modules.realtimers.ModuleShooter;
 
+import javax.annotation.Nonnull;
+
 public class SlotArrow extends SlotBase {
 	private ModuleShooter shooter;
 
@@ -13,7 +15,9 @@ public class SlotArrow extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
 		return this.shooter.isValidProjectileItem(itemstack);
 	}
 }

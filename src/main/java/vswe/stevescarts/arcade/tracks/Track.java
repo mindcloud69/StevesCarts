@@ -1,11 +1,11 @@
 package vswe.stevescarts.arcade.tracks;
 
-import java.util.ArrayList;
-
 import vswe.stevescarts.arcade.ArcadeGame;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.modules.realtimers.ModuleArcade;
+
+import java.util.ArrayList;
 
 public class Track {
 	private int x;

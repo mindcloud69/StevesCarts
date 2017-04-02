@@ -1,7 +1,5 @@
 package vswe.stevescarts.handlers;
 
-import java.util.Random;
-
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
@@ -12,6 +10,8 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.items.ModItems;
+
+import java.util.Random;
 
 public class TradeHandler implements ITradeList {
 

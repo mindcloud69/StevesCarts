@@ -6,6 +6,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 
+import javax.annotation.Nonnull;
+
 public class SlotAssemblerFuel extends SlotAssembler {
 	public SlotAssemblerFuel(final TileEntityCartAssembler assembler, final int i, final int j, final int k) {
 		super(assembler, i, j, k, 0, true, 0);
@@ -20,11 +22,15 @@ public class SlotAssemblerFuel extends SlotAssembler {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
 		return itemstack.getItem() == Items.COAL || (this.getAssembler().isCombustionFuelValid() && !FluidContainerRegistry.isFilledContainer(itemstack) && TileEntityFurnace.getItemBurnTime(itemstack) > 0);
 	}
 
-	public int getFuelLevel(@Nonnull ItemStack itemstack) {
+	public int getFuelLevel(
+		@Nonnull
+			ItemStack itemstack) {
 		if (this.isItemValid(itemstack)) {
 			return (int) (TileEntityFurnace.getItemBurnTime(itemstack) * 0.25f);
 		}

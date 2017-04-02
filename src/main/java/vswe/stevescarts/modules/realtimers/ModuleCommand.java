@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.List;
-
 import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,6 +8,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
+
+import java.util.List;
 
 public abstract class ModuleCommand extends ModuleBase implements ICommandSender {
 	private String command;

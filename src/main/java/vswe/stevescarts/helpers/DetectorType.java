@@ -1,8 +1,5 @@
 package vswe.stevescarts.helpers;
 
-import java.util.HashMap;
-import java.util.Locale;
-
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -10,11 +7,13 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import vswe.stevescarts.StevesCarts;
-import vswe.stevescarts.blocks.BlockDetector;
 import vswe.stevescarts.blocks.BlockRailAdvDetector;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.entitys.EntityMinecartModular;
+
+import java.util.HashMap;
+import java.util.Locale;
 
 public enum DetectorType implements IStringSerializable {
 	NORMAL(0, true, false, true, new String[] { "detector_manager_bot", "detector_manager_top", "detector_manager_yellow", "detector_manager_blue", "detector_manager_green", "detector_manager_red" }),
@@ -26,7 +25,7 @@ public enum DetectorType implements IStringSerializable {
 		}
 	},
 	JUNCTION(3, true, false, false, new String[] { "detector_manager_bot", "detector_junction_top", "detector_junction_yellow", "detector_junction_blue", "detector_junction_green",
-	"detector_junction_red" }) {
+		"detector_junction_red" }) {
 		@Override
 		public void activate(final TileEntityDetector detector, final EntityMinecartModular cart) {
 			this.update(detector, true);
@@ -46,7 +45,7 @@ public enum DetectorType implements IStringSerializable {
 		}
 	},
 	REDSTONE(4, false, false, false, new String[] { "detector_redstone_bot", "detector_redstone_bot", "detector_redstone_yellow", "detector_redstone_blue", "detector_redstone_green",
-	"detector_redstone_red" }) {
+		"detector_redstone_red" }) {
 		@Override
 		public void initOperators(final HashMap<Byte, OperatorObject> operators) {
 			super.initOperators(operators);
@@ -83,7 +82,7 @@ public enum DetectorType implements IStringSerializable {
 		return this.meta;
 	}
 
-	public String getTranslatedName(){
+	public String getTranslatedName() {
 		final StringBuilder append = new StringBuilder().append("item.");
 		final StevesCarts instance = StevesCarts.instance;
 		return I18n.translateToLocal(append.append("SC2:").append("BlockDetector").append(this.meta).append(".name").toString());

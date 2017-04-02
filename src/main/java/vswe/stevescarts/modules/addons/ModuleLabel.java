@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.addons;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -19,6 +17,8 @@ import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.engines.ModuleEngine;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
 
+import java.util.ArrayList;
+
 public class ModuleLabel extends ModuleAddon {
 	private ArrayList<LabelInformation> labels;
 	private int delay;
@@ -26,7 +26,7 @@ public class ModuleLabel extends ModuleAddon {
 	private ModuleTool tool;
 	private DataParameter<Integer> SECONDS;
 	private DataParameter<Byte> USED;
-	private DataParameter<Integer> DATA ;
+	private DataParameter<Integer> DATA;
 	private DataParameter<Byte> ACTIVE;
 
 	public ModuleLabel(final EntityMinecartModular cart) {
@@ -72,7 +72,7 @@ public class ModuleLabel extends ModuleAddon {
 					used += 256;
 				}
 				return (ModuleLabel.this.storageSlots == null) ? "" : (Localization.MODULES.ADDONS.STORAGE.translate() + ": " + used + "/" + ModuleLabel.this.storageSlots.size() + (
-						(ModuleLabel.this.storageSlots.size() == 0) ? "" : ("[" + (int) (100.0f * used / ModuleLabel.this.storageSlots.size()) + "%]")));
+					(ModuleLabel.this.storageSlots.size() == 0) ? "" : ("[" + (int) (100.0f * used / ModuleLabel.this.storageSlots.size()) + "%]")));
 			}
 		});
 	}
@@ -180,9 +180,9 @@ public class ModuleLabel extends ModuleAddon {
 		USED = createDw(DataSerializers.BYTE);
 		DATA = createDw(DataSerializers.VARINT);
 		ACTIVE = createDw(DataSerializers.BYTE);
-		registerDw(ACTIVE, (byte)0);
+		registerDw(ACTIVE, (byte) 0);
 		registerDw(SECONDS, 0);
-		registerDw(USED, (byte)0);
+		registerDw(USED, (byte) 0);
 		if (this.hasToolWithDurability()) {
 			registerDw(DATA, -1);
 		}

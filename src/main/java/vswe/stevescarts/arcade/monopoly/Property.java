@@ -1,8 +1,8 @@
 package vswe.stevescarts.arcade.monopoly;
 
-import java.util.EnumSet;
-
 import vswe.stevescarts.guis.GuiMinecart;
+
+import java.util.EnumSet;
 
 public abstract class Property extends Place {
 	private String name;

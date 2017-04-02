@@ -78,7 +78,8 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 					if (flag) {
 						world.setBlockState(pos, Block.getBlockFromItem(this.getStack(m).getItem()).getStateFromMeta(getStack(m).getItemDamage()), 3);
 						if (!this.getCart().hasCreativeSupplies()) {
-							@Nonnull ItemStack stack = this.getStack(m);
+							@Nonnull
+							ItemStack stack = this.getStack(m);
 							--stack.stackSize;
 							if (this.getStack(m).stackSize == 0) {
 								this.setStack(m, null);
@@ -120,7 +121,8 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean haveSupplies() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			@Nonnull ItemStack item = this.getStack(i);
+			@Nonnull
+			ItemStack item = this.getStack(i);
 			if (item != null && SlotBridge.isBridgeMaterial(item)) {
 				return true;
 			}

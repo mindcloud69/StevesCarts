@@ -11,7 +11,9 @@ public class SlotTorch extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
 		return Block.getBlockFromItem(itemstack.getItem()) == Blocks.TORCH;
 	}
 }

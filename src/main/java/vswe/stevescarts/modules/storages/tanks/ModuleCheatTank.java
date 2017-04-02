@@ -7,7 +7,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
 public class ModuleCheatTank extends ModuleTank {
-	private static final TextFormatting[] colors = new TextFormatting[] { TextFormatting.YELLOW, TextFormatting.GREEN, TextFormatting.RED, TextFormatting.GOLD };;
+	private static final TextFormatting[] colors = new TextFormatting[] { TextFormatting.YELLOW, TextFormatting.GREEN, TextFormatting.RED, TextFormatting.GOLD };
+	;
 	private int mode;
 
 	public ModuleCheatTank(final EntityMinecartModular cart) {

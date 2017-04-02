@@ -10,7 +10,6 @@ import net.minecraftforge.common.util.FakePlayer;
 public interface ITreeModule {
 
 	/**
-	 *
 	 * @param blockState
 	 * @param pos
 	 * @param cart
@@ -19,7 +18,6 @@ public interface ITreeModule {
 	boolean isLeaves(IBlockState blockState, BlockPos pos, EntityMinecart cart);
 
 	/**
-	 *
 	 * @param blockState
 	 * @param pos
 	 * @param cart
@@ -29,6 +27,7 @@ public interface ITreeModule {
 
 	/**
 	 * Only return true if the sapling can be planted with this module
+	 *
 	 * @param itemStack the item stack to check
 	 * @return if the sapling can be planted by this module
 	 */
@@ -36,6 +35,7 @@ public interface ITreeModule {
 
 	/**
 	 * Plants the sapling in world, the stack size should be decreased by one here, a stack size of 0 is handled.
+	 *
 	 * @param world
 	 * @param pos
 	 * @param stack

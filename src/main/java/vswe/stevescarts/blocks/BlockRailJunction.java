@@ -23,7 +23,7 @@ public class BlockRailJunction extends BlockRail {
 	}
 
 	@Override
-	public IProperty<BlockRailBase.EnumRailDirection> getShapeProperty(){
+	public IProperty<BlockRailBase.EnumRailDirection> getShapeProperty() {
 		return SHAPE;
 	}
 
@@ -38,8 +38,8 @@ public class BlockRailJunction extends BlockRail {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {SHAPE});
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { SHAPE });
 	}
 
 	@Override

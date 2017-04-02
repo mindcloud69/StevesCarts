@@ -74,43 +74,43 @@ public class TetrisPiece {
 
 	private static TetrisPiecePart[] createEndermanParts() {
 		final TetrisPiecePart[] parts = { new TetrisPiecePart(new TetrisBlock(0, 0), 0, -1), new TetrisPiecePart(new TetrisBlock(0, 10), 0, 0), new TetrisPiecePart(new TetrisBlock(0, 20), 0, 1),
-				new TetrisPiecePart(new TetrisBlock(0, 30), 0, 2) };
+			new TetrisPiecePart(new TetrisBlock(0, 30), 0, 2) };
 		return parts;
 	}
 
 	private static TetrisPiecePart[] createSlimeParts() {
 		final TetrisPiecePart[] parts = { new TetrisPiecePart(new TetrisBlock(10, 0), 0, 0), new TetrisPiecePart(new TetrisBlock(20, 0), 1, 0), new TetrisPiecePart(new TetrisBlock(10, 10), 0, 1),
-				new TetrisPiecePart(new TetrisBlock(20, 10), 1, 1) };
+			new TetrisPiecePart(new TetrisBlock(20, 10), 1, 1) };
 		return parts;
 	}
 
 	private static TetrisPiecePart[] createWitherParts() {
 		final TetrisPiecePart[] parts = { new TetrisPiecePart(new TetrisBlock(30, 0), -1, 0), new TetrisPiecePart(new TetrisBlock(40, 0), 0, 0), new TetrisPiecePart(new TetrisBlock(50, 0), 1, 0),
-				new TetrisPiecePart(new TetrisBlock(40, 10), 0, 1) };
+			new TetrisPiecePart(new TetrisBlock(40, 10), 0, 1) };
 		return parts;
 	}
 
 	private static TetrisPiecePart[] createWitchParts() {
 		final TetrisPiecePart[] parts = { new TetrisPiecePart(new TetrisBlock(70, 0), 0, -1), new TetrisPiecePart(new TetrisBlock(70, 10), 0, 0), new TetrisPiecePart(new TetrisBlock(70, 20), 0, 1),
-				new TetrisPiecePart(new TetrisBlock(60, 20), -1, 1) };
+			new TetrisPiecePart(new TetrisBlock(60, 20), -1, 1) };
 		return parts;
 	}
 
 	private static TetrisPiecePart[] createPigParts() {
 		final TetrisPiecePart[] parts = { new TetrisPiecePart(new TetrisBlock(80, 0), 0, -1), new TetrisPiecePart(new TetrisBlock(80, 10), 0, 0), new TetrisPiecePart(new TetrisBlock(80, 20), 0, 1),
-				new TetrisPiecePart(new TetrisBlock(90, 20), 1, 1) };
+			new TetrisPiecePart(new TetrisBlock(90, 20), 1, 1) };
 		return parts;
 	}
 
 	private static TetrisPiecePart[] createSteveParts() {
 		final TetrisPiecePart[] parts = { new TetrisPiecePart(new TetrisBlock(100, 0), -1, -1), new TetrisPiecePart(new TetrisBlock(110, 0), 0, -1),
-				new TetrisPiecePart(new TetrisBlock(110, 10), 0, 0), new TetrisPiecePart(new TetrisBlock(120, 10), 1, 0) };
+			new TetrisPiecePart(new TetrisBlock(110, 10), 0, 0), new TetrisPiecePart(new TetrisBlock(120, 10), 1, 0) };
 		return parts;
 	}
 
 	private static TetrisPiecePart[] createSheepParts() {
 		final TetrisPiecePart[] parts = { new TetrisPiecePart(new TetrisBlock(130, 10), -1, 1), new TetrisPiecePart(new TetrisBlock(140, 10), 0, 1), new TetrisPiecePart(new TetrisBlock(140, 0), 0, 0),
-				new TetrisPiecePart(new TetrisBlock(150, 0), 1, 0) };
+			new TetrisPiecePart(new TetrisBlock(150, 0), 1, 0) };
 		return parts;
 	}
 

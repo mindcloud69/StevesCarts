@@ -1,10 +1,10 @@
 package vswe.stevescarts.modules.storages.chests;
 
-import java.util.Random;
-
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.ComponentTypes;
+
+import java.util.Random;
 
 public class ModuleEggBasket extends ModuleChest {
 	public ModuleEggBasket(final EntityMinecartModular cart) {
@@ -53,7 +53,8 @@ public class ModuleEggBasket extends ModuleChest {
 		}
 		final Random rand = this.getCart().rand;
 		final int eggs = 1 + rand.nextInt(4) + rand.nextInt(4);
-		@Nonnull ItemStack easterEgg = ComponentTypes.PAINTED_EASTER_EGG.getItemStack(eggs);
+		@Nonnull
+		ItemStack easterEgg = ComponentTypes.PAINTED_EASTER_EGG.getItemStack(eggs);
 		this.setStack(0, easterEgg);
 	}
 }

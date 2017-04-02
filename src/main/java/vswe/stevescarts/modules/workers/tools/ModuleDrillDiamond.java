@@ -36,7 +36,9 @@ public class ModuleDrillDiamond extends ModuleDrill {
 	}
 
 	@Override
-	public int getRepairItemUnits(@Nonnull ItemStack item) {
+	public int getRepairItemUnits(
+		@Nonnull
+			ItemStack item) {
 		if (item != null && item.getItem() == Items.DIAMOND) {
 			return 100000;
 		}

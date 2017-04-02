@@ -30,13 +30,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init() {
 
-
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityEasterEgg.class, new RenderSnowball((Item) ModItems.component, ComponentTypes.PAINTED_EASTER_EGG.getId()));
 		//	StevesCarts.instance.blockRenderer = (ISimpleBlockRenderingHandler) new RendererUpgrade();
 
 		//		RenderingRegistry.registerEntityRenderingHandler((Class) EntityCake.class, new RenderSnowball(Items.CAKE));
 		ModuleData.initModels();
-
 
 		ModelLoader.setCustomStateMapper(ModBlocks.UPGRADE.getBlock(), new DefaultStateMapper() {
 			@Override
@@ -77,8 +75,7 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void initItemModels()
-	{
+	public void initItemModels() {
 		registerItemModel(ModBlocks.CART_ASSEMBLER.getBlock(), 0);
 		registerItemModel(ModBlocks.CARGO_MANAGER.getBlock(), 0);
 		registerItemModel(ModItems.carts, 0);
@@ -98,14 +95,12 @@ public class ClientProxy extends CommonProxy {
 		}
 	}
 
-	public static void registerItemModel(Item i, int meta)
-	{
+	public static void registerItemModel(Item i, int meta) {
 		ResourceLocation loc = i.getRegistryName();
 		ModelLoader.setCustomModelResourceLocation(i, meta, new ModelResourceLocation(loc, "inventory"));
 	}
 
-	public static void registerItemModel(Block b, int meta)
-	{
+	public static void registerItemModel(Block b, int meta) {
 		registerItemModel(Item.getItemFromBlock(b), meta);
 	}
 }

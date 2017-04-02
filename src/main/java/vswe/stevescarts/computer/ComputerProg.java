@@ -1,8 +1,8 @@
 package vswe.stevescarts.computer;
 
-import java.util.ArrayList;
-
 import vswe.stevescarts.modules.workers.ModuleComputer;
+
+import java.util.ArrayList;
 
 public class ComputerProg {
 	private ModuleComputer module;

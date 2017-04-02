@@ -1,12 +1,11 @@
 package vswe.stevescarts.models;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.realtimers.ModuleDynamite;

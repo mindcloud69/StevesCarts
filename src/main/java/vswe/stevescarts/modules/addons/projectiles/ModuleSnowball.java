@@ -6,18 +6,24 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
+import javax.annotation.Nonnull;
+
 public class ModuleSnowball extends ModuleProjectile {
 	public ModuleSnowball(final EntityMinecartModular cart) {
 		super(cart);
 	}
 
 	@Override
-	public boolean isValidProjectile(@Nonnull ItemStack item) {
+	public boolean isValidProjectile(
+		@Nonnull
+			ItemStack item) {
 		return item.getItem() == Items.SNOWBALL;
 	}
 
 	@Override
-	public Entity createProjectile(final Entity target, @Nonnull ItemStack item) {
+	public Entity createProjectile(final Entity target,
+	                               @Nonnull
+		                               ItemStack item) {
 		return new EntitySnowball(this.getCart().world);
 	}
 }

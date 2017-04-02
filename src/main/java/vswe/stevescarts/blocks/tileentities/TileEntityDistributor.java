@@ -1,7 +1,5 @@
 package vswe.stevescarts.blocks.tileentities;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,15 +11,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerBase;
@@ -32,6 +26,9 @@ import vswe.stevescarts.helpers.DistributorSetting;
 import vswe.stevescarts.helpers.DistributorSide;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.storages.Tank;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 public class TileEntityDistributor extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler {
 	private ArrayList<DistributorSide> sides;
@@ -213,6 +210,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getStackInSlot(final int slot) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
@@ -222,6 +220,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack decrStackSize(final int slot, final int count) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
@@ -231,7 +230,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public void setInventorySlotContents(final int slot, @Nonnull ItemStack itemstack) {
+	public void setInventorySlotContents(final int slot,
+	                                     @Nonnull
+		                                     ItemStack itemstack) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
 			manager.setInventorySlotContents(this.translateSlotId(slot), itemstack);
@@ -262,6 +263,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack removeStackFromSlot(final int slot) {
 		final TileEntityManager manager = this.getManagerFromSlotId(slot);
 		if (manager != null) {
@@ -376,17 +378,23 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public boolean canInsertItem(final int slot, @Nonnull ItemStack item, EnumFacing side) {
+	public boolean canInsertItem(final int slot,
+	                             @Nonnull
+		                             ItemStack item, EnumFacing side) {
 		return true;
 	}
 
 	@Override
-	public boolean canExtractItem(final int slot, @Nonnull ItemStack item, EnumFacing side) {
+	public boolean canExtractItem(final int slot,
+	                              @Nonnull
+		                              ItemStack item, EnumFacing side) {
 		return true;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slotId, @Nonnull ItemStack item) {
+	public boolean isItemValidForSlot(final int slotId,
+	                                  @Nonnull
+		                                  ItemStack item) {
 		return true;
 	}
 
@@ -461,20 +469,16 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
 		}
 		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) new SidedInvWrapper(this, facing);
 		}
 		return super.getCapability(capability, facing);

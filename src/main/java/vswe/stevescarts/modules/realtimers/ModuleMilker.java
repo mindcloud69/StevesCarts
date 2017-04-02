@@ -13,6 +13,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.modules.ModuleBase;
 
+import javax.annotation.Nonnull;
+
 public class ModuleMilker extends ModuleBase {
 	int cooldown;
 	int milkbuffer;
@@ -46,13 +48,16 @@ public class ModuleMilker extends ModuleBase {
 			}
 			if (this.milkbuffer == 1000) {
 				for (int i = 0; i < this.getInventorySize(); ++i) {
-					@Nonnull ItemStack bucket = this.getStack(i);
+					@Nonnull
+					ItemStack bucket = this.getStack(i);
 					if (!bucket.isEmpty() && bucket.getItem() == Items.BUCKET) {
-						@Nonnull ItemStack milk = new ItemStack(Items.MILK_BUCKET);
+						@Nonnull
+						ItemStack milk = new ItemStack(Items.MILK_BUCKET);
 						this.getCart().addItemToChest(milk);
 						if (milk.getCount() <= 0) {
 							this.milkbuffer = 0;
-							@Nonnull ItemStack itemStack = bucket;
+							@Nonnull
+							ItemStack itemStack = bucket;
 							itemStack.shrink(1);
 							if (itemStack.getCount() <= 0) {
 								this.setStack(i, ItemStack.EMPTY);
@@ -66,7 +71,7 @@ public class ModuleMilker extends ModuleBase {
 
 	private void generateMilk() {
 		if (this.milkbuffer < 1000) {
-			if(!this.getCart().getPassengers().isEmpty()){
+			if (!this.getCart().getPassengers().isEmpty()) {
 				final Entity rider = this.getCart().getPassengers().get(0);
 				if (rider != null && rider instanceof EntityCow) {
 					this.milkbuffer = Math.min(this.milkbuffer + 75, 1000);

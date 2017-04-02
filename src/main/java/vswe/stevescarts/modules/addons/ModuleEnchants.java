@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.addons;
 
-import java.util.ArrayList;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +13,9 @@ import vswe.stevescarts.helpers.EnchantmentData;
 import vswe.stevescarts.helpers.EnchantmentInfo;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 public class ModuleEnchants extends ModuleAddon {
 	private EnchantmentData[] enchants;
@@ -91,21 +92,22 @@ public class ModuleEnchants extends ModuleAddon {
 		super.update();
 		if (!this.getCart().world.isRemote) {
 			for (int i = 0; i < 3; ++i) {
-				if (this.getStack(i) != null && this.getStack(i).stackSize > 0) {
-					final int stacksize = this.getStack(i).stackSize;
+				if (!this.getStack(i).isEmpty() && this.getStack(i).getCount() > 0) {
+					final int stacksize = this.getStack(i).getCount();
 					this.enchants[i] = EnchantmentInfo.addBook(this.enabledTypes, this.enchants[i], this.getStack(i));
-					if (this.getStack(i).stackSize != stacksize) {
+					if (this.getStack(i).getCount() != stacksize) {
 						boolean valid = true;
 						for (int j = 0; j < 3; ++j) {
 							if (i != j && this.enchants[i] != null && this.enchants[j] != null && this.enchants[i].getEnchantment() == this.enchants[j].getEnchantment()) {
 								this.enchants[i] = null;
-								@Nonnull ItemStack stack = this.getStack(i);
-								++stack.stackSize;
+								@Nonnull
+								ItemStack stack = this.getStack(i);
+								stack.grow(1);
 								valid = false;
 								break;
 							}
 						}
-						if (valid && this.getStack(i).stackSize <= 0) {
+						if (valid && this.getStack(i).getCount() <= 0) {
 							this.setStack(i, null);
 						}
 					}

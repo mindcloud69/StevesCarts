@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.workers;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -9,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vswe.stevescarts.entitys.EntityMinecartModular;
+
+import javax.annotation.Nonnull;
 
 public class ModuleRemover extends ModuleWorker {
 	@Nonnull
@@ -66,7 +66,8 @@ public class ModuleRemover extends ModuleWorker {
 					return true;
 				}
 				final int rInt = this.getCart().rand.nextInt(100);
-				@Nonnull ItemStack iStack = new ItemStack(Blocks.RAIL, 1, 0);
+				@Nonnull
+				ItemStack iStack = new ItemStack(Blocks.RAIL, 1, 0);
 				this.getCart().addItemToChest(iStack);
 				if (iStack.stackSize == 0) {
 					world.setBlockToAir(pos);

@@ -8,6 +8,7 @@ import vswe.stevescarts.helpers.Localization;
 
 public class ModuleCheatEngine extends ModuleEngine {
 	private DataParameter<Integer> PRIORITY;
+
 	public ModuleCheatEngine(final EntityMinecartModular cart) {
 		super(cart);
 	}
@@ -25,7 +26,7 @@ public class ModuleCheatEngine extends ModuleEngine {
 	public int getFuelLevel() {
 		return 9001;
 	}
-	
+
 	@Override
 	public void initDw() {
 		PRIORITY = createDw(DataSerializers.VARINT);

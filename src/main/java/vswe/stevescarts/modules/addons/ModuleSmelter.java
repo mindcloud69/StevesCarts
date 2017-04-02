@@ -1,15 +1,16 @@
 package vswe.stevescarts.modules.addons;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
 import vswe.stevescarts.containers.slots.SlotFurnaceInput;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
+
+import javax.annotation.Nonnull;
 
 public class ModuleSmelter extends ModuleRecipe {
 	private int energyBuffer;
@@ -30,32 +31,38 @@ public class ModuleSmelter extends ModuleRecipe {
 		}
 		if (this.cooldown <= 0) {
 			if (this.energyBuffer == 10) {
-				@Nonnull ItemStack recipe = this.getStack(0);
-				ItemStack result = null;
-				if (recipe != null) {
+				@Nonnull
+				ItemStack recipe = this.getStack(0);
+				@Nonnull
+				ItemStack result = ItemStack.EMPTY;
+				if (!recipe.isEmpty()) {
 					result = FurnaceRecipes.instance().getSmeltingResult(recipe);
 				}
-				if (result != null) {
+				if (!result.isEmpty()) {
 					result = result.copy();
 				}
-				if (result != null && this.getCart().getModules() != null) {
+				if (!result.isEmpty() && this.getCart().getModules() != null) {
 					this.prepareLists();
 					if (this.canCraftMoreOfResult(result)) {
-						final ArrayList<ItemStack> originals = new ArrayList<>();
+						final NonNullList<ItemStack> originals = NonNullList.create();
 						for (int i = 0; i < this.allTheSlots.size(); ++i) {
-							@Nonnull ItemStack item = this.allTheSlots.get(i).getStack();
-							originals.add((item == null) ? null : item.copy());
+							@Nonnull
+							ItemStack item = this.allTheSlots.get(i).getStack();
+							originals.add((item.isEmpty()) ? ItemStack.EMPTY : item.copy());
 						}
 						int i = 0;
 						while (i < this.inputSlots.size()) {
-							@Nonnull ItemStack item = this.inputSlots.get(i).getStack();
-							if (item != null && item.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item, recipe)) {
-								@Nonnull ItemStack itemStack = item;
-								if (--itemStack.stackSize <= 0) {
-									this.inputSlots.get(i).putStack(null);
+							@Nonnull
+							ItemStack item = this.inputSlots.get(i).getStack();
+							if (!item.isEmpty() && item.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item, recipe)) {
+								@Nonnull
+								ItemStack itemStack = item;
+								itemStack.shrink(1);
+								if (itemStack.getCount() <= 0) {
+									this.inputSlots.get(i).putStack(ItemStack.EMPTY);
 								}
 								this.getCart().addItemToChest(result, this.getValidSlot(), null);
-								if (result.stackSize != 0) {
+								if (result.getCount() != 0) {
 									for (int j = 0; j < this.allTheSlots.size(); ++j) {
 										this.allTheSlots.get(j).putStack(originals.get(j));
 									}

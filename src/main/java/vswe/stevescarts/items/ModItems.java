@@ -1,7 +1,5 @@
 package vswe.stevescarts.items;
 
-import java.util.HashMap;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -14,6 +12,8 @@ import vswe.stevescarts.helpers.DetectorType;
 import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
+
+import java.util.HashMap;
 
 public final class ModItems {
 	public static ItemCarts carts;
@@ -41,11 +41,13 @@ public final class ModItems {
 			}
 		}
 		for (int i = 0; i < ItemCartComponent.size(); ++i) {
-			@Nonnull ItemStack subcomponent = new ItemStack(ModItems.component, 1, i);
+			@Nonnull
+			ItemStack subcomponent = new ItemStack(ModItems.component, 1, i);
 			//GameRegistry.registerCustomItemStack(subcomponent.getUnlocalizedName(), subcomponent);
 		}
 		for (final ModuleData module : ModuleData.getList().values()) {
-			@Nonnull ItemStack submodule = new ItemStack(ModItems.modules, 1, module.getID());
+			@Nonnull
+			ItemStack submodule = new ItemStack(ModItems.modules, 1, module.getID());
 			//GameRegistry.registerCustomItemStack(submodule.getUnlocalizedName(), submodule);
 		}
 	}
@@ -55,22 +57,26 @@ public final class ModItems {
 		ModItems.upgrades = (ItemUpgrade) new ItemStack(ModBlocks.UPGRADE.getBlock()).getItem();
 		ModItems.storages = (ItemBlockStorage) new ItemStack(ModBlocks.STORAGE.getBlock()).getItem();
 		for (int i = 0; i < ItemBlockStorage.blocks.length; ++i) {
-			@Nonnull ItemStack storage = new ItemStack(ModItems.storages, 1, i);
+			@Nonnull
+			ItemStack storage = new ItemStack(ModItems.storages, 1, i);
 			//	GameRegistry.registerCustomItemStack(storage.getUnlocalizedName(), storage);
 		}
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-			@Nonnull ItemStack upgradeStack = new ItemStack(ModItems.upgrades, 1, upgrade.getId());
+			@Nonnull
+			ItemStack upgradeStack = new ItemStack(ModItems.upgrades, 1, upgrade.getId());
 			//GameRegistry.registerCustomItemStack(upgradeStack.getUnlocalizedName(), upgradeStack);
 		}
 		for (final DetectorType type : DetectorType.values()) {
-			@Nonnull ItemStack stack = new ItemStack(ModItems.detectors, 1, type.getMeta());
+			@Nonnull
+			ItemStack stack = new ItemStack(ModItems.detectors, 1, type.getMeta());
 			//GameRegistry.registerCustomItemStack(stack.getUnlocalizedName(), stack);
 		}
 	}
 
 	public static void addRecipes() {
 		for (final ModuleData module : ModuleData.getList().values()) {
-			@Nonnull ItemStack submodule = new ItemStack(ModItems.modules, 1, module.getID());
+			@Nonnull
+			ItemStack submodule = new ItemStack(ModItems.modules, 1, module.getID());
 			if (!module.getIsLocked() && ModItems.validModules.get(module.getID())) {
 				module.loadRecipe();
 			}
@@ -216,7 +222,8 @@ public final class ModItems {
 			{ Items.BLAZE_POWDER, Items.EGG, Items.BLAZE_POWDER }, { red, Items.MAGMA_CREAM, yellow } });
 		RecipeHelper.addRecipe(ComponentTypes.GLISTERING_EASTER_EGG.getItemStack(), new Object[][] { { Items.GOLD_NUGGET, Items.GOLD_NUGGET, Items.GOLD_NUGGET },
 			{ Items.GOLD_NUGGET, Items.EGG, Items.GOLD_NUGGET }, { Items.GOLD_NUGGET, blue, Items.GOLD_NUGGET } });
-		@Nonnull ItemStack chocolate = new ItemStack(Items.DYE, 1, 3);
+		@Nonnull
+		ItemStack chocolate = new ItemStack(Items.DYE, 1, 3);
 		RecipeHelper.addRecipe(ComponentTypes.CHOCOLATE_EASTER_EGG.getItemStack(), new Object[][] { { chocolate, Items.SUGAR, chocolate }, { chocolate, Items.EGG, chocolate },
 			{ chocolate, Items.SUGAR, chocolate } });
 		RecipeHelper.addRecipe(ComponentTypes.BASKET.getItemStack(), new Object[][] { { Items.STICK, Items.STICK, Items.STICK }, { Items.STICK, null, Items.STICK }, { planks, planks, planks } });

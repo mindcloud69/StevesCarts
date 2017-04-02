@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.addons;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.init.Blocks;
@@ -10,6 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.workers.tools.ModuleDrill;
+
+import java.util.ArrayList;
 
 public class ModuleOreTracker extends ModuleAddon {
 	public ModuleOreTracker(final EntityMinecartModular cart) {
@@ -57,16 +57,16 @@ public class ModuleOreTracker extends ModuleAddon {
 			return true;
 		}
 		ItemStack stack = new ItemStack(b);
-		if (stack == null || stack.getItem() == null){
+		if (stack == null || stack.getItem() == null) {
 			return false;
 		}
 		final int[] oreIds = OreDictionary.getOreIDs(stack);
 		if (oreIds.length == 0) {
 			return false;
 		}
-		for(int oreId : oreIds){
+		for (int oreId : oreIds) {
 			final String oreName = OreDictionary.getOreName(oreId);
-			if(oreName != null && oreName.startsWith("ore")){
+			if (oreName != null && oreName.startsWith("ore")) {
 				return true;
 			}
 		}

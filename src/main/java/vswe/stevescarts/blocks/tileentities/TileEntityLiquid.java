@@ -1,19 +1,12 @@
 package vswe.stevescarts.blocks.tileentities;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.containers.ContainerBase;
@@ -30,6 +23,8 @@ import vswe.stevescarts.helpers.storages.Tank;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.modules.storages.tanks.ModuleTank;
+
+import java.util.ArrayList;
 
 public class TileEntityLiquid extends TileEntityManager implements IFluidHandler, ITankHolder {
 	Tank[] tanks;
@@ -147,6 +142,7 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getInputContainer(final int tankid) {
 		return this.getStackInSlot(tankid * 3);
 	}
@@ -157,7 +153,9 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	@Override
-	public void addToOutputContainer(final int tankid, @Nonnull ItemStack item) {
+	public void addToOutputContainer(final int tankid,
+	                                 @Nonnull
+		                                 ItemStack item) {
 		TransferHandler.TransferItem(item, this, tankid * 3 + 1, tankid * 3 + 1, new ContainerLiquid(null, this), Slot.class, null, -1);
 	}
 
@@ -268,7 +266,8 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	private boolean isFluidValid(final int sideId, final FluidStack fluid) {
-		@Nonnull ItemStack filter = this.getStackInSlot(sideId * 3 + 2);
+		@Nonnull
+		ItemStack filter = this.getStackInSlot(sideId * 3 + 2);
 		final FluidStack filterFluid = FluidContainerRegistry.getFluidForFilledItem(filter);
 		return filterFluid == null || filterFluid.isFluidEqual(fluid);
 	}
@@ -417,7 +416,9 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slotId, @Nonnull ItemStack item) {
+	public boolean isItemValidForSlot(final int slotId,
+	                                  @Nonnull
+		                                  ItemStack item) {
 		if (this.isInput(slotId)) {
 			return SlotLiquidManagerInput.isItemStackValid(item, this, -1);
 		}
@@ -437,11 +438,15 @@ public class TileEntityLiquid extends TileEntityManager implements IFluidHandler
 		return TileEntityLiquid.sideSlots;
 	}
 
-	public boolean canInsertItem(final int slot, @Nonnull ItemStack item, final int side) {
+	public boolean canInsertItem(final int slot,
+	                             @Nonnull
+		                             ItemStack item, final int side) {
 		return side == 1 && this.isInput(slot) && this.isItemValidForSlot(slot, item);
 	}
 
-	public boolean canExtractItem(final int slot, @Nonnull ItemStack item, final int side) {
+	public boolean canExtractItem(final int slot,
+	                              @Nonnull
+		                              ItemStack item, final int side) {
 		return side == 0 && this.isOutput(slot);
 	}
 

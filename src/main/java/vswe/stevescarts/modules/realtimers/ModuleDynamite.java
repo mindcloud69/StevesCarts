@@ -165,7 +165,7 @@ public class ModuleDynamite extends ModuleBase {
 		}
 		int f = 8;
 		if (ComponentTypes.DYNAMITE.isStackOfType(this.getStack(0))) {
-			f += this.getStack(0).stackSize * 2;
+			f += this.getStack(0).getCount() * 2;
 		}
 		this.updateDw(EXPLOSION, (byte) f);
 	}
@@ -180,9 +180,9 @@ public class ModuleDynamite extends ModuleBase {
 		FUSE = createDw(DataSerializers.BYTE);
 		FUSE_LENGTH = createDw(DataSerializers.BYTE);
 		EXPLOSION = createDw(DataSerializers.BYTE);
-		registerDw(FUSE, (byte)0);
-		registerDw(FUSE_LENGTH, (byte)70);
-		registerDw(EXPLOSION, (byte)8);
+		registerDw(FUSE, (byte) 0);
+		registerDw(FUSE_LENGTH, (byte) 70);
+		registerDw(EXPLOSION, (byte) 8);
 	}
 
 	public int getFuse() {

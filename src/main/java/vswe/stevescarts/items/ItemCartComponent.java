@@ -1,7 +1,5 @@
 package vswe.stevescarts.items;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,8 +23,9 @@ import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.renders.model.ItemModelManager;
 import vswe.stevescarts.renders.model.TexturedItem;
 
+import java.util.List;
 
-public class ItemCartComponent extends Item  implements TexturedItem {
+public class ItemCartComponent extends Item implements TexturedItem {
 	//	private IIcon[] icons;
 	//	private IIcon unknownIcon;
 
@@ -45,7 +44,9 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 		return ComponentTypes.values()[dmg].getName();
 	}
 
-	public String getName(@Nonnull ItemStack par1ItemStack) {
+	public String getName(
+		@Nonnull
+			ItemStack par1ItemStack) {
 		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
 			return "Unknown SC2 Component";
 		}
@@ -61,7 +62,7 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 	//	}
 	//
 	private String getRawName(final int i) {
-		if(getName(i) == null){
+		if (getName(i) == null) {
 			return null;
 		}
 		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
@@ -85,7 +86,9 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 	//	}
 
 	@Override
-	public String getUnlocalizedName(@Nonnull ItemStack item) {
+	public String getUnlocalizedName(
+		@Nonnull
+			ItemStack item) {
 		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || this.getName(item.getItemDamage()) == null) {
 			return this.getUnlocalizedName();
 		}
@@ -99,7 +102,9 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(@Nonnull ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+	public void addInformation(
+		@Nonnull
+			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
 			if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartComponent) {
 				par3List.add("Component id " + par1ItemStack.getItemDamage());
@@ -113,14 +118,17 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
 		for (int i = 0; i < size(); ++i) {
-			@Nonnull ItemStack iStack = new ItemStack(par1, 1, i);
+			@Nonnull
+			ItemStack iStack = new ItemStack(par1, 1, i);
 			if (this.isValid(iStack)) {
 				par3List.add(iStack);
 			}
 		}
 	}
 
-	public boolean isValid(@Nonnull ItemStack item) {
+	public boolean isValid(
+		@Nonnull
+			ItemStack item) {
 		if (item == null || !(item.getItem() instanceof ItemCartComponent) || this.getName(item.getItemDamage()) == null) {
 			return false;
 		}
@@ -141,23 +149,32 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 		return new ItemStack(ModItems.component, count, 72 + type * 2 + (isLog ? 0 : 1));
 	}
 
-	public static boolean isWoodLog(@Nonnull ItemStack item) {
+	public static boolean isWoodLog(
+		@Nonnull
+			ItemStack item) {
 		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 0;
 	}
 
-	public static boolean isWoodTwig(@Nonnull ItemStack item) {
+	public static boolean isWoodTwig(
+		@Nonnull
+			ItemStack item) {
 		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 1;
 	}
 
-	private boolean isEdibleEgg(@Nonnull ItemStack item) {
+	private boolean isEdibleEgg(
+		@Nonnull
+			ItemStack item) {
 		return item != null && item.getItemDamage() >= 66 && item.getItemDamage() < 70;
 	}
 
-	private boolean isThrowableEgg(@Nonnull ItemStack item) {
+	private boolean isThrowableEgg(
+		@Nonnull
+			ItemStack item) {
 		return item != null && item.getItemDamage() == 70;
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack onItemUseFinish(ItemStack item, World world, EntityLivingBase entity) {
 		if (entity instanceof EntityPlayer && this.isEdibleEgg(item)) {
 			EntityPlayer player = (EntityPlayer) entity;
@@ -180,20 +197,24 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 			if (!player.capabilities.isCreativeMode) {
 				--item.stackSize;
 			}
-			world.playSound((EntityPlayer)entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound((EntityPlayer) entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 			player.getFoodStats().addStats(2, 0.0f);
 			return item;
 		}
-		return  super.onItemUseFinish(item, world, entity);
+		return super.onItemUseFinish(item, world, entity);
 	}
 
 	@Override
-	public int getMaxItemUseDuration(@Nonnull ItemStack item) {
+	public int getMaxItemUseDuration(
+		@Nonnull
+			ItemStack item) {
 		return this.isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
 	}
 
 	@Override
-	public EnumAction getItemUseAction(@Nonnull ItemStack item) {
+	public EnumAction getItemUseAction(
+		@Nonnull
+			ItemStack item) {
 		return this.isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
 	}
 
@@ -207,7 +228,7 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 			if (!player.capabilities.isCreativeMode) {
 				--item.stackSize;
 			}
-			world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
 				world.spawnEntity(new EntityEasterEgg(world, player));
 			}
@@ -218,7 +239,7 @@ public class ItemCartComponent extends Item  implements TexturedItem {
 
 	@Override
 	public String getTextureName(int damage) {
-		if(getRawName(damage) == null){
+		if (getRawName(damage) == null) {
 			return "stevescarts:items/unknown_icon";
 		}
 		return "stevescarts:items/" + getRawName(damage) + "_icon";

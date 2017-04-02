@@ -1,11 +1,10 @@
 package vswe.stevescarts.guis;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
 import vswe.stevescarts.containers.ContainerActivator;

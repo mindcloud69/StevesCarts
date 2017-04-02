@@ -1,10 +1,5 @@
 package vswe.stevescarts.guis;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.Constants;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.StevesCarts;
@@ -27,6 +23,9 @@ import vswe.stevescarts.helpers.TitleBox;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.data.ModuleDataHull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiCartAssembler extends GuiBase {
@@ -215,14 +214,14 @@ public class GuiCartAssembler extends GuiBase {
 		float assemblingProgress = 0.0f;
 		String assemblingInfo;
 		if (this.assembler.getIsAssembling()) {
-			assemblingProgress = (float)this.assembler.getAssemblingTime() / (float)this.assembler.getMaxAssemblingTime();
+			assemblingProgress = (float) this.assembler.getAssemblingTime() / (float) this.assembler.getMaxAssemblingTime();
 			assemblingInfo = Localization.GUI.ASSEMBLER.ASSEMBLE_PROGRESS.translate() + ": " + this.formatProgress(assemblingProgress);
 			assemblingInfo = assemblingInfo + "\n" + Localization.GUI.ASSEMBLER.TIME_LEFT.translate() + ": " + this.formatTime((int) ((this.assembler.getMaxAssemblingTime() - this.assembler.getAssemblingTime()) / this.assembler.getEfficiency()));
 		} else {
 			assemblingInfo = Localization.GUI.ASSEMBLER.IDLE_MESSAGE.translate();
 		}
 		this.drawProgressBar(assemblingProgRect, assemblingProgress, 22, x, y);
-		this.drawProgressBar(fuelProgRect, (float)this.assembler.getFuelLevel() / (float)this.assembler.getMaxFuelLevel(), 31, x, y);
+		this.drawProgressBar(fuelProgRect, (float) this.assembler.getFuelLevel() / (float) this.assembler.getMaxFuelLevel(), 31, x, y);
 		this.renderDropDownMenu(x, y);
 		this.render3DCart();
 		if (!this.hasErrors) {
@@ -295,7 +294,8 @@ public class GuiCartAssembler extends GuiBase {
 		Minecraft.getMinecraft().getRenderManager().playerViewY = 180.0f;
 		if (Constants.renderSteve) {
 			final EntityPlayer player = Minecraft.getMinecraft().player;
-			@Nonnull ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+			@Nonnull
+			ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));
 			final float temp = player.rotationPitch;
 			player.rotationPitch = 0.7853982f;

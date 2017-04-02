@@ -1,17 +1,18 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.List;
-
-import net.minecraft.block.BlockFlower;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class ModuleFlowerRemover extends ModuleBase {
 	private int tick;
@@ -67,7 +68,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 					if (this.isFlower(pos)) {
 						IBlockState state = getCart().world.getBlockState(pos);
 						if (state != null) {
-							this.addStuff(state.getBlock().getDrops(this.getCart().world, pos, state, 0));
+							this.addStuff((NonNullList<ItemStack>) state.getBlock().getDrops(this.getCart().world, pos, state, 0));
 							this.getCart().world.setBlockToAir(pos);
 						}
 					}
@@ -82,10 +83,10 @@ public class ModuleFlowerRemover extends ModuleBase {
 			if (target instanceof IShearable) {
 				BlockPos pos = target.getPosition();
 				final IShearable shearable = (IShearable) target;
-				if (!shearable.isShearable((ItemStack) null, this.getCart().world, pos)) {
+				if (!shearable.isShearable(ItemStack.EMPTY, this.getCart().world, pos)) {
 					continue;
 				}
-				this.addStuff(shearable.onSheared((ItemStack) null, this.getCart().world, pos, 0));
+				this.addStuff((NonNullList<ItemStack>) shearable.onSheared(ItemStack.EMPTY, this.getCart().world, pos, 0));
 			}
 		}
 	}
@@ -95,10 +96,12 @@ public class ModuleFlowerRemover extends ModuleBase {
 		return state != null && state.getBlock() instanceof IPlantable;
 	}
 
-	private void addStuff(final List<ItemStack> stuff) {
-		for (@Nonnull ItemStack iStack : stuff) {
+	private void addStuff(final NonNullList<ItemStack> stuff) {
+		for (
+			@Nonnull
+				ItemStack iStack : stuff) {
 			this.getCart().addItemToChest(iStack);
-			if (iStack.stackSize != 0) {
+			if (iStack.getCount() != 0) {
 				final EntityItem entityitem = new EntityItem(this.getCart().world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
 				entityitem.motionX = 0.0;
 				entityitem.motionY = 0.15000000596046448;

@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +22,9 @@ import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.ModuleEnchants;
 import vswe.stevescarts.modules.addons.projectiles.ModuleProjectile;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	private ArrayList<ModuleProjectile> projectiles;
@@ -267,25 +268,29 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		return this.getProjectileItem(false) != null;
 	}
 
+	@Nonnull
+	@Nonnull
 	protected ItemStack getProjectileItem(boolean flag) {
 		if (flag && this.enchanter != null && this.enchanter.useInfinity()) {
 			flag = false;
 		}
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (this.getStack(i) != null && this.isValidProjectileItem(this.getStack(i))) {
-				@Nonnull ItemStack projectile = this.getStack(i).copy();
-				projectile.stackSize = 1;
+			if (!this.getStack(i).isEmpty() && this.isValidProjectileItem(this.getStack(i))) {
+				@Nonnull
+				ItemStack projectile = this.getStack(i).copy();
+				projectile.setCount(1);
 				if (flag && !this.getCart().hasCreativeSupplies()) {
-					@Nonnull ItemStack stack = this.getStack(i);
-					--stack.stackSize;
-					if (this.getStack(i).stackSize == 0) {
+					@Nonnull
+					ItemStack stack = this.getStack(i);
+					stack.shrink(1);
+					if (this.getStack(i).getCount() == 0) {
 						this.setStack(i, null);
 					}
 				}
 				return projectile;
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	protected void Shoot() {
@@ -376,7 +381,9 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		}
 	}
 
-	protected Entity getProjectile(final Entity target, @Nonnull ItemStack item) {
+	protected Entity getProjectile(final Entity target,
+	                               @Nonnull
+		                               ItemStack item) {
 		for (final ModuleProjectile module : this.projectiles) {
 			if (module.isValidProjectile(item)) {
 				return module.createProjectile(target, item);
@@ -384,13 +391,16 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 		}
 		return new EntityArrow(this.getCart().world) {
 			@Override
+			@Nonnull
 			protected ItemStack getArrowStack() {
 				return item;
 			}
 		};
 	}
 
-	public boolean isValidProjectileItem(@Nonnull ItemStack item) {
+	public boolean isValidProjectileItem(
+		@Nonnull
+			ItemStack item) {
 		for (final ModuleProjectile module : this.projectiles) {
 			if (module.isValidProjectile(item)) {
 				return true;
@@ -439,7 +449,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	@Override
 	public void initDw() {
 		ACTIVE_PIPE = createDw(DataSerializers.BYTE);
-		registerDw(ACTIVE_PIPE, (byte)0);
+		registerDw(ACTIVE_PIPE, (byte) 0);
 	}
 
 	public void setActivePipes(final byte val) {

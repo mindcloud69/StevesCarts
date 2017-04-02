@@ -4,10 +4,14 @@ import net.minecraft.item.ItemStack;
 
 public class CargoItemSelection {
 	private Class validSlot;
+	@Nonnull
 	private ItemStack icon;
 	private Localization.GUI.CARGO name;
 
-	public CargoItemSelection(final Localization.GUI.CARGO name, final Class validSlot, @Nonnull ItemStack icon) {
+	public CargoItemSelection(final Localization.GUI.CARGO name,
+	                          final Class validSlot,
+	                          @Nonnull
+		                          ItemStack icon) {
 		this.name = name;
 		this.validSlot = validSlot;
 		this.icon = icon;
@@ -17,6 +21,7 @@ public class CargoItemSelection {
 		return this.validSlot;
 	}
 
+	@Nonnull
 	public ItemStack getIcon() {
 		return this.icon;
 	}

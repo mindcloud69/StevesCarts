@@ -5,7 +5,7 @@ import vswe.stevescarts.api.ISCPlugin;
 import vswe.stevescarts.api.SCLoadingPlugin;
 
 @SCLoadingPlugin(dependentMod = "forestry")
-public class CompatForestry implements ISCPlugin{
+public class CompatForestry implements ISCPlugin {
 
 	@Override
 	public void loadAddons(ISCHelpers plugins) {

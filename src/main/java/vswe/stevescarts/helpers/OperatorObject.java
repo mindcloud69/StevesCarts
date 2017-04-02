@@ -1,13 +1,13 @@
 package vswe.stevescarts.helpers;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.entitys.EntityMinecartModular;
+
+import java.util.Collection;
+import java.util.HashMap;
 
 public class OperatorObject {
 	private static HashMap<Byte, OperatorObject> allOperators;

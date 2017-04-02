@@ -1,12 +1,13 @@
 package vswe.stevescarts.modules.addons;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.containers.slots.SlotCartCrafter;
 import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 public class ModuleCrafter extends ModuleRecipe {
 	private CraftingDummy dummy;
@@ -22,36 +23,41 @@ public class ModuleCrafter extends ModuleRecipe {
 	public void update() {
 		if (this.cooldown <= 0) {
 			if (!this.getCart().world.isRemote && this.getValidSlot() != null) {
-				@Nonnull ItemStack result = this.dummy.getResult();
-				if (result != null && this.getCart().getModules() != null) {
-					if (result.stackSize == 0) {
-						result.stackSize = 1;
+				@Nonnull
+				ItemStack result = this.dummy.getResult();
+				if (!result.isEmpty() && this.getCart().getModules() != null) {
+					if (result.getCount() == 0) {
+						result.setCount(1);
 					}
 					this.prepareLists();
 					if (this.canCraftMoreOfResult(result)) {
 						final ArrayList<ItemStack> originals = new ArrayList<>();
 						for (int i = 0; i < this.allTheSlots.size(); ++i) {
-							@Nonnull ItemStack item = this.allTheSlots.get(i).getStack();
+							@Nonnull
+							ItemStack item = this.allTheSlots.get(i).getStack();
 							originals.add((item == null) ? null : item.copy());
 						}
 						final ArrayList<ItemStack> containers = new ArrayList<>();
 						boolean valid = true;
 						boolean edited = false;
 						for (int j = 0; j < 9; ++j) {
-							@Nonnull ItemStack recipe = this.getStack(j);
-							if (recipe != null) {
+							@Nonnull
+							ItemStack recipe = this.getStack(j);
+							if (!recipe.isEmpty()) {
 								valid = false;
 								for (int k = 0; k < this.inputSlots.size(); ++k) {
-									@Nonnull ItemStack item2 = this.inputSlots.get(k).getStack();
-									if (item2 != null && item2.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item2, recipe)) {
+									@Nonnull
+									ItemStack item2 = this.inputSlots.get(k).getStack();
+									if (!item2.isEmpty() && item2.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item2, recipe)) {
 										edited = true;
 										if (item2.getItem().hasContainerItem(item2)) {
 											containers.add(item2.getItem().getContainerItem(item2));
 										}
-										@Nonnull ItemStack itemStack = item2;
-										--itemStack.stackSize;
-										if (item2.stackSize <= 0) {
-											this.inputSlots.get(k).putStack(null);
+										@Nonnull
+										ItemStack itemStack = item2;
+										itemStack.shrink(1);
+										if (item2.getCount() <= 0) {
+											this.inputSlots.get(k).putStack(ItemStack.EMPTY);
 										}
 										valid = true;
 										break;
@@ -64,15 +70,16 @@ public class ModuleCrafter extends ModuleRecipe {
 						}
 						if (valid) {
 							this.getCart().addItemToChest(result, this.getValidSlot(), null);
-							if (result.stackSize > 0) {
+							if (result.getCount() > 0) {
 								valid = false;
 							} else {
 								edited = true;
 								for (int j = 0; j < containers.size(); ++j) {
-									@Nonnull ItemStack container = containers.get(j);
+									@Nonnull
+									ItemStack container = containers.get(j);
 									if (container != null) {
 										this.getCart().addItemToChest(container, this.getValidSlot(), null);
-										if (container.stackSize > 0) {
+										if (container.getCount() > 0) {
 											valid = false;
 											break;
 										}

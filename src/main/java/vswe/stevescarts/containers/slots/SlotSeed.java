@@ -13,7 +13,9 @@ public class SlotSeed extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
 		return this.module.isSeedValidHandler(itemstack);
 	}
 }

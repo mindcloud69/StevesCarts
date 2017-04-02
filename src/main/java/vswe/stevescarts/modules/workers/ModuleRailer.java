@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.workers;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.init.Blocks;
@@ -18,6 +16,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ISuppliesModule;
+
+import java.util.ArrayList;
 
 public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	private boolean hasGeneratedAngles;
@@ -107,7 +107,8 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 					if (flag) {
 						this.getCart().world.setBlockState(new BlockPos(i, j, k), Block.getBlockFromItem(this.getStack(l).getItem()).getStateFromMeta(getStack(l).getItemDamage()));
 						if (!this.getCart().hasCreativeSupplies()) {
-							@Nonnull ItemStack stack = this.getStack(l);
+							@Nonnull
+							ItemStack stack = this.getStack(l);
 							--stack.stackSize;
 							if (this.getStack(l).stackSize == 0) {
 								this.setStack(l, null);
@@ -127,7 +128,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void initDw() {
 		RAILS = createDw(DataSerializers.BYTE);
-		registerDw(RAILS, (byte)0);
+		registerDw(RAILS, (byte) 0);
 	}
 
 	@Override
@@ -180,7 +181,8 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean haveSupplies() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			@Nonnull ItemStack item = this.getStack(i);
+			@Nonnull
+			ItemStack item = this.getStack(i);
 			if (item != null && this.validRail(item.getItem())) {
 				return true;
 			}

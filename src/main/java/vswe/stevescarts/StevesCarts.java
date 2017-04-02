@@ -1,7 +1,5 @@
 package vswe.stevescarts;
 
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -15,6 +13,7 @@ import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.Logger;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
 import vswe.stevescarts.entitys.CartDataSerializers;
@@ -100,14 +99,15 @@ public class StevesCarts {
 	}
 
 	@Mod.EventHandler
-	public void loadComplete(FMLLoadCompleteEvent event){
+	public void loadComplete(FMLLoadCompleteEvent event) {
 		proxy.loadComplete();
 	}
 
 	public class WoodFuelHandler implements IFuelHandler {
 		@Override
-		public int getBurnTime(@Nonnull
-			                       ItemStack fuel) {
+		public int getBurnTime(
+			@Nonnull
+				ItemStack fuel) {
 			if (fuel != null && fuel.getItem() != null && fuel.getItem() == ModItems.component) {
 				if (ItemCartComponent.isWoodLog(fuel)) {
 					return 150;

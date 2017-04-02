@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,6 +14,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
+
+import java.util.ArrayList;
 
 public class ModuleArcade extends ModuleBase {
 	private ArrayList<ArcadeGame> games;

@@ -9,8 +9,8 @@ public class SCConfig {
 
 	public static boolean disableTimedCrafting = false;
 
-	public static void load(Configuration config){
-		disableTimedCrafting =  config.get("Settings", "DisableCartAssemberTime", false, "Set to true to disable the timer in the cart assember, it will still require fuel").getBoolean(false);
+	public static void load(Configuration config) {
+		disableTimedCrafting = config.get("Settings", "DisableCartAssemberTime", false, "Set to true to disable the timer in the cart assember, it will still require fuel").getBoolean(false);
 	}
 
 }

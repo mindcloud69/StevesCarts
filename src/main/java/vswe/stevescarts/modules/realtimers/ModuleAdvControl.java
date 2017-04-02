@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.realtimers;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
@@ -13,6 +11,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
@@ -478,7 +477,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	@Override
 	public boolean onInteractFirst(EntityPlayer entityplayer) {
-		if(entityplayer == getCart().getCartRider()){
+		if (entityplayer == getCart().getCartRider()) {
 			entityplayer.dismountRidingEntity();
 			return true;
 		}

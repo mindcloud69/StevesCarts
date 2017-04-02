@@ -15,6 +15,8 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.oredict.OreDictionary;
 import vswe.stevescarts.api.farms.ITreeModule;
 
+import javax.annotation.Nonnull;
+
 public class DefaultTreeModule implements ITreeModule {
 
 	@Override
@@ -28,8 +30,10 @@ public class DefaultTreeModule implements ITreeModule {
 	}
 
 	@Override
-	public boolean isSapling(@Nonnull ItemStack sapling) {
-		if (sapling != null) {
+	public boolean isSapling(
+		@Nonnull
+			ItemStack sapling) {
+		if (!sapling.isEmpty()) {
 			if (this.isStackSapling(sapling)) {
 				return true;
 			}
@@ -43,10 +47,12 @@ public class DefaultTreeModule implements ITreeModule {
 
 	@Override
 	public boolean plantSapling(World world, BlockPos pos, ItemStack stack, FakePlayer fakePlayer) {
-		return stack.getItem().onItemUse(stack, fakePlayer, world, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS;
+		return stack.getItem().onItemUse(fakePlayer, world, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS;
 	}
 
-	private boolean isStackSapling(@Nonnull ItemStack sapling) {
+	private boolean isStackSapling(
+		@Nonnull
+			ItemStack sapling) {
 		final int[] ids = OreDictionary.getOreIDs(sapling);
 		for (int id : ids) {
 			final String name = OreDictionary.getOreName(id);

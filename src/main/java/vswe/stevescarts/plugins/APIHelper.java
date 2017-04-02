@@ -12,16 +12,16 @@ import java.util.List;
  */
 public class APIHelper implements ISCHelpers {
 
-    public static List<ITreeModule> treeModules = new ArrayList<>();
-    public static List<ICropModule> cropModules = new ArrayList<>();
+	public static List<ITreeModule> treeModules = new ArrayList<>();
+	public static List<ICropModule> cropModules = new ArrayList<>();
 
-    @Override
-    public void registerTree(ITreeModule treeModule) {
-        treeModules.add(treeModule);
-    }
+	@Override
+	public void registerTree(ITreeModule treeModule) {
+		treeModules.add(treeModule);
+	}
 
-    @Override
-    public void registerCrop(ICropModule cropModule) {
-        cropModules.add(cropModule);
-    }
+	@Override
+	public void registerCrop(ICropModule cropModule) {
+		cropModules.add(cropModule);
+	}
 }

@@ -103,10 +103,12 @@ public enum ComponentTypes {
 		return this.name;
 	}
 
+	@Nonnull
 	public ItemStack getItemStack(final int count) {
 		return new ItemStack(ModItems.component, count, this.id);
 	}
 
+	@Nonnull
 	public ItemStack getItemStack() {
 		return this.getItemStack(1);
 	}
@@ -115,7 +117,9 @@ public enum ComponentTypes {
 		return this.id;
 	}
 
-	public boolean isStackOfType(@Nonnull ItemStack itemstack) {
+	public boolean isStackOfType(
+		@Nonnull
+			ItemStack itemstack) {
 		return itemstack != null && itemstack.getItem() == ModItems.component && itemstack.getItemDamage() == this.id;
 	}
 

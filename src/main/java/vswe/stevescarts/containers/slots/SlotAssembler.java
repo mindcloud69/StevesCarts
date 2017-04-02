@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.modules.data.ModuleData;
 
+import javax.annotation.Nonnull;
+
 public class SlotAssembler extends Slot {
 	private int groupID;
 	private int x;
@@ -33,8 +35,10 @@ public class SlotAssembler extends Slot {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
-		return itemstack != null && this.isValid && ModuleData.isValidModuleItem(this.groupID, itemstack) && (!this.getHasStack() || (this.getStack().stackSize > 0 && itemstack.stackSize > 0));
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
+		return itemstack != null && this.isValid && ModuleData.isValidModuleItem(this.groupID, itemstack) && (!this.getHasStack() || (this.getStack().getCount() > 0 && itemstack.getCount() > 0));
 	}
 
 	public void invalidate() {
@@ -116,6 +120,6 @@ public class SlotAssembler extends Slot {
 
 	@Override
 	public boolean canTakeStack(final EntityPlayer player) {
-		return this.getStack() != null && this.getStack().stackSize > 0;
+		return !this.getStack().isEmpty() && this.getStack().getCount() > 0;
 	}
 }

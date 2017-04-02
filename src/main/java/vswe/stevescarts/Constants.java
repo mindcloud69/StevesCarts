@@ -1,6 +1,5 @@
 package vswe.stevescarts;
 
-
 public class Constants {
 	public static final String MOD_ID = "stevescarts";
 	public static final String NAME = "Steve's Carts 2";

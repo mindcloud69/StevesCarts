@@ -12,6 +12,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
+import javax.annotation.Nonnull;
+
 public class ModulePig extends ModuleHull {
 	private int oinkTimer;
 	/**
@@ -42,20 +44,23 @@ public class ModulePig extends ModuleHull {
 		}
 	}
 
+	@Nonnull
+	@Nonnull
 	private ItemStack getHelmet() {
-		if(this.getCart().getPassengers().isEmpty()){
-			return null;
+		if (this.getCart().getPassengers().isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 		Entity rider = this.getCart().getPassengers().get(0);
 		if (rider != null && rider instanceof EntityLivingBase) {
 			return ((EntityLivingBase) rider).getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	public boolean hasHelment() {
-		@Nonnull ItemStack item = this.getHelmet();
-		return item != null && item.getItem() instanceof ItemArmor && ((ItemArmor) item.getItem()).armorType == EntityEquipmentSlot.HEAD;
+		@Nonnull
+		ItemStack item = this.getHelmet();
+		return !item.isEmpty() && item.getItem() instanceof ItemArmor && ((ItemArmor) item.getItem()).armorType == EntityEquipmentSlot.HEAD;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -63,8 +68,9 @@ public class ModulePig extends ModuleHull {
 		if (!this.hasHelment()) {
 			return null;
 		}
-		@Nonnull ItemStack item = this.getHelmet();
-		if (item.getItem() == null) {
+		@Nonnull
+		ItemStack item = this.getHelmet();
+		if (item.isEmpty()) {
 			return null;
 		}
 		return fakeArmorLayer.getArmorResource((Entity) null, item, EntityEquipmentSlot.HEAD, isOverlay ? "overlay" : null);
@@ -78,7 +84,8 @@ public class ModulePig extends ModuleHull {
 	@SideOnly(Side.CLIENT)
 	public int getHelmetColor(final boolean isOverlay) {
 		if (this.hasHelment()) {
-			@Nonnull ItemStack item = this.getHelmet();
+			@Nonnull
+			ItemStack item = this.getHelmet();
 			return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(item, isOverlay ? 1 : 0);
 		}
 		return -1;
@@ -87,7 +94,8 @@ public class ModulePig extends ModuleHull {
 	@SideOnly(Side.CLIENT)
 	public boolean getHelmetMultiRender() {
 		if (this.hasHelment()) {
-			@Nonnull ItemStack item = this.getHelmet();
+			@Nonnull
+			ItemStack item = this.getHelmet();
 			//TODO: Do we need this still
 			//return ((ItemArmor) item.getItem()).requiresMultipleRenderPasses();
 		}

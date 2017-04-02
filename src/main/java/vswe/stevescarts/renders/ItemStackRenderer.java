@@ -1,28 +1,28 @@
 package vswe.stevescarts.renders;
 
-import java.util.HashMap;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.data.ModuleData;
+
+import java.util.HashMap;
 
 public class ItemStackRenderer extends TileEntityItemStackRenderer {
 
 	TileEntityItemStackRenderer renderer;
 
+	@Nonnull
 	public ItemStackRenderer(TileEntityItemStackRenderer renderer) {
 		this.renderer = renderer;
 	}
 
 	@Override
 	public void renderByItem(ItemStack itemStack) {
-		if(itemStack.getItem() != ModItems.carts){
+		if (itemStack.getItem() != ModItems.carts) {
 			renderer.renderByItem(itemStack);
 			return;
 		}

@@ -14,7 +14,9 @@ public class ItemBlockDetector extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(@Nonnull ItemStack item) {
+	public String getUnlocalizedName(
+		@Nonnull
+			ItemStack item) {
 		if (item != null) {
 			return "item.SC2:BlockDetector" + item.getItemDamage();
 		}

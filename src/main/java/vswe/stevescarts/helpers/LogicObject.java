@@ -1,18 +1,17 @@
 package vswe.stevescarts.helpers;
 
-import java.util.ArrayList;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.Gui;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiDetector;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.data.ModuleData;
+
+import java.util.ArrayList;
 
 public class LogicObject {
 	private byte id;

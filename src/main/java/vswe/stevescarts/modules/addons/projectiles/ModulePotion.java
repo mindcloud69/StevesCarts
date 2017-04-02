@@ -5,19 +5,25 @@ import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
+import javax.annotation.Nonnull;
+
 public class ModulePotion extends ModuleProjectile {
 	public ModulePotion(final EntityMinecartModular cart) {
 		super(cart);
 	}
 
 	@Override
-	public boolean isValidProjectile(@Nonnull ItemStack item) {
+	public boolean isValidProjectile(
+		@Nonnull
+			ItemStack item) {
 		//		return item.getItem() == Items.POTIONITEM && ItemPotion.isSplash(item.getItemDamage());
 		return false; //TODO
 	}
 
 	@Override
-	public Entity createProjectile(final Entity target, @Nonnull ItemStack item) {
+	public Entity createProjectile(final Entity target,
+	                               @Nonnull
+		                               ItemStack item) {
 		final EntityPotion potion = new EntityPotion(this.getCart().world);
 		potion.setItem(item);
 		return potion;

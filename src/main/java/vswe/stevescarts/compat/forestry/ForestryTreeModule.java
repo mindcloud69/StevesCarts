@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import vswe.stevescarts.api.farms.ITreeModule;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by modmuss50 on 15/11/16.
  */
@@ -40,16 +42,16 @@ public class ForestryTreeModule implements ITreeModule {
 	}
 
 	@Override
-	public boolean isSapling(ItemStack itemStack) {
+	public boolean isSapling(@Nonnull ItemStack itemStack) {
 		return itemStack.getItem() == sapling;
 	}
 
 	@Override
-	public boolean plantSapling(World world, BlockPos pos, ItemStack stack, FakePlayer fakePlayer) {
-		if(stack.getItem() == sapling && world.isAirBlock(pos.up())){
+	public boolean plantSapling(World world, BlockPos pos, @Nonnull ItemStack stack, FakePlayer fakePlayer) {
+		if (stack.getItem() == sapling && world.isAirBlock(pos.up())) {
 			ITree tree = treeRoot.getMember(stack);
 			if (tree != null && tree.canStay(world, pos)) {
-				stack.stackSize--;
+				stack.shrink(1);
 				treeRoot.plantSapling(world, tree, fakePlayer.getGameProfile(), pos.up());
 				return true;
 			}

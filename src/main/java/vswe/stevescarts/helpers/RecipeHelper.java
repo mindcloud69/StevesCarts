@@ -1,7 +1,5 @@
 package vswe.stevescarts.helpers;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
@@ -10,8 +8,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import vswe.stevescarts.items.ModItems;
 
+import java.util.ArrayList;
+
 public final class RecipeHelper {
-	public static void addRecipe(@Nonnull ItemStack item, final Object[][] recipe) {
+	public static void addRecipe(
+		@Nonnull
+			ItemStack item, final Object[][] recipe) {
 		if (recipe != null && item != null) {
 			if (item.getItem() == ModItems.component && !ModItems.component.isValid(item)) {
 				return;
@@ -21,7 +23,8 @@ public final class RecipeHelper {
 			final String[] parts = new String[recipe.length];
 			boolean isOreDict = false;
 			boolean isSpecial = false;
-			@Nonnull ItemStack[] items = new ItemStack[recipe.length * recipe[0].length];
+			@Nonnull
+			ItemStack[] items = new ItemStack[recipe.length * recipe[0].length];
 			for (int i = 0; i < recipe.length; ++i) {
 				parts[i] = "";
 				for (int j = 0; j < recipe[i].length; ++j) {

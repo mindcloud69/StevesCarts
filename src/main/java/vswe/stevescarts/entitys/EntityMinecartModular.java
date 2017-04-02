@@ -1,13 +1,5 @@
 package vswe.stevescarts.entitys;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -35,11 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,11 +47,7 @@ import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.containers.ContainerMinecart;
 import vswe.stevescarts.guis.GuiMinecart;
-import vswe.stevescarts.helpers.ActivatorOption;
-import vswe.stevescarts.helpers.CartVersion;
-import vswe.stevescarts.helpers.DetectorType;
-import vswe.stevescarts.helpers.GuiAllocationHelper;
-import vswe.stevescarts.helpers.ModuleCountPair;
+import vswe.stevescarts.helpers.*;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.models.ModelCartbase;
@@ -77,6 +61,13 @@ import vswe.stevescarts.modules.storages.tanks.ModuleTank;
 import vswe.stevescarts.modules.workers.CompWorkModule;
 import vswe.stevescarts.modules.workers.ModuleWorker;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class EntityMinecartModular extends EntityMinecart implements IInventory, IEntityAdditionalSpawnData, IFluidHandler {
 
@@ -391,7 +382,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	protected void entityInit() {
-		if(this.world.isRemote && !(dataManager instanceof EntityDataManagerLockable)){
+		if (this.world.isRemote && !(dataManager instanceof EntityDataManagerLockable)) {
 			this.overrideDatawatcher();
 		}
 		super.entityInit();
@@ -497,9 +488,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getCartItem() {
 		if (this.modules != null) {
-			@Nonnull ItemStack cart = ModuleData.createModularCart(this);
+			@Nonnull
+			ItemStack cart = ModuleData.createModularCart(this);
 			if (this.name != null && !this.name.equals("") && !this.name.equals(ModItems.carts.getName())) {
 				cart.setStackDisplayName(this.name);
 			}
@@ -514,7 +507,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		if (this.dropOnDeath()) {
 			this.entityDropItem(this.getCartItem(), 0.0f);
 			for (int i = 0; i < this.getSizeInventory(); ++i) {
-				@Nonnull ItemStack itemstack = this.getStackInSlot(i);
+				@Nonnull
+				ItemStack itemstack = this.getStackInSlot(i);
 				if (!itemstack.isEmpty()) {
 					final float f = this.rand.nextFloat() * 0.8f + 0.1f;
 					final float f2 = this.rand.nextFloat() * 0.8f + 0.1f;
@@ -524,7 +518,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 						if (j > itemstack.getCount()) {
 							j = itemstack.getCount();
 						}
-						@Nonnull ItemStack itemStack = itemstack;
+						@Nonnull
+						ItemStack itemStack = itemstack;
 						itemStack.shrink(j);
 						final EntityItem entityitem = new EntityItem(this.world, this.posX + f, this.posY + f2, this.posZ + f3, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
 						final float f4 = 0.05f;
@@ -638,7 +633,6 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		}
 	}
 
-
 	@Override
 	public void moveMinecartOnRail(BlockPos pos) {
 		super.moveMinecartOnRail(pos);
@@ -652,12 +646,12 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		int metaBelow = stateBelow.getBlock().getMetaFromState(stateBelow);
 		EnumRailDirection railDirection = ((BlockRailBase) blockState.getBlock()).getRailDirection(world, pos, blockState, this);
 		this.cornerFlip = ((railDirection == EnumRailDirection.SOUTH_EAST || railDirection == EnumRailDirection.SOUTH_WEST) && this.motionX < 0.0)
-				|| ((railDirection == EnumRailDirection.NORTH_EAST || railDirection == EnumRailDirection.NORTH_WEST) && this.motionX > 0.0);
+			|| ((railDirection == EnumRailDirection.NORTH_EAST || railDirection == EnumRailDirection.NORTH_WEST) && this.motionX > 0.0);
 		if (blockState.getBlock() != ModBlocks.ADVANCED_DETECTOR.getBlock() && this.isDisabled()) {
 			this.releaseCart();
 		}
 		boolean canBeDisabled = blockState.getBlock() == ModBlocks.ADVANCED_DETECTOR.getBlock()
-				&& (stateBelow.getBlock() != ModBlocks.DETECTOR_UNIT.getBlock() || !DetectorType.getTypeFromSate(stateBelow).canInteractWithCart() || DetectorType.getTypeFromSate(stateBelow).shouldStopCart());
+			&& (stateBelow.getBlock() != ModBlocks.DETECTOR_UNIT.getBlock() || !DetectorType.getTypeFromSate(stateBelow).canInteractWithCart() || DetectorType.getTypeFromSate(stateBelow).shouldStopCart());
 		final boolean forceUnDisable = this.wasDisabled && disabledPos != null && this.disabledPos.equals(pos);
 		if (!forceUnDisable && this.wasDisabled) {
 			this.wasDisabled = false;
@@ -954,7 +948,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			if (newSlot != -1) {
 				ItemStack lastitem = null;
 				for (int j = newSlot; j < this.getSizeInventory(); ++j) {
-					@Nonnull ItemStack thisitem = this.getStackInSlot(j);
+					@Nonnull
+					ItemStack thisitem = this.getStackInSlot(j);
 					this.setInventorySlotContents(j, lastitem);
 					lastitem = thisitem;
 				}
@@ -1033,9 +1028,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer entityplayer,
-			Vec3d vec,
-			EnumHand hand) {
-		if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, entityplayer, hand))){
+	                                               Vec3d vec,
+	                                               EnumHand hand) {
+		if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, entityplayer, hand))) {
 			return EnumActionResult.SUCCESS;
 		}
 		if (this.isPlaceholder) {
@@ -1066,7 +1061,6 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		}
 		return EnumActionResult.SUCCESS;
 	}
-
 
 	public void loadChunks() {
 		this.loadChunks(this.cartTicket, this.x() >> 4, this.z() >> 4);
@@ -1191,7 +1185,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			yaw += 360.0f;
 		}
 		if (!this.oldRender || Math.abs(yaw - this.lastRenderYaw) < 90.0f || Math.abs(yaw - this.lastRenderYaw) > 270.0f || (this.motionX > 0.0 && this.lastMotionX < 0.0) || (this.motionZ > 0.0 && this.lastMotionZ < 0.0)
-				|| (this.motionX < 0.0 && this.lastMotionX > 0.0) || (this.motionZ < 0.0 && this.lastMotionZ > 0.0) || this.wrongRender >= 50) {
+			|| (this.motionX < 0.0 && this.lastMotionX > 0.0) || (this.motionZ < 0.0 && this.lastMotionZ > 0.0) || this.wrongRender >= 50) {
 			this.lastMotionX = this.motionX;
 			this.lastMotionZ = this.motionZ;
 			this.lastRenderYaw = yaw;
@@ -1225,23 +1219,31 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		return MathHelper.floor(this.posZ);
 	}
 
-	public void addItemToChest(@Nonnull ItemStack iStack) {
+	public void addItemToChest(
+		@Nonnull
+			ItemStack iStack) {
 		TransferHandler.TransferItem(iStack, this, this.getCon(null), Slot.class, null, -1);
 	}
 
-	public void addItemToChest(@Nonnull ItemStack iStack, final int start, final int end) {
+	public void addItemToChest(
+		@Nonnull
+			ItemStack iStack, final int start, final int end) {
 		TransferHandler.TransferItem(iStack, this, start, end, this.getCon(null), Slot.class, null, -1);
 	}
 
-	public void addItemToChest(@Nonnull ItemStack iStack, final Class validSlot, final Class invalidSlot) {
+	public void addItemToChest(
+		@Nonnull
+			ItemStack iStack, final Class validSlot, final Class invalidSlot) {
 		TransferHandler.TransferItem(iStack, this, this.getCon(null), validSlot, invalidSlot, -1);
 	}
 
 	@Override
 	@Nonnull
+	@Nonnull
 	public ItemStack removeStackFromSlot(int index) {
 		if (!this.getStackInSlot(index).isEmpty()) {
-			@Nonnull ItemStack var2 = this.getStackInSlot(index);
+			@Nonnull
+			ItemStack var2 = this.getStackInSlot(index);
 			this.setInventorySlotContents(index, null);
 			return var2;
 		}
@@ -1249,6 +1251,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
+	@Nonnull
 	@Nonnull
 	public ItemStack getStackInSlot(int i) {
 		if (this.modules != null) {
@@ -1263,7 +1266,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
-	public void setInventorySlotContents(int i, @Nonnull ItemStack item) {
+	public void setInventorySlotContents(int i,
+	                                     @Nonnull
+		                                     ItemStack item) {
 		if (this.modules != null) {
 			for (final ModuleBase module : this.modules) {
 				if (i < module.getInventorySize()) {
@@ -1277,6 +1282,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	@Nonnull
+	@Nonnull
 	public ItemStack decrStackSize(final int i, final int n) {
 		if (this.modules == null) {
 			return ItemStack.EMPTY;
@@ -1285,11 +1291,13 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			return ItemStack.EMPTY;
 		}
 		if (this.getStackInSlot(i).getCount() <= n) {
-			@Nonnull ItemStack item = this.getStackInSlot(i);
+			@Nonnull
+			ItemStack item = this.getStackInSlot(i);
 			this.setInventorySlotContents(i, ItemStack.EMPTY);
 			return item;
 		}
-		@Nonnull ItemStack item = this.getStackInSlot(i).splitStack(n);
+		@Nonnull
+		ItemStack item = this.getStackInSlot(i).splitStack(n);
 		if (this.getStackInSlot(i).getCount() == 0) {
 			this.setInventorySlotContents(i, ItemStack.EMPTY);
 		}
@@ -1514,7 +1522,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, @Nonnull ItemStack item) {
+	public boolean isItemValidForSlot(int slot,
+	                                  @Nonnull
+		                                  ItemStack item) {
 		if (this.modules != null) {
 			for (final ModuleBase module : this.modules) {
 				if (slot < module.getInventorySize()) {
@@ -1588,7 +1598,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	static {
-		railDirectionCoordinates = new int[][][] { { { 0, 0, -1 }, { 0, 0, 1 } }, { { -1, 0, 0 }, { 1, 0, 0 } }, { { -1, -1, 0 }, { 1, 0, 0 } }, { { -1, 0, 0 }, { 1, -1, 0 } }, { { 0, 0, -1 }, { 0, -1, 1 } }, { { 0, -1, -1 }, { 0, 0, 1 } },
+		railDirectionCoordinates = new int[][][] { { { 0, 0, -1 }, { 0, 0, 1 } }, { { -1, 0, 0 }, { 1, 0, 0 } }, { { -1, -1, 0 }, { 1, 0, 0 } }, { { -1, 0, 0 }, { 1, -1, 0 } },
+			{ { 0, 0, -1 }, { 0, -1, 1 } }, { { 0, -1, -1 }, { 0, 0, 1 } },
 			{ { 0, 0, 1 }, { 1, 0, 0 } }, { { 0, 0, 1 }, { -1, 0, 0 } }, { { 0, 0, -1 }, { -1, 0, 0 } }, { { 0, 0, -1 }, { 1, 0, 0 } } };
 	}
 
@@ -1615,22 +1626,23 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		return null;
 	}
 
-	public Entity getCartRider(){
+	public Entity getCartRider() {
 		return getPassengers().isEmpty() ? null : getPassengers().get(0);
 	}
 
 	@Nullable
 	@Override
 	public Entity getControllingPassenger() {
-		return  null; //Works when returning null, not sure why
+		return null; //Works when returning null, not sure why
 	}
 
-	public EntityDataManager getDataManager(){
+	public EntityDataManager getDataManager() {
 		return dataManager;
 	}
 
 	int base = 0;
-	public int getNextDataWatcher(){
+
+	public int getNextDataWatcher() {
 		base++;
 		return getDataManager().getAll().size() + base + 1;
 	}

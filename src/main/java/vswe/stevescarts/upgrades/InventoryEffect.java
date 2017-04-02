@@ -1,12 +1,12 @@
 package vswe.stevescarts.upgrades;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 
 public abstract class InventoryEffect extends InterfaceEffect {
 	protected ArrayList<Slot> slots;
@@ -36,7 +36,9 @@ public abstract class InventoryEffect extends InterfaceEffect {
 		this.slots.clear();
 	}
 
-	public boolean isItemValid(final int slotId, @Nonnull ItemStack item) {
+	public boolean isItemValid(final int slotId,
+	                           @Nonnull
+		                           ItemStack item) {
 		return slotId >= 0 && slotId < this.slots.size() && this.slots.get(slotId).isItemValid(item);
 	}
 

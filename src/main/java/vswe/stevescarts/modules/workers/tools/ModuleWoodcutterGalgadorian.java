@@ -24,7 +24,9 @@ public class ModuleWoodcutterGalgadorian extends ModuleWoodcutter {
 	}
 
 	@Override
-	public int getRepairItemUnits(@Nonnull ItemStack item) {
+	public int getRepairItemUnits(
+		@Nonnull
+			ItemStack item) {
 		return 0;
 	}
 

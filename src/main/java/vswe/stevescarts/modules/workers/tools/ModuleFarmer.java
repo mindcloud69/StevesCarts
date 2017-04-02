@@ -1,14 +1,9 @@
 package vswe.stevescarts.modules.workers.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -16,15 +11,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import vswe.stevescarts.api.farms.ICropModule;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotSeed;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
-import vswe.stevescarts.api.farms.ICropModule;
 import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.plugins.APIHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule {
 	private ArrayList<ICropModule> plantModules;
@@ -53,7 +51,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				this.plantModules.add((ICropModule) module);
 			}
 		}
-		for(ICropModule cropModule : APIHelper.cropModules){
+		for (ICropModule cropModule : APIHelper.cropModules) {
 			this.plantModules.add(cropModule);
 		}
 	}
@@ -171,7 +169,8 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				List<ItemStack> stuff;
 				if (this.shouldSilkTouch(blockState, pos)) {
 					stuff = new ArrayList<>();
-					@Nonnull ItemStack stack = this.getSilkTouchedItem(blockState);
+					@Nonnull
+					ItemStack stack = this.getSilkTouchedItem(blockState);
 					if (stack != null) {
 						stuff.add(stack);
 					}
@@ -179,7 +178,9 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
 					stuff = block.getDrops(world, pos, blockState, fortune);
 				}
-				for (@Nonnull ItemStack iStack : stuff) {
+				for (
+					@Nonnull
+						ItemStack iStack : stuff) {
 					cart.addItemToChest(iStack);
 					if (iStack.stackSize != 0) {
 						final EntityItem entityitem = new EntityItem(world, cart.posX, cart.posY, cart.posZ, iStack);
@@ -200,7 +201,9 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		return 25;
 	}
 
-	public boolean isSeedValidHandler(@Nonnull ItemStack seed) {
+	public boolean isSeedValidHandler(
+		@Nonnull
+			ItemStack seed) {
 		for (final ICropModule module : this.plantModules) {
 			if (module.isSeedValid(seed)) {
 				return true;
@@ -209,7 +212,9 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		return false;
 	}
 
-	protected IBlockState getCropFromSeedHandler(@Nonnull ItemStack seed, World world, BlockPos pos) {
+	protected IBlockState getCropFromSeedHandler(
+		@Nonnull
+			ItemStack seed, World world, BlockPos pos) {
 		for (final ICropModule module : this.plantModules) {
 			if (module.isSeedValid(seed)) {
 				return module.getCropFromSeed(seed, world, pos);
@@ -288,7 +293,8 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 	@Override
 	public boolean haveSupplies() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			@Nonnull ItemStack item = this.getStack(i);
+			@Nonnull
+			ItemStack item = this.getStack(i);
 			if (item != null && this.isSeedValidHandler(item)) {
 				return true;
 			}

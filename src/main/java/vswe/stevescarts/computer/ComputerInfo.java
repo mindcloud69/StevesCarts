@@ -1,23 +1,19 @@
 package vswe.stevescarts.computer;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.buttons.ButtonBase;
 import vswe.stevescarts.guis.buttons.ButtonInfoType;
 import vswe.stevescarts.modules.ModuleBase;
-import vswe.stevescarts.modules.addons.ModuleChunkLoader;
-import vswe.stevescarts.modules.addons.ModuleColorizer;
-import vswe.stevescarts.modules.addons.ModuleHeightControl;
-import vswe.stevescarts.modules.addons.ModuleInvisible;
-import vswe.stevescarts.modules.addons.ModuleShield;
+import vswe.stevescarts.modules.addons.*;
 import vswe.stevescarts.modules.realtimers.ModuleDynamite;
 import vswe.stevescarts.modules.realtimers.ModuleShooter;
 import vswe.stevescarts.modules.realtimers.ModuleShooterAdv;
 import vswe.stevescarts.modules.workers.ModuleComputer;
 import vswe.stevescarts.modules.workers.ModuleTorch;
 import vswe.stevescarts.modules.workers.tools.ModuleDrill;
+
+import java.util.Collection;
+import java.util.HashMap;
 
 public class ComputerInfo {
 	private static HashMap<Byte, ComputerInfo> infos;

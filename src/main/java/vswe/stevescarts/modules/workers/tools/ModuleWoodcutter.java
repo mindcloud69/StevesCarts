@@ -1,8 +1,5 @@
 package vswe.stevescarts.modules.workers.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -14,13 +11,11 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+import vswe.stevescarts.api.farms.ITreeModule;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFuel;
 import vswe.stevescarts.containers.slots.SlotSapling;
@@ -29,10 +24,12 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.BlockPosHelpers;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ISuppliesModule;
-import vswe.stevescarts.api.farms.ITreeModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
 import vswe.stevescarts.plugins.APIHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule {
 	private ArrayList<ITreeModule> treeModules;
@@ -94,7 +91,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				this.plantSize = (ModulePlantSize) module;
 			}
 		}
-		for(ITreeModule treeModule : APIHelper.treeModules){
+		for (ITreeModule treeModule : APIHelper.treeModules) {
 			this.treeModules.add(treeModule);
 		}
 	}
@@ -103,7 +100,9 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public List<ItemStack> getTierDrop(List<ItemStack> baseItems) {
 		List<ItemStack> nerfedItems = new ArrayList<>();
-		for (@Nonnull ItemStack item : baseItems) {
+		for (
+			@Nonnull
+				ItemStack item : baseItems) {
 			if (item != null) {
 				this.dropItemByMultiplierChance(nerfedItems, item, this.getPercentageDropChance());
 			}
@@ -111,7 +110,9 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return nerfedItems;
 	}
 
-	private void dropItemByMultiplierChance(List<ItemStack> items, @Nonnull ItemStack item, int percentage) {
+	private void dropItemByMultiplierChance(List<ItemStack> items,
+	                                        @Nonnull
+		                                        ItemStack item, int percentage) {
 		int drop = 0;
 		while (percentage > 0) {
 			if (this.getCart().rand.nextInt(100) < percentage) {
@@ -177,8 +178,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		if (sapling != null) {
 			if (this.doPreWork()) {
-				for(ITreeModule module : treeModules){
-					if(module.isSapling(sapling)){
+				for (ITreeModule module : treeModules) {
+					if (module.isSapling(sapling)) {
 						if (module.plantSapling(getCart().world, pos, sapling, getFakePlayer())) {
 							if (sapling.stackSize == 0) {
 								this.setStack(saplingSlotId, null);
@@ -189,7 +190,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 					}
 				}
 				this.stopWorking();
-				this.isPlanting = false;;
+				this.isPlanting = false;
+				;
 			} else {
 				this.stopWorking();
 				this.isPlanting = false;
@@ -253,7 +255,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		List<ItemStack> stuff;
 		if (shouldSilkTouch(blockState, here)) {
 			stuff = new ArrayList<>();
-			@Nonnull ItemStack stack = this.getSilkTouchedItem(blockState);
+			@Nonnull
+			ItemStack stack = this.getSilkTouchedItem(blockState);
 			if (stack != null) {
 				stuff.add(stack);
 			}
@@ -263,8 +266,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			List<ItemStack> dropList = new ArrayList<>();
 			BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(world, here, blockState, fortune, 1, dropList, getFakePlayer(), false);
 			MinecraftForge.EVENT_BUS.post(event);
-			for(ItemStack drop : dropList){ //Here to filter out any bad itemstacks, the mod I was testing with returned stacks with a size of 0
-				if(drop.getItem() != null && drop.stackSize > 0){
+			for (ItemStack drop : dropList) { //Here to filter out any bad itemstacks, the mod I was testing with returned stacks with a size of 0
+				if (drop.getItem() != null && drop.stackSize > 0) {
 					stuff.add(drop);
 				}
 			}
@@ -282,7 +285,9 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		}
 		List<ItemStack> nerfedstuff = this.getTierDrop(stuff);
 		boolean first = true;
-		for (@Nonnull ItemStack iStack : nerfedstuff) {
+		for (
+			@Nonnull
+				ItemStack iStack : nerfedstuff) {
 			this.getCart().addItemToChest(iStack, Slot.class, SlotFuel.class);
 			if (iStack.stackSize != 0) {
 				if (first) {
@@ -380,7 +385,9 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return false;
 	}
 
-	public boolean isSaplingHandler(@Nonnull ItemStack sapling) {
+	public boolean isSaplingHandler(
+		@Nonnull
+			ItemStack sapling) {
 		for (final ITreeModule module : this.treeModules) {
 			if (module.isSapling(sapling)) {
 				return true;

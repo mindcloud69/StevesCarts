@@ -1,7 +1,5 @@
 package vswe.stevescarts.blocks.tileentities;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,20 +18,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerCargo;
 import vswe.stevescarts.containers.ContainerManager;
-import vswe.stevescarts.containers.slots.ISlotExplosions;
-import vswe.stevescarts.containers.slots.SlotArrow;
-import vswe.stevescarts.containers.slots.SlotBridge;
-import vswe.stevescarts.containers.slots.SlotBuilder;
-import vswe.stevescarts.containers.slots.SlotCake;
-import vswe.stevescarts.containers.slots.SlotCargo;
-import vswe.stevescarts.containers.slots.SlotChest;
-import vswe.stevescarts.containers.slots.SlotFertilizer;
-import vswe.stevescarts.containers.slots.SlotFirework;
-import vswe.stevescarts.containers.slots.SlotFuel;
-import vswe.stevescarts.containers.slots.SlotMilker;
-import vswe.stevescarts.containers.slots.SlotSapling;
-import vswe.stevescarts.containers.slots.SlotSeed;
-import vswe.stevescarts.containers.slots.SlotTorch;
+import vswe.stevescarts.containers.slots.*;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.guis.GuiCargo;
 import vswe.stevescarts.helpers.CargoItemSelection;
@@ -42,6 +27,8 @@ import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.items.ModItems;
+
+import java.util.ArrayList;
 
 public class TileEntityCargo extends TileEntityManager {
 	public static ArrayList<CargoItemSelection> itemSelections;
@@ -259,7 +246,8 @@ public class TileEntityCargo extends TileEntityManager {
 		this.latestTransferToBeUsed = transfer;
 		for (int i = 0; i < fromInv.getSizeInventory(); ++i) {
 			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
-				@Nonnull ItemStack iStack = fromInv.getStackInSlot(i);
+				@Nonnull
+				ItemStack iStack = fromInv.getStackInSlot(i);
 				final int stacksize = iStack.stackSize;
 				int maxNumber;
 				if (this.getAmountType(transfer.getSetting()) == 1) {
@@ -290,7 +278,9 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slotId, @Nonnull ItemStack item) {
+	public boolean isItemValidForSlot(final int slotId,
+	                                  @Nonnull
+		                                  ItemStack item) {
 		return true;
 	}
 
@@ -299,20 +289,16 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
 		}
 		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) new InvWrapper(this);
 		}
 		return super.getCapability(capability, facing);

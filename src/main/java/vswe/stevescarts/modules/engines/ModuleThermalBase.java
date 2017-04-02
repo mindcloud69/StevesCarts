@@ -21,10 +21,10 @@ public abstract class ModuleThermalBase extends ModuleEngine {
 	protected DataParameter<Integer> getPriorityDw() {
 		return PRIORITY;
 	}
-	
+
 	@Override
 	public void initDw() {
-		 PRIORITY = createDw(DataSerializers.VARINT);
+		PRIORITY = createDw(DataSerializers.VARINT);
 		super.initDw();
 	}
 

@@ -1,7 +1,5 @@
 package vswe.stevescarts.items;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -13,14 +11,16 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.storages.StorageBlock;
 
+import java.util.List;
+
 public class ItemBlockStorage extends ItemBlock {
 	public static StorageBlock[] blocks;
 	//public IIcon[] icons;
 
 	public static void init() {
 		ItemBlockStorage.blocks = new StorageBlock[] { new StorageBlock("Reinforced Metal Block", ComponentTypes.REINFORCED_METAL.getItemStack()),
-				new StorageBlock("Galgadorian Block", ComponentTypes.GALGADORIAN_METAL.getItemStack()),
-				new StorageBlock("Enhanced Galgadorian Block", ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack()) };
+			new StorageBlock("Galgadorian Block", ComponentTypes.GALGADORIAN_METAL.getItemStack()),
+			new StorageBlock("Enhanced Galgadorian Block", ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack()) };
 	}
 
 	public static void loadRecipes() {
@@ -54,7 +54,9 @@ public class ItemBlockStorage extends ItemBlock {
 	//		}
 	//	}
 
-	public String getName(@Nonnull ItemStack item) {
+	public String getName(
+		@Nonnull
+			ItemStack item) {
 		if (item == null) {
 			return "Unknown";
 		}
@@ -64,7 +66,9 @@ public class ItemBlockStorage extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(@Nonnull ItemStack item) {
+	public String getUnlocalizedName(
+		@Nonnull
+			ItemStack item) {
 		if (item != null) {
 			final StringBuilder append = new StringBuilder().append("item.");
 			final StevesCarts instance = StevesCarts.instance;

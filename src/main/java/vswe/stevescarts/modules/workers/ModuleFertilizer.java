@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -104,7 +103,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 		BlockPos next = this.getNextblock();
 		for (int i = -this.range; i <= this.range; ++i) {
 			for (int j = -this.range; j <= this.range; ++j) {
-				if(random.nextInt(25) == 0 && this.fertilize(world, next.add(i, 0, j))){
+				if (random.nextInt(25) == 0 && this.fertilize(world, next.add(i, 0, j))) {
 					break;
 				}
 			}
@@ -116,10 +115,10 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 		IBlockState stateOfTopBlock = world.getBlockState(pos);
 		Block blockTop = stateOfTopBlock.getBlock();
 		if (this.fert > 0) {
-			if(blockTop instanceof IGrowable){
+			if (blockTop instanceof IGrowable) {
 				IGrowable growable = (IGrowable) blockTop;
-				if(growable.canGrow(world, pos, stateOfTopBlock, false)){
-					if(growable.canUseBonemeal(world, this.getCart().rand, pos, stateOfTopBlock)){
+				if (growable.canGrow(world, pos, stateOfTopBlock, false)) {
+					if (growable.canUseBonemeal(world, this.getCart().rand, pos, stateOfTopBlock)) {
 						growable.grow(world, this.getCart().rand, pos, stateOfTopBlock);
 						this.fert -= 2;
 						return true;
@@ -168,7 +167,8 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 					amount = 3;
 				}
 				if (this.fert <= 4 * (192 - amount) && this.getStack(0).stackSize > 0) {
-					@Nonnull ItemStack stack = this.getStack(0);
+					@Nonnull
+					ItemStack stack = this.getStack(0);
 					--stack.stackSize;
 					this.fert += amount * 4;
 				}

@@ -1,24 +1,17 @@
 package vswe.stevescarts.guis;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.containers.ContainerDetector;
-import vswe.stevescarts.helpers.DetectorType;
-import vswe.stevescarts.helpers.DropDownMenu;
-import vswe.stevescarts.helpers.DropDownMenuPages;
-import vswe.stevescarts.helpers.LogicObject;
-import vswe.stevescarts.helpers.ModuleState;
-import vswe.stevescarts.helpers.OperatorObject;
-import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.helpers.*;
 import vswe.stevescarts.modules.data.ModuleData;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 @SideOnly(Side.CLIENT)
 public class GuiDetector extends GuiBase {

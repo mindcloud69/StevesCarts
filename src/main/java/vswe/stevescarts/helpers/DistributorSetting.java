@@ -1,9 +1,9 @@
 package vswe.stevescarts.helpers;
 
-import java.util.ArrayList;
-
 import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
 import vswe.stevescarts.blocks.tileentities.TileEntityManager;
+
+import java.util.ArrayList;
 
 public class DistributorSetting {
 	public static ArrayList<DistributorSetting> settings;
@@ -34,7 +34,7 @@ public class DistributorSetting {
 	public String getName(final TileEntityManager[] manager) {
 		if (manager != null && manager.length > 1) {
 			return this.name.translate() + " (" + (this.getIsTop() ? Localization.GUI.DISTRIBUTOR.MANAGER_TOP.translate()
-					: Localization.GUI.DISTRIBUTOR.MANAGER_BOT.translate()) + ")";
+			                                                       : Localization.GUI.DISTRIBUTOR.MANAGER_BOT.translate()) + ")";
 		}
 		return this.name.translate();
 	}

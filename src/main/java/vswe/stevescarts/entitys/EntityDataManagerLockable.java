@@ -1,11 +1,11 @@
 package vswe.stevescarts.entitys;
 
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class EntityDataManagerLockable extends EntityDataManager {
 	private boolean isLocked;
@@ -13,7 +13,7 @@ public class EntityDataManagerLockable extends EntityDataManager {
 
 	public EntityDataManagerLockable(Entity entity) {
 		super(entity);
-		for(DataEntry entry : entity.getDataManager().getAll()){
+		for (DataEntry entry : entity.getDataManager().getAll()) {
 			register(entry.getKey(), entry.getValue());
 		}
 		this.isLocked = true;
@@ -35,6 +35,5 @@ public class EntityDataManagerLockable extends EntityDataManager {
 			super.setEntryValues(entriesIn);
 		}
 	}
-
 
 }

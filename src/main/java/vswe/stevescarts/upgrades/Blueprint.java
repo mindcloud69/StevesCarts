@@ -1,7 +1,5 @@
 package vswe.stevescarts.upgrades;
 
-import java.util.ArrayList;
-
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
@@ -10,6 +8,8 @@ import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.containers.slots.SlotCart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.data.ModuleData;
+
+import java.util.ArrayList;
 
 public class Blueprint extends SimpleInventoryEffect {
 	public Blueprint() {
@@ -27,7 +27,8 @@ public class Blueprint extends SimpleInventoryEffect {
 	}
 
 	public boolean isValidForBluePrint(final TileEntityUpgrade upgrade, final ArrayList<ModuleData> modules, final ModuleData module) {
-		@Nonnull ItemStack blueprint = upgrade.getStackInSlot(0);
+		@Nonnull
+		ItemStack blueprint = upgrade.getStackInSlot(0);
 		if (blueprint == null) {
 			return false;
 		}

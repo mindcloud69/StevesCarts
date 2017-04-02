@@ -1,8 +1,8 @@
 package vswe.stevescarts.helpers;
 
-import java.util.Comparator;
-
 import vswe.stevescarts.guis.buttons.ButtonBase;
+
+import java.util.Comparator;
 
 public class ButtonComparator implements Comparator {
 	public static final ButtonComparator INSTANCE = new ButtonComparator();

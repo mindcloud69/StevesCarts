@@ -1,9 +1,5 @@
 package vswe.stevescarts.items;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +22,9 @@ import vswe.stevescarts.helpers.CartVersion;
 import vswe.stevescarts.helpers.ModuleCountPair;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.data.ModuleData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemCarts extends ItemMinecart {
 	public ItemCarts() {
@@ -57,7 +56,7 @@ public class ItemCarts extends ItemMinecart {
 						try {
 							final EntityMinecartModular cart = new EntityMinecartModular(world, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, info, stack.getDisplayName());
 							world.spawnEntity(cart);
-						} catch (Exception e){
+						} catch (Exception e) {
 							e.printStackTrace();
 							player.sendMessage(new TextComponentString("The cart failed to be placed into the world, this is due to an issue with one or more modules. "
 								+ "Please post your log on the issue tracker here: " + TextFormatting.BLUE + " https://github.com/modmuss50/SC2/issues"));
@@ -90,7 +89,9 @@ public class ItemCarts extends ItemMinecart {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(@Nonnull ItemStack item, final EntityPlayer player, final List list, final boolean useExtraInfo) {
+	public void addInformation(
+		@Nonnull
+			ItemStack item, final EntityPlayer player, final List list, final boolean useExtraInfo) {
 		CartVersion.updateItemStack(item);
 		final NBTTagCompound info = item.getTagCompound();
 		if (info != null) {
@@ -138,7 +139,7 @@ public class ItemCarts extends ItemMinecart {
 				}
 			}
 			if (info.hasKey("maxTime")) {
-				list.add(TextFormatting.RED+ "Incomplete cart!");
+				list.add(TextFormatting.RED + "Incomplete cart!");
 				final int maxTime = info.getInteger("maxTime");
 				final int currentTime = info.getInteger("currentTime");
 				final int timeLeft = maxTime - currentTime;

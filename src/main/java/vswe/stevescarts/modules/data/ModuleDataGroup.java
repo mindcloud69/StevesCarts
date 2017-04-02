@@ -1,8 +1,8 @@
 package vswe.stevescarts.modules.data;
 
-import java.util.ArrayList;
-
 import vswe.stevescarts.helpers.Localization;
+
+import java.util.ArrayList;
 
 public class ModuleDataGroup {
 	private Localization.MODULE_INFO name;

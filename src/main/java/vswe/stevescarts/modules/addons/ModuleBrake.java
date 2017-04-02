@@ -85,7 +85,7 @@ public class ModuleBrake extends ModuleAddon implements ILeverModule {
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
 		this.drawStringOnMouseOver(gui,
-				this.isForceStopping() ? Localization.MODULES.ADDONS.LEVER_START.translate() : Localization.MODULES.ADDONS.LEVER_STOP.translate(), x, y, this.startstopRect);
+			this.isForceStopping() ? Localization.MODULES.ADDONS.LEVER_START.translate() : Localization.MODULES.ADDONS.LEVER_STOP.translate(), x, y, this.startstopRect);
 		this.drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.LEVER_TURN.translate(), x, y, this.turnbackRect);
 	}
 

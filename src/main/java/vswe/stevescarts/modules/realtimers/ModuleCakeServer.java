@@ -17,6 +17,8 @@ import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
 
+import javax.annotation.Nonnull;
+
 public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 	private int cooldown;
 	private static final int MAX_CAKES = 10;
@@ -45,10 +47,11 @@ public class ModuleCakeServer extends ModuleBase implements ISuppliesModule {
 					++this.cooldown;
 				}
 			}
-			@Nonnull ItemStack item = this.getStack(0);
-			if (item != null && item.getItem().equals(Items.CAKE) && this.getCakeBuffer() + 6 <= 66) {
+			@Nonnull
+			ItemStack item = this.getStack(0);
+			if (!item.isEmpty() && item.getItem().equals(Items.CAKE) && this.getCakeBuffer() + 6 <= 66) {
 				this.setCakeBuffer(this.getCakeBuffer() + 6);
-				this.setStack(0, null);
+				this.setStack(0, ItemStack.EMPTY);
 			}
 		}
 	}

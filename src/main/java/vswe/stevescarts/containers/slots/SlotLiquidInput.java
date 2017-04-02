@@ -24,7 +24,9 @@ public class SlotLiquidInput extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
 		return (FluidContainerRegistry.isEmptyContainer(itemstack) && this.tank.getFluid() != null) || (FluidContainerRegistry.isFilledContainer(itemstack) && (this.tank.getFluid() == null || this.tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))));
 	}
 }

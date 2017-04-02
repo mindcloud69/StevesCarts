@@ -1,8 +1,8 @@
 package vswe.stevescarts.arcade.monopoly;
 
-import java.util.ArrayList;
-
 import vswe.stevescarts.guis.GuiMinecart;
+
+import java.util.ArrayList;
 
 public class Note {
 	public static final ArrayList<Note> notes;

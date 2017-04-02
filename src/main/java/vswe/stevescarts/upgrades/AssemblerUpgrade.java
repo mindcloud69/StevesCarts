@@ -1,12 +1,5 @@
 package vswe.stevescarts.upgrades;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
@@ -16,11 +9,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.items.ModItems;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 public class AssemblerUpgrade {
 	private static HashMap<Byte, AssemblerUpgrade> upgrades;
@@ -56,7 +55,8 @@ public class AssemblerUpgrade {
 			{ Blocks.BOOKSHELF, ComponentTypes.REINFORCED_METAL.getItemStack(), Blocks.BOOKSHELF },
 			{ ComponentTypes.EYE_OF_GALGADOR.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.EYE_OF_GALGADOR.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), knowledge.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } });
-		@Nonnull ItemStack[] books = new ItemStack[5];
+		@Nonnull
+		ItemStack[] books = new ItemStack[5];
 		for (int i = 0; i < 5; ++i) {
 			books[i] = Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(Enchantments.EFFICIENCY, i + 1));
 		}
@@ -64,14 +64,14 @@ public class AssemblerUpgrade {
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books[0], ComponentTypes.SIMPLE_PCB.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-				{ Items.REDSTONE, books[1], Items.REDSTONE },
-				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
-				{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-					{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
-					{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-						{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
-						{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-							{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
+			{ Items.REDSTONE, books[1], Items.REDSTONE },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+			{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+			{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
+			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
+			{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
 		new AssemblerUpgrade(5, "New Era").addEffect(new WorkEfficiency(1.0f)).addEffect(new FuelCost(30.0f)).addRecipe(new Object[][] {
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), books[4], ComponentTypes.GALGADORIAN_METAL.getItemStack() },
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB, ComponentTypes.GALGADORIAN_METAL.getItemStack() },
@@ -169,18 +169,20 @@ public class AssemblerUpgrade {
 		return this.addRecipe(1, recipe);
 	}
 
-	public static void initRecipes(){
-		for(AssemblerUpgrade update : getUpgrades().values()){
-			for(Pair<Object[][], Integer> recipePair : update.recipes){
+	public static void initRecipes() {
+		for (AssemblerUpgrade update : getUpgrades().values()) {
+			for (Pair<Object[][], Integer> recipePair : update.recipes) {
 				RecipeHelper.addRecipe(update.getItemStack(recipePair.getRight()), recipePair.getLeft());
 			}
 		}
 	}
 
+	@Nonnull
 	protected ItemStack getItemStack() {
 		return this.getItemStack(1);
 	}
 
+	@Nonnull
 	protected ItemStack getItemStack(final int count) {
 		return new ItemStack(ModItems.upgrades, count, this.id);
 	}

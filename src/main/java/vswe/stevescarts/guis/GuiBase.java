@@ -1,13 +1,5 @@
 package vswe.stevescarts.guis;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -20,7 +12,14 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.modules.data.ModuleData;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiBase extends GuiContainer {
@@ -205,7 +204,6 @@ public abstract class GuiBase extends GuiContainer {
 
 	public void mouseClick(final int x, final int y, final int button) {
 	}
-
 
 	protected void mouseMovedOrUp(int x, int y, final int button) {
 		x = this.scaleX(x);

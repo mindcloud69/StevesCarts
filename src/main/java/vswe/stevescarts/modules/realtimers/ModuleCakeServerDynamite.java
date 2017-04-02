@@ -8,6 +8,8 @@ import vswe.stevescarts.containers.slots.SlotCakeDynamite;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
+
 public class ModuleCakeServerDynamite extends ModuleCakeServer {
 	private int dynamiteCount;
 
@@ -44,14 +46,16 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 	public void update() {
 		super.update();
 		if (!this.getCart().world.isRemote) {
-			@Nonnull ItemStack item = this.getStack(0);
-			if (item != null && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && this.dynamiteCount < this.getMaxDynamiteCount()) {
-				final int count = Math.min(this.getMaxDynamiteCount() - this.dynamiteCount, item.stackSize);
+			@Nonnull
+			ItemStack item = this.getStack(0);
+			if (!item.isEmpty() && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && this.dynamiteCount < this.getMaxDynamiteCount()) {
+				final int count = Math.min(this.getMaxDynamiteCount() - this.dynamiteCount, item.getCount());
 				this.dynamiteCount += count;
-				@Nonnull ItemStack itemStack = item;
-				itemStack.stackSize -= count;
-				if (item.stackSize == 0) {
-					this.setStack(0, null);
+				@Nonnull
+				ItemStack itemStack = item;
+				itemStack.shrink(count);
+				if (item.getCount() == 0) {
+					this.setStack(0, ItemStack.EMPTY);
 				}
 			}
 		}

@@ -126,7 +126,8 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 														tile.setInventorySlotContents(0, ModuleData.createModularCart(cart));
 														upgrade.getMaster().managerInteract(cart, false);
 														for (int p = 0; p < cart.getSizeInventory(); ++p) {
-															@Nonnull ItemStack item = cart.removeStackFromSlot(p);
+															@Nonnull
+															ItemStack item = cart.removeStackFromSlot(p);
 															if (item != null) {
 																upgrade.getMaster().puke(item);
 															}

@@ -1,13 +1,10 @@
 package vswe.stevescarts.guis;
 
-import java.util.ArrayList;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
 import vswe.stevescarts.blocks.tileentities.TileEntityManager;
 import vswe.stevescarts.containers.ContainerDistributor;
@@ -15,6 +12,8 @@ import vswe.stevescarts.helpers.DistributorSetting;
 import vswe.stevescarts.helpers.DistributorSide;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
+
+import java.util.ArrayList;
 
 @SideOnly(Side.CLIENT)
 public class GuiDistributor extends GuiBase {
@@ -76,8 +75,8 @@ public class GuiDistributor extends GuiBase {
 				this.drawTexturedModalRect(j + box[0], k + box[1], srcX, this.ySize, box[2], box[3]);
 				this.drawTexturedModalRect(j + box[0] + 2, k + box[1] + 2, box[2] * 2 + (box[2] - 4) * side.getId(), this.ySize, box[2] - 4, box[3] - 4);
 				this.drawMouseMover(Localization.GUI.DISTRIBUTOR.SIDE.translate(side.getName()) + ((this.activeId != -1)
-						? ("\n[" + Localization.GUI.DISTRIBUTOR.DROP_INSTRUCTION.translate() + "]")
-								: ""), x, y, box);
+				                                                                                   ? ("\n[" + Localization.GUI.DISTRIBUTOR.DROP_INSTRUCTION.translate() + "]")
+				                                                                                   : ""), x, y, box);
 				int settingCount = 0;
 				for (final DistributorSetting setting : DistributorSetting.settings) {
 					if (setting.isEnabled(this.distributor) && side.isSet(setting.getId())) {

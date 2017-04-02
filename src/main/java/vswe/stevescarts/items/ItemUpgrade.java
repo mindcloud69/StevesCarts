@@ -1,7 +1,5 @@
 package vswe.stevescarts.items;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,6 +20,8 @@ import vswe.stevescarts.renders.model.TexturedItem;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 import vswe.stevescarts.upgrades.BaseEffect;
 
+import java.util.List;
+
 public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	public ItemUpgrade(final Block block) {
 		super(block);
@@ -31,8 +31,9 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 		ItemModelManager.registerItem(this);
 	}
 
-
-	public String getName(@Nonnull ItemStack item) {
+	public String getName(
+		@Nonnull
+			ItemStack item) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
 		if (upgrade != null) {
 			return upgrade.getName();
@@ -41,7 +42,9 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	}
 
 	@Override
-	public String getUnlocalizedName(@Nonnull ItemStack item) {
+	public String getUnlocalizedName(
+		@Nonnull
+			ItemStack item) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(item.getItemDamage());
 		if (upgrade != null) {
 			return "item.SC2:" + upgrade.getRawName();
@@ -53,14 +56,15 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
-			@Nonnull ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());
+			@Nonnull
+			ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());
 			par3List.add(iStack);
 		}
 	}
 
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-		if(super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)){
+		if (super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)) {
 			final TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof TileEntityUpgrade) {
 				final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
@@ -73,7 +77,9 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(@Nonnull ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+	public void addInformation(
+		@Nonnull
+			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(par1ItemStack.getItemDamage());
 		if (upgrade != null) {
 			for (final BaseEffect effect : upgrade.getEffects()) {
@@ -86,7 +92,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	public String getTextureName(int damage) {
 		AssemblerUpgrade data = AssemblerUpgrade.getUpgrade(damage);
 		if (data != null) {
-			if(data.getIcon() == null){
+			if (data.getIcon() == null) {
 				data.setIcon("stevescarts:blocks/" + data.getRawName() + "_icon");
 			}
 			return data.getIcon();

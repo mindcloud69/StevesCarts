@@ -1,53 +1,12 @@
 package vswe.stevescarts.modules.workers;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
-import vswe.stevescarts.computer.ComputerControl;
-import vswe.stevescarts.computer.ComputerInfo;
-import vswe.stevescarts.computer.ComputerProg;
-import vswe.stevescarts.computer.ComputerTask;
-import vswe.stevescarts.computer.ComputerVar;
-import vswe.stevescarts.computer.IWriting;
+import vswe.stevescarts.computer.*;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
-import vswe.stevescarts.guis.buttons.ButtonBase;
-import vswe.stevescarts.guis.buttons.ButtonControlInteger;
-import vswe.stevescarts.guis.buttons.ButtonControlType;
-import vswe.stevescarts.guis.buttons.ButtonControlUseVar;
-import vswe.stevescarts.guis.buttons.ButtonControlVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowConditionInteger;
-import vswe.stevescarts.guis.buttons.ButtonFlowConditionOperator;
-import vswe.stevescarts.guis.buttons.ButtonFlowConditionSecondVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowConditionUseSecondVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowConditionVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowEndType;
-import vswe.stevescarts.guis.buttons.ButtonFlowForEndInteger;
-import vswe.stevescarts.guis.buttons.ButtonFlowForEndVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowForStartInteger;
-import vswe.stevescarts.guis.buttons.ButtonFlowForStartVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowForStep;
-import vswe.stevescarts.guis.buttons.ButtonFlowForUseEndVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowForUseStartVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowForVar;
-import vswe.stevescarts.guis.buttons.ButtonFlowType;
-import vswe.stevescarts.guis.buttons.ButtonInfoType;
-import vswe.stevescarts.guis.buttons.ButtonInfoVar;
-import vswe.stevescarts.guis.buttons.ButtonKeyboard;
-import vswe.stevescarts.guis.buttons.ButtonLabelId;
-import vswe.stevescarts.guis.buttons.ButtonProgramAdd;
-import vswe.stevescarts.guis.buttons.ButtonProgramStart;
-import vswe.stevescarts.guis.buttons.ButtonTask;
-import vswe.stevescarts.guis.buttons.ButtonTaskType;
-import vswe.stevescarts.guis.buttons.ButtonVarAdd;
-import vswe.stevescarts.guis.buttons.ButtonVarFirstInteger;
-import vswe.stevescarts.guis.buttons.ButtonVarFirstVar;
-import vswe.stevescarts.guis.buttons.ButtonVarSecondInteger;
-import vswe.stevescarts.guis.buttons.ButtonVarSecondVar;
-import vswe.stevescarts.guis.buttons.ButtonVarType;
-import vswe.stevescarts.guis.buttons.ButtonVarUseFirstVar;
-import vswe.stevescarts.guis.buttons.ButtonVarUseSecondVar;
-import vswe.stevescarts.guis.buttons.ButtonVarVar;
+import vswe.stevescarts.guis.buttons.*;
+
+import java.util.ArrayList;
 
 public class ModuleComputer extends ModuleWorker {
 	private IWriting writing;

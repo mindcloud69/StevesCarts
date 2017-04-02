@@ -15,7 +15,9 @@ public class SlotWater extends SlotBase {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack itemstack) {
+	public boolean isItemValid(
+		@Nonnull
+			ItemStack itemstack) {
 		return itemstack.getItem() == Items.WATER_BUCKET;
 	}
 }

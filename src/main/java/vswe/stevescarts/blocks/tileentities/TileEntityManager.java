@@ -1,8 +1,5 @@
 package vswe.stevescarts.blocks.tileentities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -21,6 +18,9 @@ import vswe.stevescarts.containers.ContainerManager;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.NBTHelper;
 import vswe.stevescarts.helpers.storages.TransferManager;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public abstract class TileEntityManager extends TileEntityBase implements IInventory {
 	private TransferManager standardTransferHandler;
@@ -43,11 +43,13 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getStackInSlot(final int i) {
 		return this.cargoItemStacks.get(i);
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack itemstack = ItemStackHelper.getAndSplit(cargoItemStacks, index, count);
 		if (!itemstack.isEmpty()) {
@@ -57,8 +59,9 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	@Override
-	public void setInventorySlotContents(final int i, @Nonnull
-		ItemStack itemstack) {
+	public void setInventorySlotContents(final int i,
+	                                     @Nonnull
+		                                     ItemStack itemstack) {
 		this.cargoItemStacks.set(i, itemstack);
 		if (!itemstack.isEmpty() && itemstack.getCount() > this.getInventoryStackLimit()) {
 			itemstack.setCount(this.getInventoryStackLimit());
@@ -208,34 +211,34 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		while (transfer.getSetting() < 4) {
 			Label_0130:
 			{
-			if (this.color[transfer.getSetting()] - 1 == transfer.getSide()) {
-				transfer.setLowestSetting(transfer.getSetting());
-				if (transfer.getLastSetting() != transfer.getSetting()) {
-					transfer.setWorkload(0);
-					transfer.setLastSetting(transfer.getSetting());
-					return true;
-				}
-				Label_0108:
-				{
-					if (this.toCart[transfer.getSetting()]) {
-						if (!transfer.getToCartEnabled()) {
+				if (this.color[transfer.getSetting()] - 1 == transfer.getSide()) {
+					transfer.setLowestSetting(transfer.getSetting());
+					if (transfer.getLastSetting() != transfer.getSetting()) {
+						transfer.setWorkload(0);
+						transfer.setLastSetting(transfer.getSetting());
+						return true;
+					}
+					Label_0108:
+					{
+						if (this.toCart[transfer.getSetting()]) {
+							if (!transfer.getToCartEnabled()) {
+								break Label_0108;
+							}
+						} else if (!transfer.getFromCartEnabled()) {
 							break Label_0108;
 						}
-					} else if (!transfer.getFromCartEnabled()) {
-						break Label_0108;
-					}
-					if (this.isTargetValid(transfer)) {
-						if (this.doTransfer(transfer)) {
-							return true;
+						if (this.isTargetValid(transfer)) {
+							if (this.doTransfer(transfer)) {
+								return true;
+							}
+							break Label_0130;
 						}
-						break Label_0130;
 					}
+					transfer.setLowestSetting(transfer.getSetting() + 1);
+					return true;
 				}
-				transfer.setLowestSetting(transfer.getSetting() + 1);
-				return true;
 			}
-			}
-		transfer.setSetting(transfer.getSetting() + 1);
+			transfer.setSetting(transfer.getSetting() + 1);
 		}
 		return false;
 	}
@@ -409,9 +412,11 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64.0;
 	}
 
+	@Nonnull
 	public ItemStack getStackInSlotOnClosing(final int par1) {
 		if (!this.cargoItemStacks.get(par1).isEmpty()) {
-			@Nonnull ItemStack var2 = this.cargoItemStacks.get(par1);
+			@Nonnull
+			ItemStack var2 = this.cargoItemStacks.get(par1);
 			this.cargoItemStacks.set(par1, ItemStack.EMPTY);
 			return var2;
 		}
@@ -445,10 +450,10 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Nullable
 	@Override
+	@Nonnull
 	public ItemStack removeStackFromSlot(int index) {
 		return ItemStackHelper.getAndRemove(cargoItemStacks, index);
 	}
-
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
@@ -486,20 +491,16 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
 		}
 		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) new InvWrapper(this);
 		}
 		return super.getCapability(capability, facing);

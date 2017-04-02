@@ -1,8 +1,5 @@
 package vswe.stevescarts.containers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
@@ -13,6 +10,9 @@ import vswe.stevescarts.blocks.tileentities.TileEntityBase;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ContainerMinecart extends ContainerBase {
 	private IInventory player;

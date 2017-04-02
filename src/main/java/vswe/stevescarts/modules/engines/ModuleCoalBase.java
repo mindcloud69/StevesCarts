@@ -11,6 +11,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 
+import javax.annotation.Nonnull;
+
 public abstract class ModuleCoalBase extends ModuleEngine {
 	private int fireCoolDown;
 	private int fireIndex;
@@ -25,7 +27,7 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	protected DataParameter<Integer> getPriorityDw() {
 		return PRIORITY;
 	}
-	
+
 	@Override
 	public void initDw() {
 		PRIORITY = createDw(DataSerializers.VARINT);
@@ -40,17 +42,18 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 			while (i < this.getInventorySize()) {
 				this.setFuelLevel(this.getFuelLevel() + SlotFuel.getItemBurnTime(this, this.getStack(i)));
 				if (this.getFuelLevel() > consumption) {
-					if (this.getStack(i) == null) {
+					if (this.getStack(i).isEmpty()) {
 						break;
 					}
 					if (this.getStack(i).getItem().hasContainerItem(this.getStack(i))) {
 						this.setStack(i, new ItemStack(this.getStack(i).getItem().getContainerItem()));
 					} else {
-						@Nonnull ItemStack stack = this.getStack(i);
-						--stack.stackSize;
+						@Nonnull
+						ItemStack stack = this.getStack(i);
+						stack.shrink(1);
 					}
-					if (this.getStack(i).stackSize == 0) {
-						this.setStack(i, null);
+					if (this.getStack(i).getCount() == 0) {
+						this.setStack(i, ItemStack.EMPTY);
 						break;
 					}
 					break;
@@ -65,8 +68,8 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	public int getTotalFuel() {
 		int totalfuel = this.getFuelLevel();
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (this.getStack(i) != null) {
-				totalfuel += SlotFuel.getItemBurnTime(this, this.getStack(i)) * this.getStack(i).stackSize;
+			if (!this.getStack(i).isEmpty()) {
+				totalfuel += SlotFuel.getItemBurnTime(this, this.getStack(i)) * this.getStack(i).getCount();
 			}
 		}
 		return totalfuel;

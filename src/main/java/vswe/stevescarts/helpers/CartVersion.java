@@ -1,11 +1,11 @@
 package vswe.stevescarts.helpers;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.items.ItemCarts;
+
+import java.util.ArrayList;
 
 public abstract class CartVersion {
 	private static ArrayList<CartVersion> versions;
@@ -39,7 +39,9 @@ public abstract class CartVersion {
 		return data;
 	}
 
-	public static void updateItemStack(@Nonnull ItemStack item) {
+	public static void updateItemStack(
+		@Nonnull
+			ItemStack item) {
 		if (item != null && item.getItem() instanceof ItemCarts) {
 			final NBTTagCompound info = item.getTagCompound();
 			if (info != null) {
@@ -52,7 +54,9 @@ public abstract class CartVersion {
 		}
 	}
 
-	public static void addVersion(@Nonnull ItemStack item) {
+	public static void addVersion(
+		@Nonnull
+			ItemStack item) {
 		if (item != null && item.getItem() instanceof ItemCarts) {
 			final NBTTagCompound info = item.getTagCompound();
 			if (info != null) {

@@ -1,23 +1,11 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGiantZombie;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +18,10 @@ import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.IActivatorModule;
 import vswe.stevescarts.modules.ModuleBase;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ModuleCage extends ModuleBase implements IActivatorModule {
 	private int[] autoRect;
@@ -155,7 +147,7 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 			return;
 		}
 		final List<EntityLivingBase> entities = this.getCart().world.getEntitiesWithinAABB(EntityLivingBase.class, this.getCart().getEntityBoundingBox().expand(searchDistance, 4.0, searchDistance));
-		Collections.sort( entities, this.sorter);
+		Collections.sort(entities, this.sorter);
 		for (EntityLivingBase target : entities) {
 			if (!(target instanceof EntityPlayer) && !(target instanceof EntityIronGolem) && !(target instanceof EntityDragon) && !(target instanceof EntitySlime) && !(target instanceof EntityWaterMob) && !(target instanceof EntityWither) && !(target instanceof EntityEnderman) && (!(target instanceof EntitySpider) || target instanceof EntityCaveSpider) && !(target instanceof EntityGiantZombie) && !(target instanceof EntityFlying)) {
 				if (target instanceof EntitySkeleton && ((EntitySkeleton) target).getSkeletonType() == SkeletonType.NORMAL) {

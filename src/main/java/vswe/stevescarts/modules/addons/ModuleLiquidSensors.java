@@ -66,7 +66,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 	@Override
 	public void initDw() {
 		SENSOR_INFO = createDw(DataSerializers.BYTE);
-		registerDw(SENSOR_INFO, (byte)1);
+		registerDw(SENSOR_INFO, (byte) 1);
 	}
 
 	private void activateLight(final int light) {

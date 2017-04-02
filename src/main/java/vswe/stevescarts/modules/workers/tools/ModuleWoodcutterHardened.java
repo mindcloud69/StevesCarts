@@ -26,7 +26,9 @@ public class ModuleWoodcutterHardened extends ModuleWoodcutter {
 	}
 
 	@Override
-	public int getRepairItemUnits(@Nonnull ItemStack item) {
+	public int getRepairItemUnits(
+		@Nonnull
+			ItemStack item) {
 		if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == 22) {
 			return 320000;
 		}

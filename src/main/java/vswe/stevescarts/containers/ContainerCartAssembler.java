@@ -1,7 +1,5 @@
 package vswe.stevescarts.containers;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -15,6 +13,8 @@ import vswe.stevescarts.blocks.tileentities.TileEntityBase;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.containers.slots.SlotAssembler;
 import vswe.stevescarts.containers.slots.SlotHull;
+
+import java.util.ArrayList;
 
 public class ContainerCartAssembler extends ContainerBase {
 	private TileEntityCartAssembler assembler;
@@ -84,13 +84,16 @@ public class ContainerCartAssembler extends ContainerBase {
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack slotClick(final int slotID, final int button, final ClickType keyflag, final EntityPlayer player) {
 		if (slotID >= 0 && slotID < this.inventorySlots.size()) {
 			final Slot hullSlot = this.inventorySlots.get(slotID);
 			if (hullSlot != null && hullSlot instanceof SlotHull) {
 				final InventoryPlayer playerInventory = player.inventory;
-				@Nonnull ItemStack playerItem = playerInventory.getItemStack();
-				@Nonnull ItemStack slotItem = hullSlot.getStack();
+				@Nonnull
+				ItemStack playerItem = playerInventory.getItemStack();
+				@Nonnull
+				ItemStack slotItem = hullSlot.getStack();
 				final ArrayList<SlotAssembler> newSlots = this.assembler.getValidSlotFromHullItem(playerItem);
 				final ArrayList<SlotAssembler> oldSlots = this.assembler.getValidSlotFromHullItem(slotItem);
 				if (oldSlots != null) {

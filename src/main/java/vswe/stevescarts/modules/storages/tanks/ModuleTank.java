@@ -101,6 +101,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getInputContainer(final int tankid) {
 		return this.getStack(0);
 	}
@@ -111,7 +112,9 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	}
 
 	@Override
-	public void addToOutputContainer(final int tankid, @Nonnull ItemStack item) {
+	public void addToOutputContainer(final int tankid,
+	                                 @Nonnull
+		                                 ItemStack item) {
 		this.addStack(1, item);
 	}
 

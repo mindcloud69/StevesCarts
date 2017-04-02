@@ -1,15 +1,15 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class ModuleCleaner extends ModuleBase {
 	public ModuleCleaner(final EntityMinecartModular cart) {
@@ -59,12 +59,12 @@ public class ModuleCleaner extends ModuleBase {
 			if (list.get(e) instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) list.get(e);
 				if (!eItem.isDead) {
-					final int stackSize = eItem.getEntityItem().stackSize;
+					final int stackSize = eItem.getEntityItem().getCount();
 					this.getCart().addItemToChest(eItem.getEntityItem());
-					if (stackSize != eItem.getEntityItem().stackSize) {
+					if (stackSize != eItem.getEntityItem().getCount()) {
 						//TODO
 						//this.getCart().world.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
-						if (eItem.getEntityItem().stackSize <= 0) {
+						if (eItem.getEntityItem().getCount() <= 0) {
 							eItem.setDead();
 						}
 					} else if (this.failPickup(eItem.getEntityItem())) {
@@ -75,9 +75,10 @@ public class ModuleCleaner extends ModuleBase {
 				final EntityArrow eItem2 = (EntityArrow) list.get(e);
 				if (Math.pow(eItem2.motionX, 2.0) + Math.pow(eItem2.motionY, 2.0) + Math.pow(eItem2.motionZ, 2.0) < 0.2 && eItem2.arrowShake <= 0 && !eItem2.isDead) {
 					eItem2.arrowShake = 3;
-					@Nonnull ItemStack iItem = new ItemStack(Items.ARROW, 1);
+					@Nonnull
+					ItemStack iItem = new ItemStack(Items.ARROW, 1);
 					this.getCart().addItemToChest(iItem);
-					if (iItem.stackSize <= 0) {
+					if (iItem.getCount() <= 0) {
 						//TODO
 						//this.getCart().world.playSound((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
 						eItem2.setDead();
@@ -89,7 +90,9 @@ public class ModuleCleaner extends ModuleBase {
 		}
 	}
 
-	private boolean failPickup(@Nonnull ItemStack item) {
+	private boolean failPickup(
+		@Nonnull
+			ItemStack item) {
 		final int x = this.normalize(this.getCart().pushZ);
 		final int z = this.normalize(this.getCart().pushX);
 		if (x == 0 && z == 0) {

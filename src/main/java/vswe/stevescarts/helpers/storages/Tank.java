@@ -1,16 +1,11 @@
 package vswe.stevescarts.helpers.storages;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.helpers.IconData;
 import vswe.stevescarts.helpers.Localization;
@@ -55,7 +50,8 @@ public class Tank implements IFluidTank {
 	}
 
 	public void containerTransfer() {
-		@Nonnull ItemStack item = this.owner.getInputContainer(this.tankid);
+		@Nonnull
+		ItemStack item = this.owner.getInputContainer(this.tankid);
 		if (item != null) {
 			if (FluidContainerRegistry.isFilledContainer(item)) {
 				final FluidStack fluidContent = FluidContainerRegistry.getFluidForFilledItem(item);
@@ -69,7 +65,8 @@ public class Tank implements IFluidTank {
 							this.owner.addToOutputContainer(this.tankid, containerStack);
 						}
 						if (containerStack == null || containerStack.stackSize == 0) {
-							@Nonnull ItemStack itemStack = item;
+							@Nonnull
+							ItemStack itemStack = item;
 							--itemStack.stackSize;
 							if (item.stackSize <= 0) {
 								this.owner.clearInputContainer(this.tankid);
@@ -79,13 +76,15 @@ public class Tank implements IFluidTank {
 					}
 				}
 			} else if (FluidContainerRegistry.isEmptyContainer(item)) {
-				@Nonnull ItemStack full = FluidContainerRegistry.fillFluidContainer(this.fluid, item);
+				@Nonnull
+				ItemStack full = FluidContainerRegistry.fillFluidContainer(this.fluid, item);
 				if (full != null) {
 					final FluidStack fluidContent2 = FluidContainerRegistry.getFluidForFilledItem(full);
 					if (fluidContent2 != null) {
 						this.owner.addToOutputContainer(this.tankid, full);
 						if (full.stackSize == 0) {
-							@Nonnull ItemStack itemStack2 = item;
+							@Nonnull
+							ItemStack itemStack2 = item;
 							--itemStack2.stackSize;
 							if (item.stackSize <= 0) {
 								this.owner.clearInputContainer(this.tankid);

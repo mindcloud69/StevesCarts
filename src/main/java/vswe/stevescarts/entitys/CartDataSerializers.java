@@ -11,20 +11,19 @@ public class CartDataSerializers {
 		DataSerializers.registerSerializer(VARINT);
 	}
 
-	public static final DataSerializer<int[]> VARINT = new DataSerializer<int[]>(){
+	public static final DataSerializer<int[]> VARINT = new DataSerializer<int[]>() {
 		@Override
-		public void write(PacketBuffer buf, int[] value)
-		{
+		public void write(PacketBuffer buf, int[] value) {
 			buf.writeVarIntArray(value);
 		}
+
 		@Override
-		public int[] read(PacketBuffer buf)
-		{
+		public int[] read(PacketBuffer buf) {
 			return buf.readVarIntArray();
 		}
+
 		@Override
-		public DataParameter<int[]> createKey(int id)
-		{
+		public DataParameter<int[]> createKey(int id) {
 			return new DataParameter(id, this);
 		}
 	};

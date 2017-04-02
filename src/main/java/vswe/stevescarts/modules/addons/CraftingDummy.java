@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
+import javax.annotation.Nonnull;
+
 public class CraftingDummy extends InventoryCrafting {
 	private int inventoryWidth;
 	private ModuleCrafter module;
@@ -21,11 +23,13 @@ public class CraftingDummy extends InventoryCrafting {
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getStackInSlot(final int par1) {
 		return (par1 >= this.getSizeInventory()) ? null : this.module.getStack(par1);
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getStackInRowAndColumn(final int par1, final int par2) {
 		if (par1 >= 0 && par1 < this.inventoryWidth) {
 			final int k = par1 + par2 * this.inventoryWidth;
@@ -34,23 +38,28 @@ public class CraftingDummy extends InventoryCrafting {
 		return null;
 	}
 
+	@Nonnull
 	public ItemStack getStackInSlotOnClosing(final int par1) {
 		return null;
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack decrStackSize(final int par1, final int par2) {
 		return null;
 	}
 
 	@Override
-	public void setInventorySlotContents(final int par1, @Nonnull ItemStack par2ItemStack) {
+	public void setInventorySlotContents(final int par1,
+	                                     @Nonnull
+		                                     ItemStack par2ItemStack) {
 	}
 
 	public void update() {
 		this.module.setStack(9, this.getResult());
 	}
 
+	@Nonnull
 	public ItemStack getResult() {
 		return CraftingManager.getInstance().findMatchingRecipe(this, this.module.getCart().world);
 	}

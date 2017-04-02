@@ -1,9 +1,5 @@
 package vswe.stevescarts.modules.realtimers;
 
-import java.util.ArrayList;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,11 +8,14 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ModuleBase;
+
+import java.util.ArrayList;
 
 public class ModuleNote extends ModuleBase {
 	private final int maximumTracksPerModuleBitCount = 4;
@@ -69,7 +68,7 @@ public class ModuleNote extends ModuleBase {
 		this.instrumentColors = new int[] { 4210752, 16711680, 65280, 255, 16776960, 65535 };
 		this.pitchNames = new String[] { "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#" };
 		this.instrumentNames = new Localization.MODULES.ATTACHMENTS[] { Localization.MODULES.ATTACHMENTS.PIANO, Localization.MODULES.ATTACHMENTS.BASS_DRUM, Localization.MODULES.ATTACHMENTS.SNARE_DRUM,
-				Localization.MODULES.ATTACHMENTS.STICKS, Localization.MODULES.ATTACHMENTS.BASS_GUITAR };
+			Localization.MODULES.ATTACHMENTS.STICKS, Localization.MODULES.ATTACHMENTS.BASS_GUITAR };
 		this.notemapX = 70;
 		this.notemapY = 40;
 		this.trackHeight = 20;
@@ -580,20 +579,20 @@ public class ModuleNote extends ModuleBase {
 		} else if (id == 1) {
 			final int trackID = data[0] & this.maximumTracksPerModule;
 			final int trackPacketID = (data[0] & ~this.maximumTracksPerModule) >> 4;
-							if (trackID < this.tracks.size()) {
-								final Track track = this.tracks.get(trackID);
-								if (trackPacketID == 0) {
-									if (track.notes.size() < this.maximumNotesPerTrack) {
-										new Note(track);
-									}
-								} else if (trackPacketID == 1) {
-									if (track.notes.size() > 0) {
-										track.notes.remove(track.notes.size() - 1);
-									}
-								} else if (trackPacketID == 2) {
-									track.volume = (track.volume + 1) % 4;
-								}
-							}
+			if (trackID < this.tracks.size()) {
+				final Track track = this.tracks.get(trackID);
+				if (trackPacketID == 0) {
+					if (track.notes.size() < this.maximumNotesPerTrack) {
+						new Note(track);
+					}
+				} else if (trackPacketID == 1) {
+					if (track.notes.size() > 0) {
+						track.notes.remove(track.notes.size() - 1);
+					}
+				} else if (trackPacketID == 2) {
+					track.volume = (track.volume + 1) % 4;
+				}
+			}
 		} else if (id == 2) {
 			final byte info = data[0];
 			final byte noteID = data[1];

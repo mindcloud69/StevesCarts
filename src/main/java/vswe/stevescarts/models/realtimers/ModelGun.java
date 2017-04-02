@@ -1,7 +1,5 @@
 package vswe.stevescarts.models.realtimers;
 
-import java.util.ArrayList;
-
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,6 +8,8 @@ import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.realtimers.ModuleShooter;
+
+import java.util.ArrayList;
 
 @SideOnly(Side.CLIENT)
 public class ModelGun extends ModelCartbase {

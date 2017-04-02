@@ -1,7 +1,5 @@
 package vswe.stevescarts.entitys;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityChicken;
@@ -13,6 +11,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import vswe.stevescarts.helpers.GiftItem;
+
+import java.util.ArrayList;
 
 public class EntityEasterEgg extends EntityEgg {
 	public EntityEasterEgg(final World world) {
@@ -47,7 +47,9 @@ public class EntityEasterEgg extends EntityEgg {
 				}
 			} else {
 				final ArrayList<ItemStack> items = GiftItem.generateItems(this.rand, GiftItem.EasterList, 25 + this.rand.nextInt(300), 1);
-				for (@Nonnull ItemStack item : items) {
+				for (
+					@Nonnull
+						ItemStack item : items) {
 					final EntityItem eItem = new EntityItem(this.world, this.posX, this.posY, this.posZ, item);
 					eItem.motionX = this.rand.nextGaussian() * 0.05000000074505806;
 					eItem.motionY = this.rand.nextGaussian() * 0.25;

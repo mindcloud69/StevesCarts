@@ -1,12 +1,5 @@
 package vswe.stevescarts.modules;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockVine;
@@ -25,7 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -34,6 +26,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerMinecart;
 import vswe.stevescarts.containers.slots.SlotBase;
@@ -48,9 +41,14 @@ import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.data.ModuleData;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class ModuleBase {
 	private EntityMinecartModular cart;
+	@Nonnull
 	private ItemStack[] cargo;
 	private int offSetX;
 	private int offSetY;
@@ -193,19 +191,27 @@ public abstract class ModuleBase {
 	}
 
 	@Nonnull
+	@Nonnull
 	public ItemStack getStack(final int slot) {
 		return this.cargo[slot];
 	}
 
-	public void setStack(final int slot, @Nonnull ItemStack item) {
+	public void setStack(final int slot,
+	                     @Nonnull
+		                     ItemStack item) {
 		this.cargo[slot] = item;
 	}
 
-	public void addStack(final int slotStart, final int slotEnd, @Nonnull ItemStack item) {
+	public void addStack(final int slotStart,
+	                     final int slotEnd,
+	                     @Nonnull
+		                     ItemStack item) {
 		this.getCart().addItemToChest(item, this.slotGlobalStart + slotStart, this.slotGlobalStart + slotEnd);
 	}
 
-	public void addStack(final int slot, @Nonnull ItemStack item) {
+	public void addStack(final int slot,
+	                     @Nonnull
+		                     ItemStack item) {
 		this.addStack(slot, slot, item);
 	}
 
@@ -281,7 +287,9 @@ public abstract class ModuleBase {
 		}
 	}
 
-	public void drawItemInInterface(final GuiMinecart gui, @Nonnull ItemStack item, final int x, final int y) {
+	public void drawItemInInterface(final GuiMinecart gui,
+	                                @Nonnull
+		                                ItemStack item, final int x, final int y) {
 		final int[] rect = { x, y, 16, 16 };
 		this.handleScroll(rect);
 		if (rect[3] == 16) {
@@ -603,28 +611,27 @@ public abstract class ModuleBase {
 	public void initDw() {
 	}
 
-
-	protected final <T> void registerDw(DataParameter<T> key, T value){
-		for(DataEntry entry : this.getCart().getDataManager().getAll()){
-			if(entry.getKey() == key){
+	protected final <T> void registerDw(DataParameter<T> key, T value) {
+		for (DataEntry entry : this.getCart().getDataManager().getAll()) {
+			if (entry.getKey() == key) {
 				return;
 			}
 		}
 		this.getCart().getDataManager().register(key, value);
 	}
 
-	protected final <T> void updateDw(DataParameter<T> key, T value){
+	protected final <T> void updateDw(DataParameter<T> key, T value) {
 		this.getCart().getDataManager().set(key, value);
 	}
 
-	protected <T> T getDw(DataParameter<T> key){
+	protected <T> T getDw(DataParameter<T> key) {
 		return this.getCart().getDataManager().get(key);
 	}
 
-	protected <T> DataParameter<T> createDw(DataSerializer<T> serializer){
+	protected <T> DataParameter<T> createDw(DataSerializer<T> serializer) {
 		return serializer.createKey(cart.getNextDataWatcher());
 	}
-	
+
 	public int numberOfGuiData() {
 		return 0;
 	}

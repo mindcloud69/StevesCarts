@@ -1,7 +1,5 @@
 package vswe.stevescarts.upgrades;
 
-import java.util.ArrayList;
-
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +13,8 @@ import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.data.ModuleDataHull;
+
+import java.util.ArrayList;
 
 public class InputChest extends SimpleInventoryEffect {
 	public InputChest(final int inventoryWidth, final int inventoryHeight) {
@@ -45,7 +45,8 @@ public class InputChest extends SimpleInventoryEffect {
 			} else {
 				comp.setByte("TransferCooldown", (byte) 20);
 				for (int slotId = 0; slotId < upgrade.getUpgrade().getInventorySize(); ++slotId) {
-					@Nonnull ItemStack itemstack = upgrade.getStackInSlot(slotId);
+					@Nonnull
+					ItemStack itemstack = upgrade.getStackInSlot(slotId);
 					if (itemstack != null) {
 						final ModuleData module = ModItems.modules.getModuleData(itemstack);
 						if (module != null) {

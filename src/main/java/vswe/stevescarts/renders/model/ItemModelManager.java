@@ -1,10 +1,10 @@
 package vswe.stevescarts.renders.model;
 
-import java.util.ArrayList;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.ArrayList;
 
 /**
  * Create a new instance of this in your mod

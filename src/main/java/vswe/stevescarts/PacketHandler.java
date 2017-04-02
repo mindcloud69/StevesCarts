@@ -1,12 +1,7 @@
 package vswe.stevescarts;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
@@ -32,6 +27,10 @@ import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerMinecart;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.ModuleBase;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class PacketHandler {
 	@SideOnly(Side.CLIENT)

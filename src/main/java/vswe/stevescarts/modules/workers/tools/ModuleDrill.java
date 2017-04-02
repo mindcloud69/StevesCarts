@@ -1,7 +1,5 @@
 package vswe.stevescarts.modules.workers.tools;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockLiquid;
@@ -32,6 +30,8 @@ import vswe.stevescarts.modules.addons.ModuleIncinerator;
 import vswe.stevescarts.modules.addons.ModuleLiquidSensors;
 import vswe.stevescarts.modules.addons.ModuleOreTracker;
 import vswe.stevescarts.modules.storages.chests.ModuleChest;
+
+import java.util.List;
 
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
 	private ModuleDrillIntelligence intelligence;
@@ -91,7 +91,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		for (int holeY = range[1]; holeY >= range[0]; --holeY) {
 			for (int holeX = -this.blocksOnSide(); holeX <= this.blocksOnSide(); ++holeX) {
 				if (this.intelligence == null || this.intelligence.isActive(holeX + this.blocksOnSide(), holeY, range[2], next.getX() > this.getCart().x() || next.getZ() < this.getCart().z())) {
-					if (this.mineBlockAndRevive(world, next.add(((this.getCart().z() != next.getZ()) ? holeX : 0), holeY,  ((this.getCart().x() != next.getX()) ? holeX : 0)), next, holeX, holeY)) {
+					if (this.mineBlockAndRevive(world, next.add(((this.getCart().z() != next.getZ()) ? holeX : 0), holeY, ((this.getCart().x() != next.getX()) ? holeX : 0)), next, holeX, holeY)) {
 						return true;
 					}
 				}
@@ -166,7 +166,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		}
 		if (storage != null) {
 			for (int i = 0; i < ((IInventory) storage).getSizeInventory(); ++i) {
-				@Nonnull ItemStack iStack = ((IInventory) storage).getStackInSlot(i);
+				@Nonnull
+				ItemStack iStack = ((IInventory) storage).getStackInSlot(i);
 				if (iStack != null) {
 					if (!this.minedItem(world, iStack, next)) {
 						return false;
@@ -177,7 +178,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		}
 		final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
 		if (this.shouldSilkTouch(blockState, coord)) {
-			@Nonnull ItemStack item = this.getSilkTouchedItem(blockState);
+			@Nonnull
+			ItemStack item = this.getSilkTouchedItem(blockState);
 			if (item != null && !this.minedItem(world, item, next)) {
 				return false;
 			}
@@ -203,7 +205,9 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		return true;
 	}
 
-	protected boolean minedItem(World world, @Nonnull ItemStack iStack, BlockPos Coords) {
+	protected boolean minedItem(World world,
+	                            @Nonnull
+		                            ItemStack iStack, BlockPos Coords) {
 		if (iStack == null || iStack.stackSize <= 0) {
 			return true;
 		}

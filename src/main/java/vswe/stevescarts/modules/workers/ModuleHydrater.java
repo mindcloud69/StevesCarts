@@ -50,9 +50,9 @@ public class ModuleHydrater extends ModuleWorker {
 
 	private boolean hydrate(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		if (state.getBlock() == Blocks.FARMLAND){ 
+		if (state.getBlock() == Blocks.FARMLAND) {
 			int moisture = state.getValue(BlockFarmland.MOISTURE);
-			if(moisture != 7) {
+			if (moisture != 7) {
 				int waterCost = 7 - moisture;
 				waterCost = this.getCart().drain(FluidRegistry.WATER, waterCost, false);
 				if (waterCost > 0) {

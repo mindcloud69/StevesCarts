@@ -1,8 +1,8 @@
 package vswe.stevescarts.arcade.monopoly;
 
-import java.util.EnumSet;
-
 import vswe.stevescarts.guis.GuiMinecart;
+
+import java.util.EnumSet;
 
 public class Community extends CardPlace {
 	public Community(final ArcadeMonopoly game) {

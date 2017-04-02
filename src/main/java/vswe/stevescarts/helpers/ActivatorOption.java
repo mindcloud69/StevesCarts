@@ -69,11 +69,11 @@ public class ActivatorOption {
 			return Localization.GUI.TOGGLER.SETTING_DISABLED.translate();
 		}
 		return "�6" + Localization.GUI.TOGGLER.SETTING_ORANGE.translate() + ": " + (this.shouldActivate(true) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
-				: (this.shouldDeactivate(true)
-						? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
-								: ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate()))) + "\n" + "�1" + Localization.GUI.TOGGLER.SETTING_BLUE.translate() + ": " + (
-										this.shouldActivate(false) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
-												: (this.shouldDeactivate(false) ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
-														: ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate())));
+		                                                                                                      : (this.shouldDeactivate(true)
+		                                                                                                         ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
+		                                                                                                         : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate()))) + "\n" + "�1" + Localization.GUI.TOGGLER.SETTING_BLUE.translate() + ": " + (
+			this.shouldActivate(false) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
+			                           : (this.shouldDeactivate(false) ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
+			                                                           : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate())));
 	}
 }

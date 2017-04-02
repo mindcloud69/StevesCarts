@@ -1,17 +1,16 @@
 package vswe.stevescarts.modules.addons;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
+import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.entitys.CartDataSerializers;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
+
+import java.util.Random;
 
 public class ModuleColorRandomizer extends ModuleAddon {
 	private int[] button;
@@ -113,7 +112,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	@Override
 	public void initDw() {
 		COLORS = createDw(CartDataSerializers.VARINT);
-		registerDw(COLORS, new int[]{255, 255, 255});
+		registerDw(COLORS, new int[] { 255, 255, 255 });
 	}
 
 	@Override
