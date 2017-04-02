@@ -13,16 +13,17 @@ public class ResourceHelper {
 	private static HashMap<String, ResourceLocation> pathResources;
 
 	public static ResourceLocation getResource(final String path) {
-		return new ResourceLocation("stevescarts", "textures" + path);
+		return new ResourceLocation("stevescarts", "textures" + path.toLowerCase());
 	}
 
 	public static ResourceLocation getResourceFromPath(final String path) {
-		return new ResourceLocation("textures" + path);
+		return new ResourceLocation("textures" + path.toLowerCase());
 	}
 
 	public static void bindResource(final ResourceLocation resource) {
 		if (resource != null) {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
+			ResourceLocation lowercaseLocation = new ResourceLocation(resource.getResourceDomain().toLowerCase(), resource.getResourcePath().toLowerCase());
+			Minecraft.getMinecraft().getTextureManager().bindTexture(lowercaseLocation);
 		}
 	}
 
