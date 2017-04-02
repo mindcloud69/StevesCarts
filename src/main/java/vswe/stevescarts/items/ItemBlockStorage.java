@@ -5,12 +5,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.storages.StorageBlock;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemBlockStorage extends ItemBlock {
@@ -57,7 +59,7 @@ public class ItemBlockStorage extends ItemBlock {
 	public String getName(
 		@Nonnull
 			ItemStack item) {
-		if (item == null) {
+		if (item.isEmpty()) {
 			return "Unknown";
 		}
 		int dmg = item.getItemDamage();
@@ -69,7 +71,7 @@ public class ItemBlockStorage extends ItemBlock {
 	public String getUnlocalizedName(
 		@Nonnull
 			ItemStack item) {
-		if (item != null) {
+		if (!item.isEmpty()) {
 			final StringBuilder append = new StringBuilder().append("item.");
 			final StevesCarts instance = StevesCarts.instance;
 			return append.append("SC2:").append("BlockStorage").append(item.getItemDamage()).toString();
@@ -79,7 +81,7 @@ public class ItemBlockStorage extends ItemBlock {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item item, final CreativeTabs tab, final List items) {
+	public void getSubItems(final Item item, final CreativeTabs tab, final NonNullList items) {
 		for (int i = 0; i < ItemBlockStorage.blocks.length; ++i) {
 			items.add(new ItemStack(item, 1, i));
 		}

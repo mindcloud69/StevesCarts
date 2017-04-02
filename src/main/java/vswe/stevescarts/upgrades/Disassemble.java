@@ -13,6 +13,7 @@ import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class Disassemble extends InventoryEffect {
@@ -65,10 +66,10 @@ public class Disassemble extends InventoryEffect {
 		if (!this.updateCart(upgrade, cart)) {
 			boolean needsToPuke = true;
 			for (int i = 1; i < this.getInventorySize(); ++i) {
-				if (upgrade.getStackInSlot(i) == null) {
+				if (upgrade.getStackInSlot(i).isEmpty()) {
 					@Nonnull
 					ItemStack item = upgrade.getStackInSlot(0);
-					upgrade.setInventorySlotContents(0, null);
+					upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 					upgrade.setInventorySlotContents(i, item);
 					needsToPuke = false;
 					break;
@@ -78,7 +79,7 @@ public class Disassemble extends InventoryEffect {
 				if (!upgrade.getWorld().isRemote) {
 					upgrade.getMaster().puke(upgrade.getStackInSlot(0).copy());
 				}
-				upgrade.setInventorySlotContents(0, null);
+				upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 			}
 		}
 	}

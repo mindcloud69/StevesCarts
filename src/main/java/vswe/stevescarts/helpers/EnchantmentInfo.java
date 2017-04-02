@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class EnchantmentInfo {
@@ -47,7 +48,7 @@ public class EnchantmentInfo {
 	public static boolean isItemValid(final ArrayList<ENCHANTMENT_TYPE> enabledTypes,
 	                                  @Nonnull
 		                                  ItemStack itemstack) {
-		if (itemstack != null && itemstack.getItem() == Items.ENCHANTED_BOOK) {
+		if (!itemstack.isEmpty() && itemstack.getItem() == Items.ENCHANTED_BOOK) {
 			for (final EnchantmentInfo info : EnchantmentInfo.enchants) {
 				boolean isValid = false;
 				for (final ENCHANTMENT_TYPE type : enabledTypes) {
@@ -71,7 +72,7 @@ public class EnchantmentInfo {
 	                                      EnchantmentData data,
 	                                      @Nonnull
 		                                      ItemStack itemstack) {
-		if (itemstack != null && itemstack.getItem() == Items.ENCHANTED_BOOK) {
+		if (!itemstack.isEmpty() && itemstack.getItem() == Items.ENCHANTED_BOOK) {
 			if (data == null) {
 				for (final EnchantmentInfo info : EnchantmentInfo.enchants) {
 					data = addEnchantment(enabledTypes, data, itemstack, info);
@@ -103,7 +104,7 @@ public class EnchantmentInfo {
 				final int newValue = data.getEnchantment().getValue(level) + data.getValue();
 				if (newValue <= data.getEnchantment().getMaxValue()) {
 					data.setValue(newValue);
-					--itemstack.stackSize;
+					itemstack.shrink(1);
 				}
 			}
 		}

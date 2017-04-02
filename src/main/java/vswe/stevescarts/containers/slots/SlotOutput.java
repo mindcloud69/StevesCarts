@@ -5,6 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
+
 public class SlotOutput extends SlotAssembler {
 	public SlotOutput(final TileEntityCartAssembler assembler, final int i, final int j, final int k) {
 		super(assembler, i, j, k, 0, true, 0);

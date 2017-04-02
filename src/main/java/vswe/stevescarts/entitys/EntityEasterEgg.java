@@ -12,6 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import vswe.stevescarts.helpers.GiftItem;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class EntityEasterEgg extends EntityEgg {

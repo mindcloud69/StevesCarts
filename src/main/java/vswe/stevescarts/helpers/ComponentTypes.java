@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
+
 public enum ComponentTypes {
 	WOODEN_WHEELS(0, "Wooden Wheels"),
 	IRON_WHEELS(1, "Iron Wheels"),
@@ -120,7 +122,7 @@ public enum ComponentTypes {
 	public boolean isStackOfType(
 		@Nonnull
 			ItemStack itemstack) {
-		return itemstack != null && itemstack.getItem() == ModItems.component && itemstack.getItemDamage() == this.id;
+		return !itemstack.isEmpty() && itemstack.getItem() == ModItems.component && itemstack.getItemDamage() == this.id;
 	}
 
 	public String getLocalizedName() {

@@ -191,7 +191,6 @@ public abstract class ModuleBase {
 	}
 
 	@Nonnull
-	@Nonnull
 	public ItemStack getStack(final int slot) {
 		return this.cargo[slot];
 	}
@@ -411,7 +410,7 @@ public abstract class ModuleBase {
 		if (this.getInventorySize() > 0) {
 			final NBTTagList items = new NBTTagList();
 			for (int i = 0; i < this.getInventorySize(); ++i) {
-				if (this.getStack(i) != null) {
+				if (!this.getStack(i).isEmpty()) {
 					final NBTTagCompound item = new NBTTagCompound();
 					item.setByte("Slot", (byte) i);
 					this.getStack(i).writeToNBT(item);

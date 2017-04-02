@@ -14,6 +14,7 @@ import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.containers.slots.SlotAssembler;
 import vswe.stevescarts.containers.slots.SlotHull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class ContainerCartAssembler extends ContainerBase {
@@ -107,7 +108,7 @@ public class ContainerCartAssembler extends ContainerBase {
 					}
 					for (final SlotAssembler slot : oldSlots) {
 						if (slot.getHasStack()) {
-							return null;
+							return ItemStack.EMPTY;
 						}
 					}
 				}

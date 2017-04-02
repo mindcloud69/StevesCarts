@@ -45,7 +45,6 @@ public class ModulePig extends ModuleHull {
 	}
 
 	@Nonnull
-	@Nonnull
 	private ItemStack getHelmet() {
 		if (this.getCart().getPassengers().isEmpty()) {
 			return ItemStack.EMPTY;

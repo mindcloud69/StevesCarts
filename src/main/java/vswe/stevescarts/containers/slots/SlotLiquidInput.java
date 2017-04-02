@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevescarts.helpers.storages.Tank;
 
+import javax.annotation.Nonnull;
+
 public class SlotLiquidInput extends SlotBase {
 	private Tank tank;
 	private int maxsize;

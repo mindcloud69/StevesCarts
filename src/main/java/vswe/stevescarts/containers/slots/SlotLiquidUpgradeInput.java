@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.helpers.storages.Tank;
 
+import javax.annotation.Nonnull;
+
 public class SlotLiquidUpgradeInput extends SlotLiquidInput {
 	private TileEntityUpgrade upgrade;
 

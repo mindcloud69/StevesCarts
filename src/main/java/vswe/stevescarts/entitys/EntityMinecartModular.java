@@ -1239,19 +1239,17 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	@Nonnull
-	@Nonnull
 	public ItemStack removeStackFromSlot(int index) {
 		if (!this.getStackInSlot(index).isEmpty()) {
 			@Nonnull
 			ItemStack var2 = this.getStackInSlot(index);
-			this.setInventorySlotContents(index, null);
+			this.setInventorySlotContents(index, ItemStack.EMPTY);
 			return var2;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
-	@Nonnull
 	@Nonnull
 	public ItemStack getStackInSlot(int i) {
 		if (this.modules != null) {
@@ -1262,7 +1260,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				i -= module.getInventorySize();
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -1281,7 +1279,6 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	@Override
-	@Nonnull
 	@Nonnull
 	public ItemStack decrStackSize(final int i, final int n) {
 		if (this.modules == null) {

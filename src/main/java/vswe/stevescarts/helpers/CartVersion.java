@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.items.ItemCarts;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public abstract class CartVersion {
@@ -42,7 +43,7 @@ public abstract class CartVersion {
 	public static void updateItemStack(
 		@Nonnull
 			ItemStack item) {
-		if (item != null && item.getItem() instanceof ItemCarts) {
+		if (!item.isEmpty() && item.getItem() instanceof ItemCarts) {
 			final NBTTagCompound info = item.getTagCompound();
 			if (info != null) {
 				final int version = info.getByte("CartVersion");
@@ -57,7 +58,7 @@ public abstract class CartVersion {
 	public static void addVersion(
 		@Nonnull
 			ItemStack item) {
-		if (item != null && item.getItem() instanceof ItemCarts) {
+		if (!item.isEmpty() && item.getItem() instanceof ItemCarts) {
 			final NBTTagCompound info = item.getTagCompound();
 			if (info != null) {
 				addVersion(info);

@@ -49,7 +49,7 @@ public class ModelGenerator {
 				TextureAtlasSprite texture = textureMap.getTextureExtry(name);
 				if (texture == null) {
 					texture = new CustomTexture(name);
-					textureMap.setTextureEntry(name, texture);
+					textureMap.setTextureEntry(texture);
 				}
 				ItemIconInfo info = new ItemIconInfo((Item) item, i, texture, name);
 				itemIcons.add(info);

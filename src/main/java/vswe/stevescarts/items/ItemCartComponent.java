@@ -9,10 +9,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,6 +20,7 @@ import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.renders.model.ItemModelManager;
 import vswe.stevescarts.renders.model.TexturedItem;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemCartComponent extends Item implements TexturedItem {
@@ -47,7 +45,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public String getName(
 		@Nonnull
 			ItemStack par1ItemStack) {
-		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
+		if (par1ItemStack.isEmpty() || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
 			return "Unknown SC2 Component";
 		}
 		return this.getName(par1ItemStack.getItemDamage());
@@ -104,9 +102,9 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(
 		@Nonnull
-			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
-		if (par1ItemStack == null || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
-			if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartComponent) {
+			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List<String> par3List, final boolean par4) {
+		if (par1ItemStack.isEmpty() || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
+			if (!par1ItemStack.isEmpty() && par1ItemStack.getItem() instanceof ItemCartComponent) {
 				par3List.add("Component id " + par1ItemStack.getItemDamage());
 			} else {
 				par3List.add("Unknown component id");
@@ -116,7 +114,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
+	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
 		for (int i = 0; i < size(); ++i) {
 			@Nonnull
 			ItemStack iStack = new ItemStack(par1, 1, i);
@@ -129,7 +127,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public boolean isValid(
 		@Nonnull
 			ItemStack item) {
-		if (item == null || !(item.getItem() instanceof ItemCartComponent) || this.getName(item.getItemDamage()) == null) {
+		if (item.isEmpty() || !(item.getItem() instanceof ItemCartComponent) || this.getName(item.getItemDamage()) == null) {
 			return false;
 		}
 		if (item.getItemDamage() >= 50 && item.getItemDamage() < 58) {
@@ -152,30 +150,30 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public static boolean isWoodLog(
 		@Nonnull
 			ItemStack item) {
-		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 0;
+		return !item.isEmpty() && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 0;
 	}
 
 	public static boolean isWoodTwig(
 		@Nonnull
 			ItemStack item) {
-		return item != null && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 1;
+		return !item.isEmpty() && item.getItemDamage() >= 72 && item.getItemDamage() < 80 && (item.getItemDamage() - 72) % 2 == 1;
 	}
 
 	private boolean isEdibleEgg(
 		@Nonnull
 			ItemStack item) {
-		return item != null && item.getItemDamage() >= 66 && item.getItemDamage() < 70;
+		return !item.isEmpty() && item.getItemDamage() >= 66 && item.getItemDamage() < 70;
 	}
 
 	private boolean isThrowableEgg(
 		@Nonnull
 			ItemStack item) {
-		return item != null && item.getItemDamage() == 70;
+		return !item.isEmpty() && item.getItemDamage() == 70;
 	}
 
 	@Override
 	@Nonnull
-	public ItemStack onItemUseFinish(ItemStack item, World world, EntityLivingBase entity) {
+	public ItemStack onItemUseFinish(@Nonnull ItemStack item, World world, EntityLivingBase entity) {
 		if (entity instanceof EntityPlayer && this.isEdibleEgg(item)) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (item.getItemDamage() == 66) {
@@ -195,7 +193,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 				}
 			} else if (item.getItemDamage() == 70) {}
 			if (!player.capabilities.isCreativeMode) {
-				--item.stackSize;
+				item.shrink(1);
 			}
 			world.playSound((EntityPlayer) entity, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 			player.getFoodStats().addStats(2, 0.0f);
@@ -219,14 +217,15 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack item, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		@Nonnull ItemStack item = player.getHeldItem(hand);
 		if (this.isEdibleEgg(item)) {
 			player.setActiveHand(hand);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 		}
 		if (this.isThrowableEgg(item)) {
 			if (!player.capabilities.isCreativeMode) {
-				--item.stackSize;
+				item.shrink(1);
 			}
 			world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote) {
@@ -234,7 +233,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 		}
-		return super.onItemRightClick(item, world, player, hand);
+		return super.onItemRightClick(world, player, hand);
 	}
 
 	@Override

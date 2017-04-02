@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
 
+import javax.annotation.Nonnull;
+
 public class SlotRepair extends SlotBase implements ISpecialItemTransferValidator {
 	private ModuleTool tool;
 

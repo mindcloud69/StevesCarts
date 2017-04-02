@@ -23,6 +23,7 @@ import vswe.stevescarts.helpers.ModuleCountPair;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.data.ModuleData;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,8 @@ public class ItemCarts extends ItemMinecart {
 	//	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		@Nonnull ItemStack stack = player.getHeldItem(hand);
 		CartVersion.updateItemStack(stack);
 		if (!world.isRemote) {
 			if (BlockRailBase.isRailBlock(world, pos)) {
@@ -80,7 +82,7 @@ public class ItemCarts extends ItemMinecart {
 					e.printStackTrace();
 					return EnumActionResult.FAIL;
 				}
-				--stack.stackSize;
+				stack.shrink(1);
 				return EnumActionResult.SUCCESS;
 			}
 		}

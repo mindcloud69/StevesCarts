@@ -5,6 +5,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.StevesCarts;
 
+import javax.annotation.Nonnull;
+
 public class ItemBlockDetector extends ItemBlock {
 	public ItemBlockDetector(final Block b) {
 		super(b);
@@ -17,7 +19,7 @@ public class ItemBlockDetector extends ItemBlock {
 	public String getUnlocalizedName(
 		@Nonnull
 			ItemStack item) {
-		if (item != null) {
+		if (!item.isEmpty()) {
 			return "item.SC2:BlockDetector" + item.getItemDamage();
 		}
 		return "item.unknown";

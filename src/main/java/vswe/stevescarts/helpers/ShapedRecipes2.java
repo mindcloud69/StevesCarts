@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class ShapedRecipes2 extends ShapedRecipes {
 	public ShapedRecipes2(final int par1,
 	                      final int par2,
@@ -47,8 +49,8 @@ public class ShapedRecipes2 extends ShapedRecipes {
 				}
 				@Nonnull
 				ItemStack var10 = par1InventoryCrafting.getStackInRowAndColumn(var5, var6);
-				if (var10 != null || var9 != null) {
-					if ((var10 == null && var9 != null) || (var10 != null && var9 == null)) {
+				if (!var10.isEmpty() || !var9.isEmpty()) {
+					if ((var10.isEmpty() && !var9.isEmpty()) || (!var10.isEmpty() && var9 == null)) {
 						return false;
 					}
 					if (var9.getItem() != var10.getItem()) {

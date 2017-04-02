@@ -6,6 +6,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,6 +17,7 @@ import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,24 +58,24 @@ public class AssemblerUpgrade {
 			{ ComponentTypes.EYE_OF_GALGADOR.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.EYE_OF_GALGADOR.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), knowledge.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } });
 		@Nonnull
-		ItemStack[] books = new ItemStack[5];
+		NonNullList<ItemStack> books = NonNullList.withSize(5, ItemStack.EMPTY);
 		for (int i = 0; i < 5; ++i) {
-			books[i] = Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(Enchantments.EFFICIENCY, i + 1));
+			books.set(5, Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(Enchantments.EFFICIENCY, i + 1)));
 		}
 		final AssemblerUpgrade experienced = new AssemblerUpgrade(4, "Experienced assembler").addEffect(new WorkEfficiency(0.1f)).addEffect(new FuelCost(0.3f)).addRecipe(new Object[][] {
-			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books[0], ComponentTypes.SIMPLE_PCB.getItemStack() },
+			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books.get(0), ComponentTypes.SIMPLE_PCB.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ Items.REDSTONE, books[1], Items.REDSTONE },
+			{ Items.REDSTONE, books.get(1), Items.REDSTONE },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ Items.REDSTONE, books[2], Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
+			{ Items.REDSTONE, books.get(2), Items.REDSTONE }, { Items.IRON_INGOT, ComponentTypes.ADVANCED_PCB.getItemStack(), Items.IRON_INGOT },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ null, books[3], null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
+			{ null, books.get(3), null }, { Items.IRON_INGOT, ComponentTypes.SIMPLE_PCB.getItemStack(), Items.IRON_INGOT },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.BLANK_UPGRADE.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } }).addRecipe(new Object[][] {
-			{ null, books[4], null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
+			{ null, books.get(4), null }, { null, Items.REDSTONE, null }, { Items.IRON_INGOT, ComponentTypes.BLANK_UPGRADE.getItemStack(), Items.IRON_INGOT } });
 		new AssemblerUpgrade(5, "New Era").addEffect(new WorkEfficiency(1.0f)).addEffect(new FuelCost(30.0f)).addRecipe(new Object[][] {
-			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), books[4], ComponentTypes.GALGADORIAN_METAL.getItemStack() },
+			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), books.get(4), ComponentTypes.GALGADORIAN_METAL.getItemStack() },
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), ComponentTypes.ADVANCED_PCB, ComponentTypes.GALGADORIAN_METAL.getItemStack() },
 			{ ComponentTypes.GALGADORIAN_METAL.getItemStack(), experienced.getItemStack(), ComponentTypes.GALGADORIAN_METAL.getItemStack() } });
 		new AssemblerUpgrade(6, "CO2 friendly").addEffect(new FuelCost(-0.15f)).addRecipe(new Object[][] { { null, Blocks.PISTON, null },

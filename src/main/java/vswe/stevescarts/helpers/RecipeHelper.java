@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public final class RecipeHelper {
@@ -36,7 +37,7 @@ public final class RecipeHelper {
 						obj = new ItemStack((Block) obj, 1);
 					} else if (obj instanceof ItemStack) {
 						obj = ((ItemStack) obj).copy();
-						((ItemStack) obj).stackSize = 1;
+						((ItemStack) obj).setCount(1);
 						if (obj != null && ((ItemStack) obj).getItem() instanceof ItemEnchantedBook) {
 							isSpecial = true;
 						}

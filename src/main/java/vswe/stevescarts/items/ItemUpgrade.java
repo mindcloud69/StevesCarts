@@ -9,6 +9,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,6 +21,7 @@ import vswe.stevescarts.renders.model.TexturedItem;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 import vswe.stevescarts.upgrades.BaseEffect;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemUpgrade extends ItemBlock implements TexturedItem {
@@ -54,7 +56,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
+	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
 			@Nonnull
 			ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());

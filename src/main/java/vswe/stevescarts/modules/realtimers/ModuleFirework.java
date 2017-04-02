@@ -84,7 +84,6 @@ public class ModuleFirework extends ModuleBase {
 	}
 
 	@Nonnull
-	@Nonnull
 	private ItemStack getFirework() {
 		boolean hasGunpowder = false;
 		boolean hasPaper = false;
@@ -152,12 +151,10 @@ public class ModuleFirework extends ModuleBase {
 	}
 
 	@Nonnull
-	@Nonnull
 	private ItemStack getCharge() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			@Nonnull
-			ItemStack item = this.getStack(i);
-			if (item != null && item.getItem() == Items.FIREWORK_CHARGE) {
+			@Nonnull ItemStack item = this.getStack(i);
+			if (!item.isEmpty() && item.getItem() == Items.FIREWORK_CHARGE) {
 				@Nonnull
 				ItemStack charge = item.copy();
 				charge.setCount(1);

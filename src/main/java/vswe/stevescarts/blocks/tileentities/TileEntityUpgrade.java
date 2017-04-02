@@ -14,6 +14,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.BlockUpgrade;
@@ -30,6 +31,7 @@ import vswe.stevescarts.upgrades.AssemblerUpgrade;
 import vswe.stevescarts.upgrades.InterfaceEffect;
 import vswe.stevescarts.upgrades.InventoryEffect;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISidedInventory, IFluidHandler, IFluidTank, ITankHolder, ITickable {
@@ -264,17 +266,17 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public ItemStack decrStackSize(final int i, final int j) {
 		if (this.inventoryStacks == null) {
 			if (this.master == null) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 			return this.master.decrStackSize(i, j);
 		} else {
 			if (i < 0 || i >= this.getSizeInventory()) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 			if (this.inventoryStacks[i] == null) {
-				return null;
+				return ItemStack.EMPTY;
 			}
-			if (this.inventoryStacks[i].stackSize <= j) {
+			if (this.inventoryStacks[i].getCount() <= j) {
 				@Nonnull
 				ItemStack itemstack = this.inventoryStacks[i];
 				this.inventoryStacks[i] = null;
@@ -283,7 +285,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 			@Nonnull
 			ItemStack itemstack2 = this.inventoryStacks[i].splitStack(j);
-			if (this.inventoryStacks[i].stackSize == 0) {
+			if (this.inventoryStacks[i].getCount() == 0) {
 				this.inventoryStacks[i] = null;
 			}
 			this.markDirty();
@@ -311,8 +313,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 				return;
 			}
 			this.inventoryStacks[i] = itemstack;
-			if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
-				itemstack.stackSize = this.getInventoryStackLimit();
+			if (!itemstack.isEmpty() && itemstack.getCount() > this.getInventoryStackLimit()) {
+				itemstack.setCount(this.getInventoryStackLimit());
 			}
 			this.markDirty();
 		}

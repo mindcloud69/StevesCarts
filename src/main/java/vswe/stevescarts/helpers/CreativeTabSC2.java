@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class CreativeTabSC2 extends CreativeTabs {
 	@Nonnull
 	private ItemStack item;
@@ -29,7 +31,8 @@ public class CreativeTabSC2 extends CreativeTabs {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem() {
-		return null;
+	@Nonnull
+	public ItemStack getTabIconItem() {
+		return ItemStack.EMPTY;
 	}
 }

@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
@@ -14,6 +15,7 @@ import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.renders.model.ItemModelManager;
 import vswe.stevescarts.renders.model.TexturedItem;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemCartModule extends Item implements TexturedItem {
@@ -54,7 +56,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item item, final CreativeTabs par2CreativeTabs, final List par3List) {
+	public void getSubItems(final Item item, final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
 		for (final ModuleData module : ModuleData.getList().values()) {
 			if (module.getIsValid()) {
 				par3List.add(module.getItemStack());
@@ -86,7 +88,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 	public ModuleData getModuleData(
 		@Nonnull
 			ItemStack itemstack, final boolean ignoreSize) {
-		if (itemstack != null && itemstack.getItem() instanceof ItemCartModule && (ignoreSize || itemstack.stackSize != TileEntityCartAssembler.getRemovedSize())) {
+		if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemCartModule && (ignoreSize || itemstack.getCount() != TileEntityCartAssembler.getRemovedSize())) {
 			return ModuleData.getList().get((byte) itemstack.getItemDamage());
 		}
 		return null;

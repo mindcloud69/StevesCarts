@@ -4,6 +4,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.modules.workers.tools.ModuleFarmer;
 
+import javax.annotation.Nonnull;
+
 public class SlotSeed extends SlotBase {
 	private ModuleFarmer module;
 

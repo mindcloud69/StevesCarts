@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 
+import javax.annotation.Nonnull;
+
 public class SlotLiquidOutput extends SlotBase implements ISpecialItemTransferValidator {
 	public SlotLiquidOutput(final IInventory iinventory, final int i, final int j, final int k) {
 		super(iinventory, i, j, k);

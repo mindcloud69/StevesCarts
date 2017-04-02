@@ -2,6 +2,8 @@ package vswe.stevescarts.helpers;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class CargoItemSelection {
 	private Class validSlot;
 	@Nonnull

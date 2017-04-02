@@ -9,6 +9,7 @@ import vswe.stevescarts.containers.slots.SlotCart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.data.ModuleData;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class Blueprint extends SimpleInventoryEffect {
@@ -29,7 +30,7 @@ public class Blueprint extends SimpleInventoryEffect {
 	public boolean isValidForBluePrint(final TileEntityUpgrade upgrade, final ArrayList<ModuleData> modules, final ModuleData module) {
 		@Nonnull
 		ItemStack blueprint = upgrade.getStackInSlot(0);
-		if (blueprint == null) {
+		if (blueprint.isEmpty()) {
 			return false;
 		}
 		final NBTTagCompound info = blueprint.getTagCompound();

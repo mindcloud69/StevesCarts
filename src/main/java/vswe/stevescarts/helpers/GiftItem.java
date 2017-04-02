@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -72,8 +73,8 @@ public class GiftItem {
 			for (final GiftItem gift2 : gifts) {
 				if (chance < gift2.chanceWeight) {
 					int maxSetSize = value / gift2.costPerItem;
-					if (maxSetSize * gift2.item.stackSize > gift2.item.getItem().getItemStackLimit(gift2.item)) {
-						maxSetSize = gift2.item.getItem().getItemStackLimit(gift2.item) / gift2.item.stackSize;
+					if (maxSetSize * gift2.item.getCount() > gift2.item.getItem().getItemStackLimit(gift2.item)) {
+						maxSetSize = gift2.item.getItem().getItemStackLimit(gift2.item) / gift2.item.getCount();
 					}
 					if (maxSetSize > 0) {
 						int setSize = 1;
@@ -88,7 +89,7 @@ public class GiftItem {
 						ItemStack copy;
 						@Nonnull
 						ItemStack item = copy = gift2.item.copy();
-						copy.stackSize *= setSize;
+						copy.setCount(copy.getCount() * setSize);
 						items.add(item);
 						value -= setSize * gift2.costPerItem;
 						break;

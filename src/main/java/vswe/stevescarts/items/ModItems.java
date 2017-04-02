@@ -13,6 +13,7 @@ import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public final class ModItems {

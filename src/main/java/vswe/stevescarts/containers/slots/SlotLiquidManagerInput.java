@@ -5,6 +5,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
 import vswe.stevescarts.helpers.storages.Tank;
 
+import javax.annotation.Nonnull;
+
 public class SlotLiquidManagerInput extends SlotBase {
 	private TileEntityLiquid manager;
 	private int tankid;

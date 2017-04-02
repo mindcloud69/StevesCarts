@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.ComponentTypes;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class ModuleEggBasket extends ModuleChest {

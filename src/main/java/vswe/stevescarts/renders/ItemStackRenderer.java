@@ -15,7 +15,6 @@ public class ItemStackRenderer extends TileEntityItemStackRenderer {
 
 	TileEntityItemStackRenderer renderer;
 
-	@Nonnull
 	public ItemStackRenderer(TileEntityItemStackRenderer renderer) {
 		this.renderer = renderer;
 	}

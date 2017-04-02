@@ -265,10 +265,9 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	}
 
 	protected boolean hasProjectileItem() {
-		return this.getProjectileItem(false) != null;
+		return !this.getProjectileItem(false).isEmpty();
 	}
 
-	@Nonnull
 	@Nonnull
 	protected ItemStack getProjectileItem(boolean flag) {
 		if (flag && this.enchanter != null && this.enchanter.useInfinity()) {

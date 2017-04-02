@@ -4,6 +4,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.modules.workers.tools.ModuleWoodcutter;
 
+import javax.annotation.Nonnull;
+
 public class SlotSapling extends SlotBase {
 	private ModuleWoodcutter module;
 
