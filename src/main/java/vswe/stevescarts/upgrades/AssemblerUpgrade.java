@@ -58,9 +58,9 @@ public class AssemblerUpgrade {
 			{ ComponentTypes.EYE_OF_GALGADOR.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack(), ComponentTypes.EYE_OF_GALGADOR.getItemStack() },
 			{ ComponentTypes.REINFORCED_METAL.getItemStack(), knowledge.getItemStack(), ComponentTypes.REINFORCED_METAL.getItemStack() } });
 		@Nonnull
-		NonNullList<ItemStack> books = NonNullList.withSize(5, ItemStack.EMPTY);
+		NonNullList<ItemStack> books = NonNullList.withSize(6, ItemStack.EMPTY);
 		for (int i = 0; i < 5; ++i) {
-			books.set(5, Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(Enchantments.EFFICIENCY, i + 1)));
+			books.set(i, Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(Enchantments.EFFICIENCY, i + 1)));
 		}
 		final AssemblerUpgrade experienced = new AssemblerUpgrade(4, "Experienced assembler").addEffect(new WorkEfficiency(0.1f)).addEffect(new FuelCost(0.3f)).addRecipe(new Object[][] {
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books.get(0), ComponentTypes.SIMPLE_PCB.getItemStack() },

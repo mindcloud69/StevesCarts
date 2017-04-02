@@ -65,7 +65,7 @@ public class TileEntityCargo extends TileEntityManager {
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_BRIDGE, SlotBridge.class, new ItemStack(Blocks.BRICK_BLOCK, 1)));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_SEEDS, SlotSeed.class, new ItemStack(Items.WHEAT_SEEDS, 1)));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_FERTILIZER, SlotFertilizer.class, new ItemStack(Items.DYE, 1, 15)));
-		TileEntityCargo.itemSelections.add(new CargoItemSelection(null, null, null));
+		TileEntityCargo.itemSelections.add(new CargoItemSelection(null, null, ItemStack.EMPTY));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_SAPLINGS, SlotSapling.class, new ItemStack(Blocks.SAPLING, 1)));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_FIREWORK, SlotFirework.class, new ItemStack(Items.FIREWORKS, 1)));
 		TileEntityCargo.itemSelections.add(new CargoItemSelection(Localization.GUI.CARGO.AREA_BUCKETS, SlotMilker.class, new ItemStack(Items.BUCKET, 1)));

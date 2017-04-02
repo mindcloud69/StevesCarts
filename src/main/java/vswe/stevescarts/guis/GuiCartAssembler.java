@@ -91,7 +91,7 @@ public class GuiCartAssembler extends GuiBase {
 
 	private void updateErrorList() {
 		final ArrayList<TextWithColor> lines = new ArrayList<>();
-		if (this.assembler.getStackInSlot(0) == null) {
+		if (!this.assembler.getStackInSlot(0).isEmpty()) {
 			this.addText(lines, Localization.GUI.ASSEMBLER.ASSEMBLE_INSTRUCTION.translate());
 			this.hasErrors = true;
 		} else {

@@ -359,7 +359,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public void setDead() {
 		if (this.world.isRemote) {
 			for (int var1 = 0; var1 < this.getSizeInventory(); ++var1) {
-				this.setInventorySlotContents(var1, null);
+				this.setInventorySlotContents(var1, ItemStack.EMPTY);
 			}
 		}
 		super.setDead();
