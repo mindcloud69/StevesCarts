@@ -11,6 +11,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -42,7 +43,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	private int type;
 	private boolean initialized;
 	private NBTTagCompound comp;
-	ItemStack[] inventoryStacks;
+	NonNullList<ItemStack> inventoryStacks;
 	private int[] slotsForSide;
 	BlockUpgrade blockUpgrade = (BlockUpgrade) ModBlocks.UPGRADE.getBlock();
 	boolean shouldSetType;
@@ -93,7 +94,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 				this.slotsForSide = new int[upgrade.getInventorySize()];
 				upgrade.init(this);
 				if (upgrade.getInventorySize() > 0) {
-					this.inventoryStacks = new ItemStack[upgrade.getInventorySize()];
+					this.inventoryStacks = NonNullList.withSize(upgrade.getInventorySize(), ItemStack.EMPTY);
 					for (int i = 0; i < this.slotsForSide.length; ++i) {
 						this.slotsForSide[i] = i;
 					}
@@ -164,10 +165,10 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		super.writeToNBT(tagCompound);
 		final NBTTagList items = new NBTTagList();
 		if (this.inventoryStacks != null) {
-			for (int i = 0; i < this.inventoryStacks.length; ++i) {
+			for (int i = 0; i < this.inventoryStacks.size(); ++i) {
 				@Nonnull
-				ItemStack iStack = this.inventoryStacks[i];
-				if (iStack != null) {
+				ItemStack iStack = this.inventoryStacks.get(i);
+				if (!iStack.isEmpty()) {
 					final NBTTagCompound item = new NBTTagCompound();
 					item.setByte("Slot", (byte) i);
 					iStack.writeToNBT(item);
@@ -239,7 +240,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	public int getSizeInventory() {
 		if (this.inventoryStacks != null) {
-			return this.inventoryStacks.length;
+			return this.inventoryStacks.size();
 		}
 		if (this.master == null) {
 			return 0;
@@ -262,14 +263,14 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public ItemStack getStackInSlot(final int i) {
 		if (this.inventoryStacks == null) {
 			if (this.master == null) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 			return this.master.getStackInSlot(i);
 		} else {
 			if (i < 0 || i >= this.getSizeInventory()) {
-				return null;
+				return ItemStack.EMPTY;
 			}
-			return this.inventoryStacks[i];
+			return this.inventoryStacks.get(i);
 		}
 	}
 
@@ -285,20 +286,20 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			if (i < 0 || i >= this.getSizeInventory()) {
 				return ItemStack.EMPTY;
 			}
-			if (this.inventoryStacks[i] == null) {
+			if (this.inventoryStacks.get(i).isEmpty()) {
 				return ItemStack.EMPTY;
 			}
-			if (this.inventoryStacks[i].getCount() <= j) {
+			if (this.inventoryStacks.get(i).getCount() <= j) {
 				@Nonnull
-				ItemStack itemstack = this.inventoryStacks[i];
-				this.inventoryStacks[i] = null;
+				ItemStack itemstack = this.inventoryStacks.get(i);
+				inventoryStacks.set(i, ItemStack.EMPTY);
 				this.markDirty();
 				return itemstack;
 			}
 			@Nonnull
-			ItemStack itemstack2 = this.inventoryStacks[i].splitStack(j);
-			if (this.inventoryStacks[i].getCount() == 0) {
-				this.inventoryStacks[i] = null;
+			ItemStack itemstack2 = this.inventoryStacks.get(i).splitStack(j);
+			if (this.inventoryStacks.get(i).getCount() == 0) {
+				this.inventoryStacks.set(i, ItemStack.EMPTY);
 			}
 			this.markDirty();
 			return itemstack2;
@@ -324,7 +325,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			if (i < 0 || i >= this.getSizeInventory()) {
 				return;
 			}
-			this.inventoryStacks[i] = itemstack;
+			this.inventoryStacks.set(i, itemstack);
 			if (!itemstack.isEmpty() && itemstack.getCount() > this.getInventoryStackLimit()) {
 				itemstack.setCount(this.getInventoryStackLimit());
 			}

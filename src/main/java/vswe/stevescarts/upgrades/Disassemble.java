@@ -3,6 +3,7 @@ package vswe.stevescarts.upgrades;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.containers.ContainerCartAssembler;
@@ -147,7 +148,7 @@ public class Disassemble extends InventoryEffect {
 					this.resetMaster(upgrade.getMaster(), true);
 				}
 				boolean addedHull = false;
-				final ArrayList<ItemStack> modules = ModuleData.getModularItems(cart);
+				final NonNullList<ItemStack> modules = ModuleData.getModularItems(cart);
 				for (
 					@Nonnull
 						ItemStack item : modules) {

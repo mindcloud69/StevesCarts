@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
@@ -758,11 +759,11 @@ public class ModuleData {
 		return name;
 	}
 
-	public static ArrayList<ItemStack> getModularItems(
+	public static NonNullList<ItemStack> getModularItems(
 		@Nonnull
 			ItemStack cart) {
-		final ArrayList<ItemStack> modules = new ArrayList<>();
-		if (cart != null && cart.getItem() == ModItems.carts && cart.getTagCompound() != null) {
+		final NonNullList<ItemStack> modules = NonNullList.create();
+		if (!cart.isEmpty() && cart.getItem() == ModItems.carts && cart.getTagCompound() != null) {
 			final NBTTagCompound info = cart.getTagCompound();
 			if (info.hasKey("Modules")) {
 				final byte[] IDs = info.getByteArray("Modules");
@@ -799,7 +800,7 @@ public class ModuleData {
 		return cart;
 	}
 
-	public static ItemStack createModularCartFromItems(final ArrayList<ItemStack> modules) {
+	public static ItemStack createModularCartFromItems(final NonNullList<ItemStack> modules) {
 		@Nonnull
 		ItemStack cart = new ItemStack(ModItems.carts, 1);
 		final NBTTagCompound save = new NBTTagCompound();

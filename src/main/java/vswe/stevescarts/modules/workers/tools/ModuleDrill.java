@@ -181,7 +181,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		if (this.shouldSilkTouch(blockState, coord)) {
 			@Nonnull
 			ItemStack item = this.getSilkTouchedItem(blockState);
-			if (item != null && !this.minedItem(world, item, next)) {
+			if (!item.isEmpty() && !this.minedItem(world, item, next)) {
 				return false;
 			}
 			world.setBlockToAir(coord);

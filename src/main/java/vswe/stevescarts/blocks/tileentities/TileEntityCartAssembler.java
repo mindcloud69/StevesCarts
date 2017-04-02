@@ -73,7 +73,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	private final int[] topbotSlots;
 	private final int[] sideSlots;
 	@Nonnull
-	private ItemStack lastHull;
+	private ItemStack lastHull = ItemStack.EMPTY;
 	private float fuelLevel;
 	private ArrayList<TileEntityUpgrade> upgrades;
 	public boolean isDead;
@@ -330,11 +330,11 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 
 	@Nonnull
 	public ItemStack getCartFromModules(final boolean isSimulated) {
-		final ArrayList<ItemStack> items = new ArrayList<>();
+		final NonNullList<ItemStack> items = NonNullList.create();
 		for (int i = 0; i < this.getSizeInventory() - this.nonModularSlots(); ++i) {
 			@Nonnull
 			ItemStack item = this.getStackInSlot(i);
-			if (item != null) {
+			if (!item.isEmpty()) {
 				if (item.getCount() != getRemovedSize()) {
 					items.add(item);
 				} else if (!isSimulated) {
@@ -351,9 +351,9 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	private void createCartFromModules() {
 		this.spareModules.clear();
 		this.outputItem = this.getCartFromModules(false);
-		if (this.outputItem != null) {
+		if (!this.outputItem.isEmpty()) {
 			for (int i = 0; i < this.getSizeInventory() - this.nonModularSlots(); ++i) {
-				this.setInventorySlotContents(i, null);
+				this.setInventorySlotContents(i, ItemStack.EMPTY);
 			}
 		} else {
 			this.spareModules.clear();
@@ -533,7 +533,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	public ArrayList<SlotAssembler> getValidSlotFromHullItem(
 		@Nonnull
 			ItemStack hullitem) {
-		if (hullitem != null) {
+		if (!hullitem.isEmpty()) {
 			final ModuleData data = ModItems.modules.getModuleData(hullitem);
 			if (data != null && data instanceof ModuleDataHull) {
 				final ModuleDataHull hull = (ModuleDataHull) data;
@@ -788,7 +788,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 				this.setAssemblingTime(0);
 				if (!this.world.isRemote) {
 					this.deployCart();
-					this.outputItem = null;
+					this.outputItem = ItemStack.EMPTY;
 					this.deploySpares();
 					this.spareModules.clear();
 				}
@@ -816,9 +816,9 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 
 	public void updateSlots() {
 		if (this.hullSlot != null) {
-			if (this.lastHull != null && this.hullSlot.getStack().isEmpty()) {
+			if (!this.lastHull.isEmpty() && this.hullSlot.getStack().isEmpty()) {
 				this.invalidateAll();
-			} else if (this.lastHull == null && !this.hullSlot.getStack().isEmpty()) {
+			} else if (this.lastHull.isEmpty() && !this.hullSlot.getStack().isEmpty()) {
 				this.validateAll();
 			} else if (this.lastHull != this.hullSlot.getStack()) {
 				this.invalidateAll();

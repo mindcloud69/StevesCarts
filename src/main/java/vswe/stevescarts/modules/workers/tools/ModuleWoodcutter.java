@@ -11,6 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -99,8 +100,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public abstract int getPercentageDropChance();
 
-	public List<ItemStack> getTierDrop(List<ItemStack> baseItems) {
-		List<ItemStack> nerfedItems = new ArrayList<>();
+	public NonNullList<ItemStack> getTierDrop(List<ItemStack> baseItems) {
+		NonNullList<ItemStack> nerfedItems = NonNullList.create();
 		for (
 			@Nonnull
 				ItemStack item : baseItems) {
