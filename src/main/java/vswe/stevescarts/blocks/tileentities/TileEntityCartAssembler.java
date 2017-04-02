@@ -49,8 +49,8 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 	private int maxAssemblingTime;
 	private float currentAssemblingTime;
 	@Nonnull
-	protected ItemStack outputItem;
-	protected ArrayList<ItemStack> spareModules;
+	protected ItemStack outputItem = ItemStack.EMPTY;
+	protected NonNullList<ItemStack> spareModules;
 	private boolean isAssembling;
 	public boolean isErrorListOutdated;
 	private ArrayList<TitleBox> titleBoxes;
@@ -98,7 +98,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		this.roll = 0.0f;
 		this.rolldown = false;
 		this.upgrades = new ArrayList<>();
-		this.spareModules = new ArrayList<>();
+		this.spareModules = NonNullList.create();
 		this.dropDownItems = new ArrayList<>();
 		this.slots = new ArrayList<>();
 		this.engineSlots = new ArrayList<>();
@@ -969,7 +969,6 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 
 	@Override
 	@Nonnull
-	@Nonnull
 	public ItemStack removeStackFromSlot(int index) {
 		@Nonnull
 		ItemStack item = this.getStackInSlot(index);
@@ -1140,15 +1139,15 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 
 	@Nonnull
 	public ItemStack getOutputOnInterupt() {
-		if (this.outputItem == null) {
-			return null;
+		if (this.outputItem.isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 		if (!this.outputItem.hasTagCompound()) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 		final NBTTagCompound info = this.outputItem.getTagCompound();
 		if (info == null) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 		info.setInteger("currentTime", this.getAssemblingTime());
 		info.setInteger("maxTime", this.maxAssemblingTime);

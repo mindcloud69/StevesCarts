@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -29,7 +30,7 @@ public class BlockDetector extends BlockContainerBase {
 	}
 
 	@Override
-	public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
+	public void getSubBlocks(final Item item, final CreativeTabs tab, final NonNullList<ItemStack> list) {
 		for (final DetectorType type : DetectorType.values()) {
 			list.add(new ItemStack(item, 1, type.getMeta()));
 		}
@@ -56,8 +57,6 @@ public class BlockDetector extends BlockContainerBase {
 	                                IBlockState state,
 	                                EntityPlayer entityPlayer,
 	                                EnumHand hand,
-	                                @Nullable
-		                                ItemStack heldItem,
 	                                EnumFacing side,
 	                                float hitX,
 	                                float hitY,

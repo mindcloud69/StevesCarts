@@ -21,6 +21,7 @@ import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.plugins.APIHelper;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,9 +143,9 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 				IBlockState cropblock2 = this.getCropFromSeedHandler(this.getStack(hasSeeds), world, pos);
 				world.setBlockState(pos.up(), cropblock2);
 				ItemStack stack = this.getStack(hasSeeds);
-				--stack.stackSize;
-				if (this.getStack(hasSeeds).stackSize <= 0) {
-					this.setStack(hasSeeds, null);
+				stack.shrink(1);
+				if (this.getStack(hasSeeds).getCount() <= 0) {
+					this.setStack(hasSeeds, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -171,7 +172,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					stuff = new ArrayList<>();
 					@Nonnull
 					ItemStack stack = this.getSilkTouchedItem(blockState);
-					if (stack != null) {
+					if (!stack.isEmpty()) {
 						stuff.add(stack);
 					}
 				} else {
@@ -182,7 +183,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 					@Nonnull
 						ItemStack iStack : stuff) {
 					cart.addItemToChest(iStack);
-					if (iStack.stackSize != 0) {
+					if (iStack.getCount() != 0) {
 						final EntityItem entityitem = new EntityItem(world, cart.posX, cart.posY, cart.posZ, iStack);
 						entityitem.motionX = (pos.getX() - cart.x()) / 10.0f;
 						entityitem.motionY = 0.15000000596046448;
@@ -295,7 +296,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		for (int i = 0; i < this.getInventorySize(); ++i) {
 			@Nonnull
 			ItemStack item = this.getStack(i);
-			if (item != null && this.isSeedValidHandler(item)) {
+			if (!item.isEmpty() && this.isSeedValidHandler(item)) {
 				return true;
 			}
 		}

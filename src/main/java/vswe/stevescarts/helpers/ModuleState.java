@@ -187,7 +187,7 @@ public class ModuleState {
 		new ModuleStatePassenger(37, Localization.GUI.DETECTOR.ZOMBIE, EntityZombie.class) {
 			@Override
 			public boolean isPassengerValid(final Entity passenger) {
-				return ((EntityZombie) passenger).isVillager();
+				return passenger instanceof EntityZombieVillager;
 			}
 		};
 		new ModuleStatePassenger(38, Localization.GUI.DETECTOR.CHILD, EntityAgeable.class) {

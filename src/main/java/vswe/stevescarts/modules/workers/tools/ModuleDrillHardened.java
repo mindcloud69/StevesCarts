@@ -5,6 +5,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
+
 public class ModuleDrillHardened extends ModuleDrill {
 	public ModuleDrillHardened(final EntityMinecartModular cart) {
 		super(cart);
@@ -39,7 +41,7 @@ public class ModuleDrillHardened extends ModuleDrill {
 	public int getRepairItemUnits(
 		@Nonnull
 			ItemStack item) {
-		if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == 22) {
+		if (!item.isEmpty() && item.getItem() == ModItems.component && item.getItemDamage() == 22) {
 			return 450000;
 		}
 		return 0;

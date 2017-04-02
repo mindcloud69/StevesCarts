@@ -14,6 +14,8 @@ import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.modules.ISuppliesModule;
 
+import javax.annotation.Nonnull;
+
 public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	private DataParameter<Boolean> BRIDGE;
 
@@ -74,15 +76,15 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 		final Block b = world.getBlockState(pos).getBlock();
 		if ((this.countsAsAir(pos) || b instanceof BlockLiquid) && this.isValidForTrack(world, pos.up(), false)) {
 			for (int m = 0; m < this.getInventorySize(); ++m) {
-				if (this.getStack(m) != null && SlotBridge.isBridgeMaterial(this.getStack(m))) {
+				if (!this.getStack(m).isEmpty() && SlotBridge.isBridgeMaterial(this.getStack(m))) {
 					if (flag) {
 						world.setBlockState(pos, Block.getBlockFromItem(this.getStack(m).getItem()).getStateFromMeta(getStack(m).getItemDamage()), 3);
 						if (!this.getCart().hasCreativeSupplies()) {
 							@Nonnull
 							ItemStack stack = this.getStack(m);
-							--stack.stackSize;
-							if (this.getStack(m).stackSize == 0) {
-								this.setStack(m, null);
+							stack.shrink(1);
+							if (this.getStack(m).getCount() == 0) {
+								this.setStack(m, ItemStack.EMPTY);
 							}
 							this.getCart().markDirty();
 						}
@@ -123,7 +125,7 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
 			@Nonnull
 			ItemStack item = this.getStack(i);
-			if (item != null && SlotBridge.isBridgeMaterial(item)) {
+			if (!item.isEmpty() && SlotBridge.isBridgeMaterial(item)) {
 				return true;
 			}
 		}

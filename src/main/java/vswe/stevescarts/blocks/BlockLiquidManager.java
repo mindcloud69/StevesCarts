@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
 
+import javax.annotation.Nonnull;
+
 public class BlockLiquidManager extends BlockContainerBase {
 
 	public BlockLiquidManager() {
@@ -31,14 +33,14 @@ public class BlockLiquidManager extends BlockContainerBase {
 					final float var10 = par1World.rand.nextFloat() * 0.8f + 0.1f;
 					final float var11 = par1World.rand.nextFloat() * 0.8f + 0.1f;
 					final float var12 = par1World.rand.nextFloat() * 0.8f + 0.1f;
-					while (var9.stackSize > 0) {
+					while (var9.getCount() > 0) {
 						int var13 = par1World.rand.nextInt(21) + 10;
-						if (var13 > var9.stackSize) {
-							var13 = var9.stackSize;
+						if (var13 > var9.getCount()) {
+							var13 = var9.getCount();
 						}
 						@Nonnull
 						ItemStack itemStack = var9;
-						itemStack.stackSize -= var13;
+						itemStack.shrink(var13);
 						final EntityItem var14 = new EntityItem(par1World, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 						final float var15 = 0.05f;
 						var14.motionX = (float) par1World.rand.nextGaussian() * var15;
@@ -56,7 +58,7 @@ public class BlockLiquidManager extends BlockContainerBase {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (player.isSneaking()) {
 			return false;
 		}

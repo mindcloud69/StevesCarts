@@ -18,6 +18,7 @@ import vswe.stevescarts.modules.ISuppliesModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.workers.tools.ModuleFarmer;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
@@ -156,7 +157,7 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 		if (this.getCart().world.isRemote) {
 			return;
 		}
-		if (this.getStack(0) != null) {
+		if (!this.getStack(0).isEmpty()) {
 			final boolean isBone = this.getStack(0).getItem() == Items.BONE;
 			final boolean isBoneMeal = this.getStack(0).getItem() == Items.DYE && this.getStack(0).getItemDamage() == 15;
 			if (isBone || isBoneMeal) {
@@ -166,14 +167,14 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 				} else {
 					amount = 3;
 				}
-				if (this.fert <= 4 * (192 - amount) && this.getStack(0).stackSize > 0) {
+				if (this.fert <= 4 * (192 - amount) && this.getStack(0).getCount() > 0) {
 					@Nonnull
 					ItemStack stack = this.getStack(0);
-					--stack.stackSize;
+					stack.shrink(1);
 					this.fert += amount * 4;
 				}
-				if (this.getStack(0).stackSize == 0) {
-					this.setStack(0, null);
+				if (this.getStack(0).getCount() == 0) {
+					this.setStack(0, ItemStack.EMPTY);
 				}
 			}
 		}

@@ -31,6 +31,7 @@ import vswe.stevescarts.modules.addons.ModuleLiquidSensors;
 import vswe.stevescarts.modules.addons.ModuleOreTracker;
 import vswe.stevescarts.modules.storages.chests.ModuleChest;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public abstract class ModuleDrill extends ModuleTool implements IActivatorModule {
@@ -168,11 +169,11 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			for (int i = 0; i < ((IInventory) storage).getSizeInventory(); ++i) {
 				@Nonnull
 				ItemStack iStack = ((IInventory) storage).getStackInSlot(i);
-				if (iStack != null) {
+				if (!iStack.isEmpty()) {
 					if (!this.minedItem(world, iStack, next)) {
 						return false;
 					}
-					((IInventory) storage).setInventorySlotContents(i, null);
+					((IInventory) storage).setInventorySlotContents(i, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -208,21 +209,21 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	protected boolean minedItem(World world,
 	                            @Nonnull
 		                            ItemStack iStack, BlockPos Coords) {
-		if (iStack == null || iStack.stackSize <= 0) {
+		if (iStack.isEmpty() || iStack.getCount() <= 0) {
 			return true;
 		}
 		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ModuleIncinerator) {
 				((ModuleIncinerator) module).incinerate(iStack);
-				if (iStack.stackSize <= 0) {
+				if (iStack.getCount() <= 0) {
 					return true;
 				}
 				continue;
 			}
 		}
-		final int size = iStack.stackSize;
+		final int size = iStack.getCount();
 		this.getCart().addItemToChest(iStack);
-		if (iStack.stackSize == 0) {
+		if (iStack.getCount() == 0) {
 			return true;
 		}
 		boolean hasChest = false;
@@ -240,7 +241,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			world.spawnEntity(entityitem);
 			return true;
 		}
-		if (iStack.stackSize != size) {
+		if (iStack.getCount() != size) {
 			final EntityItem entityitem = new EntityItem(world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
 			entityitem.motionX = (this.getCart().z() - Coords.getZ()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;

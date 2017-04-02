@@ -28,8 +28,6 @@ public class BlockActivator extends BlockContainerBase {
 	                                IBlockState state,
 	                                EntityPlayer playerIn,
 	                                EnumHand hand,
-	                                @Nullable
-		                                ItemStack heldItem,
 	                                EnumFacing side,
 	                                float hitX,
 	                                float hitY,

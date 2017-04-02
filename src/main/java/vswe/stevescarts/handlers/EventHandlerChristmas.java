@@ -20,6 +20,8 @@ import vswe.stevescarts.Constants;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
+
 public class EventHandlerChristmas {
 
 	@SubscribeEvent
@@ -45,11 +47,11 @@ public class EventHandlerChristmas {
 			if (villager.getProfessionForge() != TradeHandler.santaProfession) {
 				@Nonnull
 				ItemStack item = player.getHeldItem(EnumHand.MAIN_HAND);
-				if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == ComponentTypes.WARM_HAT.getId()) {
+				if (!item.isEmpty() && item.getItem() == ModItems.component && item.getItemDamage() == ComponentTypes.WARM_HAT.getId()) {
 					if (!player.capabilities.isCreativeMode) {
 						@Nonnull
 						ItemStack itemStack = item;
-						--itemStack.stackSize;
+						itemStack.shrink(1);
 					}
 					if (!player.world.isRemote) {
 						villager.setProfession(TradeHandler.santaProfession);
@@ -59,7 +61,7 @@ public class EventHandlerChristmas {
 							e.printStackTrace();
 						}
 					}
-					if (item.stackSize <= 0 && !player.capabilities.isCreativeMode) {
+					if (item.getCount() <= 0 && !player.capabilities.isCreativeMode) {
 						player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 					}
 					event.setCanceled(true);

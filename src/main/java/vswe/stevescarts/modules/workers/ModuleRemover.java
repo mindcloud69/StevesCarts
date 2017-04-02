@@ -69,7 +69,7 @@ public class ModuleRemover extends ModuleWorker {
 				@Nonnull
 				ItemStack iStack = new ItemStack(Blocks.RAIL, 1, 0);
 				this.getCart().addItemToChest(iStack);
-				if (iStack.stackSize == 0) {
+				if (iStack.getCount() == 0) {
 					world.setBlockToAir(pos);
 				}
 				remove = new BlockPos(pos.getX(), -1, pos.getZ());

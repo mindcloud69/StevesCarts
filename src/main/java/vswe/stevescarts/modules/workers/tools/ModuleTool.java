@@ -18,6 +18,8 @@ import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.ModuleEnchants;
 import vswe.stevescarts.modules.workers.ModuleWorker;
 
+import javax.annotation.Nonnull;
+
 public abstract class ModuleTool extends ModuleWorker {
 	private int currentDurability;
 	private int remainingRepairUnits;
@@ -155,9 +157,9 @@ public abstract class ModuleTool extends ModuleWorker {
 					this.maximumRepairUnits = n;
 					@Nonnull
 					ItemStack stack = this.getStack(0);
-					--stack.stackSize;
-					if (this.getStack(0).stackSize <= 0) {
-						this.setStack(0, null);
+					stack.shrink(1);
+					if (this.getStack(0).getCount() <= 0) {
+						this.setStack(0, ItemStack.EMPTY);
 					}
 				}
 			}
@@ -170,7 +172,7 @@ public abstract class ModuleTool extends ModuleWorker {
 	}
 
 	public boolean isRepairing() {
-		return this.getStack(0) != null || this.isActuallyRepairing();
+		return !this.getStack(0).isEmpty() || this.isActuallyRepairing();
 	}
 
 	public boolean isActuallyRepairing() {
@@ -267,7 +269,7 @@ public abstract class ModuleTool extends ModuleWorker {
 	public ItemStack getSilkTouchedItem(IBlockState blockState) {
 		Block block = blockState.getBlock();
 		ItemStack stack = new ItemStack(block, 1, 0);
-		if (stack.getItem() != null && stack.getItem().getHasSubtypes()) {
+		if (!stack.isEmpty() && stack.getItem().getHasSubtypes()) {
 			return new ItemStack(block, 1, block.getMetaFromState(blockState));
 		}
 		return stack;

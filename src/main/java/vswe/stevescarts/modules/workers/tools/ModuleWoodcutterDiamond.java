@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
+import javax.annotation.Nonnull;
+
 public class ModuleWoodcutterDiamond extends ModuleWoodcutter {
 	public ModuleWoodcutterDiamond(final EntityMinecartModular cart) {
 		super(cart);
@@ -29,7 +31,7 @@ public class ModuleWoodcutterDiamond extends ModuleWoodcutter {
 	public int getRepairItemUnits(
 		@Nonnull
 			ItemStack item) {
-		if (item != null && item.getItem() == Items.DIAMOND) {
+		if (!item.isEmpty() && item.getItem() == Items.DIAMOND) {
 			return 160000;
 		}
 		return 0;

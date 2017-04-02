@@ -10,6 +10,8 @@ import vswe.stevescarts.guis.GuiBase;
 import vswe.stevescarts.helpers.IconData;
 import vswe.stevescarts.helpers.Localization;
 
+import javax.annotation.Nonnull;
+
 public class Tank implements IFluidTank {
 	private FluidStack fluid;
 	private int tankSize;
@@ -52,7 +54,7 @@ public class Tank implements IFluidTank {
 	public void containerTransfer() {
 		@Nonnull
 		ItemStack item = this.owner.getInputContainer(this.tankid);
-		if (item != null) {
+		if (!item.isEmpty()) {
 			if (FluidContainerRegistry.isFilledContainer(item)) {
 				final FluidStack fluidContent = FluidContainerRegistry.getFluidForFilledItem(item);
 				if (fluidContent != null) {
@@ -64,11 +66,11 @@ public class Tank implements IFluidTank {
 							containerStack = new ItemStack(container, 1);
 							this.owner.addToOutputContainer(this.tankid, containerStack);
 						}
-						if (containerStack == null || containerStack.stackSize == 0) {
+						if (containerStack == null || containerStack.getCount() == 0) {
 							@Nonnull
 							ItemStack itemStack = item;
-							--itemStack.stackSize;
-							if (item.stackSize <= 0) {
+							itemStack.shrink(1);
+							if (item.getCount() <= 0) {
 								this.owner.clearInputContainer(this.tankid);
 							}
 							this.fill(fluidContent, true, false);
@@ -82,11 +84,11 @@ public class Tank implements IFluidTank {
 					final FluidStack fluidContent2 = FluidContainerRegistry.getFluidForFilledItem(full);
 					if (fluidContent2 != null) {
 						this.owner.addToOutputContainer(this.tankid, full);
-						if (full.stackSize == 0) {
+						if (full.getCount() == 0) {
 							@Nonnull
 							ItemStack itemStack2 = item;
-							--itemStack2.stackSize;
-							if (item.stackSize <= 0) {
+							itemStack2.shrink(1);
+							if (item.getCount() <= 0) {
 								this.owner.clearInputContainer(this.tankid);
 							}
 							this.drain(fluidContent2.amount, true, false);

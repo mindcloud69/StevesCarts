@@ -3,6 +3,8 @@ package vswe.stevescarts.modules.workers.tools;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
+import javax.annotation.Nonnull;
+
 public class ModuleDrillGalgadorian extends ModuleDrill {
 	public ModuleDrillGalgadorian(final EntityMinecartModular cart) {
 		super(cart);

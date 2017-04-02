@@ -1,5 +1,6 @@
 package vswe.stevescarts.handlers;
 
+import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
@@ -25,7 +26,7 @@ public class TradeHandler implements ITradeList {
 	}
 
 	@Override
-	public void modifyMerchantRecipeList(MerchantRecipeList recipeList, Random random) {
+	public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random) {
 		recipeList.add(new MerchantRecipe(new ItemStack(ModItems.component, 3, ComponentTypes.STOLEN_PRESENT.getId()), new ItemStack(ModItems.component, 1, ComponentTypes.GREEN_WRAPPING_PAPER.getId())));
 	}
 }

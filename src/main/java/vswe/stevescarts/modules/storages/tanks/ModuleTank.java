@@ -25,6 +25,8 @@ import vswe.stevescarts.helpers.storages.ITankHolder;
 import vswe.stevescarts.helpers.storages.Tank;
 import vswe.stevescarts.modules.storages.ModuleStorage;
 
+import javax.annotation.Nonnull;
+
 public abstract class ModuleTank extends ModuleStorage implements IFluidTank, ITankHolder {
 	protected Tank tank;
 	private int tick;

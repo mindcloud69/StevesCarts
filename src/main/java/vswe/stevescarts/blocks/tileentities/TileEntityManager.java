@@ -481,6 +481,16 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	@Override
+	public boolean isEmpty() {
+		for (ItemStack itemstack : this.cargoItemStacks) {
+			if (!itemstack.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
 	public String getName() {
 		return "container.cargomanager";
 	}

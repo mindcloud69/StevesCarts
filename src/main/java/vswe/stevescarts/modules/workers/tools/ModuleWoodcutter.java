@@ -28,6 +28,7 @@ import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
 import vswe.stevescarts.plugins.APIHelper;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +104,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		for (
 			@Nonnull
 				ItemStack item : baseItems) {
-			if (item != null) {
+			if (!item.isEmpty()) {
 				this.dropItemByMultiplierChance(nerfedItems, item, this.getPercentageDropChance());
 			}
 		}
@@ -181,7 +182,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				for (ITreeModule module : treeModules) {
 					if (module.isSapling(sapling)) {
 						if (module.plantSapling(getCart().world, pos, sapling, getFakePlayer())) {
-							if (sapling.stackSize == 0) {
+							if (sapling.getCount() == 0) {
 								this.setStack(saplingSlotId, null);
 							}
 							this.startWorking(25);
@@ -257,7 +258,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			stuff = new ArrayList<>();
 			@Nonnull
 			ItemStack stack = this.getSilkTouchedItem(blockState);
-			if (stack != null) {
+			if (!stack.isEmpty()) {
 				stuff.add(stack);
 			}
 		} else {
@@ -267,7 +268,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(world, here, blockState, fortune, 1, dropList, getFakePlayer(), false);
 			MinecraftForge.EVENT_BUS.post(event);
 			for (ItemStack drop : dropList) { //Here to filter out any bad itemstacks, the mod I was testing with returned stacks with a size of 0
-				if (drop.getItem() != null && drop.stackSize > 0) {
+				if (drop.getItem() != null && drop.getCount() > 0) {
 					stuff.add(drop);
 				}
 			}
@@ -289,7 +290,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			@Nonnull
 				ItemStack iStack : nerfedstuff) {
 			this.getCart().addItemToChest(iStack, Slot.class, SlotFuel.class);
-			if (iStack.stackSize != 0) {
+			if (iStack.getCount() != 0) {
 				if (first) {
 					return false;
 				}

@@ -24,6 +24,7 @@ import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.data.ModuleDataHull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,8 +167,8 @@ public class GuiCartAssembler extends GuiBase {
 				srcY = 0;
 			} else {
 				size = 18;
-				if (slot.getStack() != null && slot.getStack().stackSize <= 0) {
-					if (slot.getStack().stackSize == TileEntityCartAssembler.getRemovedSize()) {
+				if (!slot.getStack().isEmpty() && slot.getStack().getCount() <= 0) {
+					if (slot.getStack().getCount() == TileEntityCartAssembler.getRemovedSize()) {
 						srcX = 140;
 					} else {
 						srcX = 122;
@@ -490,7 +491,7 @@ public class GuiCartAssembler extends GuiBase {
 				final int targetX = slot.getX() - 1;
 				final int targetY = slot.getY() - 1;
 				final int size = 18;
-				if (this.inRect(x, y, new int[] { targetX, targetY, size, size }) && slot.getStack() != null && slot.getStack().stackSize <= 0) {
+				if (this.inRect(x, y, new int[] { targetX, targetY, size, size }) && !slot.getStack().isEmpty() && slot.getStack().getCount() <= 0) {
 					PacketHandler.sendPacket(1, new byte[] { (byte) i });
 				}
 			}

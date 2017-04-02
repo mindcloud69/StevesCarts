@@ -17,6 +17,7 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ISuppliesModule;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
@@ -103,14 +104,14 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	private boolean tryPlaceTrack(World world, final int i, final int j, final int k, final boolean flag) {
 		if (this.isValidForTrack(world, new BlockPos(i, j, k), true)) {
 			for (int l = 0; l < this.getInventorySize(); ++l) {
-				if (this.getStack(l) != null && this.validRail(this.getStack(l).getItem())) {
+				if (!this.getStack(l).isEmpty() && this.validRail(this.getStack(l).getItem())) {
 					if (flag) {
 						this.getCart().world.setBlockState(new BlockPos(i, j, k), Block.getBlockFromItem(this.getStack(l).getItem()).getStateFromMeta(getStack(l).getItemDamage()));
 						if (!this.getCart().hasCreativeSupplies()) {
 							@Nonnull
 							ItemStack stack = this.getStack(l);
-							--stack.stackSize;
-							if (this.getStack(l).stackSize == 0) {
+							stack.shrink(1);
+							if (this.getStack(l).getCount() == 0) {
 								this.setStack(l, null);
 							}
 							this.getCart().markDirty();
@@ -148,7 +149,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 		}
 		byte valid = 0;
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (this.getStack(i) != null && this.validRail(this.getStack(i).getItem())) {
+			if (!this.getStack(i).isEmpty() && this.validRail(this.getStack(i).getItem())) {
 				++valid;
 			}
 		}

@@ -28,6 +28,7 @@ import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class TileEntityCargo extends TileEntityManager {
@@ -248,7 +249,7 @@ public class TileEntityCargo extends TileEntityManager {
 			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
 				@Nonnull
 				ItemStack iStack = fromInv.getStackInSlot(i);
-				final int stacksize = iStack.stackSize;
+				final int stacksize = iStack.getCount();
 				int maxNumber;
 				if (this.getAmountType(transfer.getSetting()) == 1) {
 					maxNumber = this.getAmount(transfer.getSetting()) - transfer.getWorkload();
@@ -256,15 +257,15 @@ public class TileEntityCargo extends TileEntityManager {
 					maxNumber = -1;
 				}
 				TransferHandler.TransferItem(iStack, toInv, toCont, toValid, maxNumber, TransferHandler.TRANSFER_TYPE.MANAGER);
-				if (iStack.stackSize != stacksize) {
+				if (iStack.getCount() != stacksize) {
 					if (this.getAmountType(transfer.getSetting()) == 1) {
-						transfer.setWorkload(transfer.getWorkload() + stacksize - iStack.stackSize);
+						transfer.setWorkload(transfer.getWorkload() + stacksize - iStack.getCount());
 					} else if (this.getAmountType(transfer.getSetting()) == 2) {
 						transfer.setWorkload(transfer.getWorkload() + 1);
 					}
 					this.markDirty();
 					transfer.getCart().markDirty();
-					if (iStack.stackSize == 0) {
+					if (iStack.getCount() == 0) {
 						fromInv.setInventorySlotContents(i, null);
 					}
 					if (transfer.getWorkload() >= this.getAmount(transfer.getSetting()) && this.getAmountType(transfer.getSetting()) != 0) {

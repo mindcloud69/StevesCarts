@@ -20,6 +20,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -49,7 +50,7 @@ import java.util.List;
 public abstract class ModuleBase {
 	private EntityMinecartModular cart;
 	@Nonnull
-	private ItemStack[] cargo;
+	private NonNullList<ItemStack> cargo;
 	private int offSetX;
 	private int offSetY;
 	private int guiDataOffset;
@@ -64,7 +65,7 @@ public abstract class ModuleBase {
 	public ModuleBase(final EntityMinecartModular cart) {
 		this.moduleButtonId = 0;
 		this.cart = cart;
-		this.cargo = new ItemStack[this.getInventorySize()];
+		this.cargo = NonNullList.withSize(this.getInventorySize(), ItemStack.EMPTY);
 	}
 
 	public void init() {
@@ -192,13 +193,13 @@ public abstract class ModuleBase {
 
 	@Nonnull
 	public ItemStack getStack(final int slot) {
-		return this.cargo[slot];
+		return this.cargo.get(slot);
 	}
 
 	public void setStack(final int slot,
 	                     @Nonnull
 		                     ItemStack item) {
-		this.cargo[slot] = item;
+		this.cargo.set(slot, item);
 	}
 
 	public void addStack(final int slotStart,

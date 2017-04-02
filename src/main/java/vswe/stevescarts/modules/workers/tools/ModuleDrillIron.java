@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.Localization;
 
+import javax.annotation.Nonnull;
+
 public class ModuleDrillIron extends ModuleDrill {
 	public ModuleDrillIron(final EntityMinecartModular cart) {
 		super(cart);
@@ -39,7 +41,7 @@ public class ModuleDrillIron extends ModuleDrill {
 	public int getRepairItemUnits(
 		@Nonnull
 			ItemStack item) {
-		if (item != null && item.getItem() == Items.IRON_INGOT) {
+		if (!item.isEmpty() && item.getItem() == Items.IRON_INGOT) {
 			return 20000;
 		}
 		return 0;

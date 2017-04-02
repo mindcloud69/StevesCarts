@@ -14,6 +14,7 @@ import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.data.ModuleDataHull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class InputChest extends SimpleInventoryEffect {
@@ -47,17 +48,17 @@ public class InputChest extends SimpleInventoryEffect {
 				for (int slotId = 0; slotId < upgrade.getUpgrade().getInventorySize(); ++slotId) {
 					@Nonnull
 					ItemStack itemstack = upgrade.getStackInSlot(slotId);
-					if (itemstack != null) {
+					if (!itemstack.isEmpty()) {
 						final ModuleData module = ModItems.modules.getModuleData(itemstack);
 						if (module != null) {
 							if (this.isValidForBluePrint(upgrade.getMaster(), module)) {
 								if (!this.willInvalidate(upgrade.getMaster(), module)) {
-									final int stackSize = itemstack.stackSize;
+									final int stackSize = itemstack.getCount();
 									TransferHandler.TransferItem(itemstack, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), Slot.class, SlotAssemblerFuel.class, 1);
-									if (itemstack.stackSize == 0) {
+									if (itemstack.getCount() == 0) {
 										upgrade.setInventorySlotContents(slotId, null);
 									}
-									if (stackSize != itemstack.stackSize) {
+									if (stackSize != itemstack.getCount()) {
 										break;
 									}
 								}

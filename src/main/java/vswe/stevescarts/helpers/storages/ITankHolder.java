@@ -5,7 +5,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.guis.GuiBase;
 
+import javax.annotation.Nonnull;
+
 public interface ITankHolder {
+	@Nonnull
 	ItemStack getInputContainer(final int p0);
 
 	void clearInputContainer(final int p0);

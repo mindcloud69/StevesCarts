@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.helpers.RecipeHelper;
 
+import javax.annotation.Nonnull;
+
 public class StorageBlock {
 	private String name;
 	@Nonnull

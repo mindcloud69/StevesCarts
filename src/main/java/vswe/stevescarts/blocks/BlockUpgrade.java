@@ -26,6 +26,8 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
+
 public class BlockUpgrade extends BlockContainerBase {
 
 	public static PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -135,18 +137,18 @@ public class BlockUpgrade extends BlockContainerBase {
 				for (int var8 = 0; var8 < upgrade.getSizeInventory(); ++var8) {
 					@Nonnull
 					ItemStack var9 = upgrade.getStackInSlotOnClosing(var8);
-					if (var9 != null) {
+					if (!var9.isEmpty()) {
 						final float var10 = world.rand.nextFloat() * 0.8f + 0.1f;
 						final float var11 = world.rand.nextFloat() * 0.8f + 0.1f;
 						final float var12 = world.rand.nextFloat() * 0.8f + 0.1f;
-						while (var9.stackSize > 0) {
+						while (var9.getCount() > 0) {
 							int var13 = world.rand.nextInt(21) + 10;
-							if (var13 > var9.stackSize) {
-								var13 = var9.stackSize;
+							if (var13 > var9.getCount()) {
+								var13 = var9.getCount();
 							}
 							@Nonnull
 							ItemStack itemStack = var9;
-							itemStack.stackSize -= var13;
+							itemStack.shrink(var13);
 							final EntityItem var14 = new EntityItem(world, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 							final float var15 = 0.05f;
 							var14.motionX = (float) world.rand.nextGaussian() * var15;
@@ -223,7 +225,7 @@ public class BlockUpgrade extends BlockContainerBase {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (player.isSneaking()) {
 			return false;
 		}

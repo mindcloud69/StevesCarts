@@ -1,6 +1,7 @@
 package vswe.stevescarts;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.IFuelHandler;
@@ -69,8 +70,8 @@ public class StevesCarts {
 		ModItems.postBlockInit(config);
 		AssemblerUpgrade.init();
 		this.initCart(0, EntityMinecartModular.class);
-		EntityRegistry.registerModEntity(EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
-		EntityRegistry.registerModEntity(EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "egg"), EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "cake"),EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
 		StevesCarts.proxy.preInit();
 		StevesCarts.proxy.initItemModels();
 		config.save();
@@ -121,7 +122,7 @@ public class StevesCarts {
 	}
 
 	private void initCart(final int ID, final Class<? extends EntityMinecartModular> cart) {
-		EntityRegistry.registerModEntity(cart, "Minecart.Vswe." + ID, ID, StevesCarts.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "cart." + ID), cart, "Minecart.Vswe." + ID, ID, StevesCarts.instance, 80, 3, true);
 	}
 
 	static {

@@ -17,6 +17,7 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.items.ModItems;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class EventHandler implements ForgeChunkManager.LoadingCallback {
@@ -70,8 +71,8 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 			for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
 				@Nonnull
 				ItemStack sItem = craftMatrix.getStackInSlot(i);
-				if (sItem != null && sItem.getItem().getContainerItem() != null) {
-					craftMatrix.setInventorySlotContents(i, null);
+				if (!sItem.isEmpty() && sItem.getItem().getContainerItem() != null) {
+					craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
 				}
 			}
 		}

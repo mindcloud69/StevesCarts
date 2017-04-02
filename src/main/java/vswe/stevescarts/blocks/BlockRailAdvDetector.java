@@ -25,6 +25,8 @@ import vswe.stevescarts.upgrades.BaseEffect;
 import vswe.stevescarts.upgrades.Disassemble;
 import vswe.stevescarts.upgrades.Transposer;
 
+import javax.annotation.Nonnull;
+
 public class BlockRailAdvDetector extends BlockRailDetector {
 
 	public BlockRailAdvDetector() {
@@ -198,10 +200,10 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		pos = pos.down();
 		IBlockState blockState = world.getBlockState(pos);
-		return blockState.getBlock() == ModBlocks.DETECTOR_UNIT.getBlock() && ModBlocks.DETECTOR_UNIT.getBlock().onBlockActivated(world, pos, blockState, player, hand, heldItem, side, hitX, hitY, hitZ);
+		return blockState.getBlock() == ModBlocks.DETECTOR_UNIT.getBlock() && ModBlocks.DETECTOR_UNIT.getBlock().onBlockActivated(world, pos, blockState, player, hand, side, hitX, hitY, hitZ);
 	}
 
 	public void refreshState(World world, BlockPos pos, IBlockState state, final boolean flag) {
