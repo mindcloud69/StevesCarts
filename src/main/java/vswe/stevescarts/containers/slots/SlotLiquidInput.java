@@ -2,7 +2,7 @@ package vswe.stevescarts.containers.slots;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.helpers.storages.SCTank;
 
 import javax.annotation.Nonnull;
@@ -29,6 +29,6 @@ public class SlotLiquidInput extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return (FluidContainerRegistry.isEmptyContainer(itemstack) && this.tank.getFluid() != null) || (FluidContainerRegistry.isFilledContainer(itemstack) && (this.tank.getFluid() == null || this.tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))));
+		return (FluidUtils.getFluidStackInContainer(itemstack) != null && this.tank.getFluid() != null) || (FluidUtils.getFluidStackInContainer(itemstack) != null && (this.tank.getFluid() == null || this.tank.getFluid().isFluidEqual(FluidUtils.getFluidStackInContainer(itemstack))));
 	}
 }

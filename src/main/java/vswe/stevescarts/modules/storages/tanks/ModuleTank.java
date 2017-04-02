@@ -169,12 +169,16 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 
 	@Override
 	public int fill(final FluidStack resource, final boolean doFill) {
-		return this.tank.fill(resource, doFill, this.getCart().world.isRemote);
+		//TODO 1.11
+//		return this.tank.fill(resource, doFill, this.getCart().world.isRemote);
+		return 0;
 	}
 
 	@Override
 	public FluidStack drain(final int maxDrain, final boolean doDrain) {
-		return this.tank.drain(maxDrain, doDrain, this.getCart().world.isRemote);
+//		return this.tank.drain(maxDrain, doDrain, this.getCart().world.isRemote);
+		//TODO 1.11
+		return null;
 	}
 
 	@Override

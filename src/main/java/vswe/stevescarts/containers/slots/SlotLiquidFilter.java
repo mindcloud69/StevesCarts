@@ -2,7 +2,7 @@ package vswe.stevescarts.containers.slots;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 
 import javax.annotation.Nonnull;
@@ -29,7 +29,7 @@ public class SlotLiquidFilter extends SlotBase implements ISpecialItemTransferVa
 	public static boolean isItemStackValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return FluidContainerRegistry.isFilledContainer(itemstack);
+		return FluidUtils.getFluidStackInContainer(itemstack) != null;
 	}
 
 	@Override

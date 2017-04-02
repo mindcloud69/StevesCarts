@@ -1,7 +1,7 @@
 package vswe.stevescarts.containers.slots;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.blocks.tileentities.TileEntityLiquid;
 import vswe.stevescarts.helpers.storages.SCTank;
 
@@ -28,9 +28,9 @@ public class SlotLiquidManagerInput extends SlotBase {
 		@Nonnull
 			ItemStack itemstack, final TileEntityLiquid manager, final int tankid) {
 		if (tankid < 0 || tankid >= 4) {
-			return FluidContainerRegistry.isContainer(itemstack);
+			return FluidUtils.getFluidStackInContainer(itemstack) != null;
 		}
 		final SCTank tank = manager.getTanks()[tankid];
-		return (FluidContainerRegistry.isEmptyContainer(itemstack) && tank.getFluid() != null) || (FluidContainerRegistry.isFilledContainer(itemstack) && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidContainerRegistry.getFluidForFilledItem(itemstack))));
+		return (FluidUtils.getFluidStackInContainer(itemstack) != null && tank.getFluid() != null) || (FluidUtils.getFluidStackInContainer(itemstack) != null && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidUtils.getFluidStackInContainer(itemstack))));
 	}
 }
