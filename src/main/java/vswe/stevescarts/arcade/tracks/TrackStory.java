@@ -11,20 +11,20 @@ public class TrackStory {
 
 	public TrackStory(final Localization.STORIES.THE_BEGINNING name) {
 		this.name = name;
-		this.maps = new ArrayList<>();
+		maps = new ArrayList<>();
 		TrackStory.stories.add(this);
 	}
 
 	public void add(final TrackLevel map) {
-		this.maps.add(map);
+		maps.add(map);
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public ArrayList<TrackLevel> getLevels() {
-		return this.maps;
+		return maps;
 	}
 
 	static {

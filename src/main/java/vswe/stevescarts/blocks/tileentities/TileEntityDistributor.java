@@ -51,24 +51,24 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	public ArrayList<DistributorSide> getSides() {
-		return this.sides;
+		return sides;
 	}
 
 	public TileEntityDistributor() {
-		this.dirty = true;
-		this.dirty2 = true;
-		(this.sides = new ArrayList<>()).add(new DistributorSide(0, Localization.GUI.DISTRIBUTOR.SIDE_ORANGE, EnumFacing.UP));
-		this.sides.add(new DistributorSide(1, Localization.GUI.DISTRIBUTOR.SIDE_PURPLE, EnumFacing.DOWN));
-		this.sides.add(new DistributorSide(2, Localization.GUI.DISTRIBUTOR.SIDE_YELLOW, EnumFacing.NORTH));
-		this.sides.add(new DistributorSide(3, Localization.GUI.DISTRIBUTOR.SIDE_GREEN, EnumFacing.WEST));
-		this.sides.add(new DistributorSide(4, Localization.GUI.DISTRIBUTOR.SIDE_BLUE, EnumFacing.SOUTH));
-		this.sides.add(new DistributorSide(5, Localization.GUI.DISTRIBUTOR.SIDE_RED, EnumFacing.EAST));
+		dirty = true;
+		dirty2 = true;
+		(sides = new ArrayList<>()).add(new DistributorSide(0, Localization.GUI.DISTRIBUTOR.SIDE_ORANGE, EnumFacing.UP));
+		sides.add(new DistributorSide(1, Localization.GUI.DISTRIBUTOR.SIDE_PURPLE, EnumFacing.DOWN));
+		sides.add(new DistributorSide(2, Localization.GUI.DISTRIBUTOR.SIDE_YELLOW, EnumFacing.NORTH));
+		sides.add(new DistributorSide(3, Localization.GUI.DISTRIBUTOR.SIDE_GREEN, EnumFacing.WEST));
+		sides.add(new DistributorSide(4, Localization.GUI.DISTRIBUTOR.SIDE_BLUE, EnumFacing.SOUTH));
+		sides.add(new DistributorSide(5, Localization.GUI.DISTRIBUTOR.SIDE_RED, EnumFacing.EAST));
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		for (final DistributorSide side : this.getSides()) {
+		for (final DistributorSide side : getSides()) {
 			side.setData(nbttagcompound.getInteger("Side" + side.getId()));
 		}
 	}
@@ -76,7 +76,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		for (final DistributorSide side : this.getSides()) {
+		for (final DistributorSide side : getSides()) {
 			nbttagcompound.setInteger("Side" + side.getId(), side.getData());
 		}
 		return nbttagcompound;
@@ -84,16 +84,16 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	@Override
 	public void updateEntity() {
-		this.dirty = true;
-		this.dirty2 = true;
+		dirty = true;
+		dirty2 = true;
 	}
 
 	protected void sendPacket(final int id) {
-		this.sendPacket(id, new byte[0]);
+		sendPacket(id, new byte[0]);
 	}
 
 	protected void sendPacket(final int id, final byte data) {
-		this.sendPacket(id, new byte[] { data });
+		sendPacket(id, new byte[] { data });
 	}
 
 	public void sendPacket(final int id, final byte[] data) {
@@ -105,11 +105,11 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (id == 0 || id == 1) {
 			final byte settingId = data[0];
 			final byte sideId = data[1];
-			if (settingId >= 0 && settingId < DistributorSetting.settings.size() && sideId >= 0 && sideId < this.getSides().size()) {
+			if (settingId >= 0 && settingId < DistributorSetting.settings.size() && sideId >= 0 && sideId < getSides().size()) {
 				if (id == 0) {
-					this.getSides().get(sideId).set(settingId);
+					getSides().get(sideId).set(settingId);
 				} else {
-					this.getSides().get(sideId).reset(settingId);
+					getSides().get(sideId).reset(settingId);
 				}
 			}
 		}
@@ -122,14 +122,14 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	@Override
 	public void checkGuiData(final Container con, final IContainerListener crafting) {
 		final ContainerDistributor condist = (ContainerDistributor) con;
-		for (int i = 0; i < this.getSides().size(); ++i) {
-			final DistributorSide side = this.getSides().get(i);
+		for (int i = 0; i < getSides().size(); ++i) {
+			final DistributorSide side = getSides().get(i);
 			if (side.getLowShortData() != condist.cachedValues.get(i * 2)) {
-				this.updateGuiData(con, crafting, i * 2, side.getLowShortData());
+				updateGuiData(con, crafting, i * 2, side.getLowShortData());
 				condist.cachedValues.set(i * 2, side.getLowShortData());
 			}
 			if (side.getHighShortData() != condist.cachedValues.get(i * 2 + 1)) {
-				this.updateGuiData(con, crafting, i * 2 + 1, side.getHighShortData());
+				updateGuiData(con, crafting, i * 2 + 1, side.getHighShortData());
 				condist.cachedValues.set(i * 2 + 1, side.getHighShortData());
 			}
 		}
@@ -139,7 +139,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public void receiveGuiData(final int id, final short data) {
 		final int sideId = id / 2;
 		final boolean isHigh = id % 2 == 1;
-		final DistributorSide side = this.getSides().get(sideId);
+		final DistributorSide side = getSides().get(sideId);
 		if (isHigh) {
 			side.setHighShortData(data);
 		} else {
@@ -148,19 +148,19 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	public TileEntityManager[] getInventories() {
-		if (this.dirty) {
-			this.generateInventories();
-			this.dirty = false;
+		if (dirty) {
+			generateInventories();
+			dirty = false;
 		}
-		return this.inventories;
+		return inventories;
 	}
 
 	private void generateInventories() {
-		final TileEntityManager bot = this.generateManager(-1);
-		final TileEntityManager top = this.generateManager(1);
-		this.hasTop = (top != null);
-		this.hasBot = (bot != null);
-		this.inventories = this.populateManagers(top, bot, this.hasTop, this.hasBot);
+		final TileEntityManager bot = generateManager(-1);
+		final TileEntityManager top = generateManager(1);
+		hasTop = (top != null);
+		hasBot = (bot != null);
+		inventories = populateManagers(top, bot, hasTop, hasBot);
 	}
 
 	private TileEntityManager[] populateManagers(final TileEntityManager topElement, final TileEntityManager botElement, final boolean hasTopElement, final boolean hasBotElement) {
@@ -177,7 +177,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	private TileEntityManager generateManager(final int y) {
-		final TileEntity TE = this.world.getTileEntity(this.pos.up(y));
+		final TileEntity TE = world.getTileEntity(pos.up(y));
 		if (TE != null && TE instanceof TileEntityManager) {
 			return (TileEntityManager) TE;
 		}
@@ -186,7 +186,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	@Override
 	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
-		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+		return world.getTileEntity(pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
 
 	private int translateSlotId(final int slot) {
@@ -194,9 +194,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	private TileEntityManager getManagerFromSlotId(final int slot) {
-		final TileEntityManager[] invs = this.getInventories();
+		final TileEntityManager[] invs = getInventories();
 		int id = slot / 60;
-		if (!this.hasTop || !this.hasBot) {
+		if (!hasTop || !hasBot) {
 			id = 0;
 		}
 		if (id < 0 || id >= invs.length) {
@@ -218,9 +218,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(final int slot) {
-		final TileEntityManager manager = this.getManagerFromSlotId(slot);
+		final TileEntityManager manager = getManagerFromSlotId(slot);
 		if (manager != null) {
-			return manager.getStackInSlot(this.translateSlotId(slot));
+			return manager.getStackInSlot(translateSlotId(slot));
 		}
 		return null;
 	}
@@ -228,9 +228,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	@Override
 	@Nonnull
 	public ItemStack decrStackSize(final int slot, final int count) {
-		final TileEntityManager manager = this.getManagerFromSlotId(slot);
+		final TileEntityManager manager = getManagerFromSlotId(slot);
 		if (manager != null) {
-			return manager.decrStackSize(this.translateSlotId(slot), count);
+			return manager.decrStackSize(translateSlotId(slot), count);
 		}
 		return null;
 	}
@@ -239,9 +239,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	public void setInventorySlotContents(final int slot,
 	                                     @Nonnull
 		                                     ItemStack itemstack) {
-		final TileEntityManager manager = this.getManagerFromSlotId(slot);
+		final TileEntityManager manager = getManagerFromSlotId(slot);
 		if (manager != null) {
-			manager.setInventorySlotContents(this.translateSlotId(slot), itemstack);
+			manager.setInventorySlotContents(translateSlotId(slot), itemstack);
 		}
 	}
 
@@ -271,9 +271,9 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	@Override
 	@Nonnull
 	public ItemStack removeStackFromSlot(final int slot) {
-		final TileEntityManager manager = this.getManagerFromSlotId(slot);
+		final TileEntityManager manager = getManagerFromSlotId(slot);
 		if (manager != null) {
-			return manager.getStackInSlotOnClosing(this.translateSlotId(slot));
+			return manager.getStackInSlotOnClosing(translateSlotId(slot));
 		}
 		return null;
 	}
@@ -314,7 +314,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 			ret.amount = 0;
 		}
 		final IFluidTank[] arr$;
-		final IFluidTank[] tanks = arr$ = this.getTanks(from);
+		final IFluidTank[] tanks = arr$ = getTanks(from);
 		for (final IFluidTank tank : arr$) {
 			FluidStack temp = null;
 			temp = tank.drain(maxDrain, doDrain);
@@ -338,18 +338,18 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	private SCTank[] getTanks(final EnumFacing direction) {
-		final TileEntityManager[] invs = this.getInventories();
+		final TileEntityManager[] invs = getInventories();
 		if (invs.length > 0) {
-			for (final DistributorSide side : this.getSides()) {
+			for (final DistributorSide side : getSides()) {
 				if (side.getSide() == direction) {
 					final ArrayList<IFluidTank> tanks = new ArrayList<>();
-					if (this.hasTop && this.hasBot) {
-						this.populateTanks(tanks, side, invs[0], false);
-						this.populateTanks(tanks, side, invs[1], true);
-					} else if (this.hasTop) {
-						this.populateTanks(tanks, side, invs[0], true);
-					} else if (this.hasBot) {
-						this.populateTanks(tanks, side, invs[0], false);
+					if (hasTop && hasBot) {
+						populateTanks(tanks, side, invs[0], false);
+						populateTanks(tanks, side, invs[1], true);
+					} else if (hasTop) {
+						populateTanks(tanks, side, invs[0], true);
+					} else if (hasBot) {
+						populateTanks(tanks, side, invs[0], false);
 					}
 					return tanks.toArray(new SCTank[tanks.size()]);
 				}
@@ -363,7 +363,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 			final TileEntityLiquid fluid = (TileEntityLiquid) manager;
 			final SCTank[] managerTanks = fluid.getTanks();
 			for (int i = 0; i < 4; ++i) {
-				if (this.isChunkValid(side, manager, i, top) && !tanks.contains(managerTanks[i])) {
+				if (isChunkValid(side, manager, i, top) && !tanks.contains(managerTanks[i])) {
 					tanks.add(managerTanks[i]);
 				}
 			}
@@ -373,7 +373,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	private void populateSlots(final ArrayList<Integer> slotchunks, final DistributorSide side, final TileEntityManager manager, final boolean top) {
 		if (manager != null && manager instanceof TileEntityCargo) {
 			for (int i = 0; i < 4; ++i) {
-				if (this.isChunkValid(side, manager, i, top)) {
+				if (isChunkValid(side, manager, i, top)) {
 					final int chunkid = i + (top ? 4 : 0);
 					if (!slotchunks.contains(chunkid)) {
 						slotchunks.add(chunkid);
@@ -426,18 +426,18 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
-		final TileEntityManager[] invs = this.getInventories();
+		final TileEntityManager[] invs = getInventories();
 		if (invs.length > 0) {
-			for (final DistributorSide otherSide : this.getSides()) {
+			for (final DistributorSide otherSide : getSides()) {
 				if (otherSide.getFacing() == side) {
 					final ArrayList<Integer> slotchunks = new ArrayList<>();
-					if (this.hasTop && this.hasBot) {
-						this.populateSlots(slotchunks, otherSide, invs[0], false);
-						this.populateSlots(slotchunks, otherSide, invs[1], true);
-					} else if (this.hasTop) {
-						this.populateSlots(slotchunks, otherSide, invs[0], true);
-					} else if (this.hasBot) {
-						this.populateSlots(slotchunks, otherSide, invs[0], false);
+					if (hasTop && hasBot) {
+						populateSlots(slotchunks, otherSide, invs[0], false);
+						populateSlots(slotchunks, otherSide, invs[1], true);
+					} else if (hasTop) {
+						populateSlots(slotchunks, otherSide, invs[0], true);
+					} else if (hasBot) {
+						populateSlots(slotchunks, otherSide, invs[0], false);
 					}
 					final int[] ret = new int[slotchunks.size() * 15];
 					int id = 0;
@@ -491,7 +491,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 			return (T) new SidedInvWrapper(this, facing);
 		}
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return (T) this.getTanks(facing);
+			return (T) getTanks(facing);
 		}
 		return super.getCapability(capability, facing);
 	}

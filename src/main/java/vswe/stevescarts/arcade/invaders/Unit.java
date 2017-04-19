@@ -13,24 +13,24 @@ public abstract class Unit {
 		this.x = x;
 		this.y = y;
 		this.game = game;
-		this.health = 1;
+		health = 1;
 	}
 
 	public abstract void draw(final GuiMinecart p0);
 
 	public UPDATE_RESULT update() {
-		if (!this.dead) {
-			this.hitCalculation();
+		if (!dead) {
+			hitCalculation();
 		}
-		return this.dead ? UPDATE_RESULT.DEAD : UPDATE_RESULT.DONE;
+		return dead ? UPDATE_RESULT.DEAD : UPDATE_RESULT.DONE;
 	}
 
 	protected void hitCalculation() {
-		for (final Projectile projectile : this.game.projectiles) {
-			if (!projectile.dead && (this.isObstacle() || projectile.playerProjectile != this.isPlayer()) && this.collidesWith(projectile)) {
-				--this.health;
-				if (this.health == 0) {
-					this.dead = true;
+		for (final Projectile projectile : game.projectiles) {
+			if (!projectile.dead && (isObstacle() || projectile.playerProjectile != isPlayer()) && collidesWith(projectile)) {
+				--health;
+				if (health == 0) {
+					dead = true;
 				}
 				projectile.dead = true;
 			}
@@ -38,7 +38,7 @@ public abstract class Unit {
 	}
 
 	protected boolean collidesWith(final Unit unit) {
-		return this.isUnitAinUnitB(this, unit) || this.isUnitAinUnitB(unit, this);
+		return isUnitAinUnitB(this, unit) || isUnitAinUnitB(unit, this);
 	}
 
 	private boolean isUnitAinUnitB(final Unit a, final Unit b) {

@@ -18,7 +18,7 @@ public class Track {
 	public Track(final int x, final int y, final TrackOrientation orientation) {
 		this.x = x;
 		this.y = y;
-		this.setOrientation(orientation);
+		setOrientation(orientation);
 	}
 
 	private void setV(final int v) {
@@ -31,16 +31,16 @@ public class Track {
 
 	public void setOrientation(final TrackOrientation orientation) {
 		this.orientation = orientation;
-		this.setV(orientation.getV());
-		this.setRotation(orientation.getRotation());
+		setV(orientation.getV());
+		setRotation(orientation.getRotation());
 	}
 
 	public int getX() {
-		return this.x;
+		return x;
 	}
 
 	public int getY() {
-		return this.y;
+		return y;
 	}
 
 	public int getU() {
@@ -48,44 +48,44 @@ public class Track {
 	}
 
 	public int getV() {
-		return this.v;
+		return v;
 	}
 
 	public GuiBase.RENDER_ROTATION getRotation() {
-		return this.rotation;
+		return rotation;
 	}
 
 	public TrackOrientation getOrientation() {
-		return this.orientation;
+		return orientation;
 	}
 
 	public void onClick(final ArcadeTracks game) {
-		this.flip();
+		flip();
 	}
 
 	public void onEditorClick(final ArcadeTracks game) {
-		if (this.orientation.getOpposite() != null && game.getEditorDetectorTrack() != null) {
-			game.getEditorDetectorTrack().addTarget(this.getX(), this.getY());
+		if (orientation.getOpposite() != null && game.getEditorDetectorTrack() != null) {
+			game.getEditorDetectorTrack().addTarget(getX(), getY());
 		}
 	}
 
 	public void flip() {
-		if (this.orientation.getOpposite() != null) {
+		if (orientation.getOpposite() != null) {
 			ArcadeGame.playSound("gearswitch", 1.0f, 1.0f);
-			this.setOrientation(this.orientation.getOpposite());
+			setOrientation(orientation.getOpposite());
 		}
 	}
 
 	public void saveBackup() {
-		this.orientationBackup = this.orientation;
+		orientationBackup = orientation;
 	}
 
 	public void loadBackup() {
-		this.setOrientation(this.orientationBackup);
+		setOrientation(orientationBackup);
 	}
 
 	public Track copy() {
-		return new Track(this.x, this.y, this.orientation);
+		return new Track(x, y, orientation);
 	}
 
 	public void travel(final ArcadeTracks game, final Cart cart) {

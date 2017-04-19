@@ -11,14 +11,14 @@ public class WorkEfficiency extends BaseEffect {
 
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.EFFICIENCY.translate(((this.getPercentage() >= 0) ? "+" : "") + this.getPercentage());
+		return Localization.UPGRADES.EFFICIENCY.translate(((getPercentage() >= 0) ? "+" : "") + getPercentage());
 	}
 
 	private int getPercentage() {
-		return (int) (this.efficiency * 100.0f);
+		return (int) (efficiency * 100.0f);
 	}
 
 	public float getEfficiency() {
-		return this.efficiency;
+		return efficiency;
 	}
 }
