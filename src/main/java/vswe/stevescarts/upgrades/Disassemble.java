@@ -15,7 +15,6 @@ import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 
 public class Disassemble extends InventoryEffect {
 	@Override
@@ -175,7 +174,7 @@ public class Disassemble extends InventoryEffect {
 			return 0;
 		}
 		for (int i = 0; i < upgrade.getMaster().getSizeInventory() - upgrade.getMaster().nonModularSlots(); ++i) {
-			if (!upgrade.getMaster().getStackInSlot(i) .isEmpty() && upgrade.getMaster().getStackInSlot(i).getCount() <= 0) {
+			if (!upgrade.getMaster().getStackInSlot(i).isEmpty() && upgrade.getMaster().getStackInSlot(i).getCount() <= 0) {
 				return 1;
 			}
 		}

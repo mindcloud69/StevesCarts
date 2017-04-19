@@ -48,7 +48,8 @@ public class ItemCarts extends ItemMinecart {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		@Nonnull
+		ItemStack stack = player.getHeldItem(hand);
 		CartVersion.updateItemStack(stack);
 		if (!world.isRemote) {
 			if (BlockRailBase.isRailBlock(world, pos)) {

@@ -15,9 +15,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.blocks.BlockUpgrade;
@@ -438,7 +436,6 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		}
 		return this.getMaster() != null && this.getMaster().canExtractItem(slot, item, side);
 	}
-
 
 	@Override
 	@Nonnull

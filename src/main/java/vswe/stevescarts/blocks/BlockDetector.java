@@ -19,9 +19,6 @@ import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.helpers.DetectorType;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class BlockDetector extends BlockContainerBase {
 	public BlockDetector() {
 		super(Material.CIRCUITS);

@@ -17,7 +17,7 @@ public class ModulePotion extends ModuleProjectile {
 	public boolean isValidProjectile(
 		@Nonnull
 			ItemStack item) {
-				return item.getItem() == Items.SPLASH_POTION;
+		return item.getItem() == Items.SPLASH_POTION;
 	}
 
 	@Override

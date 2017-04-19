@@ -11,14 +11,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import reborncore.common.util.Tank;
 import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDistributor;
@@ -288,25 +287,25 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return false;
 	}
 
-//	@Override
-//	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
-//		final IFluidTank[] tanks = this.getTanks(from);
-//		int amount = 0;
-//		for (final IFluidTank tank : tanks) {
-//			amount += tank.fill(resource, doFill);
-//		}
-//		return amount;
-//	}
-//
-//	@Override
-//	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
-//		return this.drain(from, null, maxDrain, doDrain);
-//	}
-//
-//	@Override
-//	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
-//		return this.drain(from, resource, (resource == null) ? 0 : resource.amount, doDrain);
-//	}
+	//	@Override
+	//	public int fill(final EnumFacing from, final FluidStack resource, final boolean doFill) {
+	//		final IFluidTank[] tanks = this.getTanks(from);
+	//		int amount = 0;
+	//		for (final IFluidTank tank : tanks) {
+	//			amount += tank.fill(resource, doFill);
+	//		}
+	//		return amount;
+	//	}
+	//
+	//	@Override
+	//	public FluidStack drain(final EnumFacing from, final int maxDrain, final boolean doDrain) {
+	//		return this.drain(from, null, maxDrain, doDrain);
+	//	}
+	//
+	//	@Override
+	//	public FluidStack drain(final EnumFacing from, final FluidStack resource, final boolean doDrain) {
+	//		return this.drain(from, resource, (resource == null) ? 0 : resource.amount, doDrain);
+	//	}
 
 	private FluidStack drain(final EnumFacing from, final FluidStack resource, int maxDrain, final boolean doDrain) {
 		FluidStack ret = resource;
@@ -405,25 +404,25 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return true;
 	}
 
-//	@Override
-//	public boolean canFill(final EnumFacing from, final Fluid fluid) {
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
-//		return true;
-//	}
-//
-//	@Override
-//	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
-//		final IFluidTank[] tanks = this.getTanks(from);
-//		final FluidTankInfo[] infos = new FluidTankInfo[tanks.length];
-//		for (int i = 0; i < infos.length; ++i) {
-//			infos[i] = new FluidTankInfo(tanks[i].getFluid(), tanks[i].getCapacity());
-//		}
-//		return infos;
-//	}
+	//	@Override
+	//	public boolean canFill(final EnumFacing from, final Fluid fluid) {
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public boolean canDrain(final EnumFacing from, final Fluid fluid) {
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public FluidTankInfo[] getTankInfo(final EnumFacing from) {
+	//		final IFluidTank[] tanks = this.getTanks(from);
+	//		final FluidTankInfo[] infos = new FluidTankInfo[tanks.length];
+	//		for (int i = 0; i < infos.length; ++i) {
+	//			infos[i] = new FluidTankInfo(tanks[i].getFluid(), tanks[i].getCapacity());
+	//		}
+	//		return infos;
+	//	}
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {

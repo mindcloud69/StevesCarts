@@ -153,7 +153,8 @@ public class ModuleFirework extends ModuleBase {
 	@Nonnull
 	private ItemStack getCharge() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			@Nonnull ItemStack item = this.getStack(i);
+			@Nonnull
+			ItemStack item = this.getStack(i);
 			if (!item.isEmpty() && item.getItem() == Items.FIREWORK_CHARGE) {
 				@Nonnull
 				ItemStack charge = item.copy();

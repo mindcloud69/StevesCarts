@@ -941,7 +941,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				slotCount += module2.getInventorySize();
 			}
 			if (newSlot != -1) {
-				@Nonnull ItemStack lastitem = ItemStack.EMPTY;
+				@Nonnull
+				ItemStack lastitem = ItemStack.EMPTY;
 				for (int j = newSlot; j < this.getSizeInventory(); ++j) {
 					@Nonnull
 					ItemStack thisitem = this.getStackInSlot(j);

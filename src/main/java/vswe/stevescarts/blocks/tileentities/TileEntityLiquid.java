@@ -7,13 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerLiquid;
@@ -393,7 +391,6 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 		                              ItemStack item, final int side) {
 		return side == 0 && this.isOutput(slot);
 	}
-
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

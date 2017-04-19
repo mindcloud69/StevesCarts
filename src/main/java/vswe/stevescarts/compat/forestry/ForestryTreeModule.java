@@ -42,12 +42,18 @@ public class ForestryTreeModule implements ITreeModule {
 	}
 
 	@Override
-	public boolean isSapling(@Nonnull ItemStack itemStack) {
+	public boolean isSapling(
+		@Nonnull
+			ItemStack itemStack) {
 		return itemStack.getItem() == sapling;
 	}
 
 	@Override
-	public boolean plantSapling(World world, BlockPos pos, @Nonnull ItemStack stack, FakePlayer fakePlayer) {
+	public boolean plantSapling(World world,
+	                            BlockPos pos,
+	                            @Nonnull
+		                            ItemStack stack,
+	                            FakePlayer fakePlayer) {
 		if (stack.getItem() == sapling && world.isAirBlock(pos.up())) {
 			ITree tree = treeRoot.getMember(stack);
 			if (tree != null && tree.canStay(world, pos)) {

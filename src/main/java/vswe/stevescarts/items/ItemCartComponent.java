@@ -173,7 +173,9 @@ public class ItemCartComponent extends Item implements TexturedItem {
 
 	@Override
 	@Nonnull
-	public ItemStack onItemUseFinish(@Nonnull ItemStack item, World world, EntityLivingBase entity) {
+	public ItemStack onItemUseFinish(
+		@Nonnull
+			ItemStack item, World world, EntityLivingBase entity) {
 		if (entity instanceof EntityPlayer && this.isEdibleEgg(item)) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (item.getItemDamage() == 66) {
@@ -218,7 +220,8 @@ public class ItemCartComponent extends Item implements TexturedItem {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		@Nonnull ItemStack item = player.getHeldItem(hand);
+		@Nonnull
+		ItemStack item = player.getHeldItem(hand);
 		if (this.isEdibleEgg(item)) {
 			player.setActiveHand(hand);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, item);

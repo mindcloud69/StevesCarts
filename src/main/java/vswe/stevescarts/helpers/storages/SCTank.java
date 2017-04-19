@@ -76,7 +76,6 @@ public class SCTank extends FluidTank {
 		return ((color & 255 << id * 8) >> id * 8) / 255.0f;
 	}
 
-
 	@Deprecated
 	@SideOnly(Side.CLIENT)
 	public void drawFluid(final GuiBase gui, final int startX, final int startY) {

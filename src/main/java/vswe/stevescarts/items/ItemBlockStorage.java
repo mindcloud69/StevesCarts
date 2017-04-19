@@ -13,7 +13,6 @@ import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.storages.StorageBlock;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class ItemBlockStorage extends ItemBlock {
 	public static StorageBlock[] blocks;

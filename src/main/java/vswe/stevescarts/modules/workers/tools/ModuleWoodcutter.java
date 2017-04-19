@@ -169,7 +169,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			return false;
 		}
 		int saplingSlotId = -1;
-		@Nonnull ItemStack sapling = ItemStack.EMPTY;
+		@Nonnull
+		ItemStack sapling = ItemStack.EMPTY;
 		for (int i = 0; i < this.getInventorySize(); ++i) {
 			final SlotBase slot = this.getSlots().get(i);
 			if (slot.containsValidItem()) {

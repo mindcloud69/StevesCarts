@@ -71,7 +71,7 @@ public class StevesCarts {
 		AssemblerUpgrade.init();
 		this.initCart(0, EntityMinecartModular.class);
 		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "egg"), EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "cake"),EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "cake"), EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
 		StevesCarts.proxy.preInit();
 		StevesCarts.proxy.initItemModels();
 		config.save();
