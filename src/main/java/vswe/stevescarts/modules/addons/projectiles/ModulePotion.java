@@ -2,6 +2,7 @@ package vswe.stevescarts.modules.addons.projectiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 
@@ -16,8 +17,7 @@ public class ModulePotion extends ModuleProjectile {
 	public boolean isValidProjectile(
 		@Nonnull
 			ItemStack item) {
-		//		return item.getItem() == Items.POTIONITEM && ItemPotion.isSplash(item.getItemDamage());
-		return false; //TODO
+				return item.getItem() == Items.SPLASH_POTION;
 	}
 
 	@Override

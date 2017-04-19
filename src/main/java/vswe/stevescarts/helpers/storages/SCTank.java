@@ -1,14 +1,10 @@
 package vswe.stevescarts.helpers.storages;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.guis.GuiBase;
-import vswe.stevescarts.helpers.IconData;
 import vswe.stevescarts.helpers.Localization;
 
 import javax.annotation.Nonnull;
@@ -37,53 +33,13 @@ public class SCTank extends FluidTank {
 		this.fluid = fluid;
 	}
 
-	//TODO 1.11
 	public void containerTransfer() {
-//		@Nonnull
-//		ItemStack item = this.owner.getInputContainer(this.tankid);
-//		if (!item.isEmpty()) {
-//			if (FluidContainerRegistry.isFilledContainer(item)) {
-//				final FluidStack fluidContent = FluidContainerRegistry.getFluidForFilledItem(item);
-//				if (fluidContent != null) {
-//					final int fill = this.fill(fluidContent, false, false);
-//					if (fill == fluidContent.amount) {
-//						final Item container = item.getItem().getContainerItem();
-//						ItemStack containerStack = null;
-//						if (container != null) {
-//							containerStack = new ItemStack(container, 1);
-//							this.owner.addToOutputContainer(this.tankid, containerStack);
-//						}
-//						if (containerStack == null || containerStack.getCount() == 0) {
-//							@Nonnull
-//							ItemStack itemStack = item;
-//							itemStack.shrink(1);
-//							if (item.getCount() <= 0) {
-//								this.owner.clearInputContainer(this.tankid);
-//							}
-//							this.fill(fluidContent, true, false);
-//						}
-//					}
-//				}
-//			} else if (FluidContainerRegistry.isEmptyContainer(item)) {
-//				@Nonnull
-//				ItemStack full = FluidContainerRegistry.fillFluidContainer(this.fluid, item);
-//				if (full != null) {
-//					final FluidStack fluidContent2 = FluidContainerRegistry.getFluidForFilledItem(full);
-//					if (fluidContent2 != null) {
-//						this.owner.addToOutputContainer(this.tankid, full);
-//						if (full.getCount() == 0) {
-//							@Nonnull
-//							ItemStack itemStack2 = item;
-//							itemStack2.shrink(1);
-//							if (item.getCount() <= 0) {
-//								this.owner.clearInputContainer(this.tankid);
-//							}
-//							this.drain(fluidContent2.amount, true, false);
-//						}
-//					}
-//				}
-//			}
-//		}
+		@Nonnull
+		ItemStack item = this.owner.getInputContainer(this.tankid);
+		if (!item.isEmpty()) {
+			FluidUtil.tryFillContainer(item, this, 1000, null, true);
+			FluidUtil.tryEmptyContainer(item, this, 1000, null, true);
+		}
 	}
 
 	public void setLocked(final boolean val) {
