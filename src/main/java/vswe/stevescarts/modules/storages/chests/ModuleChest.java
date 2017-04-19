@@ -135,7 +135,7 @@ public abstract class ModuleChest extends ModuleStorage {
 
 	public boolean isCompletelyFilled() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (this.getStack(i) == null) {
+			if (this.getStack(i).isEmpty()) {
 				return false;
 			}
 		}
@@ -144,7 +144,7 @@ public abstract class ModuleChest extends ModuleStorage {
 
 	public boolean isCompletelyEmpty() {
 		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (this.getStack(i) != null) {
+			if (!this.getStack(i).isEmpty()) {
 				return false;
 			}
 		}

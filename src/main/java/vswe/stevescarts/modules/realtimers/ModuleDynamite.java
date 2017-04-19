@@ -1,6 +1,7 @@
 package vswe.stevescarts.modules.realtimers;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -129,7 +130,7 @@ public class ModuleDynamite extends ModuleBase {
 			this.setFuse(1);
 		} else {
 			final float f = this.explosionSize();
-			this.setStack(0, null);
+			this.setStack(0, ItemStack.EMPTY);
 			this.getCart().world.createExplosion(null, this.getCart().posX, this.getCart().posY, this.getCart().posZ, f, true);
 		}
 	}
