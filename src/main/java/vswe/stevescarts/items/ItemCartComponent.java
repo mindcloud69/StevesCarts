@@ -32,9 +32,9 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	}
 
 	public ItemCartComponent() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(StevesCarts.tabsSC2Components);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(StevesCarts.tabsSC2Components);
 		ItemModelManager.registerItem(this);
 	}
 
@@ -45,10 +45,10 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public String getName(
 		@Nonnull
 			ItemStack par1ItemStack) {
-		if (par1ItemStack.isEmpty() || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
+		if (par1ItemStack.isEmpty() || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || getName(par1ItemStack.getItemDamage()) == null) {
 			return "Unknown SC2 Component";
 		}
-		return this.getName(par1ItemStack.getItemDamage());
+		return getName(par1ItemStack.getItemDamage());
 	}
 
 	//	@SideOnly(Side.CLIENT)
@@ -63,7 +63,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 		if (getName(i) == null) {
 			return null;
 		}
-		return this.getName(i).replace(":", "").replace(" ", "_").toLowerCase();
+		return getName(i).replace(":", "").replace(" ", "_").toLowerCase();
 	}
 	//
 	//	@SideOnly(Side.CLIENT)
@@ -87,10 +87,10 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public String getUnlocalizedName(
 		@Nonnull
 			ItemStack item) {
-		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || this.getName(item.getItemDamage()) == null) {
-			return this.getUnlocalizedName();
+		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || getName(item.getItemDamage()) == null) {
+			return getUnlocalizedName();
 		}
-		return "item.SC2:" + this.getRawName(item.getItemDamage());
+		return "item.SC2:" + getRawName(item.getItemDamage());
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public void addInformation(
 		@Nonnull
 			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List<String> par3List, final boolean par4) {
-		if (par1ItemStack.isEmpty() || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || this.getName(par1ItemStack.getItemDamage()) == null) {
+		if (par1ItemStack.isEmpty() || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || getName(par1ItemStack.getItemDamage()) == null) {
 			if (!par1ItemStack.isEmpty() && par1ItemStack.getItem() instanceof ItemCartComponent) {
 				par3List.add("Component id " + par1ItemStack.getItemDamage());
 			} else {
@@ -118,7 +118,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 		for (int i = 0; i < size(); ++i) {
 			@Nonnull
 			ItemStack iStack = new ItemStack(par1, 1, i);
-			if (this.isValid(iStack)) {
+			if (isValid(iStack)) {
 				par3List.add(iStack);
 			}
 		}
@@ -127,7 +127,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public boolean isValid(
 		@Nonnull
 			ItemStack item) {
-		if (item.isEmpty() || !(item.getItem() instanceof ItemCartComponent) || this.getName(item.getItemDamage()) == null) {
+		if (item.isEmpty() || !(item.getItem() instanceof ItemCartComponent) || getName(item.getItemDamage()) == null) {
 			return false;
 		}
 		if (item.getItemDamage() >= 50 && item.getItemDamage() < 58) {
@@ -176,7 +176,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public ItemStack onItemUseFinish(
 		@Nonnull
 			ItemStack item, World world, EntityLivingBase entity) {
-		if (entity instanceof EntityPlayer && this.isEdibleEgg(item)) {
+		if (entity instanceof EntityPlayer && isEdibleEgg(item)) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (item.getItemDamage() == 66) {
 				world.createExplosion(null, entity.posX, entity.posY, entity.posZ, 0.1f, false);
@@ -208,25 +208,25 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public int getMaxItemUseDuration(
 		@Nonnull
 			ItemStack item) {
-		return this.isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
+		return isEdibleEgg(item) ? 32 : super.getMaxItemUseDuration(item);
 	}
 
 	@Override
 	public EnumAction getItemUseAction(
 		@Nonnull
 			ItemStack item) {
-		return this.isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
+		return isEdibleEgg(item) ? EnumAction.EAT : super.getItemUseAction(item);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		@Nonnull
 		ItemStack item = player.getHeldItem(hand);
-		if (this.isEdibleEgg(item)) {
+		if (isEdibleEgg(item)) {
 			player.setActiveHand(hand);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, item);
 		}
-		if (this.isThrowableEgg(item)) {
+		if (isThrowableEgg(item)) {
 			if (!player.capabilities.isCreativeMode) {
 				item.shrink(1);
 			}

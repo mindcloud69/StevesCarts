@@ -18,6 +18,6 @@ public class SlotArrow extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return this.shooter.isValidProjectileItem(itemstack);
+		return shooter.isValidProjectileItem(itemstack);
 	}
 }

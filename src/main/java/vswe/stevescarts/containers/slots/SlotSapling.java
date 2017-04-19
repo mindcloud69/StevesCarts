@@ -18,6 +18,6 @@ public class SlotSapling extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return this.module.isSaplingHandler(itemstack);
+		return module.isSaplingHandler(itemstack);
 	}
 }

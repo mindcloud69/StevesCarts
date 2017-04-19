@@ -21,28 +21,28 @@ public class ModuleFlowerRemover extends ModuleBase {
 
 	public ModuleFlowerRemover(final EntityMinecartModular cart) {
 		super(cart);
-		this.bladespeed = 0.0f;
+		bladespeed = 0.0f;
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().world.isRemote) {
-			this.bladeangle += this.getBladeSpindSpeed();
-			if (this.getCart().hasFuel()) {
-				this.bladespeed = Math.min(1.0f, this.bladespeed + 0.005f);
+		if (getCart().world.isRemote) {
+			bladeangle += getBladeSpindSpeed();
+			if (getCart().hasFuel()) {
+				bladespeed = Math.min(1.0f, bladespeed + 0.005f);
 			} else {
-				this.bladespeed = Math.max(0.0f, this.bladespeed - 0.005f);
+				bladespeed = Math.max(0.0f, bladespeed - 0.005f);
 			}
 			return;
 		}
-		if (this.getCart().hasFuel()) {
-			if (this.tick >= this.getInterval()) {
-				this.tick = 0;
-				this.mownTheLawn();
-				this.shearEntities();
+		if (getCart().hasFuel()) {
+			if (tick >= getInterval()) {
+				tick = 0;
+				mownTheLawn();
+				shearEntities();
 			} else {
-				++this.tick;
+				++tick;
 			}
 		}
 	}
@@ -61,15 +61,15 @@ public class ModuleFlowerRemover extends ModuleBase {
 
 	private void mownTheLawn() {
 		BlockPos cartPos = getCart().getPosition();
-		for (int x = -this.getBlocksOnSide(); x <= this.getBlocksOnSide(); ++x) {
-			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
-				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
+		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); ++x) {
+			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); ++z) {
+				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); ++y) {
 					BlockPos pos = cartPos.add(x, y, z);
-					if (this.isFlower(pos)) {
+					if (isFlower(pos)) {
 						IBlockState state = getCart().world.getBlockState(pos);
 						if (state != null) {
-							this.addStuff((NonNullList<ItemStack>) state.getBlock().getDrops(this.getCart().world, pos, state, 0));
-							this.getCart().world.setBlockToAir(pos);
+							addStuff((NonNullList<ItemStack>) state.getBlock().getDrops(getCart().world, pos, state, 0));
+							getCart().world.setBlockToAir(pos);
 						}
 					}
 				}
@@ -78,21 +78,21 @@ public class ModuleFlowerRemover extends ModuleBase {
 	}
 
 	private void shearEntities() {
-		final List<EntityLiving> entities = this.getCart().world.getEntitiesWithinAABB(EntityLiving.class, this.getCart().getEntityBoundingBox().expand(this.getBlocksOnSide(), this.getBlocksFromLevel() + 2.0f, this.getBlocksOnSide()));
+		final List<EntityLiving> entities = getCart().world.getEntitiesWithinAABB(EntityLiving.class, getCart().getEntityBoundingBox().expand(getBlocksOnSide(), getBlocksFromLevel() + 2.0f, getBlocksOnSide()));
 		for (EntityLiving target : entities) {
 			if (target instanceof IShearable) {
 				BlockPos pos = target.getPosition();
 				final IShearable shearable = (IShearable) target;
-				if (!shearable.isShearable(ItemStack.EMPTY, this.getCart().world, pos)) {
+				if (!shearable.isShearable(ItemStack.EMPTY, getCart().world, pos)) {
 					continue;
 				}
-				this.addStuff((NonNullList<ItemStack>) shearable.onSheared(ItemStack.EMPTY, this.getCart().world, pos, 0));
+				addStuff((NonNullList<ItemStack>) shearable.onSheared(ItemStack.EMPTY, getCart().world, pos, 0));
 			}
 		}
 	}
 
 	private boolean isFlower(BlockPos pos) {
-		IBlockState state = this.getCart().world.getBlockState(pos);
+		IBlockState state = getCart().world.getBlockState(pos);
 		return state != null && state.getBlock() instanceof IPlantable;
 	}
 
@@ -100,22 +100,22 @@ public class ModuleFlowerRemover extends ModuleBase {
 		for (
 			@Nonnull
 				ItemStack iStack : stuff) {
-			this.getCart().addItemToChest(iStack);
+			getCart().addItemToChest(iStack);
 			if (iStack.getCount() != 0) {
-				final EntityItem entityitem = new EntityItem(this.getCart().world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
+				final EntityItem entityitem = new EntityItem(getCart().world, getCart().posX, getCart().posY, getCart().posZ, iStack);
 				entityitem.motionX = 0.0;
 				entityitem.motionY = 0.15000000596046448;
 				entityitem.motionZ = 0.0;
-				this.getCart().world.spawnEntity(entityitem);
+				getCart().world.spawnEntity(entityitem);
 			}
 		}
 	}
 
 	public float getBladeAngle() {
-		return this.bladeangle;
+		return bladeangle;
 	}
 
 	public float getBladeSpindSpeed() {
-		return this.bladespeed;
+		return bladespeed;
 	}
 }

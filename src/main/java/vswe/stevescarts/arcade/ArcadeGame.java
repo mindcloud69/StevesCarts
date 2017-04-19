@@ -21,17 +21,17 @@ public abstract class ArcadeGame {
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public ModuleArcade getModule() {
-		return this.module;
+		return module;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void update() {
 		if (StevesCarts.instance.useArcadeSounds) {
-			this.getModule().getCart().silent();
+			getModule().getCart().silent();
 		}
 	}
 
@@ -97,17 +97,17 @@ public abstract class ArcadeGame {
 	}
 
 	public void load(final GuiMinecart gui) {
-		gui.enableKeyRepeat(this.allowKeyRepeat());
+		gui.enableKeyRepeat(allowKeyRepeat());
 	}
 
 	public void unload(final GuiMinecart gui) {
-		if (this.allowKeyRepeat()) {
+		if (allowKeyRepeat()) {
 			gui.enableKeyRepeat(false);
 		}
 	}
 
 	public void drawImageInArea(final GuiMinecart gui, final int x, final int y, final int u, final int v, final int w, final int h) {
-		this.drawImageInArea(gui, x, y, u, v, w, h, 5, 4, 443, 168);
+		drawImageInArea(gui, x, y, u, v, w, h, 5, 4, 443, 168);
 	}
 
 	public void drawImageInArea(final GuiMinecart gui, int x, int y, int u, int v, int w, int h, final int x1, final int y1, final int x2, final int y2) {
@@ -126,7 +126,7 @@ public abstract class ArcadeGame {
 			h = y2 - y;
 		}
 		if (w > 0 && h > 0) {
-			this.getModule().drawImage(gui, x, y, u, v, w, h);
+			getModule().drawImage(gui, x, y, u, v, w, h);
 		}
 	}
 }

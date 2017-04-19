@@ -24,7 +24,7 @@ public class ModulePotion extends ModuleProjectile {
 	public Entity createProjectile(final Entity target,
 	                               @Nonnull
 		                               ItemStack item) {
-		final EntityPotion potion = new EntityPotion(this.getCart().world);
+		final EntityPotion potion = new EntityPotion(getCart().world);
 		potion.setItem(item);
 		return potion;
 	}

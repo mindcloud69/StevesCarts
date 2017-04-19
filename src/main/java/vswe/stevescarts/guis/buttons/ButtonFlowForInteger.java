@@ -14,24 +14,24 @@ public abstract class ButtonFlowForInteger extends ButtonFlowFor {
 
 	@Override
 	public String toString() {
-		if (this.dif < 0) {
-			return "Decrease " + this.getName() + " by " + -1 * this.dif;
+		if (dif < 0) {
+			return "Decrease " + getName() + " by " + -1 * dif;
 		}
-		return "Increase " + this.getName() + " by " + this.dif;
+		return "Increase " + getName() + " by " + dif;
 	}
 
 	@Override
 	public int texture() {
-		if (this.dif == 1) {
+		if (dif == 1) {
 			return 40;
 		}
-		if (this.dif == -1) {
+		if (dif == -1) {
 			return 41;
 		}
-		if (this.dif == 10) {
+		if (dif == 10) {
 			return 42;
 		}
-		if (this.dif == -10) {
+		if (dif == -10) {
 			return 43;
 		}
 		return super.texture();
@@ -39,9 +39,9 @@ public abstract class ButtonFlowForInteger extends ButtonFlowFor {
 
 	@Override
 	public boolean isVisible() {
-		if (((ModuleComputer) this.module).getSelectedTasks() != null) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-				if (this.isVarVisible(task)) {
+		if (((ModuleComputer) module).getSelectedTasks() != null) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+				if (isVarVisible(task)) {
 					return false;
 				}
 			}
@@ -51,8 +51,8 @@ public abstract class ButtonFlowForInteger extends ButtonFlowFor {
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (-128 <= this.getInteger(task) + this.dif && this.getInteger(task) + this.dif <= 127) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (-128 <= getInteger(task) + dif && getInteger(task) + dif <= 127) {
 				return true;
 			}
 		}
@@ -61,8 +61,8 @@ public abstract class ButtonFlowForInteger extends ButtonFlowFor {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			this.setInteger(task, this.getInteger(task) + this.dif);
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			setInteger(task, getInteger(task) + dif);
 		}
 	}
 

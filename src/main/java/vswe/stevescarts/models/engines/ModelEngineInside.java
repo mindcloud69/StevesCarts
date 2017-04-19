@@ -30,8 +30,8 @@ public class ModelEngineInside extends ModelEngineBase {
 
 	public ModelEngineInside() {
 		final ModelRenderer back = new ModelRenderer(this, 0, 0);
-		this.anchor.addChild(back);
-		this.fixSize(back);
+		anchor.addChild(back);
+		fixSize(back);
 		back.addBox(-3.5f, -2.0f, 0.0f, 7, 4, 0, 0.0f);
 		back.setRotationPoint(0.0f, -0.5f, 0.3f);
 	}

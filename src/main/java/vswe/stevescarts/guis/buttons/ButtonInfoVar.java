@@ -14,7 +14,7 @@ public class ButtonInfoVar extends ButtonAssembly {
 
 	@Override
 	public String toString() {
-		if (this.increase) {
+		if (increase) {
 			return "Next variable";
 		}
 		return "Previous variable";
@@ -25,8 +25,8 @@ public class ButtonInfoVar extends ButtonAssembly {
 		if (!super.isVisible()) {
 			return false;
 		}
-		if (((ModuleComputer) this.module).getSelectedTasks() != null && ((ModuleComputer) this.module).getSelectedTasks().size() > 0) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+		if (((ModuleComputer) module).getSelectedTasks() != null && ((ModuleComputer) module).getSelectedTasks().size() > 0) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
 				if (!ComputerTask.isInfo(task.getType()) || task.isInfoEmpty()) {
 					return false;
 				}
@@ -38,16 +38,16 @@ public class ButtonInfoVar extends ButtonAssembly {
 
 	@Override
 	public int texture() {
-		return this.increase ? 30 : 31;
+		return increase ? 30 : 31;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (this.increase && task.getInfoVarIndex() < task.getProgram().getVars().size() - 1) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (increase && task.getInfoVarIndex() < task.getProgram().getVars().size() - 1) {
 				return true;
 			}
-			if (!this.increase && task.getInfoVarIndex() > -1) {
+			if (!increase && task.getInfoVarIndex() > -1) {
 				return true;
 			}
 		}
@@ -56,8 +56,8 @@ public class ButtonInfoVar extends ButtonAssembly {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			task.setInfoVar(task.getInfoVarIndex() + (this.increase ? 1 : -1));
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			task.setInfoVar(task.getInfoVarIndex() + (increase ? 1 : -1));
 		}
 	}
 }

@@ -120,66 +120,66 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	private static final DataParameter<Boolean> IS_DISANABLED = EntityDataManager.createKey(EntityMinecartModular.class, DataSerializers.BOOLEAN);
 
 	public ArrayList<ModuleBase> getModules() {
-		return this.modules;
+		return modules;
 	}
 
 	public ArrayList<ModuleWorker> getWorkers() {
-		return this.workModules;
+		return workModules;
 	}
 
 	public ArrayList<ModuleEngine> getEngines() {
-		return this.engineModules;
+		return engineModules;
 	}
 
 	public ArrayList<ModuleTank> getTanks() {
-		return this.tankModules;
+		return tankModules;
 	}
 
 	public ArrayList<ModuleCountPair> getModuleCounts() {
-		return this.moduleCounts;
+		return moduleCounts;
 	}
 
 	public EntityMinecartModular(final World world, final double x, final double y, final double z, final NBTTagCompound info, final String name) {
 		super(world, x, y, z);
-		this.engineFlag = false;
-		this.fixedRailDirection = null;
-		this.rand = new Random();
-		this.cartVersion = info.getByte("CartVersion");
-		this.loadModules(info);
+		engineFlag = false;
+		fixedRailDirection = null;
+		rand = new Random();
+		cartVersion = info.getByte("CartVersion");
+		loadModules(info);
 		this.name = name;
-		for (int i = 0; i < this.modules.size(); ++i) {
-			if (this.modules.get(i).hasExtraData() && info.hasKey("Data" + i)) {
-				this.modules.get(i).setExtraData(info.getByte("Data" + i));
+		for (int i = 0; i < modules.size(); ++i) {
+			if (modules.get(i).hasExtraData() && info.hasKey("Data" + i)) {
+				modules.get(i).setExtraData(info.getByte("Data" + i));
 			}
 		}
 	}
 
 	public EntityMinecartModular(final World world) {
 		super(world);
-		this.engineFlag = false;
-		this.fixedRailDirection = null;
-		this.rand = new Random();
+		engineFlag = false;
+		fixedRailDirection = null;
+		rand = new Random();
 	}
 
 	public EntityMinecartModular(final World world, final TileEntityCartAssembler assembler, final byte[] data) {
 		this(world);
-		this.setPlaceholder(assembler);
-		this.loadPlaceholderModules(data);
+		setPlaceholder(assembler);
+		loadPlaceholderModules(data);
 	}
 
 	private void overrideDatawatcher() {
-		this.dataManager = new EntityDataManagerLockable(this);
+		dataManager = new EntityDataManagerLockable(this);
 	}
 
 	private void loadPlaceholderModules(final byte[] data) {
-		if (this.modules == null) {
-			this.modules = new ArrayList<>();
-			this.doLoadModules(data);
+		if (modules == null) {
+			modules = new ArrayList<>();
+			doLoadModules(data);
 		} else {
 			final ArrayList<Byte> modulesToAdd = new ArrayList<>();
 			final ArrayList<Byte> oldModules = new ArrayList<>();
-			for (int i = 0; i < this.moduleLoadingData.length; ++i) {
-				oldModules.add(this.moduleLoadingData[i]);
+			for (int i = 0; i < moduleLoadingData.length; ++i) {
+				oldModules.add(moduleLoadingData[i]);
 			}
 			for (int i = 0; i < data.length; ++i) {
 				boolean found = false;
@@ -195,9 +195,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				}
 			}
 			for (final byte id : oldModules) {
-				for (int k = 0; k < this.modules.size(); ++k) {
-					if (id == this.modules.get(k).getModuleId()) {
-						this.modules.remove(k);
+				for (int k = 0; k < modules.size(); ++k) {
+					if (id == modules.get(k).getModuleId()) {
+						modules.remove(k);
 						break;
 					}
 				}
@@ -206,10 +206,10 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			for (int l = 0; l < modulesToAdd.size(); ++l) {
 				newModuleData[l] = modulesToAdd.get(l);
 			}
-			this.doLoadModules(newModuleData);
+			doLoadModules(newModuleData);
 		}
-		this.initModules();
-		this.moduleLoadingData = data;
+		initModules();
+		moduleLoadingData = data;
 	}
 
 	private void loadModules(final NBTTagCompound info) {
@@ -217,26 +217,26 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		if (moduleIDTag == null) {
 			return;
 		}
-		if (this.world.isRemote) {
-			this.moduleLoadingData = moduleIDTag.getByteArray();
+		if (world.isRemote) {
+			moduleLoadingData = moduleIDTag.getByteArray();
 		} else {
-			this.moduleLoadingData = CartVersion.updateCart(this, moduleIDTag.getByteArray());
+			moduleLoadingData = CartVersion.updateCart(this, moduleIDTag.getByteArray());
 		}
-		this.loadModules(this.moduleLoadingData);
+		loadModules(moduleLoadingData);
 	}
 
 	public void updateSimulationModules(final byte[] bytes) {
-		if (!this.isPlaceholder) {
+		if (!isPlaceholder) {
 			System.out.println("You're stupid! This is not a placeholder cart.");
 		} else {
-			this.loadPlaceholderModules(bytes);
+			loadPlaceholderModules(bytes);
 		}
 	}
 
 	protected void loadModules(final byte[] bytes) {
-		this.modules = new ArrayList<>();
-		this.doLoadModules(bytes);
-		this.initModules();
+		modules = new ArrayList<>();
+		doLoadModules(bytes);
+		initModules();
 	}
 
 	private void doLoadModules(final byte[] bytes) {
@@ -247,7 +247,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				final Object moduleObject = moduleConstructor.newInstance(this);
 				final ModuleBase module = (ModuleBase) moduleObject;
 				module.setModuleId(id);
-				this.modules.add(module);
+				modules.add(module);
 			} catch (Exception e) {
 				System.out.println("Failed to load module with ID " + id + "! More info below.");
 				e.printStackTrace();
@@ -256,11 +256,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	private void initModules() {
-		this.moduleCounts = new ArrayList<>();
-		for (final ModuleBase module : this.modules) {
+		moduleCounts = new ArrayList<>();
+		for (final ModuleBase module : modules) {
 			final ModuleData data = ModuleData.getList().get(module.getModuleId());
 			boolean found = false;
-			for (final ModuleCountPair count : this.moduleCounts) {
+			for (final ModuleCountPair count : moduleCounts) {
 				if (count.isContainingData(data)) {
 					count.increase();
 					found = true;
@@ -268,43 +268,43 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				}
 			}
 			if (!found) {
-				this.moduleCounts.add(new ModuleCountPair(data));
+				moduleCounts.add(new ModuleCountPair(data));
 			}
 		}
-		for (final ModuleBase module : this.modules) {
+		for (final ModuleBase module : modules) {
 			module.preInit();
 		}
-		this.workModules = new ArrayList<>();
-		this.engineModules = new ArrayList<>();
-		this.tankModules = new ArrayList<>();
+		workModules = new ArrayList<>();
+		engineModules = new ArrayList<>();
+		tankModules = new ArrayList<>();
 		final int x = 0;
 		final int y = 0;
 		final int maxH = 0;
 		int guidata = 0;
 		int packets = 0;
-		if (this.world.isRemote) {
-			this.generateModels();
+		if (world.isRemote) {
+			generateModels();
 		}
-		for (final ModuleBase module2 : this.modules) {
+		for (final ModuleBase module2 : modules) {
 			if (module2 instanceof ModuleWorker) {
-				this.workModules.add((ModuleWorker) module2);
+				workModules.add((ModuleWorker) module2);
 			} else if (module2 instanceof ModuleEngine) {
-				this.engineModules.add((ModuleEngine) module2);
+				engineModules.add((ModuleEngine) module2);
 			} else if (module2 instanceof ModuleTank) {
-				this.tankModules.add((ModuleTank) module2);
+				tankModules.add((ModuleTank) module2);
 			} else {
 				if (!(module2 instanceof ModuleCreativeSupplies)) {
 					continue;
 				}
-				this.creativeSupplies = (ModuleCreativeSupplies) module2;
+				creativeSupplies = (ModuleCreativeSupplies) module2;
 			}
 		}
 		final CompWorkModule sorter = new CompWorkModule();
-		Collections.sort(this.workModules, sorter);
-		if (!this.isPlaceholder) {
+		workModules.sort(sorter);
+		if (!isPlaceholder) {
 			final ArrayList<GuiAllocationHelper> lines = new ArrayList<>();
 			int slots = 0;
-			for (final ModuleBase module3 : this.modules) {
+			for (final ModuleBase module3 : modules) {
 				if (module3.hasGui()) {
 					boolean foundLine = false;
 					for (final GuiAllocationHelper line : lines) {
@@ -346,35 +346,35 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				currentY += line3.maxHeight;
 			}
 			if (currentY > 168) {
-				this.canScrollModules = true;
+				canScrollModules = true;
 			}
-			this.modularSpaceHeight = currentY;
+			modularSpaceHeight = currentY;
 		}
-		for (final ModuleBase module5 : this.modules) {
+		for (final ModuleBase module5 : modules) {
 			module5.init();
 		}
 	}
 
 	@Override
 	public void setDead() {
-		if (this.world.isRemote) {
-			for (int var1 = 0; var1 < this.getSizeInventory(); ++var1) {
-				this.setInventorySlotContents(var1, ItemStack.EMPTY);
+		if (world.isRemote) {
+			for (int var1 = 0; var1 < getSizeInventory(); ++var1) {
+				setInventorySlotContents(var1, ItemStack.EMPTY);
 			}
 		}
 		super.setDead();
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				module.onDeath();
 			}
 		}
-		this.dropChunkLoading();
+		dropChunkLoading();
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void renderOverlay(final Minecraft minecraft) {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				module.renderOverlay(minecraft);
 			}
 		}
@@ -382,8 +382,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	protected void entityInit() {
-		if (this.world.isRemote && !(dataManager instanceof EntityDataManagerLockable)) {
-			this.overrideDatawatcher();
+		if (world.isRemote && !(dataManager instanceof EntityDataManagerLockable)) {
+			overrideDatawatcher();
 		}
 		super.entityInit();
 		dataManager.register(IS_BURNING, false);
@@ -391,29 +391,29 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public void updateFuel() {
-		final int consumption = this.getConsumption();
+		final int consumption = getConsumption();
 		if (consumption > 0) {
-			final ModuleEngine engine = this.getCurrentEngine();
+			final ModuleEngine engine = getCurrentEngine();
 			if (engine != null) {
 				engine.consumeFuel(consumption);
-				if (!this.isPlaceholder && this.world.isRemote && this.hasFuel() && !this.isDisabled()) {
+				if (!isPlaceholder && world.isRemote && hasFuel() && !isDisabled()) {
 					engine.smoke();
 				}
 			}
 		}
-		if (this.hasFuel()) {
-			if (!this.engineFlag) {
-				this.pushX = this.temppushX;
-				this.pushZ = this.temppushZ;
+		if (hasFuel()) {
+			if (!engineFlag) {
+				pushX = temppushX;
+				pushZ = temppushZ;
 			}
-		} else if (this.engineFlag) {
-			this.temppushX = this.pushX;
-			this.temppushZ = this.pushZ;
+		} else if (engineFlag) {
+			temppushX = pushX;
+			temppushZ = pushZ;
 			final double n = 0.0;
-			this.pushZ = n;
-			this.pushX = n;
+			pushZ = n;
+			pushX = n;
 		}
-		this.setEngineBurning(this.hasFuel() && !this.isDisabled());
+		setEngineBurning(hasFuel() && !isDisabled());
 	}
 
 	public boolean isEngineBurning() {
@@ -425,18 +425,18 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	private ModuleEngine getCurrentEngine() {
-		if (this.modules == null) {
+		if (modules == null) {
 			return null;
 		}
-		for (final ModuleBase module : this.modules) {
+		for (final ModuleBase module : modules) {
 			if (module.stopEngines()) {
 				return null;
 			}
 		}
-		final int consumption = this.getConsumption(true);
+		final int consumption = getConsumption(true);
 		final ArrayList<ModuleEngine> priority = new ArrayList<>();
 		int mostImportant = -1;
-		for (final ModuleEngine engine : this.engineModules) {
+		for (final ModuleEngine engine : engineModules) {
 			if (engine.hasFuel(consumption) && (mostImportant == -1 || mostImportant >= engine.getPriority())) {
 				if (engine.getPriority() < mostImportant) {
 					priority.clear();
@@ -446,23 +446,23 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			}
 		}
 		if (priority.size() > 0) {
-			if (this.motorRotation >= priority.size()) {
-				this.motorRotation = 0;
+			if (motorRotation >= priority.size()) {
+				motorRotation = 0;
 			}
-			this.motorRotation = (this.motorRotation + 1) % priority.size();
-			return priority.get(this.motorRotation);
+			motorRotation = (motorRotation + 1) % priority.size();
+			return priority.get(motorRotation);
 		}
 		return null;
 	}
 
 	public int getConsumption() {
-		return this.getConsumption(!this.isDisabled() && this.isEngineBurning());
+		return getConsumption(!isDisabled() && isEngineBurning());
 	}
 
 	public int getConsumption(final boolean isMoving) {
 		int consumption = isMoving ? 1 : 0;
-		if (this.modules != null && !this.isPlaceholder) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null && !isPlaceholder) {
+			for (final ModuleBase module : modules) {
 				consumption += module.getConsumption(isMoving);
 			}
 		}
@@ -476,8 +476,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public double getMountedYOffset() {
-		if (this.modules != null && !getPassengers().isEmpty()) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null && !getPassengers().isEmpty()) {
+			for (final ModuleBase module : modules) {
 				final float offset = module.mountedOffset(getPassengers().get(0));
 				if (offset != 0.0f) {
 					return offset;
@@ -490,11 +490,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	@Nonnull
 	public ItemStack getCartItem() {
-		if (this.modules != null) {
+		if (modules != null) {
 			@Nonnull
 			ItemStack cart = ModuleData.createModularCart(this);
-			if (this.name != null && !this.name.equals("") && !this.name.equals(ModItems.carts.getName())) {
-				cart.setStackDisplayName(this.name);
+			if (name != null && !name.equals("") && !name.equals(ModItems.carts.getName())) {
+				cart.setStackDisplayName(name);
 			}
 			return cart;
 		}
@@ -503,30 +503,30 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public void killMinecart(final DamageSource dmg) {
-		this.setDead();
-		if (this.dropOnDeath()) {
-			this.entityDropItem(this.getCartItem(), 0.0f);
-			for (int i = 0; i < this.getSizeInventory(); ++i) {
+		setDead();
+		if (dropOnDeath()) {
+			entityDropItem(getCartItem(), 0.0f);
+			for (int i = 0; i < getSizeInventory(); ++i) {
 				@Nonnull
-				ItemStack itemstack = this.getStackInSlot(i);
+				ItemStack itemstack = getStackInSlot(i);
 				if (!itemstack.isEmpty()) {
-					final float f = this.rand.nextFloat() * 0.8f + 0.1f;
-					final float f2 = this.rand.nextFloat() * 0.8f + 0.1f;
-					final float f3 = this.rand.nextFloat() * 0.8f + 0.1f;
+					final float f = rand.nextFloat() * 0.8f + 0.1f;
+					final float f2 = rand.nextFloat() * 0.8f + 0.1f;
+					final float f3 = rand.nextFloat() * 0.8f + 0.1f;
 					while (itemstack.getCount() > 0) {
-						int j = this.rand.nextInt(21) + 10;
+						int j = rand.nextInt(21) + 10;
 						if (j > itemstack.getCount()) {
 							j = itemstack.getCount();
 						}
 						@Nonnull
 						ItemStack itemStack = itemstack;
 						itemStack.shrink(j);
-						final EntityItem entityitem = new EntityItem(this.world, this.posX + f, this.posY + f2, this.posZ + f3, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
+						final EntityItem entityitem = new EntityItem(world, posX + f, posY + f2, posZ + f3, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
 						final float f4 = 0.05f;
-						entityitem.motionX = (float) this.rand.nextGaussian() * f4;
-						entityitem.motionY = (float) this.rand.nextGaussian() * f4 + 0.2f;
-						entityitem.motionZ = (float) this.rand.nextGaussian() * f4;
-						this.world.spawnEntity(entityitem);
+						entityitem.motionX = (float) rand.nextGaussian() * f4;
+						entityitem.motionY = (float) rand.nextGaussian() * f4 + 0.2f;
+						entityitem.motionZ = (float) rand.nextGaussian() * f4;
+						world.spawnEntity(entityitem);
 					}
 				}
 			}
@@ -534,11 +534,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public boolean dropOnDeath() {
-		if (this.isPlaceholder) {
+		if (isPlaceholder) {
 			return false;
 		}
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (!module.dropOnDeath()) {
 					return false;
 				}
@@ -550,8 +550,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public float getMaxCartSpeedOnRail() {
 		float maxSpeed = super.getMaxCartSpeedOnRail();
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				final float tempMax = module.getMaxSpeed();
 				if (tempMax < maxSpeed) {
 					maxSpeed = tempMax;
@@ -563,7 +563,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public boolean isPoweredCart() {
-		return this.engineModules.size() > 0;
+		return engineModules.size() > 0;
 	}
 
 	public int getDefaultDisplayTileData() {
@@ -575,8 +575,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public float[] getColor() {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.getModules()) {
+		if (modules != null) {
+			for (final ModuleBase module : getModules()) {
 				final float[] color = module.getColor();
 				if (color[0] != 1.0f || color[1] != 1.0f || color[2] != 1.0f) {
 					return color;
@@ -587,20 +587,20 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public int getYTarget() {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.getModules()) {
+		if (modules != null) {
+			for (final ModuleBase module : getModules()) {
 				final int yTarget = module.getYTarget();
 				if (yTarget != -1) {
 					return yTarget;
 				}
 			}
 		}
-		return (int) this.posY;
+		return (int) posY;
 	}
 
 	public ModuleBase getInterfaceThief() {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.getModules()) {
+		if (modules != null) {
+			for (final ModuleBase module : getModules()) {
 				if (module.doStealInterface()) {
 					return module;
 				}
@@ -611,11 +611,11 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public boolean attackEntityFrom(final DamageSource dmg, final float par2) {
-		if (this.isPlaceholder) {
+		if (isPlaceholder) {
 			return false;
 		}
-		if (this.modules != null) {
-			for (final ModuleBase module : this.getModules()) {
+		if (modules != null) {
+			for (final ModuleBase module : getModules()) {
 				if (!module.receiveDamage(dmg, par2)) {
 					return false;
 				}
@@ -626,8 +626,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public void onActivatorRailPass(final int x, final int y, final int z, final boolean active) {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				module.activatedByRail(x, y, z, active);
 			}
 		}
@@ -636,8 +636,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public void moveMinecartOnRail(BlockPos pos) {
 		super.moveMinecartOnRail(pos);
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				module.moveMinecartOnRail(pos);
 			}
 		}
@@ -645,38 +645,38 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		IBlockState stateBelow = world.getBlockState(pos.down());
 		int metaBelow = stateBelow.getBlock().getMetaFromState(stateBelow);
 		EnumRailDirection railDirection = ((BlockRailBase) blockState.getBlock()).getRailDirection(world, pos, blockState, this);
-		this.cornerFlip = ((railDirection == EnumRailDirection.SOUTH_EAST || railDirection == EnumRailDirection.SOUTH_WEST) && this.motionX < 0.0)
-			|| ((railDirection == EnumRailDirection.NORTH_EAST || railDirection == EnumRailDirection.NORTH_WEST) && this.motionX > 0.0);
-		if (blockState.getBlock() != ModBlocks.ADVANCED_DETECTOR.getBlock() && this.isDisabled()) {
-			this.releaseCart();
+		cornerFlip = ((railDirection == EnumRailDirection.SOUTH_EAST || railDirection == EnumRailDirection.SOUTH_WEST) && motionX < 0.0)
+			|| ((railDirection == EnumRailDirection.NORTH_EAST || railDirection == EnumRailDirection.NORTH_WEST) && motionX > 0.0);
+		if (blockState.getBlock() != ModBlocks.ADVANCED_DETECTOR.getBlock() && isDisabled()) {
+			releaseCart();
 		}
 		boolean canBeDisabled = blockState.getBlock() == ModBlocks.ADVANCED_DETECTOR.getBlock()
 			&& (stateBelow.getBlock() != ModBlocks.DETECTOR_UNIT.getBlock() || !DetectorType.getTypeFromSate(stateBelow).canInteractWithCart() || DetectorType.getTypeFromSate(stateBelow).shouldStopCart());
-		final boolean forceUnDisable = this.wasDisabled && disabledPos != null && this.disabledPos.equals(pos);
-		if (!forceUnDisable && this.wasDisabled) {
-			this.wasDisabled = false;
+		final boolean forceUnDisable = wasDisabled && disabledPos != null && disabledPos.equals(pos);
+		if (!forceUnDisable && wasDisabled) {
+			wasDisabled = false;
 		}
 		canBeDisabled = (!forceUnDisable && canBeDisabled);
-		if (canBeDisabled && !this.isDisabled()) {
-			this.setIsDisabled(true);
-			if (this.pushX != 0.0 || this.pushZ != 0.0) {
-				this.temppushX = this.pushX;
-				this.temppushZ = this.pushZ;
+		if (canBeDisabled && !isDisabled()) {
+			setIsDisabled(true);
+			if (pushX != 0.0 || pushZ != 0.0) {
+				temppushX = pushX;
+				temppushZ = pushZ;
 				final double n = 0.0;
-				this.pushZ = n;
-				this.pushX = n;
+				pushZ = n;
+				pushX = n;
 			}
-			this.disabledPos = new BlockPos(pos);
+			disabledPos = new BlockPos(pos);
 		}
 		if (fixedRailPos != null && !fixedRailPos.equals(pos)) {
-			this.fixedRailDirection = null;
+			fixedRailDirection = null;
 			fixedRailPos = new BlockPos(fixedRailPos.getX(), -1, fixedRailPos.getZ());
 		}
 	}
 
 	public EnumRailDirection getRailDirection(final BlockPos pos) {
 		ModuleBase.RAILDIRECTION dir = ModuleBase.RAILDIRECTION.DEFAULT;
-		for (final ModuleBase module : this.getModules()) {
+		for (final ModuleBase module : getModules()) {
 			dir = module.getSpecialRailDirection(pos);
 			if (dir != ModuleBase.RAILDIRECTION.DEFAULT) {
 				break;
@@ -685,39 +685,39 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		if (dir == ModuleBase.RAILDIRECTION.DEFAULT) {
 			return null;
 		}
-		int Yaw = (int) (this.rotationYaw % 180.0f);
+		int Yaw = (int) (rotationYaw % 180.0f);
 		if (Yaw < 0) {
 			Yaw += 180;
 		}
 		final boolean flag = Yaw >= 45 && Yaw <= 135;
-		if (this.fixedRailDirection == null) {
+		if (fixedRailDirection == null) {
 			switch (dir) {
 				case FORWARD: {
 					if (flag) {
-						this.fixedRailDirection = EnumRailDirection.NORTH_SOUTH;
+						fixedRailDirection = EnumRailDirection.NORTH_SOUTH;
 						break;
 					}
-					this.fixedRailDirection = EnumRailDirection.EAST_WEST;
+					fixedRailDirection = EnumRailDirection.EAST_WEST;
 					break;
 				}
 				case LEFT: {
 					if (flag) {
-						if (this.motionZ > 0.0) {
-							this.fixedRailDirection = EnumRailDirection.NORTH_EAST;
+						if (motionZ > 0.0) {
+							fixedRailDirection = EnumRailDirection.NORTH_EAST;
 							break;
 						}
-						if (this.motionZ <= 0.0) {
-							this.fixedRailDirection = EnumRailDirection.SOUTH_WEST;
+						if (motionZ <= 0.0) {
+							fixedRailDirection = EnumRailDirection.SOUTH_WEST;
 							break;
 						}
 						break;
 					} else {
-						if (this.motionX > 0.0) {
-							this.fixedRailDirection = EnumRailDirection.NORTH_WEST;
+						if (motionX > 0.0) {
+							fixedRailDirection = EnumRailDirection.NORTH_WEST;
 							break;
 						}
-						if (this.motionX < 0.0) {
-							this.fixedRailDirection = EnumRailDirection.SOUTH_EAST;
+						if (motionX < 0.0) {
+							fixedRailDirection = EnumRailDirection.SOUTH_EAST;
 							break;
 						}
 						break;
@@ -725,22 +725,22 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				}
 				case RIGHT: {
 					if (flag) {
-						if (this.motionZ > 0.0) {
-							this.fixedRailDirection = EnumRailDirection.NORTH_WEST;
+						if (motionZ > 0.0) {
+							fixedRailDirection = EnumRailDirection.NORTH_WEST;
 							break;
 						}
-						if (this.motionZ <= 0.0) {
-							this.fixedRailDirection = EnumRailDirection.SOUTH_EAST;
+						if (motionZ <= 0.0) {
+							fixedRailDirection = EnumRailDirection.SOUTH_EAST;
 							break;
 						}
 						break;
 					} else {
-						if (this.motionX > 0.0) {
-							this.fixedRailDirection = EnumRailDirection.SOUTH_WEST;
+						if (motionX > 0.0) {
+							fixedRailDirection = EnumRailDirection.SOUTH_WEST;
 							break;
 						}
-						if (this.motionX < 0.0) {
-							this.fixedRailDirection = EnumRailDirection.NORTH_EAST;
+						if (motionX < 0.0) {
+							fixedRailDirection = EnumRailDirection.NORTH_EAST;
 							break;
 						}
 						break;
@@ -748,61 +748,61 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				}
 				case NORTH: {
 					if (flag) {
-						if (this.motionZ > 0.0) {
-							this.fixedRailDirection = EnumRailDirection.NORTH_SOUTH;
+						if (motionZ > 0.0) {
+							fixedRailDirection = EnumRailDirection.NORTH_SOUTH;
 							break;
 						}
 						break;
 					} else {
-						if (this.motionX > 0.0) {
-							this.fixedRailDirection = EnumRailDirection.SOUTH_WEST;
+						if (motionX > 0.0) {
+							fixedRailDirection = EnumRailDirection.SOUTH_WEST;
 							break;
 						}
-						if (this.motionX < 0.0) {
-							this.fixedRailDirection = EnumRailDirection.SOUTH_EAST;
+						if (motionX < 0.0) {
+							fixedRailDirection = EnumRailDirection.SOUTH_EAST;
 							break;
 						}
 						break;
 					}
 				}
 				default: {
-					this.fixedRailDirection = null;
+					fixedRailDirection = null;
 					break;
 				}
 			}
-			if (this.fixedRailDirection == null) {
+			if (fixedRailDirection == null) {
 				return null;
 			}
 			fixedRailPos = new BlockPos(pos);
 		}
-		return this.fixedRailDirection;
+		return fixedRailDirection;
 	}
 
 	public void resetRailDirection() {
-		this.fixedRailDirection = null;
+		fixedRailDirection = null;
 	}
 
 	public void turnback() {
-		this.pushX *= -1.0;
-		this.pushZ *= -1.0;
-		this.temppushX *= -1.0;
-		this.temppushZ *= -1.0;
-		this.motionX *= -1.0;
-		this.motionY *= -1.0;
-		this.motionZ *= -1.0;
+		pushX *= -1.0;
+		pushZ *= -1.0;
+		temppushX *= -1.0;
+		temppushZ *= -1.0;
+		motionX *= -1.0;
+		motionY *= -1.0;
+		motionZ *= -1.0;
 	}
 
 	public void releaseCart() {
-		this.wasDisabled = true;
-		this.setIsDisabled(false);
-		this.pushX = this.temppushX;
-		this.pushZ = this.temppushZ;
+		wasDisabled = true;
+		setIsDisabled(false);
+		pushX = temppushX;
+		pushZ = temppushZ;
 	}
 
 	@Override
 	public void markDirty() {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				module.onInventoryChanged();
 			}
 		}
@@ -811,8 +811,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public int getSizeInventory() {
 		int slotCount = 0;
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				slotCount += module.getInventorySize();
 			}
 		}
@@ -839,50 +839,50 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		} else {
 			super.moveAlongTrack(pos, state);
 		}
-		double d2 = this.pushX * this.pushX + this.pushZ * this.pushZ;
-		if (d2 > 1.0E-4 && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001) {
+		double d2 = pushX * pushX + pushZ * pushZ;
+		if (d2 > 1.0E-4 && motionX * motionX + motionZ * motionZ > 0.001) {
 			d2 = MathHelper.sqrt(d2);
-			this.pushX /= d2;
-			this.pushZ /= d2;
-			if (this.pushX * this.motionX + this.pushZ * this.motionZ < 0.0) {
-				this.pushX = 0.0;
-				this.pushZ = 0.0;
+			pushX /= d2;
+			pushZ /= d2;
+			if (pushX * motionX + pushZ * motionZ < 0.0) {
+				pushX = 0.0;
+				pushZ = 0.0;
 			} else {
-				this.pushX = this.motionX;
-				this.pushZ = this.motionZ;
+				pushX = motionX;
+				pushZ = motionZ;
 			}
 		}
 	}
 
 	@Override
 	protected void applyDrag() {
-		double d0 = this.pushX * this.pushX + this.pushZ * this.pushZ;
-		this.engineFlag = (d0 > 1.0E-4);
-		if (this.isDisabled()) {
-			this.motionX = 0.0;
-			this.motionY = 0.0;
-			this.motionZ = 0.0;
-		} else if (this.engineFlag) {
+		double d0 = pushX * pushX + pushZ * pushZ;
+		engineFlag = (d0 > 1.0E-4);
+		if (isDisabled()) {
+			motionX = 0.0;
+			motionY = 0.0;
+			motionZ = 0.0;
+		} else if (engineFlag) {
 			d0 = MathHelper.sqrt(d0);
-			this.pushX /= d0;
-			this.pushZ /= d0;
-			final double d2 = this.getPushFactor();
-			this.motionX *= 0.800000011920929;
-			this.motionY *= 0.0;
-			this.motionZ *= 0.800000011920929;
-			this.motionX += this.pushX * d2;
-			this.motionZ += this.pushZ * d2;
+			pushX /= d0;
+			pushZ /= d0;
+			final double d2 = getPushFactor();
+			motionX *= 0.800000011920929;
+			motionY *= 0.0;
+			motionZ *= 0.800000011920929;
+			motionX += pushX * d2;
+			motionZ += pushZ * d2;
 		} else {
-			this.motionX *= 0.9800000190734863;
-			this.motionY *= 0.0;
-			this.motionZ *= 0.9800000190734863;
+			motionX *= 0.9800000190734863;
+			motionY *= 0.0;
+			motionZ *= 0.9800000190734863;
 		}
 		super.applyDrag();
 	}
 
 	protected double getPushFactor() {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				final double factor = module.getPushFactor();
 				if (factor >= 0.0) {
 					return factor;
@@ -895,17 +895,17 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
-		tagCompound.setString("cartName", this.name);
-		tagCompound.setDouble("pushX", this.pushX);
-		tagCompound.setDouble("pushZ", this.pushZ);
-		tagCompound.setDouble("temppushX", this.temppushX);
-		tagCompound.setDouble("temppushZ", this.temppushZ);
-		tagCompound.setShort("workingTime", (short) this.workingTime);
-		tagCompound.setByteArray("Modules", this.moduleLoadingData);
-		tagCompound.setByte("CartVersion", this.cartVersion);
-		if (this.modules != null) {
-			for (int i = 0; i < this.modules.size(); ++i) {
-				final ModuleBase module = this.modules.get(i);
+		tagCompound.setString("cartName", name);
+		tagCompound.setDouble("pushX", pushX);
+		tagCompound.setDouble("pushZ", pushZ);
+		tagCompound.setDouble("temppushX", temppushX);
+		tagCompound.setDouble("temppushZ", temppushZ);
+		tagCompound.setShort("workingTime", (short) workingTime);
+		tagCompound.setByteArray("Modules", moduleLoadingData);
+		tagCompound.setByte("CartVersion", cartVersion);
+		if (modules != null) {
+			for (int i = 0; i < modules.size(); ++i) {
+				final ModuleBase module = modules.get(i);
 				module.writeToNBT(tagCompound, i);
 			}
 		}
@@ -915,25 +915,25 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		this.name = tagCompound.getString("cartName");
-		this.pushX = tagCompound.getDouble("pushX");
-		this.pushZ = tagCompound.getDouble("pushZ");
-		this.temppushX = tagCompound.getDouble("temppushX");
-		this.temppushZ = tagCompound.getDouble("temppushZ");
-		this.workingTime = tagCompound.getShort("workingTime");
-		this.cartVersion = tagCompound.getByte("CartVersion");
-		final int oldVersion = this.cartVersion;
-		this.loadModules(tagCompound);
-		if (this.modules != null) {
-			for (int i = 0; i < this.modules.size(); ++i) {
-				final ModuleBase module = this.modules.get(i);
+		name = tagCompound.getString("cartName");
+		pushX = tagCompound.getDouble("pushX");
+		pushZ = tagCompound.getDouble("pushZ");
+		temppushX = tagCompound.getDouble("temppushX");
+		temppushZ = tagCompound.getDouble("temppushZ");
+		workingTime = tagCompound.getShort("workingTime");
+		cartVersion = tagCompound.getByte("CartVersion");
+		final int oldVersion = cartVersion;
+		loadModules(tagCompound);
+		if (modules != null) {
+			for (int i = 0; i < modules.size(); ++i) {
+				final ModuleBase module = modules.get(i);
 				module.readFromNBT(tagCompound, i);
 			}
 		}
 		if (oldVersion < 2) {
 			int newSlot = -1;
 			int slotCount = 0;
-			for (final ModuleBase module2 : this.modules) {
+			for (final ModuleBase module2 : modules) {
 				if (module2 instanceof ModuleTool) {
 					newSlot = slotCount;
 					break;
@@ -943,10 +943,10 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			if (newSlot != -1) {
 				@Nonnull
 				ItemStack lastitem = ItemStack.EMPTY;
-				for (int j = newSlot; j < this.getSizeInventory(); ++j) {
+				for (int j = newSlot; j < getSizeInventory(); ++j) {
 					@Nonnull
-					ItemStack thisitem = this.getStackInSlot(j);
-					this.setInventorySlotContents(j, lastitem);
+					ItemStack thisitem = getStackInSlot(j);
+					setInventorySlotContents(j, lastitem);
 					lastitem = thisitem;
 				}
 			}
@@ -964,51 +964,51 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		this.onCartUpdate();
-		if (this.world.isRemote) {
-			this.updateSounds();
+		onCartUpdate();
+		if (world.isRemote) {
+			updateSounds();
 		}
 	}
 
 	public void onCartUpdate() {
-		if (this.modules != null) {
-			this.updateFuel();
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			updateFuel();
+			for (final ModuleBase module : modules) {
 				module.update();
 			}
-			for (final ModuleBase module : this.modules) {
+			for (final ModuleBase module : modules) {
 				module.postUpdate();
 			}
-			this.work();
-			this.setCurrentCartSpeedCapOnRail(this.getMaxCartSpeedOnRail());
+			work();
+			setCurrentCartSpeedCapOnRail(getMaxCartSpeedOnRail());
 		}
-		if (this.isPlaceholder && this.keepAlive++ > 20) {
-			this.kill();
-			this.placeholderAsssembler.resetPlaceholder();
+		if (isPlaceholder && keepAlive++ > 20) {
+			kill();
+			placeholderAsssembler.resetPlaceholder();
 		}
 	}
 
 	public boolean hasFuel() {
-		if (this.isDisabled()) {
+		if (isDisabled()) {
 			return false;
 		}
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (module.stopEngines()) {
 					return false;
 				}
 			}
 		}
-		return this.hasFuelForModule();
+		return hasFuelForModule();
 	}
 
 	public boolean hasFuelForModule() {
-		if (this.isPlaceholder) {
+		if (isPlaceholder) {
 			return true;
 		}
-		final int consumption = this.getConsumption(true);
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		final int consumption = getConsumption(true);
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (module.hasFuel(consumption)) {
 					return true;
 				}
@@ -1019,7 +1019,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
-		return entityplayer.getDistanceSq(this.x(), this.y(), this.z()) <= 64.0;
+		return entityplayer.getDistanceSq(x(), y(), z()) <= 64.0;
 	}
 
 	@Override
@@ -1029,12 +1029,12 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, entityplayer, hand))) {
 			return EnumActionResult.SUCCESS;
 		}
-		if (this.isPlaceholder) {
+		if (isPlaceholder) {
 			return EnumActionResult.FAIL;
 		}
-		if (this.modules != null && !entityplayer.isSneaking()) {
+		if (modules != null && !entityplayer.isSneaking()) {
 			boolean interupt = false;
-			for (final ModuleBase module : this.modules) {
+			for (final ModuleBase module : modules) {
 				if (module.onInteractFirst(entityplayer)) {
 					interupt = true;
 				}
@@ -1043,39 +1043,39 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 				return EnumActionResult.SUCCESS;
 			}
 		}
-		if (!this.world.isRemote) {
-			if (!this.isDisabled() && !isPassenger(entityplayer)) {
-				this.temppushX = this.posX - entityplayer.posX;
-				this.temppushZ = this.posZ - entityplayer.posZ;
+		if (!world.isRemote) {
+			if (!isDisabled() && !isPassenger(entityplayer)) {
+				temppushX = posX - entityplayer.posX;
+				temppushZ = posZ - entityplayer.posZ;
 			}
-			if (!this.isDisabled() && this.hasFuel() && this.pushX == 0.0 && this.pushZ == 0.0) {
-				this.pushX = this.temppushX;
-				this.pushZ = this.temppushZ;
+			if (!isDisabled() && hasFuel() && pushX == 0.0 && pushZ == 0.0) {
+				pushX = temppushX;
+				pushZ = temppushZ;
 			}
-			FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 0, this.world, this.getEntityId(), 0, 0);
-			this.openInventory(entityplayer);
+			FMLNetworkHandler.openGui(entityplayer, StevesCarts.instance, 0, world, getEntityId(), 0, 0);
+			openInventory(entityplayer);
 		}
 		return EnumActionResult.SUCCESS;
 	}
 
 	public void loadChunks() {
-		this.loadChunks(this.cartTicket, this.x() >> 4, this.z() >> 4);
+		loadChunks(cartTicket, x() >> 4, z() >> 4);
 	}
 
 	public void loadChunks(final int chunkX, final int chunkZ) {
-		this.loadChunks(this.cartTicket, chunkX, chunkZ);
+		loadChunks(cartTicket, chunkX, chunkZ);
 	}
 
 	public void loadChunks(final ForgeChunkManager.Ticket ticket) {
-		this.loadChunks(ticket, this.x() >> 4, this.z() >> 4);
+		loadChunks(ticket, x() >> 4, z() >> 4);
 	}
 
 	public void loadChunks(final ForgeChunkManager.Ticket ticket, final int chunkX, final int chunkZ) {
-		if (this.world.isRemote || ticket == null) {
+		if (world.isRemote || ticket == null) {
 			return;
 		}
-		if (this.cartTicket == null) {
-			this.cartTicket = ticket;
+		if (cartTicket == null) {
+			cartTicket = ticket;
 		}
 		for (int i = -1; i <= 1; ++i) {
 			for (int j = -1; j <= 1; ++j) {
@@ -1085,76 +1085,76 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public void initChunkLoading() {
-		if (this.world.isRemote || this.cartTicket != null) {
+		if (world.isRemote || cartTicket != null) {
 			return;
 		}
-		this.cartTicket = ForgeChunkManager.requestTicket(StevesCarts.instance, this.world, ForgeChunkManager.Type.ENTITY);
-		if (this.cartTicket != null) {
-			this.cartTicket.bindEntity(this);
-			this.cartTicket.setChunkListDepth(9);
-			this.loadChunks();
+		cartTicket = ForgeChunkManager.requestTicket(StevesCarts.instance, world, ForgeChunkManager.Type.ENTITY);
+		if (cartTicket != null) {
+			cartTicket.bindEntity(this);
+			cartTicket.setChunkListDepth(9);
+			loadChunks();
 		}
 	}
 
 	public void dropChunkLoading() {
-		if (this.world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
-		if (this.cartTicket != null) {
-			ForgeChunkManager.releaseTicket(this.cartTicket);
-			this.cartTicket = null;
+		if (cartTicket != null) {
+			ForgeChunkManager.releaseTicket(cartTicket);
+			cartTicket = null;
 		}
 	}
 
 	public void setWorker(final ModuleWorker worker) {
-		if (this.workingComponent != null && worker != null) {
-			this.workingComponent.stopWorking();
+		if (workingComponent != null && worker != null) {
+			workingComponent.stopWorking();
 		}
-		if ((this.workingComponent = worker) == null) {
-			this.setWorkingTime(0);
+		if ((workingComponent = worker) == null) {
+			setWorkingTime(0);
 		}
 	}
 
 	public ModuleWorker getWorker() {
-		return this.workingComponent;
+		return workingComponent;
 	}
 
 	public void setWorkingTime(final int val) {
-		this.workingTime = val;
+		workingTime = val;
 	}
 
 	private void work() {
-		if (this.isPlaceholder) {
+		if (isPlaceholder) {
 			return;
 		}
-		if (!this.world.isRemote && this.hasFuel()) {
-			if (this.workingTime <= 0) {
-				final ModuleWorker oldComponent = this.workingComponent;
-				if (this.workingComponent != null) {
-					final boolean result = this.workingComponent.work();
-					if (this.workingComponent != null && oldComponent == this.workingComponent && this.workingTime <= 0 && !this.workingComponent.preventAutoShutdown()) {
-						this.workingComponent.stopWorking();
+		if (!world.isRemote && hasFuel()) {
+			if (workingTime <= 0) {
+				final ModuleWorker oldComponent = workingComponent;
+				if (workingComponent != null) {
+					final boolean result = workingComponent.work();
+					if (workingComponent != null && oldComponent == workingComponent && workingTime <= 0 && !workingComponent.preventAutoShutdown()) {
+						workingComponent.stopWorking();
 					}
 					if (result) {
-						this.work();
+						work();
 						return;
 					}
 				}
-				if (this.workModules != null) {
-					for (final ModuleWorker module : this.workModules) {
+				if (workModules != null) {
+					for (final ModuleWorker module : workModules) {
 						if (module.work()) {
 							return;
 						}
 					}
 				}
 			} else {
-				--this.workingTime;
+				--workingTime;
 			}
 		}
 	}
 
 	public void handleActivator(final ActivatorOption option, final boolean isOrange) {
-		for (final ModuleBase module : this.modules) {
+		for (final ModuleBase module : modules) {
 			if (module instanceof IActivatorModule && option.getModule().isAssignableFrom(module.getClass())) {
 				final IActivatorModule iactivator = (IActivatorModule) module;
 				if (option.shouldActivate(isOrange)) {
@@ -1180,23 +1180,23 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		if (yaw < 0.0f) {
 			yaw += 360.0f;
 		}
-		if (!this.oldRender || Math.abs(yaw - this.lastRenderYaw) < 90.0f || Math.abs(yaw - this.lastRenderYaw) > 270.0f || (this.motionX > 0.0 && this.lastMotionX < 0.0) || (this.motionZ > 0.0 && this.lastMotionZ < 0.0)
-			|| (this.motionX < 0.0 && this.lastMotionX > 0.0) || (this.motionZ < 0.0 && this.lastMotionZ > 0.0) || this.wrongRender >= 50) {
-			this.lastMotionX = this.motionX;
-			this.lastMotionZ = this.motionZ;
-			this.lastRenderYaw = yaw;
-			this.oldRender = true;
-			this.wrongRender = 0;
+		if (!oldRender || Math.abs(yaw - lastRenderYaw) < 90.0f || Math.abs(yaw - lastRenderYaw) > 270.0f || (motionX > 0.0 && lastMotionX < 0.0) || (motionZ > 0.0 && lastMotionZ < 0.0)
+			|| (motionX < 0.0 && lastMotionX > 0.0) || (motionZ < 0.0 && lastMotionZ > 0.0) || wrongRender >= 50) {
+			lastMotionX = motionX;
+			lastMotionZ = motionZ;
+			lastRenderYaw = yaw;
+			oldRender = true;
+			wrongRender = 0;
 			return false;
 		}
-		++this.wrongRender;
+		++wrongRender;
 		return true;
 	}
 
 	public ArrayList<String> getLabel() {
 		final ArrayList<String> label = new ArrayList<>();
-		if (this.getModules() != null) {
-			for (final ModuleBase module : this.getModules()) {
+		if (getModules() != null) {
+			for (final ModuleBase module : getModules()) {
 				module.addToLabel(label);
 			}
 		}
@@ -1204,42 +1204,42 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public int x() {
-		return MathHelper.floor(this.posX);
+		return MathHelper.floor(posX);
 	}
 
 	public int y() {
-		return MathHelper.floor(this.posY);
+		return MathHelper.floor(posY);
 	}
 
 	public int z() {
-		return MathHelper.floor(this.posZ);
+		return MathHelper.floor(posZ);
 	}
 
 	public void addItemToChest(
 		@Nonnull
 			ItemStack iStack) {
-		TransferHandler.TransferItem(iStack, this, this.getCon(null), Slot.class, null, -1);
+		TransferHandler.TransferItem(iStack, this, getCon(null), Slot.class, null, -1);
 	}
 
 	public void addItemToChest(
 		@Nonnull
 			ItemStack iStack, final int start, final int end) {
-		TransferHandler.TransferItem(iStack, this, start, end, this.getCon(null), Slot.class, null, -1);
+		TransferHandler.TransferItem(iStack, this, start, end, getCon(null), Slot.class, null, -1);
 	}
 
 	public void addItemToChest(
 		@Nonnull
 			ItemStack iStack, final Class validSlot, final Class invalidSlot) {
-		TransferHandler.TransferItem(iStack, this, this.getCon(null), validSlot, invalidSlot, -1);
+		TransferHandler.TransferItem(iStack, this, getCon(null), validSlot, invalidSlot, -1);
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack removeStackFromSlot(int index) {
-		if (!this.getStackInSlot(index).isEmpty()) {
+		if (!getStackInSlot(index).isEmpty()) {
 			@Nonnull
-			ItemStack var2 = this.getStackInSlot(index);
-			this.setInventorySlotContents(index, ItemStack.EMPTY);
+			ItemStack var2 = getStackInSlot(index);
+			setInventorySlotContents(index, ItemStack.EMPTY);
 			return var2;
 		}
 		return ItemStack.EMPTY;
@@ -1248,8 +1248,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(int i) {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (i < module.getInventorySize()) {
 					return module.getStack(i);
 				}
@@ -1263,8 +1263,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public void setInventorySlotContents(int i,
 	                                     @Nonnull
 		                                     ItemStack item) {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (i < module.getInventorySize()) {
 					module.setStack(i, item);
 					break;
@@ -1277,22 +1277,22 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@Override
 	@Nonnull
 	public ItemStack decrStackSize(final int i, final int n) {
-		if (this.modules == null) {
+		if (modules == null) {
 			return ItemStack.EMPTY;
 		}
-		if (this.getStackInSlot(i).isEmpty()) {
+		if (getStackInSlot(i).isEmpty()) {
 			return ItemStack.EMPTY;
 		}
-		if (this.getStackInSlot(i).getCount() <= n) {
+		if (getStackInSlot(i).getCount() <= n) {
 			@Nonnull
-			ItemStack item = this.getStackInSlot(i);
-			this.setInventorySlotContents(i, ItemStack.EMPTY);
+			ItemStack item = getStackInSlot(i);
+			setInventorySlotContents(i, ItemStack.EMPTY);
 			return item;
 		}
 		@Nonnull
-		ItemStack item = this.getStackInSlot(i).splitStack(n);
-		if (this.getStackInSlot(i).getCount() == 0) {
-			this.setInventorySlotContents(i, ItemStack.EMPTY);
+		ItemStack item = getStackInSlot(i).splitStack(n);
+		if (getStackInSlot(i).getCount() == 0) {
+			setInventorySlotContents(i, ItemStack.EMPTY);
 		}
 		return item;
 	}
@@ -1303,8 +1303,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public void openInventory(EntityPlayer player) {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (module instanceof ModuleChest) {
 					((ModuleChest) module).openChest();
 				}
@@ -1314,8 +1314,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public void closeInventory(EntityPlayer player) {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (module instanceof ModuleChest) {
 					((ModuleChest) module).closeChest();
 				}
@@ -1324,13 +1324,13 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public void setPlaceholder(final TileEntityCartAssembler assembler) {
-		this.isPlaceholder = true;
-		this.placeholderAsssembler = assembler;
+		isPlaceholder = true;
+		placeholderAsssembler = assembler;
 	}
 
 	@Override
 	public AxisAlignedBB getEntityBoundingBox() {
-		if (this.isPlaceholder) {
+		if (isPlaceholder) {
 			return null;
 		}
 		return super.getEntityBoundingBox();
@@ -1338,19 +1338,19 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public boolean canBeCollidedWith() {
-		return !this.isPlaceholder && super.canBeCollidedWith();
+		return !isPlaceholder && super.canBeCollidedWith();
 	}
 
 	@Override
 	public boolean canBePushed() {
-		return !this.isPlaceholder && super.canBePushed();
+		return !isPlaceholder && super.canBePushed();
 	}
 
 	@SideOnly(Side.CLIENT)
 	private void generateModels() {
-		if (this.modules != null) {
+		if (modules != null) {
 			final ArrayList<String> invalid = new ArrayList<>();
-			for (final ModuleBase module : this.modules) {
+			for (final ModuleBase module : modules) {
 				final ModuleData data = module.getData();
 				if (data.haveRemovedModels()) {
 					for (final String remove : data.getRemovedModels()) {
@@ -1358,14 +1358,14 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 					}
 				}
 			}
-			for (int i = this.modules.size() - 1; i >= 0; --i) {
-				final ModuleBase module = this.modules.get(i);
+			for (int i = modules.size() - 1; i >= 0; --i) {
+				final ModuleBase module = modules.get(i);
 				final ModuleData data = module.getData();
-				if (data != null && data.haveModels(this.isPlaceholder)) {
+				if (data != null && data.haveModels(isPlaceholder)) {
 					final ArrayList<ModelCartbase> models = new ArrayList<>();
-					for (final String str : data.getModels(this.isPlaceholder).keySet()) {
+					for (final String str : data.getModels(isPlaceholder).keySet()) {
 						if (!invalid.contains(str)) {
-							models.add(data.getModels(this.isPlaceholder).get(str));
+							models.add(data.getModels(isPlaceholder).get(str));
 							invalid.add(str);
 						}
 					}
@@ -1384,12 +1384,12 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public void writeSpawnData(final ByteBuf data) {
-		data.writeByte(this.moduleLoadingData.length);
-		for (final byte b : this.moduleLoadingData) {
+		data.writeByte(moduleLoadingData.length);
+		for (final byte b : moduleLoadingData) {
 			data.writeByte(b);
 		}
-		data.writeByte(this.name.getBytes().length);
-		for (final byte b : this.name.getBytes()) {
+		data.writeByte(name.getBytes().length);
+		for (final byte b : name.getBytes()) {
 			data.writeByte(b);
 		}
 	}
@@ -1399,33 +1399,33 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		final byte length = data.readByte();
 		final byte[] bytes = new byte[length];
 		data.readBytes(bytes);
-		this.loadModules(bytes);
+		loadModules(bytes);
 		final int nameLength = data.readByte();
 		final byte[] nameBytes = new byte[nameLength];
 		for (int i = 0; i < nameLength; ++i) {
 			nameBytes[i] = data.readByte();
 		}
-		this.name = new String(nameBytes);
+		name = new String(nameBytes);
 		if (getDataManager() instanceof EntityDataManagerLockable) {
 			((EntityDataManagerLockable) getDataManager()).release();
 		}
 	}
 
 	public void setScrollY(final int val) {
-		if (this.canScrollModules) {
-			this.scrollY = val;
+		if (canScrollModules) {
+			scrollY = val;
 		}
 	}
 
 	public int getScrollY() {
-		if (this.getInterfaceThief() != null) {
+		if (getInterfaceThief() != null) {
 			return 0;
 		}
-		return this.scrollY;
+		return scrollY;
 	}
 
 	public int getRealScrollY() {
-		return (int) ((this.modularSpaceHeight - 168) / 198.0f * this.getScrollY());
+		return (int) ((modularSpaceHeight - 168) / 198.0f * getScrollY());
 	}
 
 	@Override
@@ -1433,8 +1433,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		int amount = 0;
 		if (resource != null && resource.amount > 0) {
 			final FluidStack fluid = resource.copy();
-			for (int i = 0; i < this.tankModules.size(); ++i) {
-				final int tempAmount = this.tankModules.get(i).fill(fluid, doFill);
+			for (int i = 0; i < tankModules.size(); ++i) {
+				final int tempAmount = tankModules.get(i).fill(fluid, doFill);
 				amount += tempAmount;
 				final FluidStack fluidStack = fluid;
 				fluidStack.amount -= tempAmount;
@@ -1448,12 +1448,12 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public FluidStack drain(final int maxDrain, final boolean doDrain) {
-		return this.drain(maxDrain, doDrain);
+		return drain(maxDrain, doDrain);
 	}
 
 	@Override
 	public FluidStack drain(final FluidStack resource, final boolean doDrain) {
-		return this.drain(resource, (resource == null) ? 0 : resource.amount, doDrain);
+		return drain(resource, (resource == null) ? 0 : resource.amount, doDrain);
 	}
 
 	private FluidStack drain(final FluidStack resource, int maxDrain, final boolean doDrain) {
@@ -1462,9 +1462,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			ret = ret.copy();
 			ret.amount = 0;
 		}
-		for (int i = 0; i < this.tankModules.size(); ++i) {
+		for (int i = 0; i < tankModules.size(); ++i) {
 			FluidStack temp = null;
-			temp = this.tankModules.get(i).drain(maxDrain, doDrain);
+			temp = tankModules.get(i).drain(maxDrain, doDrain);
 			if (temp != null && (ret == null || ret.isFluidEqual(temp))) {
 				if (ret == null) {
 					ret = temp;
@@ -1487,7 +1487,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public int drain(final Fluid type, int maxDrain, final boolean doDrain) {
 		int amount = 0;
 		if (type != null && maxDrain > 0) {
-			for (final ModuleTank tank : this.tankModules) {
+			for (final ModuleTank tank : tankModules) {
 				final FluidStack drained = tank.drain(maxDrain, false);
 				if (drained != null && type.equals(drained.getFluid())) {
 					amount += drained.amount;
@@ -1507,9 +1507,9 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
-		IFluidTankProperties[] ret = new IFluidTankProperties[this.tankModules.size()];
+		IFluidTankProperties[] ret = new IFluidTankProperties[tankModules.size()];
 		for (int i = 0; i < ret.length; ++i) {
-			ret[i] = new FluidTankProperties(this.tankModules.get(i).getFluid(), this.tankModules.get(i).getCapacity());
+			ret[i] = new FluidTankProperties(tankModules.get(i).getFluid(), tankModules.get(i).getCapacity());
 		}
 		return ret;
 	}
@@ -1518,8 +1518,8 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public boolean isItemValidForSlot(int slot,
 	                                  @Nonnull
 		                                  ItemStack item) {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
+		if (modules != null) {
+			for (final ModuleBase module : modules) {
 				if (slot < module.getInventorySize()) {
 					return module.getSlots().get(slot).isItemValid(item);
 				}
@@ -1539,14 +1539,14 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	}
 
 	public String getCartName() {
-		if (this.name == null || this.name.length() == 0) {
+		if (name == null || name.length() == 0) {
 			return "Modular Cart";
 		}
-		return this.name;
+		return name;
 	}
 
 	public boolean hasCreativeSupplies() {
-		return this.creativeSupplies != null;
+		return creativeSupplies != null;
 	}
 
 	@Override
@@ -1557,7 +1557,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	@SideOnly(Side.CLIENT)
 	public void setSound(final MovingSound sound, final boolean riding) {
 		if (riding) {
-			this.soundRiding = sound;
+			soundRiding = sound;
 		} else {
 			this.sound = sound;
 		}
@@ -1565,19 +1565,19 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@SideOnly(Side.CLIENT)
 	public void silent() {
-		this.keepSilent = 6;
+		keepSilent = 6;
 	}
 
 	@SideOnly(Side.CLIENT)
 	private void updateSounds() {
-		if (this.keepSilent > 1) {
-			--this.keepSilent;
-			this.stopSound(this.sound);
-			this.stopSound(this.soundRiding);
-			this.sound = null;
-			this.soundRiding = null;
-		} else if (this.keepSilent == 1) {
-			this.keepSilent = 0;
+		if (keepSilent > 1) {
+			--keepSilent;
+			stopSound(sound);
+			stopSound(soundRiding);
+			sound = null;
+			soundRiding = null;
+		} else if (keepSilent == 1) {
+			keepSilent = 0;
 			Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecart(this));
 			Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMinecartRiding(Minecraft.getMinecraft().player, this));
 		}

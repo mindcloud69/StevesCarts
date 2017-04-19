@@ -13,7 +13,7 @@ public class DistributorSide {
 		this.name = name;
 		this.id = id;
 		this.side = side;
-		this.data = 0;
+		data = 0;
 	}
 
 	public void setData(final int data) {
@@ -21,15 +21,15 @@ public class DistributorSide {
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public EnumFacing getSide() {
-		return this.side;
+		return side;
 	}
 
 	public EnumFacing getFacing() {
@@ -37,53 +37,53 @@ public class DistributorSide {
 	}
 
 	public int getData() {
-		return this.data;
+		return data;
 	}
 
 	public boolean isEnabled(final TileEntityDistributor distributor) {
 		if (distributor.getInventories().length == 0) {
 			return false;
 		}
-		if (this.getSide() == EnumFacing.DOWN) {
+		if (getSide() == EnumFacing.DOWN) {
 			return !distributor.hasBot;
 		}
-		return this.getSide() != EnumFacing.UP || !distributor.hasTop;
+		return getSide() != EnumFacing.UP || !distributor.hasTop;
 	}
 
 	public boolean isSet(final int id) {
-		return (this.data & 1 << id) != 0x0;
+		return (data & 1 << id) != 0x0;
 	}
 
 	public void set(final int id) {
 		int count = 0;
 		for (final DistributorSetting setting : DistributorSetting.settings) {
-			if (this.isSet(setting.getId())) {
+			if (isSet(setting.getId())) {
 				++count;
 			}
 		}
 		if (count < 11) {
-			this.data |= 1 << id;
+			data |= 1 << id;
 		}
 	}
 
 	public void reset(final int id) {
-		this.data &= ~(1 << id);
+		data &= ~(1 << id);
 	}
 
 	public short getLowShortData() {
-		return (short) (this.getData() & 0xFFFF);
+		return (short) (getData() & 0xFFFF);
 	}
 
 	public short getHighShortData() {
-		return (short) (this.getData() >> 16 & 0xFFFF);
+		return (short) (getData() >> 16 & 0xFFFF);
 	}
 
 	public void setLowShortData(final short data) {
-		this.data = (this.fixSignedIssue(this.getHighShortData()) << 16 | this.fixSignedIssue(data));
+		this.data = (fixSignedIssue(getHighShortData()) << 16 | fixSignedIssue(data));
 	}
 
 	public void setHighShortData(final short data) {
-		this.data = (this.fixSignedIssue(this.getLowShortData()) | this.fixSignedIssue(data) << 16);
+		this.data = (fixSignedIssue(getLowShortData()) | fixSignedIssue(data) << 16);
 	}
 
 	private int fixSignedIssue(final short val) {
@@ -94,6 +94,6 @@ public class DistributorSide {
 	}
 
 	public String getInfo() {
-		return Localization.GUI.DISTRIBUTOR.SIDE_TOOL_TIP.translate(this.getName());
+		return Localization.GUI.DISTRIBUTOR.SIDE_TOOL_TIP.translate(getName());
 	}
 }

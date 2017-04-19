@@ -9,12 +9,12 @@ public class ButtonControlType extends ButtonAssembly {
 
 	public ButtonControlType(final ModuleComputer module, final LOCATION loc, final int id) {
 		super(module, loc);
-		this.typeId = id;
+		typeId = id;
 	}
 
 	@Override
 	public String toString() {
-		return "Change to " + ComputerTask.getControlTypeName(this.typeId);
+		return "Change to " + ComputerTask.getControlTypeName(typeId);
 	}
 
 	@Override
@@ -22,8 +22,8 @@ public class ButtonControlType extends ButtonAssembly {
 		if (!super.isVisible()) {
 			return false;
 		}
-		if (this.module instanceof ModuleComputer && ((ModuleComputer) this.module).getSelectedTasks() != null && ((ModuleComputer) this.module).getSelectedTasks().size() > 0) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+		if (module instanceof ModuleComputer && ((ModuleComputer) module).getSelectedTasks() != null && ((ModuleComputer) module).getSelectedTasks().size() > 0) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
 				if (!ComputerTask.isControl(task.getType())) {
 					return false;
 				}
@@ -35,7 +35,7 @@ public class ButtonControlType extends ButtonAssembly {
 
 	@Override
 	public int texture() {
-		return ComputerTask.getControlImage(this.typeId);
+		return ComputerTask.getControlImage(typeId);
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class ButtonControlType extends ButtonAssembly {
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (task.getControlType() != this.typeId) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (task.getControlType() != typeId) {
 				return true;
 			}
 		}
@@ -55,8 +55,8 @@ public class ButtonControlType extends ButtonAssembly {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			task.setControlType(this.typeId);
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			task.setControlType(typeId);
 		}
 	}
 }

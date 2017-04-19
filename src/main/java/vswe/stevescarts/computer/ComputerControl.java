@@ -53,7 +53,7 @@ public class ComputerControl {
 
 	public boolean isControlValid(final EntityMinecartModular cart) {
 		for (final ModuleBase module : cart.getModules()) {
-			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
+			if (moduleClass.isAssignableFrom(module.getClass()) && isValid(module)) {
 				return true;
 			}
 		}
@@ -61,38 +61,38 @@ public class ComputerControl {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public int getTexture() {
-		return this.texture;
+		return texture;
 	}
 
 	public void runHandler(final EntityMinecartModular cart, final byte val) {
 		for (final ModuleBase module : cart.getModules()) {
-			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
-				this.run(module, this.clamp(val, (byte) this.getIntegerMin(), (byte) this.getIntegerMax()));
+			if (moduleClass.isAssignableFrom(module.getClass()) && isValid(module)) {
+				run(module, clamp(val, (byte) getIntegerMin(), (byte) getIntegerMax()));
 				break;
 			}
 		}
 	}
 
 	public int getIntegerMin() {
-		if (this.isBoolean()) {
+		if (isBoolean()) {
 			return 0;
 		}
-		return this.getMin();
+		return getMin();
 	}
 
 	public int getIntegerMax() {
-		if (this.isBoolean()) {
+		if (isBoolean()) {
 			return 1;
 		}
-		return this.getMax();
+		return getMax();
 	}
 
 	public boolean useIntegerOfSize(final int size) {
-		return !this.isBoolean() || size <= 1;
+		return !isBoolean() || size <= 1;
 	}
 
 	protected boolean isBoolean() {

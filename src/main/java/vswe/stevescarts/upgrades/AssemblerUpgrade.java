@@ -145,20 +145,20 @@ public class AssemblerUpgrade {
 		this.id = (byte) id;
 		this.sideTexture = sideTexture;
 		this.name = name;
-		this.effects = new ArrayList<>();
+		effects = new ArrayList<>();
 		AssemblerUpgrade.upgrades.put(this.id, this);
 	}
 
 	public byte getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getName() {
-		return I18n.translateToLocal("item.SC2:" + this.getRawName() + ".name");
+		return I18n.translateToLocal("item.SC2:" + getRawName() + ".name");
 	}
 
 	public AssemblerUpgrade addEffect(final BaseEffect effect) {
-		this.effects.add(effect);
+		effects.add(effect);
 		return this;
 	}
 
@@ -168,7 +168,7 @@ public class AssemblerUpgrade {
 	}
 
 	public AssemblerUpgrade addRecipe(final Object[][] recipe) {
-		return this.addRecipe(1, recipe);
+		return addRecipe(1, recipe);
 	}
 
 	public static void initRecipes() {
@@ -181,24 +181,24 @@ public class AssemblerUpgrade {
 
 	@Nonnull
 	protected ItemStack getItemStack() {
-		return this.getItemStack(1);
+		return getItemStack(1);
 	}
 
 	@Nonnull
 	protected ItemStack getItemStack(final int count) {
-		return new ItemStack(ModItems.upgrades, count, this.id);
+		return new ItemStack(ModItems.upgrades, count, id);
 	}
 
 	public ArrayList<BaseEffect> getEffects() {
-		return this.effects;
+		return effects;
 	}
 
 	public boolean useStandardInterface() {
-		return this.getInterfaceEffect() == null;
+		return getInterfaceEffect() == null;
 	}
 
 	public int getInventorySize() {
-		final InventoryEffect inv = this.getInventoryEffect();
+		final InventoryEffect inv = getInventoryEffect();
 		if (inv != null) {
 			return inv.getInventorySize();
 		}
@@ -206,7 +206,7 @@ public class AssemblerUpgrade {
 	}
 
 	public InterfaceEffect getInterfaceEffect() {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			if (effect instanceof InterfaceEffect) {
 				return (InterfaceEffect) effect;
 			}
@@ -215,7 +215,7 @@ public class AssemblerUpgrade {
 	}
 
 	public InventoryEffect getInventoryEffect() {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			if (effect instanceof InventoryEffect) {
 				return (InventoryEffect) effect;
 			}
@@ -224,7 +224,7 @@ public class AssemblerUpgrade {
 	}
 
 	public TankEffect getTankEffect() {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			if (effect instanceof TankEffect) {
 				return (TankEffect) effect;
 			}
@@ -233,37 +233,37 @@ public class AssemblerUpgrade {
 	}
 
 	public void init(final TileEntityUpgrade upgrade) {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			effect.init(upgrade);
 		}
 	}
 
 	public void load(final TileEntityUpgrade upgrade, final NBTTagCompound compound) {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			effect.load(upgrade, compound);
 		}
 	}
 
 	public void save(final TileEntityUpgrade upgrade, final NBTTagCompound compound) {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			effect.save(upgrade, compound);
 		}
 	}
 
 	public void update(final TileEntityUpgrade upgrade) {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			effect.update(upgrade);
 		}
 	}
 
 	public void removed(final TileEntityUpgrade upgrade) {
-		for (final BaseEffect effect : this.effects) {
+		for (final BaseEffect effect : effects) {
 			effect.removed(upgrade);
 		}
 	}
 
 	public String getRawName() {
-		return this.name.replace(":", "").replace(" ", "_").toLowerCase();
+		return name.replace(":", "").replace(" ", "_").toLowerCase();
 	}
 
 	//	@SideOnly(Side.CLIENT)
@@ -275,7 +275,7 @@ public class AssemblerUpgrade {
 	//
 	@SideOnly(Side.CLIENT)
 	public String getIcon() {
-		return this.icon;
+		return icon;
 	}
 
 	public void setIcon(String icon) {

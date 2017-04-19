@@ -39,8 +39,8 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	public ModuleAdvControl(final EntityMinecartModular cart) {
 		super(cart);
-		this.first = true;
-		this.buttonRect = new int[] { 15, 20, 24, 12 };
+		first = true;
+		buttonRect = new int[] { 15, 20, 24, 12 };
 	}
 
 	@Override
@@ -67,40 +67,40 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	@Override
 	public void renderOverlay(final Minecraft minecraft) {
 		ResourceHelper.bindResource("/gui/drive.png");
-		if (this.engineInformation != null) {
-			for (int i = 0; i < this.getCart().getEngines().size(); ++i) {
-				this.drawImage(5, i * 15, 0, 0, 66, 15);
-				final int upperBarLength = this.engineInformation[i * 2] & 0x3F;
-				final int lowerBarLength = this.engineInformation[i * 2 + 1] & 0x3F;
-				final ModuleEngine engine = this.getCart().getEngines().get(i);
+		if (engineInformation != null) {
+			for (int i = 0; i < getCart().getEngines().size(); ++i) {
+				drawImage(5, i * 15, 0, 0, 66, 15);
+				final int upperBarLength = engineInformation[i * 2] & 0x3F;
+				final int lowerBarLength = engineInformation[i * 2 + 1] & 0x3F;
+				final ModuleEngine engine = getCart().getEngines().get(i);
 				final float[] rgb = engine.getGuiBarColor();
 				GL11.glColor4f(rgb[0], rgb[1], rgb[2], 1.0f);
-				this.drawImage(7, i * 15 + 2, 66, 0, upperBarLength, 5);
-				this.drawImage(7, i * 15 + 2 + 6, 66, 6, lowerBarLength, 5);
+				drawImage(7, i * 15 + 2, 66, 0, upperBarLength, 5);
+				drawImage(7, i * 15 + 2 + 6, 66, 6, lowerBarLength, 5);
 				GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-				this.drawImage(5, i * 15, 66 + engine.getPriority() * 7, 11, 7, 15);
+				drawImage(5, i * 15, 66 + engine.getPriority() * 7, 11, 7, 15);
 			}
 		}
-		final int enginesEndAt = this.getCart().getEngines().size() * 15;
-		this.drawImage(5, enginesEndAt, 0, 15, 32, 32);
+		final int enginesEndAt = getCart().getEngines().size() * 15;
+		drawImage(5, enginesEndAt, 0, 15, 32, 32);
 		if (minecraft.gameSettings.keyBindForward.isKeyDown()) {
-			this.drawImage(15, enginesEndAt + 5, 42, 20, 12, 6);
+			drawImage(15, enginesEndAt + 5, 42, 20, 12, 6);
 		} else if (minecraft.gameSettings.keyBindLeft.isKeyDown()) {
-			this.drawImage(7, enginesEndAt + 13, 34, 28, 6, 12);
+			drawImage(7, enginesEndAt + 13, 34, 28, 6, 12);
 		} else if (minecraft.gameSettings.keyBindRight.isKeyDown()) {
-			this.drawImage(29, enginesEndAt + 13, 56, 28, 6, 12);
+			drawImage(29, enginesEndAt + 13, 56, 28, 6, 12);
 		}
-		final int speedGraphicHeight = this.getSpeedSetting() * 2;
-		this.drawImage(14, enginesEndAt + 13 + 12 - speedGraphicHeight, 41, 40 - speedGraphicHeight, 14, speedGraphicHeight);
-		this.drawImage(0, 0, 0, 67, 5, 130);
-		this.drawImage(1, 1 + (256 - this.getCart().y()) / 2, 5, 67, 5, 1);
-		this.drawImage(5, enginesEndAt + 32, 0, 47, 32, 20);
-		this.drawImage(5, enginesEndAt + 52, 0, 47, 32, 20);
-		this.drawImage(5, enginesEndAt + 72, 0, 47, 32, 20);
+		final int speedGraphicHeight = getSpeedSetting() * 2;
+		drawImage(14, enginesEndAt + 13 + 12 - speedGraphicHeight, 41, 40 - speedGraphicHeight, 14, speedGraphicHeight);
+		drawImage(0, 0, 0, 67, 5, 130);
+		drawImage(1, 1 + (256 - getCart().y()) / 2, 5, 67, 5, 1);
+		drawImage(5, enginesEndAt + 32, 0, 47, 32, 20);
+		drawImage(5, enginesEndAt + 52, 0, 47, 32, 20);
+		drawImage(5, enginesEndAt + 72, 0, 47, 32, 20);
 		minecraft.fontRendererObj.drawString(Localization.MODULES.ATTACHMENTS.ODO.translate(), 7, enginesEndAt + 52 + 2, 4210752);
-		minecraft.fontRendererObj.drawString(this.distToString(this.odo), 7, enginesEndAt + 52 + 11, 4210752);
+		minecraft.fontRendererObj.drawString(distToString(odo), 7, enginesEndAt + 52 + 11, 4210752);
 		minecraft.fontRendererObj.drawString(Localization.MODULES.ATTACHMENTS.TRIP.translate(), 7, enginesEndAt + 52 + 22, 4210752);
-		minecraft.fontRendererObj.drawString(this.distToString(this.trip), 7, enginesEndAt + 52 + 31, 4210752);
+		minecraft.fontRendererObj.drawString(distToString(trip), 7, enginesEndAt + 52 + 31, 4210752);
 		drawItem(new ItemStack(Items.CLOCK, 1), 5, enginesEndAt + 32 + 3);
 		drawItem(new ItemStack(Items.COMPASS, 1), 21, enginesEndAt + 32 + 3);
 	}
@@ -159,11 +159,11 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.engineInformation = data;
+			engineInformation = data;
 		} else if (id == 1) {
-			if (this.getCart().getCartRider() != null && this.getCart().getCartRider() instanceof EntityPlayer && this.getCart().getCartRider() == player) {
-				this.keyinformation = data[0];
-				this.getCart().resetRailDirection();
+			if (getCart().getCartRider() != null && getCart().getCartRider() instanceof EntityPlayer && getCart().getCartRider() == player) {
+				keyinformation = data[0];
+				getCart().resetRailDirection();
 			}
 		} else if (id == 2) {
 			int intOdo = 0;
@@ -180,80 +180,80 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 				}
 				intTrip |= temp << i * 8;
 			}
-			this.odo = intOdo;
-			this.trip = intTrip;
+			odo = intOdo;
+			trip = intTrip;
 		} else if (id == 3) {
-			this.trip = 0.0;
-			this.tripPacketTimer = 0;
+			trip = 0.0;
+			tripPacketTimer = 0;
 		}
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().world.isRemote && this.getCart().getCartRider() != null && this.getCart().getCartRider() instanceof EntityPlayer) {
-			if (this.enginePacketTimer == 0) {
-				this.sendEnginePacket((EntityPlayer) this.getCart().getCartRider());
-				this.enginePacketTimer = 15;
+		if (!getCart().world.isRemote && getCart().getCartRider() != null && getCart().getCartRider() instanceof EntityPlayer) {
+			if (enginePacketTimer == 0) {
+				sendEnginePacket((EntityPlayer) getCart().getCartRider());
+				enginePacketTimer = 15;
 			} else {
-				--this.enginePacketTimer;
+				--enginePacketTimer;
 			}
-			if (this.tripPacketTimer == 0) {
-				this.sendTripPacket((EntityPlayer) this.getCart().getCartRider());
-				this.tripPacketTimer = 500;
+			if (tripPacketTimer == 0) {
+				sendTripPacket((EntityPlayer) getCart().getCartRider());
+				tripPacketTimer = 500;
 			} else {
-				--this.tripPacketTimer;
+				--tripPacketTimer;
 			}
 		} else {
-			this.enginePacketTimer = 0;
-			this.tripPacketTimer = 0;
+			enginePacketTimer = 0;
+			tripPacketTimer = 0;
 		}
-		if (this.getCart().world.isRemote) {
-			this.encodeKeys();
+		if (getCart().world.isRemote) {
+			encodeKeys();
 		}
-		if (!this.lastBackKey && this.isBackKeyDown()) {
-			this.turnback();
+		if (!lastBackKey && isBackKeyDown()) {
+			turnback();
 		}
-		this.lastBackKey = this.isBackKeyDown();
-		if (!this.getCart().world.isRemote) {
-			if (this.speedChangeCooldown == 0) {
-				if (!this.isJumpKeyDown() || !this.isBackKeyDown()) {
-					if (this.isJumpKeyDown()) {
-						this.setSpeedSetting(this.getSpeedSetting() + 1);
-						this.speedChangeCooldown = 8;
-					} else if (this.isBackKeyDown()) {
-						this.setSpeedSetting(this.getSpeedSetting() - 1);
-						this.speedChangeCooldown = 8;
+		lastBackKey = isBackKeyDown();
+		if (!getCart().world.isRemote) {
+			if (speedChangeCooldown == 0) {
+				if (!isJumpKeyDown() || !isBackKeyDown()) {
+					if (isJumpKeyDown()) {
+						setSpeedSetting(getSpeedSetting() + 1);
+						speedChangeCooldown = 8;
+					} else if (isBackKeyDown()) {
+						setSpeedSetting(getSpeedSetting() - 1);
+						speedChangeCooldown = 8;
 					} else {
-						this.speedChangeCooldown = 0;
+						speedChangeCooldown = 0;
 					}
 				}
 			} else {
-				--this.speedChangeCooldown;
+				--speedChangeCooldown;
 			}
-			if (this.isForwardKeyDown() && this.isLeftKeyDown() && this.isRightKeyDown() && this.getCart().getCartRider() != null && this.getCart().getCartRider() instanceof EntityPlayer) {
-				this.getCart().getCartRider().startRiding(getCart());
-				this.keyinformation = 0;
+			if (isForwardKeyDown() && isLeftKeyDown() && isRightKeyDown() && getCart().getCartRider() != null && getCart().getCartRider() instanceof EntityPlayer) {
+				getCart().getCartRider().startRiding(getCart());
+				keyinformation = 0;
 			}
 		}
-		final double x = this.getCart().posX - this.lastPosX;
-		final double y = this.getCart().posY - this.lastPosY;
-		final double z = this.getCart().posZ - this.lastPosZ;
-		this.lastPosX = this.getCart().posX;
-		this.lastPosY = this.getCart().posY;
-		this.lastPosZ = this.getCart().posZ;
+		final double x = getCart().posX - lastPosX;
+		final double y = getCart().posY - lastPosY;
+		final double z = getCart().posZ - lastPosZ;
+		lastPosX = getCart().posX;
+		lastPosY = getCart().posY;
+		lastPosZ = getCart().posZ;
 		final double dist = Math.sqrt(x * x + y * y + z * z);
-		if (!this.first) {
-			this.odo += dist;
-			this.trip += dist;
+		if (!first) {
+			odo += dist;
+			trip += dist;
 		} else {
-			this.first = false;
+			first = false;
 		}
 	}
 
 	@Override
 	public double getPushFactor() {
-		switch (this.getSpeedSetting()) {
+		switch (getSpeedSetting()) {
 			case 1: {
 				return 0.01;
 			}
@@ -279,62 +279,62 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	}
 
 	private void encodeKeys() {
-		if (this.getCart().getCartRider() != null && this.getCart().getCartRider() instanceof EntityPlayer && this.getCart().getCartRider() == this.getClientPlayer()) {
+		if (getCart().getCartRider() != null && getCart().getCartRider() instanceof EntityPlayer && getCart().getCartRider() == getClientPlayer()) {
 			final Minecraft minecraft = Minecraft.getMinecraft();
-			final byte oldVal = this.keyinformation;
-			this.keyinformation = 0;
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindForward.isKeyDown() ? 1 : 0) << 0);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindLeft.isKeyDown() ? 1 : 0) << 1);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindRight.isKeyDown() ? 1 : 0) << 2);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 3);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindJump.isKeyDown() ? 1 : 0) << 4);
-			this.keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 5);
-			if (oldVal != this.keyinformation) {
-				PacketHandler.sendPacket(this.getCart(), 1 + this.getPacketStart(), new byte[] { this.keyinformation });
+			final byte oldVal = keyinformation;
+			keyinformation = 0;
+			keyinformation |= (byte) ((minecraft.gameSettings.keyBindForward.isKeyDown() ? 1 : 0) << 0);
+			keyinformation |= (byte) ((minecraft.gameSettings.keyBindLeft.isKeyDown() ? 1 : 0) << 1);
+			keyinformation |= (byte) ((minecraft.gameSettings.keyBindRight.isKeyDown() ? 1 : 0) << 2);
+			keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 3);
+			keyinformation |= (byte) ((minecraft.gameSettings.keyBindJump.isKeyDown() ? 1 : 0) << 4);
+			keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 5);
+			if (oldVal != keyinformation) {
+				PacketHandler.sendPacket(getCart(), 1 + getPacketStart(), new byte[] { keyinformation });
 			}
 		}
 	}
 
 	private boolean isForwardKeyDown() {
-		return (this.keyinformation & 0x1) != 0x0;
+		return (keyinformation & 0x1) != 0x0;
 	}
 
 	private boolean isLeftKeyDown() {
-		return (this.keyinformation & 0x2) != 0x0;
+		return (keyinformation & 0x2) != 0x0;
 	}
 
 	private boolean isRightKeyDown() {
-		return (this.keyinformation & 0x4) != 0x0;
+		return (keyinformation & 0x4) != 0x0;
 	}
 
 	private boolean isBackKeyDown() {
-		return (this.keyinformation & 0x8) != 0x0;
+		return (keyinformation & 0x8) != 0x0;
 	}
 
 	private boolean isJumpKeyDown() {
-		return (this.keyinformation & 0x10) != 0x0;
+		return (keyinformation & 0x10) != 0x0;
 	}
 
 	private boolean isSneakKeyDown() {
-		return (this.keyinformation & 0x20) != 0x0;
+		return (keyinformation & 0x20) != 0x0;
 	}
 
 	private void sendTripPacket(final EntityPlayer player) {
 		final byte[] data = new byte[8];
-		final int intOdo = (int) this.odo;
-		final int intTrip = (int) this.trip;
+		final int intOdo = (int) odo;
+		final int intTrip = (int) trip;
 		for (int i = 0; i < 4; ++i) {
 			data[i] = (byte) ((intOdo & 255 << i * 8) >> i * 8);
 			data[i + 4] = (byte) ((intTrip & 255 << i * 8) >> i * 8);
 		}
-		this.sendPacket(2, data, player);
+		sendPacket(2, data, player);
 	}
 
 	private void sendEnginePacket(final EntityPlayer player) {
-		final int engineCount = this.getCart().getEngines().size();
+		final int engineCount = getCart().getEngines().size();
 		final byte[] data = new byte[engineCount * 2];
-		for (int i = 0; i < this.getCart().getEngines().size(); ++i) {
-			final ModuleEngine engine = this.getCart().getEngines().get(i);
+		for (int i = 0; i < getCart().getEngines().size(); ++i) {
+			final ModuleEngine engine = getCart().getEngines().get(i);
 			final int totalfuel = engine.getTotalFuel();
 			final int fuelInTopBar = 20000;
 			final int maxBarLength = 62;
@@ -347,7 +347,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 			data[i * 2] = (byte) (upperBarLength & 0x3F);
 			data[i * 2 + 1] = (byte) (lowerBarLength & 0x3F);
 		}
-		this.sendPacket(0, data, player);
+		sendPacket(0, data, player);
 	}
 
 	@Override
@@ -359,14 +359,14 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		if (val < 0 || val > 6) {
 			return;
 		}
-		this.updateDw(SPEED, val);
+		updateDw(SPEED, val);
 	}
 
 	private int getSpeedSetting() {
-		if (this.isPlaceholder()) {
+		if (isPlaceholder()) {
 			return 1;
 		}
-		return this.getDw(SPEED);
+		return getDw(SPEED);
 	}
 
 	@Override
@@ -382,7 +382,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	@Override
 	public boolean stopEngines() {
-		return this.getSpeedSetting() == 0;
+		return getSpeedSetting() == 0;
 	}
 
 	@Override
@@ -390,7 +390,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		if (!isMoving) {
 			return super.getConsumption(isMoving);
 		}
-		switch (this.getSpeedSetting()) {
+		switch (getSpeedSetting()) {
 			case 4: {
 				return 1;
 			}
@@ -410,50 +410,50 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/advlever.png");
-		if (this.inRect(x, y, this.buttonRect)) {
-			this.drawImage(gui, this.buttonRect, 0, this.buttonRect[3]);
+		if (inRect(x, y, buttonRect)) {
+			drawImage(gui, buttonRect, 0, buttonRect[3]);
 		} else {
-			this.drawImage(gui, this.buttonRect, 0, 0);
+			drawImage(gui, buttonRect, 0, 0);
 		}
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CONTROL_RESET.translate(), x, y, this.buttonRect);
+		drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CONTROL_RESET.translate(), x, y, buttonRect);
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (button == 0 && this.inRect(x, y, this.buttonRect)) {
-			this.sendPacket(3);
+		if (button == 0 && inRect(x, y, buttonRect)) {
+			sendPacket(3);
 		}
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, Localization.MODULES.ATTACHMENTS.CONTROL_SYSTEM.translate(), 8, 6, 4210752);
+		drawString(gui, Localization.MODULES.ATTACHMENTS.CONTROL_SYSTEM.translate(), 8, 6, 4210752);
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("Speed", id), (byte) this.getSpeedSetting());
-		tagCompound.setDouble(this.generateNBTName("ODO", id), this.odo);
-		tagCompound.setDouble(this.generateNBTName("TRIP", id), this.trip);
+		tagCompound.setByte(generateNBTName("Speed", id), (byte) getSpeedSetting());
+		tagCompound.setDouble(generateNBTName("ODO", id), odo);
+		tagCompound.setDouble(generateNBTName("TRIP", id), trip);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.setSpeedSetting(tagCompound.getByte(this.generateNBTName("Speed", id)));
-		this.odo = tagCompound.getDouble(this.generateNBTName("ODO", id));
-		this.trip = tagCompound.getDouble(this.generateNBTName("TRIP", id));
+		setSpeedSetting(tagCompound.getByte(generateNBTName("Speed", id)));
+		odo = tagCompound.getDouble(generateNBTName("ODO", id));
+		trip = tagCompound.getDouble(generateNBTName("TRIP", id));
 	}
 
 	public float getWheelAngle() {
-		if (!this.isForwardKeyDown()) {
-			if (this.isLeftKeyDown()) {
+		if (!isForwardKeyDown()) {
+			if (isLeftKeyDown()) {
 				return 0.3926991f;
 			}
-			if (this.isRightKeyDown()) {
+			if (isRightKeyDown()) {
 				return -0.3926991f;
 			}
 		}
@@ -462,10 +462,10 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 
 	@Override
 	public float getLeverState() {
-		if (this.isPlaceholder()) {
+		if (isPlaceholder()) {
 			return 0.0f;
 		}
-		return this.getSpeedSetting() / 6.0f;
+		return getSpeedSetting() / 6.0f;
 	}
 
 	@Override

@@ -11,16 +11,16 @@ public class TetrisBlock {
 	public TetrisBlock(final int u, final int v) {
 		this.u = u;
 		this.v = v;
-		this.r = GuiBase.RENDER_ROTATION.NORMAL;
+		r = GuiBase.RENDER_ROTATION.NORMAL;
 	}
 
 	public void render(final ArcadeTetris game, final GuiMinecart gui, final int x, final int y) {
 		if (y >= 0) {
-			game.getModule().drawImage(gui, 189 + x * 10, 9 + y * 10, this.u, this.v, 10, 10, this.r);
+			game.getModule().drawImage(gui, 189 + x * 10, 9 + y * 10, u, v, 10, 10, r);
 		}
 	}
 
 	public void rotate() {
-		this.r = this.r.getNextRotation();
+		r = r.getNextRotation();
 	}
 }

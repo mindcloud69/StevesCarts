@@ -24,6 +24,6 @@ public class ModuleSnowball extends ModuleProjectile {
 	public Entity createProjectile(final Entity target,
 	                               @Nonnull
 		                               ItemStack item) {
-		return new EntitySnowball(this.getCart().world);
+		return new EntitySnowball(getCart().world);
 	}
 }

@@ -31,6 +31,6 @@ public class SlotBridge extends SlotBase implements ISpecialItemTransferValidato
 	public boolean isItemValidForTransfer(
 		@Nonnull
 			ItemStack item, final TransferHandler.TRANSFER_TYPE type) {
-		return this.isItemValid(item) && type != TransferHandler.TRANSFER_TYPE.OTHER;
+		return isItemValid(item) && type != TransferHandler.TRANSFER_TYPE.OTHER;
 	}
 }

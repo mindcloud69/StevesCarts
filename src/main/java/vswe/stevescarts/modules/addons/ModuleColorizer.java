@@ -18,9 +18,9 @@ public class ModuleColorizer extends ModuleAddon {
 
 	public ModuleColorizer(final EntityMinecartModular cart) {
 		super(cart);
-		this.markerOffsetX = 10;
-		this.scrollWidth = 64;
-		this.markerMoving = -1;
+		markerOffsetX = 10;
+		scrollWidth = 64;
+		markerMoving = -1;
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class ModuleColorizer extends ModuleAddon {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -49,22 +49,22 @@ public class ModuleColorizer extends ModuleAddon {
 	}
 
 	private int[] getMovableMarker(final int i) {
-		return new int[] { this.markerOffsetX + (int) (this.scrollWidth * (this.getColorVal(i) / 255.0f)) - 2, 17 + i * 20, 4, 13 };
+		return new int[] { markerOffsetX + (int) (scrollWidth * (getColorVal(i) / 255.0f)) - 2, 17 + i * 20, 4, 13 };
 	}
 
 	private int[] getArea(final int i) {
-		return new int[] { this.markerOffsetX, 20 + i * 20, this.scrollWidth, 7 };
+		return new int[] { markerOffsetX, 20 + i * 20, scrollWidth, 7 };
 	}
 
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/color.png");
 		for (int i = 0; i < 3; ++i) {
-			this.drawMarker(gui, x, y, i);
+			drawMarker(gui, x, y, i);
 		}
-		final float[] color = this.getColor();
+		final float[] color = getColor();
 		GL11.glColor4f(color[0], color[1], color[2], 1.0f);
-		this.drawImage(gui, this.scrollWidth + 25, 29, 4, 7, 28, 28);
+		drawImage(gui, scrollWidth + 25, 29, 4, 7, 28, 28);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
@@ -73,7 +73,7 @@ public class ModuleColorizer extends ModuleAddon {
 		final String[] colorNames = { Localization.MODULES.ADDONS.COLOR_RED.translate(), Localization.MODULES.ADDONS.COLOR_GREEN.translate(),
 			Localization.MODULES.ADDONS.COLOR_BLUE.translate() };
 		for (int i = 0; i < 3; ++i) {
-			this.drawStringOnMouseOver(gui, colorNames[i] + ": " + this.getColorVal(i), x, y, this.getArea(i));
+			drawStringOnMouseOver(gui, colorNames[i] + ": " + getColorVal(i), x, y, getArea(i));
 		}
 	}
 
@@ -90,9 +90,9 @@ public class ModuleColorizer extends ModuleAddon {
 			}
 		}
 		GL11.glColor4f(colorArea[0], colorArea[1], colorArea[2], 1.0f);
-		this.drawImage(gui, this.getArea(id), 0, 0);
+		drawImage(gui, getArea(id), 0, 0);
 		GL11.glColor4f(colorMarker[0], colorMarker[1], colorMarker[2], 1.0f);
-		this.drawImage(gui, this.getMovableMarker(id), 0, 7);
+		drawImage(gui, getMovableMarker(id), 0, 7);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
@@ -100,8 +100,8 @@ public class ModuleColorizer extends ModuleAddon {
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (button == 0) {
 			for (int i = 0; i < 3; ++i) {
-				if (this.inRect(x, y, this.getMovableMarker(i))) {
-					this.markerMoving = i;
+				if (inRect(x, y, getMovableMarker(i))) {
+					markerMoving = i;
 				}
 			}
 		}
@@ -109,17 +109,17 @@ public class ModuleColorizer extends ModuleAddon {
 
 	@Override
 	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.markerMoving != -1) {
-			int tempColor = (int) ((x - this.markerOffsetX) / (this.scrollWidth / 255.0f));
+		if (markerMoving != -1) {
+			int tempColor = (int) ((x - markerOffsetX) / (scrollWidth / 255.0f));
 			if (tempColor < 0) {
 				tempColor = 0;
 			} else if (tempColor > 255) {
 				tempColor = 255;
 			}
-			this.sendPacket(this.markerMoving, (byte) tempColor);
+			sendPacket(markerMoving, (byte) tempColor);
 		}
 		if (button != -1) {
-			this.markerMoving = -1;
+			markerMoving = -1;
 		}
 	}
 
@@ -142,12 +142,12 @@ public class ModuleColorizer extends ModuleAddon {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id >= 0 && id < 3) {
-			this.setColorVal(id, data[0]);
+			setColorVal(id, data[0]);
 		}
 	}
 
 	public int getColorVal(final int i) {
-		if (this.isPlaceholder()) {
+		if (isPlaceholder()) {
 			return 255;
 		}
 		int tempVal = getDw(COLORS)[i];
@@ -164,25 +164,25 @@ public class ModuleColorizer extends ModuleAddon {
 	}
 
 	private float getColorComponent(final int i) {
-		return this.getColorVal(i) / 255.0f;
+		return getColorVal(i) / 255.0f;
 	}
 
 	@Override
 	public float[] getColor() {
-		return new float[] { this.getColorComponent(0), this.getColorComponent(1), this.getColorComponent(2) };
+		return new float[] { getColorComponent(0), getColorComponent(1), getColorComponent(2) };
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("Red", id), (byte) this.getColorVal(0));
-		tagCompound.setByte(this.generateNBTName("Green", id), (byte) this.getColorVal(1));
-		tagCompound.setByte(this.generateNBTName("Blue", id), (byte) this.getColorVal(2));
+		tagCompound.setByte(generateNBTName("Red", id), (byte) getColorVal(0));
+		tagCompound.setByte(generateNBTName("Green", id), (byte) getColorVal(1));
+		tagCompound.setByte(generateNBTName("Blue", id), (byte) getColorVal(2));
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.setColorVal(0, tagCompound.getByte(this.generateNBTName("Red", id)));
-		this.setColorVal(1, tagCompound.getByte(this.generateNBTName("Green", id)));
-		this.setColorVal(2, tagCompound.getByte(this.generateNBTName("Blue", id)));
+		setColorVal(0, tagCompound.getByte(generateNBTName("Red", id)));
+		setColorVal(1, tagCompound.getByte(generateNBTName("Green", id)));
+		setColorVal(2, tagCompound.getByte(generateNBTName("Blue", id)));
 	}
 }

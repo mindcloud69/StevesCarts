@@ -18,15 +18,15 @@ public class ContainerDistributor extends ContainerBase {
 
 	@Override
 	public TileEntityBase getTileEntity() {
-		return this.distributor;
+		return distributor;
 	}
 
 	public ContainerDistributor(final IInventory invPlayer, final TileEntityDistributor distributor) {
 		this.distributor = distributor;
-		this.cachedValues = new ArrayList<>();
+		cachedValues = new ArrayList<>();
 		for (final DistributorSide side : distributor.getSides()) {
-			this.cachedValues.add((short) 0);
-			this.cachedValues.add((short) 0);
+			cachedValues.add((short) 0);
+			cachedValues.add((short) 0);
 		}
 	}
 }

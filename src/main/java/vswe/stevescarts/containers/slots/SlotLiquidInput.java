@@ -19,16 +19,16 @@ public class SlotLiquidInput extends SlotBase {
 
 	@Override
 	public int getSlotStackLimit() {
-		if (this.maxsize != -1) {
-			return this.maxsize;
+		if (maxsize != -1) {
+			return maxsize;
 		}
-		return Math.min(8, this.tank.getCapacity() / 1000);
+		return Math.min(8, tank.getCapacity() / 1000);
 	}
 
 	@Override
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return (FluidUtils.getFluidStackInContainer(itemstack) != null && this.tank.getFluid() != null) || (FluidUtils.getFluidStackInContainer(itemstack) != null && (this.tank.getFluid() == null || this.tank.getFluid().isFluidEqual(FluidUtils.getFluidStackInContainer(itemstack))));
+		return (FluidUtils.getFluidStackInContainer(itemstack) != null && tank.getFluid() != null) || (FluidUtils.getFluidStackInContainer(itemstack) != null && (tank.getFluid() == null || tank.getFluid().isFluidEqual(FluidUtils.getFluidStackInContainer(itemstack))));
 	}
 }

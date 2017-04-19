@@ -16,12 +16,12 @@ public class EntityDataManagerLockable extends EntityDataManager {
 		for (DataEntry entry : entity.getDataManager().getAll()) {
 			register(entry.getKey(), entry.getValue());
 		}
-		this.isLocked = true;
+		isLocked = true;
 	}
 
 	public void release() {
-		this.isLocked = false;
-		if (this.lockedList != null) {
+		isLocked = false;
+		if (lockedList != null) {
 			setEntryValues(lockedList);
 		}
 	}
@@ -29,8 +29,8 @@ public class EntityDataManagerLockable extends EntityDataManager {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void setEntryValues(List<DataEntry<?>> entriesIn) {
-		if (this.isLocked) {
-			this.lockedList = entriesIn;
+		if (isLocked) {
+			lockedList = entriesIn;
 		} else {
 			super.setEntryValues(entriesIn);
 		}

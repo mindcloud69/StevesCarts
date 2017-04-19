@@ -50,8 +50,8 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	public TileEntityCargo() {
-		this.target = new int[] { 0, 0, 0, 0 };
-		this.lastLayout = -1;
+		target = new int[] { 0, 0, 0, 0 };
+		lastLayout = -1;
 	}
 
 	public static void loadSelectionSettings() {
@@ -84,17 +84,17 @@ public class TileEntityCargo extends TileEntityManager {
 
 	@Override
 	protected void updateLayout() {
-		if (this.cargoSlots != null && this.lastLayout != this.layoutType) {
-			for (final SlotCargo slot : this.cargoSlots) {
+		if (cargoSlots != null && lastLayout != layoutType) {
+			for (final SlotCargo slot : cargoSlots) {
 				slot.updatePosition();
 			}
-			this.lastLayout = this.layoutType;
+			lastLayout = layoutType;
 		}
 	}
 
 	@Override
 	protected boolean isTargetValid(final TransferManager transfer) {
-		return this.target[transfer.getSetting()] >= 0 && this.target[transfer.getSetting()] < TileEntityCargo.itemSelections.size();
+		return target[transfer.getSetting()] >= 0 && target[transfer.getSetting()] < TileEntityCargo.itemSelections.size();
 	}
 
 	@Override
@@ -107,11 +107,11 @@ public class TileEntityCargo extends TileEntityManager {
 			} else if (this.target[id] < 0) {
 				this.target[id] = TileEntityCargo.itemSelections.size() - 1;
 			}
-			if (this.color[id] - 1 == this.getSide()) {
-				this.reset();
+			if (color[id] - 1 == getSide()) {
+				reset();
 			}
 			if (TileEntityCargo.itemSelections.get(this.target[id]).getValidSlot() == null && dif != 0) {
-				this.receiveClickData(packetid, id, dif);
+				receiveClickData(packetid, id, dif);
 			}
 		}
 	}
@@ -122,10 +122,10 @@ public class TileEntityCargo extends TileEntityManager {
 		final ContainerCargo con = (ContainerCargo) conManager;
 		short targetShort = 0;
 		for (int i = 0; i < 4; ++i) {
-			targetShort |= (short) ((this.target[i] & 0xF) << i * 4);
+			targetShort |= (short) ((target[i] & 0xF) << i * 4);
 		}
 		if (isNew || con.lastTarget != targetShort) {
-			this.updateGuiData(con, crafting, 2, targetShort);
+			updateGuiData(con, crafting, 2, targetShort);
 			con.lastTarget = targetShort;
 		}
 	}
@@ -134,7 +134,7 @@ public class TileEntityCargo extends TileEntityManager {
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 2) {
 			for (int i = 0; i < 4; ++i) {
-				this.target[i] = (data & 15 << i * 4) >> i * 4;
+				target[i] = (data & 15 << i * 4) >> i * 4;
 			}
 		} else {
 			super.receiveGuiData(id, data);
@@ -142,7 +142,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	public int getAmount(final int id) {
-		final int val = this.getAmountId(id);
+		final int val = getAmountId(id);
 		switch (val) {
 			case 1: {
 				return 1;
@@ -181,7 +181,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	public int getAmountType(final int id) {
-		final int val = this.getAmountId(id);
+		final int val = getAmountId(id);
 		if (val == 0) {
 			return 0;
 		}
@@ -199,25 +199,25 @@ public class TileEntityCargo extends TileEntityManager {
 	@Override
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		this.setWorkload(nbttagcompound.getByte("workload"));
+		setWorkload(nbttagcompound.getByte("workload"));
 		for (int i = 0; i < 4; ++i) {
-			this.target[i] = nbttagcompound.getByte("target" + i);
+			target[i] = nbttagcompound.getByte("target" + i);
 		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setByte("workload", (byte) this.getWorkload());
+		nbttagcompound.setByte("workload", (byte) getWorkload());
 		for (int i = 0; i < 4; ++i) {
-			nbttagcompound.setByte("target" + i, (byte) this.target[i]);
+			nbttagcompound.setByte("target" + i, (byte) target[i]);
 		}
 		return nbttagcompound;
 	}
 
 	@Override
 	protected boolean doTransfer(final TransferManager transfer) {
-		final Class slotCart = TileEntityCargo.itemSelections.get(this.target[transfer.getSetting()]).getValidSlot();
+		final Class slotCart = TileEntityCargo.itemSelections.get(target[transfer.getSetting()]).getValidSlot();
 		if (slotCart == null) {
 			transfer.setLowestSetting(transfer.getSetting() + 1);
 			return true;
@@ -229,7 +229,7 @@ public class TileEntityCargo extends TileEntityManager {
 		IInventory toInv;
 		Container toCont;
 		Class toValid;
-		if (this.toCart[transfer.getSetting()]) {
+		if (toCart[transfer.getSetting()]) {
 			fromInv = this;
 			fromCont = new ContainerCargo(null, this);
 			fromValid = slotCargo;
@@ -244,31 +244,31 @@ public class TileEntityCargo extends TileEntityManager {
 			toCont = new ContainerCargo(null, this);
 			toValid = slotCargo;
 		}
-		this.latestTransferToBeUsed = transfer;
+		latestTransferToBeUsed = transfer;
 		for (int i = 0; i < fromInv.getSizeInventory(); ++i) {
 			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
 				@Nonnull
 				ItemStack iStack = fromInv.getStackInSlot(i);
 				final int stacksize = iStack.getCount();
 				int maxNumber;
-				if (this.getAmountType(transfer.getSetting()) == 1) {
-					maxNumber = this.getAmount(transfer.getSetting()) - transfer.getWorkload();
+				if (getAmountType(transfer.getSetting()) == 1) {
+					maxNumber = getAmount(transfer.getSetting()) - transfer.getWorkload();
 				} else {
 					maxNumber = -1;
 				}
 				TransferHandler.TransferItem(iStack, toInv, toCont, toValid, maxNumber, TransferHandler.TRANSFER_TYPE.MANAGER);
 				if (iStack.getCount() != stacksize) {
-					if (this.getAmountType(transfer.getSetting()) == 1) {
+					if (getAmountType(transfer.getSetting()) == 1) {
 						transfer.setWorkload(transfer.getWorkload() + stacksize - iStack.getCount());
-					} else if (this.getAmountType(transfer.getSetting()) == 2) {
+					} else if (getAmountType(transfer.getSetting()) == 2) {
 						transfer.setWorkload(transfer.getWorkload() + 1);
 					}
-					this.markDirty();
+					markDirty();
 					transfer.getCart().markDirty();
 					if (iStack.getCount() == 0) {
 						fromInv.setInventorySlotContents(i, null);
 					}
-					if (transfer.getWorkload() >= this.getAmount(transfer.getSetting()) && this.getAmountType(transfer.getSetting()) != 0) {
+					if (transfer.getWorkload() >= getAmount(transfer.getSetting()) && getAmountType(transfer.getSetting()) != 0) {
 						transfer.setLowestSetting(transfer.getSetting() + 1);
 					}
 					return true;
@@ -286,7 +286,7 @@ public class TileEntityCargo extends TileEntityManager {
 	}
 
 	public TransferManager getCurrentTransferForSlots() {
-		return this.latestTransferToBeUsed;
+		return latestTransferToBeUsed;
 	}
 
 	@Override

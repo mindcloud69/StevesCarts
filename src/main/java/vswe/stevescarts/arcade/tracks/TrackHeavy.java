@@ -11,7 +11,7 @@ public class TrackHeavy extends Track {
 
 	@Override
 	public Track copy() {
-		return new TrackHeavy(this.getX(), this.getY(), this.getOrientation());
+		return new TrackHeavy(getX(), getY(), getOrientation());
 	}
 
 	@Override

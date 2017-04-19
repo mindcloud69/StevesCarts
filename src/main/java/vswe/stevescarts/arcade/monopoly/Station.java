@@ -16,13 +16,13 @@ public class Station extends Property {
 
 	@Override
 	protected int getTextureId() {
-		return 1 + this.stationId;
+		return 1 + stationId;
 	}
 
 	@Override
 	public void draw(final GuiMinecart gui, final EnumSet<PLACE_STATE> states) {
 		super.draw(gui, states);
-		this.drawValue(gui);
+		drawValue(gui);
 	}
 
 	@Override
@@ -36,6 +36,6 @@ public class Station extends Property {
 
 	@Override
 	public int getRentCost() {
-		return this.getRentCost(this.getOwnedInGroup());
+		return getRentCost(getOwnedInGroup());
 	}
 }

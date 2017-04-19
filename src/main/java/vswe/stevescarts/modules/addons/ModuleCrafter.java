@@ -15,26 +15,26 @@ public class ModuleCrafter extends ModuleRecipe {
 
 	public ModuleCrafter(final EntityMinecartModular cart) {
 		super(cart);
-		this.cooldown = 0;
-		this.dummy = new CraftingDummy(this);
+		cooldown = 0;
+		dummy = new CraftingDummy(this);
 	}
 
 	@Override
 	public void update() {
-		if (this.cooldown <= 0) {
-			if (!this.getCart().world.isRemote && this.getValidSlot() != null) {
+		if (cooldown <= 0) {
+			if (!getCart().world.isRemote && getValidSlot() != null) {
 				@Nonnull
-				ItemStack result = this.dummy.getResult();
-				if (!result.isEmpty() && this.getCart().getModules() != null) {
+				ItemStack result = dummy.getResult();
+				if (!result.isEmpty() && getCart().getModules() != null) {
 					if (result.getCount() == 0) {
 						result.setCount(1);
 					}
-					this.prepareLists();
-					if (this.canCraftMoreOfResult(result)) {
+					prepareLists();
+					if (canCraftMoreOfResult(result)) {
 						final ArrayList<ItemStack> originals = new ArrayList<>();
-						for (int i = 0; i < this.allTheSlots.size(); ++i) {
+						for (int i = 0; i < allTheSlots.size(); ++i) {
 							@Nonnull
-							ItemStack item = this.allTheSlots.get(i).getStack();
+							ItemStack item = allTheSlots.get(i).getStack();
 							originals.add((item == null) ? null : item.copy());
 						}
 						final ArrayList<ItemStack> containers = new ArrayList<>();
@@ -42,12 +42,12 @@ public class ModuleCrafter extends ModuleRecipe {
 						boolean edited = false;
 						for (int j = 0; j < 9; ++j) {
 							@Nonnull
-							ItemStack recipe = this.getStack(j);
+							ItemStack recipe = getStack(j);
 							if (!recipe.isEmpty()) {
 								valid = false;
-								for (int k = 0; k < this.inputSlots.size(); ++k) {
+								for (int k = 0; k < inputSlots.size(); ++k) {
 									@Nonnull
-									ItemStack item2 = this.inputSlots.get(k).getStack();
+									ItemStack item2 = inputSlots.get(k).getStack();
 									if (!item2.isEmpty() && item2.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item2, recipe)) {
 										edited = true;
 										if (item2.getItem().hasContainerItem(item2)) {
@@ -57,7 +57,7 @@ public class ModuleCrafter extends ModuleRecipe {
 										ItemStack itemStack = item2;
 										itemStack.shrink(1);
 										if (item2.getCount() <= 0) {
-											this.inputSlots.get(k).putStack(ItemStack.EMPTY);
+											inputSlots.get(k).putStack(ItemStack.EMPTY);
 										}
 										valid = true;
 										break;
@@ -69,7 +69,7 @@ public class ModuleCrafter extends ModuleRecipe {
 							}
 						}
 						if (valid) {
-							this.getCart().addItemToChest(result, this.getValidSlot(), null);
+							getCart().addItemToChest(result, getValidSlot(), null);
 							if (result.getCount() > 0) {
 								valid = false;
 							} else {
@@ -78,7 +78,7 @@ public class ModuleCrafter extends ModuleRecipe {
 									@Nonnull
 									ItemStack container = containers.get(j);
 									if (container != null) {
-										this.getCart().addItemToChest(container, this.getValidSlot(), null);
+										getCart().addItemToChest(container, getValidSlot(), null);
 										if (container.getCount() > 0) {
 											valid = false;
 											break;
@@ -88,16 +88,16 @@ public class ModuleCrafter extends ModuleRecipe {
 							}
 						}
 						if (!valid && edited) {
-							for (int j = 0; j < this.allTheSlots.size(); ++j) {
-								this.allTheSlots.get(j).putStack(originals.get(j));
+							for (int j = 0; j < allTheSlots.size(); ++j) {
+								allTheSlots.get(j).putStack(originals.get(j));
 							}
 						}
 					}
 				}
 			}
-			this.cooldown = 40;
+			cooldown = 40;
 		} else {
-			--this.cooldown;
+			--cooldown;
 		}
 	}
 
@@ -118,33 +118,33 @@ public class ModuleCrafter extends ModuleRecipe {
 
 	@Override
 	public int generateSlots(int slotCount) {
-		this.slotGlobalStart = slotCount;
-		this.slotList = new ArrayList<>();
+		slotGlobalStart = slotCount;
+		slotList = new ArrayList<>();
 		for (int y = 0; y < 3; ++y) {
 			for (int x = 0; x < 3; ++x) {
-				this.slotList.add(new SlotCartCrafter(this.getCart(), slotCount++, 10 + 18 * x, 15 + 18 * y));
+				slotList.add(new SlotCartCrafter(getCart(), slotCount++, 10 + 18 * x, 15 + 18 * y));
 			}
 		}
-		this.slotList.add(new SlotCartCrafterResult(this.getCart(), slotCount++, 67, this.canUseAdvancedFeatures() ? 20 : 33));
+		slotList.add(new SlotCartCrafterResult(getCart(), slotCount++, 67, canUseAdvancedFeatures() ? 20 : 33));
 		return slotCount;
 	}
 
 	@Override
 	public void onInventoryChanged() {
-		if (this.getCart().world.isRemote) {
-			this.dummy.update();
+		if (getCart().world.isRemote) {
+			dummy.update();
 		}
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
 		super.drawForeground(gui);
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
 	public int guiWidth() {
-		return this.canUseAdvancedFeatures() ? 120 : 95;
+		return canUseAdvancedFeatures() ? 120 : 95;
 	}
 
 	@Override

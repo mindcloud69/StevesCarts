@@ -16,21 +16,21 @@ public class HeightControlOre {
 
 	public HeightControlOre(final String name, final int textureid, final int spanHighest, final int bestHighest, final int bestLowest) {
 		this.name = name;
-		this.useDefaultTexture = true;
-		this.specialTexture = "";
+		useDefaultTexture = true;
+		specialTexture = "";
 		this.spanHighest = spanHighest;
-		this.spanLowest = 1;
+		spanLowest = 1;
 		this.bestHighest = bestHighest;
 		this.bestLowest = bestLowest;
-		this.srcX = 0;
-		this.srcY = (textureid * 2 + 1) * 4;
+		srcX = 0;
+		srcY = (textureid * 2 + 1) * 4;
 		HeightControlOre.ores.add(this);
 	}
 
 	public HeightControlOre(final String name, final String texture, final int srcX, final int srcY, final int spanHighest, final int spanLowest, final int bestHighest, final int bestLowest) {
 		this.name = name;
-		this.useDefaultTexture = false;
-		this.specialTexture = texture;
+		useDefaultTexture = false;
+		specialTexture = texture;
 		this.spanHighest = spanHighest;
 		this.spanLowest = spanLowest;
 		this.bestHighest = bestHighest;

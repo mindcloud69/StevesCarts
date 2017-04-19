@@ -28,19 +28,19 @@ public class EntityCake extends EntityEgg {
 	protected void onImpact(final RayTraceResult data) {
 		BlockPos pos = getPosition();
 		if (data.entityHit != null) {
-			data.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0f);
+			data.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 0.0f);
 			if (data.entityHit instanceof EntityPlayer) {
 				final EntityPlayer player = (EntityPlayer) data.entityHit;
 				player.getFoodStats().addStats(14, 0.7f);
 			}
-		} else if (this.world.isAirBlock(pos) && this.world.isSideSolid(pos.down(), EnumFacing.UP)) {
-			this.world.setBlockState(pos, Blocks.CAKE.getDefaultState());
+		} else if (world.isAirBlock(pos) && world.isSideSolid(pos.down(), EnumFacing.UP)) {
+			world.setBlockState(pos, Blocks.CAKE.getDefaultState());
 		}
 		for (int j = 0; j < 8; ++j) {
-			this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
+			world.spawnParticle(EnumParticleTypes.SNOWBALL, posX, posY, posZ, 0.0, 0.0, 0.0);
 		}
-		if (!this.world.isRemote) {
-			this.setDead();
+		if (!world.isRemote) {
+			setDead();
 		}
 	}
 }

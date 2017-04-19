@@ -18,8 +18,8 @@ public class BlockRailJunction extends BlockRail {
 
 	public BlockRailJunction() {
 		super();
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setDefaultState(blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class BlockRailJunction extends BlockRail {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta));
+		return getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta));
 	}
 
 	@Override

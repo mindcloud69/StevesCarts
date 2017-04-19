@@ -15,10 +15,10 @@ public class ContainerCargo extends ContainerManager {
 		cargo.lastLayout = -1;
 		for (int i = 0; i < 60; ++i) {
 			final SlotCargo slot = new SlotCargo(cargo, i);
-			this.addSlotToContainer(slot);
+			addSlotToContainer(slot);
 			cargo.cargoSlots.add(slot);
 		}
-		this.addPlayer(invPlayer);
+		addPlayer(invPlayer);
 	}
 
 	@Override

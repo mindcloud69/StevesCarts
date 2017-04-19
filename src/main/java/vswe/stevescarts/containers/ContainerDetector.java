@@ -16,11 +16,11 @@ public class ContainerDetector extends ContainerBase {
 
 	@Override
 	public TileEntityBase getTileEntity() {
-		return this.detector;
+		return detector;
 	}
 
 	public ContainerDetector(final IInventory invPlayer, final TileEntityDetector detector) {
 		this.detector = detector;
-		this.mainObj = new LogicObject((byte) 1, (byte) 0);
+		mainObj = new LogicObject((byte) 1, (byte) 0);
 	}
 }

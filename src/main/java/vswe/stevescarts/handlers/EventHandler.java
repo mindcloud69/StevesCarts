@@ -39,7 +39,7 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 	@SubscribeEvent
 	public void onRenderTick(final TickEvent.RenderTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
-			this.renderOverlay();
+			renderOverlay();
 		}
 	}
 
@@ -61,7 +61,7 @@ public class EventHandler implements ForgeChunkManager.LoadingCallback {
 
 	@SubscribeEvent
 	public void onCrafting(final PlayerEvent.ItemCraftedEvent event) {
-		this.onCrafting(event.player, event.crafting, event.craftMatrix);
+		onCrafting(event.player, event.crafting, event.craftMatrix);
 	}
 
 	private void onCrafting(final EntityPlayer player,

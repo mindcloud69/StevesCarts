@@ -20,13 +20,13 @@ public class ContainerMinecart extends ContainerBase {
 	public EntityMinecartModular cart;
 
 	public ContainerMinecart(final IInventory player, final EntityMinecartModular cart) {
-		this.cartInv(cart);
-		this.playerInv(player);
+		cartInv(cart);
+		playerInv(player);
 	}
 
 	@Override
 	public IInventory getMyInventory() {
-		return this.cart;
+		return cart;
 	}
 
 	@Override
@@ -43,13 +43,13 @@ public class ContainerMinecart extends ContainerBase {
 					for (final SlotBase slot : slotsList) {
 						slot.xPos = slot.getX() + module.getX() + 1;
 						slot.yPos = slot.getY() + module.getY() + 1;
-						this.addSlotToContainer(slot);
+						addSlotToContainer(slot);
 					}
 				}
 			}
 		} else {
 			for (int i = 0; i < 100; ++i) {
-				this.addSlotToContainer(new Slot(cart, i, -1000, -1000));
+				addSlotToContainer(new Slot(cart, i, -1000, -1000));
 			}
 		}
 	}
@@ -58,11 +58,11 @@ public class ContainerMinecart extends ContainerBase {
 		this.player = player;
 		for (int i = 0; i < 3; ++i) {
 			for (int k = 0; k < 9; ++k) {
-				this.addSlotToContainer(new Slot(player, k + i * 9 + 9, this.offsetX() + k * 18, i * 18 + this.offsetY()));
+				addSlotToContainer(new Slot(player, k + i * 9 + 9, offsetX() + k * 18, i * 18 + offsetY()));
 			}
 		}
 		for (int j = 0; j < 9; ++j) {
-			this.addSlotToContainer(new Slot(player, j, this.offsetX() + j * 18, 58 + this.offsetY()));
+			addSlotToContainer(new Slot(player, j, offsetX() + j * 18, 58 + offsetY()));
 		}
 	}
 
@@ -76,20 +76,20 @@ public class ContainerMinecart extends ContainerBase {
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer entityplayer) {
-		return this.cart.isUsableByPlayer(entityplayer);
+		return cart.isUsableByPlayer(entityplayer);
 	}
 
 	@Override
 	public void onContainerClosed(final EntityPlayer par1EntityPlayer) {
 		super.onContainerClosed(par1EntityPlayer);
-		this.cart.closeInventory(par1EntityPlayer);
+		cart.closeInventory(par1EntityPlayer);
 	}
 
 	@Override
 	public void addListener(final IContainerListener par1ICrafting) {
 		super.addListener(par1ICrafting);
-		if (this.cart.getModules() != null) {
-			for (ModuleBase module : this.cart.getModules()) {}
+		if (cart.getModules() != null) {
+			for (ModuleBase module : cart.getModules()) {}
 		}
 	}
 
@@ -97,8 +97,8 @@ public class ContainerMinecart extends ContainerBase {
 	@Override
 	public void updateProgressBar(final int par1, int par2) {
 		par2 &= 0xFFFF;
-		if (this.cart.getModules() != null) {
-			for (final ModuleBase module : this.cart.getModules()) {
+		if (cart.getModules() != null) {
+			for (final ModuleBase module : cart.getModules()) {
 				if (par1 >= module.getGuiDataStart() && par1 < module.getGuiDataStart() + module.numberOfGuiData()) {
 					module.receiveGuiData(par1 - module.getGuiDataStart(), (short) par2);
 					break;
@@ -110,9 +110,9 @@ public class ContainerMinecart extends ContainerBase {
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		if (this.cart.getModules() != null && this.listeners.size() > 0) {
-			for (final ModuleBase module : this.cart.getModules()) {
-				module.checkGuiData(this, this.listeners, false);
+		if (cart.getModules() != null && listeners.size() > 0) {
+			for (final ModuleBase module : cart.getModules()) {
+				module.checkGuiData(this, listeners, false);
 			}
 		}
 	}

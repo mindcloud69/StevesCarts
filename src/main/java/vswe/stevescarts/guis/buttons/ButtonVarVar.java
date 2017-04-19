@@ -14,17 +14,17 @@ public class ButtonVarVar extends ButtonVar {
 
 	@Override
 	public String toString() {
-		if (this.increase) {
-			return "Next " + this.getName() + " variable";
+		if (increase) {
+			return "Next " + getName() + " variable";
 		}
-		return "Previous " + this.getName() + " variable";
+		return "Previous " + getName() + " variable";
 	}
 
 	@Override
 	public boolean isVisible() {
-		if (((ModuleComputer) this.module).getSelectedTasks() != null) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-				if (!this.isVarVisible(task)) {
+		if (((ModuleComputer) module).getSelectedTasks() != null) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+				if (!isVarVisible(task)) {
 					return false;
 				}
 			}
@@ -34,16 +34,16 @@ public class ButtonVarVar extends ButtonVar {
 
 	@Override
 	public int texture() {
-		return this.increase ? 30 : 31;
+		return increase ? 30 : 31;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (this.increase && this.getIndex(task) < task.getProgram().getVars().size() - 1) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (increase && getIndex(task) < task.getProgram().getVars().size() - 1) {
 				return true;
 			}
-			if (!this.increase && this.getIndex(task) > -1) {
+			if (!increase && getIndex(task) > -1) {
 				return true;
 			}
 		}
@@ -52,8 +52,8 @@ public class ButtonVarVar extends ButtonVar {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			this.setIndex(task, this.getIndex(task) + (this.increase ? 1 : -1));
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			setIndex(task, getIndex(task) + (increase ? 1 : -1));
 		}
 	}
 

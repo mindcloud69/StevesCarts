@@ -28,24 +28,24 @@ public class ModelEngineFrame extends ModelEngineBase {
 
 	public ModelEngineFrame() {
 		final ModelRenderer left = new ModelRenderer(this, 0, 0);
-		this.anchor.addChild(left);
-		this.fixSize(left);
+		anchor.addChild(left);
+		fixSize(left);
 		left.addBox(-0.5f, -2.5f, -0.5f, 1, 5, 1, 0.0f);
 		left.setRotationPoint(-4.0f, 0.0f, 0.0f);
 		final ModelRenderer right = new ModelRenderer(this, 0, 0);
-		this.anchor.addChild(right);
-		this.fixSize(right);
+		anchor.addChild(right);
+		fixSize(right);
 		right.addBox(-0.5f, -2.5f, -0.5f, 1, 5, 1, 0.0f);
 		right.setRotationPoint(4.0f, 0.0f, 0.0f);
 		final ModelRenderer top = new ModelRenderer(this, 4, 0);
-		this.anchor.addChild(top);
-		this.fixSize(top);
+		anchor.addChild(top);
+		fixSize(top);
 		top.addBox(-0.5f, -3.5f, -0.5f, 1, 7, 1, 0.0f);
 		top.setRotationPoint(0.0f, -3.0f, 0.0f);
 		top.rotateAngleZ = 1.5707964f;
 		final ModelRenderer bot = new ModelRenderer(this, 4, 0);
-		this.anchor.addChild(bot);
-		this.fixSize(bot);
+		anchor.addChild(bot);
+		fixSize(bot);
 		bot.addBox(-0.5f, -3.5f, -0.5f, 1, 7, 1, 0.0f);
 		bot.setRotationPoint(0.0f, 2.0f, 0.0f);
 		bot.rotateAngleZ = 1.5707964f;

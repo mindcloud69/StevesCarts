@@ -46,26 +46,26 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	public ModuleShooter(final EntityMinecartModular cart) {
 		super(cart);
-		this.dragState = -1;
-		this.AInterval = new int[] { 1, 3, 5, 7, 10, 13, 17, 21, 27, 35, 44, 55, 70, 95, 130, 175, 220, 275, 340, 420, 520, 650 };
-		this.arrowInterval = 5;
-		this.generatePipes(this.pipes = new ArrayList<>());
-		this.pipeRotations = new float[this.pipes.size()];
-		this.generateInterfaceRegions();
+		dragState = -1;
+		AInterval = new int[] { 1, 3, 5, 7, 10, 13, 17, 21, 27, 35, 44, 55, 70, 95, 130, 175, 220, 275, 340, 420, 520, 650 };
+		arrowInterval = 5;
+		generatePipes(pipes = new ArrayList<>());
+		pipeRotations = new float[pipes.size()];
+		generateInterfaceRegions();
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		this.projectiles = new ArrayList<>();
-		for (final ModuleBase module : this.getCart().getModules()) {
+		projectiles = new ArrayList<>();
+		for (final ModuleBase module : getCart().getModules()) {
 			if (module instanceof ModuleProjectile) {
-				this.projectiles.add((ModuleProjectile) module);
+				projectiles.add((ModuleProjectile) module);
 			} else {
 				if (!(module instanceof ModuleEnchants)) {
 					continue;
 				}
-				(this.enchanter = (ModuleEnchants) module).addType(EnchantmentInfo.ENCHANTMENT_TYPE.SHOOTER);
+				(enchanter = (ModuleEnchants) module).addType(EnchantmentInfo.ENCHANTMENT_TYPE.SHOOTER);
 			}
 		}
 	}
@@ -77,7 +77,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotArrow(this.getCart(), this, slotId, 8 + x * 18, 23 + y * 18);
+		return new SlotArrow(getCart(), this, slotId, 8 + x * 18, 23 + y * 18);
 	}
 
 	@Override
@@ -87,20 +87,20 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, Localization.MODULES.ATTACHMENTS.SHOOTER.translate(), 8, 6, 4210752);
-		final int delay = this.AInterval[this.arrowInterval];
+		drawString(gui, Localization.MODULES.ATTACHMENTS.SHOOTER.translate(), 8, 6, 4210752);
+		final int delay = AInterval[arrowInterval];
 		final double freq = 20.0 / (delay + 1);
 		String s = String.valueOf((int) (freq * 1000.0) / 1000.0);
-		this.drawString(gui, Localization.MODULES.ATTACHMENTS.FREQUENCY.translate() + ":", this.intervalDragArea[0] + this.intervalDragArea[2] + 5, 15, 4210752);
-		this.drawString(gui, s, this.intervalDragArea[0] + this.intervalDragArea[2] + 5, 23, 4210752);
+		drawString(gui, Localization.MODULES.ATTACHMENTS.FREQUENCY.translate() + ":", intervalDragArea[0] + intervalDragArea[2] + 5, 15, 4210752);
+		drawString(gui, s, intervalDragArea[0] + intervalDragArea[2] + 5, 23, 4210752);
 		s = String.valueOf(delay / 20.0 + Localization.MODULES.ATTACHMENTS.SECONDS.translate(new String[0]));
-		this.drawString(gui, Localization.MODULES.ATTACHMENTS.DELAY.translate() + ":", this.intervalDragArea[0] + this.intervalDragArea[2] + 5, 35, 4210752);
-		this.drawString(gui, s, this.intervalDragArea[0] + this.intervalDragArea[2] + 5, 43, 4210752);
+		drawString(gui, Localization.MODULES.ATTACHMENTS.DELAY.translate() + ":", intervalDragArea[0] + intervalDragArea[2] + 5, 35, 4210752);
+		drawString(gui, s, intervalDragArea[0] + intervalDragArea[2] + 5, 43, 4210752);
 	}
 
 	@Override
 	public int guiWidth() {
-		return super.guiWidth() + this.guiExtraWidth();
+		return super.guiWidth() + guiExtraWidth();
 	}
 
 	protected int guiExtraWidth() {
@@ -109,7 +109,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	public int guiHeight() {
-		return Math.max(super.guiHeight(), this.guiRequiredHeight());
+		return Math.max(super.guiHeight(), guiRequiredHeight());
 	}
 
 	protected int guiRequiredHeight() {
@@ -117,24 +117,24 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	}
 
 	protected void generateInterfaceRegions() {
-		this.pipeSelectionX = this.guiWidth() - 110;
-		this.pipeSelectionY = (this.guiHeight() - 12 - 26) / 2 + 12;
-		this.intervalSelectionX = this.pipeSelectionX + 26 + 8;
-		this.intervalSelectionY = 10;
-		this.intervalSelection = new int[] { this.intervalSelectionX, this.intervalSelectionY, 14, 53 };
-		this.intervalDragArea = new int[] { this.intervalSelectionX - 4, this.intervalSelectionY, 40, 53 };
+		pipeSelectionX = guiWidth() - 110;
+		pipeSelectionY = (guiHeight() - 12 - 26) / 2 + 12;
+		intervalSelectionX = pipeSelectionX + 26 + 8;
+		intervalSelectionY = 10;
+		intervalSelection = new int[] { intervalSelectionX, intervalSelectionY, 14, 53 };
+		intervalDragArea = new int[] { intervalSelectionX - 4, intervalSelectionY, 40, 53 };
 	}
 
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/shooter.png");
-		this.drawImage(gui, this.pipeSelectionX + 9, this.pipeSelectionY + 9 - 1, 0, 104, 8, 9);
-		for (int i = 0; i < this.pipes.size(); ++i) {
-			final int pipe = this.pipes.get(i);
+		drawImage(gui, pipeSelectionX + 9, pipeSelectionY + 9 - 1, 0, 104, 8, 9);
+		for (int i = 0; i < pipes.size(); ++i) {
+			final int pipe = pipes.get(i);
 			final int pipeX = pipe % 3;
 			final int pipeY = pipe / 3;
-			final boolean active = this.isPipeActive(i);
-			final boolean selected = this.inRect(x, y, this.getRectForPipe(pipe)) || (this.currentCooldownState == 0 && active);
+			final boolean active = isPipeActive(i);
+			final boolean selected = inRect(x, y, getRectForPipe(pipe)) || (currentCooldownState == 0 && active);
 			int srcX = pipeX * 9;
 			if (!active) {
 				srcX += 26;
@@ -143,43 +143,43 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 			if (selected) {
 				srcY += 26;
 			}
-			this.drawImage(gui, this.getRectForPipe(pipe), srcX, srcY);
+			drawImage(gui, getRectForPipe(pipe), srcX, srcY);
 		}
-		this.drawImage(gui, this.intervalSelection, 42, 52);
-		final int size = (int) (this.arrowInterval / this.AInterval.length * 4.0f);
-		int targetX = this.intervalSelectionX + 7;
-		final int targetY = this.intervalSelectionY + this.arrowInterval * 2;
+		drawImage(gui, intervalSelection, 42, 52);
+		final int size = (int) (arrowInterval / AInterval.length * 4.0f);
+		int targetX = intervalSelectionX + 7;
+		final int targetY = intervalSelectionY + arrowInterval * 2;
 		int srcX2 = 0;
 		final int srcY2 = 52 + size * 13;
-		this.drawImage(gui, targetX, targetY, srcX2, srcY2, 25, 13);
+		drawImage(gui, targetX, targetY, srcX2, srcY2, 25, 13);
 		srcX2 += 25;
 		targetX += 7;
-		this.drawImage(gui, targetX, targetY + 1, srcX2, srcY2 + 1, 1, 11);
-		this.drawImage(gui, targetX + 1, targetY + 2, srcX2 + 1, srcY2 + 2, 1, 9);
-		this.drawImage(gui, targetX + 1, targetY + 1, srcX2 + 1, srcY2 + 1, Math.min(this.currentCooldownState, 15), 2);
-		this.drawImage(gui, targetX + 15, targetY + 1, srcX2 + 15, srcY2 + 1, 2, Math.max(Math.min(this.currentCooldownState, 25) - 15, 0));
-		final int len = Math.max(Math.min(this.currentCooldownState, 41) - 25, 0);
-		this.drawImage(gui, targetX + 1 + (16 - len), targetY + 10, srcX2 + 1 + (16 - len), srcY2 + 10, len, 2);
+		drawImage(gui, targetX, targetY + 1, srcX2, srcY2 + 1, 1, 11);
+		drawImage(gui, targetX + 1, targetY + 2, srcX2 + 1, srcY2 + 2, 1, 9);
+		drawImage(gui, targetX + 1, targetY + 1, srcX2 + 1, srcY2 + 1, Math.min(currentCooldownState, 15), 2);
+		drawImage(gui, targetX + 15, targetY + 1, srcX2 + 15, srcY2 + 1, 2, Math.max(Math.min(currentCooldownState, 25) - 15, 0));
+		final int len = Math.max(Math.min(currentCooldownState, 41) - 25, 0);
+		drawImage(gui, targetX + 1 + (16 - len), targetY + 10, srcX2 + 1 + (16 - len), srcY2 + 10, len, 2);
 	}
 
 	private int getCurrentCooldownState() {
-		final double perc = this.arrowTick / this.AInterval[this.arrowInterval];
-		return this.currentCooldownState = (int) (41.0 * perc);
+		final double perc = arrowTick / AInterval[arrowInterval];
+		return currentCooldownState = (int) (41.0 * perc);
 	}
 
 	private int[] getRectForPipe(final int pipe) {
-		return new int[] { this.pipeSelectionX + pipe % 3 * 9, this.pipeSelectionY + pipe / 3 * 9, 8, 8 };
+		return new int[] { pipeSelectionX + pipe % 3 * 9, pipeSelectionY + pipe / 3 * 9, 8, 8 };
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (button == 0) {
-			if (this.inRect(x, y, this.intervalDragArea)) {
-				this.dragState = y - (this.intervalSelectionY + this.arrowInterval * 2);
+			if (inRect(x, y, intervalDragArea)) {
+				dragState = y - (intervalSelectionY + arrowInterval * 2);
 			} else {
-				for (int i = 0; i < this.pipes.size(); ++i) {
-					if (this.inRect(x, y, this.getRectForPipe(this.pipes.get(i)))) {
-						this.sendPacket(0, (byte) i);
+				for (int i = 0; i < pipes.size(); ++i) {
+					if (inRect(x, y, getRectForPipe(pipes.get(i)))) {
+						sendPacket(0, (byte) i);
 						break;
 					}
 				}
@@ -190,11 +190,11 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	@Override
 	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (button != -1) {
-			this.dragState = -1;
-		} else if (this.dragState != -1) {
-			final int interval = (y + this.getCart().getRealScrollY() - this.intervalSelectionY - this.dragState) / 2;
-			if (interval != this.arrowInterval && interval >= 0 && interval < this.AInterval.length) {
-				this.sendPacket(1, (byte) interval);
+			dragState = -1;
+		} else if (dragState != -1) {
+			final int interval = (y + getCart().getRealScrollY() - intervalSelectionY - dragState) / 2;
+			if (interval != arrowInterval && interval >= 0 && interval < AInterval.length) {
+				sendPacket(1, (byte) interval);
 			}
 		}
 	}
@@ -202,18 +202,18 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			byte info = this.getActivePipes();
+			byte info = getActivePipes();
 			info ^= (byte) (1 << data[0]);
-			this.setActivePipes(info);
+			setActivePipes(info);
 		} else if (id == 1) {
 			byte info = data[0];
 			if (info < 0) {
 				info = 0;
-			} else if (info >= this.AInterval.length) {
-				info = (byte) (this.AInterval.length - 1);
+			} else if (info >= AInterval.length) {
+				info = (byte) (AInterval.length - 1);
 			}
-			this.arrowInterval = info;
-			this.arrowTick = this.AInterval[info];
+			arrowInterval = info;
+			arrowTick = AInterval[info];
 		}
 	}
 
@@ -229,30 +229,30 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		this.updateGuiData(info, 0, (short) this.currentCooldownState);
-		this.updateGuiData(info, 1, (short) this.arrowInterval);
+		updateGuiData(info, 0, (short) currentCooldownState);
+		updateGuiData(info, 1, (short) arrowInterval);
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.currentCooldownState = data;
+			currentCooldownState = data;
 		} else if (id == 1) {
-			this.arrowInterval = data;
+			arrowInterval = data;
 		}
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().world.isRemote) {
-			if (this.arrowTick > 0) {
-				--this.arrowTick;
+		if (!getCart().world.isRemote) {
+			if (arrowTick > 0) {
+				--arrowTick;
 			} else {
-				this.Shoot();
+				Shoot();
 			}
 		} else {
-			this.rotatePipes(false);
+			rotatePipes(false);
 		}
 	}
 
@@ -265,25 +265,25 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	}
 
 	protected boolean hasProjectileItem() {
-		return !this.getProjectileItem(false).isEmpty();
+		return !getProjectileItem(false).isEmpty();
 	}
 
 	@Nonnull
 	protected ItemStack getProjectileItem(boolean flag) {
-		if (flag && this.enchanter != null && this.enchanter.useInfinity()) {
+		if (flag && enchanter != null && enchanter.useInfinity()) {
 			flag = false;
 		}
-		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (!this.getStack(i).isEmpty() && this.isValidProjectileItem(this.getStack(i))) {
+		for (int i = 0; i < getInventorySize(); ++i) {
+			if (!getStack(i).isEmpty() && isValidProjectileItem(getStack(i))) {
 				@Nonnull
-				ItemStack projectile = this.getStack(i).copy();
+				ItemStack projectile = getStack(i).copy();
 				projectile.setCount(1);
-				if (flag && !this.getCart().hasCreativeSupplies()) {
+				if (flag && !getCart().hasCreativeSupplies()) {
 					@Nonnull
-					ItemStack stack = this.getStack(i);
+					ItemStack stack = getStack(i);
 					stack.shrink(1);
-					if (this.getStack(i).getCount() == 0) {
-						this.setStack(i, null);
+					if (getStack(i).getCount() == 0) {
+						setStack(i, null);
 					}
 				}
 				return projectile;
@@ -293,64 +293,64 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	}
 
 	protected void Shoot() {
-		this.setTimeToNext(this.AInterval[this.arrowInterval]);
-		if ((this.getCart().pushX != 0.0 && this.getCart().pushZ != 0.0) || (this.getCart().pushX == 0.0 && this.getCart().pushZ == 0.0) || !this.getCart().hasFuel()) {
+		setTimeToNext(AInterval[arrowInterval]);
+		if ((getCart().pushX != 0.0 && getCart().pushZ != 0.0) || (getCart().pushX == 0.0 && getCart().pushZ == 0.0) || !getCart().hasFuel()) {
 			return;
 		}
 		boolean hasShot = false;
-		for (int i = 0; i < this.pipes.size(); ++i) {
-			if (this.isPipeActive(i)) {
-				final int pipe = this.pipes.get(i);
-				if (!this.hasProjectileItem()) {
+		for (int i = 0; i < pipes.size(); ++i) {
+			if (isPipeActive(i)) {
+				final int pipe = pipes.get(i);
+				if (!hasProjectileItem()) {
 					break;
 				}
 				int x = pipe % 3 - 1;
 				int y = pipe / 3 - 1;
-				if (this.getCart().pushZ > 0.0) {
+				if (getCart().pushZ > 0.0) {
 					y *= -1;
 					x *= -1;
-				} else if (this.getCart().pushZ >= 0.0) {
-					if (this.getCart().pushX < 0.0) {
+				} else if (getCart().pushZ >= 0.0) {
+					if (getCart().pushX < 0.0) {
 						final int temp = -x;
 						x = y;
 						y = temp;
-					} else if (this.getCart().pushX > 0.0) {
+					} else if (getCart().pushX > 0.0) {
 						final int temp = x;
 						x = -y;
 						y = temp;
 					}
 				}
-				final Entity projectile = this.getProjectile(null, this.getProjectileItem(true));
-				projectile.setPosition(this.getCart().posX + x * 1.5, this.getCart().posY + 0.75, this.getCart().posZ + y * 1.5);
-				this.setHeading(projectile, x, 0.10000000149011612, y, 1.6f, 12.0f);
-				this.setProjectileDamage(projectile);
-				this.setProjectileOnFire(projectile);
-				this.setProjectileKnockback(projectile);
-				this.getCart().world.spawnEntity(projectile);
+				final Entity projectile = getProjectile(null, getProjectileItem(true));
+				projectile.setPosition(getCart().posX + x * 1.5, getCart().posY + 0.75, getCart().posZ + y * 1.5);
+				setHeading(projectile, x, 0.10000000149011612, y, 1.6f, 12.0f);
+				setProjectileDamage(projectile);
+				setProjectileOnFire(projectile);
+				setProjectileKnockback(projectile);
+				getCart().world.spawnEntity(projectile);
 				hasShot = true;
-				this.damageEnchant();
+				damageEnchant();
 			}
 		}
 		if (hasShot) {
-			this.getCart().world.playEvent(1002, this.getCart().getPosition(), 0);
+			getCart().world.playEvent(1002, getCart().getPosition(), 0);
 		}
 	}
 
 	protected void damageEnchant() {
-		if (this.enchanter != null) {
-			this.enchanter.damageEnchant(EnchantmentInfo.ENCHANTMENT_TYPE.SHOOTER, 1);
+		if (enchanter != null) {
+			enchanter.damageEnchant(EnchantmentInfo.ENCHANTMENT_TYPE.SHOOTER, 1);
 		}
 	}
 
 	protected void setProjectileOnFire(final Entity projectile) {
-		if (this.enchanter != null && this.enchanter.useFlame()) {
+		if (enchanter != null && enchanter.useFlame()) {
 			projectile.setFire(100);
 		}
 	}
 
 	protected void setProjectileDamage(final Entity projectile) {
-		if (this.enchanter != null && projectile instanceof EntityArrow) {
-			final int power = this.enchanter.getPowerLevel();
+		if (enchanter != null && projectile instanceof EntityArrow) {
+			final int power = enchanter.getPowerLevel();
 			if (power > 0) {
 				final EntityArrow arrow = (EntityArrow) projectile;
 				arrow.setDamage(arrow.getDamage() + power * 0.5 + 0.5);
@@ -359,8 +359,8 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	}
 
 	protected void setProjectileKnockback(final Entity projectile) {
-		if (this.enchanter != null && projectile instanceof EntityArrow) {
-			final int punch = this.enchanter.getPunchLevel();
+		if (enchanter != null && projectile instanceof EntityArrow) {
+			final int punch = enchanter.getPunchLevel();
 			if (punch > 0) {
 				final EntityArrow arrow = (EntityArrow) projectile;
 				arrow.setKnockbackStrength(punch);
@@ -383,12 +383,12 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	protected Entity getProjectile(final Entity target,
 	                               @Nonnull
 		                               ItemStack item) {
-		for (final ModuleProjectile module : this.projectiles) {
+		for (final ModuleProjectile module : projectiles) {
 			if (module.isValidProjectile(item)) {
 				return module.createProjectile(target, item);
 			}
 		}
-		return new EntityArrow(this.getCart().world) {
+		return new EntityArrow(getCart().world) {
 			@Override
 			@Nonnull
 			protected ItemStack getArrowStack() {
@@ -400,7 +400,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	public boolean isValidProjectileItem(
 		@Nonnull
 			ItemStack item) {
-		for (final ModuleProjectile module : this.projectiles) {
+		for (final ModuleProjectile module : projectiles) {
 			if (module.isValidProjectile(item)) {
 				return true;
 			}
@@ -409,32 +409,32 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	}
 
 	protected void setTimeToNext(final int val) {
-		this.arrowTick = val;
+		arrowTick = val;
 	}
 
 	private void rotatePipes(final boolean isNew) {
 		final float minRotation = 0.0f;
 		final float maxRotation = 0.7853982f;
 		final float speed = 0.15f;
-		for (int i = 0; i < this.pipes.size(); ++i) {
-			final boolean isActive = this.isPipeActive(i);
+		for (int i = 0; i < pipes.size(); ++i) {
+			final boolean isActive = isPipeActive(i);
 			if (isNew && isActive) {
-				this.pipeRotations[i] = minRotation;
+				pipeRotations[i] = minRotation;
 			} else if (isNew && !isActive) {
-				this.pipeRotations[i] = maxRotation;
-			} else if (isActive && this.pipeRotations[i] > minRotation) {
+				pipeRotations[i] = maxRotation;
+			} else if (isActive && pipeRotations[i] > minRotation) {
 				final float[] pipeRotations = this.pipeRotations;
 				final int n = i;
 				pipeRotations[n] -= speed;
 				if (this.pipeRotations[i] < minRotation) {
 					this.pipeRotations[i] = minRotation;
 				}
-			} else if (!isActive && this.pipeRotations[i] < maxRotation) {
-				final float[] pipeRotations2 = this.pipeRotations;
+			} else if (!isActive && pipeRotations[i] < maxRotation) {
+				final float[] pipeRotations2 = pipeRotations;
 				final int n2 = i;
 				pipeRotations2[n2] += speed;
-				if (this.pipeRotations[i] > maxRotation) {
-					this.pipeRotations[i] = maxRotation;
+				if (pipeRotations[i] > maxRotation) {
+					pipeRotations[i] = maxRotation;
 				}
 			}
 		}
@@ -452,52 +452,52 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 	}
 
 	public void setActivePipes(final byte val) {
-		this.updateDw(ACTIVE_PIPE, val);
+		updateDw(ACTIVE_PIPE, val);
 	}
 
 	public byte getActivePipes() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getActivePipes();
+		if (isPlaceholder()) {
+			return getSimInfo().getActivePipes();
 		}
-		return this.getDw(ACTIVE_PIPE);
+		return getDw(ACTIVE_PIPE);
 	}
 
 	protected boolean isPipeActive(final int id) {
-		return (this.getActivePipes() & 1 << id) != 0x0;
+		return (getActivePipes() & 1 << id) != 0x0;
 	}
 
 	public int getPipeCount() {
-		return this.pipes.size();
+		return pipes.size();
 	}
 
 	public float getPipeRotation(final int id) {
-		return this.pipeRotations[id];
+		return pipeRotations[id];
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("Pipes", id), this.getActivePipes());
-		tagCompound.setByte(this.generateNBTName("Interval", id), (byte) this.arrowInterval);
-		this.saveTick(tagCompound, id);
+		tagCompound.setByte(generateNBTName("Pipes", id), getActivePipes());
+		tagCompound.setByte(generateNBTName("Interval", id), (byte) arrowInterval);
+		saveTick(tagCompound, id);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.setActivePipes(tagCompound.getByte(this.generateNBTName("Pipes", id)));
-		this.arrowInterval = tagCompound.getByte(this.generateNBTName("Interval", id));
-		this.loadTick(tagCompound, id);
+		setActivePipes(tagCompound.getByte(generateNBTName("Pipes", id)));
+		arrowInterval = tagCompound.getByte(generateNBTName("Interval", id));
+		loadTick(tagCompound, id);
 	}
 
 	protected void saveTick(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("Tick", id), (byte) this.arrowTick);
+		tagCompound.setByte(generateNBTName("Tick", id), (byte) arrowTick);
 	}
 
 	protected void loadTick(final NBTTagCompound tagCompound, final int id) {
-		this.arrowTick = tagCompound.getByte(this.generateNBTName("Tick", id));
+		arrowTick = tagCompound.getByte(generateNBTName("Tick", id));
 	}
 
 	@Override
 	public boolean haveSupplies() {
-		return this.hasProjectileItem();
+		return hasProjectileItem();
 	}
 }

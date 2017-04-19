@@ -28,7 +28,7 @@ public class ModelToolPlate extends ModelCartbase {
 
 	public ModelToolPlate() {
 		final ModelRenderer drillBase = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(drillBase);
+		AddRenderer(drillBase);
 		drillBase.addBox(-5.0f, -7.0f, -2.0f, 10, 6, 1, 0.0f);
 		drillBase.setRotationPoint(-9.0f, 4.0f, 0.0f);
 		drillBase.rotateAngleY = 1.5707964f;

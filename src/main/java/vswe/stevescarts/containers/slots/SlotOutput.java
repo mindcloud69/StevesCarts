@@ -24,7 +24,7 @@ public class SlotOutput extends SlotAssembler {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		if (!this.getAssembler().getIsAssembling() && itemstack.getItem() == ModItems.carts) {
+		if (!getAssembler().getIsAssembling() && itemstack.getItem() == ModItems.carts) {
 			final NBTTagCompound info = itemstack.getTagCompound();
 			if (info != null && info.hasKey("maxTime")) {
 				return true;

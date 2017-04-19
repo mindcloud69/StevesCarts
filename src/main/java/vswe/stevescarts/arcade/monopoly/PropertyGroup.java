@@ -6,14 +6,14 @@ public class PropertyGroup {
 	private ArrayList<Property> properties;
 
 	public PropertyGroup() {
-		this.properties = new ArrayList<>();
+		properties = new ArrayList<>();
 	}
 
 	public ArrayList<Property> getProperties() {
-		return this.properties;
+		return properties;
 	}
 
 	public void add(final Property property) {
-		this.properties.add(property);
+		properties.add(property);
 	}
 }

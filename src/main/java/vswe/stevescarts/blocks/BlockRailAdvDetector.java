@@ -31,7 +31,7 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 
 	public BlockRailAdvDetector() {
 		super();
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 			}
 			return;
 		}
-		if (!this.isCartReadyForAction(cart, pos)) {
+		if (!isCartReadyForAction(cart, pos)) {
 			return;
 		}
 		int side = 0;

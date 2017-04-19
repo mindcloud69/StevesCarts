@@ -31,12 +31,12 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 
 	public void handleLiquid(final ModuleDrill drill, BlockPos pos) {
 		final ArrayList<BlockPos> checked = new ArrayList<>();
-		final int result = this.drainAt(getCart().world, drill, checked, pos, 0);
-		if (result > 0 && this.doPreWork()) {
+		final int result = drainAt(getCart().world, drill, checked, pos, 0);
+		if (result > 0 && doPreWork()) {
 			drill.kill();
-			this.startWorking((int) (2.5f * result));
+			startWorking((int) (2.5f * result));
 		} else {
-			this.stopWorking();
+			stopWorking();
 		}
 	}
 
@@ -49,22 +49,22 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		int drained = 0;
 		IBlockState blockState = world.getBlockState(pos);
 		final Block b = blockState.getBlock();
-		if (!this.isLiquid(b)) {
+		if (!isLiquid(b)) {
 			return 0;
 		}
 		final int meta = b.getMetaFromState(blockState);
-		final FluidStack liquid = this.getFluidStack(b, pos, !this.doPreWork());
+		final FluidStack liquid = getFluidStack(b, pos, !doPreWork());
 		if (liquid != null) {
-			if (this.doPreWork()) {
+			if (doPreWork()) {
 				final FluidStack fluidStack = liquid;
 				fluidStack.amount += buckets * 1000;
 			}
-			final int amount = this.getCart().fill(liquid, false);
+			final int amount = getCart().fill(liquid, false);
 			if (amount == liquid.amount) {
 				final boolean isDrainable = meta == 0;
-				if (!this.doPreWork()) {
+				if (!doPreWork()) {
 					if (isDrainable) {
-						this.getCart().fill(liquid, true);
+						getCart().fill(liquid, true);
 					}
 					world.setBlockToAir(pos);
 				}
@@ -73,14 +73,14 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 			}
 		}
 		checked.add(pos);
-		if (checked.size() < 100 && BlockPosHelpers.getHorizontalDistToCartSquared(pos, this.getCart()) < 200.0) {
+		if (checked.size() < 100 && BlockPosHelpers.getHorizontalDistToCartSquared(pos, getCart()) < 200.0) {
 			for (int y = 1; y >= 0; --y) {
 				for (int x = -1; x <= 1; ++x) {
 					for (int z = -1; z <= 1; ++z) {
 						if (Math.abs(x) + Math.abs(y) + Math.abs(z) == 1) {
 							BlockPos next = pos.add(x, y, z);
 							if (!checked.contains(next)) {
-								drained += this.drainAt(world, drill, checked, next, buckets);
+								drained += drainAt(world, drill, checked, next, buckets);
 							}
 						}
 					}
@@ -106,7 +106,7 @@ public class ModuleLiquidDrainer extends ModuleWorker {
 		}
 		if (b instanceof IFluidBlock) {
 			final IFluidBlock liquid = (IFluidBlock) b;
-			return liquid.drain(this.getCart().world, pos, doDrain);
+			return liquid.drain(getCart().world, pos, doDrain);
 		}
 		return null;
 	}

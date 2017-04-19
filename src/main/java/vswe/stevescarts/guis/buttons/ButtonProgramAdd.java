@@ -26,6 +26,6 @@ public class ButtonProgramAdd extends ButtonAssembly {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		((ModuleComputer) this.module).setCurrentProg(new ComputerProg((ModuleComputer) this.module));
+		((ModuleComputer) module).setCurrentProg(new ComputerProg((ModuleComputer) module));
 	}
 }

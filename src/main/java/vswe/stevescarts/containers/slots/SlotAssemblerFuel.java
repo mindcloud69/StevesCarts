@@ -25,13 +25,13 @@ public class SlotAssemblerFuel extends SlotAssembler {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return itemstack.getItem() == Items.COAL || (this.getAssembler().isCombustionFuelValid() && FluidUtils.getFluidStackInContainer(itemstack) != null && TileEntityFurnace.getItemBurnTime(itemstack) > 0);
+		return itemstack.getItem() == Items.COAL || (getAssembler().isCombustionFuelValid() && FluidUtils.getFluidStackInContainer(itemstack) != null && TileEntityFurnace.getItemBurnTime(itemstack) > 0);
 	}
 
 	public int getFuelLevel(
 		@Nonnull
 			ItemStack itemstack) {
-		if (this.isItemValid(itemstack)) {
+		if (isItemValid(itemstack)) {
 			return (int) (TileEntityFurnace.getItemBurnTime(itemstack) * 0.25f);
 		}
 		return 0;

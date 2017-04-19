@@ -12,13 +12,13 @@ public class Go extends CornerPlace {
 	@Override
 	public void draw(final GuiMinecart gui, final EnumSet<PLACE_STATE> states) {
 		super.draw(gui, states);
-		Note.DIAMOND.draw(this.game, gui, 45, 5, 2);
+		Note.DIAMOND.draw(game, gui, 45, 5, 2);
 	}
 
 	@Override
 	public void drawText(final GuiMinecart gui, final EnumSet<PLACE_STATE> states) {
-		this.game.getModule().drawString(gui, "Collect", 5, 10, 4210752);
-		this.game.getModule().drawString(gui, "as you pass.", 5, 20, 4210752);
+		game.getModule().drawString(gui, "Collect", 5, 10, 4210752);
+		game.getModule().drawString(gui, "as you pass.", 5, 20, 4210752);
 	}
 
 	@Override

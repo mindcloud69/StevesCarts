@@ -20,18 +20,18 @@ public class CargoItemSelection {
 	}
 
 	public Class getValidSlot() {
-		return this.validSlot;
+		return validSlot;
 	}
 
 	@Nonnull
 	public ItemStack getIcon() {
-		return this.icon;
+		return icon;
 	}
 
 	public String getName() {
-		if (this.name == null) {
+		if (name == null) {
 			return null;
 		}
-		return this.name.translate();
+		return name.translate();
 	}
 }

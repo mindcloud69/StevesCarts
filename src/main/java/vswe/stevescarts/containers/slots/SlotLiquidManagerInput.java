@@ -21,7 +21,7 @@ public class SlotLiquidManagerInput extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return isItemStackValid(itemstack, this.manager, this.tankid);
+		return isItemStackValid(itemstack, manager, tankid);
 	}
 
 	public static boolean isItemStackValid(

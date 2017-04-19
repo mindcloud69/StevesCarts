@@ -12,12 +12,12 @@ public class ContainerUpgrade extends ContainerBase {
 
 	@Override
 	public IInventory getMyInventory() {
-		return this.upgrade;
+		return upgrade;
 	}
 
 	@Override
 	public TileEntityBase getTileEntity() {
-		return this.upgrade;
+		return upgrade;
 	}
 
 	public ContainerUpgrade(final IInventory invPlayer, final TileEntityUpgrade upgrade) {
@@ -29,16 +29,16 @@ public class ContainerUpgrade extends ContainerBase {
 		inventory.clear();
 		for (int id = 0; id < inventory.getInventorySize(); ++id) {
 			final Slot slot = inventory.createSlot(upgrade, id);
-			this.addSlotToContainer(slot);
+			addSlotToContainer(slot);
 			inventory.addSlot(slot);
 		}
 		for (int i = 0; i < 3; ++i) {
 			for (int k = 0; k < 9; ++k) {
-				this.addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, this.offsetX() + k * 18, i * 18 + this.offsetY()));
+				addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, offsetX() + k * 18, i * 18 + offsetY()));
 			}
 		}
 		for (int j = 0; j < 9; ++j) {
-			this.addSlotToContainer(new Slot(invPlayer, j, this.offsetX() + j * 18, 58 + this.offsetY()));
+			addSlotToContainer(new Slot(invPlayer, j, offsetX() + j * 18, 58 + offsetY()));
 		}
 	}
 

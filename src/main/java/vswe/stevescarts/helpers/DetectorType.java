@@ -28,12 +28,12 @@ public enum DetectorType implements IStringSerializable {
 		"detector_junction_red" }) {
 		@Override
 		public void activate(final TileEntityDetector detector, final EntityMinecartModular cart) {
-			this.update(detector, true);
+			update(detector, true);
 		}
 
 		@Override
 		public void deactivate(final TileEntityDetector detector) {
-			this.update(detector, false);
+			update(detector, false);
 		}
 
 		private void update(final TileEntityDetector detector, final boolean flag) {
@@ -79,13 +79,13 @@ public enum DetectorType implements IStringSerializable {
 	}
 
 	public int getMeta() {
-		return this.meta;
+		return meta;
 	}
 
 	public String getTranslatedName() {
 		final StringBuilder append = new StringBuilder().append("item.");
 		final StevesCarts instance = StevesCarts.instance;
-		return I18n.translateToLocal(append.append("SC2:").append("BlockDetector").append(this.meta).append(".name").toString());
+		return I18n.translateToLocal(append.append("SC2:").append("BlockDetector").append(meta).append(".name").toString());
 	}
 
 	@Override
@@ -109,15 +109,15 @@ public enum DetectorType implements IStringSerializable {
 	//	}
 
 	public boolean canInteractWithCart() {
-		return this.acceptCart;
+		return acceptCart;
 	}
 
 	public boolean shouldStopCart() {
-		return this.stopCart;
+		return stopCart;
 	}
 
 	public boolean shouldEmitRedstone() {
-		return this.emitRedstone;
+		return emitRedstone;
 	}
 
 	public void activate(final TileEntityDetector detector, final EntityMinecartModular cart) {
@@ -139,6 +139,6 @@ public enum DetectorType implements IStringSerializable {
 	}
 
 	public HashMap<Byte, OperatorObject> getOperators() {
-		return this.operators;
+		return operators;
 	}
 }

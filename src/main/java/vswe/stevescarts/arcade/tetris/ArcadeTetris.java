@@ -32,96 +32,96 @@ public class ArcadeTetris extends ArcadeGame {
 
 	public ArcadeTetris(final ModuleArcade module) {
 		super(module, Localization.ARCADE.STACKER);
-		this.ticks = 0;
-		this.isPlaying = true;
-		this.quickMove = false;
-		this.delay = 10;
-		this.newgame();
+		ticks = 0;
+		isPlaying = true;
+		quickMove = false;
+		delay = 10;
+		newgame();
 	}
 
 	private void newgame() {
-		this.board = new TetrisBlock[10][15];
-		this.generatePiece();
-		this.isPlaying = true;
-		this.ticks = 0;
-		this.quickMove = false;
-		this.score = 0;
-		this.removed = 0;
-		this.removedByAmount = new int[4];
-		this.delay = 10;
-		this.piecesSinceDelayChange = 0;
-		this.newHighScore = false;
+		board = new TetrisBlock[10][15];
+		generatePiece();
+		isPlaying = true;
+		ticks = 0;
+		quickMove = false;
+		score = 0;
+		removed = 0;
+		removedByAmount = new int[4];
+		delay = 10;
+		piecesSinceDelayChange = 0;
+		newHighScore = false;
 	}
 
 	private void generatePiece() {
-		this.piece = TetrisPiece.createPiece(this.getModule().getCart().rand.nextInt(7));
+		piece = TetrisPiece.createPiece(getModule().getCart().rand.nextInt(7));
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void update() {
 		super.update();
-		if (this.isPlaying) {
-			if (this.ticks == 0 || this.quickMove) {
-				if (this.piece != null) {
-					final TetrisPiece.MOVE_RESULT result = this.piece.move(this, this.board, 0, 1, true);
+		if (isPlaying) {
+			if (ticks == 0 || quickMove) {
+				if (piece != null) {
+					final TetrisPiece.MOVE_RESULT result = piece.move(this, board, 0, 1, true);
 					if (result == TetrisPiece.MOVE_RESULT.FAIL) {
-						this.piece = null;
+						piece = null;
 						int removedCount = 0;
-						for (int y = 0; y < this.board[0].length; ++y) {
+						for (int y = 0; y < board[0].length; ++y) {
 							boolean valid = true;
-							for (int x = 0; x < this.board.length; ++x) {
-								if (this.board[x][y] == null) {
+							for (int x = 0; x < board.length; ++x) {
+								if (board[x][y] == null) {
 									valid = false;
 									break;
 								}
 							}
 							if (valid) {
 								for (int y2 = y; y2 >= 0; --y2) {
-									for (int x2 = 0; x2 < this.board.length; ++x2) {
-										final TetrisBlock value = (y2 == 0) ? null : this.board[x2][y2 - 1];
-										this.board[x2][y2] = value;
+									for (int x2 = 0; x2 < board.length; ++x2) {
+										final TetrisBlock value = (y2 == 0) ? null : board[x2][y2 - 1];
+										board[x2][y2] = value;
 									}
 								}
 								++removedCount;
 							}
 						}
 						if (removedCount > 0) {
-							this.removed += removedCount;
+							removed += removedCount;
 							final int[] removedByAmount = this.removedByAmount;
 							final int n = removedCount - 1;
 							++removedByAmount[n];
-							this.score += removedCount * removedCount * 100;
+							score += removedCount * removedCount * 100;
 							ArcadeGame.playSound(ArcadeTetris.removalSounds[removedCount - 1], 1.0f, 1.0f);
 						}
-						this.quickMove = false;
-						++this.piecesSinceDelayChange;
-						if (this.piecesSinceDelayChange == 8) {
-							this.piecesSinceDelayChange = 0;
-							if (this.delay > 0) {
-								--this.delay;
+						quickMove = false;
+						++piecesSinceDelayChange;
+						if (piecesSinceDelayChange == 8) {
+							piecesSinceDelayChange = 0;
+							if (delay > 0) {
+								--delay;
 							}
 						}
 					} else if (result == TetrisPiece.MOVE_RESULT.GAME_OVER) {
-						this.piece = null;
-						this.isPlaying = false;
-						this.quickMove = false;
-						this.gameOverTicks = 0;
-						this.newHighScore();
+						piece = null;
+						isPlaying = false;
+						quickMove = false;
+						gameOverTicks = 0;
+						newHighScore();
 						ArcadeGame.playSound("gameover", 1.0f, 1.0f);
 					}
 				} else {
-					this.generatePiece();
+					generatePiece();
 				}
-				this.ticks = this.delay;
+				ticks = delay;
 			} else {
-				--this.ticks;
+				--ticks;
 			}
-		} else if (this.gameOverTicks < 170) {
-			this.gameOverTicks = Math.min(170, this.gameOverTicks + 5);
-		} else if (this.newHighScore) {
+		} else if (gameOverTicks < 170) {
+			gameOverTicks = Math.min(170, gameOverTicks + 5);
+		} else if (newHighScore) {
 			ArcadeGame.playSound("highscore", 1.0f, 1.0f);
-			this.newHighScore = false;
+			newHighScore = false;
 		}
 	}
 
@@ -129,23 +129,23 @@ public class ArcadeTetris extends ArcadeGame {
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource(ArcadeTetris.texture);
-		this.getModule().drawImage(gui, 187, 7, 0, 40, 104, 154);
-		for (int i = 0; i < this.board.length; ++i) {
-			for (int j = 0; j < this.board[0].length; ++j) {
-				final TetrisBlock b = this.board[i][j];
+		getModule().drawImage(gui, 187, 7, 0, 40, 104, 154);
+		for (int i = 0; i < board.length; ++i) {
+			for (int j = 0; j < board[0].length; ++j) {
+				final TetrisBlock b = board[i][j];
 				if (b != null) {
 					b.render(this, gui, i, j);
 				}
 			}
 		}
-		if (this.piece != null) {
-			this.piece.render(this, gui);
+		if (piece != null) {
+			piece.render(this, gui);
 		}
-		if (!this.isPlaying) {
-			final int graphicalValue = Math.min(this.gameOverTicks, 150);
-			this.getModule().drawImage(gui, 189, 159 - graphicalValue, 104, 40, 100, graphicalValue);
-			if (graphicalValue == 150 && this.getModule().inRect(x, y, new int[] { 189, 9, 100, 150 })) {
-				this.getModule().drawImage(gui, 213, 107, 0, 194, 54, 34);
+		if (!isPlaying) {
+			final int graphicalValue = Math.min(gameOverTicks, 150);
+			getModule().drawImage(gui, 189, 159 - graphicalValue, 104, 40, 100, graphicalValue);
+			if (graphicalValue == 150 && getModule().inRect(x, y, new int[] { 189, 9, 100, 150 })) {
+				getModule().drawImage(gui, 213, 107, 0, 194, 54, 34);
 			}
 		}
 	}
@@ -153,53 +153,53 @@ public class ArcadeTetris extends ArcadeGame {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void keyPress(final GuiMinecart gui, final char character, final int extraInformation) {
-		if (this.piece != null) {
+		if (piece != null) {
 			if (Character.toLowerCase(character) == 'w') {
-				this.piece.rotate(this.board);
+				piece.rotate(board);
 			} else if (Character.toLowerCase(character) == 'a') {
-				this.piece.move(this, this.board, -1, 0, false);
+				piece.move(this, board, -1, 0, false);
 			} else if (Character.toLowerCase(character) == 'd') {
-				this.piece.move(this, this.board, 1, 0, false);
+				piece.move(this, board, 1, 0, false);
 			} else if (Character.toLowerCase(character) == 's') {
-				this.quickMove = true;
+				quickMove = true;
 			}
 		}
 		if (Character.toLowerCase(character) == 'r') {
-			this.newgame();
+			newgame();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (button == 0 && !this.isPlaying && this.gameOverTicks >= 150 && this.getModule().inRect(x, y, new int[] { 189, 9, 100, 150 })) {
-			this.newgame();
+		if (button == 0 && !isPlaying && gameOverTicks >= 150 && getModule().inRect(x, y, new int[] { 189, 9, 100, 150 })) {
+			newgame();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.getModule().drawString(gui, Localization.ARCADE.HIGH_SCORE.translate(String.valueOf(this.highscore)), 10, 20, 4210752);
-		this.getModule().drawString(gui, Localization.ARCADE.SCORE.translate(String.valueOf(this.score)), 10, 40, 4210752);
-		this.getModule().drawString(gui, Localization.ARCADE.REMOVED_LINES.translate(String.valueOf(this.removed)), 10, 60, 4210752);
+		getModule().drawString(gui, Localization.ARCADE.HIGH_SCORE.translate(String.valueOf(highscore)), 10, 20, 4210752);
+		getModule().drawString(gui, Localization.ARCADE.SCORE.translate(String.valueOf(score)), 10, 40, 4210752);
+		getModule().drawString(gui, Localization.ARCADE.REMOVED_LINES.translate(String.valueOf(removed)), 10, 60, 4210752);
 		for (int i = 0; i < 4; ++i) {
-			this.getModule().drawString(gui, Localization.ARCADE.REMOVED_LINES_COMBO.translate(String.valueOf(i), String.valueOf(this.removedByAmount[i])), 10, 80 + i * 10, 4210752);
+			getModule().drawString(gui, Localization.ARCADE.REMOVED_LINES_COMBO.translate(String.valueOf(i), String.valueOf(removedByAmount[i])), 10, 80 + i * 10, 4210752);
 		}
-		this.getModule().drawString(gui, "W - " + Localization.ARCADE.INSTRUCTION_ROTATE.translate(), 340, 20, 4210752);
-		this.getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_LEFT.translate(), 340, 30, 4210752);
-		this.getModule().drawString(gui, "S - " + Localization.ARCADE.INSTRUCTION_DROP.translate(), 340, 40, 4210752);
-		this.getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_RIGHT.translate(), 340, 50, 4210752);
-		this.getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_RESTART.translate(), 340, 70, 4210752);
+		getModule().drawString(gui, "W - " + Localization.ARCADE.INSTRUCTION_ROTATE.translate(), 340, 20, 4210752);
+		getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_LEFT.translate(), 340, 30, 4210752);
+		getModule().drawString(gui, "S - " + Localization.ARCADE.INSTRUCTION_DROP.translate(), 340, 40, 4210752);
+		getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_RIGHT.translate(), 340, 50, 4210752);
+		getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_RESTART.translate(), 340, 70, 4210752);
 	}
 
 	private void newHighScore() {
-		if (this.score > this.highscore) {
-			final int val = this.score / 100;
+		if (score > highscore) {
+			final int val = score / 100;
 			final byte byte1 = (byte) (val & 0xFF);
 			final byte byte2 = (byte) ((val & 0xFF00) >> 8);
-			this.getModule().sendPacket(1, new byte[] { byte1, byte2 });
-			this.newHighScore = true;
+			getModule().sendPacket(1, new byte[] { byte1, byte2 });
+			newHighScore = true;
 		}
 	}
 
@@ -214,30 +214,30 @@ public class ArcadeTetris extends ArcadeGame {
 			if (data3 < 0) {
 				data3 += 256;
 			}
-			this.highscore = (data2 | data3 << 8) * 100;
+			highscore = (data2 | data3 << 8) * 100;
 		}
 	}
 
 	@Override
 	public void checkGuiData(final Object[] info) {
-		this.getModule().updateGuiData(info, TrackStory.stories.size(), (short) (this.highscore / 100));
+		getModule().updateGuiData(info, TrackStory.stories.size(), (short) (highscore / 100));
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == TrackStory.stories.size()) {
-			this.highscore = data * 100;
+			highscore = data * 100;
 		}
 	}
 
 	@Override
 	public void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setShort(this.getModule().generateNBTName("Highscore", id), (short) this.highscore);
+		tagCompound.setShort(getModule().generateNBTName("Highscore", id), (short) highscore);
 	}
 
 	@Override
 	public void Load(final NBTTagCompound tagCompound, final int id) {
-		this.highscore = tagCompound.getShort(this.getModule().generateNBTName("Highscore", id));
+		highscore = tagCompound.getShort(getModule().generateNBTName("Highscore", id));
 	}
 
 	static {

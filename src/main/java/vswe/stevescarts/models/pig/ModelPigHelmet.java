@@ -17,7 +17,7 @@ public class ModelPigHelmet extends ModelCartbase {
 	@Override
 	public ResourceLocation getResource(final ModuleBase module) {
 		final ModulePig pig = (ModulePig) module;
-		return pig.getHelmetResource(this.isOverlay);
+		return pig.getHelmetResource(isOverlay);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class ModelPigHelmet extends ModelCartbase {
 	public ModelPigHelmet(final boolean isOverlay) {
 		this.isOverlay = isOverlay;
 		final ModelRenderer Headwear = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(Headwear);
+		AddRenderer(Headwear);
 		Headwear.addBox(-4.0f, -4.0f, -4.0f, 8, 8, 8, 0.0f);
 		Headwear.setRotationPoint(-12.2f + (isOverlay ? 0.2f : 0.0f), -5.4f, 0.0f);
 		Headwear.rotateAngleY = 1.5707964f;
@@ -40,13 +40,13 @@ public class ModelPigHelmet extends ModelCartbase {
 			return;
 		}
 		final ModulePig pig = (ModulePig) module;
-		if (!pig.hasHelment() || (this.isOverlay && !pig.getHelmetMultiRender())) {
+		if (!pig.hasHelment() || (isOverlay && !pig.getHelmetMultiRender())) {
 			return;
 		}
-		final float sizemult = 1.09375f + (this.isOverlay ? 0.020833334f : 0.0f);
+		final float sizemult = 1.09375f + (isOverlay ? 0.020833334f : 0.0f);
 		GL11.glScalef(sizemult, sizemult, sizemult);
-		if (pig.hasHelmetColor(this.isOverlay)) {
-			final int color = pig.getHelmetColor(this.isOverlay);
+		if (pig.hasHelmetColor(isOverlay)) {
+			final int color = pig.getHelmetColor(isOverlay);
 			final float red = (color >> 16 & 0xFF) / 255.0f;
 			final float green = (color >> 8 & 0xFF) / 255.0f;
 			final float blue = (color & 0xFF) / 255.0f;

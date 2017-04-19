@@ -13,12 +13,12 @@ public abstract class ContainerManager extends ContainerBase {
 
 	@Override
 	public IInventory getMyInventory() {
-		return this.manager;
+		return manager;
 	}
 
 	@Override
 	public TileEntityBase getTileEntity() {
-		return this.manager;
+		return manager;
 	}
 
 	public ContainerManager(final TileEntityManager manager) {
@@ -28,11 +28,11 @@ public abstract class ContainerManager extends ContainerBase {
 	protected void addPlayer(final IInventory invPlayer) {
 		for (int k = 0; k < 3; ++k) {
 			for (int j1 = 0; j1 < 9; ++j1) {
-				this.addSlotToContainer(new Slot(invPlayer, j1 + k * 9 + 9, j1 * 18 + this.offsetX(), 104 + k * 18 + 36));
+				addSlotToContainer(new Slot(invPlayer, j1 + k * 9 + 9, j1 * 18 + offsetX(), 104 + k * 18 + 36));
 			}
 		}
 		for (int l = 0; l < 9; ++l) {
-			this.addSlotToContainer(new Slot(invPlayer, l, l * 18 + this.offsetX(), 198));
+			addSlotToContainer(new Slot(invPlayer, l, l * 18 + offsetX(), 198));
 		}
 	}
 

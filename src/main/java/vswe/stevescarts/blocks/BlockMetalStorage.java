@@ -14,8 +14,8 @@ public class BlockMetalStorage extends Block {
 
 	public BlockMetalStorage() {
 		super(Material.IRON);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, 0));
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setDefaultState(blockState.getBaseState().withProperty(TYPE, 0));
 	}
 
 	public int damageDropped(final int meta) {
@@ -24,7 +24,7 @@ public class BlockMetalStorage extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(TYPE, meta);
+		return getDefaultState().withProperty(TYPE, meta);
 	}
 
 	@Override

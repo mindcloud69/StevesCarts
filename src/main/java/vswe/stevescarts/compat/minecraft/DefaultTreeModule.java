@@ -34,12 +34,12 @@ public class DefaultTreeModule implements ITreeModule {
 		@Nonnull
 			ItemStack sapling) {
 		if (!sapling.isEmpty()) {
-			if (this.isStackSapling(sapling)) {
+			if (isStackSapling(sapling)) {
 				return true;
 			}
 			if (sapling.getItem() instanceof ItemBlock) {
 				final Block b = Block.getBlockFromItem(sapling.getItem());
-				return b instanceof BlockSapling || (b != null && this.isStackSapling(new ItemStack(b, 1, 32767)));
+				return b instanceof BlockSapling || (b != null && isStackSapling(new ItemStack(b, 1, 32767)));
 			}
 		}
 		return false;

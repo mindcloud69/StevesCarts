@@ -14,22 +14,22 @@ public class TetrisPiecePart {
 	}
 
 	public void render(final ArcadeTetris game, final GuiMinecart gui, final int x, final int y) {
-		this.block.render(game, gui, x + this.offX, y + this.offY);
+		block.render(game, gui, x + offX, y + offY);
 	}
 
 	public void rotate(final int offSet) {
-		this.block.rotate();
-		final int temp = this.offX;
-		this.offX = -this.offY + offSet;
-		this.offY = temp;
+		block.rotate();
+		final int temp = offX;
+		offX = -offY + offSet;
+		offY = temp;
 	}
 
 	public void placeInBoard(final TetrisBlock[][] board, final int x, final int y) {
-		board[x + this.offX][y + this.offY] = this.block;
+		board[x + offX][y + offY] = block;
 	}
 
 	public boolean canMoveTo(final TetrisBlock[][] board, final int x, final int y) {
-		return this.isValidAt(board, x + this.offX, y + this.offY);
+		return isValidAt(board, x + offX, y + offY);
 	}
 
 	public boolean isValidAt(final TetrisBlock[][] board, final int x, final int y) {
@@ -37,10 +37,10 @@ public class TetrisPiecePart {
 	}
 
 	public boolean canRotate(final TetrisBlock[][] board, final int x, final int y, final int offSet) {
-		return this.isValidAt(board, x - this.offY + offSet, y + this.offX);
+		return isValidAt(board, x - offY + offSet, y + offX);
 	}
 
 	public boolean canPlaceInBoard(final int y) {
-		return y + this.offY >= 0;
+		return y + offY >= 0;
 	}
 }

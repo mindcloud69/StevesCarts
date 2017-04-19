@@ -39,12 +39,12 @@ public class ModuleCheatEngine extends ModuleEngine {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		final String[] split = this.getModuleName().split(" ");
-		this.drawString(gui, split[0], 8, 6, 4210752);
+		final String[] split = getModuleName().split(" ");
+		drawString(gui, split[0], 8, 6, 4210752);
 		if (split.length > 1) {
-			this.drawString(gui, split[1], 8, 16, 4210752);
+			drawString(gui, split[1], 8, 16, 4210752);
 		}
-		this.drawString(gui, Localization.MODULES.ENGINES.OVER_9000.translate(String.valueOf(this.getFuelLevel())), 8, 42, 4210752);
+		drawString(gui, Localization.MODULES.ENGINES.OVER_9000.translate(String.valueOf(getFuelLevel())), 8, 42, 4210752);
 	}
 
 	@Override

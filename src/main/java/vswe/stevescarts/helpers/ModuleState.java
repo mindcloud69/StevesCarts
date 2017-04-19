@@ -54,10 +54,10 @@ public class ModuleState {
 	}
 
 	public boolean evaluate(final EntityMinecartModular cart) {
-		switch (this.type) {
+		switch (type) {
 			case SUPPLY: {
 				for (final ModuleBase module : cart.getModules()) {
-					if (this.isModuleOfCorrectType(module) && module instanceof ISuppliesModule) {
+					if (isModuleOfCorrectType(module) && module instanceof ISuppliesModule) {
 						return ((ISuppliesModule) module).haveSupplies();
 					}
 				}
@@ -65,7 +65,7 @@ public class ModuleState {
 			}
 			case ACTIVATION: {
 				for (final ModuleBase module : cart.getModules()) {
-					if (this.isModuleOfCorrectType(module) && module instanceof IActivatorModule) {
+					if (isModuleOfCorrectType(module) && module instanceof IActivatorModule) {
 						return ((IActivatorModule) module).isActive(0);
 					}
 				}
@@ -75,7 +75,7 @@ public class ModuleState {
 				if (this instanceof ModuleStateInv) {
 					boolean hasModule = false;
 					for (final ModuleBase module2 : cart.getModules()) {
-						if (this.isModuleOfCorrectType(module2)) {
+						if (isModuleOfCorrectType(module2)) {
 							final ModuleChest chest = (ModuleChest) module2;
 							if (((ModuleStateInv) this).full && !chest.isCompletelyFilled()) {
 								return false;
@@ -99,7 +99,7 @@ public class ModuleState {
 			}
 			case POWER: {
 				for (final ModuleBase module2 : cart.getModules()) {
-					if (this.isModuleOfCorrectType(module2)) {
+					if (isModuleOfCorrectType(module2)) {
 						return ((ModulePowerObserver) module2).isAreaActive(((ModuleStatePower) this).areaId);
 					}
 				}
@@ -109,7 +109,7 @@ public class ModuleState {
 				if (this instanceof ModuleStateTank) {
 					boolean hasModule2 = false;
 					for (final ModuleBase module3 : cart.getModules()) {
-						if (this.isModuleOfCorrectType(module3)) {
+						if (isModuleOfCorrectType(module3)) {
 							final ModuleTank tank = (ModuleTank) module3;
 							boolean result;
 							if (((ModuleStateTank) this).full) {
@@ -132,15 +132,15 @@ public class ModuleState {
 	}
 
 	private boolean isModuleOfCorrectType(final ModuleBase module) {
-		return this.moduleClass.isAssignableFrom(module.getClass());
+		return moduleClass.isAssignableFrom(module.getClass());
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public byte getID() {
-		return this.id;
+		return id;
 	}
 
 	static {

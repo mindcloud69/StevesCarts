@@ -24,6 +24,6 @@ public class ModuleCake extends ModuleProjectile {
 	public Entity createProjectile(final Entity target,
 	                               @Nonnull
 		                               ItemStack item) {
-		return new EntityCake(this.getCart().world);
+		return new EntityCake(getCart().world);
 	}
 }

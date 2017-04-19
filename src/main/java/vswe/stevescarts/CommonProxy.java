@@ -16,7 +16,7 @@ public class CommonProxy implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		if (ID == 0) {
-			final EntityMinecartModular cart = this.getCart(x, world);
+			final EntityMinecartModular cart = getCart(x, world);
 			if (cart != null) {
 				return cart.getGui(player);
 			}
@@ -32,7 +32,7 @@ public class CommonProxy implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		if (ID == 0) {
-			final EntityMinecartModular cart = this.getCart(x, world);
+			final EntityMinecartModular cart = getCart(x, world);
 			if (cart != null) {
 				return cart.getCon(player.inventory);
 			}

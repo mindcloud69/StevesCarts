@@ -32,15 +32,15 @@ public class OperatorObject {
 	}
 
 	public byte getID() {
-		return this.ID;
+		return ID;
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public int getChildCount() {
-		return this.childs;
+		return childs;
 	}
 
 	public boolean inTab() {
@@ -84,7 +84,7 @@ public class OperatorObject {
 		new OperatorObject(operators, 3, Localization.GUI.DETECTOR.NOT, 1) {
 			@Override
 			public boolean isChildValid(final OperatorObject child) {
-				return this.getID() != child.ID;
+				return getID() != child.ID;
 			}
 
 			@Override

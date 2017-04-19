@@ -34,16 +34,16 @@ public class ModelFrontTank extends ModelCartbase {
 	public ModelFrontTank() {
 		for (int i = 0; i < 2; ++i) {
 			final ModelRenderer tankside = new ModelRenderer(this, 0, 15);
-			this.AddRenderer(tankside);
+			AddRenderer(tankside);
 			tankside.addBox(-4.0f, -3.0f, -0.5f, 8, 6, 1, 0.0f);
 			tankside.setRotationPoint(-14.0f, 0.0f, -6.5f + i * 13);
 			final ModelRenderer tanktopbot = new ModelRenderer(this, 0, 0);
-			this.AddRenderer(tanktopbot);
+			AddRenderer(tanktopbot);
 			tanktopbot.addBox(-4.0f, -7.0f, -0.5f, 8, 14, 1, 0.0f);
 			tanktopbot.setRotationPoint(-14.0f, 3.5f - i * 7, 0.0f);
 			tanktopbot.rotateAngleX = 1.5707964f;
 			final ModelRenderer tankfrontback = new ModelRenderer(this, 0, 22);
-			this.AddRenderer(tankfrontback);
+			AddRenderer(tankfrontback);
 			tankfrontback.addBox(-6.0f, -3.0f, -0.5f, 12, 6, 1, 0.0f);
 			tankfrontback.setRotationPoint(-17.5f + i * 7, 0.0f, 0.0f);
 			tankfrontback.rotateAngleY = 1.5707964f;

@@ -25,100 +25,100 @@ public class DropDownMenuItem {
 		this.type = type;
 		this.moduleClass = moduleClass;
 		this.excludedClass = excludedClass;
-		this.isLarge = false;
-		this.subOpen = false;
-		this.value = 0;
+		isLarge = false;
+		subOpen = false;
+		value = 0;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public Class<? extends ModuleBase> getModuleClass() {
-		return this.moduleClass;
+		return moduleClass;
 	}
 
 	public Class<? extends ModuleBase> getExcludedClass() {
-		return this.excludedClass;
+		return excludedClass;
 	}
 
 	public int getImageID() {
-		return this.imageID;
+		return imageID;
 	}
 
 	public boolean hasSubmenu() {
-		return this.type != VALUETYPE.BOOL;
+		return type != VALUETYPE.BOOL;
 	}
 
 	public boolean getIsSubMenuOpen() {
-		return this.subOpen;
+		return subOpen;
 	}
 
 	public void setIsSubMenuOpen(final boolean val) {
-		this.subOpen = val;
+		subOpen = val;
 	}
 
 	public boolean getIsLarge() {
-		return this.isLarge;
+		return isLarge;
 	}
 
 	public void setIsLarge(final boolean val) {
-		this.isLarge = val;
+		isLarge = val;
 	}
 
 	public int[] getRect(final int menuX, final int menuY, final int id) {
-		if (this.getIsLarge()) {
+		if (getIsLarge()) {
 			return new int[] { menuX, menuY + id * 20, 130, 20 };
 		}
 		return new int[] { menuX, menuY + id * 20, 54, 20 };
 	}
 
 	public int[] getSubRect(final int menuX, final int menuY, final int id) {
-		if (this.getIsSubMenuOpen()) {
+		if (getIsSubMenuOpen()) {
 			return new int[] { menuX - 43, menuY + id * 20 + 2, 52, 16 };
 		}
 		return new int[] { menuX, menuY + id * 20 + 2, 9, 16 };
 	}
 
 	public VALUETYPE getType() {
-		return this.type;
+		return type;
 	}
 
 	public boolean getBOOL() {
-		return this.value != 0;
+		return value != 0;
 	}
 
 	public void setBOOL(final boolean val) {
-		this.value = (byte) (val ? 1 : 0);
+		value = (byte) (val ? 1 : 0);
 	}
 
 	public int getINT() {
-		return this.value;
+		return value;
 	}
 
 	public void setINT(int val) {
-		if (val < this.intMinValue) {
-			val = this.intMinValue;
-		} else if (val > this.intMaxValue) {
-			val = this.intMaxValue;
+		if (val < intMinValue) {
+			val = intMinValue;
+		} else if (val > intMaxValue) {
+			val = intMaxValue;
 		}
-		this.value = (byte) val;
+		value = (byte) val;
 	}
 
 	public void setMULTIBOOL(final byte val) {
-		this.value = val;
+		value = val;
 	}
 
 	public void setMULTIBOOL(final int i, final boolean val) {
-		this.value = (byte) ((this.value & ~(1 << i)) | (val ? 1 : 0) << i);
+		value = (byte) ((value & ~(1 << i)) | (val ? 1 : 0) << i);
 	}
 
 	public byte getMULTIBOOL() {
-		return this.value;
+		return value;
 	}
 
 	public boolean getMULTIBOOL(final int i) {
-		return (this.value & 1 << i) != 0x0;
+		return (value & 1 << i) != 0x0;
 	}
 
 	public void setMULTIBOOLCount(int val) {
@@ -127,17 +127,17 @@ public class DropDownMenuItem {
 		} else if (val < 2) {
 			val = 2;
 		}
-		this.multiCount = val;
+		multiCount = val;
 	}
 
 	public int getMULTIBOOLCount() {
-		return this.multiCount;
+		return multiCount;
 	}
 
 	public void setINTLimit(final int min, final int max) {
-		this.intMinValue = min;
-		this.intMaxValue = max;
-		this.setINT(this.getINT());
+		intMinValue = min;
+		intMaxValue = max;
+		setINT(getINT());
 	}
 
 	public enum VALUETYPE {

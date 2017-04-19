@@ -23,14 +23,14 @@ public class GuiCargo extends GuiManager {
 
 	public GuiCargo(final InventoryPlayer invPlayer, final TileEntityCargo cargo) {
 		super(invPlayer, cargo, new ContainerCargo(invPlayer, cargo));
-		this.setXSize(305);
-		this.setYSize(222);
+		setXSize(305);
+		setYSize(222);
 	}
 
 	@Override
 	protected String getMaxSizeOverlay(final int id) {
-		final int amount = this.getCargo().getAmount(id);
-		final int type = this.getCargo().getAmountType(id);
+		final int amount = getCargo().getAmount(id);
+		final int type = getCargo().getAmountType(id);
 		if (type == 0) {
 			return Localization.GUI.CARGO.TRANSFER_ALL.translate();
 		}
@@ -42,12 +42,12 @@ public class GuiCargo extends GuiManager {
 
 	@Override
 	protected String getMaxSizeText(final int id) {
-		final int type = this.getCargo().getAmountType(id);
+		final int type = getCargo().getAmountType(id);
 		String s;
 		if (type == 0) {
 			s = Localization.GUI.CARGO.TRANSFER_ALL_SHORT.translate();
 		} else {
-			final int amount = this.getCargo().getAmount(id);
+			final int amount = getCargo().getAmount(id);
 			s = String.valueOf(amount);
 			if (type == 1) {
 				s = s + " " + Localization.GUI.CARGO.TRANSFER_ITEMS_SHORT.translate();
@@ -61,15 +61,15 @@ public class GuiCargo extends GuiManager {
 	@Override
 	protected void drawBackground(final int left, final int top) {
 		int version;
-		if (this.getManager().layoutType == 0) {
+		if (getManager().layoutType == 0) {
 			version = 0;
 		} else {
 			version = 1;
 		}
 		ResourceHelper.bindResource(GuiCargo.texturesLeft[version]);
-		this.drawTexturedModalRect(left, top, 0, 0, 256, this.ySize);
+		drawTexturedModalRect(left, top, 0, 0, 256, ySize);
 		ResourceHelper.bindResource(GuiCargo.texturesRight[version]);
-		this.drawTexturedModalRect(left + 256, top, 0, 0, this.xSize - 256, this.ySize);
+		drawTexturedModalRect(left + 256, top, 0, 0, xSize - 256, ySize);
 	}
 
 	@Override
@@ -90,9 +90,9 @@ public class GuiCargo extends GuiManager {
 	@Override
 	protected void drawColors(final int id, final int color, final int left, final int top) {
 		super.drawColors(id, color, left, top);
-		if (this.getManager().layoutType == 2) {
-			final int[] coords = this.getInvCoords(id);
-			this.drawTexturedModalRect(left + coords[0] - 2, top + coords[1] - 2, 125, 56 * color, 92, 56);
+		if (getManager().layoutType == 2) {
+			final int[] coords = getInvCoords(id);
+			drawTexturedModalRect(left + coords[0] - 2, top + coords[1] - 2, 125, 56 * color, 92, 56);
 		}
 	}
 
@@ -101,20 +101,20 @@ public class GuiCargo extends GuiManager {
 		ItemStack cartIcon = null;
 		Label_0103:
 		{
-			if (this.getCargo().target[id] >= 0) {
-				final int n = this.getCargo().target[id];
-				this.getCargo();
+			if (getCargo().target[id] >= 0) {
+				final int n = getCargo().target[id];
+				getCargo();
 				if (n < TileEntityCargo.itemSelections.size()) {
-					this.getCargo();
-					if (TileEntityCargo.itemSelections.get(this.getCargo().target[id]).getIcon() != null) {
-						cartIcon = TileEntityCargo.itemSelections.get(this.getCargo().target[id]).getIcon();
+					getCargo();
+					if (TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon() != null) {
+						cartIcon = TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon();
 						break Label_0103;
 					}
 				}
 			}
 			cartIcon = new ItemStack(Items.MINECART, 1);
 		}
-		final int[] coords = this.getBoxCoords(id);
+		final int[] coords = getBoxCoords(id);
 		GL11.glDisable(2896);
 		renderitem.renderItemIntoGUI(cartIcon, left + coords[0], top + coords[1]);
 		GL11.glEnable(2896);
@@ -130,8 +130,8 @@ public class GuiCargo extends GuiManager {
 
 	@Override
 	protected boolean sendOnClick(final int id, final int x, final int y, final byte data) {
-		if (this.inRect(x, y, this.getBoxCoords(id))) {
-			this.getManager().sendPacket(1, data);
+		if (inRect(x, y, getBoxCoords(id))) {
+			getManager().sendPacket(1, data);
 			return true;
 		}
 		return false;
@@ -139,21 +139,21 @@ public class GuiCargo extends GuiManager {
 
 	@Override
 	protected void drawExtraOverlay(final int id, final int x, final int y) {
-		if (this.getCargo().target[id] >= 0) {
-			final int n = this.getCargo().target[id];
-			this.getCargo();
+		if (getCargo().target[id] >= 0) {
+			final int n = getCargo().target[id];
+			getCargo();
 			if (n < TileEntityCargo.itemSelections.size()) {
-				this.getCargo();
-				final CargoItemSelection item = TileEntityCargo.itemSelections.get(this.getCargo().target[id]);
+				getCargo();
+				final CargoItemSelection item = TileEntityCargo.itemSelections.get(getCargo().target[id]);
 				if (item.getName() != null) {
-					this.drawMouseOver(Localization.GUI.CARGO.CHANGE_STORAGE_AREA.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + item.getName(), x, y, this.getBoxCoords(id));
+					drawMouseOver(Localization.GUI.CARGO.CHANGE_STORAGE_AREA.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + item.getName(), x, y, getBoxCoords(id));
 				} else {
-					this.drawMouseOver(Localization.GUI.CARGO.CHANGE_STORAGE_AREA.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + Localization.GUI.CARGO.UNKNOWN_AREA.translate(), x, y, this.getBoxCoords(id));
+					drawMouseOver(Localization.GUI.CARGO.CHANGE_STORAGE_AREA.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + Localization.GUI.CARGO.UNKNOWN_AREA.translate(), x, y, getBoxCoords(id));
 				}
 				return;
 			}
 		}
-		this.drawMouseOver(Localization.GUI.CARGO.CHANGE_STORAGE_AREA.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + Localization.GUI.CARGO.UNKNOWN_AREA.translate(), x, y, this.getBoxCoords(id));
+		drawMouseOver(Localization.GUI.CARGO.CHANGE_STORAGE_AREA.translate() + "\n" + Localization.GUI.MANAGER.CURRENT_SETTING.translate() + ": " + Localization.GUI.CARGO.UNKNOWN_AREA.translate(), x, y, getBoxCoords(id));
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class GuiCargo extends GuiManager {
 	}
 
 	private TileEntityCargo getCargo() {
-		return (TileEntityCargo) this.getManager();
+		return (TileEntityCargo) getManager();
 	}
 
 	@Override

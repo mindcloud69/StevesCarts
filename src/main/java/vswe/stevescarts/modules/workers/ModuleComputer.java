@@ -24,8 +24,8 @@ public class ModuleComputer extends ModuleWorker {
 
 	public ModuleComputer(final EntityMinecartModular cart) {
 		super(cart);
-		this.programs = new ArrayList<>();
-		this.editTasks = new ArrayList<>();
+		programs = new ArrayList<>();
+		editTasks = new ArrayList<>();
 	}
 
 	@Override
@@ -55,9 +55,9 @@ public class ModuleComputer extends ModuleWorker {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		if (this.isWriting()) {
-			this.drawString(gui, this.getWriting().getText(), 100, 6, 4210752);
-			this.drawString(gui, "Max Length: " + this.getWriting().getMaxLength(), 100, 18, 4210752);
+		if (isWriting()) {
+			drawString(gui, getWriting().getText(), 100, 6, 4210752);
+			drawString(gui, "Max Length: " + getWriting().getMaxLength(), 100, 18, 4210752);
 		}
 	}
 
@@ -132,7 +132,7 @@ public class ModuleComputer extends ModuleWorker {
 		new ButtonVarSecondVar(this, ButtonBase.LOCATION.TASK, false);
 		new ButtonVarSecondVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonControlType(this, ButtonBase.LOCATION.TASK, 0);
-		ComputerControl.createButtons(this.getCart(), this);
+		ComputerControl.createButtons(getCart(), this);
 		new ButtonControlUseVar(this, ButtonBase.LOCATION.TASK, false);
 		new ButtonControlUseVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonControlInteger(this, ButtonBase.LOCATION.TASK, 1);
@@ -142,7 +142,7 @@ public class ModuleComputer extends ModuleWorker {
 		new ButtonControlVar(this, ButtonBase.LOCATION.TASK, false);
 		new ButtonControlVar(this, ButtonBase.LOCATION.TASK, true);
 		new ButtonInfoType(this, ButtonBase.LOCATION.TASK, 0);
-		ComputerInfo.createButtons(this.getCart(), this);
+		ComputerInfo.createButtons(getCart(), this);
 		new ButtonInfoVar(this, ButtonBase.LOCATION.TASK, false);
 		new ButtonInfoVar(this, ButtonBase.LOCATION.TASK, true);
 		for (int i = 0; i < 21; ++i) {
@@ -157,71 +157,71 @@ public class ModuleComputer extends ModuleWorker {
 	}
 
 	public boolean isWriting() {
-		return this.writing != null;
+		return writing != null;
 	}
 
 	public IWriting getWriting() {
-		return this.writing;
+		return writing;
 	}
 
 	public void setWriting(final IWriting val) {
-		this.writing = val;
+		writing = val;
 	}
 
 	public void flipShift() {
-		this.info ^= 0x1;
+		info ^= 0x1;
 	}
 
 	public void flipCaps() {
-		this.info ^= 0x2;
+		info ^= 0x2;
 	}
 
 	public boolean getShift() {
-		return (this.info & 0x1) != 0x0;
+		return (info & 0x1) != 0x0;
 	}
 
 	public boolean getCaps() {
-		return (this.info & 0x2) != 0x0;
+		return (info & 0x2) != 0x0;
 	}
 
 	public boolean isLower() {
-		return this.getShift() == this.getCaps();
+		return getShift() == getCaps();
 	}
 
 	public void disableShift() {
-		this.info &= 0xFFFFFFFE;
+		info &= 0xFFFFFFFE;
 	}
 
 	public ComputerProg getCurrentProg() {
-		return this.editProg;
+		return editProg;
 	}
 
 	public ArrayList<ComputerTask> getSelectedTasks() {
-		return this.editTasks;
+		return editTasks;
 	}
 
 	public void setCurrentProg(final ComputerProg prog) {
-		this.editProg = prog;
+		editProg = prog;
 	}
 
 	public void setActiveProgram(final ComputerProg prog) {
-		this.activeProg = prog;
+		activeProg = prog;
 	}
 
 	public ComputerProg getActiveProgram() {
-		return this.activeProg;
+		return activeProg;
 	}
 
 	@Override
 	public boolean work() {
-		if (this.activeProg != null) {
-			if (this.doPreWork()) {
-				this.startWorking(this.activeProg.getRunTime());
+		if (activeProg != null) {
+			if (doPreWork()) {
+				startWorking(activeProg.getRunTime());
 			} else {
-				if (!this.activeProg.run()) {
-					this.activeProg = null;
+				if (!activeProg.run()) {
+					activeProg = null;
 				}
-				this.stopWorking();
+				stopWorking();
 			}
 		}
 		return true;
@@ -247,11 +247,11 @@ public class ModuleComputer extends ModuleWorker {
 	}
 
 	public void activationChanged() {
-		this.editTasks.clear();
-		if (this.editProg != null) {
-			for (final ComputerTask task : this.editProg.getTasks()) {
+		editTasks.clear();
+		if (editProg != null) {
+			for (final ComputerTask task : editProg.getTasks()) {
 				if (task.getIsActivated()) {
-					this.editTasks.add(task);
+					editTasks.add(task);
 				}
 			}
 		}
@@ -259,31 +259,31 @@ public class ModuleComputer extends ModuleWorker {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		this.updateGuiData(info, 0, this.info);
-		if (this.editProg != null) {
-			this.updateGuiData(info, 1, this.editProg.getInfo());
-			final int tasks = this.editProg.getTasks().size();
-			final int vars = this.editProg.getVars().size();
-			this.updateGuiData(info, 2, (short) (tasks << 8 | vars));
-			if (this.editProg == this.activeProg) {
-				this.updateGuiData(info, 3, (short) this.activeProg.getActiveId());
+		updateGuiData(info, 0, this.info);
+		if (editProg != null) {
+			updateGuiData(info, 1, editProg.getInfo());
+			final int tasks = editProg.getTasks().size();
+			final int vars = editProg.getVars().size();
+			updateGuiData(info, 2, (short) (tasks << 8 | vars));
+			if (editProg == activeProg) {
+				updateGuiData(info, 3, (short) activeProg.getActiveId());
 			} else {
-				this.updateGuiData(info, 3, (short) 256);
+				updateGuiData(info, 3, (short) 256);
 			}
 			for (int taskId = 0; taskId < tasks; ++taskId) {
-				final ComputerTask theTask = this.editProg.getTasks().get(taskId);
+				final ComputerTask theTask = editProg.getTasks().get(taskId);
 				for (int internalId = 0; internalId < 2; ++internalId) {
-					this.updateGuiData(info, 4 + taskId * 2 + internalId, theTask.getInfo(internalId));
+					updateGuiData(info, 4 + taskId * 2 + internalId, theTask.getInfo(internalId));
 				}
 			}
 			for (int varId = 0; varId < vars; ++varId) {
-				final ComputerVar theVar = this.editProg.getVars().get(varId);
+				final ComputerVar theVar = editProg.getVars().get(varId);
 				for (int internalId = 0; internalId < 5; ++internalId) {
-					this.updateGuiData(info, 516 + varId * 5 + internalId, theVar.getInfo(internalId));
+					updateGuiData(info, 516 + varId * 5 + internalId, theVar.getInfo(internalId));
 				}
 			}
 		} else {
-			this.updateGuiData(info, 1, (short) 0);
+			updateGuiData(info, 1, (short) 0);
 		}
 	}
 
@@ -291,45 +291,45 @@ public class ModuleComputer extends ModuleWorker {
 	public void receiveGuiData(final int id, final short data) {
 		System.out.println("ID " + id + " Data " + data);
 		if (id == 0) {
-			this.info = data;
+			info = data;
 		} else if (id == 1) {
 			if (data == 0) {
-				this.editProg = null;
+				editProg = null;
 			} else {
-				if (this.editProg == null) {
-					this.editProg = new ComputerProg(this);
+				if (editProg == null) {
+					editProg = new ComputerProg(this);
 				}
-				this.editProg.setInfo(data);
+				editProg.setInfo(data);
 			}
-		} else if (this.editProg != null) {
+		} else if (editProg != null) {
 			if (id == 2) {
 				final int tasks = data >> 8 & 0xFF;
 				final int vars = data & 0xFF;
-				this.editProg.setTaskCount(tasks);
-				this.editProg.setVarCount(vars);
+				editProg.setTaskCount(tasks);
+				editProg.setVarCount(vars);
 			} else if (id == 3) {
 				if (data >= 0 && data < 256) {
-					this.activeProg = this.editProg;
-					this.editProg.setActiveId(data);
+					activeProg = editProg;
+					editProg.setActiveId(data);
 				} else {
-					this.activeProg = null;
-					this.editProg.setActiveId(0);
+					activeProg = null;
+					editProg.setActiveId(0);
 				}
 			} else {
 				final int taskId = id - 1 - 3;
 				if (taskId < 512) {
 					final int task = taskId / 2;
 					final int taskInternalPos = taskId % 2;
-					if (task >= 0 && task < this.editProg.getTasks().size()) {
-						final ComputerTask theTask = this.editProg.getTasks().get(task);
+					if (task >= 0 && task < editProg.getTasks().size()) {
+						final ComputerTask theTask = editProg.getTasks().get(task);
 						theTask.setInfo(taskInternalPos, data);
 					}
 				} else {
 					final int varId = taskId - 512;
 					final int var = varId / 5;
 					final int varInternalPos = varId % 5;
-					if (var >= 0 && var < this.editProg.getVars().size()) {
-						final ComputerVar theVar = this.editProg.getVars().get(var);
+					if (var >= 0 && var < editProg.getVars().size()) {
+						final ComputerVar theVar = editProg.getVars().get(var);
 						theVar.setInfo(varInternalPos, data);
 					}
 				}

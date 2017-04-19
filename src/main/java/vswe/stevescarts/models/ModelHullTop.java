@@ -15,7 +15,7 @@ public class ModelHullTop extends ModelCartbase {
 
 	@Override
 	public ResourceLocation getResource(final ModuleBase module) {
-		return this.resource;
+		return resource;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class ModelHullTop extends ModelCartbase {
 		this.resource = resource;
 		this.useColors = useColors;
 		final ModelRenderer top = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(top);
+		AddRenderer(top);
 		top.addBox(-8.0f, -6.0f, -1.0f, 16, 12, 2, 0.0f);
 		top.setRotationPoint(0.0f, -4.0f, 0.0f);
 		top.rotateAngleX = -1.5707964f;
@@ -39,7 +39,7 @@ public class ModelHullTop extends ModelCartbase {
 
 	@Override
 	public void render(final Render render, final ModuleBase module, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
-		if (this.useColors && module != null) {
+		if (useColors && module != null) {
 			final float[] color = module.getCart().getColor();
 			GL11.glColor4f(color[0], color[1], color[2], 1.0f);
 		}

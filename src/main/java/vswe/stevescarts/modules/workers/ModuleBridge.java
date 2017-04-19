@@ -35,12 +35,12 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotBridge(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
+		return new SlotBridge(getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -51,48 +51,48 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean work() {
 		World world = getCart().world;
-		BlockPos next = this.getNextblock();
-		if (this.getCart().getYTarget() < next.getY()) {
+		BlockPos next = getNextblock();
+		if (getCart().getYTarget() < next.getY()) {
 			next = next.down(2);
 		} else {
 			next = next.down(1);
 		}
 		if (!BlockRailBase.isRailBlock(world, next) && !BlockRailBase.isRailBlock(world, next.down())) {
-			if (this.doPreWork()) {
-				if (this.tryBuildBridge(world, next, false)) {
-					this.startWorking(22);
-					this.setBridge(true);
+			if (doPreWork()) {
+				if (tryBuildBridge(world, next, false)) {
+					startWorking(22);
+					setBridge(true);
 					return true;
 				}
-			} else if (this.tryBuildBridge(world, next, true)) {
-				this.stopWorking();
+			} else if (tryBuildBridge(world, next, true)) {
+				stopWorking();
 			}
 		}
-		this.setBridge(false);
+		setBridge(false);
 		return false;
 	}
 
 	private boolean tryBuildBridge(World world, BlockPos pos, final boolean flag) {
 		final Block b = world.getBlockState(pos).getBlock();
-		if ((this.countsAsAir(pos) || b instanceof BlockLiquid) && this.isValidForTrack(world, pos.up(), false)) {
-			for (int m = 0; m < this.getInventorySize(); ++m) {
-				if (!this.getStack(m).isEmpty() && SlotBridge.isBridgeMaterial(this.getStack(m))) {
+		if ((countsAsAir(pos) || b instanceof BlockLiquid) && isValidForTrack(world, pos.up(), false)) {
+			for (int m = 0; m < getInventorySize(); ++m) {
+				if (!getStack(m).isEmpty() && SlotBridge.isBridgeMaterial(getStack(m))) {
 					if (flag) {
-						world.setBlockState(pos, Block.getBlockFromItem(this.getStack(m).getItem()).getStateFromMeta(getStack(m).getItemDamage()), 3);
-						if (!this.getCart().hasCreativeSupplies()) {
+						world.setBlockState(pos, Block.getBlockFromItem(getStack(m).getItem()).getStateFromMeta(getStack(m).getItemDamage()), 3);
+						if (!getCart().hasCreativeSupplies()) {
 							@Nonnull
-							ItemStack stack = this.getStack(m);
+							ItemStack stack = getStack(m);
 							stack.shrink(1);
-							if (this.getStack(m).getCount() == 0) {
-								this.setStack(m, ItemStack.EMPTY);
+							if (getStack(m).getCount() == 0) {
+								setStack(m, ItemStack.EMPTY);
 							}
-							this.getCart().markDirty();
+							getCart().markDirty();
 						}
 					}
 					return true;
 				}
 			}
-			if (this.isValidForTrack(world, pos, true) || this.isValidForTrack(world, pos.up(), true) || !this.isValidForTrack(world, pos.up(2), true)) {
+			if (isValidForTrack(world, pos, true) || isValidForTrack(world, pos.up(), true) || !isValidForTrack(world, pos.up(2), true)) {
 			}
 		}
 		return false;
@@ -110,21 +110,21 @@ public class ModuleBridge extends ModuleWorker implements ISuppliesModule {
 	}
 
 	private void setBridge(final boolean val) {
-		this.updateDw(BRIDGE, val);
+		updateDw(BRIDGE, val);
 	}
 
 	public boolean needBridge() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getNeedBridge();
+		if (isPlaceholder()) {
+			return getSimInfo().getNeedBridge();
 		}
-		return this.getDw(BRIDGE);
+		return getDw(BRIDGE);
 	}
 
 	@Override
 	public boolean haveSupplies() {
-		for (int i = 0; i < this.getInventorySize(); ++i) {
+		for (int i = 0; i < getInventorySize(); ++i) {
 			@Nonnull
-			ItemStack item = this.getStack(i);
+			ItemStack item = getStack(i);
 			if (!item.isEmpty() && SlotBridge.isBridgeMaterial(item)) {
 				return true;
 			}

@@ -123,6 +123,6 @@ public enum ModBlocks {
 	}
 
 	public Block getBlock() {
-		return this.block;
+		return block;
 	}
 }

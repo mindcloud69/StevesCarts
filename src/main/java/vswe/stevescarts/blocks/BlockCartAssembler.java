@@ -22,7 +22,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 
 	public BlockCartAssembler() {
 		super(Material.ROCK);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 		if (master != null) {
 			master.clearUpgrades();
 		}
-		this.checkForUpgrades(world, pos);
+		checkForUpgrades(world, pos);
 		if (!world.isRemote) {
 			PacketHandler.sendBlockInfoToClients(world, new byte[0], pos);
 		}
@@ -56,7 +56,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 
 	private void checkForUpgrades(final World world, final BlockPos pos) {
 		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-			this.checkForUpgrade(world, pos.offset(facing), facing);
+			checkForUpgrade(world, pos.offset(facing), facing);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 		final TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityUpgrade) {
 			final TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
-			final ArrayList<TileEntityCartAssembler> masters = this.getMasters(world, pos);
+			final ArrayList<TileEntityCartAssembler> masters = getMasters(world, pos);
 			if (masters.size() == 1) {
 				final TileEntityCartAssembler master = masters.get(0);
 				master.addUpgrade(upgrade);
@@ -85,7 +85,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 			for (int j = -1; j <= 1; ++j) {
 				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						final TileEntityCartAssembler temp = this.getMaster(world, pos.add(i, j, k));
+						final TileEntityCartAssembler temp = getMaster(world, pos.add(i, j, k));
 						if (temp != null) {
 							masters.add(temp);
 						}
@@ -102,7 +102,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 			for (int j = -1; j <= 1; ++j) {
 				for (int k = -1; k <= 1; ++k) {
 					if (Math.abs(i) + Math.abs(j) + Math.abs(k) == 1) {
-						final TileEntityCartAssembler temp = this.getMaster(world, pos.add(i, j, k));
+						final TileEntityCartAssembler temp = getMaster(world, pos.add(i, j, k));
 						if (temp != null) {
 							if (master != null) {
 								return null;
@@ -128,16 +128,16 @@ public class BlockCartAssembler extends BlockContainerBase {
 	}
 
 	public void addUpgrade(final World world, final BlockPos pos) {
-		final TileEntityCartAssembler master = this.getValidMaster(world, pos);
+		final TileEntityCartAssembler master = getValidMaster(world, pos);
 		if (master != null) {
-			this.updateMultiBlock(world, master.getPos());
+			updateMultiBlock(world, master.getPos());
 		}
 	}
 
 	public void removeUpgrade(final World world, final BlockPos pos) {
-		final TileEntityCartAssembler master = this.getValidMaster(world, pos);
+		final TileEntityCartAssembler master = getValidMaster(world, pos);
 		if (master != null) {
-			this.updateMultiBlock(world, pos);
+			updateMultiBlock(world, pos);
 		}
 	}
 
@@ -149,14 +149,14 @@ public class BlockCartAssembler extends BlockContainerBase {
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
-		this.updateMultiBlock(worldIn, pos);
+		updateMultiBlock(worldIn, pos);
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		final TileEntityCartAssembler var7 = (TileEntityCartAssembler) world.getTileEntity(pos);
 		var7.isDead = true;
-		this.updateMultiBlock(world, pos);
+		updateMultiBlock(world, pos);
 		if (!var7.isEmpty()) {
 			for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
 				@Nonnull
@@ -198,7 +198,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 				world.spawnEntity(eItem);
 			}
 		}
-		super.breakBlock(world, pos, this.getDefaultState());
+		super.breakBlock(world, pos, getDefaultState());
 	}
 
 }

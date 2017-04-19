@@ -21,52 +21,52 @@ public class GuiActivator extends GuiBase {
 	public GuiActivator(final InventoryPlayer invPlayer, final TileEntityActivator activator) {
 		super(new ContainerActivator(invPlayer, activator));
 		this.invPlayer = invPlayer;
-		this.setXSize(255);
-		this.setYSize(222);
+		setXSize(255);
+		setYSize(222);
 		this.activator = activator;
 	}
 
 	@Override
 	public void drawGuiForeground(final int x, final int y) {
 		GL11.glDisable(2896);
-		this.getFontRenderer().drawString(Localization.GUI.TOGGLER.TITLE.translate(), 8, 6, 4210752);
-		for (int i = 0; i < this.activator.getOptions().size(); ++i) {
-			final ActivatorOption option = this.activator.getOptions().get(i);
-			final int[] box = this.getBoxRect(i);
-			this.getFontRenderer().drawString(option.getName(), box[0] + box[2] + 6, box[1] + 4, 4210752);
+		getFontRenderer().drawString(Localization.GUI.TOGGLER.TITLE.translate(), 8, 6, 4210752);
+		for (int i = 0; i < activator.getOptions().size(); ++i) {
+			final ActivatorOption option = activator.getOptions().get(i);
+			final int[] box = getBoxRect(i);
+			getFontRenderer().drawString(option.getName(), box[0] + box[2] + 6, box[1] + 4, 4210752);
 		}
-		for (int i = 0; i < this.activator.getOptions().size(); ++i) {
-			final ActivatorOption option = this.activator.getOptions().get(i);
-			final int[] box = this.getBoxRect(i);
-			this.drawMouseMover(option.getInfo(), x, y, box);
+		for (int i = 0; i < activator.getOptions().size(); ++i) {
+			final ActivatorOption option = activator.getOptions().get(i);
+			final int[] box = getBoxRect(i);
+			drawMouseMover(option.getInfo(), x, y, box);
 		}
 		GL11.glEnable(2896);
 	}
 
 	private void drawMouseMover(final String str, final int x, final int y, final int[] rect) {
-		if (this.inRect(x - this.getGuiLeft(), y - this.getGuiTop(), rect)) {
-			this.drawMouseOver(str, x - this.getGuiLeft(), y - this.getGuiTop());
+		if (inRect(x - getGuiLeft(), y - getGuiTop(), rect)) {
+			drawMouseOver(str, x - getGuiLeft(), y - getGuiTop());
 		}
 	}
 
 	@Override
 	public void drawGuiBackground(final float f, int x, int y) {
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		final int j = this.getGuiLeft();
-		final int k = this.getGuiTop();
+		final int j = getGuiLeft();
+		final int k = getGuiTop();
 		ResourceHelper.bindResource(GuiActivator.texture);
-		this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
-		for (int i = 0; i < this.activator.getOptions().size(); ++i) {
-			final ActivatorOption option = this.activator.getOptions().get(i);
-			final int[] box = this.getBoxRect(i);
+		drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
+		x -= getGuiLeft();
+		y -= getGuiTop();
+		for (int i = 0; i < activator.getOptions().size(); ++i) {
+			final ActivatorOption option = activator.getOptions().get(i);
+			final int[] box = getBoxRect(i);
 			int srcX = 0;
-			if (this.inRect(x, y, box)) {
+			if (inRect(x, y, box)) {
 				srcX = 16;
 			}
-			this.drawTexturedModalRect(j + box[0], k + box[1], srcX, this.ySize, box[2], box[3]);
-			this.drawTexturedModalRect(j + box[0] + 1, k + box[1] + 1, (box[2] - 2) * option.getOption(), this.ySize + box[3], box[2] - 2, box[3] - 2);
+			drawTexturedModalRect(j + box[0], k + box[1], srcX, ySize, box[2], box[3]);
+			drawTexturedModalRect(j + box[0] + 1, k + box[1] + 1, (box[2] - 2) * option.getOption(), ySize + box[3], box[2] - 2, box[3] - 2);
 		}
 	}
 
@@ -77,11 +77,11 @@ public class GuiActivator extends GuiBase {
 	@Override
 	public void mouseClick(int x, int y, final int button) {
 		super.mouseClick(x, y, button);
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
-		for (int i = 0; i < this.activator.getOptions().size(); ++i) {
-			final int[] box = this.getBoxRect(i);
-			if (this.inRect(x, y, box)) {
+		x -= getGuiLeft();
+		y -= getGuiTop();
+		for (int i = 0; i < activator.getOptions().size(); ++i) {
+			final int[] box = getBoxRect(i);
+			if (inRect(x, y, box)) {
 				byte data = (byte) ((button != 0) ? 1 : 0);
 				data |= (byte) (i << 1);
 				PacketHandler.sendPacket(0, new byte[] { data });

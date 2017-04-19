@@ -24,33 +24,33 @@ public class GuiMinecart extends GuiBase {
 
 	public GuiMinecart(final InventoryPlayer invPlayer, final EntityMinecartModular cart) {
 		super(cart.getCon(invPlayer));
-		this.scrollBox = new int[] { 450, 15, 18, 225 };
-		this.setup(cart);
+		scrollBox = new int[] { 450, 15, 18, 225 };
+		setup(cart);
 	}
 
 	protected void setup(final EntityMinecartModular cart) {
 		this.cart = cart;
-		this.setXSize(478);
-		this.setYSize(256);
+		setXSize(478);
+		setYSize(256);
 	}
 
 	@Override
 	public void drawGuiForeground(final int x, final int y) {
 		GL11.glDisable(2896);
-		if (this.cart.getModules() != null) {
-			final ModuleBase thief = this.cart.getInterfaceThief();
+		if (cart.getModules() != null) {
+			final ModuleBase thief = cart.getInterfaceThief();
 			if (thief != null) {
-				this.drawModuleForeground(thief);
-				this.drawModuleMouseOver(thief, x, y);
+				drawModuleForeground(thief);
+				drawModuleMouseOver(thief, x, y);
 			} else {
-				for (final ModuleBase module : this.cart.getModules()) {
-					this.drawModuleForeground(module);
+				for (final ModuleBase module : cart.getModules()) {
+					drawModuleForeground(module);
 				}
-				this.renderModuleListText(x, y);
-				for (final ModuleBase module : this.cart.getModules()) {
-					this.drawModuleMouseOver(module, x, y);
+				renderModuleListText(x, y);
+				for (final ModuleBase module : cart.getModules()) {
+					drawModuleMouseOver(module, x, y);
 				}
-				this.renderModuleListMouseOver(x, y);
+				renderModuleListMouseOver(x, y);
 			}
 		}
 		GL11.glEnable(2896);
@@ -60,83 +60,83 @@ public class GuiMinecart extends GuiBase {
 	public void drawGuiBackground(final float f, final int x, final int y) {
 		GL11.glDisable(2896);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		final int j = this.getGuiLeft();
-		final int k = this.getGuiTop();
+		final int j = getGuiLeft();
+		final int k = getGuiTop();
 		ResourceHelper.bindResource(GuiMinecart.textureLeft);
-		this.drawTexturedModalRect(j, k, 0, 0, 256, this.ySize);
+		drawTexturedModalRect(j, k, 0, 0, 256, ySize);
 		ResourceHelper.bindResource(GuiMinecart.textureRight);
-		this.drawTexturedModalRect(j + 256, k, 0, 0, this.xSize - 256, this.ySize);
-		final ModuleBase thief = this.cart.getInterfaceThief();
+		drawTexturedModalRect(j + 256, k, 0, 0, xSize - 256, ySize);
+		final ModuleBase thief = cart.getInterfaceThief();
 		if (thief != null) {
-			this.drawModuleSlots(thief);
-			this.drawModuleBackground(thief, x, y);
-			this.drawModuleBackgroundItems(thief, x, y);
-			for (final ModuleBase module : this.cart.getModules()) {
+			drawModuleSlots(thief);
+			drawModuleBackground(thief, x, y);
+			drawModuleBackgroundItems(thief, x, y);
+			for (final ModuleBase module : cart.getModules()) {
 				if (module.hasGui() && module.hasSlots()) {
 					final ArrayList<SlotBase> slotsList = module.getSlots();
 					for (final SlotBase slot : slotsList) {
-						this.resetSlot(slot);
+						resetSlot(slot);
 					}
 				}
 			}
-		} else if (this.cart.getModules() != null) {
-			this.drawTexturedModalRect(j + this.scrollBox[0], k + this.scrollBox[1], 222, 24, this.scrollBox[2], this.scrollBox[3]);
-			this.drawTexturedModalRect(j + this.scrollBox[0] + 2, k + this.scrollBox[1] + 2 + this.cart.getScrollY(), 240, 26 + (this.cart.canScrollModules ? 0 : 25), 14, 25);
-			for (final ModuleBase module : this.cart.getModules()) {
-				this.drawModuleSlots(module);
+		} else if (cart.getModules() != null) {
+			drawTexturedModalRect(j + scrollBox[0], k + scrollBox[1], 222, 24, scrollBox[2], scrollBox[3]);
+			drawTexturedModalRect(j + scrollBox[0] + 2, k + scrollBox[1] + 2 + cart.getScrollY(), 240, 26 + (cart.canScrollModules ? 0 : 25), 14, 25);
+			for (final ModuleBase module : cart.getModules()) {
+				drawModuleSlots(module);
 			}
-			for (final ModuleBase module : this.cart.getModules()) {
-				this.drawModuleBackground(module, x, y);
+			for (final ModuleBase module : cart.getModules()) {
+				drawModuleBackground(module, x, y);
 			}
-			this.renderModuleList(x, y);
-			for (final ModuleBase module : this.cart.getModules()) {
-				this.drawModuleBackgroundItems(module, x, y);
+			renderModuleList(x, y);
+			for (final ModuleBase module : cart.getModules()) {
+				drawModuleBackgroundItems(module, x, y);
 			}
 		}
 		GL11.glEnable(2896);
 	}
 
 	private void renderModuleList(int x, int y) {
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
-		final ArrayList<ModuleCountPair> moduleCounts = this.cart.getModuleCounts();
+		x -= getGuiLeft();
+		y -= getGuiTop();
+		final ArrayList<ModuleCountPair> moduleCounts = cart.getModuleCounts();
 		GL11.glEnable(3042);
 		for (int i = 0; i < moduleCounts.size(); ++i) {
 			final ModuleCountPair count = moduleCounts.get(i);
-			final float alpha = this.inRect(x, y, this.getModuleDisplayX(i), this.getModuleDisplayY(i), 16, 16) ? 1.0f : 0.5f;
+			final float alpha = inRect(x, y, getModuleDisplayX(i), getModuleDisplayY(i), 16, 16) ? 1.0f : 0.5f;
 			GL11.glColor4f(1.0f, 1.0f, 1.0f, alpha);
-			this.drawModuleIcon(count.getData(), this.getGuiLeft() + this.getModuleDisplayX(i), this.getGuiTop() + this.getModuleDisplayY(i), 1.0f, 1.0f, 0.0f, 0.0f);
+			drawModuleIcon(count.getData(), getGuiLeft() + getModuleDisplayX(i), getGuiTop() + getModuleDisplayY(i), 1.0f, 1.0f, 0.0f, 0.0f);
 		}
 		GL11.glDisable(3042);
 	}
 
 	private void renderModuleListText(int x, int y) {
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
-		final ArrayList<ModuleCountPair> moduleCounts = this.cart.getModuleCounts();
+		x -= getGuiLeft();
+		y -= getGuiTop();
+		final ArrayList<ModuleCountPair> moduleCounts = cart.getModuleCounts();
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		this.getFontRenderer().drawString(this.cart.getCartName(), 5, 172, 4210752);
+		getFontRenderer().drawString(cart.getCartName(), 5, 172, 4210752);
 		GL11.glEnable(3042);
 		for (int i = 0; i < moduleCounts.size(); ++i) {
 			final ModuleCountPair count = moduleCounts.get(i);
 			if (count.getCount() != 1) {
-				final int alpha = (int) ((this.inRect(x, y, this.getModuleDisplayX(i), this.getModuleDisplayY(i), 16, 16) ? 1.0f : 0.75f) * 256.0f);
+				final int alpha = (int) ((inRect(x, y, getModuleDisplayX(i), getModuleDisplayY(i), 16, 16) ? 1.0f : 0.75f) * 256.0f);
 				final String str = String.valueOf(count.getCount());
-				this.getFontRenderer().drawStringWithShadow(str, this.getModuleDisplayX(i) + 16 - this.getFontRenderer().getStringWidth(str), this.getModuleDisplayY(i) + 8, 0xFFFFFF | alpha << 24);
+				getFontRenderer().drawStringWithShadow(str, getModuleDisplayX(i) + 16 - getFontRenderer().getStringWidth(str), getModuleDisplayY(i) + 8, 0xFFFFFF | alpha << 24);
 			}
 		}
 		GL11.glDisable(3042);
 	}
 
 	private void renderModuleListMouseOver(int x, int y) {
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
-		final ArrayList<ModuleCountPair> moduleCounts = this.cart.getModuleCounts();
+		x -= getGuiLeft();
+		y -= getGuiTop();
+		final ArrayList<ModuleCountPair> moduleCounts = cart.getModuleCounts();
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		for (int i = 0; i < moduleCounts.size(); ++i) {
 			final ModuleCountPair count = moduleCounts.get(i);
-			if (this.inRect(x, y, this.getModuleDisplayX(i), this.getModuleDisplayY(i), 16, 16)) {
-				this.drawMouseOver(count.toString(), x, y);
+			if (inRect(x, y, getModuleDisplayX(i), getModuleDisplayY(i), 16, 16)) {
+				drawMouseOver(count.toString(), x, y);
 			}
 		}
 	}
@@ -152,15 +152,15 @@ public class GuiMinecart extends GuiBase {
 	@Override
 	public void mouseClick(final int x, final int y, final int button) {
 		super.mouseClick(x, y, button);
-		final ModuleBase thief = this.cart.getInterfaceThief();
+		final ModuleBase thief = cart.getInterfaceThief();
 		if (thief != null) {
-			this.handleModuleMouseClicked(thief, x, y, button);
-		} else if (this.cart.getModules() != null) {
-			if (this.inRect(x - this.getGuiLeft(), y - this.getGuiTop(), this.scrollBox[0], this.scrollBox[1], this.scrollBox[2], this.scrollBox[3])) {
-				this.isScrolling = true;
+			handleModuleMouseClicked(thief, x, y, button);
+		} else if (cart.getModules() != null) {
+			if (inRect(x - getGuiLeft(), y - getGuiTop(), scrollBox[0], scrollBox[1], scrollBox[2], scrollBox[3])) {
+				isScrolling = true;
 			}
-			for (final ModuleBase module : this.cart.getModules()) {
-				this.handleModuleMouseClicked(module, x, y, button);
+			for (final ModuleBase module : cart.getModules()) {
+				handleModuleMouseClicked(module, x, y, button);
 			}
 		}
 	}
@@ -172,25 +172,25 @@ public class GuiMinecart extends GuiBase {
 	@Override
 	public void mouseMoved(final int x, final int y, final int button) {
 		super.mouseMoved(x, y, button);
-		if (this.isScrolling) {
-			int temp = y - this.getGuiTop() - 12 - (this.scrollBox[1] + 2);
+		if (isScrolling) {
+			int temp = y - getGuiTop() - 12 - (scrollBox[1] + 2);
 			if (temp < 0) {
 				temp = 0;
 			} else if (temp > 198) {
 				temp = 198;
 			}
-			this.cart.setScrollY(temp);
+			cart.setScrollY(temp);
 		}
 		if (button != -1) {
-			this.isScrolling = false;
+			isScrolling = false;
 		}
-		if (this.cart.getModules() != null) {
-			final ModuleBase thief = this.cart.getInterfaceThief();
+		if (cart.getModules() != null) {
+			final ModuleBase thief = cart.getInterfaceThief();
 			if (thief != null) {
-				this.handleModuleMouseMoved(thief, x, y, button);
+				handleModuleMouseMoved(thief, x, y, button);
 			} else {
-				for (final ModuleBase module : this.cart.getModules()) {
-					this.handleModuleMouseMoved(module, x, y, button);
+				for (final ModuleBase module : cart.getModules()) {
+					handleModuleMouseMoved(module, x, y, button);
 				}
 			}
 		}
@@ -199,13 +199,13 @@ public class GuiMinecart extends GuiBase {
 	@Override
 	public void keyPress(final char character, final int extraInformation) {
 		super.keyPress(character, extraInformation);
-		if (this.cart.getModules() != null) {
-			final ModuleBase thief = this.cart.getInterfaceThief();
+		if (cart.getModules() != null) {
+			final ModuleBase thief = cart.getInterfaceThief();
 			if (thief != null) {
-				this.handleModuleKeyPress(thief, character, extraInformation);
+				handleModuleKeyPress(thief, character, extraInformation);
 			} else {
-				for (final ModuleBase module : this.cart.getModules()) {
-					this.handleModuleKeyPress(module, character, extraInformation);
+				for (final ModuleBase module : cart.getModules()) {
+					handleModuleKeyPress(module, character, extraInformation);
 				}
 			}
 		}
@@ -213,12 +213,12 @@ public class GuiMinecart extends GuiBase {
 
 	@Override
 	public boolean disableStandardKeyFunctionality() {
-		if (this.cart.getModules() != null) {
-			final ModuleBase thief = this.cart.getInterfaceThief();
+		if (cart.getModules() != null) {
+			final ModuleBase thief = cart.getInterfaceThief();
 			if (thief != null) {
 				return thief.disableStandardKeyFunctionality();
 			}
-			for (final ModuleBase module : this.cart.getModules()) {
+			for (final ModuleBase module : cart.getModules()) {
 				if (module.disableStandardKeyFunctionality()) {
 					return true;
 				}
@@ -238,9 +238,9 @@ public class GuiMinecart extends GuiBase {
 
 	private void drawModuleMouseOver(final ModuleBase module, final int x, final int y) {
 		if (module.hasGui()) {
-			module.drawMouseOver(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY());
+			module.drawMouseOver(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY());
 			if (module.useButtons()) {
-				module.drawButtonOverlays(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY());
+				module.drawButtonOverlays(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY());
 			}
 		}
 	}
@@ -254,13 +254,13 @@ public class GuiMinecart extends GuiBase {
 				final boolean drawAll = rect[3] == 16;
 				if (drawAll) {
 					slot.xPos = slot.getX() + module.getX() + 1;
-					slot.yPos = slot.getY() + module.getY() + 1 - this.cart.getRealScrollY();
+					slot.yPos = slot.getY() + module.getY() + 1 - cart.getRealScrollY();
 				} else {
-					this.resetSlot(slot);
+					resetSlot(slot);
 				}
-				module.drawImage(this, slot.getX(), slot.getY(), this.xSize - 256, 0, 18, 18);
+				module.drawImage(this, slot.getX(), slot.getY(), xSize - 256, 0, 18, 18);
 				if (!drawAll) {
-					module.drawImage(this, slot.getX() + 1, slot.getY() + 1, this.xSize - 256 + 18, 1, 16, 16);
+					module.drawImage(this, slot.getX() + 1, slot.getY() + 1, xSize - 256 + 18, 1, 16, 16);
 				}
 			}
 		}
@@ -273,28 +273,28 @@ public class GuiMinecart extends GuiBase {
 
 	private void drawModuleBackground(final ModuleBase module, final int x, final int y) {
 		if (module.hasGui()) {
-			module.drawBackground(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY());
+			module.drawBackground(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY());
 			if (module.useButtons()) {
-				module.drawButtons(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY());
+				module.drawButtons(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY());
 			}
 		}
 	}
 
 	private void drawModuleBackgroundItems(final ModuleBase module, final int x, final int y) {
 		if (module.hasGui()) {
-			module.drawBackgroundItems(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY());
+			module.drawBackgroundItems(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY());
 		}
 	}
 
 	private void handleModuleMouseClicked(final ModuleBase module, final int x, final int y, final int button) {
-		module.mouseClicked(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY(), button);
+		module.mouseClicked(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY(), button);
 		if (module.useButtons()) {
-			module.mouseClickedButton(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY(), button);
+			module.mouseClickedButton(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY(), button);
 		}
 	}
 
 	private void handleModuleMouseMoved(final ModuleBase module, final int x, final int y, final int button) {
-		module.mouseMovedOrUp(this, x - this.getGuiLeft() - module.getX(), y - this.getGuiTop() - module.getY(), button);
+		module.mouseMovedOrUp(this, x - getGuiLeft() - module.getX(), y - getGuiTop() - module.getY(), button);
 	}
 
 	private void handleModuleKeyPress(final ModuleBase module, final char character, final int extraInformation) {

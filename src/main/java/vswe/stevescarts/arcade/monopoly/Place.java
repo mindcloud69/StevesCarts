@@ -20,18 +20,18 @@ public class Place {
 		int t;
 		int u;
 		int v;
-		if (this.getTextureId() == -1) {
+		if (getTextureId() == -1) {
 			t = 1;
 			u = 0;
 			v = 0;
 		} else {
-			t = 3 + this.getTextureId() / 6;
-			u = this.getTextureId() % 3;
-			v = this.getTextureId() % 6 / 3;
+			t = 3 + getTextureId() / 6;
+			u = getTextureId() % 3;
+			v = getTextureId() % 6 / 3;
 		}
-		this.game.loadTexture(gui, t);
-		this.applyColorFilter(gui, states);
-		this.game.getModule().drawImage(gui, 0, 0, 76 * u, 122 * v, 76, 122);
+		game.loadTexture(gui, t);
+		applyColorFilter(gui, states);
+		game.getModule().drawImage(gui, 0, 0, 76 * u, 122 * v, 76, 122);
 	}
 
 	public void applyColorFilter(final GuiMinecart gui, final EnumSet<PLACE_STATE> states) {
@@ -59,7 +59,7 @@ public class Place {
 		final int SIZE = 24;
 		final int PADDING = 5;
 		final int MARGIN = 2;
-		final int allowedWidth = this.getAllowedWidth(area) - 10;
+		final int allowedWidth = getAllowedWidth(area) - 10;
 		final int fullWidth = total * 26 - 2;
 		int startX;
 		int offSet;
@@ -70,7 +70,7 @@ public class Place {
 			startX = 5 + (allowedWidth - fullWidth) / 2;
 			offSet = 26;
 		}
-		this.game.getModule().drawImage(gui, startX + offSet * pos, this.getPieceYPosition(area), 232, piece.getV() * 24, 24, 24);
+		game.getModule().drawImage(gui, startX + offSet * pos, getPieceYPosition(area), 232, piece.getV() * 24, 24, 24);
 	}
 
 	protected int getPieceYPosition(final int area) {

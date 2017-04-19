@@ -15,6 +15,6 @@ public enum NBTHelper {
 	INT_ARRAY;
 
 	public int getId() {
-		return this.ordinal();
+		return ordinal();
 	}
 }

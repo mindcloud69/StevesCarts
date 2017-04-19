@@ -11,10 +11,10 @@ public class FuelCapacity extends BaseEffect {
 
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.FUEL_CAPACITY.translate(((this.capacity >= 0) ? "+" : "") + this.capacity);
+		return Localization.UPGRADES.FUEL_CAPACITY.translate(((capacity >= 0) ? "+" : "") + capacity);
 	}
 
 	public int getFuelCapacity() {
-		return this.capacity;
+		return capacity;
 	}
 }

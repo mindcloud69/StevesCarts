@@ -18,7 +18,7 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	public ModuleChunkLoader(final EntityMinecartModular cart) {
 		super(cart);
-		this.buttonRect = new int[] { 20, 20, 24, 12 };
+		buttonRect = new int[] { 20, 20, 24, 12 };
 	}
 
 	@Override
@@ -43,58 +43,58 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, "Chunk Loader", 8, 6, 4210752);
+		drawString(gui, "Chunk Loader", 8, 6, 4210752);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (!this.rdyToInit) {
-			this.rdyToInit = true;
+		if (!rdyToInit) {
+			rdyToInit = true;
 		}
-		if (this.isLoadingChunk() && !this.getCart().hasFuelForModule() && !this.getCart().world.isRemote) {
-			this.setChunkLoading(false);
+		if (isLoadingChunk() && !getCart().hasFuelForModule() && !getCart().world.isRemote) {
+			setChunkLoading(false);
 		}
 	}
 
 	public void setChunkLoading(final boolean val) {
-		if (!this.isPlaceholder()) {
-			this.updateDw(LOADING_CHUNK, val);
-			if (!this.getCart().world.isRemote && this.rdyToInit) {
+		if (!isPlaceholder()) {
+			updateDw(LOADING_CHUNK, val);
+			if (!getCart().world.isRemote && rdyToInit) {
 				if (val) {
-					this.getCart().initChunkLoading();
+					getCart().initChunkLoading();
 				} else {
-					this.getCart().dropChunkLoading();
+					getCart().dropChunkLoading();
 				}
 			}
 		}
 	}
 
 	private boolean isLoadingChunk() {
-		return !this.isPlaceholder() && getDw(LOADING_CHUNK);
+		return !isPlaceholder() && getDw(LOADING_CHUNK);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/chunk.png");
-		final int imageID = this.isLoadingChunk() ? 1 : 0;
+		final int imageID = isLoadingChunk() ? 1 : 0;
 		int borderID = 0;
-		if (this.inRect(x, y, this.buttonRect)) {
+		if (inRect(x, y, buttonRect)) {
 			borderID = 1;
 		}
-		this.drawImage(gui, this.buttonRect, 0, this.buttonRect[3] * borderID);
-		final int srcY = this.buttonRect[3] * 2 + imageID * (this.buttonRect[3] - 2);
-		this.drawImage(gui, this.buttonRect[0] + 1, this.buttonRect[1] + 1, 0, srcY, this.buttonRect[2] - 2, this.buttonRect[3] - 2);
+		drawImage(gui, buttonRect, 0, buttonRect[3] * borderID);
+		final int srcY = buttonRect[3] * 2 + imageID * (buttonRect[3] - 2);
+		drawImage(gui, buttonRect[0] + 1, buttonRect[1] + 1, 0, srcY, buttonRect[2] - 2, buttonRect[3] - 2);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, this.getStateName(), x, y, this.buttonRect);
+		drawStringOnMouseOver(gui, getStateName(), x, y, buttonRect);
 	}
 
 	private String getStateName() {
-		if (!this.isLoadingChunk()) {
+		if (!isLoadingChunk()) {
 			return "Activate chunk loading";
 		}
 		return "Deactivate chunk loading";
@@ -102,15 +102,15 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (button == 0 && this.inRect(x, y, this.buttonRect)) {
-			this.sendPacket(0);
+		if (button == 0 && inRect(x, y, buttonRect)) {
+			sendPacket(0);
 		}
 	}
 
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.setChunkLoading(!this.isLoadingChunk());
+			setChunkLoading(!isLoadingChunk());
 		}
 	}
 
@@ -132,31 +132,31 @@ public class ModuleChunkLoader extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public int getConsumption(final boolean isMoving) {
-		return this.isLoadingChunk() ? 5 : super.getConsumption(isMoving);
+		return isLoadingChunk() ? 5 : super.getConsumption(isMoving);
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setBoolean(this.generateNBTName("ChunkLoading", id), this.isLoadingChunk());
+		tagCompound.setBoolean(generateNBTName("ChunkLoading", id), isLoadingChunk());
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.setChunkLoading(tagCompound.getBoolean(this.generateNBTName("ChunkLoading", id)));
+		setChunkLoading(tagCompound.getBoolean(generateNBTName("ChunkLoading", id)));
 	}
 
 	@Override
 	public void doActivate(final int id) {
-		this.setChunkLoading(true);
+		setChunkLoading(true);
 	}
 
 	@Override
 	public void doDeActivate(final int id) {
-		this.setChunkLoading(false);
+		setChunkLoading(false);
 	}
 
 	@Override
 	public boolean isActive(final int id) {
-		return this.isLoadingChunk();
+		return isLoadingChunk();
 	}
 }

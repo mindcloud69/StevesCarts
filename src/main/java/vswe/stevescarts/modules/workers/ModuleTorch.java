@@ -31,9 +31,9 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	public ModuleTorch(final EntityMinecartModular cart) {
 		super(cart);
-		this.lightLimit = 8;
-		this.boxRect = new int[] { 12, this.guiHeight() - 10, 46, 9 };
-		this.markerMoving = false;
+		lightLimit = 8;
+		boxRect = new int[] { 12, guiHeight() - 10, 46, 9 };
+		markerMoving = false;
 	}
 
 	@Override
@@ -48,12 +48,12 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotTorch(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
+		return new SlotTorch(getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	public boolean work() {
-		final BlockPos next = this.getLastblock();
+		final BlockPos next = getLastblock();
 		final EntityMinecartModular cart = getCart();
 		final World world = cart.world;
 		final int x = next.getX();
@@ -71,7 +71,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 		final int z = next.getZ();
 		final int cartX = cart.x();
 		final int cartZ = cart.z();
-		if (this.light <= this.lightLimit) {
+		if (light <= lightLimit) {
 			for (int side = -1; side <= 1; side += 2) {
 				final int xTorch = x + ((cartZ != z) ? side : 0);
 				final int zTorch = z + ((cartX != x) ? side : 0);
@@ -79,22 +79,22 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 					BlockPos pos = new BlockPos(xTorch, y + level, zTorch);
 					if (world.isAirBlock(pos) && Blocks.TORCH.canPlaceBlockAt(world, pos)) {
 						int i = 0;
-						while (i < this.getInventorySize()) {
-							if (!this.getStack(i).isEmpty() && Block.getBlockFromItem(this.getStack(i).getItem()) == Blocks.TORCH) {
-								if (this.doPreWork()) {
-									this.startWorking(3);
+						while (i < getInventorySize()) {
+							if (!getStack(i).isEmpty() && Block.getBlockFromItem(getStack(i).getItem()) == Blocks.TORCH) {
+								if (doPreWork()) {
+									startWorking(3);
 									return true;
 								}
 								IBlockState state = Blocks.TORCH.getStateForPlacement(world, pos, EnumFacing.DOWN, 0, 0, 0, 0, getFakePlayer(), EnumHand.MAIN_HAND);
 								world.setBlockState(new BlockPos(xTorch, y + level, zTorch), state);
 								if (!cart.hasCreativeSupplies()) {
 									@Nonnull
-									ItemStack stack = this.getStack(i);
+									ItemStack stack = getStack(i);
 									stack.shrink(1);
-									if (this.getStack(i).getCount() == 0) {
-										this.setStack(i, ItemStack.EMPTY);
+									if (getStack(i).getCount() == 0) {
+										setStack(i, ItemStack.EMPTY);
 									}
-									this.onInventoryChanged();
+									onInventoryChanged();
 									break;
 								}
 								break;
@@ -110,29 +110,29 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 				}
 			}
 		}
-		this.stopWorking();
+		stopWorking();
 		return false;
 	}
 
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/torch.png");
-		int barLength = 3 * this.light;
-		if (this.light == 15) {
+		int barLength = 3 * light;
+		if (light == 15) {
 			--barLength;
 		}
 		int srcX = 0;
-		if (this.inRect(x, y, this.boxRect)) {
-			srcX += this.boxRect[2];
+		if (inRect(x, y, boxRect)) {
+			srcX += boxRect[2];
 		}
-		this.drawImage(gui, this.boxRect, srcX, 0);
-		this.drawImage(gui, 13, this.guiHeight() - 10 + 1, 0, 9, barLength, 7);
-		this.drawImage(gui, 12 + 3 * this.lightLimit, this.guiHeight() - 10, 0, 16, 1, 9);
+		drawImage(gui, boxRect, srcX, 0);
+		drawImage(gui, 13, guiHeight() - 10 + 1, 0, 9, barLength, 7);
+		drawImage(gui, 12 + 3 * lightLimit, guiHeight() - 10, 0, 16, 1, 9);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, "Threshold: " + this.lightLimit + " Current: " + this.light, x, y, this.boxRect);
+		drawStringOnMouseOver(gui, "Threshold: " + lightLimit + " Current: " + light, x, y, boxRect);
 	}
 
 	@Override
@@ -147,16 +147,16 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		short data = (short) (this.light & 0xF);
-		data |= (short) ((this.lightLimit & 0xF) << 4);
-		this.updateGuiData(info, 0, data);
+		short data = (short) (light & 0xF);
+		data |= (short) ((lightLimit & 0xF) << 4);
+		updateGuiData(info, 0, data);
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.light = (data & 0xF);
-			this.lightLimit = (data & 0xF0) >> 4;
+			light = (data & 0xF);
+			lightLimit = (data & 0xF0) >> 4;
 		}
 	}
 
@@ -168,60 +168,60 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.lightLimit = data[0];
-			if (this.lightLimit < 0) {
-				this.lightLimit = 0;
-			} else if (this.lightLimit > 15) {
-				this.lightLimit = 15;
+			lightLimit = data[0];
+			if (lightLimit < 0) {
+				lightLimit = 0;
+			} else if (lightLimit > 15) {
+				lightLimit = 15;
 			}
 		}
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (button == 0 && this.inRect(x, y, this.boxRect)) {
-			this.generatePacket(x, y);
-			this.markerMoving = true;
+		if (button == 0 && inRect(x, y, boxRect)) {
+			generatePacket(x, y);
+			markerMoving = true;
 		}
 	}
 
 	@Override
 	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.markerMoving) {
-			this.generatePacket(x, y);
+		if (markerMoving) {
+			generatePacket(x, y);
 		}
 		if (button != -1) {
-			this.markerMoving = false;
+			markerMoving = false;
 		}
 	}
 
 	private void generatePacket(final int x, final int y) {
-		final int xInBox = x - this.boxRect[0];
+		final int xInBox = x - boxRect[0];
 		int val = xInBox / 3;
 		if (val < 0) {
 			val = 0;
 		} else if (val > 15) {
 			val = 15;
 		}
-		this.sendPacket(0, (byte) val);
+		sendPacket(0, (byte) val);
 	}
 
 	public void setThreshold(final byte val) {
-		this.lightLimit = val;
+		lightLimit = val;
 	}
 
 	public int getThreshold() {
-		return this.lightLimit;
+		return lightLimit;
 	}
 
 	public int getLightLevel() {
-		return this.light;
+		return light;
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.light = this.getCart().world.getLightFor(EnumSkyBlock.BLOCK, new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z()));
+		light = getCart().world.getLightFor(EnumSkyBlock.BLOCK, new BlockPos(getCart().x(), getCart().y() + 1, getCart().z()));
 	}
 
 	@Override
@@ -238,43 +238,43 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void onInventoryChanged() {
 		super.onInventoryChanged();
-		this.calculateTorches();
+		calculateTorches();
 	}
 
 	private void calculateTorches() {
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
 		int val = 0;
 		for (int i = 0; i < 3; ++i) {
-			val |= ((this.getStack(i) != null) ? 1 : 0) << i;
+			val |= ((getStack(i) != null) ? 1 : 0) << i;
 		}
-		this.updateDw(TORCHES, val);
+		updateDw(TORCHES, val);
 	}
 
 	public int getTorches() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getTorchInfo();
+		if (isPlaceholder()) {
+			return getSimInfo().getTorchInfo();
 		}
-		return this.getDw(TORCHES);
+		return getDw(TORCHES);
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("lightLimit", id), (byte) this.lightLimit);
+		tagCompound.setByte(generateNBTName("lightLimit", id), (byte) lightLimit);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.lightLimit = tagCompound.getByte(this.generateNBTName("lightLimit", id));
-		this.calculateTorches();
+		lightLimit = tagCompound.getByte(generateNBTName("lightLimit", id));
+		calculateTorches();
 	}
 
 	@Override
 	public boolean haveSupplies() {
-		for (int i = 0; i < this.getInventorySize(); ++i) {
+		for (int i = 0; i < getInventorySize(); ++i) {
 			@Nonnull
-			ItemStack item = this.getStack(i);
+			ItemStack item = getStack(i);
 			if (item != null && Block.getBlockFromItem(item.getItem()) == Blocks.TORCH) {
 				return true;
 			}

@@ -35,7 +35,7 @@ public abstract class TileEntityBase extends TileEntity implements ITickable {
 	}
 
 	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
-		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64.0;
+		return world.getTileEntity(pos) == this && entityplayer.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0;
 	}
 
 	public short getShortFromInt(final boolean first, final int val) {

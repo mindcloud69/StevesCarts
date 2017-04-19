@@ -10,7 +10,7 @@ public class ModuleOpenTank extends ModuleTank {
 
 	public ModuleOpenTank(final EntityMinecartModular cart) {
 		super(cart);
-		this.cooldown = 0;
+		cooldown = 0;
 	}
 
 	@Override
@@ -21,12 +21,12 @@ public class ModuleOpenTank extends ModuleTank {
 	@Override
 	public void update() {
 		super.update();
-		if (this.cooldown > 0) {
-			--this.cooldown;
+		if (cooldown > 0) {
+			--cooldown;
 		} else {
-			this.cooldown = 20;
-			if (this.getCart().world.isRaining() && this.getCart().world.canSeeSky(new BlockPos(this.getCart().x(), this.getCart().y() + 1, this.getCart().z())) && this.getCart().world.getPrecipitationHeight(new BlockPos(this.getCart().x(), 0, this.getCart().z())).getY() < this.getCart().y() + 1) {
-				this.fill(new FluidStack(FluidRegistry.WATER, this.getCart().world.getBiome(new BlockPos(this.getCart().x(), 0, this.getCart().z())).getEnableSnow() ? 2 : 5), true);
+			cooldown = 20;
+			if (getCart().world.isRaining() && getCart().world.canSeeSky(new BlockPos(getCart().x(), getCart().y() + 1, getCart().z())) && getCart().world.getPrecipitationHeight(new BlockPos(getCart().x(), 0, getCart().z())).getY() < getCart().y() + 1) {
+				fill(new FluidStack(FluidRegistry.WATER, getCart().world.getBiome(new BlockPos(getCart().x(), 0, getCart().z())).getEnableSnow() ? 2 : 5), true);
 			}
 		}
 	}

@@ -72,7 +72,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	public TileEntityCartAssembler getMaster() {
-		return this.master;
+		return master;
 	}
 
 	public void setType(final int type) {
@@ -84,44 +84,44 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 		if (setBlockState) {
 			world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, type).withProperty(BlockUpgrade.FACING, getSide()));
 		}
-		if (!this.initialized) {
-			this.initialized = true;
-			final AssemblerUpgrade upgrade = this.getUpgrade();
+		if (!initialized) {
+			initialized = true;
+			final AssemblerUpgrade upgrade = getUpgrade();
 			if (upgrade != null) {
-				this.comp = new NBTTagCompound();
-				this.slotsForSide = new int[upgrade.getInventorySize()];
+				comp = new NBTTagCompound();
+				slotsForSide = new int[upgrade.getInventorySize()];
 				upgrade.init(this);
 				if (upgrade.getInventorySize() > 0) {
-					this.inventoryStacks = NonNullList.withSize(upgrade.getInventorySize(), ItemStack.EMPTY);
-					for (int i = 0; i < this.slotsForSide.length; ++i) {
-						this.slotsForSide[i] = i;
+					inventoryStacks = NonNullList.withSize(upgrade.getInventorySize(), ItemStack.EMPTY);
+					for (int i = 0; i < slotsForSide.length; ++i) {
+						slotsForSide[i] = i;
 					}
 				}
 			} else {
-				this.inventoryStacks = null;
+				inventoryStacks = null;
 			}
 		}
 	}
 
 	public int getType() {
-		return this.type;
+		return type;
 	}
 
 	public NBTTagCompound getCompound() {
-		return this.comp;
+		return comp;
 	}
 
 	@Nullable
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		final NBTTagCompound var1 = new NBTTagCompound();
-		this.writeToNBT(var1);
-		return new SPacketUpdateTileEntity(this.pos, 1, var1);
+		writeToNBT(var1);
+		return new SPacketUpdateTileEntity(pos, 1, var1);
 	}
 
 	@Override
 	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
+		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
@@ -130,17 +130,17 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	}
 
 	public AssemblerUpgrade getUpgrade() {
-		return AssemblerUpgrade.getUpgrade(this.type);
+		return AssemblerUpgrade.getUpgrade(type);
 	}
 
 	public boolean hasInventory() {
-		return this.inventoryStacks != null;
+		return inventoryStacks != null;
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-		this.setType(tagCompound.getByte("Type"), false);
+		setType(tagCompound.getByte("Type"), false);
 		shouldSetType = true;
 		final NBTTagList items = tagCompound.getTagList("Items", NBTHelper.COMPOUND.getId());
 		for (int i = 0; i < items.tagCount(); ++i) {
@@ -148,11 +148,11 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			final int slot = item.getByte("Slot") & 0xFF;
 			@Nonnull
 			ItemStack iStack = new ItemStack(item);
-			if (slot >= 0 && slot < this.getSizeInventory()) {
-				this.setInventorySlotContents(slot, iStack);
+			if (slot >= 0 && slot < getSizeInventory()) {
+				setInventorySlotContents(slot, iStack);
 			}
 		}
-		final AssemblerUpgrade upgrade = this.getUpgrade();
+		final AssemblerUpgrade upgrade = getUpgrade();
 		if (upgrade != null) {
 			upgrade.load(this, tagCompound);
 		}
@@ -162,10 +162,10 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public NBTTagCompound writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 		final NBTTagList items = new NBTTagList();
-		if (this.inventoryStacks != null) {
-			for (int i = 0; i < this.inventoryStacks.size(); ++i) {
+		if (inventoryStacks != null) {
+			for (int i = 0; i < inventoryStacks.size(); ++i) {
 				@Nonnull
-				ItemStack iStack = this.inventoryStacks.get(i);
+				ItemStack iStack = inventoryStacks.get(i);
 				if (!iStack.isEmpty()) {
 					final NBTTagCompound item = new NBTTagCompound();
 					item.setByte("Slot", (byte) i);
@@ -175,8 +175,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 			}
 		}
 		tagCompound.setTag("Items", items);
-		tagCompound.setByte("Type", (byte) this.type);
-		final AssemblerUpgrade upgrade = this.getUpgrade();
+		tagCompound.setByte("Type", (byte) type);
+		final AssemblerUpgrade upgrade = getUpgrade();
 		if (upgrade != null) {
 			upgrade.save(this, tagCompound);
 		}
@@ -185,7 +185,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
-		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+		return world.getTileEntity(pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
 
 	@Override
@@ -200,15 +200,15 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public void updateEntity() {
-		if (this.getUpgrade() != null && this.getMaster() != null) {
-			this.getUpgrade().update(this);
+		if (getUpgrade() != null && getMaster() != null) {
+			getUpgrade().update(this);
 		}
 	}
 
 	@Override
 	public void initGuiData(final Container con, final IContainerListener crafting) {
-		if (this.getUpgrade() != null) {
-			final InterfaceEffect gui = this.getUpgrade().getInterfaceEffect();
+		if (getUpgrade() != null) {
+			final InterfaceEffect gui = getUpgrade().getInterfaceEffect();
 			if (gui != null) {
 				gui.checkGuiData(this, (ContainerUpgrade) con, crafting, true);
 			}
@@ -217,8 +217,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public void checkGuiData(final Container con, final IContainerListener crafting) {
-		if (this.getUpgrade() != null) {
-			final InterfaceEffect gui = this.getUpgrade().getInterfaceEffect();
+		if (getUpgrade() != null) {
+			final InterfaceEffect gui = getUpgrade().getInterfaceEffect();
 			if (gui != null) {
 				gui.checkGuiData(this, (ContainerUpgrade) con, crafting, false);
 			}
@@ -227,8 +227,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
-		if (this.getUpgrade() != null) {
-			final InterfaceEffect gui = this.getUpgrade().getInterfaceEffect();
+		if (getUpgrade() != null) {
+			final InterfaceEffect gui = getUpgrade().getInterfaceEffect();
 			if (gui != null) {
 				gui.receiveGuiData(this, id, data);
 			}
@@ -237,13 +237,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public int getSizeInventory() {
-		if (this.inventoryStacks != null) {
-			return this.inventoryStacks.size();
+		if (inventoryStacks != null) {
+			return inventoryStacks.size();
 		}
-		if (this.master == null) {
+		if (master == null) {
 			return 0;
 		}
-		return this.master.getSizeInventory();
+		return master.getSizeInventory();
 	}
 
 	@Override
@@ -259,47 +259,47 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(final int i) {
-		if (this.inventoryStacks == null) {
-			if (this.master == null) {
+		if (inventoryStacks == null) {
+			if (master == null) {
 				return ItemStack.EMPTY;
 			}
-			return this.master.getStackInSlot(i);
+			return master.getStackInSlot(i);
 		} else {
-			if (i < 0 || i >= this.getSizeInventory()) {
+			if (i < 0 || i >= getSizeInventory()) {
 				return ItemStack.EMPTY;
 			}
-			return this.inventoryStacks.get(i);
+			return inventoryStacks.get(i);
 		}
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack decrStackSize(final int i, final int j) {
-		if (this.inventoryStacks == null) {
-			if (this.master == null) {
+		if (inventoryStacks == null) {
+			if (master == null) {
 				return ItemStack.EMPTY;
 			}
-			return this.master.decrStackSize(i, j);
+			return master.decrStackSize(i, j);
 		} else {
-			if (i < 0 || i >= this.getSizeInventory()) {
+			if (i < 0 || i >= getSizeInventory()) {
 				return ItemStack.EMPTY;
 			}
-			if (this.inventoryStacks.get(i).isEmpty()) {
+			if (inventoryStacks.get(i).isEmpty()) {
 				return ItemStack.EMPTY;
 			}
-			if (this.inventoryStacks.get(i).getCount() <= j) {
+			if (inventoryStacks.get(i).getCount() <= j) {
 				@Nonnull
-				ItemStack itemstack = this.inventoryStacks.get(i);
+				ItemStack itemstack = inventoryStacks.get(i);
 				inventoryStacks.set(i, ItemStack.EMPTY);
-				this.markDirty();
+				markDirty();
 				return itemstack;
 			}
 			@Nonnull
-			ItemStack itemstack2 = this.inventoryStacks.get(i).splitStack(j);
-			if (this.inventoryStacks.get(i).getCount() == 0) {
-				this.inventoryStacks.set(i, ItemStack.EMPTY);
+			ItemStack itemstack2 = inventoryStacks.get(i).splitStack(j);
+			if (inventoryStacks.get(i).getCount() == 0) {
+				inventoryStacks.set(i, ItemStack.EMPTY);
 			}
-			this.markDirty();
+			markDirty();
 			return itemstack2;
 		}
 	}
@@ -315,19 +315,19 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public void setInventorySlotContents(final int i,
 	                                     @Nonnull
 		                                     ItemStack itemstack) {
-		if (this.inventoryStacks == null) {
-			if (this.master != null) {
-				this.master.setInventorySlotContents(i, itemstack);
+		if (inventoryStacks == null) {
+			if (master != null) {
+				master.setInventorySlotContents(i, itemstack);
 			}
 		} else {
-			if (i < 0 || i >= this.getSizeInventory()) {
+			if (i < 0 || i >= getSizeInventory()) {
 				return;
 			}
-			this.inventoryStacks.set(i, itemstack);
-			if (!itemstack.isEmpty() && itemstack.getCount() > this.getInventoryStackLimit()) {
-				itemstack.setCount(this.getInventoryStackLimit());
+			inventoryStacks.set(i, itemstack);
+			if (!itemstack.isEmpty() && itemstack.getCount() > getInventoryStackLimit()) {
+				itemstack.setCount(getInventoryStackLimit());
 			}
-			this.markDirty();
+			markDirty();
 		}
 	}
 
@@ -352,16 +352,16 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Nonnull
 	public ItemStack getStackInSlotOnClosing(final int i) {
-		if (this.inventoryStacks == null) {
-			if (this.master == null) {
+		if (inventoryStacks == null) {
+			if (master == null) {
 				return null;
 			}
-			return this.master.getStackInSlot(i);
+			return master.getStackInSlot(i);
 		} else {
 			@Nonnull
-			ItemStack item = this.getStackInSlot(i);
+			ItemStack item = getStackInSlot(i);
 			if (item != null) {
-				this.setInventorySlotContents(i, null);
+				setInventorySlotContents(i, null);
 				return item;
 			}
 			return null;
@@ -370,8 +370,8 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public void markDirty() {
-		if (this.getUpgrade() != null) {
-			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
+		if (getUpgrade() != null) {
+			final InventoryEffect inv = getUpgrade().getInventoryEffect();
 			if (inv != null) {
 				inv.onInventoryChanged(this);
 			}
@@ -382,13 +382,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public boolean isItemValidForSlot(final int slot,
 	                                  @Nonnull
 		                                  ItemStack item) {
-		if (this.getUpgrade() != null) {
-			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
+		if (getUpgrade() != null) {
+			final InventoryEffect inv = getUpgrade().getInventoryEffect();
 			if (inv != null) {
 				return inv.isItemValid(slot, item);
 			}
 		}
-		return this.getMaster() != null && this.getMaster().isItemValidForSlot(slot, item);
+		return getMaster() != null && getMaster().isItemValidForSlot(slot, item);
 	}
 
 	@Override
@@ -415,37 +415,37 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public boolean canInsertItem(final int slot,
 	                             @Nonnull
 		                             ItemStack item, EnumFacing side) {
-		if (this.getUpgrade() != null) {
-			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
+		if (getUpgrade() != null) {
+			final InventoryEffect inv = getUpgrade().getInventoryEffect();
 			if (inv != null) {
-				return this.isItemValidForSlot(slot, item);
+				return isItemValidForSlot(slot, item);
 			}
 		}
-		return this.getMaster() != null && this.getMaster().canInsertItem(slot, item, side);
+		return getMaster() != null && getMaster().canInsertItem(slot, item, side);
 	}
 
 	@Override
 	public boolean canExtractItem(final int slot,
 	                              @Nonnull
 		                              ItemStack item, EnumFacing side) {
-		if (this.getUpgrade() != null) {
-			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
+		if (getUpgrade() != null) {
+			final InventoryEffect inv = getUpgrade().getInventoryEffect();
 			if (inv != null) {
 				return true;
 			}
 		}
-		return this.getMaster() != null && this.getMaster().canExtractItem(slot, item, side);
+		return getMaster() != null && getMaster().canExtractItem(slot, item, side);
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack getInputContainer(final int tankid) {
-		return this.getStackInSlot(0);
+		return getStackInSlot(0);
 	}
 
 	@Override
 	public void clearInputContainer(final int tankid) {
-		this.setInventorySlotContents(0, null);
+		setInventorySlotContents(0, null);
 	}
 
 	@Override
@@ -487,14 +487,14 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
-		if (this.getUpgrade() != null) {
-			final InventoryEffect inv = this.getUpgrade().getInventoryEffect();
+		if (getUpgrade() != null) {
+			final InventoryEffect inv = getUpgrade().getInventoryEffect();
 			if (inv != null) {
-				return this.slotsForSide;
+				return slotsForSide;
 			}
 		}
-		if (this.getMaster() != null) {
-			return this.getMaster().getSlotsForFace(side);
+		if (getMaster() != null) {
+			return getMaster().getSlotsForFace(side);
 		}
 		return new int[0];
 	}

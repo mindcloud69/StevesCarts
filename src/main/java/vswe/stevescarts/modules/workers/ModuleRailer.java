@@ -27,7 +27,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 
 	public ModuleRailer(final EntityMinecartModular cart) {
 		super(cart);
-		this.hasGeneratedAngles = false;
+		hasGeneratedAngles = false;
 	}
 
 	@Override
@@ -37,12 +37,12 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotBuilder(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
+		return new SlotBuilder(getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, Localization.MODULES.ATTACHMENTS.RAILER.translate(), 8, 6, 4210752);
+		drawString(gui, Localization.MODULES.ATTACHMENTS.RAILER.translate(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -53,21 +53,21 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public boolean work() {
 		World world = getCart().world;
-		BlockPos next = this.getNextblock();
+		BlockPos next = getNextblock();
 		final int x = next.getX();
 		final int y = next.getY();
 		final int z = next.getZ();
-		final ArrayList<Integer[]> pos = this.getValidRailPositions(x, y, z);
-		if (this.doPreWork()) {
+		final ArrayList<Integer[]> pos = getValidRailPositions(x, y, z);
+		if (doPreWork()) {
 			boolean valid = false;
 			for (int i = 0; i < pos.size(); ++i) {
-				if (this.tryPlaceTrack(world, pos.get(i)[0], pos.get(i)[1], pos.get(i)[2], false)) {
+				if (tryPlaceTrack(world, pos.get(i)[0], pos.get(i)[1], pos.get(i)[2], false)) {
 					valid = true;
 					break;
 				}
 			}
 			if (valid) {
-				this.startWorking(12);
+				startWorking(12);
 			} else {
 				boolean front = false;
 				for (int j = 0; j < pos.size(); ++j) {
@@ -77,19 +77,19 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 					}
 				}
 				if (!front) {
-					this.turnback();
+					turnback();
 				}
 			}
 			return true;
 		}
-		this.stopWorking();
-		for (int k = 0; k < pos.size() && !this.tryPlaceTrack(world, pos.get(k)[0], pos.get(k)[1], pos.get(k)[2], true); ++k) {}
+		stopWorking();
+		for (int k = 0; k < pos.size() && !tryPlaceTrack(world, pos.get(k)[0], pos.get(k)[1], pos.get(k)[2], true); ++k) {}
 		return false;
 	}
 
 	protected ArrayList<Integer[]> getValidRailPositions(final int x, final int y, final int z) {
 		final ArrayList<Integer[]> lst = new ArrayList<>();
-		if (y >= this.getCart().y()) {
+		if (y >= getCart().y()) {
 			lst.add(new Integer[] { x, y + 1, z });
 		}
 		lst.add(new Integer[] { x, y, z });
@@ -102,25 +102,25 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	}
 
 	private boolean tryPlaceTrack(World world, final int i, final int j, final int k, final boolean flag) {
-		if (this.isValidForTrack(world, new BlockPos(i, j, k), true)) {
-			for (int l = 0; l < this.getInventorySize(); ++l) {
-				if (!this.getStack(l).isEmpty() && this.validRail(this.getStack(l).getItem())) {
+		if (isValidForTrack(world, new BlockPos(i, j, k), true)) {
+			for (int l = 0; l < getInventorySize(); ++l) {
+				if (!getStack(l).isEmpty() && validRail(getStack(l).getItem())) {
 					if (flag) {
-						this.getCart().world.setBlockState(new BlockPos(i, j, k), Block.getBlockFromItem(this.getStack(l).getItem()).getStateFromMeta(getStack(l).getItemDamage()));
-						if (!this.getCart().hasCreativeSupplies()) {
+						getCart().world.setBlockState(new BlockPos(i, j, k), Block.getBlockFromItem(getStack(l).getItem()).getStateFromMeta(getStack(l).getItemDamage()));
+						if (!getCart().hasCreativeSupplies()) {
 							@Nonnull
-							ItemStack stack = this.getStack(l);
+							ItemStack stack = getStack(l);
 							stack.shrink(1);
-							if (this.getStack(l).getCount() == 0) {
-								this.setStack(l, null);
+							if (getStack(l).getCount() == 0) {
+								setStack(l, null);
 							}
-							this.getCart().markDirty();
+							getCart().markDirty();
 						}
 					}
 					return true;
 				}
 			}
-			this.turnback();
+			turnback();
 			return true;
 		}
 		return false;
@@ -140,51 +140,51 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void onInventoryChanged() {
 		super.onInventoryChanged();
-		this.calculateRails();
+		calculateRails();
 	}
 
 	private void calculateRails() {
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
 		byte valid = 0;
-		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (!this.getStack(i).isEmpty() && this.validRail(this.getStack(i).getItem())) {
+		for (int i = 0; i < getInventorySize(); ++i) {
+			if (!getStack(i).isEmpty() && validRail(getStack(i).getItem())) {
 				++valid;
 			}
 		}
-		this.updateDw(RAILS, valid);
+		updateDw(RAILS, valid);
 	}
 
 	public int getRails() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getRailCount();
+		if (isPlaceholder()) {
+			return getSimInfo().getRailCount();
 		}
-		return this.getDw(RAILS);
+		return getDw(RAILS);
 	}
 
 	public float getRailAngle(final int i) {
-		if (!this.hasGeneratedAngles) {
-			this.railAngles = new float[this.getInventorySize()];
-			for (int j = 0; j < this.getInventorySize(); ++j) {
-				this.railAngles[j] = this.getCart().rand.nextFloat() / 2.0f - 0.25f;
+		if (!hasGeneratedAngles) {
+			railAngles = new float[getInventorySize()];
+			for (int j = 0; j < getInventorySize(); ++j) {
+				railAngles[j] = getCart().rand.nextFloat() / 2.0f - 0.25f;
 			}
-			this.hasGeneratedAngles = true;
+			hasGeneratedAngles = true;
 		}
-		return this.railAngles[i];
+		return railAngles[i];
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.calculateRails();
+		calculateRails();
 	}
 
 	@Override
 	public boolean haveSupplies() {
-		for (int i = 0; i < this.getInventorySize(); ++i) {
+		for (int i = 0; i < getInventorySize(); ++i) {
 			@Nonnull
-			ItemStack item = this.getStack(i);
-			if (item != null && this.validRail(item.getItem())) {
+			ItemStack item = getStack(i);
+			if (item != null && validRail(item.getItem())) {
 				return true;
 			}
 		}

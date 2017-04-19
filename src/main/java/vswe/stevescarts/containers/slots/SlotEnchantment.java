@@ -19,6 +19,6 @@ public class SlotEnchantment extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return EnchantmentInfo.isItemValid(this.enabledTypes, itemstack);
+		return EnchantmentInfo.isItemValid(enabledTypes, itemstack);
 	}
 }

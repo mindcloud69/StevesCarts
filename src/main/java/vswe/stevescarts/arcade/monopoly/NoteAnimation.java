@@ -9,30 +9,30 @@ public class NoteAnimation {
 
 	public NoteAnimation(final Note note, final int start, final boolean isNew) {
 		this.note = note;
-		this.animation = start;
+		animation = start;
 		this.isNew = isNew;
 	}
 
 	public boolean draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y) {
-		if (this.animation >= 0) {
-			if (this.isNew) {
-				this.note.draw(game, gui, x, y - 10 + this.animation / 2);
+		if (animation >= 0) {
+			if (isNew) {
+				note.draw(game, gui, x, y - 10 + animation / 2);
 			} else {
-				this.note.draw(game, gui, x, y + this.animation);
+				note.draw(game, gui, x, y + animation);
 			}
 		}
-		return ++this.animation > 20;
+		return ++animation > 20;
 	}
 
 	public Note getNote() {
-		return this.note;
+		return note;
 	}
 
 	public int getAnimation() {
-		return this.animation;
+		return animation;
 	}
 
 	public boolean isNew() {
-		return this.isNew;
+		return isNew;
 	}
 }

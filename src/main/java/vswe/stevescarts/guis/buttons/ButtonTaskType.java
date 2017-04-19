@@ -10,15 +10,15 @@ public class ButtonTaskType extends ButtonAssembly {
 
 	public ButtonTaskType(final ModuleComputer module, final LOCATION loc, final int id) {
 		super(module, loc);
-		this.typeId = id;
+		typeId = id;
 	}
 
 	@Override
 	public String toString() {
-		if (this.haveTasks()) {
-			return "Change to " + ComputerTask.getTypeName(this.typeId);
+		if (haveTasks()) {
+			return "Change to " + ComputerTask.getTypeName(typeId);
 		}
-		return "Add " + ComputerTask.getTypeName(this.typeId) + " task";
+		return "Add " + ComputerTask.getTypeName(typeId) + " task";
 	}
 
 	@Override
@@ -28,23 +28,23 @@ public class ButtonTaskType extends ButtonAssembly {
 
 	@Override
 	public int texture() {
-		if (this.typeId < 4) {
-			return this.typeId * 2 + (this.haveTasks() ? 1 : 0);
+		if (typeId < 4) {
+			return typeId * 2 + (haveTasks() ? 1 : 0);
 		}
-		if (this.typeId == 4) {
-			return 66 + (this.haveTasks() ? 1 : 0);
+		if (typeId == 4) {
+			return 66 + (haveTasks() ? 1 : 0);
 		}
-		return this.typeId * 2 + (this.haveTasks() ? 1 : 0) - 2;
+		return typeId * 2 + (haveTasks() ? 1 : 0) - 2;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		if (!(this.module instanceof ModuleComputer) || ((ModuleComputer) this.module).getCurrentProg() == null) {
+		if (!(module instanceof ModuleComputer) || ((ModuleComputer) module).getCurrentProg() == null) {
 			return false;
 		}
-		if (this.haveTasks()) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-				if (task.getType() != this.typeId) {
+		if (haveTasks()) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+				if (task.getType() != typeId) {
 					return true;
 				}
 			}
@@ -54,20 +54,20 @@ public class ButtonTaskType extends ButtonAssembly {
 	}
 
 	private boolean haveTasks() {
-		return ((ModuleComputer) this.module).getSelectedTasks().size() > 0;
+		return ((ModuleComputer) module).getSelectedTasks().size() > 0;
 	}
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		if (this.haveTasks()) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-				task.setType(this.typeId);
+		if (haveTasks()) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+				task.setType(typeId);
 			}
 		} else {
-			final ComputerProg program = ((ModuleComputer) this.module).getCurrentProg();
+			final ComputerProg program = ((ModuleComputer) module).getCurrentProg();
 			if (program != null) {
-				final ComputerTask task = new ComputerTask((ModuleComputer) this.module, program);
-				task.setType(this.typeId);
+				final ComputerTask task = new ComputerTask((ModuleComputer) module, program);
+				task.setType(typeId);
 				program.getTasks().add(task);
 			}
 		}

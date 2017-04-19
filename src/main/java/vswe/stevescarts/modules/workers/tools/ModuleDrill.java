@@ -47,8 +47,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 
 	public ModuleDrill(final EntityMinecartModular cart) {
 		super(cart);
-		this.sensorLight = 1;
-		this.buttonRect = new int[] { 15, 30, 24, 12 };
+		sensorLight = 1;
+		buttonRect = new int[] { 15, 30, 24, 12 };
 	}
 
 	@Override
@@ -59,15 +59,15 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	@Override
 	public void init() {
 		super.init();
-		for (final ModuleBase module : this.getCart().getModules()) {
+		for (final ModuleBase module : getCart().getModules()) {
 			if (module instanceof ModuleDrillIntelligence) {
-				this.intelligence = (ModuleDrillIntelligence) module;
+				intelligence = (ModuleDrillIntelligence) module;
 			}
 			if (module instanceof ModuleLiquidSensors) {
-				this.liquidsensors = (ModuleLiquidSensors) module;
+				liquidsensors = (ModuleLiquidSensors) module;
 			}
 			if (module instanceof ModuleOreTracker) {
-				this.tracker = (ModuleOreTracker) module;
+				tracker = (ModuleOreTracker) module;
 			}
 		}
 	}
@@ -75,51 +75,51 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	@Override
 	public boolean work() {
 		World world = getCart().world;
-		if (!this.isDrillEnabled()) {
-			this.stopDrill();
-			this.stopWorking();
+		if (!isDrillEnabled()) {
+			stopDrill();
+			stopWorking();
 			return false;
 		}
-		if (!this.doPreWork()) {
-			this.stopDrill();
-			this.stopWorking();
+		if (!doPreWork()) {
+			stopDrill();
+			stopWorking();
 		}
-		if (this.isBroken()) {
+		if (isBroken()) {
 			return false;
 		}
-		BlockPos next = this.getNextblock();
-		final int[] range = this.mineRange();
+		BlockPos next = getNextblock();
+		final int[] range = mineRange();
 		for (int holeY = range[1]; holeY >= range[0]; --holeY) {
-			for (int holeX = -this.blocksOnSide(); holeX <= this.blocksOnSide(); ++holeX) {
-				if (this.intelligence == null || this.intelligence.isActive(holeX + this.blocksOnSide(), holeY, range[2], next.getX() > this.getCart().x() || next.getZ() < this.getCart().z())) {
-					if (this.mineBlockAndRevive(world, next.add(((this.getCart().z() != next.getZ()) ? holeX : 0), holeY, ((this.getCart().x() != next.getX()) ? holeX : 0)), next, holeX, holeY)) {
+			for (int holeX = -blocksOnSide(); holeX <= blocksOnSide(); ++holeX) {
+				if (intelligence == null || intelligence.isActive(holeX + blocksOnSide(), holeY, range[2], next.getX() > getCart().x() || next.getZ() < getCart().z())) {
+					if (mineBlockAndRevive(world, next.add(((getCart().z() != next.getZ()) ? holeX : 0), holeY, ((getCart().x() != next.getX()) ? holeX : 0)), next, holeX, holeY)) {
 						return true;
 					}
 				}
 			}
 		}
 		BlockPos pos = next.add(0, range[0], 0);
-		if (this.countsAsAir(pos) && !this.isValidForTrack(world, pos, true) && this.mineBlockAndRevive(world, pos.down(), next, 0, range[0] - 1)) {
+		if (countsAsAir(pos) && !isValidForTrack(world, pos, true) && mineBlockAndRevive(world, pos.down(), next, 0, range[0] - 1)) {
 			return true;
 		}
-		this.stopWorking();
-		this.stopDrill();
+		stopWorking();
+		stopDrill();
 		return false;
 	}
 
 	protected int[] mineRange() {
-		BlockPos next = this.getNextblock();
-		final int yTarget = this.getCart().getYTarget();
-		if (BlockRailBase.isRailBlock(this.getCart().world, next) || BlockRailBase.isRailBlock(this.getCart().world, next.down())) {
-			return new int[] { 0, this.blocksOnTop() - 1, 1 };
+		BlockPos next = getNextblock();
+		final int yTarget = getCart().getYTarget();
+		if (BlockRailBase.isRailBlock(getCart().world, next) || BlockRailBase.isRailBlock(getCart().world, next.down())) {
+			return new int[] { 0, blocksOnTop() - 1, 1 };
 		}
 		if (next.getY() > yTarget) {
-			return new int[] { -1, this.blocksOnTop() - 1, 1 };
+			return new int[] { -1, blocksOnTop() - 1, 1 };
 		}
 		if (next.getY() < yTarget) {
-			return new int[] { 1, this.blocksOnTop() + 1, 0 };
+			return new int[] { 1, blocksOnTop() + 1, 0 };
 		}
-		return new int[] { 0, this.blocksOnTop() - 1, 1 };
+		return new int[] { 0, blocksOnTop() - 1, 1 };
 	}
 
 	protected abstract int blocksOnTop();
@@ -127,32 +127,32 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	protected abstract int blocksOnSide();
 
 	public int getAreaWidth() {
-		return this.blocksOnSide() * 2 + 1;
+		return blocksOnSide() * 2 + 1;
 	}
 
 	public int getAreaHeight() {
-		return this.blocksOnTop();
+		return blocksOnTop();
 	}
 
 	private boolean mineBlockAndRevive(World world, BlockPos coord, BlockPos next, final int holeX, final int holeY) {
-		if (this.mineBlock(world, coord, next, holeX, holeY, false)) {
+		if (mineBlock(world, coord, next, holeX, holeY, false)) {
 			return true;
 		}
-		if (this.isDead()) {
-			this.revive();
+		if (isDead()) {
+			revive();
 			return true;
 		}
 		return false;
 	}
 
 	protected boolean mineBlock(World world, BlockPos coord, BlockPos next, final int holeX, final int holeY, final boolean flag) {
-		if (this.tracker != null) {
-			final BlockPos target = this.tracker.findBlockToMine(this, coord);
+		if (tracker != null) {
+			final BlockPos target = tracker.findBlockToMine(this, coord);
 			if (target != null) {
 				coord = target;
 			}
 		}
-		final Object valid = this.isValidBlock(world, coord, holeX, holeY, flag);
+		final Object valid = isValidBlock(world, coord, holeX, holeY, flag);
 		TileEntity storage = null;
 		if (valid instanceof TileEntity) {
 			storage = (TileEntity) valid;
@@ -170,18 +170,18 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 				@Nonnull
 				ItemStack iStack = ((IInventory) storage).getStackInSlot(i);
 				if (!iStack.isEmpty()) {
-					if (!this.minedItem(world, iStack, next)) {
+					if (!minedItem(world, iStack, next)) {
 						return false;
 					}
 					((IInventory) storage).setInventorySlotContents(i, ItemStack.EMPTY);
 				}
 			}
 		}
-		final int fortune = (this.enchanter != null) ? this.enchanter.getFortuneLevel() : 0;
-		if (this.shouldSilkTouch(blockState, coord)) {
+		final int fortune = (enchanter != null) ? enchanter.getFortuneLevel() : 0;
+		if (shouldSilkTouch(blockState, coord)) {
 			@Nonnull
-			ItemStack item = this.getSilkTouchedItem(blockState);
-			if (!item.isEmpty() && !this.minedItem(world, item, next)) {
+			ItemStack item = getSilkTouchedItem(blockState);
+			if (!item.isEmpty() && !minedItem(world, item, next)) {
 				return false;
 			}
 			world.setBlockToAir(coord);
@@ -189,7 +189,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			List<ItemStack> stacks = block.getDrops(world, coord, blockState, fortune);
 			boolean shouldRemove = false;
 			for (int j = 0; j < stacks.size(); ++j) {
-				if (!this.minedItem(world, stacks.get(j), next)) {
+				if (!minedItem(world, stacks.get(j), next)) {
 					return false;
 				}
 				shouldRemove = true;
@@ -200,9 +200,9 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		} else {
 			world.setBlockToAir(coord);
 		}
-		this.damageTool(1 + (int) h);
-		this.startWorking(this.getTimeToMine(h));
-		this.startDrill();
+		damageTool(1 + (int) h);
+		startWorking(getTimeToMine(h));
+		startDrill();
 		return true;
 	}
 
@@ -212,7 +212,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 		if (iStack.isEmpty() || iStack.getCount() <= 0) {
 			return true;
 		}
-		for (final ModuleBase module : this.getCart().getModules()) {
+		for (final ModuleBase module : getCart().getModules()) {
 			if (module instanceof ModuleIncinerator) {
 				((ModuleIncinerator) module).incinerate(iStack);
 				if (iStack.getCount() <= 0) {
@@ -222,30 +222,30 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 			}
 		}
 		final int size = iStack.getCount();
-		this.getCart().addItemToChest(iStack);
+		getCart().addItemToChest(iStack);
 		if (iStack.getCount() == 0) {
 			return true;
 		}
 		boolean hasChest = false;
-		for (final ModuleBase module2 : this.getCart().getModules()) {
+		for (final ModuleBase module2 : getCart().getModules()) {
 			if (module2 instanceof ModuleChest) {
 				hasChest = true;
 				break;
 			}
 		}
 		if (!hasChest) {
-			final EntityItem entityitem = new EntityItem(world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
-			entityitem.motionX = (this.getCart().x() - Coords.getX()) / 10.0f;
+			final EntityItem entityitem = new EntityItem(world, getCart().posX, getCart().posY, getCart().posZ, iStack);
+			entityitem.motionX = (getCart().x() - Coords.getX()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
-			entityitem.motionZ = (this.getCart().z() - Coords.getZ()) / 10.0f;
+			entityitem.motionZ = (getCart().z() - Coords.getZ()) / 10.0f;
 			world.spawnEntity(entityitem);
 			return true;
 		}
 		if (iStack.getCount() != size) {
-			final EntityItem entityitem = new EntityItem(world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, iStack);
-			entityitem.motionX = (this.getCart().z() - Coords.getZ()) / 10.0f;
+			final EntityItem entityitem = new EntityItem(world, getCart().posX, getCart().posY, getCart().posZ, iStack);
+			entityitem.motionX = (getCart().z() - Coords.getZ()) / 10.0f;
 			entityitem.motionY = 0.15000000596046448;
-			entityitem.motionZ = (this.getCart().x() - Coords.getX()) / 10.0f;
+			entityitem.motionZ = (getCart().x() - Coords.getX()) / 10.0f;
 			world.spawnEntity(entityitem);
 			return true;
 		}
@@ -253,8 +253,8 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	private int getTimeToMine(final float hardness) {
-		final int efficiency = (this.enchanter != null) ? this.enchanter.getEfficiencyLevel() : 0;
-		return (int) (this.getTimeMult() * hardness / Math.pow(1.2999999523162842, efficiency)) + ((this.liquidsensors != null) ? 2 : 0);
+		final int efficiency = (enchanter != null) ? enchanter.getEfficiencyLevel() : 0;
+		return (int) (getTimeMult() * hardness / Math.pow(1.2999999523162842, efficiency)) + ((liquidsensors != null) ? 2 : 0);
 	}
 
 	protected abstract float getTimeMult();
@@ -292,12 +292,12 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 				return tileentity;
 			}
 		}
-		if (this.liquidsensors != null) {
-			if (this.liquidsensors.isDangerous(this, pos.add(0, 1, 0), true) || this.liquidsensors.isDangerous(this, pos.add(1, 0, 0), false) || this.liquidsensors.isDangerous(this, pos.add(-1, 0, 0), false) || this.liquidsensors.isDangerous(this, pos.add(0, 0, 1), false) || this.liquidsensors.isDangerous(this, pos.add(0, 0, -1), false)) {
-				this.sensorLight = 3;
+		if (liquidsensors != null) {
+			if (liquidsensors.isDangerous(this, pos.add(0, 1, 0), true) || liquidsensors.isDangerous(this, pos.add(1, 0, 0), false) || liquidsensors.isDangerous(this, pos.add(-1, 0, 0), false) || liquidsensors.isDangerous(this, pos.add(0, 0, 1), false) || liquidsensors.isDangerous(this, pos.add(0, 0, -1), false)) {
+				sensorLight = 3;
 				return null;
 			}
-			this.sensorLight = 2;
+			sensorLight = 2;
 		}
 		return false;
 	}
@@ -305,41 +305,41 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	@Override
 	public void update() {
 		super.update();
-		if ((this.getCart().hasFuel() && this.isMining()) || this.miningCoolDown < 10) {
-			this.drillRotation = (float) ((this.drillRotation + 0.03f * (10 - this.miningCoolDown)) % 6.283185307179586);
-			if (this.isMining()) {
-				this.miningCoolDown = 0;
+		if ((getCart().hasFuel() && isMining()) || miningCoolDown < 10) {
+			drillRotation = (float) ((drillRotation + 0.03f * (10 - miningCoolDown)) % 6.283185307179586);
+			if (isMining()) {
+				miningCoolDown = 0;
 			} else {
-				++this.miningCoolDown;
+				++miningCoolDown;
 			}
 		}
-		if (!this.getCart().world.isRemote && this.liquidsensors != null) {
-			byte data = this.sensorLight;
-			if (this.isDrillSpinning()) {
+		if (!getCart().world.isRemote && liquidsensors != null) {
+			byte data = sensorLight;
+			if (isDrillSpinning()) {
 				data |= 0x4;
 			}
-			this.liquidsensors.getInfoFromDrill(data);
-			this.sensorLight = 1;
+			liquidsensors.getInfoFromDrill(data);
+			sensorLight = 1;
 		}
 	}
 
 	protected void startDrill() {
-		this.updateDw(IS_MINING, true);
+		updateDw(IS_MINING, true);
 	}
 
 	protected void stopDrill() {
-		this.updateDw(IS_MINING, false);
+		updateDw(IS_MINING, false);
 	}
 
 	protected boolean isMining() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getDrillSpinning();
+		if (isPlaceholder()) {
+			return getSimInfo().getDrillSpinning();
 		}
-		return this.getDw(IS_MINING);
+		return getDw(IS_MINING);
 	}
 
 	protected boolean isDrillSpinning() {
-		return this.isMining() || this.miningCoolDown < 10;
+		return isMining() || miningCoolDown < 10;
 	}
 
 	@Override
@@ -356,28 +356,28 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	}
 
 	public float getDrillRotation() {
-		return this.drillRotation;
+		return drillRotation;
 	}
 
 	private boolean isDrillEnabled() {
-		return this.getDw(IS_ENABLED);
+		return getDw(IS_ENABLED);
 	}
 
 	public void setDrillEnabled(final boolean val) {
-		this.updateDw(IS_ENABLED, val);
+		updateDw(IS_ENABLED, val);
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (button == 0 && this.inRect(x, y, this.buttonRect)) {
-			this.sendPacket(0);
+		if (button == 0 && inRect(x, y, buttonRect)) {
+			sendPacket(0);
 		}
 	}
 
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.setDrillEnabled(!this.isDrillEnabled());
+			setDrillEnabled(!isDrillEnabled());
 		}
 	}
 
@@ -393,7 +393,7 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, Localization.MODULES.TOOLS.DRILL.translate(), 8, 6, 4210752);
+		drawString(gui, Localization.MODULES.TOOLS.DRILL.translate(), 8, 6, 4210752);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -401,50 +401,50 @@ public abstract class ModuleDrill extends ModuleTool implements IActivatorModule
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		super.drawBackground(gui, x, y);
 		ResourceHelper.bindResource("/gui/drill.png");
-		final int imageID = this.isDrillEnabled() ? 1 : 0;
+		final int imageID = isDrillEnabled() ? 1 : 0;
 		int borderID = 0;
-		if (this.inRect(x, y, this.buttonRect)) {
+		if (inRect(x, y, buttonRect)) {
 			borderID = 1;
 		}
-		this.drawImage(gui, this.buttonRect, 0, this.buttonRect[3] * borderID);
-		final int srcY = this.buttonRect[3] * 2 + imageID * (this.buttonRect[3] - 2);
-		this.drawImage(gui, this.buttonRect[0] + 1, this.buttonRect[1] + 1, 0, srcY, this.buttonRect[2] - 2, this.buttonRect[3] - 2);
+		drawImage(gui, buttonRect, 0, buttonRect[3] * borderID);
+		final int srcY = buttonRect[3] * 2 + imageID * (buttonRect[3] - 2);
+		drawImage(gui, buttonRect[0] + 1, buttonRect[1] + 1, 0, srcY, buttonRect[2] - 2, buttonRect[3] - 2);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
 		super.drawMouseOver(gui, x, y);
-		this.drawStringOnMouseOver(gui, this.getStateName(), x, y, this.buttonRect);
+		drawStringOnMouseOver(gui, getStateName(), x, y, buttonRect);
 	}
 
 	private String getStateName() {
-		return Localization.MODULES.TOOLS.TOGGLE.translate(this.isDrillEnabled() ? "1" : "0");
+		return Localization.MODULES.TOOLS.TOGGLE.translate(isDrillEnabled() ? "1" : "0");
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		super.Save(tagCompound, id);
-		tagCompound.setBoolean(this.generateNBTName("DrillEnabled", id), this.isDrillEnabled());
+		tagCompound.setBoolean(generateNBTName("DrillEnabled", id), isDrillEnabled());
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		this.setDrillEnabled(tagCompound.getBoolean(this.generateNBTName("DrillEnabled", id)));
+		setDrillEnabled(tagCompound.getBoolean(generateNBTName("DrillEnabled", id)));
 	}
 
 	@Override
 	public void doActivate(final int id) {
-		this.setDrillEnabled(true);
+		setDrillEnabled(true);
 	}
 
 	@Override
 	public void doDeActivate(final int id) {
-		this.setDrillEnabled(false);
+		setDrillEnabled(false);
 	}
 
 	@Override
 	public boolean isActive(final int id) {
-		return this.isDrillEnabled();
+		return isDrillEnabled();
 	}
 }

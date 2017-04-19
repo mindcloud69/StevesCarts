@@ -10,9 +10,9 @@ import javax.annotation.Nonnull;
 public class ItemBlockDetector extends ItemBlock {
 	public ItemBlockDetector(final Block b) {
 		super(b);
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	@Override

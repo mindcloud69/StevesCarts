@@ -19,48 +19,48 @@ public class LevelMessage {
 	}
 
 	public int getX() {
-		return this.x;
+		return x;
 	}
 
 	public int getY() {
-		return this.y;
+		return y;
 	}
 
 	public int getW() {
-		return this.w;
+		return w;
 	}
 
 	public String getMessage() {
-		return this.message.translate();
+		return message.translate();
 	}
 
 	public LevelMessage setMustBeRunning() {
-		this.isRunning = 1;
+		isRunning = 1;
 		return this;
 	}
 
 	public LevelMessage setMustNotBeRunning() {
-		this.isRunning = -1;
+		isRunning = -1;
 		return this;
 	}
 
 	public LevelMessage setMustBeStill() {
-		this.isStill = 1;
+		isStill = 1;
 		return this;
 	}
 
 	public LevelMessage setMustNotBeStill() {
-		this.isStill = -1;
+		isStill = -1;
 		return this;
 	}
 
 	public LevelMessage setMustBeDone() {
-		this.isDone = 1;
+		isDone = 1;
 		return this;
 	}
 
 	public LevelMessage setMustNotBeDone() {
-		this.isDone = -1;
+		isDone = -1;
 		return this;
 	}
 

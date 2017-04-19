@@ -18,21 +18,21 @@ public class ModuleSmelter extends ModuleRecipe {
 
 	public ModuleSmelter(final EntityMinecartModular cart) {
 		super(cart);
-		this.cooldown = 0;
+		cooldown = 0;
 	}
 
 	@Override
 	public void update() {
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
-		if (this.getCart().hasFuelForModule() && this.energyBuffer < 10) {
-			++this.energyBuffer;
+		if (getCart().hasFuelForModule() && energyBuffer < 10) {
+			++energyBuffer;
 		}
-		if (this.cooldown <= 0) {
-			if (this.energyBuffer == 10) {
+		if (cooldown <= 0) {
+			if (energyBuffer == 10) {
 				@Nonnull
-				ItemStack recipe = this.getStack(0);
+				ItemStack recipe = getStack(0);
 				@Nonnull
 				ItemStack result = ItemStack.EMPTY;
 				if (!recipe.isEmpty()) {
@@ -41,34 +41,34 @@ public class ModuleSmelter extends ModuleRecipe {
 				if (!result.isEmpty()) {
 					result = result.copy();
 				}
-				if (!result.isEmpty() && this.getCart().getModules() != null) {
-					this.prepareLists();
-					if (this.canCraftMoreOfResult(result)) {
+				if (!result.isEmpty() && getCart().getModules() != null) {
+					prepareLists();
+					if (canCraftMoreOfResult(result)) {
 						final NonNullList<ItemStack> originals = NonNullList.create();
-						for (int i = 0; i < this.allTheSlots.size(); ++i) {
+						for (int i = 0; i < allTheSlots.size(); ++i) {
 							@Nonnull
-							ItemStack item = this.allTheSlots.get(i).getStack();
+							ItemStack item = allTheSlots.get(i).getStack();
 							originals.add((item.isEmpty()) ? ItemStack.EMPTY : item.copy());
 						}
 						int i = 0;
-						while (i < this.inputSlots.size()) {
+						while (i < inputSlots.size()) {
 							@Nonnull
-							ItemStack item = this.inputSlots.get(i).getStack();
+							ItemStack item = inputSlots.get(i).getStack();
 							if (!item.isEmpty() && item.isItemEqual(recipe) && ItemStack.areItemStackTagsEqual(item, recipe)) {
 								@Nonnull
 								ItemStack itemStack = item;
 								itemStack.shrink(1);
 								if (itemStack.getCount() <= 0) {
-									this.inputSlots.get(i).putStack(ItemStack.EMPTY);
+									inputSlots.get(i).putStack(ItemStack.EMPTY);
 								}
-								this.getCart().addItemToChest(result, this.getValidSlot(), null);
+								getCart().addItemToChest(result, getValidSlot(), null);
 								if (result.getCount() != 0) {
-									for (int j = 0; j < this.allTheSlots.size(); ++j) {
-										this.allTheSlots.get(j).putStack(originals.get(j));
+									for (int j = 0; j < allTheSlots.size(); ++j) {
+										allTheSlots.get(j).putStack(originals.get(j));
 									}
 									break;
 								}
-								this.energyBuffer = 0;
+								energyBuffer = 0;
 								break;
 							} else {
 								++i;
@@ -77,15 +77,15 @@ public class ModuleSmelter extends ModuleRecipe {
 					}
 				}
 			}
-			this.cooldown = 40;
+			cooldown = 40;
 		} else {
-			--this.cooldown;
+			--cooldown;
 		}
 	}
 
 	@Override
 	public int getConsumption(final boolean isMoving) {
-		if (this.energyBuffer < 10) {
+		if (energyBuffer < 10) {
 			return 15;
 		}
 		return super.getConsumption(isMoving);
@@ -109,9 +109,9 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
 		if (y == 0) {
-			return new SlotFurnaceInput(this.getCart(), slotId, 10 + 18 * x, 15 + 18 * y);
+			return new SlotFurnaceInput(getCart(), slotId, 10 + 18 * x, 15 + 18 * y);
 		}
-		return new SlotCartCrafterResult(this.getCart(), slotId, 10 + 18 * x, 15 + 18 * y);
+		return new SlotCartCrafterResult(getCart(), slotId, 10 + 18 * x, 15 + 18 * y);
 	}
 
 	@Override
@@ -122,24 +122,24 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	protected void checkGuiData(final Object[] info) {
 		super.checkGuiData(info);
-		this.updateGuiData(info, super.numberOfGuiData() + 0, (short) this.energyBuffer);
+		updateGuiData(info, super.numberOfGuiData() + 0, (short) energyBuffer);
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		super.receiveGuiData(id, data);
 		if (id == super.numberOfGuiData() + 0) {
-			this.energyBuffer = data;
+			energyBuffer = data;
 		}
 	}
 
 	@Override
 	public void onInventoryChanged() {
-		if (this.getCart().world.isRemote) {
-			if (this.getStack(0) != null) {
-				this.setStack(1, FurnaceRecipes.instance().getSmeltingResult(this.getStack(0)));
+		if (getCart().world.isRemote) {
+			if (getStack(0) != null) {
+				setStack(1, FurnaceRecipes.instance().getSmeltingResult(getStack(0)));
 			} else {
-				this.setStack(1, null);
+				setStack(1, null);
 			}
 		}
 	}
@@ -147,12 +147,12 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
 		super.drawForeground(gui);
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
 	public int guiWidth() {
-		return this.canUseAdvancedFeatures() ? 100 : 45;
+		return canUseAdvancedFeatures() ? 100 : 45;
 	}
 
 	@Override
@@ -168,13 +168,13 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		this.energyBuffer = tagCompound.getByte(this.generateNBTName("Buffer", id));
+		energyBuffer = tagCompound.getByte(generateNBTName("Buffer", id));
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		super.Save(tagCompound, id);
-		tagCompound.setByte(this.generateNBTName("Buffer", id), (byte) this.energyBuffer);
+		tagCompound.setByte(generateNBTName("Buffer", id), (byte) energyBuffer);
 	}
 
 	@Override

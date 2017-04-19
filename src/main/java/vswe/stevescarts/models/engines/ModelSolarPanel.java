@@ -13,12 +13,12 @@ public abstract class ModelSolarPanel extends ModelCartbase {
 
 	protected ModelRenderer createMovingHolder(final int x, final int y) {
 		final ModelRenderer moving = new ModelRenderer(this, x, y);
-		this.AddRenderer(this.moving = moving);
+		AddRenderer(this.moving = moving);
 		return moving;
 	}
 
 	@Override
 	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
-		this.moving.rotationPointY = ((module == null) ? -4.0f : ((ModuleSolarTop) module).getMovingLevel());
+		moving.rotationPointY = ((module == null) ? -4.0f : ((ModuleSolarTop) module).getMovingLevel());
 	}
 }

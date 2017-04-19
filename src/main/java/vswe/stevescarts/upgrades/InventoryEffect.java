@@ -13,7 +13,7 @@ public abstract class InventoryEffect extends InterfaceEffect {
 	protected ArrayList<Slot> slots;
 
 	public InventoryEffect() {
-		this.slots = new ArrayList<>();
+		slots = new ArrayList<>();
 	}
 
 	public Class<? extends Slot> getSlot(final int id) {
@@ -30,24 +30,24 @@ public abstract class InventoryEffect extends InterfaceEffect {
 	public abstract int getSlotY(final int p0);
 
 	public void addSlot(final Slot slot) {
-		this.slots.add(slot);
+		slots.add(slot);
 	}
 
 	public void clear() {
-		this.slots.clear();
+		slots.clear();
 	}
 
 	public boolean isItemValid(final int slotId,
 	                           @Nonnull
 		                           ItemStack item) {
-		return slotId >= 0 && slotId < this.slots.size() && this.slots.get(slotId).isItemValid(item);
+		return slotId >= 0 && slotId < slots.size() && slots.get(slotId).isItemValid(item);
 	}
 
 	public Slot createSlot(final TileEntityUpgrade upgrade, final int id) {
 		try {
-			final Class<? extends Slot> slotClass = this.getSlot(id);
+			final Class<? extends Slot> slotClass = getSlot(id);
 			final Constructor slotConstructor = slotClass.getConstructor(IInventory.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-			final Object slotObject = slotConstructor.newInstance(upgrade, id, this.getSlotX(id), this.getSlotY(id));
+			final Object slotObject = slotConstructor.newInstance(upgrade, id, getSlotX(id), getSlotY(id));
 			return (Slot) slotObject;
 		} catch (Exception e) {
 			System.out.println("Failed to create slot! More info below.");

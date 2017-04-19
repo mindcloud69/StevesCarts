@@ -59,7 +59,7 @@ public class ComputerInfo {
 
 	public boolean isInfoValid(final EntityMinecartModular cart) {
 		for (final ModuleBase module : cart.getModules()) {
-			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
+			if (moduleClass.isAssignableFrom(module.getClass()) && isValid(module)) {
 				return true;
 			}
 		}
@@ -67,17 +67,17 @@ public class ComputerInfo {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public int getTexture() {
-		return this.texture;
+		return texture;
 	}
 
 	public void getHandler(final EntityMinecartModular cart, final ComputerVar var) {
 		for (final ModuleBase module : cart.getModules()) {
-			if (this.moduleClass.isAssignableFrom(module.getClass()) && this.isValid(module)) {
-				var.setByteValue(this.get(module));
+			if (moduleClass.isAssignableFrom(module.getClass()) && isValid(module)) {
+				var.setByteValue(get(module));
 				break;
 			}
 		}

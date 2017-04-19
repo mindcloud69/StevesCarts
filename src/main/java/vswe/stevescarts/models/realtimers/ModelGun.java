@@ -35,14 +35,14 @@ public class ModelGun extends ModelCartbase {
 	}
 
 	public ModelGun(final ArrayList<Integer> pipes) {
-		this.guns = new ModelRenderer[pipes.size()];
+		guns = new ModelRenderer[pipes.size()];
 		for (int i = 0; i < pipes.size(); ++i) {
 			float angle = (new int[] { 3, 4, 5, 2, -1, 6, 1, 0, 7 })[pipes.get(i)];
 			angle *= 0.7853982f;
 			final ModelRenderer gunAnchorAnchor = new ModelRenderer(this);
-			this.AddRenderer(gunAnchorAnchor);
+			AddRenderer(gunAnchorAnchor);
 			gunAnchorAnchor.rotateAngleY = angle;
-			this.guns[i] = this.createGun(gunAnchorAnchor);
+			guns[i] = createGun(gunAnchorAnchor);
 		}
 	}
 
@@ -51,7 +51,7 @@ public class ModelGun extends ModelCartbase {
 		parent.addChild(gunAnchor);
 		gunAnchor.setRotationPoint(2.5f, 0.0f, 0.0f);
 		final ModelRenderer gun = new ModelRenderer(this, 0, 16);
-		this.fixSize(gun);
+		fixSize(gun);
 		gunAnchor.addChild(gun);
 		gun.addBox(-1.5f, -2.5f, -1.5f, 7, 3, 3, 0.0f);
 		gun.setRotationPoint(0.0f, -9.0f, 0.0f);
@@ -60,8 +60,8 @@ public class ModelGun extends ModelCartbase {
 
 	@Override
 	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
-		for (int i = 0; i < this.guns.length; ++i) {
-			this.guns[i].rotateAngleZ = ((module == null) ? 0.0f : ((ModuleShooter) module).getPipeRotation(i));
+		for (int i = 0; i < guns.length; ++i) {
+			guns[i].rotateAngleZ = ((module == null) ? 0.0f : ((ModuleShooter) module).getPipeRotation(i));
 		}
 	}
 

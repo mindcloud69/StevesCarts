@@ -15,43 +15,43 @@ public abstract class ModuleEngine extends ModuleBase {
 
 	public ModuleEngine(final EntityMinecartModular cart) {
 		super(cart);
-		this.initPriorityButton();
+		initPriorityButton();
 	}
 
 	protected void initPriorityButton() {
-		this.priorityButton = new int[] { 78, 7, 16, 16 };
+		priorityButton = new int[] { 78, 7, 16, 16 };
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.loadFuel();
+		loadFuel();
 	}
 
 	@Override
 	public boolean hasFuel(final int comsumption) {
-		return this.getFuelLevel() >= comsumption && !this.isDisabled();
+		return getFuelLevel() >= comsumption && !isDisabled();
 	}
 
 	public int getFuelLevel() {
-		return this.fuel;
+		return fuel;
 	}
 
 	public void setFuelLevel(final int val) {
-		this.fuel = val;
+		fuel = val;
 	}
 
 	protected boolean isDisabled() {
-		return this.getPriority() >= 3 || this.getPriority() < 0;
+		return getPriority() >= 3 || getPriority() < 0;
 	}
 
 	protected abstract DataParameter<Integer> getPriorityDw();
 
 	public int getPriority() {
-		if (this.isPlaceholder()) {
+		if (isPlaceholder()) {
 			return 0;
 		}
-		int temp = this.getDw(getPriorityDw());
+		int temp = getDw(getPriorityDw());
 		if (temp < 0 || temp > 3) {
 			temp = 3;
 		}
@@ -64,11 +64,11 @@ public abstract class ModuleEngine extends ModuleBase {
 		} else if (data > 3) {
 			data = 3;
 		}
-		this.updateDw(getPriorityDw(), data);
+		updateDw(getPriorityDw(), data);
 	}
 
 	public void consumeFuel(final int comsumption) {
-		this.setFuelLevel(this.getFuelLevel() - comsumption);
+		setFuelLevel(getFuelLevel() - comsumption);
 	}
 
 	protected abstract void loadFuel();
@@ -98,43 +98,43 @@ public abstract class ModuleEngine extends ModuleBase {
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/engine.png");
-		final int sourceX = 16 * this.getPriority();
+		final int sourceX = 16 * getPriority();
 		int sourceY = 0;
-		if (this.inRect(x, y, this.priorityButton)) {
+		if (inRect(x, y, priorityButton)) {
 			sourceY = 16;
 		}
-		this.drawImage(gui, this.priorityButton, sourceX, sourceY);
+		drawImage(gui, priorityButton, sourceX, sourceY);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, this.getPriorityText(), x, y, this.priorityButton);
+		drawStringOnMouseOver(gui, getPriorityText(), x, y, priorityButton);
 	}
 
 	private String getPriorityText() {
-		if (this.isDisabled()) {
+		if (isDisabled()) {
 			return Localization.MODULES.ENGINES.ENGINE_DISABLED.translate();
 		}
-		return Localization.MODULES.ENGINES.ENGINE_PRIORITY.translate(String.valueOf(this.getPriority()));
+		return Localization.MODULES.ENGINES.ENGINE_PRIORITY.translate(String.valueOf(getPriority()));
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.inRect(x, y, this.priorityButton) && (button == 0 || button == 1)) {
-			this.sendPacket(0, (byte) button);
+		if (inRect(x, y, priorityButton) && (button == 0 || button == 1)) {
+			sendPacket(0, (byte) button);
 		}
 	}
 
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			int prio = this.getPriority();
+			int prio = getPriority();
 			prio += ((data[0] == 0) ? 1 : -1);
 			prio %= 4;
 			if (prio < 0) {
 				prio += 4;
 			}
-			this.setPriority(prio);
+			setPriority(prio);
 		}
 	}
 
@@ -155,11 +155,11 @@ public abstract class ModuleEngine extends ModuleBase {
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("Priority", id), (byte) this.getPriority());
+		tagCompound.setByte(generateNBTName("Priority", id), (byte) getPriority());
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.setPriority(tagCompound.getByte(this.generateNBTName("Priority", id)));
+		setPriority(tagCompound.getByte(generateNBTName("Priority", id)));
 	}
 }

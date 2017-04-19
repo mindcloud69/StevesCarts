@@ -16,11 +16,11 @@ public class Community extends CardPlace {
 
 	@Override
 	public void drawText(final GuiMinecart gui, final EnumSet<PLACE_STATE> states) {
-		this.game.getModule().drawSplitString(gui, "Dungeon Chest", 3 + gui.getGuiLeft(), 10 + gui.getGuiTop(), 70, true, 4210752);
+		game.getModule().drawSplitString(gui, "Dungeon Chest", 3 + gui.getGuiLeft(), 10 + gui.getGuiTop(), 70, true, 4210752);
 	}
 
 	@Override
 	public Card getCard() {
-		return CardCommunity.cards.get(this.game.getModule().getCart().rand.nextInt(CardCommunity.cards.size()));
+		return CardCommunity.cards.get(game.getModule().getCart().rand.nextInt(CardCommunity.cards.size()));
 	}
 }

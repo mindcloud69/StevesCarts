@@ -14,12 +14,12 @@ public class ButtonFlowEndType extends ButtonAssembly {
 
 	@Override
 	public String toString() {
-		return "Change to End " + ComputerTask.getEndTypeName(this.typeId);
+		return "Change to End " + ComputerTask.getEndTypeName(typeId);
 	}
 
 	@Override
 	public int texture() {
-		return ComputerTask.getEndImage(this.typeId);
+		return ComputerTask.getEndImage(typeId);
 	}
 
 	@Override
@@ -27,8 +27,8 @@ public class ButtonFlowEndType extends ButtonAssembly {
 		if (!super.isVisible()) {
 			return false;
 		}
-		if (((ModuleComputer) this.module).getSelectedTasks() != null && ((ModuleComputer) this.module).getSelectedTasks().size() > 0) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+		if (((ModuleComputer) module).getSelectedTasks() != null && ((ModuleComputer) module).getSelectedTasks().size() > 0) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
 				if (!task.isFlowEnd()) {
 					return false;
 				}
@@ -40,8 +40,8 @@ public class ButtonFlowEndType extends ButtonAssembly {
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (this.typeId != task.getFlowEndType()) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (typeId != task.getFlowEndType()) {
 				return true;
 			}
 		}
@@ -50,8 +50,8 @@ public class ButtonFlowEndType extends ButtonAssembly {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			task.setFlowEndType(this.typeId);
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			task.setFlowEndType(typeId);
 		}
 	}
 }

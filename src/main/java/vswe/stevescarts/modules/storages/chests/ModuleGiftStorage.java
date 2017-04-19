@@ -36,9 +36,9 @@ public class ModuleGiftStorage extends ModuleChest {
 		if (b == 0) {
 			return;
 		}
-		final ArrayList<ItemStack> items = GiftItem.generateItems(this.getCart().rand, GiftItem.ChristmasList, 50 + this.getCart().rand.nextInt(700), 1 + this.getCart().rand.nextInt(5));
+		final ArrayList<ItemStack> items = GiftItem.generateItems(getCart().rand, GiftItem.ChristmasList, 50 + getCart().rand.nextInt(700), 1 + getCart().rand.nextInt(5));
 		for (int i = 0; i < items.size(); ++i) {
-			this.setStack(i, items.get(i));
+			setStack(i, items.get(i));
 		}
 	}
 }

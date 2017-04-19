@@ -33,19 +33,19 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	public int[] color;
 
 	public TileEntityManager() {
-		this.toCart = new boolean[] { true, true, true, true };
-		this.doReturn = new boolean[] { false, false, false, false };
-		this.amount = new int[] { 0, 0, 0, 0 };
-		this.color = new int[] { 1, 2, 3, 4 };
-		this.cargoItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-		this.moveTime = 0;
-		this.standardTransferHandler = new TransferManager();
+		toCart = new boolean[] { true, true, true, true };
+		doReturn = new boolean[] { false, false, false, false };
+		amount = new int[] { 0, 0, 0, 0 };
+		color = new int[] { 1, 2, 3, 4 };
+		cargoItemStacks = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
+		moveTime = 0;
+		standardTransferHandler = new TransferManager();
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(final int i) {
-		return this.cargoItemStacks.get(i);
+		return cargoItemStacks.get(i);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack itemstack = ItemStackHelper.getAndSplit(cargoItemStacks, index, count);
 		if (!itemstack.isEmpty()) {
-			this.markDirty();
+			markDirty();
 		}
 		return itemstack;
 	}
@@ -62,67 +62,67 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	public void setInventorySlotContents(final int i,
 	                                     @Nonnull
 		                                     ItemStack itemstack) {
-		this.cargoItemStacks.set(i, itemstack);
-		if (!itemstack.isEmpty() && itemstack.getCount() > this.getInventoryStackLimit()) {
-			itemstack.setCount(this.getInventoryStackLimit());
+		cargoItemStacks.set(i, itemstack);
+		if (!itemstack.isEmpty() && itemstack.getCount() > getInventoryStackLimit()) {
+			itemstack.setCount(getInventoryStackLimit());
 		}
-		this.markDirty();
+		markDirty();
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		final NBTTagList nbttaglist = nbttagcompound.getTagList("Items", NBTHelper.COMPOUND.getId());
-		this.cargoItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+		cargoItemStacks = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
 		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
 			final NBTTagCompound nbttagcompound2 = nbttaglist.getCompoundTagAt(i);
 			final byte byte0 = nbttagcompound2.getByte("Slot");
-			if (byte0 >= 0 && byte0 < this.cargoItemStacks.size()) {
-				this.cargoItemStacks.set(byte0, new ItemStack(nbttagcompound2));
+			if (byte0 >= 0 && byte0 < cargoItemStacks.size()) {
+				cargoItemStacks.set(byte0, new ItemStack(nbttagcompound2));
 			}
 		}
-		this.moveTime = nbttagcompound.getByte("movetime");
-		this.setLowestSetting(nbttagcompound.getByte("lowestNumber"));
-		this.layoutType = nbttagcompound.getByte("layout");
+		moveTime = nbttagcompound.getByte("movetime");
+		setLowestSetting(nbttagcompound.getByte("lowestNumber"));
+		layoutType = nbttagcompound.getByte("layout");
 		final byte temp = nbttagcompound.getByte("tocart");
 		final byte temp2 = nbttagcompound.getByte("doReturn");
 		for (int j = 0; j < 4; ++j) {
-			this.amount[j] = nbttagcompound.getByte("amount" + j);
-			this.color[j] = nbttagcompound.getByte("color" + j);
-			if (this.color[j] == 0) {
-				this.color[j] = j + 1;
+			amount[j] = nbttagcompound.getByte("amount" + j);
+			color[j] = nbttagcompound.getByte("color" + j);
+			if (color[j] == 0) {
+				color[j] = j + 1;
 			}
-			this.toCart[j] = ((temp & 1 << j) != 0x0);
-			this.doReturn[j] = ((temp2 & 1 << j) != 0x0);
+			toCart[j] = ((temp & 1 << j) != 0x0);
+			doReturn[j] = ((temp2 & 1 << j) != 0x0);
 		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setByte("movetime", (byte) this.moveTime);
-		nbttagcompound.setByte("lowestNumber", (byte) this.getLowestSetting());
-		nbttagcompound.setByte("layout", (byte) this.layoutType);
+		nbttagcompound.setByte("movetime", (byte) moveTime);
+		nbttagcompound.setByte("lowestNumber", (byte) getLowestSetting());
+		nbttagcompound.setByte("layout", (byte) layoutType);
 		byte temp = 0;
 		byte temp2 = 0;
 		for (int i = 0; i < 4; ++i) {
-			nbttagcompound.setByte("amount" + i, (byte) this.amount[i]);
-			nbttagcompound.setByte("color" + i, (byte) this.color[i]);
-			if (this.toCart[i]) {
+			nbttagcompound.setByte("amount" + i, (byte) amount[i]);
+			nbttagcompound.setByte("color" + i, (byte) color[i]);
+			if (toCart[i]) {
 				temp |= (byte) (1 << i);
 			}
-			if (this.doReturn[i]) {
+			if (doReturn[i]) {
 				temp2 |= (byte) (1 << i);
 			}
 		}
 		nbttagcompound.setByte("tocart", temp);
 		nbttagcompound.setByte("doReturn", temp2);
 		final NBTTagList nbttaglist = new NBTTagList();
-		for (int j = 0; j < this.cargoItemStacks.size(); ++j) {
-			if (!this.cargoItemStacks.get(j).isEmpty()) {
+		for (int j = 0; j < cargoItemStacks.size(); ++j) {
+			if (!cargoItemStacks.get(j).isEmpty()) {
 				final NBTTagCompound nbttagcompound2 = new NBTTagCompound();
 				nbttagcompound2.setByte("Slot", (byte) j);
-				this.cargoItemStacks.get(j).writeToNBT(nbttagcompound2);
+				cargoItemStacks.get(j).writeToNBT(nbttagcompound2);
 				nbttaglist.appendTag(nbttagcompound2);
 			}
 		}
@@ -136,72 +136,72 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	public EntityMinecartModular getCart() {
-		return this.standardTransferHandler.getCart();
+		return standardTransferHandler.getCart();
 	}
 
 	public void setCart(final EntityMinecartModular cart) {
-		this.standardTransferHandler.setCart(cart);
+		standardTransferHandler.setCart(cart);
 	}
 
 	public int getSetting() {
-		return this.standardTransferHandler.getSetting();
+		return standardTransferHandler.getSetting();
 	}
 
 	public void setSetting(final int val) {
-		this.standardTransferHandler.setSetting(val);
+		standardTransferHandler.setSetting(val);
 	}
 
 	public int getSide() {
-		return this.standardTransferHandler.getSide();
+		return standardTransferHandler.getSide();
 	}
 
 	public void setSide(final int val) {
-		this.standardTransferHandler.setSide(val);
+		standardTransferHandler.setSide(val);
 	}
 
 	public int getLastSetting() {
-		return this.standardTransferHandler.getLastSetting();
+		return standardTransferHandler.getLastSetting();
 	}
 
 	public void setLastSetting(final int val) {
-		this.standardTransferHandler.setLastSetting(val);
+		standardTransferHandler.setLastSetting(val);
 	}
 
 	public int getLowestSetting() {
-		return this.standardTransferHandler.getLowestSetting();
+		return standardTransferHandler.getLowestSetting();
 	}
 
 	public void setLowestSetting(final int val) {
-		this.standardTransferHandler.setLowestSetting(val);
+		standardTransferHandler.setLowestSetting(val);
 	}
 
 	public int getWorkload() {
-		return this.standardTransferHandler.getWorkload();
+		return standardTransferHandler.getWorkload();
 	}
 
 	public void setWorkload(final int val) {
-		this.standardTransferHandler.setWorkload(val);
+		standardTransferHandler.setWorkload(val);
 	}
 
 	@Override
 	public void updateEntity() {
-		if (this.world.isRemote) {
-			this.updateLayout();
+		if (world.isRemote) {
+			updateLayout();
 			return;
 		}
-		if (this.getCart() == null || this.getCart().isDead || this.getSide() < 0 || this.getSide() > 3 || !this.getCart().isDisabled()) {
-			this.standardTransferHandler.reset();
+		if (getCart() == null || getCart().isDead || getSide() < 0 || getSide() > 3 || !getCart().isDisabled()) {
+			standardTransferHandler.reset();
 			return;
 		}
-		++this.moveTime;
-		if (this.moveTime >= 24) {
-			this.moveTime = 0;
-			if (!this.exchangeItems(this.standardTransferHandler)) {
-				this.getCart().releaseCart();
-				if (this.doReturn[this.getSide()]) {
-					this.getCart().turnback();
+		++moveTime;
+		if (moveTime >= 24) {
+			moveTime = 0;
+			if (!exchangeItems(standardTransferHandler)) {
+				getCart().releaseCart();
+				if (doReturn[getSide()]) {
+					getCart().turnback();
 				}
-				this.standardTransferHandler.reset();
+				standardTransferHandler.reset();
 			}
 		}
 	}
@@ -211,7 +211,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 		while (transfer.getSetting() < 4) {
 			Label_0130:
 			{
-				if (this.color[transfer.getSetting()] - 1 == transfer.getSide()) {
+				if (color[transfer.getSetting()] - 1 == transfer.getSide()) {
 					transfer.setLowestSetting(transfer.getSetting());
 					if (transfer.getLastSetting() != transfer.getSetting()) {
 						transfer.setWorkload(0);
@@ -220,15 +220,15 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 					}
 					Label_0108:
 					{
-						if (this.toCart[transfer.getSetting()]) {
+						if (toCart[transfer.getSetting()]) {
 							if (!transfer.getToCartEnabled()) {
 								break Label_0108;
 							}
 						} else if (!transfer.getFromCartEnabled()) {
 							break Label_0108;
 						}
-						if (this.isTargetValid(transfer)) {
-							if (this.doTransfer(transfer)) {
+						if (isTargetValid(transfer)) {
+							if (doTransfer(transfer)) {
 								return true;
 							}
 							break Label_0130;
@@ -244,11 +244,11 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	public void sendPacket(final int id) {
-		this.sendPacket(id, new byte[0]);
+		sendPacket(id, new byte[0]);
 	}
 
 	public void sendPacket(final int id, final byte data) {
-		this.sendPacket(id, new byte[] { data });
+		sendPacket(id, new byte[] { data });
 	}
 
 	public void sendPacket(final int id, final byte[] data) {
@@ -259,24 +259,24 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	public void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
 			final int railID = data[0];
-			this.toCart[railID] = !this.toCart[railID];
-			if (this.color[railID] - 1 == this.getSide()) {
-				this.reset();
+			toCart[railID] = !toCart[railID];
+			if (color[railID] - 1 == getSide()) {
+				reset();
 			}
 		} else if (id == 4) {
 			final int railID = data[0];
-			if (this.color[railID] != 5) {
-				this.doReturn[this.color[railID] - 1] = !this.doReturn[this.color[railID] - 1];
+			if (color[railID] != 5) {
+				doReturn[color[railID] - 1] = !doReturn[color[railID] - 1];
 			}
 		} else if (id == 5) {
 			final int difference = data[0];
-			this.layoutType += difference;
-			if (this.layoutType > 2) {
-				this.layoutType = 0;
-			} else if (this.layoutType < 0) {
-				this.layoutType = 2;
+			layoutType += difference;
+			if (layoutType > 2) {
+				layoutType = 0;
+			} else if (layoutType < 0) {
+				layoutType = 2;
 			}
-			this.reset();
+			reset();
 		} else {
 			final byte railsAndDifferenceCombined = data[0];
 			final int railID2 = railsAndDifferenceCombined & 0x3;
@@ -291,25 +291,25 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 				final int[] amount = this.amount;
 				final int n = railID2;
 				amount[n] += difference2;
-				if (this.amount[railID2] >= this.getAmountCount()) {
+				if (this.amount[railID2] >= getAmountCount()) {
 					this.amount[railID2] = 0;
 				} else if (this.amount[railID2] < 0) {
-					this.amount[railID2] = this.getAmountCount() - 1;
+					this.amount[railID2] = getAmountCount() - 1;
 				}
-				if (this.color[railID2] - 1 == this.getSide()) {
-					this.reset();
+				if (color[railID2] - 1 == getSide()) {
+					reset();
 				}
 			} else if (id == 3) {
-				if (this.color[railID2] != 5) {
+				if (color[railID2] != 5) {
 					boolean willStillExist = false;
 					for (int side = 0; side < 4; ++side) {
-						if (side != railID2 && this.color[railID2] == this.color[side]) {
+						if (side != railID2 && color[railID2] == color[side]) {
 							willStillExist = true;
 							break;
 						}
 					}
 					if (!willStillExist) {
-						this.doReturn[this.color[railID2] - 1] = false;
+						doReturn[color[railID2] - 1] = false;
 					}
 				}
 				final int[] color = this.color;
@@ -320,53 +320,53 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 				} else if (this.color[railID2] < 1) {
 					this.color[railID2] = 5;
 				}
-				if (this.color[railID2] - 1 == this.getSide()) {
-					this.reset();
+				if (this.color[railID2] - 1 == getSide()) {
+					reset();
 				}
 			} else {
-				this.receiveClickData(id, railID2, difference2);
+				receiveClickData(id, railID2, difference2);
 			}
 		}
 	}
 
 	@Override
 	public void initGuiData(final Container con, final IContainerListener crafting) {
-		this.checkGuiData((ContainerManager) con, crafting, true);
+		checkGuiData((ContainerManager) con, crafting, true);
 	}
 
 	@Override
 	public void checkGuiData(final Container con, final IContainerListener crafting) {
-		this.checkGuiData((ContainerManager) con, crafting, false);
+		checkGuiData((ContainerManager) con, crafting, false);
 	}
 
 	public void checkGuiData(final ContainerManager con, final IContainerListener crafting, final boolean isNew) {
-		short header = (short) (this.moveTime & 0x1F);
-		header |= (short) ((this.layoutType & 0x3) << 5);
+		short header = (short) (moveTime & 0x1F);
+		header |= (short) ((layoutType & 0x3) << 5);
 		for (int i = 0; i < 4; ++i) {
-			header |= (short) ((this.toCart[i] ? 1 : 0) << 7 + i);
+			header |= (short) ((toCart[i] ? 1 : 0) << 7 + i);
 		}
 		for (int i = 0; i < 4; ++i) {
-			header |= (short) ((this.doReturn[i] ? 1 : 0) << 11 + i);
+			header |= (short) ((doReturn[i] ? 1 : 0) << 11 + i);
 		}
 		if (isNew || con.lastHeader != header) {
-			this.updateGuiData(con, crafting, 0, header);
+			updateGuiData(con, crafting, 0, header);
 			con.lastHeader = header;
 		}
 		short colorShort = 0;
 		for (int j = 0; j < 4; ++j) {
-			colorShort |= (short) ((this.color[j] & 0x7) << j * 3);
+			colorShort |= (short) ((color[j] & 0x7) << j * 3);
 		}
-		colorShort |= (short) ((this.getLastSetting() & 0x7) << 12);
+		colorShort |= (short) ((getLastSetting() & 0x7) << 12);
 		if (isNew || con.lastColor != colorShort) {
-			this.updateGuiData(con, crafting, 1, colorShort);
+			updateGuiData(con, crafting, 1, colorShort);
 			con.lastColor = colorShort;
 		}
 		short amountShort = 0;
 		for (int k = 0; k < 4; ++k) {
-			amountShort |= (short) ((this.amount[k] & 0xF) << k * 4);
+			amountShort |= (short) ((amount[k] & 0xF) << k * 4);
 		}
 		if (isNew || con.lastAmount != amountShort) {
-			this.updateGuiData(con, crafting, 3, amountShort);
+			updateGuiData(con, crafting, 3, amountShort);
 			con.lastAmount = amountShort;
 		}
 	}
@@ -374,29 +374,29 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.moveTime = (data & 0x1F);
-			this.layoutType = (data & 0x60) >> 5;
-			this.updateLayout();
+			moveTime = (data & 0x1F);
+			layoutType = (data & 0x60) >> 5;
+			updateLayout();
 			for (int i = 0; i < 4; ++i) {
-				this.toCart[i] = ((data & 1 << 7 + i) != 0x0);
+				toCart[i] = ((data & 1 << 7 + i) != 0x0);
 			}
 			for (int i = 0; i < 4; ++i) {
-				this.doReturn[i] = ((data & 1 << 11 + i) != 0x0);
+				doReturn[i] = ((data & 1 << 11 + i) != 0x0);
 			}
 		} else if (id == 1) {
 			for (int i = 0; i < 4; ++i) {
-				this.color[i] = (data & 7 << i * 3) >> i * 3;
+				color[i] = (data & 7 << i * 3) >> i * 3;
 			}
-			this.setLastSetting((data & 0x7000) >> 12);
+			setLastSetting((data & 0x7000) >> 12);
 		} else if (id == 3) {
 			for (int i = 0; i < 4; ++i) {
-				this.amount[i] = (data & 15 << i * 4) >> i * 4;
+				amount[i] = (data & 15 << i * 4) >> i * 4;
 			}
 		}
 	}
 
 	public int moveProgressScaled(final int i) {
-		return this.moveTime * i / 24;
+		return moveTime * i / 24;
 	}
 
 	@Override
@@ -409,15 +409,15 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Override
 	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
-		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSq(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64.0;
+		return world.getTileEntity(pos) == this && entityplayer.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0;
 	}
 
 	@Nonnull
 	public ItemStack getStackInSlotOnClosing(final int par1) {
-		if (!this.cargoItemStacks.get(par1).isEmpty()) {
+		if (!cargoItemStacks.get(par1).isEmpty()) {
 			@Nonnull
-			ItemStack var2 = this.cargoItemStacks.get(par1);
-			this.cargoItemStacks.set(par1, ItemStack.EMPTY);
+			ItemStack var2 = cargoItemStacks.get(par1);
+			cargoItemStacks.set(par1, ItemStack.EMPTY);
 			return var2;
 		}
 		return null;
@@ -436,11 +436,11 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	public abstract int getAmountCount();
 
 	protected void reset() {
-		this.setWorkload(this.moveTime = 0);
+		setWorkload(moveTime = 0);
 	}
 
 	protected int getAmountId(final int id) {
-		return this.amount[id];
+		return amount[id];
 	}
 
 	@Override
@@ -482,7 +482,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.cargoItemStacks) {
+		for (ItemStack itemstack : cargoItemStacks) {
 			if (!itemstack.isEmpty()) {
 				return false;
 			}

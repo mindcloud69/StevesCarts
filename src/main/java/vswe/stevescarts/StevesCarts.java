@@ -51,7 +51,7 @@ public class StevesCarts {
 	public TradeHandler tradeHandler;
 
 	public StevesCarts() {
-		this.maxDynamites = 50;
+		maxDynamites = 50;
 	}
 
 	@Mod.EventHandler
@@ -61,15 +61,15 @@ public class StevesCarts {
 		final Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		SCConfig.load(config);
-		this.maxDynamites = Math.min(this.maxDynamites, config.get("Settings", "MaximumNumberOfDynamites", this.maxDynamites).getInt(this.maxDynamites));
-		this.useArcadeSounds = config.get("Settings", "useArcadeSounds", true).getBoolean(true);
-		this.useArcadeMobSounds = config.get("Settings", "useTetrisMobSounds", true).getBoolean(true);
+		maxDynamites = Math.min(maxDynamites, config.get("Settings", "MaximumNumberOfDynamites", maxDynamites).getInt(maxDynamites));
+		useArcadeSounds = config.get("Settings", "useArcadeSounds", true).getBoolean(true);
+		useArcadeMobSounds = config.get("Settings", "useTetrisMobSounds", true).getBoolean(true);
 		ModItems.preBlockInit(config);
 		ItemBlockStorage.init();
 		ModBlocks.init();
 		ModItems.postBlockInit(config);
 		AssemblerUpgrade.init();
-		this.initCart(0, EntityMinecartModular.class);
+		initCart(0, EntityMinecartModular.class);
 		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "egg"), EntityEasterEgg.class, "Egg.Vswe", 2, StevesCarts.instance, 80, 3, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "cake"), EntityCake.class, "Cake.Vswe", 3, StevesCarts.instance, 80, 3, true);
 		StevesCarts.proxy.preInit();
@@ -84,7 +84,7 @@ public class StevesCarts {
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 		GameRegistry.registerFuelHandler(new WoodFuelHandler());
 		if (Constants.isChristmas) {
-			this.tradeHandler = new TradeHandler();
+			tradeHandler = new TradeHandler();
 			MinecraftForge.EVENT_BUS.register(new EventHandlerChristmas());
 		}
 		GiftItem.init();

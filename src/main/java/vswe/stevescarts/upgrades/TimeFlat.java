@@ -11,14 +11,14 @@ public class TimeFlat extends BaseEffect {
 
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.FLAT.translate(((this.getSeconds() >= 0) ? "+" : "") + this.getSeconds(), String.valueOf(this.getSeconds()));
+		return Localization.UPGRADES.FLAT.translate(((getSeconds() >= 0) ? "+" : "") + getSeconds(), String.valueOf(getSeconds()));
 	}
 
 	protected int getSeconds() {
-		return this.ticks / 20;
+		return ticks / 20;
 	}
 
 	public int getTicks() {
-		return this.ticks;
+		return ticks;
 	}
 }

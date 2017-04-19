@@ -32,10 +32,10 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 
 	public ModuleCage(final EntityMinecartModular cart) {
 		super(cart);
-		this.autoRect = new int[] { 15, 20, 24, 12 };
-		this.manualRect = new int[] { this.autoRect[0] + this.autoRect[2] + 5, this.autoRect[1], this.autoRect[2], this.autoRect[3] };
-		this.sorter = new EntityNearestTarget(this.getCart());
-		this.cooldown = 0;
+		autoRect = new int[] { 15, 20, 24, 12 };
+		manualRect = new int[] { autoRect[0] + autoRect[2] + 5, autoRect[1], autoRect[2], autoRect[3] };
+		sorter = new EntityNearestTarget(getCart());
+		cooldown = 0;
 	}
 
 	@Override
@@ -60,44 +60,44 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/cage.png");
-		this.drawButton(gui, x, y, this.autoRect, this.disablePickup ? 2 : 3);
-		this.drawButton(gui, x, y, this.manualRect, this.isCageEmpty() ? 0 : 1);
+		drawButton(gui, x, y, autoRect, disablePickup ? 2 : 3);
+		drawButton(gui, x, y, manualRect, isCageEmpty() ? 0 : 1);
 	}
 
 	private void drawButton(final GuiMinecart gui, final int x, final int y, final int[] coords, final int imageID) {
-		if (this.inRect(x, y, coords)) {
-			this.drawImage(gui, coords, 0, coords[3]);
+		if (inRect(x, y, coords)) {
+			drawImage(gui, coords, 0, coords[3]);
 		} else {
-			this.drawImage(gui, coords, 0, 0);
+			drawImage(gui, coords, 0, 0);
 		}
 		final int srcY = coords[3] * 2 + imageID * (coords[3] - 2);
-		this.drawImage(gui, coords[0] + 1, coords[1] + 1, 0, srcY, coords[2] - 2, coords[3] - 2);
+		drawImage(gui, coords[0] + 1, coords[1] + 1, 0, srcY, coords[2] - 2, coords[3] - 2);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CAGE_AUTO.translate(this.disablePickup ? "0" : "1"), x, y, this.autoRect);
-		this.drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CAGE.translate(this.isCageEmpty() ? "0" : "1"), x, y, this.manualRect);
+		drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CAGE_AUTO.translate(disablePickup ? "0" : "1"), x, y, autoRect);
+		drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.CAGE.translate(isCageEmpty() ? "0" : "1"), x, y, manualRect);
 	}
 
 	private boolean isCageEmpty() {
-		return this.getCart().getRidingEntity() == null;
+		return getCart().getRidingEntity() == null;
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		if (button == 0) {
-			if (this.inRect(x, y, this.autoRect)) {
-				this.sendPacket(0);
-			} else if (this.inRect(x, y, this.manualRect)) {
-				this.sendPacket(1);
+			if (inRect(x, y, autoRect)) {
+				sendPacket(0);
+			} else if (inRect(x, y, manualRect)) {
+				sendPacket(1);
 			}
 		}
 	}
@@ -105,12 +105,12 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.disablePickup = !this.disablePickup;
+			disablePickup = !disablePickup;
 		} else if (id == 1) {
-			if (!this.isCageEmpty()) {
-				this.manualDrop();
+			if (!isCageEmpty()) {
+				manualDrop();
 			} else {
-				this.manualPickUp();
+				manualPickUp();
 			}
 		}
 	}
@@ -123,35 +123,35 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 	@Override
 	public void update() {
 		super.update();
-		if (this.cooldown > 0) {
-			--this.cooldown;
-		} else if (!this.disablePickup) {
-			this.pickUpCreature(2);
-			this.cooldown = 20;
+		if (cooldown > 0) {
+			--cooldown;
+		} else if (!disablePickup) {
+			pickUpCreature(2);
+			cooldown = 20;
 		}
 	}
 
 	private void manualDrop() {
-		if (!this.isCageEmpty()) {
-			this.getCart().startRiding((Entity) null);
-			this.cooldown = 20;
+		if (!isCageEmpty()) {
+			getCart().startRiding((Entity) null);
+			cooldown = 20;
 		}
 	}
 
 	private void manualPickUp() {
-		this.pickUpCreature(5);
+		pickUpCreature(5);
 	}
 
 	private void pickUpCreature(final int searchDistance) {
-		if (this.getCart().world.isRemote || !this.isCageEmpty()) {
+		if (getCart().world.isRemote || !isCageEmpty()) {
 			return;
 		}
-		final List<EntityLivingBase> entities = this.getCart().world.getEntitiesWithinAABB(EntityLivingBase.class, this.getCart().getEntityBoundingBox().expand(searchDistance, 4.0, searchDistance));
-		Collections.sort(entities, this.sorter);
+		final List<EntityLivingBase> entities = getCart().world.getEntitiesWithinAABB(EntityLivingBase.class, getCart().getEntityBoundingBox().expand(searchDistance, 4.0, searchDistance));
+		entities.sort(sorter);
 		for (EntityLivingBase target : entities) {
 			if (!(target instanceof EntityPlayer) && !(target instanceof EntityIronGolem) && !(target instanceof EntityDragon) && !(target instanceof EntitySlime) && !(target instanceof EntityWaterMob) && !(target instanceof EntityWither) && !(target instanceof EntityEnderman) && (!(target instanceof EntitySpider) || target instanceof EntityCaveSpider) && !(target instanceof EntityGiantZombie) && !(target instanceof EntityFlying)) {
 				if (target.getRidingEntity() == null) {
-					target.startRiding(this.getCart());
+					target.startRiding(getCart());
 					return;
 				}
 				continue;
@@ -177,49 +177,49 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		this.updateGuiData(info, 0, (byte) (this.disablePickup ? 1 : 0));
+		updateGuiData(info, 0, (byte) (disablePickup ? 1 : 0));
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.disablePickup = (data != 0);
+			disablePickup = (data != 0);
 		}
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setBoolean(this.generateNBTName("disablePickup", id), this.disablePickup);
+		tagCompound.setBoolean(generateNBTName("disablePickup", id), disablePickup);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.disablePickup = tagCompound.getBoolean(this.generateNBTName("disablePickup", id));
+		disablePickup = tagCompound.getBoolean(generateNBTName("disablePickup", id));
 	}
 
 	@Override
 	public boolean isActive(final int id) {
 		if (id == 0) {
-			return !this.disablePickup;
+			return !disablePickup;
 		}
-		return !this.isCageEmpty();
+		return !isCageEmpty();
 	}
 
 	@Override
 	public void doActivate(final int id) {
 		if (id == 0) {
-			this.disablePickup = false;
+			disablePickup = false;
 		} else {
-			this.manualPickUp();
+			manualPickUp();
 		}
 	}
 
 	@Override
 	public void doDeActivate(final int id) {
 		if (id == 0) {
-			this.disablePickup = true;
+			disablePickup = true;
 		} else {
-			this.manualDrop();
+			manualDrop();
 		}
 	}
 
@@ -231,14 +231,14 @@ public class ModuleCage extends ModuleBase implements IActivatorModule {
 		}
 
 		public int compareDistanceSq(final Entity entity1, final Entity entity2) {
-			final double distance1 = this.entity.getDistanceSqToEntity(entity1);
-			final double distance2 = this.entity.getDistanceSqToEntity(entity2);
+			final double distance1 = entity.getDistanceSqToEntity(entity1);
+			final double distance2 = entity.getDistanceSqToEntity(entity2);
 			return (distance1 < distance2) ? -1 : ((distance1 > distance2) ? 1 : 0);
 		}
 
 		@Override
 		public int compare(final Object obj1, final Object obj2) {
-			return this.compareDistanceSq((Entity) obj1, (Entity) obj2);
+			return compareDistanceSq((Entity) obj1, (Entity) obj2);
 		}
 	}
 }

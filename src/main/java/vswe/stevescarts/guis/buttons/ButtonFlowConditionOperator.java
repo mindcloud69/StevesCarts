@@ -14,18 +14,18 @@ public class ButtonFlowConditionOperator extends ButtonFlowCondition {
 
 	@Override
 	public String toString() {
-		return "Change to " + ComputerTask.getFlowOperatorName(this.typeId, true);
+		return "Change to " + ComputerTask.getFlowOperatorName(typeId, true);
 	}
 
 	@Override
 	public int texture() {
-		return 32 + this.typeId;
+		return 32 + typeId;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (this.typeId != task.getFlowConditionOperator()) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (typeId != task.getFlowConditionOperator()) {
 				return true;
 			}
 		}
@@ -34,8 +34,8 @@ public class ButtonFlowConditionOperator extends ButtonFlowCondition {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			task.setFlowConditionOperator(this.typeId);
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			task.setFlowConditionOperator(typeId);
 		}
 	}
 }

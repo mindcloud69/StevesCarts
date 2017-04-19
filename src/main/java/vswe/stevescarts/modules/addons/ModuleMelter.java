@@ -15,15 +15,15 @@ public class ModuleMelter extends ModuleAddon {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
-		if (this.getCart().hasFuel()) {
-			if (this.tick >= this.getInterval()) {
-				this.tick = 0;
-				this.melt();
+		if (getCart().hasFuel()) {
+			if (tick >= getInterval()) {
+				tick = 0;
+				melt();
 			} else {
-				++this.tick;
+				++tick;
 			}
 		}
 	}
@@ -42,12 +42,12 @@ public class ModuleMelter extends ModuleAddon {
 
 	private void melt() {
 		BlockPos cartPos = getCart().getPosition();
-		for (int x = -this.getBlocksOnSide(); x <= this.getBlocksOnSide(); ++x) {
-			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
-				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
+		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); ++x) {
+			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); ++z) {
+				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); ++y) {
 					BlockPos pos = cartPos.add(x, y, z);
-					final Block b = this.getCart().world.getBlockState(cartPos).getBlock();
-					this.melt(b, cartPos);
+					final Block b = getCart().world.getBlockState(cartPos).getBlock();
+					melt(b, cartPos);
 				}
 			}
 		}
@@ -55,7 +55,7 @@ public class ModuleMelter extends ModuleAddon {
 
 	protected boolean melt(final Block b, BlockPos pos) {
 		if (b == Blocks.SNOW) {
-			this.getCart().world.setBlockToAir(pos);
+			getCart().world.setBlockToAir(pos);
 			return true;
 		}
 		return false;

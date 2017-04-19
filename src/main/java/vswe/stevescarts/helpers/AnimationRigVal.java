@@ -12,7 +12,7 @@ public class AnimationRigVal {
 		this.min = min;
 		this.max = max;
 		this.speed = speed;
-		this.val = this.min;
+		val = this.min;
 		rig.addVal(this);
 	}
 
@@ -25,44 +25,44 @@ public class AnimationRigVal {
 	}
 
 	public void setUpAndDown(final AnimationRigVal up) {
-		this.setUp(up);
+		setUp(up);
 		up.setDown(this);
 	}
 
 	public float getVal() {
-		return this.val;
+		return val;
 	}
 
 	public boolean update(final boolean goDown) {
-		final float target = goDown ? this.min : this.max;
-		if (target == this.val) {
+		final float target = goDown ? min : max;
+		if (target == val) {
 			return false;
 		}
-		if (this.val < target) {
-			this.val += this.speed;
-			if (this.val > target) {
-				this.val = target;
+		if (val < target) {
+			val += speed;
+			if (val > target) {
+				val = target;
 			}
-		} else if (this.val > target) {
-			this.val -= this.speed;
-			if (this.val < target) {
-				this.val = target;
+		} else if (val > target) {
+			val -= speed;
+			if (val < target) {
+				val = target;
 			}
 		}
 		if (goDown) {
-			if (this.down != null) {
-				this.down.update(goDown);
+			if (down != null) {
+				down.update(goDown);
 			}
-		} else if (this.up != null) {
-			this.up.update(goDown);
+		} else if (up != null) {
+			up.update(goDown);
 		}
 		return true;
 	}
 
 	public void setSpeedToSync(final AnimationRigVal syncTo, final boolean invert) {
-		this.speed = (this.max - this.min) / ((syncTo.max - syncTo.min) / syncTo.speed);
+		speed = (max - min) / ((syncTo.max - syncTo.min) / syncTo.speed);
 		if (invert) {
-			this.speed *= -1.0f;
+			speed *= -1.0f;
 		}
 	}
 }

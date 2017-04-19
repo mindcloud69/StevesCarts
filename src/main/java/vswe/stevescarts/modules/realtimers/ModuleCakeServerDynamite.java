@@ -23,39 +23,39 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotCakeDynamite(this.getCart(), slotId, 8 + x * 18, 38 + y * 18);
+		return new SlotCakeDynamite(getCart(), slotId, 8 + x * 18, 38 + y * 18);
 	}
 
 	@Override
 	public boolean dropOnDeath() {
-		return this.dynamiteCount == 0;
+		return dynamiteCount == 0;
 	}
 
 	@Override
 	public void onDeath() {
-		if (this.dynamiteCount > 0) {
-			this.explode();
+		if (dynamiteCount > 0) {
+			explode();
 		}
 	}
 
 	private void explode() {
-		this.getCart().world.createExplosion(null, this.getCart().posX, this.getCart().posY, this.getCart().posZ, this.dynamiteCount * 0.8f, true);
+		getCart().world.createExplosion(null, getCart().posX, getCart().posY, getCart().posZ, dynamiteCount * 0.8f, true);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (!this.getCart().world.isRemote) {
+		if (!getCart().world.isRemote) {
 			@Nonnull
-			ItemStack item = this.getStack(0);
-			if (!item.isEmpty() && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && this.dynamiteCount < this.getMaxDynamiteCount()) {
-				final int count = Math.min(this.getMaxDynamiteCount() - this.dynamiteCount, item.getCount());
-				this.dynamiteCount += count;
+			ItemStack item = getStack(0);
+			if (!item.isEmpty() && item.getItem().equals(ModItems.component) && item.getItemDamage() == 6 && dynamiteCount < getMaxDynamiteCount()) {
+				final int count = Math.min(getMaxDynamiteCount() - dynamiteCount, item.getCount());
+				dynamiteCount += count;
 				@Nonnull
 				ItemStack itemStack = item;
 				itemStack.shrink(count);
 				if (item.getCount() == 0) {
-					this.setStack(0, ItemStack.EMPTY);
+					setStack(0, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -63,9 +63,9 @@ public class ModuleCakeServerDynamite extends ModuleCakeServer {
 
 	@Override
 	public boolean onInteractFirst(final EntityPlayer entityplayer) {
-		if (this.dynamiteCount > 0) {
-			this.explode();
-			this.getCart().setDead();
+		if (dynamiteCount > 0) {
+			explode();
+			getCart().setDead();
 			return true;
 		}
 		return super.onInteractFirst(entityplayer);

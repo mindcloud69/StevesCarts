@@ -23,7 +23,7 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 
 	public ModuleSolarBase(final EntityMinecartModular cart) {
 		super(cart);
-		this.down = true;
+		down = true;
 	}
 
 	@Override
@@ -39,19 +39,19 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	@Override
 	public void update() {
 		super.update();
-		this.updateSolarModel();
+		updateSolarModel();
 	}
 
 	@Override
 	protected void loadFuel() {
-		this.updateLight();
-		this.updateDataForModel();
-		this.chargeSolar();
+		updateLight();
+		updateDataForModel();
+		chargeSolar();
 	}
 
 	@Override
 	public int getTotalFuel() {
-		return this.getFuelLevel();
+		return getFuelLevel();
 	}
 
 	@Override
@@ -60,51 +60,51 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	private void updateLight() {
-		if (!this.getCart().world.isDaytime() || this.getCart().world.isRaining()) {
-			this.light = 0;
+		if (!getCart().world.isDaytime() || getCart().world.isRaining()) {
+			light = 0;
 		} else {
-			this.light = this.getCart().world.getLight(this.getCart().getPosition());
-			if (this.light == 15 && !this.getCart().world.canBlockSeeSky(this.getCart().getPosition())) {
-				this.light = 14;
+			light = getCart().world.getLight(getCart().getPosition());
+			if (light == 15 && !getCart().world.canBlockSeeSky(getCart().getPosition())) {
+				light = 14;
 			}
 		}
 	}
 
 	private void updateDataForModel() {
-		if (this.isPlaceholder()) {
-			this.light = (this.getSimInfo().getMaxLight() ? 15 : 14);
-		} else if (this.getCart().world.isRemote) {
-			this.light = this.getDw(LIGHT);
+		if (isPlaceholder()) {
+			light = (getSimInfo().getMaxLight() ? 15 : 14);
+		} else if (getCart().world.isRemote) {
+			light = getDw(LIGHT);
 		} else {
-			this.updateDw(LIGHT, this.light);
+			updateDw(LIGHT, light);
 		}
-		this.maxLight = (this.light == 15);
-		if (!this.upState && this.light == 15) {
-			this.light = 14;
+		maxLight = (light == 15);
+		if (!upState && light == 15) {
+			light = 14;
 		}
 	}
 
 	private void chargeSolar() {
-		if (this.light == 15 && this.getCart().world.rand.nextInt(8) < 4) {
-			this.setFuelLevel(this.getFuelLevel() + this.getGenSpeed());
-			if (this.getFuelLevel() > this.getMaxCapacity()) {
-				this.setFuelLevel(this.getMaxCapacity());
+		if (light == 15 && getCart().world.rand.nextInt(8) < 4) {
+			setFuelLevel(getFuelLevel() + getGenSpeed());
+			if (getFuelLevel() > getMaxCapacity()) {
+				setFuelLevel(getMaxCapacity());
 			}
 		}
 	}
 
 	public int getLight() {
-		return this.light;
+		return light;
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, Localization.MODULES.ENGINES.SOLAR.translate(), 8, 6, 4210752);
+		drawString(gui, Localization.MODULES.ENGINES.SOLAR.translate(), 8, 6, 4210752);
 		String strfuel = Localization.MODULES.ENGINES.NO_POWER.translate();
-		if (this.getFuelLevel() > 0) {
-			strfuel = Localization.MODULES.ENGINES.POWER.translate(String.valueOf(this.getFuelLevel()));
+		if (getFuelLevel() > 0) {
+			strfuel = Localization.MODULES.ENGINES.POWER.translate(String.valueOf(getFuelLevel()));
 		}
-		this.drawString(gui, strfuel, 8, 42, 4210752);
+		drawString(gui, strfuel, 8, 42, 4210752);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -112,12 +112,12 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		super.drawBackground(gui, x, y);
 		ResourceHelper.bindResource("/gui/solar.png");
-		int lightWidth = this.light * 3;
-		if (this.light == 15) {
+		int lightWidth = light * 3;
+		if (light == 15) {
 			lightWidth += 2;
 		}
-		this.drawImage(gui, 9, 20, 0, 0, 54, 18);
-		this.drawImage(gui, 15, 21, 0, 18, lightWidth, 16);
+		drawImage(gui, 9, 20, 0, 0, 54, 18);
+		drawImage(gui, 15, 21, 0, 18, lightWidth, 16);
 	}
 
 	@Override
@@ -136,25 +136,25 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	}
 
 	protected boolean isGoingDown() {
-		return this.down;
+		return down;
 	}
 
 	public void updateSolarModel() {
-		if (this.getCart().world.isRemote) {
-			this.updateDataForModel();
+		if (getCart().world.isRemote) {
+			updateDataForModel();
 		}
-		this.panelCoolDown += (this.maxLight ? 1 : -1);
-		if (this.down && this.panelCoolDown < 0) {
-			this.panelCoolDown = 0;
-		} else if (!this.down && this.panelCoolDown > 0) {
-			this.panelCoolDown = 0;
-		} else if (Math.abs(this.panelCoolDown) > 20) {
-			this.panelCoolDown = 0;
-			this.down = !this.down;
+		panelCoolDown += (maxLight ? 1 : -1);
+		if (down && panelCoolDown < 0) {
+			panelCoolDown = 0;
+		} else if (!down && panelCoolDown > 0) {
+			panelCoolDown = 0;
+		} else if (Math.abs(panelCoolDown) > 20) {
+			panelCoolDown = 0;
+			down = !down;
 		}
-		this.upState = this.updatePanels();
-		if (!this.getCart().world.isRemote) {
-			this.updateDw(UP_STATE, this.upState);
+		upState = updatePanels();
+		if (!getCart().world.isRemote) {
+			updateDw(UP_STATE, upState);
 		}
 	}
 
@@ -165,8 +165,8 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		this.updateGuiData(info, 0, (short) (this.getFuelLevel() & 0xFFFF));
-		this.updateGuiData(info, 1, (short) (this.getFuelLevel() >> 16 & 0xFFFF));
+		updateGuiData(info, 0, (short) (getFuelLevel() & 0xFFFF));
+		updateGuiData(info, 1, (short) (getFuelLevel() >> 16 & 0xFFFF));
 	}
 
 	@Override
@@ -176,9 +176,9 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 			if (dataint < 0) {
 				dataint += 65536;
 			}
-			this.setFuelLevel((this.getFuelLevel() & 0xFFFF0000) | dataint);
+			setFuelLevel((getFuelLevel() & 0xFFFF0000) | dataint);
 		} else if (id == 1) {
-			this.setFuelLevel((this.getFuelLevel() & 0xFFFF) | data << 16);
+			setFuelLevel((getFuelLevel() & 0xFFFF) | data << 16);
 		}
 	}
 
@@ -191,14 +191,14 @@ public abstract class ModuleSolarBase extends ModuleEngine {
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		super.Save(tagCompound, id);
-		tagCompound.setInteger(this.generateNBTName("Fuel", id), this.getFuelLevel());
-		tagCompound.setBoolean(this.generateNBTName("Up", id), this.upState);
+		tagCompound.setInteger(generateNBTName("Fuel", id), getFuelLevel());
+		tagCompound.setBoolean(generateNBTName("Up", id), upState);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		this.setFuelLevel(tagCompound.getInteger(this.generateNBTName("Fuel", id)));
-		this.upState = tagCompound.getBoolean(this.generateNBTName("Up", id));
+		setFuelLevel(tagCompound.getInteger(generateNBTName("Fuel", id)));
+		upState = tagCompound.getBoolean(generateNBTName("Up", id));
 	}
 }

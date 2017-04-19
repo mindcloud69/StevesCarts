@@ -16,12 +16,12 @@ public class ModulePlantSize extends ModuleAddon {
 
 	public ModulePlantSize(final EntityMinecartModular cart) {
 		super(cart);
-		this.size = 1;
-		this.boxrect = new int[] { 10, 18, 44, 44 };
+		size = 1;
+		boxrect = new int[] { 10, 18, 44, 44 };
 	}
 
 	public int getSize() {
-		return this.size;
+		return size;
 	}
 
 	@Override
@@ -46,30 +46,30 @@ public class ModulePlantSize extends ModuleAddon {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, Localization.MODULES.ADDONS.PLANTER_RANGE.translate(), 8, 6, 4210752);
+		drawString(gui, Localization.MODULES.ADDONS.PLANTER_RANGE.translate(), 8, 6, 4210752);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/plantsize.png");
-		final int srcX = (this.size - 1) % 5 * 44;
-		final int srcY = ((this.size - 1) / 5 + 1) * 44;
-		this.drawImage(gui, this.boxrect, srcX, srcY);
-		if (this.inRect(x, y, this.boxrect)) {
-			this.drawImage(gui, this.boxrect, 0, 0);
+		final int srcX = (size - 1) % 5 * 44;
+		final int srcY = ((size - 1) / 5 + 1) * 44;
+		drawImage(gui, boxrect, srcX, srcY);
+		if (inRect(x, y, boxrect)) {
+			drawImage(gui, boxrect, 0, 0);
 		}
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.SAPLING_AMOUNT.translate() + ": " + this.size + "x" + this.size, x, y, this.boxrect);
+		drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.SAPLING_AMOUNT.translate() + ": " + size + "x" + size, x, y, boxrect);
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if ((button == 0 || button == 1) && this.inRect(x, y, this.boxrect)) {
-			this.sendPacket(0, (byte) button);
+		if ((button == 0 || button == 1) && inRect(x, y, boxrect)) {
+			sendPacket(0, (byte) button);
 		}
 	}
 
@@ -77,14 +77,14 @@ public class ModulePlantSize extends ModuleAddon {
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
 			if (data[0] == 1) {
-				--this.size;
-				if (this.size < 1) {
-					this.size = 7;
+				--size;
+				if (size < 1) {
+					size = 7;
 				}
 			} else {
-				++this.size;
-				if (this.size > 7) {
-					this.size = 1;
+				++size;
+				if (size > 7) {
+					size = 1;
 				}
 			}
 		}
@@ -102,23 +102,23 @@ public class ModulePlantSize extends ModuleAddon {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		this.updateGuiData(info, 0, (short) this.size);
+		updateGuiData(info, 0, (short) size);
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.size = data;
+			size = data;
 		}
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("size", id), (byte) this.size);
+		tagCompound.setByte(generateNBTName("size", id), (byte) size);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.size = tagCompound.getByte(this.generateNBTName("size", id));
+		size = tagCompound.getByte(generateNBTName("size", id));
 	}
 }

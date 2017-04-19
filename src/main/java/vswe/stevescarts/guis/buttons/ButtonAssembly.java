@@ -9,6 +9,6 @@ public abstract class ButtonAssembly extends ButtonBase {
 
 	@Override
 	public boolean isVisible() {
-		return !((ModuleComputer) this.module).isWriting();
+		return !((ModuleComputer) module).isWriting();
 	}
 }

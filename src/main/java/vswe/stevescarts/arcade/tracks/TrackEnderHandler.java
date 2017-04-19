@@ -12,7 +12,7 @@ public class TrackEnderHandler extends Track {
 
 	@Override
 	public void travel(final ArcadeTracks game, final Cart cart) {
-		if (this.isSpawner) {
+		if (isSpawner) {
 			game.getEnderman().setAlive(true);
 			game.getEnderman().setDirection(TrackOrientation.DIRECTION.RIGHT);
 			game.getEnderman().setX(cart.getX() + 5);
@@ -25,6 +25,6 @@ public class TrackEnderHandler extends Track {
 
 	@Override
 	public Track copy() {
-		return new TrackEnderHandler(this.getX(), this.getY(), this.getOrientation(), this.isSpawner);
+		return new TrackEnderHandler(getX(), getY(), getOrientation(), isSpawner);
 	}
 }

@@ -14,7 +14,7 @@ public class ButtonLabelId extends ButtonAssembly {
 
 	@Override
 	public String toString() {
-		return this.increase ? "Increase ID" : "Decrease ID";
+		return increase ? "Increase ID" : "Decrease ID";
 	}
 
 	@Override
@@ -22,8 +22,8 @@ public class ButtonLabelId extends ButtonAssembly {
 		if (!super.isVisible()) {
 			return false;
 		}
-		if (this.module instanceof ModuleComputer && ((ModuleComputer) this.module).getSelectedTasks() != null && ((ModuleComputer) this.module).getSelectedTasks().size() > 0) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+		if (module instanceof ModuleComputer && ((ModuleComputer) module).getSelectedTasks() != null && ((ModuleComputer) module).getSelectedTasks().size() > 0) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
 				if (!task.isFlowLabel() && !task.isFlowGoto()) {
 					return false;
 				}
@@ -35,13 +35,13 @@ public class ButtonLabelId extends ButtonAssembly {
 
 	@Override
 	public int texture() {
-		return this.increase ? 23 : 24;
+		return increase ? 23 : 24;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if ((this.increase && task.getFlowLabelId() < 31) || (!this.increase && task.getFlowLabelId() > 0)) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if ((increase && task.getFlowLabelId() < 31) || (!increase && task.getFlowLabelId() > 0)) {
 				return true;
 			}
 		}
@@ -50,8 +50,8 @@ public class ButtonLabelId extends ButtonAssembly {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			task.setFlowLabelId(task.getFlowLabelId() + (this.increase ? 1 : -1));
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			task.setFlowLabelId(task.getFlowLabelId() + (increase ? 1 : -1));
 		}
 	}
 }

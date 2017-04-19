@@ -24,79 +24,79 @@ public class SlotAssembler extends Slot {
 		this.assembler = assembler;
 		this.useLarge = useLarge;
 		this.groupID = groupID;
-		this.x = j;
-		this.y = k;
-		this.isValid = true;
+		x = j;
+		y = k;
+		isValid = true;
 		this.id = id;
 	}
 
 	public boolean useLargeInterface() {
-		return this.useLarge;
+		return useLarge;
 	}
 
 	@Override
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return itemstack != null && this.isValid && ModuleData.isValidModuleItem(this.groupID, itemstack) && (!this.getHasStack() || (this.getStack().getCount() > 0 && itemstack.getCount() > 0));
+		return itemstack != null && isValid && ModuleData.isValidModuleItem(groupID, itemstack) && (!getHasStack() || (getStack().getCount() > 0 && itemstack.getCount() > 0));
 	}
 
 	public void invalidate() {
-		this.isValid = false;
-		this.invalidationCheck();
+		isValid = false;
+		invalidationCheck();
 	}
 
 	public void validate() {
-		this.isValid = true;
+		isValid = true;
 	}
 
 	public boolean isValid() {
-		return this.isValid;
+		return isValid;
 	}
 
 	private void invalidationCheck() {
-		this.xPos = -3000;
-		this.yPos = -3000;
-		if (this.openingAnimation > 8) {
-			this.openingAnimation = 8;
+		xPos = -3000;
+		yPos = -3000;
+		if (openingAnimation > 8) {
+			openingAnimation = 8;
 		}
 	}
 
 	public void update() {
-		if (!this.assembler.getWorld().isRemote) {
-			if (!this.isValid() && this.getHasStack()) {
-				this.assembler.puke(this.getStack());
-				this.putStack(null);
+		if (!assembler.getWorld().isRemote) {
+			if (!isValid() && getHasStack()) {
+				assembler.puke(getStack());
+				putStack(null);
 			}
-		} else if (this.isValid()) {
-			if (this.openingAnimation == 8) {
-				this.xPos = this.x;
-				this.yPos = this.y;
-				++this.openingAnimation;
-			} else if (this.openingAnimation < 8) {
-				++this.openingAnimation;
+		} else if (isValid()) {
+			if (openingAnimation == 8) {
+				xPos = x;
+				yPos = y;
+				++openingAnimation;
+			} else if (openingAnimation < 8) {
+				++openingAnimation;
 			}
-		} else if (this.openingAnimation > 0) {
-			--this.openingAnimation;
+		} else if (openingAnimation > 0) {
+			--openingAnimation;
 		} else {
-			this.openingAnimation = this.id * -3;
+			openingAnimation = id * -3;
 		}
 	}
 
 	public int getAnimationTick() {
-		return this.openingAnimation;
+		return openingAnimation;
 	}
 
 	public int getX() {
-		return this.x;
+		return x;
 	}
 
 	public int getY() {
-		return this.y;
+		return y;
 	}
 
 	public TileEntityCartAssembler getAssembler() {
-		return this.assembler;
+		return assembler;
 	}
 
 	public boolean shouldUpdatePlaceholder() {
@@ -106,10 +106,10 @@ public class SlotAssembler extends Slot {
 	@Override
 	public void onSlotChanged() {
 		super.onSlotChanged();
-		if (this.shouldUpdatePlaceholder()) {
-			this.assembler.updatePlaceholder();
+		if (shouldUpdatePlaceholder()) {
+			assembler.updatePlaceholder();
 		} else {
-			this.assembler.isErrorListOutdated = true;
+			assembler.isErrorListOutdated = true;
 		}
 	}
 
@@ -120,6 +120,6 @@ public class SlotAssembler extends Slot {
 
 	@Override
 	public boolean canTakeStack(final EntityPlayer player) {
-		return !this.getStack().isEmpty() && this.getStack().getCount() > 0;
+		return !getStack().isEmpty() && getStack().getCount() > 0;
 	}
 }

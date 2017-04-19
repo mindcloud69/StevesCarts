@@ -30,8 +30,8 @@ public class GuiDetector extends GuiBase {
 	public GuiDetector(final InventoryPlayer invPlayer, final TileEntityDetector detector) {
 		super(new ContainerDetector(invPlayer, detector));
 		this.invPlayer = invPlayer;
-		this.setXSize(255);
-		this.setYSize(202);
+		setXSize(255);
+		setYSize(202);
 		this.detector = detector;
 		final Iterator<LogicObject> i$ = detector.mainObj.getChilds().iterator();
 		if (i$.hasNext()) {
@@ -39,58 +39,58 @@ public class GuiDetector extends GuiBase {
 			child.setParent(null);
 		}
 		detector.recalculateTree();
-		(this.menus = new ArrayList<>()).add(this.modulesMenu = new DropDownMenuPages(0, 2));
-		this.menus.add(this.statesMenu = new DropDownMenu(1));
-		this.menus.add(this.flowMenu = new DropDownMenu(2));
+		(menus = new ArrayList<>()).add(modulesMenu = new DropDownMenuPages(0, 2));
+		menus.add(statesMenu = new DropDownMenu(1));
+		menus.add(flowMenu = new DropDownMenu(2));
 	}
 
 	@Override
 	public void drawGuiForeground(final int x, final int y) {
 		GL11.glDisable(2896);
-		this.getFontRenderer().drawString(DetectorType.getTypeFromSate(this.detector.getWorld().getBlockState(this.detector.getPos())).getTranslatedName(), 8, 6, 4210752);
-		if (this.modulesMenu.getScroll() != 0) {
+		getFontRenderer().drawString(DetectorType.getTypeFromSate(detector.getWorld().getBlockState(detector.getPos())).getTranslatedName(), 8, 6, 4210752);
+		if (modulesMenu.getScroll() != 0) {
 			int modulePosId = 0;
 			for (final ModuleData module : ModuleData.getModules()) {
 				if (module.getIsValid()) {
-					final int[] target = this.modulesMenu.getContentRect(modulePosId);
-					if (this.drawMouseOver(module.getName(), x, y, target)) {
+					final int[] target = modulesMenu.getContentRect(modulePosId);
+					if (drawMouseOver(module.getName(), x, y, target)) {
 						break;
 					}
 					++modulePosId;
 				}
 			}
-		} else if (this.statesMenu.getScroll() != 0) {
+		} else if (statesMenu.getScroll() != 0) {
 			int statesPosId = 0;
 			for (final ModuleState state : ModuleState.getStateList()) {
-				final int[] target = this.statesMenu.getContentRect(statesPosId);
-				if (this.drawMouseOver(state.getName(), x, y, target)) {
+				final int[] target = statesMenu.getContentRect(statesPosId);
+				if (drawMouseOver(state.getName(), x, y, target)) {
 					break;
 				}
 				++statesPosId;
 			}
-		} else if (this.flowMenu.getScroll() != 0) {
+		} else if (flowMenu.getScroll() != 0) {
 			int flowPosId = 0;
-			for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getType())) {
+			for (final OperatorObject operator : OperatorObject.getOperatorList(detector.getType())) {
 				if (operator.inTab()) {
-					final int[] target = this.flowMenu.getContentRect(flowPosId);
-					if (this.drawMouseOver(operator.getName(), x, y, target)) {
+					final int[] target = flowMenu.getContentRect(flowPosId);
+					if (drawMouseOver(operator.getName(), x, y, target)) {
 						break;
 					}
 					++flowPosId;
 				}
 			}
 		} else {
-			this.drawMouseOverFromObject(this.detector.mainObj, x, y);
+			drawMouseOverFromObject(detector.mainObj, x, y);
 		}
 		GL11.glEnable(2896);
 	}
 
 	private boolean drawMouseOverFromObject(final LogicObject obj, final int x, final int y) {
-		if (this.drawMouseOver(obj.getName(), x, y, obj.getRect())) {
+		if (drawMouseOver(obj.getName(), x, y, obj.getRect())) {
 			return true;
 		}
 		for (final LogicObject child : obj.getChilds()) {
-			if (this.drawMouseOverFromObject(child, x, y)) {
+			if (drawMouseOverFromObject(child, x, y)) {
 				return true;
 			}
 		}
@@ -98,8 +98,8 @@ public class GuiDetector extends GuiBase {
 	}
 
 	private boolean drawMouseOver(final String str, final int x, final int y, final int[] rect) {
-		if (rect != null && this.inRect(x - this.getGuiLeft(), y - this.getGuiTop(), rect)) {
-			this.drawMouseOver(str, x - this.getGuiLeft(), y - this.getGuiTop());
+		if (rect != null && inRect(x - getGuiLeft(), y - getGuiTop(), rect)) {
+			drawMouseOver(str, x - getGuiLeft(), y - getGuiTop());
 			return true;
 		}
 		return false;
@@ -108,52 +108,52 @@ public class GuiDetector extends GuiBase {
 	@Override
 	public void drawGuiBackground(final float f, int x, int y) {
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		final int j = this.getGuiLeft();
-		final int k = this.getGuiTop();
+		final int j = getGuiLeft();
+		final int k = getGuiTop();
 		ResourceHelper.bindResource(GuiDetector.texture);
-		this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
-		this.detector.mainObj.draw(this, x, y);
-		DropDownMenu.update(this, x, y, this.menus);
-		this.flowMenu.drawMain(this, x, y);
+		drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
+		x -= getGuiLeft();
+		y -= getGuiTop();
+		detector.mainObj.draw(this, x, y);
+		DropDownMenu.update(this, x, y, menus);
+		flowMenu.drawMain(this, x, y);
 		ResourceHelper.bindResource(GuiDetector.texture);
 		int flowPosId = 0;
-		for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getType())) {
+		for (final OperatorObject operator : OperatorObject.getOperatorList(detector.getType())) {
 			if (operator.inTab()) {
-				final int[] src = this.getOperatorTexture(operator.getID());
-				this.flowMenu.drawContent(this, flowPosId, src[0], src[1]);
+				final int[] src = getOperatorTexture(operator.getID());
+				flowMenu.drawContent(this, flowPosId, src[0], src[1]);
 				++flowPosId;
 			}
 		}
-		this.statesMenu.drawMain(this, x, y);
+		statesMenu.drawMain(this, x, y);
 		ResourceHelper.bindResource(GuiDetector.stateTexture);
 		int statePosId = 0;
 		for (final ModuleState state : ModuleState.getStateList()) {
-			final int[] src2 = this.getModuleTexture(state.getID());
-			this.statesMenu.drawContent(this, statePosId, src2[0], src2[1]);
+			final int[] src2 = getModuleTexture(state.getID());
+			statesMenu.drawContent(this, statePosId, src2[0], src2[1]);
 			++statePosId;
 		}
-		this.modulesMenu.drawMain(this, x, y);
+		modulesMenu.drawMain(this, x, y);
 		int modulePosId = 0;
 		for (final ModuleData module : ModuleData.getModules()) {
 			if (module.getIsValid()) {
-				this.modulesMenu.drawContent(this, modulePosId, module);
+				modulesMenu.drawContent(this, modulePosId, module);
 				++modulePosId;
 			}
 		}
-		this.flowMenu.drawHeader(this);
-		this.statesMenu.drawHeader(this);
-		this.modulesMenu.drawHeader(this);
-		if (this.currentObject != null) {
-			this.currentObject.draw(this, -500, -500, x, y);
+		flowMenu.drawHeader(this);
+		statesMenu.drawHeader(this);
+		modulesMenu.drawHeader(this);
+		if (currentObject != null) {
+			currentObject.draw(this, -500, -500, x, y);
 		}
 	}
 
 	public int[] getOperatorTexture(final byte operatorId) {
 		final int x = operatorId % 11;
 		final int y = operatorId / 11;
-		return new int[] { 36 + x * 20, this.ySize + y * 11 };
+		return new int[] { 36 + x * 20, ySize + y * 11 };
 	}
 
 	public int[] getModuleTexture(final byte moduleId) {
@@ -169,20 +169,20 @@ public class GuiDetector extends GuiBase {
 	@Override
 	public void mouseClick(int x, int y, final int button) {
 		super.mouseClick(x, y, button);
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
+		x -= getGuiLeft();
+		y -= getGuiTop();
 		if (button == 0) {
 			if (isShiftKeyDown()) {
-				if (this.currentObject == null) {
-					this.pickupObject(x, y, this.detector.mainObj);
+				if (currentObject == null) {
+					pickupObject(x, y, detector.mainObj);
 				}
 			} else {
 				int modulePosId = 0;
 				for (final ModuleData module : ModuleData.getModules()) {
 					if (module.getIsValid()) {
-						final int[] target = this.modulesMenu.getContentRect(modulePosId);
-						if (this.inRect(x, y, target)) {
-							this.currentObject = new LogicObject((byte) 0, module.getID());
+						final int[] target = modulesMenu.getContentRect(modulePosId);
+						if (inRect(x, y, target)) {
+							currentObject = new LogicObject((byte) 0, module.getID());
 							return;
 						}
 						++modulePosId;
@@ -190,51 +190,51 @@ public class GuiDetector extends GuiBase {
 				}
 				int statePosId = 0;
 				for (final ModuleState state : ModuleState.getStateList()) {
-					final int[] target2 = this.statesMenu.getContentRect(statePosId);
-					if (this.inRect(x, y, target2)) {
-						this.currentObject = new LogicObject((byte) 2, state.getID());
+					final int[] target2 = statesMenu.getContentRect(statePosId);
+					if (inRect(x, y, target2)) {
+						currentObject = new LogicObject((byte) 2, state.getID());
 						return;
 					}
 					++statePosId;
 				}
 				int flowPosId = 0;
-				for (final OperatorObject operator : OperatorObject.getOperatorList(this.detector.getType())) {
+				for (final OperatorObject operator : OperatorObject.getOperatorList(detector.getType())) {
 					if (operator.inTab()) {
-						final int[] target3 = this.flowMenu.getContentRect(flowPosId);
-						if (this.inRect(x, y, target3)) {
-							this.currentObject = new LogicObject((byte) 1, operator.getID());
+						final int[] target3 = flowMenu.getContentRect(flowPosId);
+						if (inRect(x, y, target3)) {
+							currentObject = new LogicObject((byte) 1, operator.getID());
 							return;
 						}
 						++flowPosId;
 					}
 				}
-				for (final DropDownMenu menu : this.menus) {
+				for (final DropDownMenu menu : menus) {
 					menu.onClick(this, x, y);
 				}
 			}
-		} else if (button == 1 && this.currentObject == null) {
-			this.removeObject(x, y, this.detector.mainObj);
+		} else if (button == 1 && currentObject == null) {
+			removeObject(x, y, detector.mainObj);
 		}
 	}
 
 	@Override
 	public void mouseMoved(int x, int y, final int button) {
 		super.mouseMoved(x, y, button);
-		x -= this.getGuiLeft();
-		y -= this.getGuiTop();
-		if (button != -1 && this.currentObject != null) {
-			this.dropOnObject(x, y, this.detector.mainObj, this.currentObject);
-			this.currentObject = null;
+		x -= getGuiLeft();
+		y -= getGuiTop();
+		if (button != -1 && currentObject != null) {
+			dropOnObject(x, y, detector.mainObj, currentObject);
+			currentObject = null;
 		}
 	}
 
 	private boolean removeObject(final int x, final int y, final LogicObject object) {
-		if (this.inRect(x, y, object.getRect()) && object.canBeRemoved()) {
-			object.setParent(this.detector, null);
+		if (inRect(x, y, object.getRect()) && object.canBeRemoved()) {
+			object.setParent(detector, null);
 			return true;
 		}
 		for (final LogicObject child : object.getChilds()) {
-			if (this.removeObject(x, y, child)) {
+			if (removeObject(x, y, child)) {
 				return true;
 			}
 		}
@@ -242,12 +242,12 @@ public class GuiDetector extends GuiBase {
 	}
 
 	private boolean pickupObject(final int x, final int y, final LogicObject object) {
-		if (this.inRect(x, y, object.getRect()) && object.canBeRemoved()) {
-			(this.currentObject = object).setParent(this.detector, null);
+		if (inRect(x, y, object.getRect()) && object.canBeRemoved()) {
+			(currentObject = object).setParent(detector, null);
 			return true;
 		}
 		for (final LogicObject child : object.getChilds()) {
-			if (this.pickupObject(x, y, child)) {
+			if (pickupObject(x, y, child)) {
 				return true;
 			}
 		}
@@ -255,14 +255,14 @@ public class GuiDetector extends GuiBase {
 	}
 
 	private boolean dropOnObject(final int x, final int y, final LogicObject object, final LogicObject drop) {
-		if (this.inRect(x, y, object.getRect())) {
+		if (inRect(x, y, object.getRect())) {
 			if (object.hasRoomForChild() && object.isChildValid(drop)) {
-				drop.setParent(this.detector, object);
+				drop.setParent(detector, object);
 			}
 			return true;
 		}
 		for (final LogicObject child : object.getChilds()) {
-			if (this.dropOnObject(x, y, child, drop)) {
+			if (dropOnObject(x, y, child, drop)) {
 				return true;
 			}
 		}

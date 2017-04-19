@@ -13,34 +13,34 @@ public class Player extends Unit {
 
 	public Player(final ArcadeInvaders game) {
 		this(game, 200, 150);
-		this.ready = true;
+		ready = true;
 	}
 
 	@Override
 	public void draw(final GuiMinecart gui) {
-		if (this.ready || this.targetY == this.y) {
-			this.game.drawImageInArea(gui, this.x, this.y, 16, 16, 16, 16);
+		if (ready || targetY == y) {
+			game.drawImageInArea(gui, x, y, 16, 16, 16, 16);
 		} else {
-			this.game.drawImageInArea(gui, this.x, this.y, 16, 16, 16, 16, 3, 0, 1000, 1000);
+			game.drawImageInArea(gui, x, y, 16, 16, 16, 16, 3, 0, 1000, 1000);
 		}
 	}
 
 	protected void setTarget(final int x, final int y) {
-		this.targetX = x;
-		this.targetY = y;
+		targetX = x;
+		targetY = y;
 	}
 
 	@Override
 	public UPDATE_RESULT update() {
-		if (!this.ready) {
-			if (this.targetY == this.y && this.targetX == this.x) {
-				this.ready = true;
-			} else if (this.targetY == this.y) {
-				this.x = Math.min(this.targetX, this.x + 8);
-			} else if (this.x == -15) {
-				this.y = Math.max(this.targetY, this.y - 8);
+		if (!ready) {
+			if (targetY == y && targetX == x) {
+				ready = true;
+			} else if (targetY == y) {
+				x = Math.min(targetX, x + 8);
+			} else if (x == -15) {
+				y = Math.max(targetY, y - 8);
 			} else {
-				this.x = Math.max(-15, this.x - 8);
+				x = Math.max(-15, x - 8);
 			}
 		} else if (super.update() == UPDATE_RESULT.DEAD) {
 			return UPDATE_RESULT.DEAD;
@@ -49,11 +49,11 @@ public class Player extends Unit {
 	}
 
 	public void move(final int dir) {
-		this.x += dir * 5;
-		if (this.x < 10) {
-			this.x = 10;
-		} else if (this.x > 417) {
-			this.x = 417;
+		x += dir * 5;
+		if (x < 10) {
+			x = 10;
+		} else if (x > 417) {
+			x = 417;
 		}
 	}
 

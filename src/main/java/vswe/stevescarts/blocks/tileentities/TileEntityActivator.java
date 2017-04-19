@@ -37,26 +37,26 @@ public class TileEntityActivator extends TileEntityBase {
 	}
 
 	public TileEntityActivator() {
-		this.loadOptions();
+		loadOptions();
 	}
 
 	private void loadOptions() {
-		(this.options = new ArrayList<>()).add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_DRILL, ModuleDrill.class));
-		this.options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_SHIELD, ModuleShield.class));
-		this.options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_INVISIBILITY, ModuleInvisible.class));
-		this.options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_CHUNK, ModuleChunkLoader.class));
-		this.options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_CAGE_AUTO, ModuleCage.class, 0));
-		this.options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_CAGE, ModuleCage.class, 1));
+		(options = new ArrayList<>()).add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_DRILL, ModuleDrill.class));
+		options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_SHIELD, ModuleShield.class));
+		options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_INVISIBILITY, ModuleInvisible.class));
+		options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_CHUNK, ModuleChunkLoader.class));
+		options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_CAGE_AUTO, ModuleCage.class, 0));
+		options.add(new ActivatorOption(Localization.GUI.TOGGLER.OPTION_CAGE, ModuleCage.class, 1));
 	}
 
 	public ArrayList<ActivatorOption> getOptions() {
-		return this.options;
+		return options;
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		for (final ActivatorOption option : this.options) {
+		for (final ActivatorOption option : options) {
 			option.setOption(nbttagcompound.getByte(option.getName()));
 		}
 	}
@@ -64,7 +64,7 @@ public class TileEntityActivator extends TileEntityBase {
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		for (final ActivatorOption option : this.options) {
+		for (final ActivatorOption option : options) {
 			nbttagcompound.setByte(option.getName(), (byte) option.getOption());
 		}
 		return nbttagcompound;
@@ -75,26 +75,26 @@ public class TileEntityActivator extends TileEntityBase {
 		if (id == 0) {
 			final boolean leftClick = (data[0] & 0x1) == 0x0;
 			final int optionId = (data[0] & 0xFFFFFFFE) >> 1;
-			if (optionId >= 0 && optionId < this.options.size()) {
-				this.options.get(optionId).changeOption(leftClick);
+			if (optionId >= 0 && optionId < options.size()) {
+				options.get(optionId).changeOption(leftClick);
 			}
 		}
 	}
 
 	@Override
 	public void initGuiData(final Container con, final IContainerListener crafting) {
-		for (int i = 0; i < this.options.size(); ++i) {
-			this.updateGuiData(con, crafting, i, (short) this.options.get(i).getOption());
+		for (int i = 0; i < options.size(); ++i) {
+			updateGuiData(con, crafting, i, (short) options.get(i).getOption());
 		}
 	}
 
 	@Override
 	public void checkGuiData(final Container con, final IContainerListener crafting) {
-		for (int i = 0; i < this.options.size(); ++i) {
-			final int option = this.options.get(i).getOption();
+		for (int i = 0; i < options.size(); ++i) {
+			final int option = options.get(i).getOption();
 			final int lastoption = ((ContainerActivator) con).lastOptions.get(i);
 			if (option != lastoption) {
-				this.updateGuiData(con, crafting, i, (short) option);
+				updateGuiData(con, crafting, i, (short) option);
 				((ContainerActivator) con).lastOptions.set(i, option);
 			}
 		}
@@ -102,13 +102,13 @@ public class TileEntityActivator extends TileEntityBase {
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
-		if (id >= 0 && id < this.options.size()) {
-			this.options.get(id).setOption(data);
+		if (id >= 0 && id < options.size()) {
+			options.get(id).setOption(data);
 		}
 	}
 
 	public void handleCart(final EntityMinecartModular cart, final boolean isOrange) {
-		for (final ActivatorOption option : this.options) {
+		for (final ActivatorOption option : options) {
 			if (!option.isDisabled()) {
 				cart.handleActivator(option, isOrange);
 			}

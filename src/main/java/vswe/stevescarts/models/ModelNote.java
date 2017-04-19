@@ -22,15 +22,15 @@ public class ModelNote extends ModelCartbase {
 	}
 
 	public ModelNote() {
-		this.AddSpeaker(false);
-		this.AddSpeaker(true);
+		AddSpeaker(false);
+		AddSpeaker(true);
 	}
 
 	private void AddSpeaker(final boolean opposite) {
 		final ModelRenderer noteAnchor = new ModelRenderer(this);
-		this.AddRenderer(noteAnchor);
+		AddRenderer(noteAnchor);
 		final ModelRenderer base = new ModelRenderer(this, 0, 0);
-		this.fixSize(base);
+		fixSize(base);
 		noteAnchor.addChild(base);
 		base.addBox(8.0f, 6.0f, 6.0f, 16, 12, 12, 0.0f);
 		base.setRotationPoint(-16.0f, -13.5f, -12.0f + 14.0f * (opposite ? 1 : -1));

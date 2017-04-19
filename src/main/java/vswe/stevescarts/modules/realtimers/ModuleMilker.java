@@ -21,46 +21,46 @@ public class ModuleMilker extends ModuleBase {
 
 	public ModuleMilker(final EntityMinecartModular cart) {
 		super(cart);
-		this.cooldown = 0;
-		this.milkbuffer = 0;
+		cooldown = 0;
+		milkbuffer = 0;
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (this.cooldown <= 0) {
-			if (!this.getCart().world.isRemote && this.getCart().hasFuel()) {
-				this.generateMilk();
-				this.depositeMilk();
+		if (cooldown <= 0) {
+			if (!getCart().world.isRemote && getCart().hasFuel()) {
+				generateMilk();
+				depositeMilk();
 			}
-			this.cooldown = 20;
+			cooldown = 20;
 		} else {
-			--this.cooldown;
+			--cooldown;
 		}
 	}
 
 	private void depositeMilk() {
-		if (this.milkbuffer > 0) {
+		if (milkbuffer > 0) {
 			final FluidStack ret = FluidUtils.getFluidStackInContainer(new ItemStack(Items.MILK_BUCKET));
 			if (ret != null) {
-				ret.amount = this.milkbuffer;
-				this.milkbuffer -= this.getCart().fill(ret, true);
+				ret.amount = milkbuffer;
+				milkbuffer -= getCart().fill(ret, true);
 			}
-			if (this.milkbuffer == 1000) {
-				for (int i = 0; i < this.getInventorySize(); ++i) {
+			if (milkbuffer == 1000) {
+				for (int i = 0; i < getInventorySize(); ++i) {
 					@Nonnull
-					ItemStack bucket = this.getStack(i);
+					ItemStack bucket = getStack(i);
 					if (!bucket.isEmpty() && bucket.getItem() == Items.BUCKET) {
 						@Nonnull
 						ItemStack milk = new ItemStack(Items.MILK_BUCKET);
-						this.getCart().addItemToChest(milk);
+						getCart().addItemToChest(milk);
 						if (milk.getCount() <= 0) {
-							this.milkbuffer = 0;
+							milkbuffer = 0;
 							@Nonnull
 							ItemStack itemStack = bucket;
 							itemStack.shrink(1);
 							if (itemStack.getCount() <= 0) {
-								this.setStack(i, ItemStack.EMPTY);
+								setStack(i, ItemStack.EMPTY);
 							}
 						}
 					}
@@ -70,11 +70,11 @@ public class ModuleMilker extends ModuleBase {
 	}
 
 	private void generateMilk() {
-		if (this.milkbuffer < 1000) {
-			if (!this.getCart().getPassengers().isEmpty()) {
-				final Entity rider = this.getCart().getPassengers().get(0);
+		if (milkbuffer < 1000) {
+			if (!getCart().getPassengers().isEmpty()) {
+				final Entity rider = getCart().getPassengers().get(0);
 				if (rider != null && rider instanceof EntityCow) {
-					this.milkbuffer = Math.min(this.milkbuffer + 75, 1000);
+					milkbuffer = Math.min(milkbuffer + 75, 1000);
 				}
 			}
 		}
@@ -92,21 +92,21 @@ public class ModuleMilker extends ModuleBase {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotMilker(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
+		return new SlotMilker(getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setShort(this.generateNBTName("Milk", id), (short) this.milkbuffer);
+		tagCompound.setShort(generateNBTName("Milk", id), (short) milkbuffer);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.milkbuffer = tagCompound.getShort(this.generateNBTName("Milk", id));
+		milkbuffer = tagCompound.getShort(generateNBTName("Milk", id));
 	}
 }

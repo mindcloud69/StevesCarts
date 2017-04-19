@@ -17,8 +17,8 @@ public class SlotCartDisassemble extends SlotCart {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		if (this.inventory instanceof TileEntityUpgrade) {
-			final TileEntityUpgrade upgrade = (TileEntityUpgrade) this.inventory;
+		if (inventory instanceof TileEntityUpgrade) {
+			final TileEntityUpgrade upgrade = (TileEntityUpgrade) inventory;
 			if (upgrade.getUpgrade() != null) {
 				for (final BaseEffect effect : upgrade.getUpgrade().getEffects()) {
 					if (effect instanceof Disassemble) {

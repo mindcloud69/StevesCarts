@@ -14,18 +14,18 @@ public abstract class ButtonFlowForUseVar extends ButtonFlowFor {
 
 	@Override
 	public String toString() {
-		return this.use ? ("Use " + this.getName() + " variable") : ("Use " + this.getName() + " integer");
+		return use ? ("Use " + getName() + " variable") : ("Use " + getName() + " integer");
 	}
 
 	@Override
 	public int texture() {
-		return this.use ? 38 : 39;
+		return use ? 38 : 39;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (this.use != this.getUseVar(task)) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (use != getUseVar(task)) {
 				return true;
 			}
 		}
@@ -34,8 +34,8 @@ public abstract class ButtonFlowForUseVar extends ButtonFlowFor {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			this.setUseVar(task, this.use);
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			setUseVar(task, use);
 		}
 	}
 

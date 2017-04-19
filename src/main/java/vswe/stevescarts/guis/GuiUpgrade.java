@@ -21,19 +21,19 @@ public class GuiUpgrade extends GuiBase {
 		super(new ContainerUpgrade(invPlayer, upgrade));
 		this.upgrade = upgrade;
 		this.invPlayer = invPlayer;
-		this.setXSize(256);
-		this.setYSize(190);
+		setXSize(256);
+		setYSize(190);
 	}
 
 	@Override
 	public void drawGuiForeground(final int x, final int y) {
 		GL11.glDisable(2896);
-		if (this.upgrade.getUpgrade() != null) {
-			this.getFontRenderer().drawString(this.upgrade.getUpgrade().getName(), 8, 6, 4210752);
-			final InterfaceEffect gui = this.upgrade.getUpgrade().getInterfaceEffect();
+		if (upgrade.getUpgrade() != null) {
+			getFontRenderer().drawString(upgrade.getUpgrade().getName(), 8, 6, 4210752);
+			final InterfaceEffect gui = upgrade.getUpgrade().getInterfaceEffect();
 			if (gui != null) {
-				gui.drawForeground(this.upgrade, this);
-				gui.drawMouseOver(this.upgrade, this, x, y);
+				gui.drawForeground(upgrade, this);
+				gui.drawMouseOver(upgrade, this, x, y);
 			}
 		}
 		GL11.glEnable(2896);
@@ -42,20 +42,20 @@ public class GuiUpgrade extends GuiBase {
 	@Override
 	public void drawGuiBackground(final float f, final int x, final int y) {
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		final int j = this.getGuiLeft();
-		final int k = this.getGuiTop();
+		final int j = getGuiLeft();
+		final int k = getGuiTop();
 		ResourceHelper.bindResource(GuiUpgrade.texture);
-		this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);
-		if (this.upgrade.getUpgrade() != null) {
-			final InventoryEffect inventory = this.upgrade.getUpgrade().getInventoryEffect();
+		drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
+		if (upgrade.getUpgrade() != null) {
+			final InventoryEffect inventory = upgrade.getUpgrade().getInventoryEffect();
 			if (inventory != null) {
 				for (int i = 0; i < inventory.getInventorySize(); ++i) {
-					this.drawTexturedModalRect(j + inventory.getSlotX(i) - 1, k + inventory.getSlotY(i) - 1, 0, this.ySize, 18, 18);
+					drawTexturedModalRect(j + inventory.getSlotX(i) - 1, k + inventory.getSlotY(i) - 1, 0, ySize, 18, 18);
 				}
 			}
-			final InterfaceEffect gui = this.upgrade.getUpgrade().getInterfaceEffect();
+			final InterfaceEffect gui = upgrade.getUpgrade().getInterfaceEffect();
 			if (gui != null) {
-				gui.drawBackground(this.upgrade, this, x, y);
+				gui.drawBackground(upgrade, this, x, y);
 			}
 		}
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

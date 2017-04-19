@@ -26,15 +26,15 @@ public class ButtonVarAdd extends ButtonAssembly {
 
 	@Override
 	public boolean isEnabled() {
-		return ((ModuleComputer) this.module).getCurrentProg() != null;
+		return ((ModuleComputer) module).getCurrentProg() != null;
 	}
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		if (((ModuleComputer) this.module).getCurrentProg() != null) {
-			final ComputerVar var = new ComputerVar((ModuleComputer) this.module);
+		if (((ModuleComputer) module).getCurrentProg() != null) {
+			final ComputerVar var = new ComputerVar((ModuleComputer) module);
 			var.setEditing(true);
-			((ModuleComputer) this.module).getCurrentProg().getVars().add(var);
+			((ModuleComputer) module).getCurrentProg().getVars().add(var);
 		}
 	}
 }

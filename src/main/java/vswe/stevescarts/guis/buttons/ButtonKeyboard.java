@@ -17,17 +17,17 @@ public class ButtonKeyboard extends ButtonAssembly {
 
 	@Override
 	public String toString() {
-		return String.valueOf(this.getCasedChar(this.key));
+		return String.valueOf(getCasedChar(key));
 	}
 
 	@Override
 	public boolean isVisible() {
-		return ((ModuleComputer) this.module).isWriting();
+		return ((ModuleComputer) module).isWriting();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return ((ModuleComputer) this.module).getWriting().getText().length() < ((ModuleComputer) this.module).getWriting().getMaxLength();
+		return ((ModuleComputer) module).getWriting().getText().length() < ((ModuleComputer) module).getWriting().getMaxLength();
 	}
 
 	@Override
@@ -37,12 +37,12 @@ public class ButtonKeyboard extends ButtonAssembly {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		((ModuleComputer) this.module).getWriting().addChar(this.getCasedChar(this.key));
-		((ModuleComputer) this.module).disableShift();
+		((ModuleComputer) module).getWriting().addChar(getCasedChar(key));
+		((ModuleComputer) module).disableShift();
 	}
 
 	private char getCasedChar(final char c) {
-		if (((ModuleComputer) this.module).isLower()) {
+		if (((ModuleComputer) module).isLower()) {
 			return Character.toLowerCase(c);
 		}
 		return c;
@@ -50,12 +50,12 @@ public class ButtonKeyboard extends ButtonAssembly {
 
 	@Override
 	public int X() {
-		return 70 + this.y * 10 + this.x * 25;
+		return 70 + y * 10 + x * 25;
 	}
 
 	@Override
 	public int Y() {
-		return 40 + this.y * 25;
+		return 40 + y * 25;
 	}
 
 	public static void generateKeyboard(final ModuleComputer module) {

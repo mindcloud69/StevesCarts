@@ -45,7 +45,7 @@ public abstract class TrackOrientation {
 	TrackOrientation(final int v, final GuiBase.RENDER_ROTATION rotation) {
 		this.v = v;
 		this.rotation = rotation;
-		this.val = TrackOrientation.ALL.size();
+		val = TrackOrientation.ALL.size();
 		TrackOrientation.ALL.add(this);
 	}
 
@@ -60,19 +60,19 @@ public abstract class TrackOrientation {
 	}
 
 	public int getV() {
-		return this.v;
+		return v;
 	}
 
 	public GuiBase.RENDER_ROTATION getRotation() {
-		return this.rotation;
+		return rotation;
 	}
 
 	public TrackOrientation getOpposite() {
-		return this.opposite;
+		return opposite;
 	}
 
 	public int toInteger() {
-		return this.val;
+		return val;
 	}
 
 	public abstract DIRECTION travel(final DIRECTION p0);
@@ -127,10 +127,10 @@ public abstract class TrackOrientation {
 
 		@Override
 		public DIRECTION travel(final DIRECTION in) {
-			if (in.equals(this.base)) {
-				return this.base.getOpposite();
+			if (in.equals(base)) {
+				return base.getOpposite();
 			}
-			return this.base;
+			return base;
 		}
 	}
 
@@ -146,11 +146,11 @@ public abstract class TrackOrientation {
 
 		@Override
 		public DIRECTION travel(final DIRECTION in) {
-			if (in.equals(this.dir1)) {
-				return this.dir2;
+			if (in.equals(dir1)) {
+				return dir2;
 			}
-			if (in.equals(this.dir2)) {
-				return this.dir1;
+			if (in.equals(dir2)) {
+				return dir1;
 			}
 			return in.getOpposite();
 		}
@@ -168,10 +168,10 @@ public abstract class TrackOrientation {
 
 		@Override
 		public DIRECTION travel(final DIRECTION in) {
-			if (in.equals(this.entrance)) {
-				return this.active;
+			if (in.equals(entrance)) {
+				return active;
 			}
-			return this.entrance;
+			return entrance;
 		}
 	}
 
@@ -194,11 +194,11 @@ public abstract class TrackOrientation {
 		}
 
 		public int getX() {
-			return this.x;
+			return x;
 		}
 
 		public int getY() {
-			return this.y;
+			return y;
 		}
 
 		public DIRECTION getOpposite() {
@@ -282,7 +282,7 @@ public abstract class TrackOrientation {
 		}
 
 		public int toInteger() {
-			return this.val;
+			return val;
 		}
 
 		public static DIRECTION fromInteger(final int i) {

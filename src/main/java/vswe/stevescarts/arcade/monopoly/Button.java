@@ -21,10 +21,10 @@ public abstract class Button {
 	}
 
 	public boolean isReallyEnabled(final ArcadeMonopoly game) {
-		return game.getCurrentPiece().getController() == Piece.CONTROLLED_BY.PLAYER && this.isEnabled();
+		return game.getCurrentPiece().getController() == Piece.CONTROLLED_BY.PLAYER && isEnabled();
 	}
 
 	public boolean isReallyVisible(final ArcadeMonopoly game) {
-		return this.isVisibleForPlayer() && this.isVisible();
+		return isVisibleForPlayer() && isVisible();
 	}
 }

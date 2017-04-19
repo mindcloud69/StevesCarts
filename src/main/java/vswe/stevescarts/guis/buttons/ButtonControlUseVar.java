@@ -14,18 +14,18 @@ public class ButtonControlUseVar extends ButtonControl {
 
 	@Override
 	public String toString() {
-		return this.use ? "Use variable" : "Use integer";
+		return use ? "Use variable" : "Use integer";
 	}
 
 	@Override
 	public int texture() {
-		return this.use ? 38 : 39;
+		return use ? 38 : 39;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (this.use != task.getControlUseVar()) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (use != task.getControlUseVar()) {
 				return true;
 			}
 		}
@@ -34,8 +34,8 @@ public class ButtonControlUseVar extends ButtonControl {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			task.setControlUseVar(this.use);
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			task.setControlUseVar(use);
 		}
 	}
 }

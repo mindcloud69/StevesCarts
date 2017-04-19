@@ -31,7 +31,7 @@ public abstract class TankEffect extends InventoryEffect {
 	@Override
 	public Slot createSlot(final TileEntityUpgrade upgrade, final int id) {
 		if (id == 0) {
-			return new SlotLiquidUpgradeInput(upgrade, upgrade.tank, 16, id, this.getSlotX(id), this.getSlotY(id));
+			return new SlotLiquidUpgradeInput(upgrade, upgrade.tank, 16, id, getSlotX(id), getSlotY(id));
 		}
 		return super.createSlot(upgrade, id);
 	}
@@ -65,7 +65,7 @@ public abstract class TankEffect extends InventoryEffect {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawMouseOver(final TileEntityUpgrade upgrade, final GuiUpgrade gui, final int x, final int y) {
-		this.drawMouseOver(gui, upgrade.tank.getMouseOver(), x, y, new int[] { 35, 20, 36, 51 });
+		drawMouseOver(gui, upgrade.tank.getMouseOver(), x, y, new int[] { 35, 20, 36, 51 });
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public abstract class TankEffect extends InventoryEffect {
 
 	@Override
 	public void init(final TileEntityUpgrade upgrade) {
-		upgrade.tank = new SCTank(upgrade, this.getTankSize(), 0);
+		upgrade.tank = new SCTank(upgrade, getTankSize(), 0);
 		upgrade.getCompound().setByte("Tick", (byte) 0);
 	}
 
@@ -131,7 +131,7 @@ public abstract class TankEffect extends InventoryEffect {
 		upgrade.getCompound().setByte("Tick", (byte) (upgrade.getCompound().getByte("Tick") - 1));
 		if (upgrade.getCompound().getByte("Tick") <= 0) {
 			upgrade.getCompound().setByte("Tick", (byte) 5);
-			if (!upgrade.getWorld().isRemote && this.slots != null && this.slots.size() >= 2) {
+			if (!upgrade.getWorld().isRemote && slots != null && slots.size() >= 2) {
 				upgrade.tank.containerTransfer();
 			}
 		}

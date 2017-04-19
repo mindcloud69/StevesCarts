@@ -31,10 +31,10 @@ public class EventHandlerChristmas {
 			return;
 		}
 		if (monster instanceof EntityMob && Math.random() < 0.1) {
-			this.dropItem(monster, ComponentTypes.STOLEN_PRESENT.getItemStack());
+			dropItem(monster, ComponentTypes.STOLEN_PRESENT.getItemStack());
 		}
 		if (monster instanceof EntityBlaze && Math.random() < 0.12) {
-			this.dropItem(monster, ComponentTypes.RED_WRAPPING_PAPER.getItemStack());
+			dropItem(monster, ComponentTypes.RED_WRAPPING_PAPER.getItemStack());
 		}
 	}
 

@@ -20,19 +20,19 @@ public class ComputerTask {
 	}
 
 	public int run(final ComputerProg prog, final int id) {
-		if (this.isFlowGoto()) {
-			final int labelId = this.getFlowLabelId();
+		if (isFlowGoto()) {
+			final int labelId = getFlowLabelId();
 			for (int i = 0; i < prog.getTasks().size(); ++i) {
 				final ComputerTask task = prog.getTasks().get(i);
 				if (task.isFlowLabel() && task.getFlowLabelId() == labelId) {
 					return i;
 				}
 			}
-		} else if (this.isFlowCondition()) {
-			final boolean condition = this.evalFlowCondition();
+		} else if (isFlowCondition()) {
+			final boolean condition = evalFlowCondition();
 			int nested = 0;
 			if (!condition) {
-				if (this.isFlowIf() || this.isFlowElseif()) {
+				if (isFlowIf() || isFlowElseif()) {
 					for (int j = id + 1; j < prog.getTasks().size(); ++j) {
 						final ComputerTask task2 = prog.getTasks().get(j);
 						if (task2.isFlowIf()) {
@@ -46,7 +46,7 @@ public class ComputerTask {
 							}
 						}
 					}
-				} else if (this.isFlowWhile()) {
+				} else if (isFlowWhile()) {
 					for (int j = id + 1; j < prog.getTasks().size(); ++j) {
 						final ComputerTask task2 = prog.getTasks().get(j);
 						if (task2.isFlowWhile()) {
@@ -60,8 +60,8 @@ public class ComputerTask {
 					}
 				}
 			}
-		} else if (this.isFlowFor()) {
-			final boolean condition = this.evalFlowFor();
+		} else if (isFlowFor()) {
+			final boolean condition = evalFlowFor();
 			if (!condition) {
 				int nested = 0;
 				for (int j = id + 1; j < prog.getTasks().size(); ++j) {
@@ -76,7 +76,7 @@ public class ComputerTask {
 					}
 				}
 			}
-		} else if (this.isFlowContinue() || this.isFlowBreak()) {
+		} else if (isFlowContinue() || isFlowBreak()) {
 			int nested2 = 0;
 			for (int i = id + 1; i < prog.getTasks().size(); ++i) {
 				final ComputerTask task = prog.getTasks().get(i);
@@ -84,7 +84,7 @@ public class ComputerTask {
 					++nested2;
 				} else if (task.isFlowEndwhile() || task.isFlowEndfor()) {
 					if (nested2 == 0) {
-						if (this.isFlowContinue()) {
+						if (isFlowContinue()) {
 							return task.preload(prog, i);
 						}
 						return i;
@@ -93,59 +93,59 @@ public class ComputerTask {
 					}
 				}
 			}
-		} else if (isVar(this.getType()) && !this.isVarEmpty()) {
-			final ComputerVar var = this.getVarVar();
+		} else if (isVar(getType()) && !isVarEmpty()) {
+			final ComputerVar var = getVarVar();
 			if (var != null) {
 				int value1;
-				if (this.getVarUseFirstVar()) {
-					final ComputerVar var2 = this.getVarFirstVar();
+				if (getVarUseFirstVar()) {
+					final ComputerVar var2 = getVarFirstVar();
 					if (var2 == null) {
 						return -1;
 					}
 					value1 = var2.getByteValue();
 				} else {
-					value1 = this.getVarFirstInteger();
+					value1 = getVarFirstInteger();
 				}
 				int value2;
-				if (this.hasTwoValues()) {
-					if (this.getVarUseSecondVar()) {
-						final ComputerVar var3 = this.getVarSecondVar();
+				if (hasTwoValues()) {
+					if (getVarUseSecondVar()) {
+						final ComputerVar var3 = getVarSecondVar();
 						if (var3 == null) {
 							return -1;
 						}
 						value2 = var3.getByteValue();
 					} else {
-						value2 = this.getVarSecondInteger();
+						value2 = getVarSecondInteger();
 					}
 				} else {
 					value2 = 0;
 				}
-				var.setByteValue(this.calcVarValue(value1, value2));
+				var.setByteValue(calcVarValue(value1, value2));
 			}
-		} else if (isControl(this.getType()) && !this.isControlEmpty()) {
-			final ComputerControl control = ComputerControl.getMap().get((byte) this.getControlType());
-			if (control != null && control.isControlValid(this.module.getCart())) {
+		} else if (isControl(getType()) && !isControlEmpty()) {
+			final ComputerControl control = ComputerControl.getMap().get((byte) getControlType());
+			if (control != null && control.isControlValid(module.getCart())) {
 				int value3;
-				if (this.getControlUseVar()) {
-					final ComputerVar var4 = this.getControlVar();
+				if (getControlUseVar()) {
+					final ComputerVar var4 = getControlVar();
 					if (var4 == null) {
 						return -1;
 					}
 					value3 = var4.getByteValue();
 				} else {
-					value3 = this.getControlInteger();
+					value3 = getControlInteger();
 				}
-				control.runHandler(this.module.getCart(), (byte) value3);
+				control.runHandler(module.getCart(), (byte) value3);
 			}
-		} else if (isInfo(this.getType()) && !this.isInfoEmpty()) {
-			final ComputerInfo info = ComputerInfo.getMap().get((byte) this.getControlType());
-			if (info != null && info.isInfoValid(this.module.getCart())) {
-				final ComputerVar var5 = this.getInfoVar();
+		} else if (isInfo(getType()) && !isInfoEmpty()) {
+			final ComputerInfo info = ComputerInfo.getMap().get((byte) getControlType());
+			if (info != null && info.isInfoValid(module.getCart())) {
+				final ComputerVar var5 = getInfoVar();
 				if (var5 != null) {
-					info.getHandler(this.module.getCart(), var5);
+					info.getHandler(module.getCart(), var5);
 				}
 			}
-		} else if (isVar(this.getType())) {
+		} else if (isVar(getType())) {
 			for (final ComputerVar var5 : prog.getVars()) {
 				System.out.println(var5.getFullInfo());
 			}
@@ -154,7 +154,7 @@ public class ComputerTask {
 	}
 
 	public int preload(final ComputerProg prog, final int id) {
-		if (this.isFlowElseif() || this.isFlowElse()) {
+		if (isFlowElseif() || isFlowElse()) {
 			int nested = 0;
 			for (int i = id + 1; i < prog.getTasks().size(); ++i) {
 				final ComputerTask task = prog.getTasks().get(i);
@@ -167,7 +167,7 @@ public class ComputerTask {
 					--nested;
 				}
 			}
-		} else if (this.isFlowEndwhile()) {
+		} else if (isFlowEndwhile()) {
 			int nested = 0;
 			for (int i = id - 1; i >= 0; --i) {
 				final ComputerTask task = prog.getTasks().get(i);
@@ -180,19 +180,19 @@ public class ComputerTask {
 					--nested;
 				}
 			}
-		} else if (this.isFlowFor()) {
-			final ComputerVar var = this.getFlowForVar();
+		} else if (isFlowFor()) {
+			final ComputerVar var = getFlowForVar();
 			if (var != null) {
-				if (this.getFlowForUseStartVar()) {
-					final ComputerVar var2 = this.getFlowForStartVar();
+				if (getFlowForUseStartVar()) {
+					final ComputerVar var2 = getFlowForStartVar();
 					if (var2 != null) {
 						var.setByteValue(var2.getByteValue());
 					}
 				} else {
-					var.setByteValue(this.getFlowForStartInteger());
+					var.setByteValue(getFlowForStartInteger());
 				}
 			}
-		} else if (this.isFlowEndfor()) {
+		} else if (isFlowEndfor()) {
 			System.out.println("End for");
 			int nested = 0;
 			for (int i = id - 1; i >= 0; --i) {
@@ -217,13 +217,13 @@ public class ComputerTask {
 
 	@Override
 	public ComputerTask clone() {
-		final ComputerTask clone = new ComputerTask(this.module, this.prog);
-		clone.info = this.info;
+		final ComputerTask clone = new ComputerTask(module, prog);
+		clone.info = info;
 		return clone;
 	}
 
 	public ComputerProg getProgram() {
-		return this.prog;
+		return prog;
 	}
 
 	public void setInfo(final int id, final short val) {
@@ -231,43 +231,43 @@ public class ComputerTask {
 		if (iVal < 0) {
 			iVal += 65536;
 		}
-		final boolean oldVal = this.getIsActivated();
-		this.info &= ~(65535 << id * 16);
-		this.info |= iVal << id * 16;
-		if (oldVal != this.getIsActivated()) {
-			this.module.activationChanged();
+		final boolean oldVal = getIsActivated();
+		info &= ~(65535 << id * 16);
+		info |= iVal << id * 16;
+		if (oldVal != getIsActivated()) {
+			module.activationChanged();
 		}
 	}
 
 	public short getInfo(final int id) {
-		return (short) ((this.info & 65535 << id * 16) >> id * 16);
+		return (short) ((info & 65535 << id * 16) >> id * 16);
 	}
 
 	public void setIsActivated(final boolean val) {
-		final boolean oldVal = this.getIsActivated();
-		this.info &= 0xFFFFFFFE;
-		this.info |= (val ? 1 : 0);
+		final boolean oldVal = getIsActivated();
+		info &= 0xFFFFFFFE;
+		info |= (val ? 1 : 0);
 		if (oldVal != val) {
-			this.module.activationChanged();
+			module.activationChanged();
 		}
 	}
 
 	public boolean getIsActivated() {
-		return (this.info & 0x1) != 0x0;
+		return (info & 0x1) != 0x0;
 	}
 
 	public void setType(final int type) {
-		final int oldType = this.getType();
+		final int oldType = getType();
 		final boolean flag = isBuild(oldType);
-		this.info &= 0xFFFFFFF1;
-		this.info |= type << 1;
+		info &= 0xFFFFFFF1;
+		info |= type << 1;
 		if (oldType != type && (!flag || !isBuild(type))) {
-			this.info &= 0xF;
+			info &= 0xF;
 		}
 	}
 
 	public int getType() {
-		return (this.info & 0xE) >> 1;
+		return (info & 0xE) >> 1;
 	}
 
 	public static boolean isEmpty(final int type) {
@@ -299,20 +299,20 @@ public class ComputerTask {
 	}
 
 	public int getImage() {
-		if (isEmpty(this.getType())) {
+		if (isEmpty(getType())) {
 			return -1;
 		}
-		if (isFlow(this.getType())) {
-			return this.getFlowImageForTask();
+		if (isFlow(getType())) {
+			return getFlowImageForTask();
 		}
-		if (isVar(this.getType())) {
-			return getVarImage(this.getVarType());
+		if (isVar(getType())) {
+			return getVarImage(getVarType());
 		}
-		if (isControl(this.getType())) {
-			return getControlImage(this.getControlType());
+		if (isControl(getType())) {
+			return getControlImage(getControlType());
 		}
-		if (isInfo(this.getType())) {
-			return getInfoImage(this.getInfoType());
+		if (isInfo(getType())) {
+			return getInfoImage(getInfoType());
 		}
 		return -1;
 	}
@@ -345,87 +345,87 @@ public class ComputerTask {
 
 	@Override
 	public String toString() {
-		if (isEmpty(this.getType())) {
+		if (isEmpty(getType())) {
 			return "Empty";
 		}
-		if (isFlow(this.getType())) {
-			return getFlowTypeName(this.getFlowType()) + " " + this.getFlowText();
+		if (isFlow(getType())) {
+			return getFlowTypeName(getFlowType()) + " " + getFlowText();
 		}
-		if (isVar(this.getType())) {
-			return getVarTypeName(this.getVarType()) + ": " + this.getVarText();
+		if (isVar(getType())) {
+			return getVarTypeName(getVarType()) + ": " + getVarText();
 		}
-		if (isControl(this.getType())) {
-			return "Set " + getControlTypeName(this.getControlType()) + " to " + this.getControlText();
+		if (isControl(getType())) {
+			return "Set " + getControlTypeName(getControlType()) + " to " + getControlText();
 		}
-		if (isInfo(this.getType())) {
-			return "Set " + getVarName(this.getInfoVar()) + " to " + getInfoTypeName(this.getInfoType());
+		if (isInfo(getType())) {
+			return "Set " + getVarName(getInfoVar()) + " to " + getInfoTypeName(getInfoType());
 		}
 		return "Unknown";
 	}
 
 	public int getFlowType() {
-		return (this.info & 0xF0) >> 4;
+		return (info & 0xF0) >> 4;
 	}
 
 	public void setFlowType(final int type) {
-		final int oldType = this.getFlowType();
+		final int oldType = getFlowType();
 		if (oldType == type) {
 			return;
 		}
-		final boolean conditionFlag = this.isFlowCondition();
-		this.info &= 0xFFFFFF0F;
-		this.info |= type << 4;
-		if (!conditionFlag || !this.isFlowCondition()) {
-			this.info &= 0xFF;
+		final boolean conditionFlag = isFlowCondition();
+		info &= 0xFFFFFF0F;
+		info |= type << 4;
+		if (!conditionFlag || !isFlowCondition()) {
+			info &= 0xFF;
 		}
 	}
 
 	public boolean isFlowEmpty() {
-		return isFlow(this.getType()) && this.getFlowType() == 0;
+		return isFlow(getType()) && getFlowType() == 0;
 	}
 
 	public boolean isFlowLabel() {
-		return isFlow(this.getType()) && this.getFlowType() == 1;
+		return isFlow(getType()) && getFlowType() == 1;
 	}
 
 	public boolean isFlowGoto() {
-		return isFlow(this.getType()) && this.getFlowType() == 2;
+		return isFlow(getType()) && getFlowType() == 2;
 	}
 
 	public boolean isFlowIf() {
-		return isFlow(this.getType()) && this.getFlowType() == 3;
+		return isFlow(getType()) && getFlowType() == 3;
 	}
 
 	public boolean isFlowElseif() {
-		return isFlow(this.getType()) && this.getFlowType() == 4;
+		return isFlow(getType()) && getFlowType() == 4;
 	}
 
 	public boolean isFlowElse() {
-		return isFlow(this.getType()) && this.getFlowType() == 5;
+		return isFlow(getType()) && getFlowType() == 5;
 	}
 
 	public boolean isFlowWhile() {
-		return isFlow(this.getType()) && this.getFlowType() == 6;
+		return isFlow(getType()) && getFlowType() == 6;
 	}
 
 	public boolean isFlowFor() {
-		return isFlow(this.getType()) && this.getFlowType() == 7;
+		return isFlow(getType()) && getFlowType() == 7;
 	}
 
 	public boolean isFlowEnd() {
-		return isFlow(this.getType()) && this.getFlowType() == 8;
+		return isFlow(getType()) && getFlowType() == 8;
 	}
 
 	public boolean isFlowBreak() {
-		return isFlow(this.getType()) && this.getFlowType() == 9;
+		return isFlow(getType()) && getFlowType() == 9;
 	}
 
 	public boolean isFlowContinue() {
-		return isFlow(this.getType()) && this.getFlowType() == 10;
+		return isFlow(getType()) && getFlowType() == 10;
 	}
 
 	public boolean isFlowCondition() {
-		return this.isFlowIf() || this.isFlowElseif() || this.isFlowWhile();
+		return isFlowIf() || isFlowElseif() || isFlowWhile();
 	}
 
 	public static int getFlowImage(final int type) {
@@ -433,10 +433,10 @@ public class ComputerTask {
 	}
 
 	public int getFlowImageForTask() {
-		if (this.isFlowEnd()) {
-			return getEndImage(this.getFlowEndType());
+		if (isFlowEnd()) {
+			return getEndImage(getFlowEndType());
 		}
-		return getFlowImage(this.getFlowType());
+		return getFlowImage(getFlowType());
 	}
 
 	public static String getFlowTypeName(final int type) {
@@ -478,48 +478,48 @@ public class ComputerTask {
 	}
 
 	public String getFlowText() {
-		if (this.isFlowLabel() || this.isFlowGoto()) {
-			return "[" + this.getFlowLabelId() + "]";
+		if (isFlowLabel() || isFlowGoto()) {
+			return "[" + getFlowLabelId() + "]";
 		}
-		if (this.isFlowCondition()) {
-			final ComputerVar var = this.getFlowConditionVar();
+		if (isFlowCondition()) {
+			final ComputerVar var = getFlowConditionVar();
 			String str = getVarName(var);
 			str += " ";
-			str += getFlowOperatorName(this.getFlowConditionOperator(), false);
+			str += getFlowOperatorName(getFlowConditionOperator(), false);
 			str += " ";
-			if (this.getFlowConditionUseSecondVar()) {
-				final ComputerVar var2 = this.getFlowConditionSecondVar();
+			if (getFlowConditionUseSecondVar()) {
+				final ComputerVar var2 = getFlowConditionSecondVar();
 				str += getVarName(var2);
 			} else {
-				str += this.getFlowConditionInteger();
+				str += getFlowConditionInteger();
 			}
 			return str;
 		}
-		if (this.isFlowFor()) {
-			String str2 = getVarName(this.getFlowForVar());
+		if (isFlowFor()) {
+			String str2 = getVarName(getFlowForVar());
 			str2 += " = ";
-			if (this.getFlowForUseStartVar()) {
-				str2 += getVarName(this.getFlowForStartVar());
+			if (getFlowForUseStartVar()) {
+				str2 += getVarName(getFlowForStartVar());
 			} else {
-				str2 += this.getFlowForStartInteger();
+				str2 += getFlowForStartInteger();
 			}
 			str2 += " to ";
-			if (this.getFlowForUseEndVar()) {
-				str2 += getVarName(this.getFlowForEndVar());
+			if (getFlowForUseEndVar()) {
+				str2 += getVarName(getFlowForEndVar());
 			} else {
-				str2 += this.getFlowForEndInteger();
+				str2 += getFlowForEndInteger();
 			}
-			str2 = str2 + "  step " + (this.getFlowForDecrease() ? "-" : "+") + "1";
+			str2 = str2 + "  step " + (getFlowForDecrease() ? "-" : "+") + "1";
 			return str2;
 		}
-		if (this.isFlowEnd()) {
-			return getEndTypeName(this.getFlowEndType());
+		if (isFlowEnd()) {
+			return getEndTypeName(getFlowEndType());
 		}
 		return "(Not set)";
 	}
 
 	public int getFlowLabelId() {
-		return (this.info & 0x1F00) >> 8;
+		return (info & 0x1F00) >> 8;
 	}
 
 	public void setFlowLabelId(int id) {
@@ -528,118 +528,118 @@ public class ComputerTask {
 		} else if (id > 31) {
 			id = 31;
 		}
-		this.info &= 0xFFFFE0FF;
-		this.info |= id << 8;
+		info &= 0xFFFFE0FF;
+		info |= id << 8;
 	}
 
 	public int getFlowConditionVarIndex() {
-		return this.getVarIndex(8);
+		return getVarIndex(8);
 	}
 
 	public ComputerVar getFlowConditionVar() {
-		return this.getVar(8);
+		return getVar(8);
 	}
 
 	public void setFlowConditionVar(final int val) {
-		this.setVar(8, val);
+		setVar(8, val);
 	}
 
 	public int getFlowConditionOperator() {
-		return (this.info & 0xE000) >> 13;
+		return (info & 0xE000) >> 13;
 	}
 
 	public void setFlowConditionOperator(final int val) {
-		this.info &= 0xFFFF1FFF;
-		this.info |= val << 13;
+		info &= 0xFFFF1FFF;
+		info |= val << 13;
 	}
 
 	public boolean isFlowConditionOperatorEquals() {
-		return this.getFlowConditionOperator() == 0;
+		return getFlowConditionOperator() == 0;
 	}
 
 	public boolean isFlowConditionOperatorNotequals() {
-		return this.getFlowConditionOperator() == 1;
+		return getFlowConditionOperator() == 1;
 	}
 
 	public boolean isFlowConditionOperatorGreaterequals() {
-		return this.getFlowConditionOperator() == 2;
+		return getFlowConditionOperator() == 2;
 	}
 
 	public boolean isFlowConditionOperatorGreater() {
-		return this.getFlowConditionOperator() == 3;
+		return getFlowConditionOperator() == 3;
 	}
 
 	public boolean isFlowConditionOperatorLesserequals() {
-		return this.getFlowConditionOperator() == 4;
+		return getFlowConditionOperator() == 4;
 	}
 
 	public boolean isFlowConditionOperatorLesser() {
-		return this.getFlowConditionOperator() == 5;
+		return getFlowConditionOperator() == 5;
 	}
 
 	public boolean getFlowConditionUseSecondVar() {
-		return this.getUseOptionalVar(16);
+		return getUseOptionalVar(16);
 	}
 
 	public void setFlowConditionUseSecondVar(final boolean val) {
-		this.setUseOptionalVar(16, val);
+		setUseOptionalVar(16, val);
 	}
 
 	public int getFlowConditionInteger() {
-		return this.getInteger(17);
+		return getInteger(17);
 	}
 
 	public void setFlowConditionInteger(final int val) {
-		this.setInteger(17, val);
+		setInteger(17, val);
 	}
 
 	public int getFlowConditionSecondVarIndex() {
-		return this.getVarIndex(17);
+		return getVarIndex(17);
 	}
 
 	public ComputerVar getFlowConditionSecondVar() {
-		return this.getVar(17);
+		return getVar(17);
 	}
 
 	public void setFlowConditionSecondVar(final int val) {
-		this.setVar(17, val);
+		setVar(17, val);
 	}
 
 	public boolean evalFlowCondition() {
-		if (!this.isFlowCondition()) {
+		if (!isFlowCondition()) {
 			return false;
 		}
-		final ComputerVar var = this.getFlowConditionVar();
+		final ComputerVar var = getFlowConditionVar();
 		if (var == null) {
 			return false;
 		}
 		final int varValue = var.getByteValue();
 		int compareWith;
-		if (this.getFlowConditionUseSecondVar()) {
-			final ComputerVar var2 = this.getFlowConditionVar();
+		if (getFlowConditionUseSecondVar()) {
+			final ComputerVar var2 = getFlowConditionVar();
 			if (var2 == null) {
 				return false;
 			}
 			compareWith = var2.getByteValue();
 		} else {
-			compareWith = this.getFlowConditionInteger();
+			compareWith = getFlowConditionInteger();
 		}
-		if (this.isFlowConditionOperatorEquals()) {
+		if (isFlowConditionOperatorEquals()) {
 			return varValue == compareWith;
 		}
-		if (this.isFlowConditionOperatorNotequals()) {
+		if (isFlowConditionOperatorNotequals()) {
 			return varValue != compareWith;
 		}
-		if (this.isFlowConditionOperatorGreaterequals()) {
+		if (isFlowConditionOperatorGreaterequals()) {
 			return varValue >= compareWith;
 		}
-		if (this.isFlowConditionOperatorGreater()) {
+		if (isFlowConditionOperatorGreater()) {
 			return varValue > compareWith;
 		}
-		if (this.isFlowConditionOperatorLesserequals()) {
+		if (isFlowConditionOperatorLesserequals()) {
 			return varValue <= compareWith;
 		}
-		return this.isFlowConditionOperatorLesser() && varValue < compareWith;
+		return isFlowConditionOperatorLesser() && varValue < compareWith;
 	}
 
 	public static String getFlowOperatorName(final int type, final boolean isLong) {
@@ -669,106 +669,106 @@ public class ComputerTask {
 	}
 
 	public int getFlowForVarIndex() {
-		return this.getVarIndex(8);
+		return getVarIndex(8);
 	}
 
 	public ComputerVar getFlowForVar() {
-		return this.getVar(8);
+		return getVar(8);
 	}
 
 	public void setFlowForVar(final int val) {
-		this.setVar(8, val);
+		setVar(8, val);
 	}
 
 	public boolean getFlowForUseStartVar() {
-		return this.getUseOptionalVar(13);
+		return getUseOptionalVar(13);
 	}
 
 	public void setFlowForUseStartVar(final boolean val) {
-		this.setUseOptionalVar(13, val);
+		setUseOptionalVar(13, val);
 	}
 
 	public int getFlowForStartInteger() {
-		return this.getInteger(14);
+		return getInteger(14);
 	}
 
 	public void setFlowForStartInteger(final int val) {
-		this.setInteger(14, val);
+		setInteger(14, val);
 	}
 
 	public int getFlowForStartVarIndex() {
-		return this.getVarIndex(14);
+		return getVarIndex(14);
 	}
 
 	public ComputerVar getFlowForStartVar() {
-		return this.getVar(14);
+		return getVar(14);
 	}
 
 	public void setFlowForStartVar(final int val) {
-		this.setVar(14, val);
+		setVar(14, val);
 	}
 
 	public boolean getFlowForUseEndVar() {
-		return this.getUseOptionalVar(22);
+		return getUseOptionalVar(22);
 	}
 
 	public void setFlowForUseEndVar(final boolean val) {
-		this.setUseOptionalVar(22, val);
+		setUseOptionalVar(22, val);
 	}
 
 	public int getFlowForEndInteger() {
-		return this.getInteger(23);
+		return getInteger(23);
 	}
 
 	public void setFlowForEndInteger(final int val) {
-		this.setInteger(23, val);
+		setInteger(23, val);
 	}
 
 	public int getFlowForEndVarIndex() {
-		return this.getVarIndex(23);
+		return getVarIndex(23);
 	}
 
 	public ComputerVar getFlowForEndVar() {
-		return this.getVar(23);
+		return getVar(23);
 	}
 
 	public void setFlowForEndVar(final int val) {
-		this.setVar(23, val);
+		setVar(23, val);
 	}
 
 	public boolean getFlowForDecrease() {
-		return (this.info & Integer.MIN_VALUE) != 0x0;
+		return (info & Integer.MIN_VALUE) != 0x0;
 	}
 
 	public void setFlowForDecrease(final boolean val) {
-		this.info &= Integer.MAX_VALUE;
-		this.info |= (val ? 1 : 0) << 31;
+		info &= Integer.MAX_VALUE;
+		info |= (val ? 1 : 0) << 31;
 	}
 
 	public boolean evalFlowFor() {
-		if (!this.isFlowFor()) {
+		if (!isFlowFor()) {
 			return false;
 		}
-		final ComputerVar var = this.getFlowForVar();
+		final ComputerVar var = getFlowForVar();
 		if (var == null) {
 			return false;
 		}
 		final int varValue = var.getByteValue();
 		int compareWith;
-		if (this.getFlowForUseEndVar()) {
-			final ComputerVar var2 = this.getFlowForEndVar();
+		if (getFlowForUseEndVar()) {
+			final ComputerVar var2 = getFlowForEndVar();
 			if (var2 == null) {
 				return false;
 			}
 			compareWith = var2.getByteValue();
 		} else {
-			compareWith = this.getFlowForEndInteger();
+			compareWith = getFlowForEndInteger();
 		}
 		return varValue != compareWith;
 	}
 
 	public int getFlowEndType() {
-		return (this.info & 0x300) >> 8;
+		return (info & 0x300) >> 8;
 	}
 
 	public void setFlowEndType(int val) {
@@ -777,20 +777,20 @@ public class ComputerTask {
 		} else if (val > 3) {
 			val = 3;
 		}
-		this.info &= 0xFFFFFCFF;
-		this.info |= val << 8;
+		info &= 0xFFFFFCFF;
+		info |= val << 8;
 	}
 
 	public boolean isFlowEndif() {
-		return this.isFlowEnd() && this.getFlowEndType() == 1;
+		return isFlowEnd() && getFlowEndType() == 1;
 	}
 
 	public boolean isFlowEndwhile() {
-		return this.isFlowEnd() && this.getFlowEndType() == 2;
+		return isFlowEnd() && getFlowEndType() == 2;
 	}
 
 	public boolean isFlowEndfor() {
-		return this.isFlowEnd() && this.getFlowEndType() == 3;
+		return isFlowEnd() && getFlowEndType() == 3;
 	}
 
 	public static String getEndTypeName(final int type) {
@@ -818,160 +818,160 @@ public class ComputerTask {
 	}
 
 	public int getVarType() {
-		return (this.info & 0x1F0) >> 4;
+		return (info & 0x1F0) >> 4;
 	}
 
 	public void setVarType(final int val) {
-		this.info &= 0xFFFFFE0F;
-		this.info |= val << 4;
+		info &= 0xFFFFFE0F;
+		info |= val << 4;
 	}
 
 	public boolean isVarEmpty() {
-		return isVar(this.getType()) && this.getVarType() == 0;
+		return isVar(getType()) && getVarType() == 0;
 	}
 
 	public boolean isVarSet() {
-		return isVar(this.getType()) && this.getVarType() == 1;
+		return isVar(getType()) && getVarType() == 1;
 	}
 
 	public boolean isVarAdd() {
-		return isVar(this.getType()) && this.getVarType() == 2;
+		return isVar(getType()) && getVarType() == 2;
 	}
 
 	public boolean isVarSub() {
-		return isVar(this.getType()) && this.getVarType() == 3;
+		return isVar(getType()) && getVarType() == 3;
 	}
 
 	public boolean isVarMult() {
-		return isVar(this.getType()) && this.getVarType() == 4;
+		return isVar(getType()) && getVarType() == 4;
 	}
 
 	public boolean isVarDiv() {
-		return isVar(this.getType()) && this.getVarType() == 5;
+		return isVar(getType()) && getVarType() == 5;
 	}
 
 	public boolean isVarMod() {
-		return isVar(this.getType()) && this.getVarType() == 6;
+		return isVar(getType()) && getVarType() == 6;
 	}
 
 	public boolean isVarAnd() {
-		return isVar(this.getType()) && this.getVarType() == 7;
+		return isVar(getType()) && getVarType() == 7;
 	}
 
 	public boolean isVarOr() {
-		return isVar(this.getType()) && this.getVarType() == 8;
+		return isVar(getType()) && getVarType() == 8;
 	}
 
 	public boolean isVarXor() {
-		return isVar(this.getType()) && this.getVarType() == 9;
+		return isVar(getType()) && getVarType() == 9;
 	}
 
 	public boolean isVarNot() {
-		return isVar(this.getType()) && this.getVarType() == 10;
+		return isVar(getType()) && getVarType() == 10;
 	}
 
 	public boolean isVarShiftR() {
-		return isVar(this.getType()) && this.getVarType() == 11;
+		return isVar(getType()) && getVarType() == 11;
 	}
 
 	public boolean isVarShiftL() {
-		return isVar(this.getType()) && this.getVarType() == 12;
+		return isVar(getType()) && getVarType() == 12;
 	}
 
 	public boolean isVarMax() {
-		return isVar(this.getType()) && this.getVarType() == 13;
+		return isVar(getType()) && getVarType() == 13;
 	}
 
 	public boolean isVarMin() {
-		return isVar(this.getType()) && this.getVarType() == 14;
+		return isVar(getType()) && getVarType() == 14;
 	}
 
 	public boolean isVarAbs() {
-		return isVar(this.getType()) && this.getVarType() == 15;
+		return isVar(getType()) && getVarType() == 15;
 	}
 
 	public boolean isVarClamp() {
-		return isVar(this.getType()) && this.getVarType() == 16;
+		return isVar(getType()) && getVarType() == 16;
 	}
 
 	public boolean isVarRand() {
-		return isVar(this.getType()) && this.getVarType() == 17;
+		return isVar(getType()) && getVarType() == 17;
 	}
 
 	public boolean hasOneValue() {
-		return this.isVarSet() || this.isVarNot() || this.isVarAbs();
+		return isVarSet() || isVarNot() || isVarAbs();
 	}
 
 	public boolean hasTwoValues() {
-		return !this.isVarEmpty() && !this.hasOneValue();
+		return !isVarEmpty() && !hasOneValue();
 	}
 
 	public int getVarVarIndex() {
-		return this.getVarIndex(9);
+		return getVarIndex(9);
 	}
 
 	public ComputerVar getVarVar() {
-		return this.getVar(9);
+		return getVar(9);
 	}
 
 	public void setVarVar(final int val) {
-		this.setVar(9, val);
+		setVar(9, val);
 	}
 
 	public boolean getVarUseFirstVar() {
-		return this.getUseOptionalVar(14);
+		return getUseOptionalVar(14);
 	}
 
 	public void setVarUseFirstVar(final boolean val) {
-		this.setUseOptionalVar(14, val);
+		setUseOptionalVar(14, val);
 	}
 
 	public int getVarFirstInteger() {
-		return this.getInteger(15);
+		return getInteger(15);
 	}
 
 	public void setVarFirstInteger(final int val) {
-		this.setInteger(15, val);
+		setInteger(15, val);
 	}
 
 	public int getVarFirstVarIndex() {
-		return this.getVarIndex(15);
+		return getVarIndex(15);
 	}
 
 	public ComputerVar getVarFirstVar() {
-		return this.getVar(15);
+		return getVar(15);
 	}
 
 	public void setVarFirstVar(final int val) {
-		this.setVar(15, val);
+		setVar(15, val);
 	}
 
 	public boolean getVarUseSecondVar() {
-		return this.getUseOptionalVar(23);
+		return getUseOptionalVar(23);
 	}
 
 	public void setVarUseSecondVar(final boolean val) {
-		this.setUseOptionalVar(23, val);
+		setUseOptionalVar(23, val);
 	}
 
 	public int getVarSecondInteger() {
-		return this.getInteger(24);
+		return getInteger(24);
 	}
 
 	public void setVarSecondInteger(final int val) {
-		this.setInteger(24, val);
+		setInteger(24, val);
 	}
 
 	public int getVarSecondVarIndex() {
-		return this.getVarIndex(24);
+		return getVarIndex(24);
 	}
 
 	public ComputerVar getVarSecondVar() {
-		return this.getVar(24);
+		return getVar(24);
 	}
 
 	public void setVarSecondVar(final int val) {
-		this.setVar(24, val);
+		setVar(24, val);
 	}
 
 	public static String getVarTypeName(final int type) {
@@ -1034,93 +1034,93 @@ public class ComputerTask {
 	}
 
 	public String getVarPrefix() {
-		if (this.isVarMax()) {
+		if (isVarMax()) {
 			return "max(";
 		}
-		if (this.isVarMin()) {
+		if (isVarMin()) {
 			return "min(";
 		}
-		if (this.isVarClamp()) {
-			return "clamp(" + getVarName(this.getVarVar()) + ", ";
+		if (isVarClamp()) {
+			return "clamp(" + getVarName(getVarVar()) + ", ";
 		}
-		if (this.isVarAbs()) {
+		if (isVarAbs()) {
 			return "abs(";
 		}
-		if (this.isVarNot()) {
+		if (isVarNot()) {
 			return "~";
 		}
-		if (this.isVarRand()) {
+		if (isVarRand()) {
 			return "rand(";
 		}
 		return "";
 	}
 
 	public String getVarMidfix() {
-		if (this.isVarMax() || this.isVarMin() || this.isVarClamp() || this.isVarRand()) {
+		if (isVarMax() || isVarMin() || isVarClamp() || isVarRand()) {
 			return ", ";
 		}
-		if (this.isVarAdd()) {
+		if (isVarAdd()) {
 			return " + ";
 		}
-		if (this.isVarSub()) {
+		if (isVarSub()) {
 			return " - ";
 		}
-		if (this.isVarMult()) {
+		if (isVarMult()) {
 			return " * ";
 		}
-		if (this.isVarDiv()) {
+		if (isVarDiv()) {
 			return " / ";
 		}
-		if (this.isVarMod()) {
+		if (isVarMod()) {
 			return " % ";
 		}
-		if (this.isVarAnd()) {
+		if (isVarAnd()) {
 			return " & ";
 		}
-		if (this.isVarOr()) {
+		if (isVarOr()) {
 			return " | ";
 		}
-		if (this.isVarXor()) {
+		if (isVarXor()) {
 			return " ^ ";
 		}
-		if (this.isVarShiftR()) {
+		if (isVarShiftR()) {
 			return " >> ";
 		}
-		if (this.isVarShiftL()) {
+		if (isVarShiftL()) {
 			return " << ";
 		}
 		return "";
 	}
 
 	public String getVarPostfix() {
-		if (this.isVarMax() || this.isVarMin() || this.isVarClamp() || this.isVarAbs() || this.isVarRand()) {
+		if (isVarMax() || isVarMin() || isVarClamp() || isVarAbs() || isVarRand()) {
 			return ")";
 		}
 		return "";
 	}
 
 	public String getVarText() {
-		if (this.isVarEmpty()) {
+		if (isVarEmpty()) {
 			return "(Not set)";
 		}
 		String str = "";
-		str += getVarName(this.getVarVar());
+		str += getVarName(getVarVar());
 		str += " = ";
-		str += this.getVarPrefix();
-		if (this.getVarUseFirstVar()) {
-			str += getVarName(this.getVarFirstVar());
+		str += getVarPrefix();
+		if (getVarUseFirstVar()) {
+			str += getVarName(getVarFirstVar());
 		} else {
-			str += this.getVarFirstInteger();
+			str += getVarFirstInteger();
 		}
-		if (this.hasTwoValues()) {
-			str += this.getVarMidfix();
-			if (this.getVarUseSecondVar()) {
-				str += getVarName(this.getVarSecondVar());
+		if (hasTwoValues()) {
+			str += getVarMidfix();
+			if (getVarUseSecondVar()) {
+				str += getVarName(getVarSecondVar());
 			} else {
-				str += this.getVarSecondInteger();
+				str += getVarSecondInteger();
 			}
 		}
-		str += this.getVarPostfix();
+		str += getVarPostfix();
 		return str;
 	}
 
@@ -1132,64 +1132,64 @@ public class ComputerTask {
 	}
 
 	public int calcVarValue(final int val1, int val2) {
-		if (this.isVarSet()) {
+		if (isVarSet()) {
 			return val1;
 		}
-		if (this.isVarAdd()) {
+		if (isVarAdd()) {
 			return val1 + val2;
 		}
-		if (this.isVarSub()) {
+		if (isVarSub()) {
 			return val1 - val2;
 		}
-		if (this.isVarMult()) {
+		if (isVarMult()) {
 			return val1 * val2;
 		}
-		if (this.isVarDiv()) {
+		if (isVarDiv()) {
 			return val1 / val2;
 		}
-		if (this.isVarMod()) {
+		if (isVarMod()) {
 			return val1 % val2;
 		}
-		if (this.isVarAnd()) {
+		if (isVarAnd()) {
 			return val1 & val2;
 		}
-		if (this.isVarOr()) {
+		if (isVarOr()) {
 			return val1 | val2;
 		}
-		if (this.isVarXor()) {
+		if (isVarXor()) {
 			return val1 ^ val2;
 		}
-		if (this.isVarNot()) {
+		if (isVarNot()) {
 			byte b = (byte) val1;
 			b ^= -1;
 			return b;
 		}
-		if (this.isVarShiftR()) {
+		if (isVarShiftR()) {
 			val2 = Math.max(val2, 8);
 			val2 = Math.min(val2, 0);
 			return val1 >> val2;
 		}
-		if (this.isVarShiftL()) {
+		if (isVarShiftL()) {
 			val2 = Math.max(val2, 8);
 			val2 = Math.min(val2, 0);
 			return val1 << val2;
 		}
-		if (this.isVarMax()) {
+		if (isVarMax()) {
 			return Math.max(val1, val2);
 		}
-		if (this.isVarMin()) {
+		if (isVarMin()) {
 			return Math.min(val1, val2);
 		}
-		if (this.isVarAbs()) {
+		if (isVarAbs()) {
 			return Math.abs(val1);
 		}
-		if (this.isVarClamp()) {
-			int temp = this.getVarVar().getByteValue();
+		if (isVarClamp()) {
+			int temp = getVarVar().getByteValue();
 			temp = Math.max(temp, val1);
 			temp = Math.min(temp, val2);
 			return temp;
 		}
-		if (!this.isVarRand()) {
+		if (!isVarRand()) {
 			return 0;
 		}
 		if (++val2 <= val1) {
@@ -1199,25 +1199,25 @@ public class ComputerTask {
 	}
 
 	public int getControlType() {
-		return (this.info & 0xFF0) >> 4;
+		return (info & 0xFF0) >> 4;
 	}
 
 	public void setControlType(final int val) {
-		this.info &= 0xFFFFF00F;
-		this.info |= val << 4;
-		if (!this.getControlUseVar()) {
-			final int min = this.getControlMinInteger();
-			final int max = this.getControlMaxInteger();
-			if (this.getControlInteger() < min) {
-				this.setControlInteger(min);
-			} else if (this.getControlInteger() > max) {
-				this.setControlInteger(max);
+		info &= 0xFFFFF00F;
+		info |= val << 4;
+		if (!getControlUseVar()) {
+			final int min = getControlMinInteger();
+			final int max = getControlMaxInteger();
+			if (getControlInteger() < min) {
+				setControlInteger(min);
+			} else if (getControlInteger() > max) {
+				setControlInteger(max);
 			}
 		}
 	}
 
 	public boolean isControlEmpty() {
-		return this.getControlType() == 0;
+		return getControlType() == 0;
 	}
 
 	public static String getControlTypeName(final int type) {
@@ -1243,49 +1243,49 @@ public class ComputerTask {
 	}
 
 	public String getControlText() {
-		if (this.isControlEmpty()) {
+		if (isControlEmpty()) {
 			return "(not set)";
 		}
-		if (this.isControlActivator()) {
+		if (isControlActivator()) {
 			return "Activate";
 		}
-		if (this.getControlUseVar()) {
-			final ComputerVar var = this.getControlVar();
+		if (getControlUseVar()) {
+			final ComputerVar var = getControlVar();
 			return getVarName(var);
 		}
-		return String.valueOf(this.getControlInteger());
+		return String.valueOf(getControlInteger());
 	}
 
 	public boolean getControlUseVar() {
-		return this.getUseOptionalVar(12);
+		return getUseOptionalVar(12);
 	}
 
 	public void setControlUseVar(final boolean val) {
-		this.setUseOptionalVar(12, val);
+		setUseOptionalVar(12, val);
 	}
 
 	public int getControlInteger() {
-		return this.getInteger(13);
+		return getInteger(13);
 	}
 
 	public void setControlInteger(final int val) {
-		this.setInteger(13, val);
+		setInteger(13, val);
 	}
 
 	public int getControlVarIndex() {
-		return this.getVarIndex(13);
+		return getVarIndex(13);
 	}
 
 	public ComputerVar getControlVar() {
-		return this.getVar(13);
+		return getVar(13);
 	}
 
 	public void setControlVar(final int val) {
-		this.setVar(13, val);
+		setVar(13, val);
 	}
 
 	public int getControlMinInteger() {
-		final ComputerControl control = ComputerControl.getMap().get((byte) this.getControlType());
+		final ComputerControl control = ComputerControl.getMap().get((byte) getControlType());
 		if (control == null) {
 			return -128;
 		}
@@ -1293,7 +1293,7 @@ public class ComputerTask {
 	}
 
 	public int getControlMaxInteger() {
-		final ComputerControl control = ComputerControl.getMap().get((byte) this.getControlType());
+		final ComputerControl control = ComputerControl.getMap().get((byte) getControlType());
 		if (control == null) {
 			return 127;
 		}
@@ -1301,26 +1301,26 @@ public class ComputerTask {
 	}
 
 	public boolean getControlUseBigInteger(final int size) {
-		final ComputerControl control = ComputerControl.getMap().get((byte) this.getControlType());
+		final ComputerControl control = ComputerControl.getMap().get((byte) getControlType());
 		return control != null && control.useIntegerOfSize(size);
 	}
 
 	public boolean isControlActivator() {
-		final ComputerControl control = ComputerControl.getMap().get((byte) this.getControlType());
+		final ComputerControl control = ComputerControl.getMap().get((byte) getControlType());
 		return control != null && control.isActivator();
 	}
 
 	public int getInfoType() {
-		return (this.info & 0xFF0) >> 4;
+		return (info & 0xFF0) >> 4;
 	}
 
 	public void setInfoType(final int val) {
-		this.info &= 0xFFFFF00F;
-		this.info |= val << 4;
+		info &= 0xFFFFF00F;
+		info |= val << 4;
 	}
 
 	public boolean isInfoEmpty() {
-		return this.getInfoType() == 0;
+		return getInfoType() == 0;
 	}
 
 	public static String getInfoTypeName(final int type) {
@@ -1346,15 +1346,15 @@ public class ComputerTask {
 	}
 
 	public int getInfoVarIndex() {
-		return this.getVarIndex(12);
+		return getVarIndex(12);
 	}
 
 	public ComputerVar getInfoVar() {
-		return this.getVar(12);
+		return getVar(12);
 	}
 
 	public void setInfoVar(final int val) {
-		this.setVar(12, val);
+		setVar(12, val);
 	}
 
 	private static String getVarName(final ComputerVar var) {
@@ -1365,7 +1365,7 @@ public class ComputerTask {
 	}
 
 	private int getInteger(final int startBit) {
-		final int val = (this.info & 255 << startBit) >> startBit;
+		final int val = (info & 255 << startBit) >> startBit;
 		if (val > 127) {
 			return val - 255;
 		}
@@ -1381,44 +1381,44 @@ public class ComputerTask {
 		if (val < 0) {
 			val += 256;
 		}
-		this.info &= ~(255 << startBit);
-		this.info |= val << startBit;
+		info &= ~(255 << startBit);
+		info |= val << startBit;
 	}
 
 	private boolean getUseOptionalVar(final int startBit) {
-		return (this.info & 1 << startBit) != 0x0;
+		return (info & 1 << startBit) != 0x0;
 	}
 
 	private void setUseOptionalVar(final int startBit, final boolean val) {
-		if (val == this.getUseOptionalVar(startBit)) {
+		if (val == getUseOptionalVar(startBit)) {
 			return;
 		}
-		this.info &= ~(1 << startBit);
-		this.info |= (val ? 1 : 0) << startBit;
-		this.setInteger(startBit + 1, 0);
+		info &= ~(1 << startBit);
+		info |= (val ? 1 : 0) << startBit;
+		setInteger(startBit + 1, 0);
 	}
 
 	private int getVarIndex(final int startBit) {
-		return ((this.info & 31 << startBit) >> startBit) - 1;
+		return ((info & 31 << startBit) >> startBit) - 1;
 	}
 
 	public ComputerVar getVar(final int startBit) {
-		final int ind = this.getVarIndex(startBit);
-		if (ind < 0 || ind >= this.prog.getVars().size()) {
+		final int ind = getVarIndex(startBit);
+		if (ind < 0 || ind >= prog.getVars().size()) {
 			return null;
 		}
-		return this.prog.getVars().get(ind);
+		return prog.getVars().get(ind);
 	}
 
 	public void setVar(final int startBit, int val) {
 		if (val < -1) {
 			val = -1;
-		} else if (val >= this.prog.getVars().size()) {
-			val = this.prog.getVars().size() - 2;
+		} else if (val >= prog.getVars().size()) {
+			val = prog.getVars().size() - 2;
 		}
 		++val;
-		this.info &= ~(31 << startBit);
-		this.info |= val << startBit;
+		info &= ~(31 << startBit);
+		info |= val << startBit;
 	}
 
 	static {

@@ -30,19 +30,19 @@ public class EnchantmentInfo {
 	}
 
 	public Enchantment getEnchantment() {
-		return this.enchantment;
+		return enchantment;
 	}
 
 	public int getMaxValue() {
 		int max = 0;
-		for (int i = 0; i < this.getEnchantment().getMaxLevel(); ++i) {
-			max += this.getValue(i + 1);
+		for (int i = 0; i < getEnchantment().getMaxLevel(); ++i) {
+			max += getValue(i + 1);
 		}
 		return max;
 	}
 
 	public int getValue(final int level) {
-		return (int) Math.pow(2.0, level - 1) * this.rank1Value;
+		return (int) Math.pow(2.0, level - 1) * rank1Value;
 	}
 
 	public static boolean isItemValid(final ArrayList<ENCHANTMENT_TYPE> enabledTypes,
@@ -146,7 +146,7 @@ public class EnchantmentInfo {
 	}
 
 	public ENCHANTMENT_TYPE getType() {
-		return this.type;
+		return type;
 	}
 
 	static {

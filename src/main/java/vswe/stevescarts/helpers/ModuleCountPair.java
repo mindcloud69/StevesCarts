@@ -11,12 +11,12 @@ public class ModuleCountPair {
 
 	public ModuleCountPair(final ModuleData data) {
 		this.data = data;
-		this.count = 1;
-		this.name = data.getUnlocalizedName();
+		count = 1;
+		name = data.getUnlocalizedName();
 	}
 
 	public int getCount() {
-		return this.count;
+		return count;
 	}
 
 	public void setName(final String name) {
@@ -24,7 +24,7 @@ public class ModuleCountPair {
 	}
 
 	public void increase() {
-		++this.count;
+		++count;
 	}
 
 	public boolean isContainingData(final ModuleData data) {
@@ -32,18 +32,18 @@ public class ModuleCountPair {
 	}
 
 	public ModuleData getData() {
-		return this.data;
+		return data;
 	}
 
 	public void setExtraData(final byte b) {
-		this.extraData = b;
+		extraData = b;
 	}
 
 	@Override
 	public String toString() {
-		String ret = this.data.getCartInfoText(I18n.translateToLocal(this.name), this.extraData);
-		if (this.count != 1) {
-			ret = ret + " x" + this.count;
+		String ret = data.getCartInfoText(I18n.translateToLocal(name), extraData);
+		if (count != 1) {
+			ret = ret + " x" + count;
 		}
 		return ret;
 	}

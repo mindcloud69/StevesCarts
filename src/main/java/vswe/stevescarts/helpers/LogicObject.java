@@ -27,7 +27,7 @@ public class LogicObject {
 		this.id = id;
 		this.type = type;
 		this.data = data;
-		this.childs = new ArrayList<>();
+		childs = new ArrayList<>();
 	}
 
 	public LogicObject(final byte type, final byte data) {
@@ -36,12 +36,12 @@ public class LogicObject {
 
 	public void setParent(final TileEntityDetector detector, final LogicObject parent) {
 		if (parent != null) {
-			PacketHandler.sendPacket(0, new byte[] { parent.id, this.getExtra(), this.data });
-			for (final LogicObject child : this.childs) {
+			PacketHandler.sendPacket(0, new byte[] { parent.id, getExtra(), data });
+			for (final LogicObject child : childs) {
 				child.setParent(detector, this);
 			}
 		} else {
-			PacketHandler.sendPacket(1, new byte[] { this.id });
+			PacketHandler.sendPacket(1, new byte[] { id });
 		}
 	}
 
@@ -56,91 +56,91 @@ public class LogicObject {
 	}
 
 	public ArrayList<LogicObject> getChilds() {
-		return this.childs;
+		return childs;
 	}
 
 	public LogicObject getParent() {
-		return this.parent;
+		return parent;
 	}
 
 	public byte getId() {
-		return this.id;
+		return id;
 	}
 
 	public byte getExtra() {
-		return this.type;
+		return type;
 	}
 
 	public byte getData() {
-		return this.data;
+		return data;
 	}
 
 	public void setX(final int val) {
-		this.x = val;
+		x = val;
 	}
 
 	public void setY(final int val) {
-		this.y = val;
+		y = val;
 	}
 
 	public void setXCenter(final int val) {
-		this.setX(val + (this.isOperator() ? -10 : -8));
+		setX(val + (isOperator() ? -10 : -8));
 	}
 
 	public void setYCenter(final int val) {
-		this.setY(val + (this.isOperator() ? -5 : -8));
+		setY(val + (isOperator() ? -5 : -8));
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void draw(final GuiDetector gui, final int mouseX, final int mouseY, final int x, final int y) {
-		this.generatePosition(x - 50, y, 100, 0);
-		this.draw(gui, mouseX, mouseY);
+		generatePosition(x - 50, y, 100, 0);
+		draw(gui, mouseX, mouseY);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void draw(final GuiDetector gui, final int mouseX, final int mouseY) {
-		if (!this.isOperator()) {
+		if (!isOperator()) {
 			ResourceHelper.bindResource(GuiDetector.texture);
 			int yIndex = 0;
-			if (gui.inRect(mouseX, mouseY, this.getRect())) {
+			if (gui.inRect(mouseX, mouseY, getRect())) {
 				yIndex = 1;
 			}
-			gui.drawTexturedModalRect(gui.getGuiLeft() + this.x, gui.getGuiTop() + this.y, 0, 202 + yIndex * 16, 16, 16);
-			if (this.isModule()) {
-				final ModuleData module = ModuleData.getList().get(this.data);
+			gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y, 0, 202 + yIndex * 16, 16, 16);
+			if (isModule()) {
+				final ModuleData module = ModuleData.getList().get(data);
 				if (module != null) {
-					gui.drawModuleIcon(module, gui.getGuiLeft() + this.x, gui.getGuiTop() + this.y, 1.0f, 1.0f, 0.0f, 0.0f);
+					gui.drawModuleIcon(module, gui.getGuiLeft() + x, gui.getGuiTop() + y, 1.0f, 1.0f, 0.0f, 0.0f);
 				}
 			} else {
 				ResourceHelper.bindResource(GuiDetector.stateTexture);
-				final int[] src = gui.getModuleTexture(this.data);
-				gui.drawTexturedModalRect(gui.getGuiLeft() + this.x, gui.getGuiTop() + this.y, src[0], src[1], 16, 16);
+				final int[] src = gui.getModuleTexture(data);
+				gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y, src[0], src[1], 16, 16);
 			}
 		} else {
 			ResourceHelper.bindResource(GuiDetector.texture);
-			final int[] src2 = gui.getOperatorTexture(this.data);
-			gui.drawTexturedModalRect(gui.getGuiLeft() + this.x, gui.getGuiTop() + this.y, src2[0], src2[1], 20, 11);
-			if (gui.inRect(mouseX, mouseY, this.getRect())) {
+			final int[] src2 = gui.getOperatorTexture(data);
+			gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y, src2[0], src2[1], 20, 11);
+			if (gui.inRect(mouseX, mouseY, getRect())) {
 				int yIndex2;
 				if (gui.currentObject == null) {
 					yIndex2 = 2;
-				} else if (this.hasRoomForChild() && this.isChildValid(gui.currentObject)) {
+				} else if (hasRoomForChild() && isChildValid(gui.currentObject)) {
 					yIndex2 = 0;
 				} else {
 					yIndex2 = 1;
 				}
-				gui.drawTexturedModalRect(gui.getGuiLeft() + this.x, gui.getGuiTop() + this.y, 16, 202 + yIndex2 * 11, 20, 11);
+				gui.drawTexturedModalRect(gui.getGuiLeft() + x, gui.getGuiTop() + y, 16, 202 + yIndex2 * 11, 20, 11);
 			}
 		}
-		if (this.parent != null && this.parent.maxChilds() > 1) {
-			int px1 = gui.getGuiLeft() + this.x;
-			final int py1 = gui.getGuiTop() + this.y;
-			int px2 = gui.getGuiLeft() + this.parent.x;
-			int py2 = gui.getGuiTop() + this.parent.y;
+		if (parent != null && parent.maxChilds() > 1) {
+			int px1 = gui.getGuiLeft() + x;
+			final int py1 = gui.getGuiTop() + y;
+			int px2 = gui.getGuiLeft() + parent.x;
+			int py2 = gui.getGuiTop() + parent.y;
 			py2 += 5;
-			px1 += (this.isOperator() ? 10 : 8);
+			px1 += (isOperator() ? 10 : 8);
 			boolean tooClose = false;
-			if (this.x > this.parent.x) {
+			if (x > parent.x) {
 				px2 += 20;
 				if (px1 < px2) {
 					tooClose = true;
@@ -154,36 +154,36 @@ public class LogicObject {
 				GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			}
 		}
-		for (final LogicObject child : this.childs) {
+		for (final LogicObject child : childs) {
 			child.draw(gui, mouseX, mouseY);
 		}
 	}
 
 	public void generatePosition(final int x, final int y, final int w, final int level) {
-		this.setXCenter(x + w / 2);
-		this.setYCenter(y);
+		setXCenter(x + w / 2);
+		setYCenter(y);
 		this.level = level;
-		final int max = this.maxChilds();
-		for (int i = 0; i < this.childs.size(); ++i) {
-			this.childs.get(i).generatePosition(x + w / max * i, y + (this.childs.get(i).isOperator() ? 11 : 16), w / max, level + ((this.childs.get(i).maxChilds() > 1) ? 1 : 0));
+		final int max = maxChilds();
+		for (int i = 0; i < childs.size(); ++i) {
+			childs.get(i).generatePosition(x + w / max * i, y + (childs.get(i).isOperator() ? 11 : 16), w / max, level + ((childs.get(i).maxChilds() > 1) ? 1 : 0));
 		}
 	}
 
 	private boolean isModule() {
-		return this.type == 0;
+		return type == 0;
 	}
 
 	private boolean isOperator() {
-		return this.type == 1;
+		return type == 1;
 	}
 
 	private boolean isState() {
-		return this.type == 2;
+		return type == 2;
 	}
 
 	private OperatorObject getOperator() {
-		if (this.isOperator()) {
-			return OperatorObject.getAllOperators().get(this.data);
+		if (isOperator()) {
+			return OperatorObject.getAllOperators().get(data);
 		}
 		return null;
 	}
@@ -192,36 +192,36 @@ public class LogicObject {
 		if (depth >= 1000) {
 			return false;
 		}
-		if (this.isState()) {
-			final ModuleState state = ModuleState.getStates().get(this.getData());
+		if (isState()) {
+			final ModuleState state = ModuleState.getStates().get(getData());
 			return state != null && state.evaluate(cart);
 		}
-		if (this.isModule()) {
+		if (isModule()) {
 			for (final ModuleBase module : cart.getModules()) {
-				if (this.getData() == module.getModuleId()) {
+				if (getData() == module.getModuleId()) {
 					return true;
 				}
 			}
 			return false;
 		}
-		if (this.getChilds().size() != this.maxChilds()) {
+		if (getChilds().size() != maxChilds()) {
 			return false;
 		}
-		final OperatorObject operator = this.getOperator();
+		final OperatorObject operator = getOperator();
 		if (operator == null) {
 			return false;
 		}
 		if (operator.getChildCount() == 2) {
-			return operator.evaluate(detector, cart, depth + 1, this.getChilds().get(0), this.getChilds().get(1));
+			return operator.evaluate(detector, cart, depth + 1, getChilds().get(0), getChilds().get(1));
 		}
 		if (operator.getChildCount() == 1) {
-			return operator.evaluate(detector, cart, depth + 1, this.getChilds().get(0), null);
+			return operator.evaluate(detector, cart, depth + 1, getChilds().get(0), null);
 		}
 		return operator.evaluate(detector, cart, depth + 1, null, null);
 	}
 
 	private int maxChilds() {
-		final OperatorObject operator = this.getOperator();
+		final OperatorObject operator = getOperator();
 		if (operator != null) {
 			return operator.getChildCount();
 		}
@@ -229,65 +229,65 @@ public class LogicObject {
 	}
 
 	public boolean isChildValid(final LogicObject child) {
-		if (this.level >= 4 && child.isOperator()) {
+		if (level >= 4 && child.isOperator()) {
 			return false;
 		}
-		if (this.level >= 5) {
+		if (level >= 5) {
 			return false;
 		}
-		final OperatorObject operator = this.getOperator();
+		final OperatorObject operator = getOperator();
 		final OperatorObject operatorchild = child.getOperator();
 		return operator == null || operatorchild == null || operator.isChildValid(operatorchild);
 	}
 
 	public boolean canBeRemoved() {
-		final OperatorObject operator = this.getOperator();
+		final OperatorObject operator = getOperator();
 		return operator == null || operator.inTab();
 	}
 
 	public boolean hasRoomForChild() {
-		return this.childs.size() < this.maxChilds();
+		return childs.size() < maxChilds();
 	}
 
 	public int[] getRect() {
-		if (!this.isOperator()) {
-			return new int[] { this.x, this.y, 16, 16 };
+		if (!isOperator()) {
+			return new int[] { x, y, 16, 16 };
 		}
-		return new int[] { this.x, this.y, 20, 11 };
+		return new int[] { x, y, 20, 11 };
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj instanceof LogicObject) {
 			final LogicObject logic = (LogicObject) obj;
-			return logic.id == this.id && ((logic.parent == null && this.parent == null) || (logic.parent != null && this.parent != null && logic.parent.id == this.parent.id)) && logic.getExtra() == this.getExtra() && logic.getData() == this.getData();
+			return logic.id == id && ((logic.parent == null && parent == null) || (logic.parent != null && parent != null && logic.parent.id == parent.id)) && logic.getExtra() == getExtra() && logic.getData() == getData();
 		}
 		return false;
 	}
 
 	public LogicObject copy(final LogicObject parent) {
-		final LogicObject obj = new LogicObject(this.id, this.getExtra(), this.getData());
+		final LogicObject obj = new LogicObject(id, getExtra(), getData());
 		obj.setParent(parent);
 		return obj;
 	}
 
 	public String getName() {
-		if (this.isState()) {
-			final ModuleState state = ModuleState.getStates().get(this.getData());
+		if (isState()) {
+			final ModuleState state = ModuleState.getStates().get(getData());
 			if (state == null) {
 				return "Undefined";
 			}
 			return state.getName();
 		} else {
-			if (!this.isModule()) {
+			if (!isModule()) {
 				String name = "Undefined";
-				final OperatorObject operator = this.getOperator();
+				final OperatorObject operator = getOperator();
 				if (operator != null) {
 					name = operator.getName();
 				}
-				return name + "\nChild nodes: " + this.getChilds().size() + "/" + this.maxChilds();
+				return name + "\nChild nodes: " + getChilds().size() + "/" + maxChilds();
 			}
-			final ModuleData module = ModuleData.getList().get(this.getData());
+			final ModuleData module = ModuleData.getList().get(getData());
 			if (module == null) {
 				return "Undefined";
 			}

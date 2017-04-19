@@ -18,9 +18,9 @@ public class ModulePowerObserver extends ModuleAddon {
 
 	public ModulePowerObserver(final EntityMinecartModular cart) {
 		super(cart);
-		this.areaData = new short[4];
-		this.powerLevel = new short[4];
-		this.currentEngine = -1;
+		areaData = new short[4];
+		powerLevel = new short[4];
+		currentEngine = -1;
 	}
 
 	@Override
@@ -45,10 +45,10 @@ public class ModulePowerObserver extends ModuleAddon {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 		for (int i = 0; i < 4; ++i) {
-			final int[] rect = this.getPowerRect(i);
-			this.drawString(gui, this.powerLevel[i] + Localization.MODULES.ADDONS.K.translate(new String[0]), rect, 4210752);
+			final int[] rect = getPowerRect(i);
+			drawString(gui, powerLevel[i] + Localization.MODULES.ADDONS.K.translate(new String[0]), rect, 4210752);
 		}
 	}
 
@@ -59,43 +59,43 @@ public class ModulePowerObserver extends ModuleAddon {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
-		for (int i = 0; i < this.getCart().getEngines().size(); ++i) {
-			if (!this.removeOnPickup() || this.currentEngine != i) {
-				this.drawEngine(gui, i, this.getEngineRect(i));
+		for (int i = 0; i < getCart().getEngines().size(); ++i) {
+			if (!removeOnPickup() || currentEngine != i) {
+				drawEngine(gui, i, getEngineRect(i));
 			}
 		}
 		ResourceHelper.bindResource("/gui/observer.png");
 		for (int i = 0; i < 4; ++i) {
-			int[] rect = this.getAreaRect(i);
-			this.drawImage(gui, rect, 18, 22 * i);
-			if (this.inRect(x, y, rect)) {
-				this.drawImage(gui, rect, 18, 22 * (i + 4));
+			int[] rect = getAreaRect(i);
+			drawImage(gui, rect, 18, 22 * i);
+			if (inRect(x, y, rect)) {
+				drawImage(gui, rect, 18, 22 * (i + 4));
 			}
 			int count = 0;
-			for (int j = 0; j < this.getCart().getEngines().size(); ++j) {
-				if ((this.areaData[i] & 1 << j) != 0x0) {
-					this.drawEngine(gui, j, this.getEngineRectInArea(i, count));
+			for (int j = 0; j < getCart().getEngines().size(); ++j) {
+				if ((areaData[i] & 1 << j) != 0x0) {
+					drawEngine(gui, j, getEngineRectInArea(i, count));
 					++count;
 				}
 			}
 			ResourceHelper.bindResource("/gui/observer.png");
-			rect = this.getPowerRect(i);
-			if (this.isAreaActive(i)) {
-				this.drawImage(gui, rect, 122, 0);
+			rect = getPowerRect(i);
+			if (isAreaActive(i)) {
+				drawImage(gui, rect, 122, 0);
 			} else {
-				this.drawImage(gui, rect, 122 + rect[2], 0);
+				drawImage(gui, rect, 122 + rect[2], 0);
 			}
-			if (this.inRect(x, y, rect)) {
-				this.drawImage(gui, rect, 122 + rect[2] * 2, 0);
+			if (inRect(x, y, rect)) {
+				drawImage(gui, rect, 122 + rect[2] * 2, 0);
 			}
 		}
-		if (this.currentEngine != -1) {
-			this.drawEngine(gui, this.currentEngine, this.getEngineRectMouse(x, y + this.getCart().getRealScrollY()));
+		if (currentEngine != -1) {
+			drawEngine(gui, currentEngine, getEngineRectMouse(x, y + getCart().getRealScrollY()));
 		}
 	}
 
 	private void drawEngine(final GuiMinecart gui, final int id, final int[] rect) {
-		final ModuleEngine engine = this.getCart().getEngines().get(id);
+		final ModuleEngine engine = getCart().getEngines().get(id);
 		ResourceHelper.bindResourcePath("/atlas/items.png");
 		//TODO
 		//this.drawImage(gui, engine.getData().getIcon(), rect, 0, 0);
@@ -114,36 +114,36 @@ public class ModulePowerObserver extends ModuleAddon {
 	}
 
 	private int[] getEngineRectInArea(final int areaid, final int number) {
-		final int[] area = this.getAreaRect(areaid);
+		final int[] area = getAreaRect(areaid);
 		return new int[] { area[0] + 4 + number * 20, area[1] + 3, 16, 16 };
 	}
 
 	private int[] getPowerRect(final int areaid) {
-		final int[] area = this.getAreaRect(areaid);
+		final int[] area = getAreaRect(areaid);
 		return new int[] { area[0] + area[2] + 10, area[1] + 2, 35, 18 };
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		for (int i = 0; i < this.getCart().getEngines().size(); ++i) {
-			if (!this.removeOnPickup() || this.currentEngine != i) {
-				final ModuleEngine engine = this.getCart().getEngines().get(i);
-				this.drawStringOnMouseOver(gui, engine.getData().getName() + "\n" + Localization.MODULES.ADDONS.OBSERVER_INSTRUCTION.translate(), x, y, this.getEngineRect(i));
+		for (int i = 0; i < getCart().getEngines().size(); ++i) {
+			if (!removeOnPickup() || currentEngine != i) {
+				final ModuleEngine engine = getCart().getEngines().get(i);
+				drawStringOnMouseOver(gui, engine.getData().getName() + "\n" + Localization.MODULES.ADDONS.OBSERVER_INSTRUCTION.translate(), x, y, getEngineRect(i));
 			}
 		}
 		for (int i = 0; i < 4; ++i) {
 			int count = 0;
-			for (int j = 0; j < this.getCart().getEngines().size(); ++j) {
-				if ((this.areaData[i] & 1 << j) != 0x0) {
-					final ModuleEngine engine2 = this.getCart().getEngines().get(j);
-					this.drawStringOnMouseOver(gui, engine2.getData().getName() + "\n" + Localization.MODULES.ADDONS.OBSERVER_REMOVE.translate(), x, y, this.getEngineRectInArea(i, count));
+			for (int j = 0; j < getCart().getEngines().size(); ++j) {
+				if ((areaData[i] & 1 << j) != 0x0) {
+					final ModuleEngine engine2 = getCart().getEngines().get(j);
+					drawStringOnMouseOver(gui, engine2.getData().getName() + "\n" + Localization.MODULES.ADDONS.OBSERVER_REMOVE.translate(), x, y, getEngineRectInArea(i, count));
 					++count;
 				}
 			}
-			if (this.currentEngine != -1) {
-				this.drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.OBSERVER_DROP.translate(), x, y, this.getAreaRect(i));
+			if (currentEngine != -1) {
+				drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.OBSERVER_DROP.translate(), x, y, getAreaRect(i));
 			}
-			this.drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.OBSERVER_CHANGE.translate() + "\n" + Localization.MODULES.ADDONS.OBSERVER_CHANGE_10.translate(), x, y, this.getPowerRect(i));
+			drawStringOnMouseOver(gui, Localization.MODULES.ADDONS.OBSERVER_CHANGE.translate() + "\n" + Localization.MODULES.ADDONS.OBSERVER_CHANGE_10.translate(), x, y, getPowerRect(i));
 		}
 	}
 
@@ -155,19 +155,19 @@ public class ModulePowerObserver extends ModuleAddon {
 	@Override
 	protected void checkGuiData(final Object[] info) {
 		for (int i = 0; i < 4; ++i) {
-			this.updateGuiData(info, i, this.areaData[i]);
+			updateGuiData(info, i, areaData[i]);
 		}
 		for (int i = 0; i < 4; ++i) {
-			this.updateGuiData(info, i + 4, this.powerLevel[i]);
+			updateGuiData(info, i + 4, powerLevel[i]);
 		}
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id >= 0 && id < 4) {
-			this.areaData[id] = data;
+			areaData[id] = data;
 		} else if (id >= 4 && id < 8) {
-			this.powerLevel[id - 4] = data;
+			powerLevel[id - 4] = data;
 		}
 	}
 
@@ -187,7 +187,7 @@ public class ModulePowerObserver extends ModuleAddon {
 		} else if (id == 1) {
 			final int area = data[0];
 			final int engine = data[1];
-			final short[] areaData2 = this.areaData;
+			final short[] areaData2 = areaData;
 			final int n2 = area;
 			areaData2[n2] &= (short) ~(1 << engine);
 		} else if (id == 2) {
@@ -198,14 +198,14 @@ public class ModulePowerObserver extends ModuleAddon {
 			if (shift) {
 				change *= 10;
 			}
-			short value = this.powerLevel[area];
+			short value = powerLevel[area];
 			value += (short) change;
 			if (value < 0) {
 				value = 0;
 			} else if (value > 999) {
 				value = 999;
 			}
-			this.powerLevel[area] = value;
+			powerLevel[area] = value;
 		}
 	}
 
@@ -214,42 +214,42 @@ public class ModulePowerObserver extends ModuleAddon {
 		if (button != -1) {
 			if (button == 0) {
 				for (int i = 0; i < 4; ++i) {
-					final int[] rect = this.getAreaRect(i);
-					if (this.inRect(x, y, rect)) {
-						this.sendPacket(0, new byte[] { (byte) i, (byte) this.currentEngine });
+					final int[] rect = getAreaRect(i);
+					if (inRect(x, y, rect)) {
+						sendPacket(0, new byte[] { (byte) i, (byte) currentEngine });
 						break;
 					}
 				}
 			}
-			this.currentEngine = -1;
+			currentEngine = -1;
 		}
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
 		for (int i = 0; i < 4; ++i) {
-			final int[] rect = this.getPowerRect(i);
-			if (this.inRect(x, y, rect)) {
-				this.sendPacket(2, new byte[] { (byte) i, (byte) (button | (GuiScreen.isShiftKeyDown() ? 2 : 0)) });
+			final int[] rect = getPowerRect(i);
+			if (inRect(x, y, rect)) {
+				sendPacket(2, new byte[] { (byte) i, (byte) (button | (GuiScreen.isShiftKeyDown() ? 2 : 0)) });
 				break;
 			}
 		}
 		if (button == 0) {
-			for (int i = 0; i < this.getCart().getEngines().size(); ++i) {
-				final int[] rect = this.getEngineRect(i);
-				if (this.inRect(x, y, rect)) {
-					this.currentEngine = i;
+			for (int i = 0; i < getCart().getEngines().size(); ++i) {
+				final int[] rect = getEngineRect(i);
+				if (inRect(x, y, rect)) {
+					currentEngine = i;
 					break;
 				}
 			}
 		} else if (button == 1) {
 			for (int i = 0; i < 4; ++i) {
 				int count = 0;
-				for (int j = 0; j < this.getCart().getEngines().size(); ++j) {
-					if ((this.areaData[i] & 1 << j) != 0x0) {
-						final int[] rect2 = this.getEngineRectInArea(i, count);
-						if (this.inRect(x, y, rect2)) {
-							this.sendPacket(1, new byte[] { (byte) i, (byte) j });
+				for (int j = 0; j < getCart().getEngines().size(); ++j) {
+					if ((areaData[i] & 1 << j) != 0x0) {
+						final int[] rect2 = getEngineRectInArea(i, count);
+						if (inRect(x, y, rect2)) {
+							sendPacket(1, new byte[] { (byte) i, (byte) j });
 							break;
 						}
 						++count;
@@ -261,28 +261,28 @@ public class ModulePowerObserver extends ModuleAddon {
 
 	public boolean isAreaActive(final int area) {
 		int power = 0;
-		for (int i = 0; i < this.getCart().getEngines().size(); ++i) {
-			final ModuleEngine engine = this.getCart().getEngines().get(i);
-			if ((this.areaData[area] & 1 << i) != 0x0) {
+		for (int i = 0; i < getCart().getEngines().size(); ++i) {
+			final ModuleEngine engine = getCart().getEngines().get(i);
+			if ((areaData[area] & 1 << i) != 0x0) {
 				power += engine.getTotalFuel();
 			}
 		}
-		return power > this.powerLevel[area] * 1000;
+		return power > powerLevel[area] * 1000;
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		for (int i = 0; i < 4; ++i) {
-			tagCompound.setShort(this.generateNBTName("AreaData" + i, id), this.areaData[i]);
-			tagCompound.setShort(this.generateNBTName("PowerLevel" + i, id), this.powerLevel[i]);
+			tagCompound.setShort(generateNBTName("AreaData" + i, id), areaData[i]);
+			tagCompound.setShort(generateNBTName("PowerLevel" + i, id), powerLevel[i]);
 		}
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		for (int i = 0; i < 4; ++i) {
-			this.areaData[i] = tagCompound.getShort(this.generateNBTName("AreaData" + i, id));
-			this.powerLevel[i] = tagCompound.getShort(this.generateNBTName("PowerLevel" + i, id));
+			areaData[i] = tagCompound.getShort(generateNBTName("AreaData" + i, id));
+			powerLevel[i] = tagCompound.getShort(generateNBTName("PowerLevel" + i, id));
 		}
 	}
 }

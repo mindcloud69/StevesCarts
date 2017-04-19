@@ -19,7 +19,7 @@ public abstract class ModuleChest extends ModuleStorage {
 	@Override
 	public void update() {
 		super.update();
-		this.handleChest();
+		handleChest();
 	}
 
 	@Override
@@ -29,30 +29,30 @@ public abstract class ModuleChest extends ModuleStorage {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotChest(this.getCart(), slotId, 8 + x * 18, 16 + y * 18);
+		return new SlotChest(getCart(), slotId, 8 + x * 18, 16 + y * 18);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
 	public int guiWidth() {
-		return 15 + this.getInventoryWidth() * 18;
+		return 15 + getInventoryWidth() * 18;
 	}
 
 	@Override
 	public int guiHeight() {
-		return 20 + this.getInventoryHeight() * 18;
+		return 20 + getInventoryHeight() * 18;
 	}
 
 	public float getChestAngle() {
-		return this.chestAngle;
+		return chestAngle;
 	}
 
 	protected boolean lidClosed() {
-		return this.chestAngle <= 0.0f;
+		return chestAngle <= 0.0f;
 	}
 
 	protected float getLidSpeed() {
@@ -68,12 +68,12 @@ public abstract class ModuleChest extends ModuleStorage {
 	}
 
 	protected boolean playChestSound() {
-		return this.hasVisualChest();
+		return hasVisualChest();
 	}
 
 	@Override
 	public int numberOfDataWatchers() {
-		if (this.hasVisualChest()) {
+		if (hasVisualChest()) {
 			return 1;
 		}
 		return 0;
@@ -81,61 +81,61 @@ public abstract class ModuleChest extends ModuleStorage {
 
 	@Override
 	public void initDw() {
-		if (this.hasVisualChest()) {
+		if (hasVisualChest()) {
 			IS_OPEN = createDw(DataSerializers.BOOLEAN);
 			registerDw(IS_OPEN, false);
 		}
 	}
 
 	public void openChest() {
-		if (this.hasVisualChest()) {
-			this.updateDw(IS_OPEN, true);
+		if (hasVisualChest()) {
+			updateDw(IS_OPEN, true);
 		}
 	}
 
 	public void closeChest() {
-		if (this.hasVisualChest()) {
-			this.updateDw(IS_OPEN, false);
+		if (hasVisualChest()) {
+			updateDw(IS_OPEN, false);
 		}
 	}
 
 	protected boolean isChestActive() {
-		if (!this.hasVisualChest()) {
+		if (!hasVisualChest()) {
 			return false;
 		}
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getChestActive();
+		if (isPlaceholder()) {
+			return getSimInfo().getChestActive();
 		}
-		return this.getDw(IS_OPEN);
+		return getDw(IS_OPEN);
 	}
 
 	protected void handleChest() {
-		if (!this.hasVisualChest()) {
+		if (!hasVisualChest()) {
 			return;
 		}
-		if (this.isChestActive() && this.lidClosed() && this.playChestSound()) {
+		if (isChestActive() && lidClosed() && playChestSound()) {
 			//			this.getCart().world.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestopen", 0.5f, this.getCart().world.rand.nextFloat() * 0.1f + 0.9f);
 		}
-		if (this.isChestActive() && this.chestAngle < this.chestFullyOpenAngle()) {
-			this.chestAngle += this.getLidSpeed();
-			if (this.chestAngle > this.chestFullyOpenAngle()) {
-				this.chestAngle = this.chestFullyOpenAngle();
+		if (isChestActive() && chestAngle < chestFullyOpenAngle()) {
+			chestAngle += getLidSpeed();
+			if (chestAngle > chestFullyOpenAngle()) {
+				chestAngle = chestFullyOpenAngle();
 			}
-		} else if (!this.isChestActive() && !this.lidClosed()) {
-			final float lastAngle = this.chestAngle;
-			this.chestAngle -= this.getLidSpeed();
-			if (this.chestAngle < 1.1780972450961724 && lastAngle >= 1.1780972450961724 && this.playChestSound()) {
+		} else if (!isChestActive() && !lidClosed()) {
+			final float lastAngle = chestAngle;
+			chestAngle -= getLidSpeed();
+			if (chestAngle < 1.1780972450961724 && lastAngle >= 1.1780972450961724 && playChestSound()) {
 				//				this.getCart().world.playSoundEffect(this.getCart().posX, this.getCart().posY, this.getCart().posZ, "random.chestclosed", 0.5f, this.getCart().world.rand.nextFloat() * 0.1f + 0.9f);
 			}
-			if (this.chestAngle < 0.0f) {
-				this.chestAngle = 0.0f;
+			if (chestAngle < 0.0f) {
+				chestAngle = 0.0f;
 			}
 		}
 	}
 
 	public boolean isCompletelyFilled() {
-		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (this.getStack(i).isEmpty()) {
+		for (int i = 0; i < getInventorySize(); ++i) {
+			if (getStack(i).isEmpty()) {
 				return false;
 			}
 		}
@@ -143,8 +143,8 @@ public abstract class ModuleChest extends ModuleStorage {
 	}
 
 	public boolean isCompletelyEmpty() {
-		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (!this.getStack(i).isEmpty()) {
+		for (int i = 0; i < getInventorySize(); ++i) {
+			if (!getStack(i).isEmpty()) {
 				return false;
 			}
 		}

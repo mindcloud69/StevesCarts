@@ -24,7 +24,7 @@ public class InputChest extends SimpleInventoryEffect {
 
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.INPUT_CHEST.translate(String.valueOf(this.getInventorySize()));
+		return Localization.UPGRADES.INPUT_CHEST.translate(String.valueOf(getInventorySize()));
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class InputChest extends SimpleInventoryEffect {
 					if (!itemstack.isEmpty()) {
 						final ModuleData module = ModItems.modules.getModuleData(itemstack);
 						if (module != null) {
-							if (this.isValidForBluePrint(upgrade.getMaster(), module)) {
-								if (!this.willInvalidate(upgrade.getMaster(), module)) {
+							if (isValidForBluePrint(upgrade.getMaster(), module)) {
+								if (!willInvalidate(upgrade.getMaster(), module)) {
 									final int stackSize = itemstack.getCount();
 									TransferHandler.TransferItem(itemstack, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), Slot.class, SlotAssemblerFuel.class, 1);
 									if (itemstack.getCount() == 0) {

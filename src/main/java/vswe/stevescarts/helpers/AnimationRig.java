@@ -6,20 +6,20 @@ public class AnimationRig {
 	private ArrayList<AnimationRigVal> rigs;
 
 	public AnimationRig() {
-		this.rigs = new ArrayList<>();
+		rigs = new ArrayList<>();
 	}
 
 	public boolean update(final boolean goDown) {
 		if (goDown) {
-			for (int i = this.rigs.size() - 1; i >= 0; --i) {
-				if (this.rigs.get(i).update(goDown)) {
+			for (int i = rigs.size() - 1; i >= 0; --i) {
+				if (rigs.get(i).update(goDown)) {
 					return false;
 				}
 			}
 			return false;
 		}
-		for (int i = 0; i < this.rigs.size(); ++i) {
-			if (this.rigs.get(i).update(goDown)) {
+		for (int i = 0; i < rigs.size(); ++i) {
+			if (rigs.get(i).update(goDown)) {
 				return false;
 			}
 		}
@@ -27,6 +27,6 @@ public class AnimationRig {
 	}
 
 	public void addVal(final AnimationRigVal val) {
-		this.rigs.add(val);
+		rigs.add(val);
 	}
 }

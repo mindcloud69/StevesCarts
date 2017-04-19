@@ -33,51 +33,51 @@ public class ModelCompactSolarPanel extends ModelCartbase {
 	}
 
 	public ModelCompactSolarPanel() {
-		(this.models = new ModelRenderer[2][])[0] = this.createSide(false);
-		this.models[1] = this.createSide(true);
+		(models = new ModelRenderer[2][])[0] = createSide(false);
+		models[1] = createSide(true);
 	}
 
 	private ModelRenderer[] createSide(final boolean opposite) {
 		final ModelRenderer anchor = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(anchor);
+		AddRenderer(anchor);
 		if (opposite) {
 			anchor.rotateAngleY = 3.1415927f;
 		}
 		final ModelRenderer base = new ModelRenderer(this, 0, 0);
 		anchor.addChild(base);
-		this.fixSize(base);
+		fixSize(base);
 		base.addBox(-7.0f, -6.0f, -1.5f, 14, 6, 3, 0.0f);
 		base.setRotationPoint(0.0f, 2.0f, -9.0f);
 		final ModelRenderer panelarminner = new ModelRenderer(this, 34, 0);
 		anchor.addChild(panelarminner);
-		this.fixSize(panelarminner);
+		fixSize(panelarminner);
 		panelarminner.addBox(-1.0f, -1.0f, -2.0f, 2, 2, 4, 0.0f);
 		panelarminner.setRotationPoint(0.0f, -1.0f, 0.0f);
 		final ModelRenderer panelarmouter = new ModelRenderer(this, 34, 0);
 		panelarminner.addChild(panelarmouter);
-		this.fixSize(panelarmouter);
+		fixSize(panelarmouter);
 		panelarmouter.addBox(-1.0f, -1.0f, -3.0f, 2, 2, 4, 0.0f);
 		panelarmouter.setRotationPoint(0.001f, 0.001f, 0.001f);
 		final ModelRenderer panelBase = new ModelRenderer(this, 0, 9);
 		panelarmouter.addChild(panelBase);
-		this.fixSize(panelBase);
+		fixSize(panelBase);
 		panelBase.addBox(-5.5f, -2.0f, -1.0f, 11, 4, 2, 0.0f);
 		panelBase.setRotationPoint(0.0f, 0.0f, -2.8f);
-		final ModelRenderer panelTop = this.createPanel(panelBase, 10, 4, -0.497f, 0, 15);
-		final ModelRenderer panelBot = this.createPanel(panelBase, 10, 4, -0.494f, 22, 15);
-		final ModelRenderer panelLeft = this.createPanel(panelBase, 6, 4, -0.491f, 0, 20);
-		final ModelRenderer panelRight = this.createPanel(panelBase, 6, 4, -0.488f, 14, 20);
-		final ModelRenderer panelTopLeft = this.createPanel(panelLeft, 6, 4, 0.002f, 0, 25);
-		final ModelRenderer panelBotLeft = this.createPanel(panelLeft, 6, 4, 0.001f, 28, 25);
-		final ModelRenderer panelTopRight = this.createPanel(panelRight, 6, 4, 0.002f, 14, 25);
-		final ModelRenderer panelBotRight = this.createPanel(panelRight, 6, 4, 0.001f, 42, 25);
+		final ModelRenderer panelTop = createPanel(panelBase, 10, 4, -0.497f, 0, 15);
+		final ModelRenderer panelBot = createPanel(panelBase, 10, 4, -0.494f, 22, 15);
+		final ModelRenderer panelLeft = createPanel(panelBase, 6, 4, -0.491f, 0, 20);
+		final ModelRenderer panelRight = createPanel(panelBase, 6, 4, -0.488f, 14, 20);
+		final ModelRenderer panelTopLeft = createPanel(panelLeft, 6, 4, 0.002f, 0, 25);
+		final ModelRenderer panelBotLeft = createPanel(panelLeft, 6, 4, 0.001f, 28, 25);
+		final ModelRenderer panelTopRight = createPanel(panelRight, 6, 4, 0.002f, 14, 25);
+		final ModelRenderer panelBotRight = createPanel(panelRight, 6, 4, 0.001f, 42, 25);
 		return new ModelRenderer[] { panelBase, panelTop, panelBot, panelLeft, panelRight, panelTopLeft, panelTopRight, panelBotLeft, panelBotRight, panelarmouter, panelarminner };
 	}
 
 	private ModelRenderer createPanel(final ModelRenderer parent, final int width, final int height, final float offset, final int textureOffsetX, final int textureOffsetY) {
 		final ModelRenderer panel = new ModelRenderer(this, textureOffsetX, textureOffsetY);
 		parent.addChild(panel);
-		this.fixSize(panel);
+		fixSize(panel);
 		panel.addBox(-width / 2, -height / 2, -0.5f, width, height, 1, 0.0f);
 		panel.setRotationPoint(0.0f, 0.0f, offset);
 		return panel;
@@ -109,7 +109,7 @@ public class ModelCompactSolarPanel extends ModelCartbase {
 		} else {
 			final ModuleSolarCompact solar = (ModuleSolarCompact) module;
 			for (int j = 0; j < 2; ++j) {
-				final ModelRenderer[] models2 = this.models[j];
+				final ModelRenderer[] models2 = models[j];
 				models2[9].rotationPointZ = 1.0f - solar.getExtractionDist();
 				models2[10].rotationPointZ = -7.7f - solar.getInnerExtraction();
 				models2[1].rotationPointY = -solar.getTopBotExtractionDist();

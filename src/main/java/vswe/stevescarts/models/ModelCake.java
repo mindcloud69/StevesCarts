@@ -24,15 +24,15 @@ public class ModelCake extends ModelCartbase {
 	}
 
 	public ModelCake() {
-		this.cakes = new ModelRenderer[6];
-		for (int i = 0; i < this.cakes.length; ++i) {
-			this.cakes[i] = this.createCake(6 - i);
+		cakes = new ModelRenderer[6];
+		for (int i = 0; i < cakes.length; ++i) {
+			cakes[i] = createCake(6 - i);
 		}
 	}
 
 	private ModelRenderer createCake(final int slices) {
 		final ModelRenderer cake = new ModelRenderer(this, 0, 22 * (6 - slices));
-		this.AddRenderer(cake);
+		AddRenderer(cake);
 		cake.addBox(-7.0f, -4.0f, -7.0f, 2 * slices + ((slices == 6) ? 2 : 1), 8, 14, 0.0f);
 		cake.setRotationPoint(0.0f, -9.0f, 0.0f);
 		return cake;
@@ -46,8 +46,8 @@ public class ModelCake extends ModelCartbase {
 		} else {
 			count = 6;
 		}
-		for (int i = 0; i < this.cakes.length; ++i) {
-			this.cakes[i].isHidden = (6 - i != count);
+		for (int i = 0; i < cakes.length; ++i) {
+			cakes[i].isHidden = (6 - i != count);
 		}
 	}
 

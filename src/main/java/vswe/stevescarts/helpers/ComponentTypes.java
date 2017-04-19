@@ -102,30 +102,30 @@ public enum ComponentTypes {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	@Nonnull
 	public ItemStack getItemStack(final int count) {
-		return new ItemStack(ModItems.component, count, this.id);
+		return new ItemStack(ModItems.component, count, id);
 	}
 
 	@Nonnull
 	public ItemStack getItemStack() {
-		return this.getItemStack(1);
+		return getItemStack(1);
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public boolean isStackOfType(
 		@Nonnull
 			ItemStack itemstack) {
-		return !itemstack.isEmpty() && itemstack.getItem() == ModItems.component && itemstack.getItemDamage() == this.id;
+		return !itemstack.isEmpty() && itemstack.getItem() == ModItems.component && itemstack.getItemDamage() == id;
 	}
 
 	public String getLocalizedName() {
-		return I18n.translateToLocal(ModItems.component.getUnlocalizedName(this.getItemStack()) + ".name");
+		return I18n.translateToLocal(ModItems.component.getUnlocalizedName(getItemStack()) + ".name");
 	}
 }

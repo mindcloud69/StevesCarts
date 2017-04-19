@@ -15,7 +15,7 @@ public class ModuleHydrater extends ModuleWorker {
 
 	public ModuleHydrater(final EntityMinecartModular cart) {
 		super(cart);
-		this.range = 1;
+		range = 1;
 	}
 
 	@Override
@@ -26,9 +26,9 @@ public class ModuleHydrater extends ModuleWorker {
 	@Override
 	public void init() {
 		super.init();
-		for (final ModuleBase module : this.getCart().getModules()) {
+		for (final ModuleBase module : getCart().getModules()) {
 			if (module instanceof ModuleFarmer) {
-				this.range = ((ModuleFarmer) module).getExternalRange();
+				range = ((ModuleFarmer) module).getExternalRange();
 				break;
 			}
 		}
@@ -37,10 +37,10 @@ public class ModuleHydrater extends ModuleWorker {
 	@Override
 	public boolean work() {
 		World world = getCart().world;
-		BlockPos next = this.getNextblock();
-		for (int i = -this.range; i <= this.range; ++i) {
-			for (int j = -this.range; j <= this.range; ++j) {
-				if (this.hydrate(world, next.add(i, -1, j))) {
+		BlockPos next = getNextblock();
+		for (int i = -range; i <= range; ++i) {
+			for (int j = -range; j <= range; ++j) {
+				if (hydrate(world, next.add(i, -1, j))) {
 					return true;
 				}
 			}
@@ -54,14 +54,14 @@ public class ModuleHydrater extends ModuleWorker {
 			int moisture = state.getValue(BlockFarmland.MOISTURE);
 			if (moisture != 7) {
 				int waterCost = 7 - moisture;
-				waterCost = this.getCart().drain(FluidRegistry.WATER, waterCost, false);
+				waterCost = getCart().drain(FluidRegistry.WATER, waterCost, false);
 				if (waterCost > 0) {
-					if (this.doPreWork()) {
-						this.startWorking(2 + waterCost);
+					if (doPreWork()) {
+						startWorking(2 + waterCost);
 						return true;
 					}
-					this.stopWorking();
-					this.getCart().drain(FluidRegistry.WATER, waterCost, true);
+					stopWorking();
+					getCart().drain(FluidRegistry.WATER, waterCost, true);
 					world.setBlockState(pos, state.withProperty(BlockFarmland.MOISTURE, moisture + waterCost), 3);
 				}
 			}

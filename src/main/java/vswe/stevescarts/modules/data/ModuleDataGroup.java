@@ -11,24 +11,24 @@ public class ModuleDataGroup {
 
 	public ModuleDataGroup(final Localization.MODULE_INFO name) {
 		this.name = name;
-		this.count = 1;
-		this.modules = new ArrayList<>();
+		count = 1;
+		modules = new ArrayList<>();
 	}
 
 	public String getName() {
-		return this.name.translate(String.valueOf(this.getCount()));
+		return name.translate(String.valueOf(getCount()));
 	}
 
 	public ArrayList<ModuleData> getModules() {
-		return this.modules;
+		return modules;
 	}
 
 	public int getCount() {
-		return this.count;
+		return count;
 	}
 
 	public ModuleDataGroup add(final ModuleData module) {
-		this.modules.add(module);
+		modules.add(module);
 		return this;
 	}
 
@@ -38,23 +38,23 @@ public class ModuleDataGroup {
 	}
 
 	public ModuleDataGroup copy() {
-		final ModuleDataGroup newObj = new ModuleDataGroup(this.name).setCount(this.getCount());
-		for (final ModuleData obj : this.getModules()) {
+		final ModuleDataGroup newObj = new ModuleDataGroup(name).setCount(getCount());
+		for (final ModuleData obj : getModules()) {
 			newObj.add(obj);
 		}
 		return newObj;
 	}
 
 	public ModuleDataGroup copy(final int count) {
-		final ModuleDataGroup newObj = new ModuleDataGroup(this.name).setCount(count);
-		for (final ModuleData obj : this.getModules()) {
+		final ModuleDataGroup newObj = new ModuleDataGroup(name).setCount(count);
+		for (final ModuleData obj : getModules()) {
 			newObj.add(obj);
 		}
 		return newObj;
 	}
 
 	public String getCountName() {
-		switch (this.count) {
+		switch (count) {
 			case 1: {
 				return Localization.MODULE_INFO.MODULE_COUNT_1.translate();
 			}
@@ -79,7 +79,7 @@ public class ModuleDataGroup {
 
 	public void add(final ModuleDataGroup group) {
 		for (final ModuleData obj : group.getModules()) {
-			this.add(obj);
+			add(obj);
 		}
 	}
 }

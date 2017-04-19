@@ -9,9 +9,9 @@ public class ModuleExtractingChests extends ModuleChest {
 
 	public ModuleExtractingChests(final EntityMinecartModular cart) {
 		super(cart);
-		this.startOffset = -14.0f;
-		this.endOffset = -24.5f;
-		this.chestOffset = -14.0f;
+		startOffset = -14.0f;
+		endOffset = -24.5f;
+		chestOffset = -14.0f;
 	}
 
 	@Override
@@ -31,16 +31,16 @@ public class ModuleExtractingChests extends ModuleChest {
 
 	@Override
 	protected void handleChest() {
-		if (this.isChestActive() && this.lidClosed() && this.chestOffset > this.endOffset) {
-			this.chestOffset -= 0.5f;
-		} else if (!this.isChestActive() && this.lidClosed() && this.chestOffset < this.startOffset) {
-			this.chestOffset += 0.5f;
+		if (isChestActive() && lidClosed() && chestOffset > endOffset) {
+			chestOffset -= 0.5f;
+		} else if (!isChestActive() && lidClosed() && chestOffset < startOffset) {
+			chestOffset += 0.5f;
 		} else {
 			super.handleChest();
 		}
 	}
 
 	public float getChestOffset() {
-		return this.chestOffset;
+		return chestOffset;
 	}
 }

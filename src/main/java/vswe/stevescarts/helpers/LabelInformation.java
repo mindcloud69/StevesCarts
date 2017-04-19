@@ -8,7 +8,7 @@ public abstract class LabelInformation {
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public abstract String getLabel();

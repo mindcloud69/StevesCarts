@@ -28,13 +28,13 @@ public class SoundHandler {
 			this.player = player;
 			this.volume = volume;
 			this.pitch = pitch;
-			this.update();
+			update();
 		}
 
 		private void update() {
-			this.xPosF = (float) this.player.posX;
-			this.yPosF = (float) this.player.posY;
-			this.zPosF = (float) this.player.posZ;
+			xPosF = (float) player.posX;
+			yPosF = (float) player.posY;
+			zPosF = (float) player.posZ;
 		}
 	}
 }

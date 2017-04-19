@@ -18,7 +18,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	public ModuleInvisible(final EntityMinecartModular cart) {
 		super(cart);
-		this.buttonRect = new int[] { 20, 20, 24, 12 };
+		buttonRect = new int[] { 20, 20, 24, 12 };
 	}
 
 	@Override
@@ -43,63 +43,63 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/invis.png");
-		final int imageID = this.isVisible() ? 1 : 0;
+		final int imageID = isVisible() ? 1 : 0;
 		int borderID = 0;
-		if (this.inRect(x, y, this.buttonRect)) {
+		if (inRect(x, y, buttonRect)) {
 			borderID = 1;
 		}
-		this.drawImage(gui, this.buttonRect, 0, this.buttonRect[3] * borderID);
-		final int srcY = this.buttonRect[3] * 2 + imageID * (this.buttonRect[3] - 2);
-		this.drawImage(gui, this.buttonRect[0] + 1, this.buttonRect[1] + 1, 0, srcY, this.buttonRect[2] - 2, this.buttonRect[3] - 2);
+		drawImage(gui, buttonRect, 0, buttonRect[3] * borderID);
+		final int srcY = buttonRect[3] * 2 + imageID * (buttonRect[3] - 2);
+		drawImage(gui, buttonRect[0] + 1, buttonRect[1] + 1, 0, srcY, buttonRect[2] - 2, buttonRect[3] - 2);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, this.getStateName(), x, y, this.buttonRect);
+		drawStringOnMouseOver(gui, getStateName(), x, y, buttonRect);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (!this.isVisible() && !this.getCart().hasFuelForModule() && !this.getCart().world.isRemote) {
-			this.setIsVisible(true);
+		if (!isVisible() && !getCart().hasFuelForModule() && !getCart().world.isRemote) {
+			setIsVisible(true);
 		}
 	}
 
 	private boolean isVisible() {
-		if (this.isPlaceholder()) {
-			return !this.getSimInfo().getInvisActive();
+		if (isPlaceholder()) {
+			return !getSimInfo().getInvisActive();
 		}
-		return this.getDw(VISABLE);
+		return getDw(VISABLE);
 	}
 
 	private String getStateName() {
-		return Localization.MODULES.ADDONS.INVISIBILITY.translate(this.isVisible() ? "0" : "1");
+		return Localization.MODULES.ADDONS.INVISIBILITY.translate(isVisible() ? "0" : "1");
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (button == 0 && this.inRect(x, y, this.buttonRect)) {
-			this.sendPacket(0);
+		if (button == 0 && inRect(x, y, buttonRect)) {
+			sendPacket(0);
 		}
 	}
 
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.setIsVisible(!this.isVisible());
+			setIsVisible(!isVisible());
 		}
 	}
 
 	public void setIsVisible(final boolean val) {
-		this.updateDw(VISABLE, val);
+		updateDw(VISABLE, val);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public boolean shouldCartRender() {
-		return this.isVisible();
+		return isVisible();
 	}
 
 	@Override
@@ -125,31 +125,31 @@ public class ModuleInvisible extends ModuleAddon implements IActivatorModule {
 
 	@Override
 	public int getConsumption(final boolean isMoving) {
-		return this.isVisible() ? super.getConsumption(isMoving) : 3;
+		return isVisible() ? super.getConsumption(isMoving) : 3;
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setBoolean(this.generateNBTName("Invis", id), !this.isVisible());
+		tagCompound.setBoolean(generateNBTName("Invis", id), !isVisible());
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.setIsVisible(!tagCompound.getBoolean(this.generateNBTName("Invis", id)));
+		setIsVisible(!tagCompound.getBoolean(generateNBTName("Invis", id)));
 	}
 
 	@Override
 	public void doActivate(final int id) {
-		this.setIsVisible(false);
+		setIsVisible(false);
 	}
 
 	@Override
 	public void doDeActivate(final int id) {
-		this.setIsVisible(true);
+		setIsVisible(true);
 	}
 
 	@Override
 	public boolean isActive(final int id) {
-		return !this.isVisible();
+		return !isVisible();
 	}
 }

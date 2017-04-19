@@ -63,16 +63,16 @@ public abstract class ModuleBase {
 	private int moduleButtonId;
 
 	public ModuleBase(final EntityMinecartModular cart) {
-		this.moduleButtonId = 0;
+		moduleButtonId = 0;
 		this.cart = cart;
-		this.cargo = NonNullList.withSize(this.getInventorySize(), ItemStack.EMPTY);
+		cargo = NonNullList.withSize(getInventorySize(), ItemStack.EMPTY);
 	}
 
 	public void init() {
-		if (this.useButtons()) {
-			this.buttons = new ArrayList<>();
-			this.loadButtons();
-			this.buttonVisibilityChanged();
+		if (useButtons()) {
+			buttons = new ArrayList<>();
+			loadButtons();
+			buttonVisibilityChanged();
 		}
 	}
 
@@ -80,63 +80,63 @@ public abstract class ModuleBase {
 	}
 
 	public EntityMinecartModular getCart() {
-		return this.cart;
+		return cart;
 	}
 
 	public boolean isPlaceholder() {
-		return this.getCart().isPlaceholder;
+		return getCart().isPlaceholder;
 	}
 
 	protected SimulationInfo getSimInfo() {
-		return this.getCart().placeholderAsssembler.getSimulationInfo();
+		return getCart().placeholderAsssembler.getSimulationInfo();
 	}
 
 	public void setModuleId(final byte val) {
-		this.moduleId = val;
+		moduleId = val;
 	}
 
 	public byte getModuleId() {
-		return this.moduleId;
+		return moduleId;
 	}
 
 	public void onInventoryChanged() {
 	}
 
 	public int getX() {
-		if (this.doStealInterface()) {
+		if (doStealInterface()) {
 			return 0;
 		}
-		return this.offSetX;
+		return offSetX;
 	}
 
 	public int getY() {
-		if (this.doStealInterface()) {
+		if (doStealInterface()) {
 			return 0;
 		}
-		return this.offSetY;
+		return offSetY;
 	}
 
 	public void setX(final int val) {
-		this.offSetX = val;
+		offSetX = val;
 	}
 
 	public void setY(final int val) {
-		this.offSetY = val;
+		offSetY = val;
 	}
 
 	public int getInventorySize() {
-		if (!this.hasSlots()) {
+		if (!hasSlots()) {
 			return 0;
 		}
-		return this.getInventoryWidth() * this.getInventoryHeight();
+		return getInventoryWidth() * getInventoryHeight();
 	}
 
 	public int guiWidth() {
-		return 15 + this.getInventoryWidth() * 18;
+		return 15 + getInventoryWidth() * 18;
 	}
 
 	public int guiHeight() {
-		return 27 + this.getInventoryHeight() * 18;
+		return 27 + getInventoryHeight() * 18;
 	}
 
 	protected int getInventoryWidth() {
@@ -151,15 +151,15 @@ public abstract class ModuleBase {
 	}
 
 	public ArrayList<SlotBase> getSlots() {
-		return this.slotList;
+		return slotList;
 	}
 
 	public int generateSlots(int slotCount) {
-		this.slotGlobalStart = slotCount;
-		this.slotList = new ArrayList<>();
-		for (int j = 0; j < this.getInventoryHeight(); ++j) {
-			for (int i = 0; i < this.getInventoryWidth(); ++i) {
-				this.slotList.add(this.getSlot(slotCount++, i, j));
+		slotGlobalStart = slotCount;
+		slotList = new ArrayList<>();
+		for (int j = 0; j < getInventoryHeight(); ++j) {
+			for (int i = 0; i < getInventoryWidth(); ++i) {
+				slotList.add(getSlot(slotCount++, i, j));
 			}
 		}
 		return slotCount;
@@ -170,7 +170,7 @@ public abstract class ModuleBase {
 	}
 
 	public boolean hasSlots() {
-		return this.hasGui();
+		return hasGui();
 	}
 
 	public void update() {
@@ -193,26 +193,26 @@ public abstract class ModuleBase {
 
 	@Nonnull
 	public ItemStack getStack(final int slot) {
-		return this.cargo.get(slot);
+		return cargo.get(slot);
 	}
 
 	public void setStack(final int slot,
 	                     @Nonnull
 		                     ItemStack item) {
-		this.cargo.set(slot, item);
+		cargo.set(slot, item);
 	}
 
 	public void addStack(final int slotStart,
 	                     final int slotEnd,
 	                     @Nonnull
 		                     ItemStack item) {
-		this.getCart().addItemToChest(item, this.slotGlobalStart + slotStart, this.slotGlobalStart + slotEnd);
+		getCart().addItemToChest(item, slotGlobalStart + slotStart, slotGlobalStart + slotEnd);
 	}
 
 	public void addStack(final int slot,
 	                     @Nonnull
 		                     ItemStack item) {
-		this.addStack(slot, slot, item);
+		addStack(slot, slot, item);
 	}
 
 	public boolean dropOnDeath() {
@@ -235,12 +235,12 @@ public abstract class ModuleBase {
 		if (rect.length < 4) {
 			return;
 		}
-		this.drawString(gui, str, rect[0] + (rect[2] - gui.getFontRenderer().getStringWidth(str)) / 2, rect[1] + (rect[3] - gui.getFontRenderer().FONT_HEIGHT + 3) / 2, c);
+		drawString(gui, str, rect[0] + (rect[2] - gui.getFontRenderer().getStringWidth(str)) / 2, rect[1] + (rect[3] - gui.getFontRenderer().FONT_HEIGHT + 3) / 2, c);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void drawString(final GuiMinecart gui, final String str, final int x, final int y, final int c) {
-		this.drawString(gui, str, x, y, -1, false, c);
+		drawString(gui, str, x, y, -1, false, c);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -248,14 +248,14 @@ public abstract class ModuleBase {
 		final int j = gui.getGuiLeft();
 		final int k = gui.getGuiTop();
 		final int[] rect = { x, y, w, 8 };
-		if (!this.doStealInterface()) {
-			this.handleScroll(rect);
+		if (!doStealInterface()) {
+			handleScroll(rect);
 		}
 		if (rect[3] == 8) {
 			if (center) {
-				gui.getFontRenderer().drawString(str, rect[0] + (rect[2] - gui.getFontRenderer().getStringWidth(str)) / 2 + this.getX(), rect[1] + this.getY(), c);
+				gui.getFontRenderer().drawString(str, rect[0] + (rect[2] - gui.getFontRenderer().getStringWidth(str)) / 2 + getX(), rect[1] + getY(), c);
 			} else {
-				gui.getFontRenderer().drawString(str, rect[0] + this.getX(), rect[1] + this.getY(), c);
+				gui.getFontRenderer().drawString(str, rect[0] + getX(), rect[1] + getY(), c);
 			}
 		}
 	}
@@ -265,17 +265,17 @@ public abstract class ModuleBase {
 		final int j = gui.getGuiLeft();
 		final int k = gui.getGuiTop();
 		final int[] rect = { x, y, 0, 8 };
-		if (!this.doStealInterface()) {
-			this.handleScroll(rect);
+		if (!doStealInterface()) {
+			handleScroll(rect);
 		}
 		if (rect[3] == 8) {
-			gui.getFontRenderer().drawStringWithShadow(str, rect[0] + this.getX(), rect[1] + this.getY(), c);
+			gui.getFontRenderer().drawStringWithShadow(str, rect[0] + getX(), rect[1] + getY(), c);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void drawSplitString(final GuiMinecart gui, final String str, final int x, final int y, final int w, final int c) {
-		this.drawSplitString(gui, str, x, y, w, false, c);
+		drawSplitString(gui, str, x, y, w, false, c);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -283,7 +283,7 @@ public abstract class ModuleBase {
 		final List newlines = gui.getFontRenderer().listFormattedStringToWidth(str, w);
 		for (int i = 0; i < newlines.size(); ++i) {
 			final String line = newlines.get(i).toString();
-			this.drawString(gui, line, x, y + i * 8, w, center, c);
+			drawString(gui, line, x, y + i * 8, w, center, c);
 		}
 	}
 
@@ -291,28 +291,28 @@ public abstract class ModuleBase {
 	                                @Nonnull
 		                                ItemStack item, final int x, final int y) {
 		final int[] rect = { x, y, 16, 16 };
-		this.handleScroll(rect);
+		handleScroll(rect);
 		if (rect[3] == 16) {
 			final RenderItem renderitem = Minecraft.getMinecraft().getRenderItem();
 			GL11.glDisable(2896);
-			renderitem.renderItemIntoGUI(item, gui.getGuiLeft() + rect[0] + this.getX(), gui.getGuiTop() + rect[1] + this.getY());
+			renderitem.renderItemIntoGUI(item, gui.getGuiLeft() + rect[0] + getX(), gui.getGuiTop() + rect[1] + getY());
 			GL11.glEnable(2896);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void drawImage(final GuiMinecart gui, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY) {
-		this.drawImage(gui, targetX, targetY, srcX, srcY, sizeX, sizeY, GuiBase.RENDER_ROTATION.NORMAL);
+		drawImage(gui, targetX, targetY, srcX, srcY, sizeX, sizeY, GuiBase.RENDER_ROTATION.NORMAL);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void drawImage(final GuiMinecart gui, final int targetX, final int targetY, final int srcX, final int srcY, final int sizeX, final int sizeY, final GuiBase.RENDER_ROTATION rotation) {
-		this.drawImage(gui, new int[] { targetX, targetY, sizeX, sizeY }, srcX, srcY, rotation);
+		drawImage(gui, new int[] { targetX, targetY, sizeX, sizeY }, srcX, srcY, rotation);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void drawImage(final GuiMinecart gui, final int[] rect, final int srcX, final int srcY) {
-		this.drawImage(gui, rect, srcX, srcY, GuiBase.RENDER_ROTATION.NORMAL);
+		drawImage(gui, rect, srcX, srcY, GuiBase.RENDER_ROTATION.NORMAL);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -320,12 +320,12 @@ public abstract class ModuleBase {
 		if (rect.length < 4) {
 			return;
 		}
-		rect = this.cloneRect(rect);
-		if (!this.doStealInterface()) {
-			srcY -= this.handleScroll(rect);
+		rect = cloneRect(rect);
+		if (!doStealInterface()) {
+			srcY -= handleScroll(rect);
 		}
 		if (rect[3] > 0) {
-			gui.drawTexturedModalRect(gui.getGuiLeft() + rect[0] + this.getX(), gui.getGuiTop() + rect[1] + this.getY(), srcX, srcY, rect[2], rect[3], rotation);
+			gui.drawTexturedModalRect(gui.getGuiLeft() + rect[0] + getX(), gui.getGuiTop() + rect[1] + getY(), srcX, srcY, rect[2], rect[3], rotation);
 		}
 	}
 
@@ -350,14 +350,14 @@ public abstract class ModuleBase {
 
 	public int handleScroll(final int[] rect) {
 		final int n = 1;
-		rect[n] -= this.getCart().getRealScrollY();
-		int y = rect[1] + this.getY();
+		rect[n] -= getCart().getRealScrollY();
+		int y = rect[1] + getY();
 		if (y < 4) {
 			final int dif = y - 4;
 			final int n2 = 3;
 			rect[n2] += dif;
 			y = 4;
-			rect[1] = y - this.getY();
+			rect[1] = y - getY();
 			return dif;
 		}
 		if (y + rect[3] > 168) {
@@ -376,10 +376,10 @@ public abstract class ModuleBase {
 	}
 
 	public final void buttonVisibilityChanged() {
-		Collections.sort(this.buttons, ButtonComparator.INSTANCE);
+		buttons.sort(ButtonComparator.INSTANCE);
 		ButtonBase.LOCATION lastLoc = null;
 		int id = 0;
-		for (final ButtonBase button : this.buttons) {
+		for (final ButtonBase button : buttons) {
 			if (button.isVisible()) {
 				if (lastLoc != null && button.getLocation() != lastLoc) {
 					id = 0;
@@ -399,8 +399,8 @@ public abstract class ModuleBase {
 	}
 
 	public final void addButton(final ButtonBase button) {
-		button.setIdInModule(this.moduleButtonId++);
-		this.buttons.add(button);
+		button.setIdInModule(moduleButtonId++);
+		buttons.add(button);
 	}
 
 	public String generateNBTName(final String name, final int id) {
@@ -408,36 +408,36 @@ public abstract class ModuleBase {
 	}
 
 	public final void writeToNBT(final NBTTagCompound tagCompound, final int id) {
-		if (this.getInventorySize() > 0) {
+		if (getInventorySize() > 0) {
 			final NBTTagList items = new NBTTagList();
-			for (int i = 0; i < this.getInventorySize(); ++i) {
-				if (!this.getStack(i).isEmpty()) {
+			for (int i = 0; i < getInventorySize(); ++i) {
+				if (!getStack(i).isEmpty()) {
 					final NBTTagCompound item = new NBTTagCompound();
 					item.setByte("Slot", (byte) i);
-					this.getStack(i).writeToNBT(item);
+					getStack(i).writeToNBT(item);
 					items.appendTag(item);
 				}
 			}
-			tagCompound.setTag(this.generateNBTName("Items", id), items);
+			tagCompound.setTag(generateNBTName("Items", id), items);
 		}
-		this.Save(tagCompound, id);
+		Save(tagCompound, id);
 	}
 
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 	}
 
 	public final void readFromNBT(final NBTTagCompound tagCompound, final int id) {
-		if (this.getInventorySize() > 0) {
-			final NBTTagList items = tagCompound.getTagList(this.generateNBTName("Items", id), NBTHelper.COMPOUND.getId());
+		if (getInventorySize() > 0) {
+			final NBTTagList items = tagCompound.getTagList(generateNBTName("Items", id), NBTHelper.COMPOUND.getId());
 			for (int i = 0; i < items.tagCount(); ++i) {
 				final NBTTagCompound item = items.getCompoundTagAt(i);
 				final int slot = item.getByte("Slot") & 0xFF;
-				if (slot >= 0 && slot < this.getInventorySize()) {
-					this.setStack(slot, new ItemStack(item));
+				if (slot >= 0 && slot < getInventorySize()) {
+					setStack(slot, new ItemStack(item));
 				}
 			}
 		}
-		this.Load(tagCompound, id);
+		Load(tagCompound, id);
 	}
 
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
@@ -445,31 +445,31 @@ public abstract class ModuleBase {
 
 	@SideOnly(Side.CLIENT)
 	public final void drawButtonText(final GuiMinecart gui) {
-		for (final ButtonBase button : this.buttons) {
+		for (final ButtonBase button : buttons) {
 			button.drawButtonText(gui, this);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public final void drawButtons(final GuiMinecart gui, final int x, final int y) {
-		for (final ButtonBase button : this.buttons) {
+		for (final ButtonBase button : buttons) {
 			button.drawButton(gui, this, x, y);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public final void drawButtonOverlays(final GuiMinecart gui, final int x, final int y) {
-		for (final ButtonBase button : this.buttons) {
+		for (final ButtonBase button : buttons) {
 			if (button.isVisible()) {
-				this.drawStringOnMouseOver(gui, button.toString(), x, y, button.getBounds());
+				drawStringOnMouseOver(gui, button.toString(), x, y, button.getBounds());
 			}
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public final void mouseClickedButton(final GuiMinecart gui, final int x, final int y, final int mousebutton) {
-		for (final ButtonBase button : this.buttons) {
-			if (this.inRect(x, y, button.getBounds())) {
+		for (final ButtonBase button : buttons) {
+			if (inRect(x, y, button.getBounds())) {
 				button.computeOnClick(gui, mousebutton);
 			}
 		}
@@ -478,7 +478,7 @@ public abstract class ModuleBase {
 	public void sendButtonPacket(final ButtonBase button, final byte clickinfo) {
 		final byte id = (byte) button.getIdInModule();
 		System.out.println("Sent button " + button.getIdInModule());
-		this.sendPacket(this.totalNumberOfPackets() - 1, new byte[] { id, clickinfo });
+		sendPacket(totalNumberOfPackets() - 1, new byte[] { id, clickinfo });
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -502,16 +502,16 @@ public abstract class ModuleBase {
 	}
 
 	protected boolean inRect(final int x, final int y, final int x1, final int y1, final int sizeX, final int sizeY) {
-		return this.inRect(x, y, new int[] { x1, y1, sizeX, sizeY });
+		return inRect(x, y, new int[] { x1, y1, sizeX, sizeY });
 	}
 
 	public boolean inRect(final int x, final int y, int[] rect) {
 		if (rect.length < 4) {
 			return false;
 		}
-		rect = this.cloneRect(rect);
-		if (!this.doStealInterface()) {
-			this.handleScroll(rect);
+		rect = cloneRect(rect);
+		if (!doStealInterface()) {
+			handleScroll(rect);
 		}
 		return x >= rect[0] && x <= rect[0] + rect[2] && y >= rect[1] && y <= rect[1] + rect[3];
 	}
@@ -521,12 +521,12 @@ public abstract class ModuleBase {
 	}
 
 	protected void turnback() {
-		for (final ModuleBase module : this.getCart().getModules()) {
+		for (final ModuleBase module : getCart().getModules()) {
 			if (module != this && module.preventTurnback()) {
 				return;
 			}
 		}
-		this.getCart().turnback();
+		getCart().turnback();
 	}
 
 	protected boolean preventTurnback() {
@@ -534,7 +534,7 @@ public abstract class ModuleBase {
 	}
 
 	public final int totalNumberOfPackets() {
-		return this.numberOfPackets() + (this.useButtons() ? 1 : 0);
+		return numberOfPackets() + (useButtons() ? 1 : 0);
 	}
 
 	protected int numberOfPackets() {
@@ -542,51 +542,51 @@ public abstract class ModuleBase {
 	}
 
 	public int getPacketStart() {
-		return this.packetOffset;
+		return packetOffset;
 	}
 
 	public void setPacketStart(final int val) {
-		this.packetOffset = val;
+		packetOffset = val;
 	}
 
 	protected void sendPacket(final int id) {
-		this.sendPacket(id, new byte[0]);
+		sendPacket(id, new byte[0]);
 	}
 
 	public void sendPacket(final int id, final byte data) {
-		this.sendPacket(id, new byte[] { data });
+		sendPacket(id, new byte[] { data });
 	}
 
 	public void sendPacket(final int id, final byte[] data) {
-		PacketHandler.sendPacket(this.getPacketStart() + id, data);
+		PacketHandler.sendPacket(getPacketStart() + id, data);
 	}
 
 	protected void sendPacket(final int id, final EntityPlayer player) {
-		this.sendPacket(id, new byte[0], player);
+		sendPacket(id, new byte[0], player);
 	}
 
 	protected void sendPacket(final int id, final byte data, final EntityPlayer player) {
-		this.sendPacket(id, new byte[] { data }, player);
+		sendPacket(id, new byte[] { data }, player);
 	}
 
 	protected void sendPacket(final int id, final byte[] data, final EntityPlayer player) {
-		PacketHandler.sendPacketToPlayer(this.getPacketStart() + id, data, player, this.getCart());
+		PacketHandler.sendPacketToPlayer(getPacketStart() + id, data, player, getCart());
 	}
 
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 	}
 
 	public final void delegateReceivedPacket(final int id, final byte[] data, final EntityPlayer player) {
-		if (id < 0 || id >= this.totalNumberOfPackets()) {
+		if (id < 0 || id >= totalNumberOfPackets()) {
 			return;
 		}
-		if (id == this.totalNumberOfPackets() - 1 && this.useButtons()) {
+		if (id == totalNumberOfPackets() - 1 && useButtons()) {
 			int buttonId = data[0];
 			if (buttonId < 0) {
 				buttonId += 256;
 			}
 			System.out.println("Received button " + buttonId);
-			for (final ButtonBase button : this.buttons) {
+			for (final ButtonBase button : buttons) {
 				if (button.getIdInModule() == buttonId) {
 					final byte buttoninformation = data[1];
 					final boolean isCtrlDown = (buttoninformation & 0x40) != 0x0;
@@ -600,7 +600,7 @@ public abstract class ModuleBase {
 				}
 			}
 		} else {
-			this.receivePacket(id, data, player);
+			receivePacket(id, data, player);
 		}
 	}
 
@@ -612,20 +612,20 @@ public abstract class ModuleBase {
 	}
 
 	protected final <T> void registerDw(DataParameter<T> key, T value) {
-		for (DataEntry entry : this.getCart().getDataManager().getAll()) {
+		for (DataEntry entry : getCart().getDataManager().getAll()) {
 			if (entry.getKey() == key) {
 				return;
 			}
 		}
-		this.getCart().getDataManager().register(key, value);
+		getCart().getDataManager().register(key, value);
 	}
 
 	protected final <T> void updateDw(DataParameter<T> key, T value) {
-		this.getCart().getDataManager().set(key, value);
+		getCart().getDataManager().set(key, value);
 	}
 
 	protected <T> T getDw(DataParameter<T> key) {
-		return this.getCart().getDataManager().get(key);
+		return getCart().getDataManager().get(key);
 	}
 
 	protected <T> DataParameter<T> createDw(DataSerializer<T> serializer) {
@@ -637,11 +637,11 @@ public abstract class ModuleBase {
 	}
 
 	public int getGuiDataStart() {
-		return this.guiDataOffset;
+		return guiDataOffset;
 	}
 
 	public void setGuiDataStart(final int val) {
-		this.guiDataOffset = val;
+		guiDataOffset = val;
 	}
 
 	private final void updateGuiData(Container con, List<IContainerListener> players, final int id, final short data) {
@@ -655,7 +655,7 @@ public abstract class ModuleBase {
 		if (con == null) {
 			return;
 		}
-		final int globalId = id + this.getGuiDataStart();
+		final int globalId = id + getGuiDataStart();
 		final List players = (List) info[1];
 		boolean flag;
 		final boolean isNew = flag = (boolean) info[2];
@@ -671,7 +671,7 @@ public abstract class ModuleBase {
 			if (con.cache == null) {
 				con.cache = new HashMap<>();
 			}
-			this.updateGuiData(con, players, globalId, data);
+			updateGuiData(con, players, globalId, data);
 			con.cache.put((short) globalId, data);
 		}
 	}
@@ -679,7 +679,7 @@ public abstract class ModuleBase {
 	public final void initGuiData(final Container con, final IContainerListener player) {
 		final ArrayList players = new ArrayList();
 		players.add(player);
-		this.checkGuiData(con, players, true);
+		checkGuiData(con, players, true);
 	}
 
 	protected void checkGuiData(final Object[] info) {
@@ -689,7 +689,7 @@ public abstract class ModuleBase {
 		if (con == null) {
 			return;
 		}
-		this.checkGuiData(new Object[] { con, players, isNew });
+		checkGuiData(new Object[] { con, players, isNew });
 	}
 
 	public void receiveGuiData(final int id, final short data) {
@@ -704,30 +704,30 @@ public abstract class ModuleBase {
 	}
 
 	public ArrayList<ModelCartbase> getModels() {
-		return this.models;
+		return models;
 	}
 
 	public boolean haveModels() {
-		return this.models != null;
+		return models != null;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public final void drawStringOnMouseOver(final GuiMinecart gui, final String str, final int x, final int y, final int x1, final int y1, final int w, final int h) {
-		this.drawStringOnMouseOver(gui, str, x, y, new int[] { x1, y1, w, h });
+		drawStringOnMouseOver(gui, str, x, y, new int[] { x1, y1, w, h });
 	}
 
 	@SideOnly(Side.CLIENT)
 	public final void drawStringOnMouseOver(final GuiMinecart gui, final String str, int x, int y, final int[] rect) {
-		if (!this.inRect(x, y, rect)) {
+		if (!inRect(x, y, rect)) {
 			return;
 		}
-		x += this.getX();
-		y += this.getY();
+		x += getX();
+		y += getY();
 		gui.drawMouseOver(str, x, y);
 	}
 
 	protected void drawImage(final int[] rect, final int sourceX, final int sourceY) {
-		this.drawImage(rect[0], rect[1], sourceX, sourceY, rect[2], rect[3]);
+		drawImage(rect[0], rect[1], sourceX, sourceY, rect[2], rect[3]);
 	}
 
 	protected void drawImage(final int targetX, final int targetY, final int sourceX, final int sourceY, final int width, final int height) {
@@ -776,10 +776,10 @@ public abstract class ModuleBase {
 	}
 
 	protected boolean countsAsAir(final BlockPos pos) {
-		if (this.getCart().world.isAirBlock(pos)) {
+		if (getCart().world.isAirBlock(pos)) {
 			return true;
 		}
-		final IBlockState b = this.getCart().world.getBlockState(pos);
+		final IBlockState b = getCart().world.getBlockState(pos);
 		return b instanceof BlockSnow || b instanceof BlockFlower || b instanceof BlockVine;
 	}
 
@@ -787,7 +787,7 @@ public abstract class ModuleBase {
 	}
 
 	public ModuleData getData() {
-		return ModuleData.getList().get(this.getModuleId());
+		return ModuleData.getList().get(getModuleId());
 	}
 
 	public boolean doStealInterface() {
@@ -806,7 +806,7 @@ public abstract class ModuleBase {
 	}
 
 	protected FakePlayer getFakePlayer() {
-		return FakePlayerFactory.getMinecraft((WorldServer) this.getCart().world);
+		return FakePlayerFactory.getMinecraft((WorldServer) getCart().world);
 	}
 
 	public boolean disableStandardKeyFunctionality() {
@@ -824,7 +824,7 @@ public abstract class ModuleBase {
 	}
 
 	public String getModuleName() {
-		return ModuleData.getList().get(this.getModuleId()).getName();
+		return ModuleData.getList().get(getModuleId()).getName();
 	}
 
 	public enum RAILDIRECTION {

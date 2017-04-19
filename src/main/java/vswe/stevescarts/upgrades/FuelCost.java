@@ -11,14 +11,14 @@ public class FuelCost extends BaseEffect {
 
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.FUEL_COST.translate(((this.getPercentage() >= 0) ? "+" : "") + this.getPercentage());
+		return Localization.UPGRADES.FUEL_COST.translate(((getPercentage() >= 0) ? "+" : "") + getPercentage());
 	}
 
 	private int getPercentage() {
-		return (int) (this.cost * 100.0f);
+		return (int) (cost * 100.0f);
 	}
 
 	public float getCost() {
-		return this.cost;
+		return cost;
 	}
 }

@@ -19,7 +19,7 @@ public class DropDownMenu {
 
 	public DropDownMenu(final int index) {
 		this.index = index;
-		this.moduleScroll = 0;
+		moduleScroll = 0;
 	}
 
 	public static void update(final GuiDetector gui, final int x, final int y, final ArrayList<DropDownMenu> menus) {
@@ -48,40 +48,40 @@ public class DropDownMenu {
 	}
 
 	private void update(final boolean hasFocus) {
-		if (!this.forceGoUp && hasFocus) {
-			if (this.moduleScroll < 156) {
-				this.moduleScroll += 10;
-				if (this.moduleScroll > 156) {
-					this.moduleScroll = 156;
+		if (!forceGoUp && hasFocus) {
+			if (moduleScroll < 156) {
+				moduleScroll += 10;
+				if (moduleScroll > 156) {
+					moduleScroll = 156;
 				}
 			}
-		} else if (this.moduleScroll > 0) {
-			this.moduleScroll -= 25;
-			if (this.moduleScroll <= 0) {
-				this.moduleScroll = 0;
-				this.forceGoUp = false;
+		} else if (moduleScroll > 0) {
+			moduleScroll -= 25;
+			if (moduleScroll <= 0) {
+				moduleScroll = 0;
+				forceGoUp = false;
 			}
 		}
 	}
 
 	public void drawMain(final GuiDetector gui, final int x, final int y) {
 		ResourceHelper.bindResource(GuiDetector.dropdownTexture);
-		final int[] rect = this.getMainRect();
-		gui.drawTexturedModalRect(gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1], 0, 156 - this.moduleScroll, rect[2], rect[3]);
+		final int[] rect = getMainRect();
+		gui.drawTexturedModalRect(gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1], 0, 156 - moduleScroll, rect[2], rect[3]);
 	}
 
 	public void drawHeader(final GuiDetector gui) {
 		ResourceHelper.bindResource(GuiDetector.dropdownTexture);
-		final int[] rect = this.getHeaderRect();
-		gui.drawTexturedModalRect(gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1], 77 * this.index, 156, rect[2], rect[3]);
+		final int[] rect = getHeaderRect();
+		gui.drawTexturedModalRect(gui.getGuiLeft() + rect[0], gui.getGuiTop() + rect[1], 77 * index, 156, rect[2], rect[3]);
 	}
 
 	public void drawContent(final GuiDetector gui, final int index, final int srcX, final int srcY) {
-		final int[] rect = this.getContentRect(index);
+		final int[] rect = getContentRect(index);
 		if (rect == null) {
 			return;
 		}
-		final int gap = rect[1] - this.getMainRect()[1] + rect[3];
+		final int gap = rect[1] - getMainRect()[1] + rect[3];
 		if (gap > 0) {
 			final int height = Math.min(rect[3], gap);
 			final int offset = rect[3] - height;
@@ -90,11 +90,11 @@ public class DropDownMenu {
 	}
 
 	public void drawContent(final GuiDetector gui, final int index, final ModuleData moduleData) {
-		final int[] rect = this.getContentRect(index);
+		final int[] rect = getContentRect(index);
 		if (rect == null) {
 			return;
 		}
-		final int gap = rect[1] - this.getMainRect()[1] + rect[3];
+		final int gap = rect[1] - getMainRect()[1] + rect[3];
 		if (gap > 0) {
 			final int height = Math.min(rect[3], gap);
 			final int offset = rect[3] - height;
@@ -108,34 +108,34 @@ public class DropDownMenu {
 		int objectWidth = 16;
 		int objectHeight = 16;
 		int objectY = 31;
-		if (this.index == 2) {
+		if (index == 2) {
 			objectsPerRow = 9;
 			objectsRows = 10;
 			objectWidth = 20;
 			objectHeight = 11;
 			objectY = 34;
 		}
-		posId = this.getCurrentId(posId, objectsPerRow * objectsRows);
+		posId = getCurrentId(posId, objectsPerRow * objectsRows);
 		if (posId < 0 || posId >= objectsPerRow * objectsRows) {
 			return null;
 		}
 		final int x = posId % objectsPerRow;
 		final int y = posId / objectsPerRow;
 		final int targetX = x * (objectWidth + 3) + 25;
-		final int targetY = y * (objectHeight + 3) + 20 + objectY + this.getScroll() - 170;
+		final int targetY = y * (objectHeight + 3) + 20 + objectY + getScroll() - 170;
 		return new int[] { targetX, targetY, objectWidth, objectHeight };
 	}
 
 	public int[] getMainRect() {
-		return new int[] { 11, 20, 232, this.moduleScroll };
+		return new int[] { 11, 20, 232, moduleScroll };
 	}
 
 	public int[] getHeaderRect() {
-		return new int[] { 11 + 77 * this.index, 20 + this.moduleScroll, (int) Math.ceil(77.33333587646484), 14 };
+		return new int[] { 11 + 77 * index, 20 + moduleScroll, (int) Math.ceil(77.33333587646484), 14 };
 	}
 
 	public int getScroll() {
-		return this.moduleScroll;
+		return moduleScroll;
 	}
 
 	protected int getCurrentId(final int index, final int objects) {

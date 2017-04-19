@@ -35,9 +35,9 @@ public class BlockUpgrade extends BlockContainerBase {
 
 	public BlockUpgrade() {
 		super(Material.ROCK);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
-		this.setDefaultState(
-			this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TYPE, 0));
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setDefaultState(
+			blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TYPE, 0));
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class BlockUpgrade extends BlockContainerBase {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(FACING, getSideFromint(meta));
+		return getDefaultState().withProperty(FACING, getSideFromint(meta));
 	}
 
 	public EnumFacing getSideFromint(int i) {

@@ -22,16 +22,16 @@ public class ItemCartModule extends Item implements TexturedItem {
 	//	IIcon unknownIcon;
 
 	public ItemCartModule() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(StevesCarts.tabsSC2);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(StevesCarts.tabsSC2);
 		ItemModelManager.registerItem(this);
 	}
 
 	public String getName(
 		@Nonnull
 			ItemStack par1ItemStack) {
-		final ModuleData data = this.getModuleData(par1ItemStack, true);
+		final ModuleData data = getModuleData(par1ItemStack, true);
 		if (data == null) {
 			return "Unknown SC2 module";
 		}
@@ -47,11 +47,11 @@ public class ItemCartModule extends Item implements TexturedItem {
 	public String getUnlocalizedName(
 		@Nonnull
 			ItemStack item) {
-		final ModuleData data = this.getModuleData(item, true);
+		final ModuleData data = getModuleData(item, true);
 		if (data != null) {
 			return "item.SC2:" + data.getRawName();
 		}
-		return this.getUnlocalizedName();
+		return getUnlocalizedName();
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 	public void addInformation(
 		@Nonnull
 			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
-		final ModuleData module = this.getModuleData(par1ItemStack, true);
+		final ModuleData module = getModuleData(par1ItemStack, true);
 		if (module != null) {
 			module.addInformation(par3List, par1ItemStack.getTagCompound());
 		} else if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartModule) {
@@ -82,7 +82,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 	public ModuleData getModuleData(
 		@Nonnull
 			ItemStack itemstack) {
-		return this.getModuleData(itemstack, false);
+		return getModuleData(itemstack, false);
 	}
 
 	public ModuleData getModuleData(
@@ -100,7 +100,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 		if (module.getTagCompound() != null && module.getTagCompound().hasKey("Data")) {
 			save.setByte("Data" + i, module.getTagCompound().getByte("Data"));
 		} else {
-			final ModuleData data = this.getModuleData(module, true);
+			final ModuleData data = getModuleData(module, true);
 			if (data.isUsingExtraData()) {
 				save.setByte("Data" + i, data.getDefaultExtraData());
 			}
@@ -123,7 +123,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 		if (info != null && info.hasKey("Data" + i)) {
 			save.setByte("Data", info.getByte("Data" + i));
 		} else {
-			final ModuleData data = this.getModuleData(module, true);
+			final ModuleData data = getModuleData(module, true);
 			if (data.isUsingExtraData()) {
 				save.setByte("Data", data.getDefaultExtraData());
 			}

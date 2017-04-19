@@ -14,100 +14,100 @@ public class ComputerProg {
 
 	public ComputerProg(final ModuleComputer module) {
 		this.module = module;
-		this.tasks = new ArrayList<>();
-		this.vars = new ArrayList<>();
-		this.info = 1;
+		tasks = new ArrayList<>();
+		vars = new ArrayList<>();
+		info = 1;
 	}
 
 	public void start() {
-		this.module.setActiveProgram(this);
-		if (this.activeTaskId < 0 || this.activeTaskId >= this.tasks.size()) {
-			this.activeTaskId = 0;
+		module.setActiveProgram(this);
+		if (activeTaskId < 0 || activeTaskId >= tasks.size()) {
+			activeTaskId = 0;
 			return;
 		}
-		this.activeTaskId = this.tasks.get(this.activeTaskId).preload(this, this.activeTaskId);
+		activeTaskId = tasks.get(activeTaskId).preload(this, activeTaskId);
 	}
 
 	public int getActiveId() {
-		return this.activeTaskId;
+		return activeTaskId;
 	}
 
 	public void setActiveId(final int val) {
-		this.activeTaskId = val;
+		activeTaskId = val;
 	}
 
 	public int getRunTime() {
-		if (this.activeTaskId < 0 || this.activeTaskId >= this.tasks.size()) {
-			return this.activeTaskId = 0;
+		if (activeTaskId < 0 || activeTaskId >= tasks.size()) {
+			return activeTaskId = 0;
 		}
-		return this.tasks.get(this.activeTaskId).getTime();
+		return tasks.get(activeTaskId).getTime();
 	}
 
 	public boolean run() {
-		if (this.activeTaskId < 0 || this.activeTaskId >= this.tasks.size()) {
-			this.activeTaskId = 0;
+		if (activeTaskId < 0 || activeTaskId >= tasks.size()) {
+			activeTaskId = 0;
 			return false;
 		}
-		final int result = this.tasks.get(this.activeTaskId).run(this, this.activeTaskId);
+		final int result = tasks.get(activeTaskId).run(this, activeTaskId);
 		if (result == -1) {
-			++this.activeTaskId;
+			++activeTaskId;
 		} else {
-			this.activeTaskId = result;
+			activeTaskId = result;
 		}
-		if (this.activeTaskId < 0 || this.activeTaskId >= this.tasks.size()) {
-			this.activeTaskId = 0;
+		if (activeTaskId < 0 || activeTaskId >= tasks.size()) {
+			activeTaskId = 0;
 			return false;
 		}
 		if (result == -1) {
-			this.activeTaskId = this.tasks.get(this.activeTaskId).preload(this, this.activeTaskId);
+			activeTaskId = tasks.get(activeTaskId).preload(this, activeTaskId);
 		}
 		return true;
 	}
 
 	public ArrayList<ComputerTask> getTasks() {
-		return this.tasks;
+		return tasks;
 	}
 
 	public ArrayList<ComputerVar> getVars() {
-		return this.vars;
+		return vars;
 	}
 
 	public void setTaskCount(final int count) {
-		while (this.tasks.size() > count) {
-			this.tasks.remove(this.tasks.size() - 1);
+		while (tasks.size() > count) {
+			tasks.remove(tasks.size() - 1);
 		}
-		while (this.tasks.size() < count) {
-			this.tasks.add(new ComputerTask(this.module, this));
+		while (tasks.size() < count) {
+			tasks.add(new ComputerTask(module, this));
 		}
 	}
 
 	public void setVarCount(final int count) {
-		while (this.vars.size() > count) {
-			this.vars.remove(this.vars.size() - 1);
+		while (vars.size() > count) {
+			vars.remove(vars.size() - 1);
 		}
-		while (this.vars.size() < count) {
-			this.vars.add(new ComputerVar(this.module));
+		while (vars.size() < count) {
+			vars.add(new ComputerVar(module));
 		}
 	}
 
 	public short getInfo() {
-		return this.info;
+		return info;
 	}
 
 	public void setInfo(final short val) {
-		this.info = val;
+		info = val;
 	}
 
 	public void setName(final String name) {
-		this.myName = name;
+		myName = name;
 	}
 
 	public String getName() {
-		return this.myName;
+		return myName;
 	}
 
 	@Override
 	public String toString() {
-		return this.getName();
+		return getName();
 	}
 }

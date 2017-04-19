@@ -19,7 +19,7 @@ public class BlockLiquidManager extends BlockContainerBase {
 
 	public BlockLiquidManager() {
 		super(Material.ROCK);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class ModulePig extends ModuleHull {
 
 	public ModulePig(final EntityMinecartModular cart) {
 		super(cart);
-		this.oinkTimer = this.getRandomTimer();
+		oinkTimer = getRandomTimer();
 	}
 
 	private void oink() {
@@ -31,25 +31,25 @@ public class ModulePig extends ModuleHull {
 	}
 
 	private int getRandomTimer() {
-		return this.oinkTimer = this.getCart().rand.nextInt(900) + 300;
+		return oinkTimer = getCart().rand.nextInt(900) + 300;
 	}
 
 	@Override
 	public void update() {
-		if (this.oinkTimer <= 0) {
-			this.oink();
-			this.oinkTimer = this.getRandomTimer();
+		if (oinkTimer <= 0) {
+			oink();
+			oinkTimer = getRandomTimer();
 		} else {
-			--this.oinkTimer;
+			--oinkTimer;
 		}
 	}
 
 	@Nonnull
 	private ItemStack getHelmet() {
-		if (this.getCart().getPassengers().isEmpty()) {
+		if (getCart().getPassengers().isEmpty()) {
 			return ItemStack.EMPTY;
 		}
-		Entity rider = this.getCart().getPassengers().get(0);
+		Entity rider = getCart().getPassengers().get(0);
 		if (rider != null && rider instanceof EntityLivingBase) {
 			return ((EntityLivingBase) rider).getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 		}
@@ -58,17 +58,17 @@ public class ModulePig extends ModuleHull {
 
 	public boolean hasHelment() {
 		@Nonnull
-		ItemStack item = this.getHelmet();
+		ItemStack item = getHelmet();
 		return !item.isEmpty() && item.getItem() instanceof ItemArmor && ((ItemArmor) item.getItem()).armorType == EntityEquipmentSlot.HEAD;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getHelmetResource(final boolean isOverlay) {
-		if (!this.hasHelment()) {
+		if (!hasHelment()) {
 			return null;
 		}
 		@Nonnull
-		ItemStack item = this.getHelmet();
+		ItemStack item = getHelmet();
 		if (item.isEmpty()) {
 			return null;
 		}
@@ -77,14 +77,14 @@ public class ModulePig extends ModuleHull {
 
 	@SideOnly(Side.CLIENT)
 	public boolean hasHelmetColor(final boolean isOverlay) {
-		return this.getHelmetColor(isOverlay) != -1;
+		return getHelmetColor(isOverlay) != -1;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public int getHelmetColor(final boolean isOverlay) {
-		if (this.hasHelment()) {
+		if (hasHelment()) {
 			@Nonnull
-			ItemStack item = this.getHelmet();
+			ItemStack item = getHelmet();
 			return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(item, isOverlay ? 1 : 0);
 		}
 		return -1;
@@ -92,9 +92,9 @@ public class ModulePig extends ModuleHull {
 
 	@SideOnly(Side.CLIENT)
 	public boolean getHelmetMultiRender() {
-		if (this.hasHelment()) {
+		if (hasHelment()) {
 			@Nonnull
-			ItemStack item = this.getHelmet();
+			ItemStack item = getHelmet();
 			//TODO: Do we need this still
 			//return ((ItemArmor) item.getItem()).requiresMultipleRenderPasses();
 		}

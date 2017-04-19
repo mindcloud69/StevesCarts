@@ -32,10 +32,10 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 
 	public ModuleFertilizer(final EntityMinecartModular cart) {
 		super(cart);
-		this.tankPosX = this.guiWidth() - 21;
-		this.tankPosY = 20;
-		this.range = 1;
-		this.fert = 0;
+		tankPosX = guiWidth() - 21;
+		tankPosY = 20;
+		range = 1;
+		fert = 0;
 	}
 
 	@Override
@@ -56,9 +56,9 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void init() {
 		super.init();
-		for (final ModuleBase module : this.getCart().getModules()) {
+		for (final ModuleBase module : getCart().getModules()) {
 			if (module instanceof ModuleFarmer) {
-				this.range = ((ModuleFarmer) module).getExternalRange();
+				range = ((ModuleFarmer) module).getExternalRange();
 				break;
 			}
 		}
@@ -67,20 +67,20 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/fertilize.png");
-		this.drawImage(gui, this.tankPosX, this.tankPosY, 0, 0, 18, 27);
-		final float percentage = this.fert / this.getMaxFert();
+		drawImage(gui, tankPosX, tankPosY, 0, 0, 18, 27);
+		final float percentage = fert / getMaxFert();
 		final int size = (int) (percentage * 23.0f);
-		this.drawImage(gui, this.tankPosX + 2, this.tankPosY + 2 + (23 - size), 18, 23 - size, 14, size);
+		drawImage(gui, tankPosX + 2, tankPosY + 2 + (23 - size), 18, 23 - size, 14, size);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		this.drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.FERTILIZERS.translate() + ": " + this.fert + " / " + this.getMaxFert(), x, y, this.tankPosX, this.tankPosY, 18, 27);
+		drawStringOnMouseOver(gui, Localization.MODULES.ATTACHMENTS.FERTILIZERS.translate() + ": " + fert + " / " + getMaxFert(), x, y, tankPosX, tankPosY, 18, 27);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -95,16 +95,16 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotFertilizer(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
+		return new SlotFertilizer(getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 
 	@Override
 	public boolean work() {
 		World world = getCart().world;
-		BlockPos next = this.getNextblock();
-		for (int i = -this.range; i <= this.range; ++i) {
-			for (int j = -this.range; j <= this.range; ++j) {
-				if (random.nextInt(25) == 0 && this.fertilize(world, next.add(i, 0, j))) {
+		BlockPos next = getNextblock();
+		for (int i = -range; i <= range; ++i) {
+			for (int j = -range; j <= range; ++j) {
+				if (random.nextInt(25) == 0 && fertilize(world, next.add(i, 0, j))) {
 					break;
 				}
 			}
@@ -115,13 +115,13 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 	private boolean fertilize(World world, BlockPos pos) {
 		IBlockState stateOfTopBlock = world.getBlockState(pos);
 		Block blockTop = stateOfTopBlock.getBlock();
-		if (this.fert > 0) {
+		if (fert > 0) {
 			if (blockTop instanceof IGrowable) {
 				IGrowable growable = (IGrowable) blockTop;
 				if (growable.canGrow(world, pos, stateOfTopBlock, false)) {
-					if (growable.canUseBonemeal(world, this.getCart().rand, pos, stateOfTopBlock)) {
-						growable.grow(world, this.getCart().rand, pos, stateOfTopBlock);
-						this.fert -= 2;
+					if (growable.canUseBonemeal(world, getCart().rand, pos, stateOfTopBlock)) {
+						growable.grow(world, getCart().rand, pos, stateOfTopBlock);
+						fert -= 2;
 						return true;
 					}
 				}
@@ -137,29 +137,29 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		this.updateGuiData(info, 0, (short) this.fert);
+		updateGuiData(info, 0, (short) fert);
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.fert = data;
+			fert = data;
 		}
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.loadSupplies();
+		loadSupplies();
 	}
 
 	private void loadSupplies() {
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
-		if (!this.getStack(0).isEmpty()) {
-			final boolean isBone = this.getStack(0).getItem() == Items.BONE;
-			final boolean isBoneMeal = this.getStack(0).getItem() == Items.DYE && this.getStack(0).getItemDamage() == 15;
+		if (!getStack(0).isEmpty()) {
+			final boolean isBone = getStack(0).getItem() == Items.BONE;
+			final boolean isBoneMeal = getStack(0).getItem() == Items.DYE && getStack(0).getItemDamage() == 15;
 			if (isBone || isBoneMeal) {
 				int amount;
 				if (isBoneMeal) {
@@ -167,14 +167,14 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 				} else {
 					amount = 3;
 				}
-				if (this.fert <= 4 * (192 - amount) && this.getStack(0).getCount() > 0) {
+				if (fert <= 4 * (192 - amount) && getStack(0).getCount() > 0) {
 					@Nonnull
-					ItemStack stack = this.getStack(0);
+					ItemStack stack = getStack(0);
 					stack.shrink(1);
-					this.fert += amount * 4;
+					fert += amount * 4;
 				}
-				if (this.getStack(0).getCount() == 0) {
-					this.setStack(0, ItemStack.EMPTY);
+				if (getStack(0).getCount() == 0) {
+					setStack(0, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -186,16 +186,16 @@ public class ModuleFertilizer extends ModuleWorker implements ISuppliesModule {
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setShort(this.generateNBTName("Fert", id), (short) this.fert);
+		tagCompound.setShort(generateNBTName("Fert", id), (short) fert);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.fert = tagCompound.getShort(this.generateNBTName("Fert", id));
+		fert = tagCompound.getShort(generateNBTName("Fert", id));
 	}
 
 	@Override
 	public boolean haveSupplies() {
-		return this.fert > 0;
+		return fert > 0;
 	}
 }

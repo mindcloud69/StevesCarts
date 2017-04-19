@@ -12,50 +12,50 @@ public abstract class ModuleSolarTop extends ModuleSolarBase {
 
 	public ModuleSolarTop(final EntityMinecartModular cart) {
 		super(cart);
-		this.minVal = -4.0f;
-		this.maxVal = -13.0f;
-		this.minAngle = 0.0f;
-		this.maxAngle = 1.5707964f;
-		this.innerRotation = 0.0f;
-		this.movingLevel = this.minVal;
+		minVal = -4.0f;
+		maxVal = -13.0f;
+		minAngle = 0.0f;
+		maxAngle = 1.5707964f;
+		innerRotation = 0.0f;
+		movingLevel = minVal;
 	}
 
 	public float getInnerRotation() {
-		return this.innerRotation;
+		return innerRotation;
 	}
 
 	public float getMovingLevel() {
-		return this.movingLevel;
+		return movingLevel;
 	}
 
 	@Override
 	public boolean updatePanels() {
-		if (this.movingLevel > this.minVal) {
-			this.movingLevel = this.minVal;
+		if (movingLevel > minVal) {
+			movingLevel = minVal;
 		}
-		if (this.innerRotation < this.minAngle) {
-			this.innerRotation = this.minAngle;
-		} else if (this.innerRotation > this.maxAngle) {
-			this.innerRotation = this.maxAngle;
+		if (innerRotation < minAngle) {
+			innerRotation = minAngle;
+		} else if (innerRotation > maxAngle) {
+			innerRotation = maxAngle;
 		}
-		final float targetAngle = this.isGoingDown() ? this.minAngle : this.maxAngle;
-		if (this.movingLevel > this.maxVal && this.innerRotation != targetAngle) {
-			this.movingLevel -= 0.2f;
-			if (this.movingLevel <= this.maxVal) {
-				this.movingLevel = this.maxVal;
+		final float targetAngle = isGoingDown() ? minAngle : maxAngle;
+		if (movingLevel > maxVal && innerRotation != targetAngle) {
+			movingLevel -= 0.2f;
+			if (movingLevel <= maxVal) {
+				movingLevel = maxVal;
 			}
-		} else if (this.innerRotation != targetAngle) {
-			this.innerRotation += (this.isGoingDown() ? -0.05f : 0.05f);
-			if ((!this.isGoingDown() && this.innerRotation >= targetAngle) || (this.isGoingDown() && this.innerRotation <= targetAngle)) {
-				this.innerRotation = targetAngle;
+		} else if (innerRotation != targetAngle) {
+			innerRotation += (isGoingDown() ? -0.05f : 0.05f);
+			if ((!isGoingDown() && innerRotation >= targetAngle) || (isGoingDown() && innerRotation <= targetAngle)) {
+				innerRotation = targetAngle;
 			}
-		} else if (this.movingLevel < this.minVal) {
-			this.movingLevel += 0.2f;
-			if (this.movingLevel >= this.minVal) {
-				this.movingLevel = this.minVal;
+		} else if (movingLevel < minVal) {
+			movingLevel += 0.2f;
+			if (movingLevel >= minVal) {
+				movingLevel = minVal;
 			}
 		}
-		return this.innerRotation == this.maxAngle;
+		return innerRotation == maxAngle;
 	}
 
 	protected abstract int getPanelCount();

@@ -15,7 +15,7 @@ import vswe.stevescarts.blocks.tileentities.TileEntityDistributor;
 public class BlockDistributor extends BlockContainerBase {
 	public BlockDistributor() {
 		super(Material.ROCK);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	@Override

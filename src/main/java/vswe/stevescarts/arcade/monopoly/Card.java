@@ -13,21 +13,21 @@ public abstract class Card {
 		if (isFront) {
 			game.loadTexture(gui, 1);
 			game.getModule().drawImage(gui, rect, 67, 177);
-			game.getModule().drawSplitString(gui, this.message, rect[0] + gui.getGuiLeft() + 5, rect[1] + gui.getGuiTop() + 5, rect[2] - 10, true, 4210752);
-			if (this.getNote() != null) {
+			game.getModule().drawSplitString(gui, message, rect[0] + gui.getGuiLeft() + 5, rect[1] + gui.getGuiTop() + 5, rect[2] - 10, true, 4210752);
+			if (getNote() != null) {
 				int x = 10;
-				if (!this.getMoneyPrefix().equals("")) {
-					game.getModule().drawString(gui, this.getMoneyPrefix(), x, 64, 4210752);
-					x += gui.getFontRenderer().getStringWidth(this.getMoneyPrefix()) + 5;
+				if (!getMoneyPrefix().equals("")) {
+					game.getModule().drawString(gui, getMoneyPrefix(), x, 64, 4210752);
+					x += gui.getFontRenderer().getStringWidth(getMoneyPrefix()) + 5;
 				}
-				this.getNote().draw(game, gui, x, 59, this.getNoteCount());
+				getNote().draw(game, gui, x, 59, getNoteCount());
 				x += 31;
-				if (!this.getMoneyPostfix().equals("")) {
-					game.getModule().drawString(gui, this.getMoneyPostfix(), x, 64, 4210752);
+				if (!getMoneyPostfix().equals("")) {
+					game.getModule().drawString(gui, getMoneyPostfix(), x, 64, 4210752);
 				}
 			}
 		} else {
-			game.getModule().drawImage(gui, rect, 0, rect[3] * this.getBackgroundV());
+			game.getModule().drawImage(gui, rect, 0, rect[3] * getBackgroundV());
 		}
 	}
 

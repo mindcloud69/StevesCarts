@@ -20,7 +20,7 @@ public class BlockCargoManager extends BlockContainerBase {
 
 	public BlockCargoManager() {
 		super(Material.ROCK);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	@Override

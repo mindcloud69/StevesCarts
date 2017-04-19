@@ -14,8 +14,8 @@ public class TetrisPiece {
 
 	private TetrisPiece(final TetrisPiecePart[] parts) {
 		this.parts = parts;
-		this.x = 5;
-		this.y = -2;
+		x = 5;
+		y = -2;
 	}
 
 	public static TetrisPiece createPiece(final int type) {
@@ -115,37 +115,37 @@ public class TetrisPiece {
 	}
 
 	public void render(final ArcadeTetris game, final GuiMinecart gui) {
-		for (int i = 0; i < this.parts.length; ++i) {
-			this.parts[i].render(game, gui, this.x, this.y);
+		for (int i = 0; i < parts.length; ++i) {
+			parts[i].render(game, gui, x, y);
 		}
 	}
 
 	public void rotate(final TetrisBlock[][] board) {
-		for (int i = 0; i < this.parts.length; ++i) {
-			if (!this.parts[i].canRotate(board, this.x, this.y, this.rotationOffset)) {
+		for (int i = 0; i < parts.length; ++i) {
+			if (!parts[i].canRotate(board, x, y, rotationOffset)) {
 				return;
 			}
 		}
-		for (int i = 0; i < this.parts.length; ++i) {
-			this.parts[i].rotate(this.rotationOffset);
+		for (int i = 0; i < parts.length; ++i) {
+			parts[i].rotate(rotationOffset);
 		}
 	}
 
 	public MOVE_RESULT move(final ArcadeTetris game, final TetrisBlock[][] board, final int offX, final int offY, final boolean placeOnFail) {
-		for (int i = 0; i < this.parts.length; ++i) {
-			if (!this.parts[i].canMoveTo(board, this.x + offX, this.y + offY)) {
+		for (int i = 0; i < parts.length; ++i) {
+			if (!parts[i].canMoveTo(board, x + offX, y + offY)) {
 				boolean isGameOver = false;
 				if (placeOnFail) {
-					for (int j = 0; j < this.parts.length; ++j) {
-						if (this.parts[j].canPlaceInBoard(this.y)) {
-							this.parts[j].placeInBoard(board, this.x, this.y);
+					for (int j = 0; j < parts.length; ++j) {
+						if (parts[j].canPlaceInBoard(y)) {
+							parts[j].placeInBoard(board, x, y);
 						} else {
 							isGameOver = true;
 						}
 					}
 					if (StevesCarts.instance.useArcadeMobSounds) {
-						if (this.sound != null) {
-							ArcadeGame.playDefaultSound(this.sound, this.volume, (game.getModule().getCart().rand.nextFloat() - game.getModule().getCart().rand.nextFloat()) * 0.2f + 1.0f);
+						if (sound != null) {
+							ArcadeGame.playDefaultSound(sound, volume, (game.getModule().getCart().rand.nextFloat() - game.getModule().getCart().rand.nextFloat()) * 0.2f + 1.0f);
 						}
 					} else {
 						ArcadeGame.playSound("boop", 1.0f, 1.0f);
@@ -154,8 +154,8 @@ public class TetrisPiece {
 				return isGameOver ? MOVE_RESULT.GAME_OVER : MOVE_RESULT.FAIL;
 			}
 		}
-		this.x += offX;
-		this.y += offY;
+		x += offX;
+		y += offY;
 		return MOVE_RESULT.SUCCESS;
 	}
 

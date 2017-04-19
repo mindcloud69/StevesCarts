@@ -16,15 +16,15 @@ public class ModuleSolarCompact extends ModuleSolarBase {
 
 	public ModuleSolarCompact(final EntityMinecartModular cart) {
 		super(cart);
-		this.rig = new AnimationRig();
-		this.extraction = new AnimationRigVal(this.rig, 0.4f, 2.0f, 0.1f);
-		this.topbot = new AnimationRigVal(this.rig, 0.1f, 4.0f, 0.25f);
-		this.leftright = new AnimationRigVal(this.rig, 0.01f, 6.0f, 0.2f);
-		this.corner = new AnimationRigVal(this.rig, 0.1f, 4.0f, 0.25f);
-		this.extraction2 = new AnimationRigVal(this.rig, 0.0f, 1.8f, 0.1f);
-		this.innerextraction = new AnimationRigVal(this.rig, 0.4f, 3.0f, 0.2f);
-		this.angle = new AnimationRigVal(this.rig, 0.0f, 1.5707964f, 0.1f);
-		this.innerextraction.setUpAndDown(this.angle);
+		rig = new AnimationRig();
+		extraction = new AnimationRigVal(rig, 0.4f, 2.0f, 0.1f);
+		topbot = new AnimationRigVal(rig, 0.1f, 4.0f, 0.25f);
+		leftright = new AnimationRigVal(rig, 0.01f, 6.0f, 0.2f);
+		corner = new AnimationRigVal(rig, 0.1f, 4.0f, 0.25f);
+		extraction2 = new AnimationRigVal(rig, 0.0f, 1.8f, 0.1f);
+		innerextraction = new AnimationRigVal(rig, 0.4f, 3.0f, 0.2f);
+		angle = new AnimationRigVal(rig, 0.0f, 1.5707964f, 0.1f);
+		innerextraction.setUpAndDown(angle);
 	}
 
 	@Override
@@ -39,30 +39,30 @@ public class ModuleSolarCompact extends ModuleSolarBase {
 
 	@Override
 	public boolean updatePanels() {
-		return this.rig.update(this.isGoingDown());
+		return rig.update(isGoingDown());
 	}
 
 	public float getExtractionDist() {
-		return this.extraction.getVal() + this.extraction2.getVal();
+		return extraction.getVal() + extraction2.getVal();
 	}
 
 	public float getTopBotExtractionDist() {
-		return this.topbot.getVal();
+		return topbot.getVal();
 	}
 
 	public float getLeftRightExtractionDist() {
-		return this.leftright.getVal();
+		return leftright.getVal();
 	}
 
 	public float getCornerExtractionDist() {
-		return this.corner.getVal();
+		return corner.getVal();
 	}
 
 	public float getPanelAngle() {
-		return this.angle.getVal();
+		return angle.getVal();
 	}
 
 	public float getInnerExtraction() {
-		return this.innerextraction.getVal();
+		return innerextraction.getVal();
 	}
 }

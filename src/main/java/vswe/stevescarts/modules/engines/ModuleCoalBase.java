@@ -36,24 +36,24 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 
 	@Override
 	protected void loadFuel() {
-		final int consumption = this.getCart().getConsumption(true) * 2;
-		if (this.getFuelLevel() <= consumption) {
+		final int consumption = getCart().getConsumption(true) * 2;
+		if (getFuelLevel() <= consumption) {
 			int i = 0;
-			while (i < this.getInventorySize()) {
-				this.setFuelLevel(this.getFuelLevel() + SlotFuel.getItemBurnTime(this, this.getStack(i)));
-				if (this.getFuelLevel() > consumption) {
-					if (this.getStack(i).isEmpty()) {
+			while (i < getInventorySize()) {
+				setFuelLevel(getFuelLevel() + SlotFuel.getItemBurnTime(this, getStack(i)));
+				if (getFuelLevel() > consumption) {
+					if (getStack(i).isEmpty()) {
 						break;
 					}
-					if (this.getStack(i).getItem().hasContainerItem(this.getStack(i))) {
-						this.setStack(i, new ItemStack(this.getStack(i).getItem().getContainerItem()));
+					if (getStack(i).getItem().hasContainerItem(getStack(i))) {
+						setStack(i, new ItemStack(getStack(i).getItem().getContainerItem()));
 					} else {
 						@Nonnull
-						ItemStack stack = this.getStack(i);
+						ItemStack stack = getStack(i);
 						stack.shrink(1);
 					}
-					if (this.getStack(i).getCount() == 0) {
-						this.setStack(i, ItemStack.EMPTY);
+					if (getStack(i).getCount() == 0) {
+						setStack(i, ItemStack.EMPTY);
 						break;
 					}
 					break;
@@ -66,10 +66,10 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 
 	@Override
 	public int getTotalFuel() {
-		int totalfuel = this.getFuelLevel();
-		for (int i = 0; i < this.getInventorySize(); ++i) {
-			if (!this.getStack(i).isEmpty()) {
-				totalfuel += SlotFuel.getItemBurnTime(this, this.getStack(i)) * this.getStack(i).getCount();
+		int totalfuel = getFuelLevel();
+		for (int i = 0; i < getInventorySize(); ++i) {
+			if (!getStack(i).isEmpty()) {
+				totalfuel += SlotFuel.getItemBurnTime(this, getStack(i)) * getStack(i).getCount();
 			}
 		}
 		return totalfuel;
@@ -84,33 +84,33 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	public void smoke() {
 		double oX = 0.0;
 		double oZ = 0.0;
-		if (this.getCart().motionX != 0.0) {
-			oX = ((this.getCart().motionX > 0.0) ? -1 : 1);
+		if (getCart().motionX != 0.0) {
+			oX = ((getCart().motionX > 0.0) ? -1 : 1);
 		}
-		if (this.getCart().motionZ != 0.0) {
-			oZ = ((this.getCart().motionZ > 0.0) ? -1 : 1);
+		if (getCart().motionZ != 0.0) {
+			oZ = ((getCart().motionZ > 0.0) ? -1 : 1);
 		}
-		if (this.getCart().rand.nextInt(2) == 0) {
-			this.getCart().world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.getCart().posX + oX * 0.85, this.getCart().posY + 0.12, this.getCart().posZ + oZ * 0.85, 0.0, 0.0, 0.0);
+		if (getCart().rand.nextInt(2) == 0) {
+			getCart().world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, getCart().posX + oX * 0.85, getCart().posY + 0.12, getCart().posZ + oZ * 0.85, 0.0, 0.0, 0.0);
 		}
-		if (this.getCart().rand.nextInt(30) == 0) {
-			this.getCart().world.spawnParticle(EnumParticleTypes.FLAME, this.getCart().posX + oX * 0.75, this.getCart().posY + 0.15, this.getCart().posZ + oZ * 0.75, this.getCart().motionX, this.getCart().motionY, this.getCart().motionZ);
+		if (getCart().rand.nextInt(30) == 0) {
+			getCart().world.spawnParticle(EnumParticleTypes.FLAME, getCart().posX + oX * 0.75, getCart().posY + 0.15, getCart().posZ + oZ * 0.75, getCart().motionX, getCart().motionY, getCart().motionZ);
 		}
 	}
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotFuel(this.getCart(), slotId, 8 + x * 18, 23 + 18 * y);
+		return new SlotFuel(getCart(), slotId, 8 + x * 18, 23 + 18 * y);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, Localization.MODULES.ENGINES.COAL.translate(), 8, 6, 4210752);
+		drawString(gui, Localization.MODULES.ENGINES.COAL.translate(), 8, 6, 4210752);
 		String strfuel = Localization.MODULES.ENGINES.NO_FUEL.translate();
-		if (this.getFuelLevel() > 0) {
-			strfuel = Localization.MODULES.ENGINES.FUEL.translate(String.valueOf(this.getFuelLevel()));
+		if (getFuelLevel() > 0) {
+			strfuel = Localization.MODULES.ENGINES.FUEL.translate(String.valueOf(getFuelLevel()));
 		}
-		this.drawString(gui, strfuel, 8, 42, 4210752);
+		drawString(gui, strfuel, 8, 42, 4210752);
 	}
 
 	@Override
@@ -120,15 +120,15 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		this.updateGuiData(info, 0, (short) this.getFuelLevel());
+		updateGuiData(info, 0, (short) getFuelLevel());
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.setFuelLevel(data);
-			if (this.getFuelLevel() < 0) {
-				this.setFuelLevel(this.getFuelLevel() + 65536);
+			setFuelLevel(data);
+			if (getFuelLevel() < 0) {
+				setFuelLevel(getFuelLevel() + 65536);
 			}
 		}
 	}
@@ -136,17 +136,17 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	@Override
 	public void update() {
 		super.update();
-		if (this.fireCoolDown <= 0) {
-			this.fireIndex = this.getCart().rand.nextInt(4) + 1;
-			this.fireCoolDown = 2;
+		if (fireCoolDown <= 0) {
+			fireIndex = getCart().rand.nextInt(4) + 1;
+			fireCoolDown = 2;
 		} else {
-			--this.fireCoolDown;
+			--fireCoolDown;
 		}
 	}
 
 	public int getFireIndex() {
-		if (this.getCart().isEngineBurning()) {
-			return this.fireIndex;
+		if (getCart().isEngineBurning()) {
+			return fireIndex;
 		}
 		return 0;
 	}
@@ -154,15 +154,15 @@ public abstract class ModuleCoalBase extends ModuleEngine {
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		super.Save(tagCompound, id);
-		tagCompound.setShort(this.generateNBTName("Fuel", id), (short) this.getFuelLevel());
+		tagCompound.setShort(generateNBTName("Fuel", id), (short) getFuelLevel());
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		this.setFuelLevel(tagCompound.getShort(this.generateNBTName("Fuel", id)));
-		if (this.getFuelLevel() < 0) {
-			this.setFuelLevel(this.getFuelLevel() + 65536);
+		setFuelLevel(tagCompound.getShort(generateNBTName("Fuel", id)));
+		if (getFuelLevel() < 0) {
+			setFuelLevel(getFuelLevel() + 65536);
 		}
 	}
 

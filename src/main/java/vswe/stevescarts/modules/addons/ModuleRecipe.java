@@ -30,11 +30,11 @@ public abstract class ModuleRecipe extends ModuleAddon {
 
 	public ModuleRecipe(final EntityMinecartModular cart) {
 		super(cart);
-		this.maxItemCount = 1;
-		this.target = 3;
-		this.dirty = true;
-		this.allTheSlots = new ArrayList<>();
-		this.outputSlots = new ArrayList<>();
+		maxItemCount = 1;
+		target = 3;
+		dirty = true;
+		allTheSlots = new ArrayList<>();
+		outputSlots = new ArrayList<>();
 	}
 
 	protected abstract int getLimitStartX();
@@ -44,42 +44,42 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
-		if (this.canUseAdvancedFeatures()) {
-			final int[] area = this.getArea();
+		if (canUseAdvancedFeatures()) {
+			final int[] area = getArea();
 			ResourceHelper.bindResource("/gui/recipe.png");
-			this.drawImage(gui, area[0] - 2, area[1] - 2, 0, 0, 20, 20);
-			if (this.mode == 1) {
+			drawImage(gui, area[0] - 2, area[1] - 2, 0, 0, 20, 20);
+			if (mode == 1) {
 				for (int i = 0; i < 3; ++i) {
-					this.drawControlRect(gui, x, y, i);
+					drawControlRect(gui, x, y, i);
 				}
 			} else {
-				this.drawControlRect(gui, x, y, 1);
+				drawControlRect(gui, x, y, 1);
 			}
 		}
 	}
 
 	private void drawControlRect(final GuiMinecart gui, final int x, final int y, final int i) {
 		final int v = i * 11;
-		final int[] rect = this.getControlRect(i);
-		this.drawImage(gui, rect, 20 + (this.inRect(x, y, rect) ? 22 : 0), v);
+		final int[] rect = getControlRect(i);
+		drawImage(gui, rect, 20 + (inRect(x, y, rect) ? 22 : 0), v);
 	}
 
 	private int[] getControlRect(final int i) {
-		return new int[] { this.getLimitStartX(), this.getLimitStartY() + 12 * i, 22, 11 };
+		return new int[] { getLimitStartX(), getLimitStartY() + 12 * i, 22, 11 };
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		if (this.canUseAdvancedFeatures()) {
+		if (canUseAdvancedFeatures()) {
 			String str = null;
-			switch (this.mode) {
+			switch (mode) {
 				case 0: {
 					str = "Inf";
 					break;
 				}
 				case 1: {
-					str = String.valueOf(this.maxItemCount);
+					str = String.valueOf(maxItemCount);
 					break;
 				}
 				default: {
@@ -87,44 +87,44 @@ public abstract class ModuleRecipe extends ModuleAddon {
 					break;
 				}
 			}
-			this.drawString(gui, str, this.getControlRect(1), 4210752);
+			drawString(gui, str, getControlRect(1), 4210752);
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawBackgroundItems(final GuiMinecart gui, final int x, final int y) {
-		if (this.canUseAdvancedFeatures()) {
+		if (canUseAdvancedFeatures()) {
 			ItemStack icon;
-			if (this.isTargetInvalid()) {
+			if (isTargetInvalid()) {
 				icon = new ItemStack(Items.MINECART, 1);
 			} else {
-				icon = TileEntityCargo.itemSelections.get(this.target).getIcon();
+				icon = TileEntityCargo.itemSelections.get(target).getIcon();
 			}
-			final int[] area = this.getArea();
-			this.drawItemInInterface(gui, icon, area[0], area[1]);
+			final int[] area = getArea();
+			drawItemInInterface(gui, icon, area[0], area[1]);
 		}
 	}
 
 	private boolean isTargetInvalid() {
-		return this.target < 0 || this.target >= TileEntityCargo.itemSelections.size() || TileEntityCargo.itemSelections.get(this.target).getValidSlot() == null;
+		return target < 0 || target >= TileEntityCargo.itemSelections.size() || TileEntityCargo.itemSelections.get(target).getValidSlot() == null;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		if (this.canUseAdvancedFeatures()) {
+		if (canUseAdvancedFeatures()) {
 			String str = Localization.MODULES.ADDONS.RECIPE_OUTPUT.translate() + "\n" + Localization.MODULES.ADDONS.CURRENT.translate() + ": ";
-			if (this.isTargetInvalid()) {
+			if (isTargetInvalid()) {
 				str += Localization.MODULES.ADDONS.INVALID_OUTPUT.translate();
 			} else {
-				str += TileEntityCargo.itemSelections.get(this.target).getName();
+				str += TileEntityCargo.itemSelections.get(target).getName();
 			}
-			this.drawStringOnMouseOver(gui, str, x, y, this.getArea());
+			drawStringOnMouseOver(gui, str, x, y, getArea());
 			for (int i = 0; i < 3; ++i) {
 				if (i == 1) {
 					str = Localization.MODULES.ADDONS.RECIPE_MODE.translate() + "\n" + Localization.MODULES.ADDONS.CURRENT.translate() + ": ";
-					switch (this.mode) {
+					switch (mode) {
 						case 0: {
 							str += Localization.MODULES.ADDONS.RECIPE_NO_LIMIT.translate();
 							break;
@@ -138,14 +138,14 @@ public abstract class ModuleRecipe extends ModuleAddon {
 							break;
 						}
 					}
-				} else if (this.mode != 1) {
+				} else if (mode != 1) {
 					str = null;
 				} else {
 					str = Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT.translate((i == 0) ? "0"
 					                                                                          : "1") + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_10.translate() + "\n" + Localization.MODULES.ADDONS.RECIPE_CHANGE_AMOUNT_64.translate();
 				}
 				if (str != null) {
-					this.drawStringOnMouseOver(gui, str, x, y, this.getControlRect(i));
+					drawStringOnMouseOver(gui, str, x, y, getControlRect(i));
 				}
 			}
 		}
@@ -155,27 +155,27 @@ public abstract class ModuleRecipe extends ModuleAddon {
 
 	@Override
 	public int numberOfGuiData() {
-		return this.canUseAdvancedFeatures() ? 3 : 0;
+		return canUseAdvancedFeatures() ? 3 : 0;
 	}
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		if (this.canUseAdvancedFeatures()) {
-			this.updateGuiData(info, 0, (short) this.target);
-			this.updateGuiData(info, 1, (short) this.mode);
-			this.updateGuiData(info, 2, (short) this.maxItemCount);
+		if (canUseAdvancedFeatures()) {
+			updateGuiData(info, 0, (short) target);
+			updateGuiData(info, 1, (short) mode);
+			updateGuiData(info, 2, (short) maxItemCount);
 		}
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
-		if (this.canUseAdvancedFeatures()) {
+		if (canUseAdvancedFeatures()) {
 			if (id == 0) {
-				this.target = data;
+				target = data;
 			} else if (id == 1) {
-				this.mode = data;
+				mode = data;
 			} else if (id == 2) {
-				this.maxItemCount = data;
+				maxItemCount = data;
 			}
 		}
 	}
@@ -183,15 +183,15 @@ public abstract class ModuleRecipe extends ModuleAddon {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.canUseAdvancedFeatures()) {
-			if (this.inRect(x, y, this.getArea())) {
-				this.sendPacket(0, (byte) button);
+		if (canUseAdvancedFeatures()) {
+			if (inRect(x, y, getArea())) {
+				sendPacket(0, (byte) button);
 			}
 			int i = 0;
 			while (i < 3) {
-				if ((this.mode == 1 || i == 1) && this.inRect(x, y, this.getControlRect(i))) {
+				if ((mode == 1 || i == 1) && inRect(x, y, getControlRect(i))) {
 					if (i == 1) {
-						this.sendPacket(1, (byte) button);
+						sendPacket(1, (byte) button);
 						break;
 					}
 					byte encodedData = (byte) ((i != 0) ? 1 : 0);
@@ -200,7 +200,7 @@ public abstract class ModuleRecipe extends ModuleAddon {
 					} else if (GuiScreen.isShiftKeyDown()) {
 						encodedData |= 0x4;
 					}
-					this.sendPacket(2, encodedData);
+					sendPacket(2, encodedData);
 					break;
 				} else {
 					++i;
@@ -211,22 +211,22 @@ public abstract class ModuleRecipe extends ModuleAddon {
 
 	@Override
 	protected int numberOfPackets() {
-		return this.canUseAdvancedFeatures() ? 3 : 0;
+		return canUseAdvancedFeatures() ? 3 : 0;
 	}
 
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
-		if (this.canUseAdvancedFeatures()) {
+		if (canUseAdvancedFeatures()) {
 			if (id == 0) {
-				this.dirty = true;
-				this.changeTarget(data[0] == 0);
+				dirty = true;
+				changeTarget(data[0] == 0);
 			} else if (id == 1) {
 				if (data[0] == 0) {
-					if (++this.mode > 2) {
-						this.mode = 0;
+					if (++mode > 2) {
+						mode = 0;
 					}
-				} else if (--this.mode < 0) {
-					this.mode = 2;
+				} else if (--mode < 0) {
+					mode = 2;
 				}
 			} else if (id == 2) {
 				int dif = ((data[0] & 0x1) == 0x0) ? 1 : -1;
@@ -235,103 +235,103 @@ public abstract class ModuleRecipe extends ModuleAddon {
 				} else if ((data[0] & 0x4) != 0x0) {
 					dif *= 10;
 				}
-				this.maxItemCount = Math.min(Math.max(1, this.maxItemCount + dif), 999);
+				maxItemCount = Math.min(Math.max(1, maxItemCount + dif), 999);
 			}
 		}
 	}
 
 	private void changeTarget(final boolean up) {
 		if (!up) {
-			if (--this.target < 0) {
-				this.target = TileEntityCargo.itemSelections.size() - 1;
+			if (--target < 0) {
+				target = TileEntityCargo.itemSelections.size() - 1;
 			}
-		} else if (++this.target >= TileEntityCargo.itemSelections.size()) {
-			this.target = 0;
+		} else if (++target >= TileEntityCargo.itemSelections.size()) {
+			target = 0;
 		}
-		if (this.isTargetInvalid()) {
-			this.changeTarget(up);
+		if (isTargetInvalid()) {
+			changeTarget(up);
 		}
 	}
 
 	protected abstract boolean canUseAdvancedFeatures();
 
 	protected Class getValidSlot() {
-		if (this.isTargetInvalid()) {
+		if (isTargetInvalid()) {
 			return null;
 		}
-		return TileEntityCargo.itemSelections.get(this.target).getValidSlot();
+		return TileEntityCargo.itemSelections.get(target).getValidSlot();
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		if (this.canUseAdvancedFeatures()) {
-			this.target = tagCompound.getByte(this.generateNBTName("Target", id));
-			this.mode = tagCompound.getByte(this.generateNBTName("Mode", id));
-			this.maxItemCount = tagCompound.getShort(this.generateNBTName("MaxItems", id));
+		if (canUseAdvancedFeatures()) {
+			target = tagCompound.getByte(generateNBTName("Target", id));
+			mode = tagCompound.getByte(generateNBTName("Mode", id));
+			maxItemCount = tagCompound.getShort(generateNBTName("MaxItems", id));
 		}
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		if (this.canUseAdvancedFeatures()) {
-			tagCompound.setByte(this.generateNBTName("Target", id), (byte) this.target);
-			tagCompound.setByte(this.generateNBTName("Mode", id), (byte) this.mode);
-			tagCompound.setShort(this.generateNBTName("MaxItems", id), (short) this.maxItemCount);
+		if (canUseAdvancedFeatures()) {
+			tagCompound.setByte(generateNBTName("Target", id), (byte) target);
+			tagCompound.setByte(generateNBTName("Mode", id), (byte) mode);
+			tagCompound.setShort(generateNBTName("MaxItems", id), (short) maxItemCount);
 		}
 	}
 
 	protected void prepareLists() {
-		if (this.inputSlots == null) {
-			this.inputSlots = new ArrayList<>();
-			for (final ModuleBase module : this.getCart().getModules()) {
+		if (inputSlots == null) {
+			inputSlots = new ArrayList<>();
+			for (final ModuleBase module : getCart().getModules()) {
 				if (module.getSlots() != null) {
 					for (final SlotBase slot : module.getSlots()) {
 						if (slot instanceof SlotChest) {
-							this.inputSlots.add(slot);
+							inputSlots.add(slot);
 						}
 					}
 				}
 			}
 		}
-		if (this.dirty) {
-			this.allTheSlots.clear();
-			this.outputSlots.clear();
-			final Class validSlot = this.getValidSlot();
-			for (final ModuleBase module2 : this.getCart().getModules()) {
+		if (dirty) {
+			allTheSlots.clear();
+			outputSlots.clear();
+			final Class validSlot = getValidSlot();
+			for (final ModuleBase module2 : getCart().getModules()) {
 				if (module2.getSlots() != null) {
 					for (final SlotBase slot2 : module2.getSlots()) {
 						if (validSlot.isInstance(slot2)) {
-							this.outputSlots.add(slot2);
-							this.allTheSlots.add(slot2);
+							outputSlots.add(slot2);
+							allTheSlots.add(slot2);
 						} else {
 							if (!(slot2 instanceof SlotChest)) {
 								continue;
 							}
-							this.allTheSlots.add(slot2);
+							allTheSlots.add(slot2);
 						}
 					}
 				}
 			}
-			this.dirty = false;
+			dirty = false;
 		}
 	}
 
 	protected boolean canCraftMoreOfResult(
 		@Nonnull
 			ItemStack result) {
-		if (this.mode == 0) {
+		if (mode == 0) {
 			return true;
 		}
-		if (this.mode == 2) {
+		if (mode == 2) {
 			return false;
 		}
 		int count = 0;
-		for (int i = 0; i < this.outputSlots.size(); ++i) {
+		for (int i = 0; i < outputSlots.size(); ++i) {
 			@Nonnull
-			ItemStack item = this.outputSlots.get(i).getStack();
+			ItemStack item = outputSlots.get(i).getStack();
 			if (!item.isEmpty() && item.isItemEqual(result) && ItemStack.areItemStackTagsEqual(item, result)) {
 				count += item.getCount();
-				if (count >= this.maxItemCount) {
+				if (count >= maxItemCount) {
 					return false;
 				}
 			}

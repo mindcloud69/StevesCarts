@@ -14,7 +14,7 @@ public class ModelHull extends ModelCartbase {
 
 	@Override
 	public ResourceLocation getResource(final ModuleBase module) {
-		return this.resource;
+		return resource;
 	}
 
 	@Override
@@ -29,11 +29,11 @@ public class ModelHull extends ModelCartbase {
 		final ModelRenderer left = new ModelRenderer(this, 0, 18);
 		final ModelRenderer right = new ModelRenderer(this, 0, 18);
 		final ModelRenderer back = new ModelRenderer(this, 0, 18);
-		this.AddRenderer(bot);
-		this.AddRenderer(front);
-		this.AddRenderer(left);
-		this.AddRenderer(right);
-		this.AddRenderer(back);
+		AddRenderer(bot);
+		AddRenderer(front);
+		AddRenderer(left);
+		AddRenderer(right);
+		AddRenderer(back);
 		bot.addBox(-10.0f, -8.0f, -1.0f, 20, 16, 2, 0.0f);
 		bot.setRotationPoint(0.0f, 4.0f, 0.0f);
 		front.addBox(-8.0f, -9.0f, -1.0f, 16, 8, 2, 0.0f);

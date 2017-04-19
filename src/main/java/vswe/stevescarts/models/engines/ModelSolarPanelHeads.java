@@ -35,10 +35,10 @@ public class ModelSolarPanelHeads extends ModelSolarPanel {
 	}
 
 	public ModelSolarPanelHeads(final int panelCount) {
-		this.panels = new ArrayList<>();
-		final ModelRenderer moving = this.createMovingHolder(0, 0);
+		panels = new ArrayList<>();
+		final ModelRenderer moving = createMovingHolder(0, 0);
 		for (int i = 0; i < panelCount; ++i) {
-			this.createPanel(moving, i);
+			createPanel(moving, i);
 		}
 	}
 
@@ -70,23 +70,23 @@ public class ModelSolarPanelHeads extends ModelSolarPanel {
 				return;
 			}
 		}
-		this.createPanel(base, rotation, f);
+		createPanel(base, rotation, f);
 	}
 
 	private void createPanel(final ModelRenderer base, final float rotation, final float f) {
 		final ModelRenderer panel = new ModelRenderer(this, 0, 0);
-		this.fixSize(panel);
+		fixSize(panel);
 		base.addChild(panel);
 		panel.addBox(-6.0f, 0.0f, -2.0f, 12, 13, 2, 0.0f);
 		panel.setRotationPoint((float) Math.sin(rotation) * f, -5.0f, (float) Math.cos(rotation) * f);
 		panel.rotateAngleY = rotation;
-		this.panels.add(panel);
+		panels.add(panel);
 	}
 
 	@Override
 	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
 		super.applyEffects(module, yaw, pitch, roll);
-		for (final ModelRenderer panel : this.panels) {
+		for (final ModelRenderer panel : panels) {
 			panel.rotateAngleX = ((module == null) ? 0.0f : (-((ModuleSolarTop) module).getInnerRotation()));
 		}
 	}

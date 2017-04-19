@@ -5,18 +5,18 @@ public class TrackEditor extends Track {
 
 	public TrackEditor(final TrackOrientation orientation) {
 		super(0, 0, orientation);
-		this.type = 0;
+		type = 0;
 	}
 
 	@Override
 	public Track copy() {
-		final TrackEditor newTrack = new TrackEditor(this.getOrientation());
-		newTrack.type = this.type;
+		final TrackEditor newTrack = new TrackEditor(getOrientation());
+		newTrack.type = type;
 		return newTrack;
 	}
 
 	public Track getRealTrack(final int x, final int y) {
-		return getRealTrack(x, y, this.type, this.getOrientation());
+		return getRealTrack(x, y, type, getOrientation());
 	}
 
 	public static Track getRealTrack(final int x, final int y, final int type, final TrackOrientation orientation) {
@@ -35,18 +35,18 @@ public class TrackEditor extends Track {
 
 	@Override
 	public int getU() {
-		return this.type;
+		return type;
 	}
 
 	public int getType() {
-		return this.type;
+		return type;
 	}
 
 	public void setType(final int val) {
-		this.type = val;
+		type = val;
 	}
 
 	public void nextType() {
-		this.type = (this.type + 1) % 3;
+		type = (type + 1) % 3;
 	}
 }

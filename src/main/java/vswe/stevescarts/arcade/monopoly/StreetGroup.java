@@ -10,10 +10,10 @@ public class StreetGroup extends PropertyGroup {
 	}
 
 	public float[] getColor() {
-		return this.color;
+		return color;
 	}
 
 	public int getStructureCost() {
-		return this.houseCost;
+		return houseCost;
 	}
 }

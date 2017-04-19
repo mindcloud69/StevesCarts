@@ -12,7 +12,7 @@ public class Recharger extends RechargerBase {
 
 	@Override
 	protected int getAmount(final TileEntityUpgrade upgrade) {
-		return this.amount;
+		return amount;
 	}
 
 	@Override
@@ -22,6 +22,6 @@ public class Recharger extends RechargerBase {
 
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.GENERATOR.translate(String.valueOf(this.amount), String.valueOf(this.amount));
+		return Localization.UPGRADES.GENERATOR.translate(String.valueOf(amount), String.valueOf(amount));
 	}
 }

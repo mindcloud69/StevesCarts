@@ -12,7 +12,7 @@ public class ModelPumpkinHullTop extends ModelHullTop {
 
 	@Override
 	public ResourceLocation getResource(final ModuleBase module) {
-		return (module == null || this.isActive(module)) ? this.resourceactive : this.resourceidle;
+		return (module == null || isActive(module)) ? resourceactive : resourceidle;
 	}
 
 	public ModelPumpkinHullTop(final ResourceLocation resourceactive, final ResourceLocation resourceidle) {

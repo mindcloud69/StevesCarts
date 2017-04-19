@@ -22,9 +22,9 @@ public class SCTank extends FluidTank {
 	}
 
 	public SCTank copy() {
-		final SCTank tank = new SCTank(this.owner, this.capacity, this.tankid);
-		if (this.getFluid() != null) {
-			tank.setFluid(this.getFluid().copy());
+		final SCTank tank = new SCTank(owner, capacity, tankid);
+		if (getFluid() != null) {
+			tank.setFluid(getFluid().copy());
 		}
 		return tank;
 	}
@@ -35,7 +35,7 @@ public class SCTank extends FluidTank {
 
 	public void containerTransfer() {
 		@Nonnull
-		ItemStack item = this.owner.getInputContainer(this.tankid);
+		ItemStack item = owner.getInputContainer(tankid);
 		if (!item.isEmpty()) {
 			FluidUtil.tryFillContainer(item, this, 1000, null, true);
 			FluidUtil.tryEmptyContainer(item, this, 1000, null, true);
@@ -43,29 +43,29 @@ public class SCTank extends FluidTank {
 	}
 
 	public void setLocked(final boolean val) {
-		this.isLocked = val;
+		isLocked = val;
 	}
 
 	public boolean isLocked() {
-		return this.isLocked;
+		return isLocked;
 	}
 
 	public String getMouseOver() {
 		String name = Localization.MODULES.TANKS.EMPTY.translate();
 		int amount = 0;
-		if (this.fluid != null) {
-			name = this.fluid.getFluid().getLocalizedName(fluid);
+		if (fluid != null) {
+			name = fluid.getFluid().getLocalizedName(fluid);
 			if (name.indexOf(".") != -1) {
-				name = FluidRegistry.getFluidName(this.fluid);
+				name = FluidRegistry.getFluidName(fluid);
 			}
 			if (name != null && !name.equals("")) {
 				name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
 			} else {
 				name = Localization.MODULES.TANKS.INVALID.translate();
 			}
-			amount = this.fluid.amount;
+			amount = fluid.amount;
 		}
-		return name + "\n" + this.formatNumber(amount) + " / " + this.formatNumber(this.capacity);
+		return name + "\n" + formatNumber(amount) + " / " + formatNumber(capacity);
 	}
 
 	private String formatNumber(final int number) {
@@ -104,11 +104,11 @@ public class SCTank extends FluidTank {
 
 	@Override
 	public int getFluidAmount() {
-		return (this.fluid == null) ? 0 : this.fluid.amount;
+		return (fluid == null) ? 0 : fluid.amount;
 	}
 
 	@Override
 	public FluidTankInfo getInfo() {
-		return new FluidTankInfo(this.fluid, this.getCapacity());
+		return new FluidTankInfo(fluid, getCapacity());
 	}
 }

@@ -29,9 +29,9 @@ public abstract class GuiBase extends GuiContainer {
 
 	public GuiBase(final Container container) {
 		super(container);
-		this.myOwnEventButton = 0;
-		this.myOwnTimeyWhineyThingy = 0L;
-		this.myOwnTouchpadTimeWhineyThingy = 0;
+		myOwnEventButton = 0;
+		myOwnTimeyWhineyThingy = 0L;
+		myOwnTouchpadTimeWhineyThingy = 0;
 	}
 
 	public void drawMouseOver(final String str, final int x, final int y) {
@@ -40,7 +40,7 @@ public abstract class GuiBase extends GuiContainer {
 		for (int i = 0; i < split.length; ++i) {
 			text.add(split[i]);
 		}
-		this.drawMouseOver(text, x, y);
+		drawMouseOver(text, x, y);
 	}
 
 	public boolean inRect(final int x, final int y, final int[] coords) {
@@ -52,7 +52,7 @@ public abstract class GuiBase extends GuiContainer {
 		GL11.glDisable(2929);
 		int var5 = 0;
 		for (final String var7 : text) {
-			final int var8 = this.getFontRenderer().getStringWidth(var7);
+			final int var8 = getFontRenderer().getStringWidth(var7);
 			if (var8 > var5) {
 				var5 = var8;
 			}
@@ -63,71 +63,71 @@ public abstract class GuiBase extends GuiContainer {
 		if (text.size() > 1) {
 			var11 += 2 + (text.size() - 1) * 10;
 		}
-		this.zLevel = 300.0f;
+		zLevel = 300.0f;
 		//GuiBase.itemRender.zLevel = 300.0f;
 		final int var12 = -267386864;
-		this.drawGradientRect(var9 - 3, var10 - 4, var9 + var5 + 3, var10 - 3, var12, var12);
-		this.drawGradientRect(var9 - 3, var10 + var11 + 3, var9 + var5 + 3, var10 + var11 + 4, var12, var12);
-		this.drawGradientRect(var9 - 3, var10 - 3, var9 + var5 + 3, var10 + var11 + 3, var12, var12);
-		this.drawGradientRect(var9 - 4, var10 - 3, var9 - 3, var10 + var11 + 3, var12, var12);
-		this.drawGradientRect(var9 + var5 + 3, var10 - 3, var9 + var5 + 4, var10 + var11 + 3, var12, var12);
+		drawGradientRect(var9 - 3, var10 - 4, var9 + var5 + 3, var10 - 3, var12, var12);
+		drawGradientRect(var9 - 3, var10 + var11 + 3, var9 + var5 + 3, var10 + var11 + 4, var12, var12);
+		drawGradientRect(var9 - 3, var10 - 3, var9 + var5 + 3, var10 + var11 + 3, var12, var12);
+		drawGradientRect(var9 - 4, var10 - 3, var9 - 3, var10 + var11 + 3, var12, var12);
+		drawGradientRect(var9 + var5 + 3, var10 - 3, var9 + var5 + 4, var10 + var11 + 3, var12, var12);
 		final int var13 = 1347420415;
 		final int var14 = (var13 & 0xFEFEFE) >> 1 | (var13 & 0xFF000000);
-		this.drawGradientRect(var9 - 3, var10 - 3 + 1, var9 - 3 + 1, var10 + var11 + 3 - 1, var13, var14);
-		this.drawGradientRect(var9 + var5 + 2, var10 - 3 + 1, var9 + var5 + 3, var10 + var11 + 3 - 1, var13, var14);
-		this.drawGradientRect(var9 - 3, var10 - 3, var9 + var5 + 3, var10 - 3 + 1, var13, var13);
-		this.drawGradientRect(var9 - 3, var10 + var11 + 2, var9 + var5 + 3, var10 + var11 + 3, var14, var14);
+		drawGradientRect(var9 - 3, var10 - 3 + 1, var9 - 3 + 1, var10 + var11 + 3 - 1, var13, var14);
+		drawGradientRect(var9 + var5 + 2, var10 - 3 + 1, var9 + var5 + 3, var10 + var11 + 3 - 1, var13, var14);
+		drawGradientRect(var9 - 3, var10 - 3, var9 + var5 + 3, var10 - 3 + 1, var13, var13);
+		drawGradientRect(var9 - 3, var10 + var11 + 2, var9 + var5 + 3, var10 + var11 + 3, var14, var14);
 		for (int var15 = 0; var15 < text.size(); ++var15) {
 			final String var16 = text.get(var15);
-			this.getFontRenderer().drawStringWithShadow(var16, var9, var10, -1);
+			getFontRenderer().drawStringWithShadow(var16, var9, var10, -1);
 			if (var15 == 0) {
 				var10 += 2;
 			}
 			var10 += 10;
 		}
-		this.zLevel = 0.0f;
+		zLevel = 0.0f;
 		//GuiBase.itemRender.zLevel = 0.0f;
 		GL11.glEnable(2929);
 		GL11.glEnable(2896);
 	}
 
 	public Minecraft getMinecraft() {
-		return this.mc;
+		return mc;
 	}
 
 	public FontRenderer getFontRenderer() {
-		return this.fontRendererObj;
+		return fontRendererObj;
 	}
 
 	public void setXSize(final int val) {
-		this.xSize = val;
-		this.guiLeft = (this.width - this.xSize) / 2;
+		xSize = val;
+		guiLeft = (width - xSize) / 2;
 	}
 
 	public void setYSize(final int val) {
-		this.ySize = val;
-		this.guiTop = (this.height - this.ySize) / 2;
+		ySize = val;
+		guiTop = (height - ySize) / 2;
 	}
 
 	public int getXSize() {
-		return this.xSize;
+		return xSize;
 	}
 
 	public int getYSize() {
-		return this.ySize;
+		return ySize;
 	}
 
 	public int getGuiLeft() {
-		return this.guiLeft;
+		return guiLeft;
 	}
 
 	public int getGuiTop() {
-		return this.guiTop;
+		return guiTop;
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int x, final int y) {
-		this.drawGuiForeground(x, y);
+		drawGuiForeground(x, y);
 	}
 
 	public void drawGuiForeground(final int x, final int y) {
@@ -136,37 +136,37 @@ public abstract class GuiBase extends GuiContainer {
 	@Override
 	public void drawDefaultBackground() {
 		super.drawDefaultBackground();
-		this.startScaling();
+		startScaling();
 	}
 
 	private int scaleX(float x) {
-		final float scale = this.getScale();
+		final float scale = getScale();
 		x /= scale;
-		x += this.getGuiLeft();
-		x -= (this.width - this.xSize * scale) / (2.0f * scale);
+		x += getGuiLeft();
+		x -= (width - xSize * scale) / (2.0f * scale);
 		return (int) x;
 	}
 
 	private int scaleY(float y) {
-		final float scale = this.getScale();
+		final float scale = getScale();
 		y /= scale;
-		y += this.getGuiTop();
-		y -= (this.height - this.ySize * scale) / (2.0f * scale);
+		y += getGuiTop();
+		y -= (height - ySize * scale) / (2.0f * scale);
 		return (int) y;
 	}
 
 	@Override
 	public void drawScreen(final int x, final int y, final float f) {
-		super.drawScreen(this.scaleX(x), this.scaleY(y), f);
-		this.stopScaling();
+		super.drawScreen(scaleX(x), scaleY(y), f);
+		stopScaling();
 	}
 
 	protected float getScale() {
-		final ScaledResolution scaledresolution = new ScaledResolution(this.mc);
+		final ScaledResolution scaledresolution = new ScaledResolution(mc);
 		final float w = scaledresolution.getScaledWidth() * 0.9f;
 		final float h = scaledresolution.getScaledHeight() * 0.9f;
-		final float multX = w / this.getXSize();
-		final float multY = h / this.getYSize();
+		final float multX = w / getXSize();
+		final float multY = h / getYSize();
 		float mult = Math.min(multX, multY);
 		if (mult > 1.0f) {
 			mult = 1.0f;
@@ -176,10 +176,10 @@ public abstract class GuiBase extends GuiContainer {
 
 	private void startScaling() {
 		GL11.glPushMatrix();
-		final float scale = this.getScale();
+		final float scale = getScale();
 		GL11.glScalef(scale, scale, 1.0f);
-		GL11.glTranslatef((-this.guiLeft), (-this.guiTop), 0.0f);
-		GL11.glTranslatef((this.width - this.xSize * scale) / (2.0f * scale), (this.height - this.ySize * scale) / (2.0f * scale), 0.0f);
+		GL11.glTranslatef((-guiLeft), (-guiTop), 0.0f);
+		GL11.glTranslatef((width - xSize * scale) / (2.0f * scale), (height - ySize * scale) / (2.0f * scale), 0.0f);
 	}
 
 	private void stopScaling() {
@@ -188,7 +188,7 @@ public abstract class GuiBase extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(final float f, final int x, final int y) {
-		this.drawGuiBackground(f, x, y);
+		drawGuiBackground(f, x, y);
 	}
 
 	public void drawGuiBackground(final float f, final int x, final int y) {
@@ -196,63 +196,63 @@ public abstract class GuiBase extends GuiContainer {
 
 	@Override
 	protected void mouseClicked(int x, int y, final int button) throws IOException {
-		x = this.scaleX(x);
-		y = this.scaleY(y);
+		x = scaleX(x);
+		y = scaleY(y);
 		super.mouseClicked(x, y, button);
-		this.mouseClick(x, y, button);
+		mouseClick(x, y, button);
 	}
 
 	public void mouseClick(final int x, final int y, final int button) {
 	}
 
 	protected void mouseMovedOrUp(int x, int y, final int button) {
-		x = this.scaleX(x);
-		y = this.scaleY(y);
+		x = scaleX(x);
+		y = scaleY(y);
 		//super.mouseMovedOrUp(x, y, button);
-		this.mouseMoved(x, y, button);
-		this.mouseDraged(x, y, button);
+		mouseMoved(x, y, button);
+		mouseDraged(x, y, button);
 	}
 
 	@Override
 	public void handleMouseInput() throws IOException {
-		final int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
-		final int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		final int mouseX = Mouse.getEventX() * width / mc.displayWidth;
+		final int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 		if (Mouse.getEventButtonState()) {
-			if (this.mc.gameSettings.touchscreen && this.myOwnTouchpadTimeWhineyThingy++ > 0) {
+			if (mc.gameSettings.touchscreen && myOwnTouchpadTimeWhineyThingy++ > 0) {
 				return;
 			}
-			this.myOwnEventButton = Mouse.getEventButton();
-			this.myOwnTimeyWhineyThingy = Minecraft.getSystemTime();
-			this.mouseClicked(mouseX, mouseY, this.myOwnEventButton);
+			myOwnEventButton = Mouse.getEventButton();
+			myOwnTimeyWhineyThingy = Minecraft.getSystemTime();
+			mouseClicked(mouseX, mouseY, myOwnEventButton);
 		} else if (Mouse.getEventButton() != -1) {
-			if (this.mc.gameSettings.touchscreen && --this.myOwnTouchpadTimeWhineyThingy > 0) {
+			if (mc.gameSettings.touchscreen && --myOwnTouchpadTimeWhineyThingy > 0) {
 				return;
 			}
-			this.myOwnEventButton = -1;
-			this.mouseReleased(mouseX, mouseY, Mouse.getEventButton());
-			this.mouseMovedOrUp(mouseX, mouseY, Mouse.getEventButton());
-		} else if (this.myOwnEventButton != -1 && this.myOwnTimeyWhineyThingy > 0L) {
-			final long k = Minecraft.getSystemTime() - this.myOwnTimeyWhineyThingy;
-			this.mouseClickMove(mouseX, mouseY, this.myOwnEventButton, k);
+			myOwnEventButton = -1;
+			mouseReleased(mouseX, mouseY, Mouse.getEventButton());
+			mouseMovedOrUp(mouseX, mouseY, Mouse.getEventButton());
+		} else if (myOwnEventButton != -1 && myOwnTimeyWhineyThingy > 0L) {
+			final long k = Minecraft.getSystemTime() - myOwnTimeyWhineyThingy;
+			mouseClickMove(mouseX, mouseY, myOwnEventButton, k);
 		} else {
-			this.mouseMovedOrUp(mouseX, mouseY, -1);
+			mouseMovedOrUp(mouseX, mouseY, -1);
 		}
 	}
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		mouseX = this.scaleX(mouseX);
-		mouseY = this.scaleY(mouseY);
+		mouseX = scaleX(mouseX);
+		mouseY = scaleY(mouseY);
 		super.mouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override
 	protected void mouseClickMove(int x, int y, final int button, final long timeSinceClick) {
-		x = this.scaleX(x);
-		y = this.scaleY(y);
+		x = scaleX(x);
+		y = scaleY(y);
 		super.mouseClickMove(x, y, button, timeSinceClick);
-		this.mouseMoved(x, y, -1);
-		this.mouseDraged(x, y, button);
+		mouseMoved(x, y, -1);
+		mouseDraged(x, y, button);
 	}
 
 	public void mouseMoved(final int x, final int y, final int button) {
@@ -263,10 +263,10 @@ public abstract class GuiBase extends GuiContainer {
 
 	@Override
 	protected void keyTyped(final char character, final int extraInformation) throws IOException {
-		if (extraInformation == 1 || !this.disableStandardKeyFunctionality()) {
+		if (extraInformation == 1 || !disableStandardKeyFunctionality()) {
 			super.keyTyped(character, extraInformation);
 		}
-		this.keyPress(character, extraInformation);
+		keyPress(character, extraInformation);
 	}
 
 	public boolean disableStandardKeyFunctionality() {
@@ -287,7 +287,7 @@ public abstract class GuiBase extends GuiContainer {
 	}
 
 	public float getZLevel() {
-		return this.zLevel;
+		return zLevel;
 	}
 
 	//	public void drawIcon(final IIcon icon, final int targetX, final int targetY, final float sizeX, final float sizeY, final float offsetX, final float offsetY) {
@@ -388,10 +388,10 @@ public abstract class GuiBase extends GuiContainer {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexbuffer = tessellator.getBuffer();
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vertexbuffer.pos((x + 0), y + h, this.zLevel).tex(pt1[0], pt1[1]).endVertex();
-		vertexbuffer.pos((x + w), y + h, this.zLevel).tex(pt2[0], pt2[1]).endVertex();
-		vertexbuffer.pos((x + w), y + 0, this.zLevel).tex(pt3[0], pt3[1]).endVertex();
-		vertexbuffer.pos((x + 0), y + 0, this.zLevel).tex(pt4[0], pt4[1]).endVertex();
+		vertexbuffer.pos((x + 0), y + h, zLevel).tex(pt1[0], pt1[1]).endVertex();
+		vertexbuffer.pos((x + w), y + h, zLevel).tex(pt2[0], pt2[1]).endVertex();
+		vertexbuffer.pos((x + w), y + 0, zLevel).tex(pt3[0], pt3[1]).endVertex();
+		vertexbuffer.pos((x + 0), y + 0, zLevel).tex(pt4[0], pt4[1]).endVertex();
 		tessellator.draw();
 	}
 

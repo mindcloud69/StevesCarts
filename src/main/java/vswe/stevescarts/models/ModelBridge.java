@@ -59,12 +59,12 @@ public class ModelBridge extends ModelCartbase {
 
 	public ModelBridge() {
 		final ModelRenderer side1 = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(side1);
+		AddRenderer(side1);
 		side1.addBox(1.0f, 3.0f, 0.5f, 2, 6, 1, 0.0f);
 		side1.setRotationPoint(-11.5f, -6.0f, 8.0f);
 		side1.rotateAngleY = 1.5707964f;
 		final ModelRenderer side2 = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(side2);
+		AddRenderer(side2);
 		side2.addBox(1.0f, 3.0f, 0.5f, 2, 6, 1, 0.0f);
 		side2.setRotationPoint(-11.5f, -6.0f, -4.0f);
 		side2.rotateAngleY = 1.5707964f;

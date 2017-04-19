@@ -16,7 +16,7 @@ public class BlockActivator extends BlockContainerBase {
 
 	public BlockActivator() {
 		super(Material.ROCK);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	@Override

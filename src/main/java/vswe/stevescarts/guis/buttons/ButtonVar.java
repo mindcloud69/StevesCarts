@@ -13,9 +13,9 @@ public abstract class ButtonVar extends ButtonAssembly {
 		if (!super.isVisible()) {
 			return false;
 		}
-		if (((ModuleComputer) this.module).getSelectedTasks() != null && ((ModuleComputer) this.module).getSelectedTasks().size() > 0) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-				if (!ComputerTask.isVar(task.getType()) || task.isVarEmpty() || (this.isSecondValue() && !task.hasTwoValues())) {
+		if (((ModuleComputer) module).getSelectedTasks() != null && ((ModuleComputer) module).getSelectedTasks().size() > 0) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+				if (!ComputerTask.isVar(task.getType()) || task.isVarEmpty() || (isSecondValue() && !task.hasTwoValues())) {
 					return false;
 				}
 			}

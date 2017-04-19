@@ -51,7 +51,7 @@ public class Disassemble extends InventoryEffect {
 
 	@Override
 	public void load(final TileEntityUpgrade upgrade, final NBTTagCompound compound) {
-		this.setLastCart(upgrade, upgrade.getStackInSlot(0));
+		setLastCart(upgrade, upgrade.getStackInSlot(0));
 	}
 
 	@Override
@@ -63,9 +63,9 @@ public class Disassemble extends InventoryEffect {
 	public void onInventoryChanged(final TileEntityUpgrade upgrade) {
 		@Nonnull
 		ItemStack cart = upgrade.getStackInSlot(0);
-		if (!this.updateCart(upgrade, cart)) {
+		if (!updateCart(upgrade, cart)) {
 			boolean needsToPuke = true;
-			for (int i = 1; i < this.getInventorySize(); ++i) {
+			for (int i = 1; i < getInventorySize(); ++i) {
 				if (upgrade.getStackInSlot(i).isEmpty()) {
 					@Nonnull
 					ItemStack item = upgrade.getStackInSlot(0);
@@ -86,7 +86,7 @@ public class Disassemble extends InventoryEffect {
 
 	@Override
 	public void removed(final TileEntityUpgrade upgrade) {
-		this.updateCart(upgrade, null);
+		updateCart(upgrade, null);
 	}
 
 	private void resetMaster(final TileEntityCartAssembler master, final boolean full) {
@@ -124,17 +124,17 @@ public class Disassemble extends InventoryEffect {
 		                           ItemStack cart) {
 		if (upgrade.getMaster() != null) {
 			if (cart.isEmpty() || cart.getItem() != ModItems.carts || cart.getTagCompound() == null || cart.getTagCompound().hasKey("maxTime")) {
-				this.resetMaster(upgrade.getMaster(), false);
-				this.setLastCart(upgrade, ItemStack.EMPTY);
+				resetMaster(upgrade.getMaster(), false);
+				setLastCart(upgrade, ItemStack.EMPTY);
 				if (!cart.isEmpty()) {
 					upgrade.getMaster().puke(cart);
 					upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 				}
 			} else {
 				@Nonnull
-				ItemStack last = this.getLastCart(upgrade);
-				this.setLastCart(upgrade, cart);
-				int result = this.canDisassemble(upgrade);
+				ItemStack last = getLastCart(upgrade);
+				setLastCart(upgrade, cart);
+				int result = canDisassemble(upgrade);
 				boolean reset = false;
 				if (result > 0 && !last.isEmpty() && !ItemStack.areItemStacksEqual(cart, last)) {
 					result = 2;
@@ -144,7 +144,7 @@ public class Disassemble extends InventoryEffect {
 					return result == 1 && !upgrade.getMaster().getStackInSlot(0).isEmpty();
 				}
 				if (reset) {
-					this.resetMaster(upgrade.getMaster(), true);
+					resetMaster(upgrade.getMaster(), true);
 				}
 				boolean addedHull = false;
 				final NonNullList<ItemStack> modules = ModuleData.getModularItems(cart);

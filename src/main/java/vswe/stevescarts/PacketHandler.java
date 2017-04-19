@@ -61,9 +61,9 @@ public class PacketHandler {
 					data2[j] = reader.readByte();
 				}
 				final World world2 = player.world;
-				final EntityMinecartModular cart = this.getCart(entityid, world2);
+				final EntityMinecartModular cart = getCart(entityid, world2);
 				if (cart != null) {
-					this.receivePacketAtCart(cart, id, data2, player);
+					receivePacketAtCart(cart, id, data2, player);
 				}
 			}
 		} catch (Exception ex) {
@@ -87,9 +87,9 @@ public class PacketHandler {
 				for (int i = 0; i < len; ++i) {
 					data[i] = reader.readByte();
 				}
-				final EntityMinecartModular cart = this.getCart(entityid, world);
+				final EntityMinecartModular cart = getCart(entityid, world);
 				if (cart != null) {
-					this.receivePacketAtCart(cart, id, data, player);
+					receivePacketAtCart(cart, id, data, player);
 				}
 			} else {
 				final int len2 = bytes.length - 1;
@@ -101,7 +101,7 @@ public class PacketHandler {
 				if (con instanceof ContainerMinecart) {
 					final ContainerMinecart conMC = (ContainerMinecart) con;
 					final EntityMinecartModular cart2 = conMC.cart;
-					this.receivePacketAtCart(cart2, id, data2, player);
+					receivePacketAtCart(cart2, id, data2, player);
 				} else if (con instanceof ContainerBase) {
 					final ContainerBase conBase = (ContainerBase) con;
 					final TileEntityBase base = conBase.getTileEntity();

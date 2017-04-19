@@ -17,7 +17,7 @@ public class SlotFuel extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return this.getItemBurnTime(itemstack) > 0;
+		return getItemBurnTime(itemstack) > 0;
 	}
 
 	private boolean isValid(
@@ -29,7 +29,7 @@ public class SlotFuel extends SlotBase {
 	private int getItemBurnTime(
 		@Nonnull
 			ItemStack itemstack) {
-		return this.isValid(itemstack) ? TileEntityFurnace.getItemBurnTime(itemstack) : 0;
+		return isValid(itemstack) ? TileEntityFurnace.getItemBurnTime(itemstack) : 0;
 	}
 
 	public static int getItemBurnTime(final ModuleCoalBase engine,

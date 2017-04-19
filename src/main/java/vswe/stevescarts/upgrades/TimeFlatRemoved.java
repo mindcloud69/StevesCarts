@@ -9,6 +9,6 @@ public class TimeFlatRemoved extends TimeFlat {
 
 	@Override
 	public String getName() {
-		return Localization.UPGRADES.FLAT_REMOVED.translate(((this.getSeconds() >= 0) ? "+" : "") + this.getSeconds(), String.valueOf(this.getSeconds()));
+		return Localization.UPGRADES.FLAT_REMOVED.translate(((getSeconds() >= 0) ? "+" : "") + getSeconds(), String.valueOf(getSeconds()));
 	}
 }

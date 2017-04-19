@@ -19,7 +19,7 @@ public class CreativeTabSC2 extends CreativeTabs {
 	@SideOnly(Side.CLIENT)
 	@Nonnull
 	public ItemStack getIconItemStack() {
-		return this.item;
+		return item;
 	}
 
 	public void setIcon(

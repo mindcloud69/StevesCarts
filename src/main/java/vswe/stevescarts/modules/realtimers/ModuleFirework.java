@@ -24,16 +24,16 @@ public class ModuleFirework extends ModuleBase {
 
 	@Override
 	public void update() {
-		if (this.fireCooldown > 0) {
-			--this.fireCooldown;
+		if (fireCooldown > 0) {
+			--fireCooldown;
 		}
 	}
 
 	@Override
 	public void activatedByRail(final int x, final int y, final int z, final boolean active) {
-		if (active && this.fireCooldown == 0 && this.getCart().hasFuel()) {
-			this.fire();
-			this.fireCooldown = 20;
+		if (active && fireCooldown == 0 && getCart().hasFuel()) {
+			fire();
+			fireCooldown = 20;
 		}
 	}
 
@@ -44,22 +44,22 @@ public class ModuleFirework extends ModuleBase {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotFirework(this.getCart(), slotId, 8 + x * 18, 16 + y * 18);
+		return new SlotFirework(getCart(), slotId, 8 + x * 18, 16 + y * 18);
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
 	public int guiWidth() {
-		return 15 + this.getInventoryWidth() * 18;
+		return 15 + getInventoryWidth() * 18;
 	}
 
 	@Override
 	public int guiHeight() {
-		return 20 + this.getInventoryHeight() * 18;
+		return 20 + getInventoryHeight() * 18;
 	}
 
 	@Override
@@ -73,13 +73,13 @@ public class ModuleFirework extends ModuleBase {
 	}
 
 	public void fire() {
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
 		@Nonnull
-		ItemStack firework = this.getFirework();
+		ItemStack firework = getFirework();
 		if (!firework.isEmpty()) {
-			this.launchFirework(firework);
+			launchFirework(firework);
 		}
 	}
 
@@ -87,15 +87,15 @@ public class ModuleFirework extends ModuleBase {
 	private ItemStack getFirework() {
 		boolean hasGunpowder = false;
 		boolean hasPaper = false;
-		for (int i = 0; i < this.getInventorySize(); ++i) {
+		for (int i = 0; i < getInventorySize(); ++i) {
 			@Nonnull
-			ItemStack item = this.getStack(i);
+			ItemStack item = getStack(i);
 			if (!item.isEmpty()) {
 				if (item.getItem() == Items.FIREWORKS) {
 					@Nonnull
 					ItemStack firework = item.copy();
 					firework.setCount(1);
-					this.removeItemStack(item, firework.getCount(), i);
+					removeItemStack(item, firework.getCount(), i);
 					return firework;
 				}
 				if (item.getItem() == Items.PAPER) {
@@ -108,32 +108,32 @@ public class ModuleFirework extends ModuleBase {
 		if (hasPaper && hasGunpowder) {
 			@Nonnull
 			ItemStack firework2 = new ItemStack(Items.FIREWORKS);
-			final int maxGunpowder = this.getCart().rand.nextInt(3) + 1;
+			final int maxGunpowder = getCart().rand.nextInt(3) + 1;
 			int countGunpowder = 0;
 			boolean removedPaper = false;
-			for (int j = 0; j < this.getInventorySize(); ++j) {
+			for (int j = 0; j < getInventorySize(); ++j) {
 				@Nonnull
-				ItemStack item2 = this.getStack(j);
+				ItemStack item2 = getStack(j);
 				if (!item2.isEmpty()) {
 					if (item2.getItem() == Items.PAPER && !removedPaper) {
-						this.removeItemStack(item2, 1, j);
+						removeItemStack(item2, 1, j);
 						removedPaper = true;
 					} else if (item2.getItem() == Items.GUNPOWDER && countGunpowder < maxGunpowder) {
 						while (item2.getCount() > 0 && countGunpowder < maxGunpowder) {
 							++countGunpowder;
-							this.removeItemStack(item2, 1, j);
+							removeItemStack(item2, 1, j);
 						}
 					}
 				}
 			}
 			int chargeCount;
-			for (chargeCount = 1; chargeCount < 7 && this.getCart().rand.nextInt(3 + chargeCount / 3) == 0; ++chargeCount) {}
+			for (chargeCount = 1; chargeCount < 7 && getCart().rand.nextInt(3 + chargeCount / 3) == 0; ++chargeCount) {}
 			final NBTTagCompound itemstackNBT = new NBTTagCompound();
 			final NBTTagCompound fireworksNBT = new NBTTagCompound();
 			final NBTTagList explosionsNBT = new NBTTagList();
 			for (int k = 0; k < chargeCount; ++k) {
 				@Nonnull
-				ItemStack charge = this.getCharge();
+				ItemStack charge = getCharge();
 				if (charge.isEmpty()) {
 					break;
 				}
@@ -152,14 +152,14 @@ public class ModuleFirework extends ModuleBase {
 
 	@Nonnull
 	private ItemStack getCharge() {
-		for (int i = 0; i < this.getInventorySize(); ++i) {
+		for (int i = 0; i < getInventorySize(); ++i) {
 			@Nonnull
-			ItemStack item = this.getStack(i);
+			ItemStack item = getStack(i);
 			if (!item.isEmpty() && item.getItem() == Items.FIREWORK_CHARGE) {
 				@Nonnull
 				ItemStack charge = item.copy();
 				charge.setCount(1);
-				this.removeItemStack(item, charge.getCount(), i);
+				removeItemStack(item, charge.getCount(), i);
 				return charge;
 			}
 		}
@@ -169,42 +169,42 @@ public class ModuleFirework extends ModuleBase {
 		final NBTTagCompound explosionNBT = new NBTTagCompound();
 		byte type = 0;
 		boolean removedGunpowder = false;
-		final boolean canHasTrail = this.getCart().rand.nextInt(16) == 0;
-		final boolean canHasFlicker = this.getCart().rand.nextInt(8) == 0;
-		final boolean canHasModifier = this.getCart().rand.nextInt(4) == 0;
-		final byte modifierType = (byte) (this.getCart().rand.nextInt(4) + 1);
+		final boolean canHasTrail = getCart().rand.nextInt(16) == 0;
+		final boolean canHasFlicker = getCart().rand.nextInt(8) == 0;
+		final boolean canHasModifier = getCart().rand.nextInt(4) == 0;
+		final byte modifierType = (byte) (getCart().rand.nextInt(4) + 1);
 		boolean removedModifier = false;
 		boolean removedDiamond = false;
 		boolean removedGlow = false;
-		for (int j = 0; j < this.getInventorySize(); ++j) {
+		for (int j = 0; j < getInventorySize(); ++j) {
 			@Nonnull
-			ItemStack item2 = this.getStack(j);
+			ItemStack item2 = getStack(j);
 			if (item2 != null) {
 				if (item2.getItem() == Items.GUNPOWDER && !removedGunpowder) {
-					this.removeItemStack(item2, 1, j);
+					removeItemStack(item2, 1, j);
 					removedGunpowder = true;
 				} else if (item2.getItem() == Items.GLOWSTONE_DUST && canHasFlicker && !removedGlow) {
-					this.removeItemStack(item2, 1, j);
+					removeItemStack(item2, 1, j);
 					removedGlow = true;
 					explosionNBT.setBoolean("Flicker", true);
 				} else if (item2.getItem() == Items.DIAMOND && canHasTrail && !removedDiamond) {
-					this.removeItemStack(item2, 1, j);
+					removeItemStack(item2, 1, j);
 					removedDiamond = true;
 					explosionNBT.setBoolean("Trail", true);
 				} else if (canHasModifier && !removedModifier && ((item2.getItem() == Items.FIREWORK_CHARGE && modifierType == 1) || (item2.getItem() == Items.GOLD_NUGGET && modifierType == 2) || (item2.getItem() == Items.SKULL && modifierType == 3) || (item2.getItem() == Items.FEATHER && modifierType == 4))) {
-					this.removeItemStack(item2, 1, j);
+					removeItemStack(item2, 1, j);
 					removedModifier = true;
 					type = modifierType;
 				}
 			}
 		}
-		final int[] colors = this.generateColors((type != 0) ? 7 : 8);
+		final int[] colors = generateColors((type != 0) ? 7 : 8);
 		if (colors == null) {
 			return null;
 		}
 		explosionNBT.setIntArray("Colors", colors);
-		if (this.getCart().rand.nextInt(4) == 0) {
-			final int[] fade = this.generateColors(8);
+		if (getCart().rand.nextInt(4) == 0) {
+			final int[] fade = generateColors(8);
 			if (fade != null) {
 				explosionNBT.setIntArray("FadeColors", fade);
 			}
@@ -218,9 +218,9 @@ public class ModuleFirework extends ModuleBase {
 	private int[] generateColors(final int maxColorCount) {
 		final int[] maxColors = new int[16];
 		final int[] currentColors = new int[16];
-		for (int i = 0; i < this.getInventorySize(); ++i) {
+		for (int i = 0; i < getInventorySize(); ++i) {
 			@Nonnull
-			ItemStack item = this.getStack(i);
+			ItemStack item = getStack(i);
 			if (!item.isEmpty() && item.getItem() == Items.DYE) {
 				final int[] array = maxColors;
 				final int itemDamage = item.getItemDamage();
@@ -228,7 +228,7 @@ public class ModuleFirework extends ModuleBase {
 			}
 		}
 		int colorCount;
-		for (colorCount = this.getCart().rand.nextInt(2) + 1; colorCount <= maxColorCount - 2 && this.getCart().rand.nextInt(2) == 0; colorCount += 2) {}
+		for (colorCount = getCart().rand.nextInt(2) + 1; colorCount <= maxColorCount - 2 && getCart().rand.nextInt(2) == 0; colorCount += 2) {}
 		final ArrayList<Integer> colorPointers = new ArrayList<>();
 		for (int j = 0; j < 16; ++j) {
 			if (maxColors[j] > 0) {
@@ -240,7 +240,7 @@ public class ModuleFirework extends ModuleBase {
 		}
 		final ArrayList<Integer> usedColors = new ArrayList<>();
 		while (colorCount > 0 && colorPointers.size() > 0) {
-			final int pointerId = this.getCart().rand.nextInt(colorPointers.size());
+			final int pointerId = getCart().rand.nextInt(colorPointers.size());
 			final int colorId = colorPointers.get(pointerId);
 			final int[] array2 = currentColors;
 			final int n = colorId;
@@ -257,9 +257,9 @@ public class ModuleFirework extends ModuleBase {
 		for (int k = 0; k < colors.length; ++k) {
 			colors[k] = ItemDye.DYE_COLORS[usedColors.get(k)];
 		}
-		for (int k = 0; k < this.getInventorySize(); ++k) {
+		for (int k = 0; k < getInventorySize(); ++k) {
 			@Nonnull
-			ItemStack item2 = this.getStack(k);
+			ItemStack item2 = getStack(k);
 			if (!item2.isEmpty() && item2.getItem() == Items.DYE && currentColors[item2.getItemDamage()] > 0) {
 				final int count = Math.min(currentColors[item2.getItemDamage()], item2.getCount());
 				final int[] array4 = currentColors;
@@ -273,10 +273,10 @@ public class ModuleFirework extends ModuleBase {
 	private void removeItemStack(
 		@Nonnull
 			ItemStack item, final int count, final int id) {
-		if (!this.getCart().hasCreativeSupplies()) {
+		if (!getCart().hasCreativeSupplies()) {
 			item.shrink(count);
 			if (item.getCount() <= 0) {
-				this.setStack(id, ItemStack.EMPTY);
+				setStack(id, ItemStack.EMPTY);
 			}
 		}
 	}
@@ -284,7 +284,7 @@ public class ModuleFirework extends ModuleBase {
 	private void launchFirework(
 		@Nonnull
 			ItemStack firework) {
-		final EntityFireworkRocket rocket = new EntityFireworkRocket(this.getCart().world, this.getCart().posX, this.getCart().posY + 1.0, this.getCart().posZ, firework);
-		this.getCart().world.spawnEntity(rocket);
+		final EntityFireworkRocket rocket = new EntityFireworkRocket(getCart().world, getCart().posX, getCart().posY + 1.0, getCart().posZ, firework);
+		getCart().world.spawnEntity(rocket);
 	}
 }

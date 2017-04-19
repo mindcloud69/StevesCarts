@@ -214,12 +214,12 @@ public class TrackLevel {
 		this.playerDir = playerDir;
 		this.itemX = itemX;
 		this.itemY = itemY;
-		this.tracks = new ArrayList<>();
-		this.messages = new ArrayList<>();
+		tracks = new ArrayList<>();
+		messages = new ArrayList<>();
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public void setName(final Localization.STORIES.THE_BEGINNING name) {
@@ -227,35 +227,35 @@ public class TrackLevel {
 	}
 
 	public int getPlayerStartX() {
-		return this.playerX;
+		return playerX;
 	}
 
 	public int getPlayerStartY() {
-		return this.playerY;
+		return playerY;
 	}
 
 	public TrackOrientation.DIRECTION getPlayerStartDirection() {
-		return this.playerDir;
+		return playerDir;
 	}
 
 	public int getItemX() {
-		return this.itemX;
+		return itemX;
 	}
 
 	public int getItemY() {
-		return this.itemY;
+		return itemY;
 	}
 
 	public ArrayList<Track> getTracks() {
-		return this.tracks;
+		return tracks;
 	}
 
 	public ArrayList<LevelMessage> getMessages() {
-		return this.messages;
+		return messages;
 	}
 
 	public void addMessage(final LevelMessage levelMessage) {
-		this.messages.add(levelMessage);
+		messages.add(levelMessage);
 	}
 
 	static {

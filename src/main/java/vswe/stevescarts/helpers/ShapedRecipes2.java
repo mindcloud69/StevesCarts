@@ -21,12 +21,12 @@ public class ShapedRecipes2 extends ShapedRecipes {
 
 	@Override
 	public boolean matches(final InventoryCrafting par1InventoryCrafting, final World par2World) {
-		for (int var3 = 0; var3 <= 3 - this.recipeWidth; ++var3) {
-			for (int var4 = 0; var4 <= 3 - this.recipeHeight; ++var4) {
-				if (this.checkMatch(par1InventoryCrafting, var3, var4, true)) {
+		for (int var3 = 0; var3 <= 3 - recipeWidth; ++var3) {
+			for (int var4 = 0; var4 <= 3 - recipeHeight; ++var4) {
+				if (checkMatch(par1InventoryCrafting, var3, var4, true)) {
 					return true;
 				}
-				if (this.checkMatch(par1InventoryCrafting, var3, var4, false)) {
+				if (checkMatch(par1InventoryCrafting, var3, var4, false)) {
 					return true;
 				}
 			}
@@ -40,11 +40,11 @@ public class ShapedRecipes2 extends ShapedRecipes {
 				final int var7 = var5 - par2;
 				final int var8 = var6 - par3;
 				ItemStack var9 = null;
-				if (var7 >= 0 && var8 >= 0 && var7 < this.recipeWidth && var8 < this.recipeHeight) {
+				if (var7 >= 0 && var8 >= 0 && var7 < recipeWidth && var8 < recipeHeight) {
 					if (par4) {
-						var9 = this.recipeItems[this.recipeWidth - var7 - 1 + var8 * this.recipeWidth];
+						var9 = recipeItems[recipeWidth - var7 - 1 + var8 * recipeWidth];
 					} else {
-						var9 = this.recipeItems[var7 + var8 * this.recipeWidth];
+						var9 = recipeItems[var7 + var8 * recipeWidth];
 					}
 				}
 				@Nonnull

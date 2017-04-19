@@ -19,61 +19,61 @@ public class ActivatorOption {
 	}
 
 	public Class<? extends ModuleBase> getModule() {
-		return this.module;
+		return module;
 	}
 
 	public String getName() {
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public int getOption() {
-		return this.option;
+		return option;
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setOption(final int val) {
-		this.option = val;
+		option = val;
 	}
 
 	public void changeOption(final boolean dif) {
 		if (dif) {
-			if (++this.option > 5) {
-				this.option = 0;
+			if (++option > 5) {
+				option = 0;
 			}
-		} else if (--this.option < 0) {
-			this.option = 5;
+		} else if (--option < 0) {
+			option = 5;
 		}
 	}
 
 	public boolean isDisabled() {
-		return this.option == 0;
+		return option == 0;
 	}
 
 	public boolean shouldActivate(final boolean isOrange) {
-		return this.option == 2 || (this.option == 4 && !isOrange) || (this.option == 5 && isOrange);
+		return option == 2 || (option == 4 && !isOrange) || (option == 5 && isOrange);
 	}
 
 	public boolean shouldDeactivate(final boolean isOrange) {
-		return this.option == 1 || (this.option == 4 && isOrange) || (this.option == 5 && !isOrange);
+		return option == 1 || (option == 4 && isOrange) || (option == 5 && !isOrange);
 	}
 
 	public boolean shouldToggle() {
-		return this.option == 3;
+		return option == 3;
 	}
 
 	public String getInfo() {
-		if (this.isDisabled()) {
+		if (isDisabled()) {
 			return Localization.GUI.TOGGLER.SETTING_DISABLED.translate();
 		}
-		return "�6" + Localization.GUI.TOGGLER.SETTING_ORANGE.translate() + ": " + (this.shouldActivate(true) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
-		                                                                                                      : (this.shouldDeactivate(true)
+		return "�6" + Localization.GUI.TOGGLER.SETTING_ORANGE.translate() + ": " + (shouldActivate(true) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
+		                                                                                                 : (shouldDeactivate(true)
 		                                                                                                         ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
 		                                                                                                         : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate()))) + "\n" + "�1" + Localization.GUI.TOGGLER.SETTING_BLUE.translate() + ": " + (
-			this.shouldActivate(false) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
-			                           : (this.shouldDeactivate(false) ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
-			                                                           : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate())));
+			shouldActivate(false) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
+			                      : (shouldDeactivate(false) ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
+			                                                      : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate())));
 	}
 }

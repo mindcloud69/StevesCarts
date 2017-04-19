@@ -27,42 +27,42 @@ public class ModelSideGuns extends ModelCartbase {
 	}
 
 	public ModelSideGuns() {
-		(this.models = new ModelRenderer[2][])[0] = this.createSide(false);
-		this.models[1] = this.createSide(true);
+		(models = new ModelRenderer[2][])[0] = createSide(false);
+		models[1] = createSide(true);
 	}
 
 	private ModelRenderer[] createSide(final boolean opposite) {
 		final ModelRenderer anchor = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(anchor);
+		AddRenderer(anchor);
 		final int mult = opposite ? 1 : -1;
 		final ModelRenderer handle = new ModelRenderer(this, 0, 8);
 		anchor.addChild(handle);
-		this.fixSize(handle);
+		fixSize(handle);
 		handle.addBox(-2.0f, -2.0f, -2.5f, 4, 4, 5, 0.0f);
 		handle.setRotationPoint(6.0f, 0.0f, 0.0f);
 		final ModelRenderer base = new ModelRenderer(this, 0, 0);
 		handle.addChild(base);
-		this.fixSize(base);
+		fixSize(base);
 		base.addBox(-2.5f, -2.5f, -1.5f, 12, 5, 3, 0.0f);
 		base.setRotationPoint(0.0f, 0.0f, 0.0f);
 		final ModelRenderer gun = new ModelRenderer(this, 0, 0);
 		base.addChild(gun);
-		this.fixSize(gun);
+		fixSize(gun);
 		gun.addBox(-2.5f, -2.5f, -1.5f, 12, 5, 3, 0.0f);
 		gun.setRotationPoint(7.005f, 0.005f, 0.005f);
 		final ModelRenderer back = new ModelRenderer(this, 18, 8);
 		gun.addChild(back);
-		this.fixSize(back);
+		fixSize(back);
 		back.addBox(-6.5f, -2.0f, -0.5f, 7, 4, 1, 0.0f);
 		back.setRotationPoint(0.0f, 0.0f, -0.5f * mult);
 		final ModelRenderer backAttacher = new ModelRenderer(this, 18, 8);
 		back.addChild(backAttacher);
-		this.fixSize(backAttacher);
+		fixSize(backAttacher);
 		backAttacher.addBox(0.0f, -2.0f, -0.5f + 0.5f * mult, 7, 4, 1, 0.0f);
 		backAttacher.setRotationPoint(-6.5f, 0.0f, 0.5f * mult + 0.005f);
 		final ModelRenderer stabalizer = new ModelRenderer(this, 0, 8);
 		back.addChild(stabalizer);
-		this.fixSize(stabalizer);
+		fixSize(stabalizer);
 		stabalizer.addBox(-0.5f, -1.5f, -0.5f, 1, 3, 1, 0.0f);
 		stabalizer.setRotationPoint(-5.75f, 0.0f, 0.0f);
 		final ModelRenderer[] missileStands = new ModelRenderer[6];
@@ -76,33 +76,33 @@ public class ModelSideGuns extends ModelCartbase {
 				backAttacher.addChild(missileStands[i]);
 				posX = 0.0f;
 			}
-			this.fixSize(missileStands[i]);
+			fixSize(missileStands[i]);
 			missileStands[i].addBox(1.0f, -1.5f, -0.5f, 2, 3, 1, 0.0f);
 			missileStands[i].setRotationPoint(posX, 0.0f, 0.0f);
 		}
 		final ModelRenderer missleArmBase = new ModelRenderer(this, 7, 17);
 		base.addChild(missleArmBase);
-		this.fixSize(missleArmBase);
+		fixSize(missleArmBase);
 		missleArmBase.addBox(-2.0f, -2.0f, -0.5f, 4, 4, 1, 0.0f);
 		missleArmBase.setRotationPoint(0.0f, 0.0f, 0.75f * mult);
 		final ModelRenderer missleArm = new ModelRenderer(this, 17, 17);
 		missleArmBase.addChild(missleArm);
-		this.fixSize(missleArm);
+		fixSize(missleArm);
 		missleArm.addBox(-0.5f, -2.0f, -0.5f, 11, 4, 1, 0.0f);
 		missleArm.setRotationPoint(0.0f, 0.0f, 0.0f);
 		final ModelRenderer missleArmBaseFake = new ModelRenderer(this);
 		base.addChild(missleArmBaseFake);
-		this.fixSize(missleArmBaseFake);
+		fixSize(missleArmBaseFake);
 		missleArmBaseFake.setRotationPoint(0.0f, 0.0f, 0.75f * mult);
 		final ModelRenderer missleArmFake = new ModelRenderer(this);
 		missleArmBaseFake.addChild(missleArmFake);
-		this.fixSize(missleArmFake);
+		fixSize(missleArmFake);
 		missleArmFake.setRotationPoint(0.0f, 0.0f, 0.0f);
 		final ModelRenderer[] missiles = new ModelRenderer[2];
 		for (int j = 0; j < 2; ++j) {
 			final ModelRenderer missile = new ModelRenderer(this, 0, 22);
 			missleArmFake.addChild(missiles[j] = missile);
-			this.fixSize(missile);
+			fixSize(missile);
 			missile.addBox(-2.0f, -1.0f, -1.0f, 4, 2, 2, -0.2f);
 			missile.setRotationPoint((j == 0) ? 9.5f : 4.0f, 0.0f, mult * -1.0f);
 			missile.rotateAngleZ = 1.5707964f;
@@ -111,7 +111,7 @@ public class ModelSideGuns extends ModelCartbase {
 					if (k == 0 || l == 0) {
 						final ModelRenderer missilePart = new ModelRenderer(this, 12, 22);
 						missile.addChild(missilePart);
-						this.fixSize(missilePart);
+						fixSize(missilePart);
 						missilePart.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 1, 0.0f);
 						missilePart.setRotationPoint(-1.0f, k * 0.6f, l * 0.6f);
 					}
@@ -119,7 +119,7 @@ public class ModelSideGuns extends ModelCartbase {
 			}
 			final ModelRenderer missilePart2 = new ModelRenderer(this, 12, 24);
 			missile.addChild(missilePart2);
-			this.fixSize(missilePart2);
+			fixSize(missilePart2);
 			missilePart2.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 1, 0.0f);
 			missilePart2.setRotationPoint(1.75f, 0.0f, 0.0f);
 		}
@@ -136,7 +136,7 @@ public class ModelSideGuns extends ModelCartbase {
 		} else {
 			final ModuleShooterAdvSide shooter = (ModuleShooterAdvSide) module;
 			for (int j = 0; j < 2; ++j) {
-				final ModelRenderer[] models2 = this.models[j];
+				final ModelRenderer[] models2 = models[j];
 				final int mult = (j != 0) ? 1 : -1;
 				models2[0].rotationPointZ = shooter.getHandlePos(mult);
 				models2[1].rotationPointZ = shooter.getBasePos(mult);

@@ -31,18 +31,18 @@ public abstract class ModelWire extends ModelCartbase {
 	}
 
 	protected void CreateEnd(final int x, final int y) {
-		this.CreateEnd(x, y, this.baseZ());
+		CreateEnd(x, y, baseZ());
 	}
 
 	protected void CreateEnd(final int x, final int y, final int z) {
 		final ModelRenderer end = new ModelRenderer(this, 28, 0);
-		this.AddRenderer(end);
+		AddRenderer(end);
 		end.addBox(0.5f, 0.5f, 0.5f, 1, 1, 1, 0.0f);
 		end.setRotationPoint(-7.5f + y, -5.5f - z, -5.5f + x);
 	}
 
 	protected void CreateWire(final int x1, final int y1, final int x2, final int y2) {
-		this.CreateWire(x1, y1, this.baseZ(), x2, y2, this.baseZ());
+		CreateWire(x1, y1, baseZ(), x2, y2, baseZ());
 	}
 
 	protected void CreateWire(int x1, int y1, int z1, int x2, int y2, int z2) {
@@ -87,7 +87,7 @@ public abstract class ModelWire extends ModelCartbase {
 			return;
 		}
 		final ModelRenderer wire = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(wire);
+		AddRenderer(wire);
 		wire.addBox(length / 2.0f, 0.5f, 0.5f, length, 1, 1, 0.0f);
 		if (rotateZ) {
 			wire.setRotationPoint(-7.5f + y1, -4.0f + length / 2.0f - z1, -5.5f + x1);

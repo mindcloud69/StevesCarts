@@ -6,12 +6,12 @@ import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 public abstract class RechargerBase extends BaseEffect {
 	@Override
 	public void update(final TileEntityUpgrade upgrade) {
-		if (!upgrade.getWorld().isRemote && this.canGenerate(upgrade)) {
+		if (!upgrade.getWorld().isRemote && canGenerate(upgrade)) {
 			final NBTTagCompound comp = upgrade.getCompound();
 			if (comp == null) {
 				return;
 			}
-			if (comp.getShort("GenerateCooldown") >= 1200 / this.getAmount(upgrade)) {
+			if (comp.getShort("GenerateCooldown") >= 1200 / getAmount(upgrade)) {
 				comp.setShort("GenerateCooldown", (short) 0);
 				upgrade.getMaster().increaseFuel(1);
 			} else {

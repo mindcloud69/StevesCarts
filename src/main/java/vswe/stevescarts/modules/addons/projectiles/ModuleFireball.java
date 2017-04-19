@@ -24,6 +24,6 @@ public class ModuleFireball extends ModuleProjectile {
 	public Entity createProjectile(final Entity target,
 	                               @Nonnull
 		                               ItemStack item) {
-		return new EntitySmallFireball(this.getCart().world);
+		return new EntitySmallFireball(getCart().world);
 	}
 }

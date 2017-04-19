@@ -24,6 +24,6 @@ public class ModuleEgg extends ModuleProjectile {
 	public Entity createProjectile(final Entity target,
 	                               @Nonnull
 		                               ItemStack item) {
-		return new EntityEgg(this.getCart().world);
+		return new EntityEgg(getCart().world);
 	}
 }

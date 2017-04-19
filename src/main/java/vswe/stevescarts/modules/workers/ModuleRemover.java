@@ -33,42 +33,42 @@ public class ModuleRemover extends ModuleWorker {
 	public boolean work() {
 		EntityMinecartModular cart = getCart();
 		World world = cart.world;
-		if (remove.getY() != -1 && (remove.getX() != cart.x() || remove.getZ() != cart.z()) && this.removeRail(world, remove, true)) {
+		if (remove.getY() != -1 && (remove.getX() != cart.x() || remove.getZ() != cart.z()) && removeRail(world, remove, true)) {
 			return false;
 		}
-		BlockPos next = this.getNextblock();
-		BlockPos last = this.getLastblock();
-		final boolean front = this.isRailAtCoords(world, next);
-		final boolean back = this.isRailAtCoords(world, last);
+		BlockPos next = getNextblock();
+		BlockPos last = getLastblock();
+		final boolean front = isRailAtCoords(world, next);
+		final boolean back = isRailAtCoords(world, last);
 		if (!front) {
 			if (back) {
-				this.turnback();
-				if (this.removeRail(world, cart.getPosition(), false)) {
+				turnback();
+				if (removeRail(world, cart.getPosition(), false)) {
 					return true;
 				}
 			}
-		} else if (!back && this.removeRail(world, cart.getPosition(), false)) {
+		} else if (!back && removeRail(world, cart.getPosition(), false)) {
 			return true;
 		}
 		return false;
 	}
 
 	private boolean isRailAtCoords(World world, BlockPos coords) {
-		return BlockRailBase.isRailBlock(world, coords.up()) || BlockRailBase.isRailBlock(this.getCart().world, coords) || BlockRailBase.isRailBlock(this.getCart().world, coords.down());
+		return BlockRailBase.isRailBlock(world, coords.up()) || BlockRailBase.isRailBlock(getCart().world, coords) || BlockRailBase.isRailBlock(getCart().world, coords.down());
 	}
 
 	private boolean removeRail(World world, BlockPos pos, final boolean flag) {
 		if (flag) {
 			IBlockState blockState = world.getBlockState(pos);
 			if (BlockRailBase.isRailBlock(blockState) && blockState.getBlock() == Blocks.RAIL) {
-				if (this.doPreWork()) {
-					this.startWorking(12);
+				if (doPreWork()) {
+					startWorking(12);
 					return true;
 				}
-				final int rInt = this.getCart().rand.nextInt(100);
+				final int rInt = getCart().rand.nextInt(100);
 				@Nonnull
 				ItemStack iStack = new ItemStack(Blocks.RAIL, 1, 0);
-				this.getCart().addItemToChest(iStack);
+				getCart().addItemToChest(iStack);
 				if (iStack.getCount() == 0) {
 					world.setBlockToAir(pos);
 				}
@@ -83,7 +83,7 @@ public class ModuleRemover extends ModuleWorker {
 		} else if (BlockRailBase.isRailBlock(world, pos.up())) {
 			remove = pos.up();
 		}
-		this.stopWorking();
+		stopWorking();
 		return false;
 	}
 }

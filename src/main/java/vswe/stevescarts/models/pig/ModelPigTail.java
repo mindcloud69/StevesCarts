@@ -26,31 +26,31 @@ public class ModelPigTail extends ModelCartbase {
 
 	public ModelPigTail() {
 		final ModelRenderer tailanchor = new ModelRenderer(this);
-		this.AddRenderer(tailanchor);
+		AddRenderer(tailanchor);
 		tailanchor.setRotationPoint(10.0f, -4.0f, 0.0f);
 		tailanchor.rotateAngleY = 1.5707964f;
 		final ModelRenderer tail1 = new ModelRenderer(this, 0, 0);
-		this.fixSize(tail1);
+		fixSize(tail1);
 		tailanchor.addChild(tail1);
 		tail1.addBox(-1.5f, -0.5f, -0.0f, 3, 1, 1, 0.0f);
 		tail1.setRotationPoint(0.0f, 0.0f, 0.0f);
 		final ModelRenderer tail2 = new ModelRenderer(this, 0, 0);
-		this.fixSize(tail2);
+		fixSize(tail2);
 		tailanchor.addChild(tail2);
 		tail2.addBox(-0.5f, -1.5f, -0.0f, 1, 3, 1, 0.0f);
 		tail2.setRotationPoint(2.0f, -2.0f, 0.0f);
 		final ModelRenderer tail3 = new ModelRenderer(this, 0, 0);
-		this.fixSize(tail3);
+		fixSize(tail3);
 		tailanchor.addChild(tail3);
 		tail3.addBox(-1.0f, -0.5f, -0.0f, 2, 1, 1, 0.0f);
 		tail3.setRotationPoint(0.5f, -4.0f, 0.0f);
 		final ModelRenderer tail4 = new ModelRenderer(this, 0, 0);
-		this.fixSize(tail4);
+		fixSize(tail4);
 		tailanchor.addChild(tail4);
 		tail4.addBox(-0.5f, -0.5f, -0.0f, 1, 1, 1, 0.0f);
 		tail4.setRotationPoint(-1.0f, -3.0f, 0.0f);
 		final ModelRenderer tail5 = new ModelRenderer(this, 0, 0);
-		this.fixSize(tail5);
+		fixSize(tail5);
 		tailanchor.addChild(tail5);
 		tail5.addBox(-0.5f, -0.5f, -0.0f, 1, 1, 1, 0.0f);
 		tail5.setRotationPoint(0.0f, -2.0f, 0.0f);

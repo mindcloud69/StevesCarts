@@ -23,32 +23,32 @@ public abstract class ModelCartbase extends ModelBase {
 	public abstract ResourceLocation getResource(final ModuleBase p0);
 
 	public ModelCartbase() {
-		this.renderers = new ArrayList<>();
+		renderers = new ArrayList<>();
 	}
 
 	public void render(final Render render, final ModuleBase module, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
-		final ResourceLocation resource = this.getResource(module);
+		final ResourceLocation resource = getResource(module);
 		if (resource == null) {
 			return;
 		}
 		ResourceHelper.bindResource(resource);
-		this.applyEffects(module, yaw, pitch, roll, partialtime);
-		this.do_render(mult);
+		applyEffects(module, yaw, pitch, roll, partialtime);
+		do_render(mult);
 	}
 
 	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll, final float partialtime) {
-		this.applyEffects(module, yaw, pitch, roll);
+		applyEffects(module, yaw, pitch, roll);
 	}
 
 	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
 	}
 
 	protected void AddRenderer(final ModelRenderer renderer) {
-		this.renderers.add(this.fixSize(renderer));
+		renderers.add(fixSize(renderer));
 	}
 
 	public ModelRenderer fixSize(final ModelRenderer renderer) {
-		return renderer.setTextureSize(this.getTextureWidth(), this.getTextureHeight());
+		return renderer.setTextureSize(getTextureWidth(), getTextureHeight());
 	}
 
 	protected int getTextureWidth() {
@@ -64,8 +64,8 @@ public abstract class ModelCartbase extends ModelBase {
 	}
 
 	protected void do_render(final float mult) {
-		for (final ModelRenderer renderer : this.renderers) {
-			renderer.render(mult * this.extraMult());
+		for (final ModelRenderer renderer : renderers) {
+			renderer.render(mult * extraMult());
 		}
 	}
 }

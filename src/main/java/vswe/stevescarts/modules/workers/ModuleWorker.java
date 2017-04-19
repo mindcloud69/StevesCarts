@@ -17,7 +17,7 @@ public abstract class ModuleWorker extends ModuleBase {
 
 	public ModuleWorker(final EntityMinecartModular cart) {
 		super(cart);
-		this.preWork = true;
+		preWork = true;
 	}
 
 	public abstract byte getWorkPriority();
@@ -25,15 +25,15 @@ public abstract class ModuleWorker extends ModuleBase {
 	public abstract boolean work();
 
 	protected void startWorking(final int time) {
-		this.getCart().setWorkingTime(time);
-		this.preWork = false;
-		this.getCart().setWorker(this);
+		getCart().setWorkingTime(time);
+		preWork = false;
+		getCart().setWorker(this);
 	}
 
 	public void stopWorking() {
-		if (this.getCart().getWorker() == this) {
-			this.preWork = true;
-			this.getCart().setWorker(null);
+		if (getCart().getWorker() == this) {
+			preWork = true;
+			getCart().setWorker(null);
 		}
 	}
 
@@ -42,27 +42,27 @@ public abstract class ModuleWorker extends ModuleBase {
 	}
 
 	public void kill() {
-		this.shouldDie = true;
+		shouldDie = true;
 	}
 
 	public boolean isDead() {
-		return this.shouldDie;
+		return shouldDie;
 	}
 
 	public void revive() {
-		this.shouldDie = false;
+		shouldDie = false;
 	}
 
 	protected boolean doPreWork() {
-		return this.preWork;
+		return preWork;
 	}
 
 	public BlockPos getLastblock() {
-		return this.getNextblock(false);
+		return getNextblock(false);
 	}
 
 	public BlockPos getNextblock() {
-		return this.getNextblock(true);
+		return getNextblock(true);
 	}
 
 	private BlockPos getNextblock(final boolean flag) {
@@ -77,8 +77,8 @@ public abstract class ModuleWorker extends ModuleBase {
 				pos = pos.up();
 			}
 			final int[][] logic = EntityMinecartModular.railDirectionCoordinates[meta];
-			final double pX = this.getCart().pushX;
-			final double pZ = this.getCart().pushZ;
+			final double pX = getCart().pushX;
+			final double pZ = getCart().pushZ;
 			final boolean xDir = (pX > 0.0 && logic[0][0] > 0) || pX == 0.0 || logic[0][0] == 0 || (pX < 0.0 && logic[0][0] < 0);
 			final boolean zDir = (pZ > 0.0 && logic[0][2] > 0) || pZ == 0.0 || logic[0][2] == 0 || (pZ < 0.0 && logic[0][2] < 0);
 			final int dir = ((xDir && zDir) != flag) ? 1 : 0;
@@ -89,18 +89,18 @@ public abstract class ModuleWorker extends ModuleBase {
 
 	@Override
 	public float getMaxSpeed() {
-		if (!this.doPreWork()) {
+		if (!doPreWork()) {
 			return 0.0f;
 		}
 		return super.getMaxSpeed();
 	}
 
 	protected boolean isValidForTrack(World world, BlockPos pos, final boolean flag) {
-		boolean result = this.countsAsAir(pos) && (!flag || world.isSideSolid(pos.down(), EnumFacing.UP));
+		boolean result = countsAsAir(pos) && (!flag || world.isSideSolid(pos.down(), EnumFacing.UP));
 		if (result) {
-			final int coordX = pos.getX() - (this.getCart().x() - pos.getX());
-			final int coordZ = pos.getY() - (this.getCart().z() - pos.getY());
-			final Block block = this.getCart().world.getBlockState(new BlockPos(coordX, pos.getY(), coordZ)).getBlock();
+			final int coordX = pos.getX() - (getCart().x() - pos.getX());
+			final int coordZ = pos.getY() - (getCart().z() - pos.getY());
+			final Block block = getCart().world.getBlockState(new BlockPos(coordX, pos.getY(), coordZ)).getBlock();
 			final boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE;
 			final boolean isLava = block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
 			final boolean isOther = block != null && block instanceof IFluidBlock;

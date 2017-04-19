@@ -17,46 +17,46 @@ public class ModuleDataHull extends ModuleData {
 	}
 
 	public ModuleDataHull setCapacity(final int val) {
-		this.modularCapacity = val;
+		modularCapacity = val;
 		return this;
 	}
 
 	public ModuleDataHull setEngineMax(final int val) {
-		this.engineMaxCount = val;
+		engineMaxCount = val;
 		return this;
 	}
 
 	public ModuleDataHull setAddonMax(final int val) {
-		this.addonMaxCount = val;
+		addonMaxCount = val;
 		return this;
 	}
 
 	public ModuleDataHull setComplexityMax(final int val) {
-		this.complexityMax = val;
+		complexityMax = val;
 		return this;
 	}
 
 	public int getEngineMax() {
-		return this.engineMaxCount;
+		return engineMaxCount;
 	}
 
 	public int getAddonMax() {
-		return this.addonMaxCount;
+		return addonMaxCount;
 	}
 
 	public int getCapacity() {
-		return this.modularCapacity;
+		return modularCapacity;
 	}
 
 	public int getComplexityMax() {
-		return this.complexityMax;
+		return complexityMax;
 	}
 
 	@Override
 	public void addSpecificInformation(final List list) {
-		list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.MODULAR_CAPACITY.translate(String.valueOf(this.modularCapacity)));
-		list.add(TextFormatting.DARK_PURPLE + Localization.MODULE_INFO.COMPLEXITY_CAP.translate(String.valueOf(this.complexityMax)));
-		list.add(TextFormatting.GOLD + Localization.MODULE_INFO.MAX_ENGINES.translate(String.valueOf(this.engineMaxCount)));
-		list.add(TextFormatting.GREEN + Localization.MODULE_INFO.MAX_ADDONS.translate(String.valueOf(this.addonMaxCount)));
+		list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.MODULAR_CAPACITY.translate(String.valueOf(modularCapacity)));
+		list.add(TextFormatting.DARK_PURPLE + Localization.MODULE_INFO.COMPLEXITY_CAP.translate(String.valueOf(complexityMax)));
+		list.add(TextFormatting.GOLD + Localization.MODULE_INFO.MAX_ENGINES.translate(String.valueOf(engineMaxCount)));
+		list.add(TextFormatting.GREEN + Localization.MODULE_INFO.MAX_ADDONS.translate(String.valueOf(addonMaxCount)));
 	}
 }

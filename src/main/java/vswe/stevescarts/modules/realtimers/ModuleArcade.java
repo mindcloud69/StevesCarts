@@ -24,19 +24,19 @@ public class ModuleArcade extends ModuleBase {
 
 	public ModuleArcade(final EntityMinecartModular cart) {
 		super(cart);
-		(this.games = new ArrayList<>()).add(new ArcadeTracks(this));
-		this.games.add(new ArcadeTetris(this));
-		this.games.add(new ArcadeInvaders(this));
-		this.games.add(new ArcadeSweeper(this));
+		(games = new ArrayList<>()).add(new ArcadeTracks(this));
+		games.add(new ArcadeTetris(this));
+		games.add(new ArcadeInvaders(this));
+		games.add(new ArcadeSweeper(this));
 	}
 
 	private boolean isGameActive() {
-		return this.getCart().world.isRemote && this.currentGame != null;
+		return getCart().world.isRemote && currentGame != null;
 	}
 
 	@Override
 	public boolean doStealInterface() {
-		return this.isGameActive();
+		return isGameActive();
 	}
 
 	@Override
@@ -61,22 +61,22 @@ public class ModuleArcade extends ModuleBase {
 
 	@Override
 	public void update() {
-		if (this.isGameActive() && this.afkTimer < 10) {
-			this.currentGame.update();
-			++this.afkTimer;
+		if (isGameActive() && afkTimer < 10) {
+			currentGame.update();
+			++afkTimer;
 		}
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		if (this.isGameActive()) {
-			this.currentGame.drawForeground(gui);
+		if (isGameActive()) {
+			currentGame.drawForeground(gui);
 		} else {
-			this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
-			for (int i = 0; i < this.games.size(); ++i) {
-				final int[] text = this.getButtonTextArea(i);
+			drawString(gui, getModuleName(), 8, 6, 4210752);
+			for (int i = 0; i < games.size(); ++i) {
+				final int[] text = getButtonTextArea(i);
 				if (text[3] == 8) {
-					this.drawString(gui, this.games.get(i).getName(), text[0], text[1], 4210752);
+					drawString(gui, games.get(i).getName(), text[0], text[1], 4210752);
 				}
 			}
 		}
@@ -86,24 +86,24 @@ public class ModuleArcade extends ModuleBase {
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/arcade.png");
-		this.afkTimer = 0;
-		if (this.isGameActive()) {
-			final int[] rect = this.getExitArea();
+		afkTimer = 0;
+		if (isGameActive()) {
+			final int[] rect = getExitArea();
 			final int srcX = 0;
-			final int srcY = 104 + (this.inRect(x, y, rect) ? 16 : 0);
-			this.drawImage(gui, rect, srcX, srcY);
-			this.currentGame.drawBackground(gui, x, y);
+			final int srcY = 104 + (inRect(x, y, rect) ? 16 : 0);
+			drawImage(gui, rect, srcX, srcY);
+			currentGame.drawBackground(gui, x, y);
 		} else {
-			final int[] rect = this.getListArea();
-			this.drawImage(gui, rect, 0, 0);
-			for (int i = 0; i < this.games.size(); ++i) {
-				final int[] button = this.getButtonGraphicArea(i);
+			final int[] rect = getListArea();
+			drawImage(gui, rect, 0, 0);
+			for (int i = 0; i < games.size(); ++i) {
+				final int[] button = getButtonGraphicArea(i);
 				final int srcX2 = 0;
-				final int srcY2 = 136 + (this.inRect(x, y, this.getButtonBoundsArea(i)) ? button[3] : 0);
+				final int srcY2 = 136 + (inRect(x, y, getButtonBoundsArea(i)) ? button[3] : 0);
 				if (button[3] > 0) {
-					this.drawImage(gui, button, srcX2, srcY2);
-					final int[] icon = this.getButtonIconArea(i);
-					this.drawImage(gui, icon, i * 16, rect[3]);
+					drawImage(gui, button, srcX2, srcY2);
+					final int[] icon = getButtonIconArea(i);
+					drawImage(gui, icon, i * 16, rect[3]);
 				}
 			}
 		}
@@ -112,9 +112,9 @@ public class ModuleArcade extends ModuleBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		if (this.isGameActive()) {
-			this.drawStringOnMouseOver(gui, "Exit", x, y, this.getExitArea());
-			this.currentGame.drawMouseOver(gui, x, y);
+		if (isGameActive()) {
+			drawStringOnMouseOver(gui, "Exit", x, y, getExitArea());
+			currentGame.drawMouseOver(gui, x, y);
 		}
 	}
 
@@ -127,41 +127,41 @@ public class ModuleArcade extends ModuleBase {
 	}
 
 	private int[] getButtonBoundsArea(final int i) {
-		return this.getButtonArea(i, false);
+		return getButtonArea(i, false);
 	}
 
 	private int[] getButtonGraphicArea(final int i) {
-		return this.getButtonArea(i, true);
+		return getButtonArea(i, true);
 	}
 
 	private int[] getButtonArea(final int i, final boolean graphic) {
-		final int[] list = this.getListArea();
+		final int[] list = getListArea();
 		return new int[] { list[0] + 2, list[1] + 2 + i * 21, 166, graphic ? 21 : 20 };
 	}
 
 	private int[] getButtonTextArea(final int i) {
-		final int[] button = this.getButtonGraphicArea(i);
+		final int[] button = getButtonGraphicArea(i);
 		return new int[] { button[0] + 24, button[1] + 6, button[2], 8 };
 	}
 
 	private int[] getButtonIconArea(final int i) {
-		final int[] button = this.getButtonGraphicArea(i);
+		final int[] button = getButtonGraphicArea(i);
 		return new int[] { button[0] + 2, button[1] + 2, 16, 16 };
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.isGameActive()) {
-			if (button == 0 && this.inRect(x, y, this.getExitArea())) {
-				this.currentGame.unload(gui);
-				this.currentGame = null;
+		if (isGameActive()) {
+			if (button == 0 && inRect(x, y, getExitArea())) {
+				currentGame.unload(gui);
+				currentGame = null;
 			} else {
-				this.currentGame.mouseClicked(gui, x, y, button);
+				currentGame.mouseClicked(gui, x, y, button);
 			}
 		} else if (button == 0) {
-			for (int i = 0; i < this.games.size(); ++i) {
-				if (this.inRect(x, y, this.getButtonBoundsArea(i))) {
-					(this.currentGame = this.games.get(i)).load(gui);
+			for (int i = 0; i < games.size(); ++i) {
+				if (inRect(x, y, getButtonBoundsArea(i))) {
+					(currentGame = games.get(i)).load(gui);
 					break;
 				}
 			}
@@ -170,28 +170,28 @@ public class ModuleArcade extends ModuleBase {
 
 	@Override
 	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.isGameActive()) {
-			this.currentGame.mouseMovedOrUp(gui, x, y, button);
+		if (isGameActive()) {
+			currentGame.mouseMovedOrUp(gui, x, y, button);
 		}
 	}
 
 	@Override
 	public void keyPress(final GuiMinecart gui, final char character, final int extraInformation) {
-		if (this.isGameActive()) {
-			this.currentGame.keyPress(gui, character, extraInformation);
+		if (isGameActive()) {
+			currentGame.keyPress(gui, character, extraInformation);
 		}
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		for (final ArcadeGame game : this.games) {
+		for (final ArcadeGame game : games) {
 			game.Save(tagCompound, id);
 		}
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		for (final ArcadeGame game : this.games) {
+		for (final ArcadeGame game : games) {
 			game.Load(tagCompound, id);
 		}
 	}
@@ -203,7 +203,7 @@ public class ModuleArcade extends ModuleBase {
 
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
-		for (final ArcadeGame game : this.games) {
+		for (final ArcadeGame game : games) {
 			game.receivePacket(id, data, player);
 		}
 	}
@@ -215,20 +215,20 @@ public class ModuleArcade extends ModuleBase {
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		for (final ArcadeGame game : this.games) {
+		for (final ArcadeGame game : games) {
 			game.checkGuiData(info);
 		}
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
-		for (final ArcadeGame game : this.games) {
+		for (final ArcadeGame game : games) {
 			game.receiveGuiData(id, data);
 		}
 	}
 
 	@Override
 	public boolean disableStandardKeyFunctionality() {
-		return this.currentGame != null && this.currentGame.disableStandardKeyFunctionality();
+		return currentGame != null && currentGame.disableStandardKeyFunctionality();
 	}
 }

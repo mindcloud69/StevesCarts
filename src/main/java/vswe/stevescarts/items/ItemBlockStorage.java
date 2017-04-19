@@ -32,9 +32,9 @@ public class ItemBlockStorage extends ItemBlock {
 
 	public ItemBlockStorage(final Block block) {
 		super(block);
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
 	}
 
 	//	@SideOnly(Side.CLIENT)

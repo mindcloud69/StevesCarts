@@ -17,12 +17,12 @@ public class ModuleIncinerator extends ModuleAddon {
 	public void incinerate(
 		@Nonnull
 			ItemStack item) {
-		if (this.isItemValid(item)) {
-			if (this.getIncinerationCost() != 0) {
-				int amount = item.getCount() * this.getIncinerationCost();
-				amount = this.getCart().drain(FluidRegistry.LAVA, amount, false);
-				final int incinerated = amount / this.getIncinerationCost();
-				this.getCart().drain(FluidRegistry.LAVA, incinerated * this.getIncinerationCost(), true);
+		if (isItemValid(item)) {
+			if (getIncinerationCost() != 0) {
+				int amount = item.getCount() * getIncinerationCost();
+				amount = getCart().drain(FluidRegistry.LAVA, amount, false);
+				final int incinerated = amount / getIncinerationCost();
+				getCart().drain(FluidRegistry.LAVA, incinerated * getIncinerationCost(), true);
 				item.shrink(incinerated);
 			} else {
 				item.setCount(0);
@@ -38,8 +38,8 @@ public class ModuleIncinerator extends ModuleAddon {
 		@Nonnull
 			ItemStack item) {
 		if (!item.isEmpty()) {
-			for (int i = 0; i < this.getInventorySize(); ++i) {
-				if (!this.getStack(i).isEmpty() && item.isItemEqual(this.getStack(i))) {
+			for (int i = 0; i < getInventorySize(); ++i) {
+				if (!getStack(i).isEmpty() && item.isItemEqual(getStack(i))) {
 					return true;
 				}
 			}
@@ -54,7 +54,7 @@ public class ModuleIncinerator extends ModuleAddon {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -64,6 +64,6 @@ public class ModuleIncinerator extends ModuleAddon {
 
 	@Override
 	protected SlotBase getSlot(final int slotId, final int x, final int y) {
-		return new SlotIncinerator(this.getCart(), slotId, 8 + x * 18, 23 + y * 18);
+		return new SlotIncinerator(getCart(), slotId, 8 + x * 18, 23 + y * 18);
 	}
 }

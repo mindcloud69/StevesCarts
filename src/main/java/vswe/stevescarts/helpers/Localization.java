@@ -71,7 +71,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("gui.SC2:" + this.name, vars);
+				return doTranslate("gui.SC2:" + name, vars);
 			}
 		}
 
@@ -101,7 +101,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("gui.SC2:" + this.name, vars);
+				return doTranslate("gui.SC2:" + name, vars);
 			}
 		}
 
@@ -141,7 +141,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("gui.SC2:" + this.name, vars);
+				return doTranslate("gui.SC2:" + name, vars);
 			}
 		}
 
@@ -163,7 +163,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("gui.SC2:" + this.name, vars);
+				return doTranslate("gui.SC2:" + name, vars);
 			}
 		}
 
@@ -189,7 +189,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("gui.SC2:" + this.name, vars);
+				return doTranslate("gui.SC2:" + name, vars);
 			}
 		}
 
@@ -227,7 +227,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("gui.SC2:" + this.name, vars);
+				return doTranslate("gui.SC2:" + name, vars);
 			}
 		}
 
@@ -307,7 +307,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("gui.SC2:" + this.name, vars);
+				return doTranslate("gui.SC2:" + name, vars);
 			}
 		}
 	}
@@ -376,7 +376,7 @@ public final class Localization {
 		}
 
 		public String translate(final String... vars) {
-			return doTranslate("info.SC2:" + this.name, vars);
+			return doTranslate("info.SC2:" + name, vars);
 		}
 	}
 
@@ -406,7 +406,7 @@ public final class Localization {
 		}
 
 		public String translate(final String... vars) {
-			return doTranslate("info.SC2:" + this.name, vars);
+			return doTranslate("info.SC2:" + name, vars);
 		}
 	}
 
@@ -472,7 +472,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("modules.addons.SC2:" + this.name, vars);
+				return doTranslate("modules.addons.SC2:" + name, vars);
 			}
 		}
 
@@ -498,7 +498,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("modules.engines.SC2:" + this.name, vars);
+				return doTranslate("modules.engines.SC2:" + name, vars);
 			}
 		}
 
@@ -519,7 +519,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("modules.tanks.SC2:" + this.name, vars);
+				return doTranslate("modules.tanks.SC2:" + name, vars);
 			}
 		}
 
@@ -545,7 +545,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("modules.tools.SC2:" + this.name, vars);
+				return doTranslate("modules.tools.SC2:" + name, vars);
 			}
 		}
 
@@ -593,7 +593,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("modules.attachments.SC2:" + this.name, vars);
+				return doTranslate("modules.attachments.SC2:" + name, vars);
 			}
 		}
 	}
@@ -663,7 +663,7 @@ public final class Localization {
 		}
 
 		public String translate(final String... vars) {
-			return doTranslate("arcade.SC2:" + this.name, vars);
+			return doTranslate("arcade.SC2:" + name, vars);
 		}
 	}
 
@@ -703,7 +703,7 @@ public final class Localization {
 			}
 
 			public String translate(final String... vars) {
-				return doTranslate("stories.beginning.SC2:" + this.name, vars);
+				return doTranslate("stories.beginning.SC2:" + name, vars);
 			}
 		}
 	}

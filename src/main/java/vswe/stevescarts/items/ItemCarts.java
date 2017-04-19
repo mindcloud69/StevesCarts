@@ -30,9 +30,9 @@ import java.util.List;
 public class ItemCarts extends ItemMinecart {
 	public ItemCarts() {
 		super(EntityMinecart.Type.RIDEABLE);
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(null);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(null);
 	}
 
 	public String getName() {
@@ -146,7 +146,7 @@ public class ItemCarts extends ItemMinecart {
 				final int maxTime = info.getInteger("maxTime");
 				final int currentTime = info.getInteger("currentTime");
 				final int timeLeft = maxTime - currentTime;
-				list.add(TextFormatting.RED + "Time left: " + this.formatTime(timeLeft));
+				list.add(TextFormatting.RED + "Time left: " + formatTime(timeLeft));
 			}
 		} else {
 			list.add("No modules loaded");

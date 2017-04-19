@@ -27,26 +27,26 @@ public class Note {
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y) {
 		game.loadTexture(gui, 1);
-		game.getModule().drawImage(gui, x, y, 76 + this.u * 16, 38 + this.v * 16, 16, 16);
+		game.getModule().drawImage(gui, x, y, 76 + u * 16, 38 + v * 16, 16, 16);
 	}
 
 	public void draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, final int amount) {
-		this.draw(game, gui, x, y, amount, 4210752);
+		draw(game, gui, x, y, amount, 4210752);
 	}
 
 	public void draw(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, final int amount, final int color) {
-		this.draw(game, gui, x + 10, y);
+		draw(game, gui, x + 10, y);
 		game.getModule().drawString(gui, amount + "x ", new int[] { x + gui.getGuiLeft(), y + gui.getGuiTop(), 10, 16 }, color);
 	}
 
 	public void drawPlayer(final ArcadeMonopoly game, final GuiMinecart gui, final int x, final int y, final int amount) {
 		game.loadTexture(gui, 1);
-		game.drawImageInArea(gui, x, y, 76 + this.u * 16, 38 + this.v * 16, 16, 16);
+		game.drawImageInArea(gui, x, y, 76 + u * 16, 38 + v * 16, 16, 16);
 		if (x + 16 < 443) {
 			game.getModule().drawString(gui, String.valueOf(amount), x + gui.getGuiLeft(), y + 17 + gui.getGuiTop(), 16, true, 4210752);
 		}
@@ -73,7 +73,7 @@ public class Note {
 	}
 
 	public int getUnits() {
-		return this.units;
+		return units;
 	}
 
 	static {

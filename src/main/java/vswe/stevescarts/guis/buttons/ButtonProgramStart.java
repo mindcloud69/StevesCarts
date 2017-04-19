@@ -21,12 +21,12 @@ public class ButtonProgramStart extends ButtonAssembly {
 
 	@Override
 	public boolean isEnabled() {
-		return ((ModuleComputer) this.module).getCurrentProg() != null;
+		return ((ModuleComputer) module).getCurrentProg() != null;
 	}
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		final ComputerProg program = ((ModuleComputer) this.module).getCurrentProg();
+		final ComputerProg program = ((ModuleComputer) module).getCurrentProg();
 		if (program != null) {
 			program.start();
 		}

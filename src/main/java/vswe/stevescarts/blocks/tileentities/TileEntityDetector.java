@@ -38,8 +38,8 @@ public class TileEntityDetector extends TileEntityBase {
 	}
 
 	public TileEntityDetector() {
-		this.activeTimer = 20;
-		this.mainObj = new LogicObject((byte) 1, (byte) 0);
+		activeTimer = 20;
+		mainObj = new LogicObject((byte) 1, (byte) 0);
 	}
 
 	@Override
@@ -47,24 +47,24 @@ public class TileEntityDetector extends TileEntityBase {
 		super.readFromNBT(nbttagcompound);
 		final byte count = nbttagcompound.getByte("LogicObjectCount");
 		for (int i = 0; i < count; ++i) {
-			this.loadLogicObjectFromInteger(nbttagcompound.getInteger("LogicObject" + i));
+			loadLogicObjectFromInteger(nbttagcompound.getInteger("LogicObject" + i));
 		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		final int count = this.saveLogicObject(nbttagcompound, this.mainObj, 0, false);
+		final int count = saveLogicObject(nbttagcompound, mainObj, 0, false);
 		nbttagcompound.setByte("LogicObjectCount", (byte) count);
 		return nbttagcompound;
 	}
 
 	private int saveLogicObject(final NBTTagCompound nbttagcompound, final LogicObject obj, int id, final boolean saveMe) {
 		if (saveMe) {
-			nbttagcompound.setInteger("LogicObject" + id++, this.saveLogicObjectToInteger(obj));
+			nbttagcompound.setInteger("LogicObject" + id++, saveLogicObjectToInteger(obj));
 		}
 		for (final LogicObject child : obj.getChilds()) {
-			id = this.saveLogicObject(nbttagcompound, child, id, true);
+			id = saveLogicObject(nbttagcompound, child, id, true);
 		}
 		return id;
 	}
@@ -83,17 +83,17 @@ public class TileEntityDetector extends TileEntityBase {
 		final byte parent = (byte) (val >> 16 & 0xFF);
 		final byte extra = (byte) (val >> 8 & 0xFF);
 		final byte data = (byte) (val >> 0 & 0xFF);
-		this.createObject(id, parent, extra, data);
+		createObject(id, parent, extra, data);
 	}
 
 	@Override
 	public void updateEntity() {
-		if (this.activeTimer > 0 && --this.activeTimer == 0) {
+		if (activeTimer > 0 && --activeTimer == 0) {
 			IBlockState blockState = world.getBlockState(pos);
 			Block block = blockState.getBlock();
 			if (block == ModBlocks.DETECTOR_UNIT.getBlock()) {
 				DetectorType.getTypeFromSate(blockState).deactivate(this);
-				this.world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, false), 3);
+				world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, false), 3);
 			}
 		}
 	}
@@ -103,7 +103,7 @@ public class TileEntityDetector extends TileEntityBase {
 		if (id == 0) {
 			byte lowestId = -1;
 			for (int i = 0; i < 128; ++i) {
-				if (!this.isIdOccupied(this.mainObj, i)) {
+				if (!isIdOccupied(mainObj, i)) {
 					lowestId = (byte) i;
 					break;
 				}
@@ -111,15 +111,15 @@ public class TileEntityDetector extends TileEntityBase {
 			if (lowestId == -1) {
 				return;
 			}
-			this.createObject(lowestId, data[0], data[1], data[2]);
+			createObject(lowestId, data[0], data[1], data[2]);
 		} else if (id == 1) {
-			this.removeObject(this.mainObj, data[0]);
+			removeObject(mainObj, data[0]);
 		}
 	}
 
 	private void createObject(final byte id, final byte parentId, final byte extra, final byte data) {
 		final LogicObject newObject = new LogicObject(id, extra, data);
-		final LogicObject parent = this.getObjectFromId(this.mainObj, parentId);
+		final LogicObject parent = getObjectFromId(mainObj, parentId);
 		if (parent != null) {
 			newObject.setParent(parent);
 		}
@@ -130,7 +130,7 @@ public class TileEntityDetector extends TileEntityBase {
 			return object;
 		}
 		for (final LogicObject child : object.getChilds()) {
-			final LogicObject result = this.getObjectFromId(child, id);
+			final LogicObject result = getObjectFromId(child, id);
 			if (result != null) {
 				return result;
 			}
@@ -144,7 +144,7 @@ public class TileEntityDetector extends TileEntityBase {
 			return true;
 		}
 		for (final LogicObject child : object.getChilds()) {
-			if (this.removeObject(child, idToRemove)) {
+			if (removeObject(child, idToRemove)) {
 				return true;
 			}
 		}
@@ -156,7 +156,7 @@ public class TileEntityDetector extends TileEntityBase {
 			return true;
 		}
 		for (final LogicObject child : object.getChilds()) {
-			if (this.isIdOccupied(child, id)) {
+			if (isIdOccupied(child, id)) {
 				return true;
 			}
 		}
@@ -169,7 +169,7 @@ public class TileEntityDetector extends TileEntityBase {
 
 	@Override
 	public void checkGuiData(final Container con, final IContainerListener crafting) {
-		this.sendUpdatedLogicObjects(con, crafting, this.mainObj, ((ContainerDetector) con).mainObj);
+		sendUpdatedLogicObjects(con, crafting, mainObj, ((ContainerDetector) con).mainObj);
 	}
 
 	private void sendUpdatedLogicObjects(final Container con, final IContainerListener crafting, final LogicObject real, LogicObject cache) {
@@ -177,30 +177,30 @@ public class TileEntityDetector extends TileEntityBase {
 			final LogicObject parent = cache.getParent();
 			cache.setParent(null);
 			final LogicObject clone = real.copy(parent);
-			this.removeLogicObject(con, crafting, cache);
-			this.sendLogicObject(con, crafting, clone);
+			removeLogicObject(con, crafting, cache);
+			sendLogicObject(con, crafting, clone);
 			cache = clone;
 		}
 		while (real.getChilds().size() > cache.getChilds().size()) {
 			final int i = cache.getChilds().size();
 			final LogicObject clone = real.getChilds().get(i).copy(cache);
-			this.sendLogicObject(con, crafting, clone);
+			sendLogicObject(con, crafting, clone);
 		}
 		while (real.getChilds().size() < cache.getChilds().size()) {
 			final int i = real.getChilds().size();
 			final LogicObject toBeRemoved = cache.getChilds().get(i);
 			toBeRemoved.setParent(null);
-			this.removeLogicObject(con, crafting, toBeRemoved);
+			removeLogicObject(con, crafting, toBeRemoved);
 		}
 		for (int i = 0; i < real.getChilds().size(); ++i) {
-			this.sendUpdatedLogicObjects(con, crafting, real.getChilds().get(i), cache.getChilds().get(i));
+			sendUpdatedLogicObjects(con, crafting, real.getChilds().get(i), cache.getChilds().get(i));
 		}
 	}
 
 	private void sendAllLogicObjects(final Container con, final IContainerListener crafting, final LogicObject obj) {
-		this.sendLogicObject(con, crafting, obj);
+		sendLogicObject(con, crafting, obj);
 		for (final LogicObject child : obj.getChilds()) {
-			this.sendAllLogicObjects(con, crafting, child);
+			sendAllLogicObjects(con, crafting, child);
 		}
 	}
 
@@ -210,47 +210,47 @@ public class TileEntityDetector extends TileEntityBase {
 		}
 		final short data = (short) (obj.getId() << 8 | obj.getParent().getId());
 		final short data2 = (short) (obj.getExtra() << 8 | obj.getData());
-		this.updateGuiData(con, crafting, 0, data);
-		this.updateGuiData(con, crafting, 1, data2);
+		updateGuiData(con, crafting, 0, data);
+		updateGuiData(con, crafting, 1, data2);
 	}
 
 	private void removeLogicObject(final Container con, final IContainerListener crafting, final LogicObject obj) {
-		this.updateGuiData(con, crafting, 2, obj.getId());
+		updateGuiData(con, crafting, 2, obj.getId());
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == 0) {
-			this.oldData = data;
-			this.hasOldData = true;
+			oldData = data;
+			hasOldData = true;
 		} else if (id == 1) {
-			if (!this.hasOldData) {
+			if (!hasOldData) {
 				System.out.println("Doesn't have the other part of the data");
 				return;
 			}
-			final byte logicid = (byte) ((this.oldData & 0xFF00) >> 8);
-			final byte parent = (byte) (this.oldData & 0xFF);
+			final byte logicid = (byte) ((oldData & 0xFF00) >> 8);
+			final byte parent = (byte) (oldData & 0xFF);
 			final byte extra = (byte) ((data & 0xFF00) >> 8);
 			final byte logicdata = (byte) (data & 0xFF);
-			this.createObject(logicid, parent, extra, logicdata);
-			this.recalculateTree();
-			this.hasOldData = false;
+			createObject(logicid, parent, extra, logicdata);
+			recalculateTree();
+			hasOldData = false;
 		} else if (id == 2) {
-			this.removeObject(this.mainObj, data);
-			this.recalculateTree();
+			removeObject(mainObj, data);
+			recalculateTree();
 		}
 	}
 
 	public void recalculateTree() {
-		this.mainObj.generatePosition(5, 60, 245, 0);
+		mainObj.generatePosition(5, 60, 245, 0);
 	}
 
 	public boolean evaluate(final EntityMinecartModular cart, final int depth) {
-		return this.mainObj.evaluateLogicTree(this, cart, depth);
+		return mainObj.evaluateLogicTree(this, cart, depth);
 	}
 
 	public void handleCart(final EntityMinecartModular cart) {
-		final boolean truthValue = this.evaluate(cart, 0);
+		final boolean truthValue = evaluate(cart, 0);
 		IBlockState blockState = world.getBlockState(pos);
 		boolean isOn = blockState.getValue(DetectorType.POWERED);
 		boolean power = false;
@@ -262,17 +262,17 @@ public class TileEntityDetector extends TileEntityBase {
 			power &= false;
 		}
 		if (power != isOn) {
-			this.world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, power), 3);
+			world.setBlockState(pos, blockState.withProperty(DetectorType.POWERED, power), 3);
 		}
 
 		if (truthValue) {
-			this.activeTimer = 20;
+			activeTimer = 20;
 		}
 	}
 
 	@Override
 	public boolean isUsableByPlayer(final EntityPlayer entityplayer) {
-		return this.world.getTileEntity(this.pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
+		return world.getTileEntity(pos) == this && entityplayer.getDistanceSqToCenter(pos) <= 64.0;
 	}
 
 	@Override

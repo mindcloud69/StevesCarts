@@ -20,13 +20,13 @@ public class StorageBlock {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void loadRecipe(final int i) {
 		@Nonnull
 		ItemStack block = new ItemStack(ModBlocks.STORAGE.getBlock(), 1, i);
-		RecipeHelper.addRecipe(block, new Object[][] { { this.item, this.item, this.item }, { this.item, this.item, this.item }, { this.item, this.item, this.item } });
-		RecipeHelper.addRecipe(this.item, new Object[][] { { block } });
+		RecipeHelper.addRecipe(block, new Object[][] { { item, item, item }, { item, item, item }, { item, item, item } });
+		RecipeHelper.addRecipe(item, new Object[][] { { block } });
 	}
 }

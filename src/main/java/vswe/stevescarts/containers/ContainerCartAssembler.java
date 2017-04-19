@@ -26,53 +26,53 @@ public class ContainerCartAssembler extends ContainerBase {
 
 	@Override
 	public IInventory getMyInventory() {
-		return this.assembler;
+		return assembler;
 	}
 
 	@Override
 	public TileEntityBase getTileEntity() {
-		return this.assembler;
+		return assembler;
 	}
 
 	public ContainerCartAssembler(final IInventory invPlayer, final TileEntityCartAssembler assembler) {
 		this.assembler = assembler;
 		final ArrayList<SlotAssembler> slots = assembler.getSlots();
 		for (final SlotAssembler slot : slots) {
-			this.addSlotToContainer(slot);
+			addSlotToContainer(slot);
 		}
 		for (int i = 0; i < 3; ++i) {
 			for (int k = 0; k < 9; ++k) {
-				this.addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, this.offsetX() + k * 18, i * 18 + this.offsetY()));
+				addSlotToContainer(new Slot(invPlayer, k + i * 9 + 9, offsetX() + k * 18, i * 18 + offsetY()));
 			}
 		}
 		for (int j = 0; j < 9; ++j) {
-			this.addSlotToContainer(new Slot(invPlayer, j, this.offsetX() + j * 18, 58 + this.offsetY()));
+			addSlotToContainer(new Slot(invPlayer, j, offsetX() + j * 18, 58 + offsetY()));
 		}
 	}
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer entityplayer) {
-		return this.assembler.isUsableByPlayer(entityplayer);
+		return assembler.isUsableByPlayer(entityplayer);
 	}
 
 	@Override
 	public void addListener(final IContainerListener par1ICrafting) {
 		super.addListener(par1ICrafting);
-		this.assembler.initGuiData(this, par1ICrafting);
+		assembler.initGuiData(this, par1ICrafting);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void updateProgressBar(final int par1, int par2) {
 		par2 &= 0xFFFF;
-		this.assembler.receiveGuiData(par1, (short) par2);
+		assembler.receiveGuiData(par1, (short) par2);
 	}
 
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		for (final IContainerListener var2 : this.listeners) {
-			this.assembler.checkGuiData(this, var2);
+		for (final IContainerListener var2 : listeners) {
+			assembler.checkGuiData(this, var2);
 		}
 	}
 
@@ -87,16 +87,16 @@ public class ContainerCartAssembler extends ContainerBase {
 	@Override
 	@Nonnull
 	public ItemStack slotClick(final int slotID, final int button, final ClickType keyflag, final EntityPlayer player) {
-		if (slotID >= 0 && slotID < this.inventorySlots.size()) {
-			final Slot hullSlot = this.inventorySlots.get(slotID);
+		if (slotID >= 0 && slotID < inventorySlots.size()) {
+			final Slot hullSlot = inventorySlots.get(slotID);
 			if (hullSlot != null && hullSlot instanceof SlotHull) {
 				final InventoryPlayer playerInventory = player.inventory;
 				@Nonnull
 				ItemStack playerItem = playerInventory.getItemStack();
 				@Nonnull
 				ItemStack slotItem = hullSlot.getStack();
-				final ArrayList<SlotAssembler> newSlots = this.assembler.getValidSlotFromHullItem(playerItem);
-				final ArrayList<SlotAssembler> oldSlots = this.assembler.getValidSlotFromHullItem(slotItem);
+				final ArrayList<SlotAssembler> newSlots = assembler.getValidSlotFromHullItem(playerItem);
+				final ArrayList<SlotAssembler> oldSlots = assembler.getValidSlotFromHullItem(slotItem);
 				if (oldSlots != null) {
 					if (newSlots != null) {
 						for (final SlotAssembler slot : newSlots) {

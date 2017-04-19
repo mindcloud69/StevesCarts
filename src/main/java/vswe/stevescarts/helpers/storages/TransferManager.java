@@ -13,81 +13,81 @@ public class TransferManager {
 	private boolean fromCartEnabled;
 
 	public TransferManager() {
-		this.reset();
+		reset();
 	}
 
 	public void reset() {
-		this.side = 0;
-		this.setting = -1;
-		this.lastsetting = 0;
-		this.lowestsetting = 0;
-		this.workload = 0;
-		this.cart = null;
-		this.toCartEnabled = true;
-		this.fromCartEnabled = true;
+		side = 0;
+		setting = -1;
+		lastsetting = 0;
+		lowestsetting = 0;
+		workload = 0;
+		cart = null;
+		toCartEnabled = true;
+		fromCartEnabled = true;
 	}
 
 	public int getSetting() {
-		return this.setting;
+		return setting;
 	}
 
 	public void setSetting(final int val) {
-		this.setting = val;
+		setting = val;
 	}
 
 	public int getSide() {
-		return this.side;
+		return side;
 	}
 
 	public void setSide(final int val) {
-		this.side = val;
+		side = val;
 	}
 
 	public int getLastSetting() {
-		return this.lastsetting;
+		return lastsetting;
 	}
 
 	public void setLastSetting(final int val) {
-		this.lastsetting = val;
+		lastsetting = val;
 	}
 
 	public int getLowestSetting() {
-		return this.lowestsetting;
+		return lowestsetting;
 	}
 
 	public void setLowestSetting(final int val) {
-		this.lowestsetting = val;
+		lowestsetting = val;
 	}
 
 	public int getWorkload() {
-		return this.workload;
+		return workload;
 	}
 
 	public void setWorkload(final int val) {
-		this.workload = val;
+		workload = val;
 	}
 
 	public EntityMinecartModular getCart() {
-		return this.cart;
+		return cart;
 	}
 
 	public void setCart(final EntityMinecartModular val) {
-		this.cart = val;
+		cart = val;
 	}
 
 	public boolean getFromCartEnabled() {
-		return this.fromCartEnabled;
+		return fromCartEnabled;
 	}
 
 	public void setFromCartEnabled(final boolean val) {
-		this.fromCartEnabled = val;
+		fromCartEnabled = val;
 	}
 
 	public boolean getToCartEnabled() {
-		return this.toCartEnabled;
+		return toCartEnabled;
 	}
 
 	public void setToCartEnabled(final boolean val) {
-		this.toCartEnabled = val;
+		toCartEnabled = val;
 	}
 }

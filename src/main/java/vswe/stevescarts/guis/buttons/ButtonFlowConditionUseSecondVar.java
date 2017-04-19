@@ -14,18 +14,18 @@ public class ButtonFlowConditionUseSecondVar extends ButtonFlowCondition {
 
 	@Override
 	public String toString() {
-		return this.use ? "Use second variable" : "Use integer";
+		return use ? "Use second variable" : "Use integer";
 	}
 
 	@Override
 	public int texture() {
-		return this.use ? 38 : 39;
+		return use ? 38 : 39;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			if (this.use != task.getFlowConditionUseSecondVar()) {
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			if (use != task.getFlowConditionUseSecondVar()) {
 				return true;
 			}
 		}
@@ -34,8 +34,8 @@ public class ButtonFlowConditionUseSecondVar extends ButtonFlowCondition {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
-			task.setFlowConditionUseSecondVar(this.use);
+		for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
+			task.setFlowConditionUseSecondVar(use);
 		}
 	}
 }

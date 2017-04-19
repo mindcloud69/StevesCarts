@@ -14,49 +14,49 @@ public class SlotCargo extends SlotBase implements ISpecialSlotValidator {
 
 	@Override
 	public boolean isSlotValid() {
-		if (this.cargo.layoutType == 0) {
+		if (cargo.layoutType == 0) {
 			return true;
 		}
 		int type;
-		if (this.cargo.layoutType == 1) {
-			type = this.cargo.getCurrentTransferForSlots().getSetting();
+		if (cargo.layoutType == 1) {
+			type = cargo.getCurrentTransferForSlots().getSetting();
 		} else {
-			type = this.cargo.getCurrentTransferForSlots().getSide();
+			type = cargo.getCurrentTransferForSlots().getSide();
 		}
-		int slotType = this.id / 15;
-		if (this.cargo.layoutType == 2) {
-			slotType = this.cargo.color[slotType] - 1;
+		int slotType = id / 15;
+		if (cargo.layoutType == 2) {
+			slotType = cargo.color[slotType] - 1;
 		}
 		return slotType == type;
 	}
 
 	public void updatePosition() {
 		int offset;
-		if (this.cargo.layoutType == 0) {
+		if (cargo.layoutType == 0) {
 			offset = 0;
 		} else {
 			offset = 5;
 		}
-		if (this.id < 15) {
-			final int x = this.id % 5;
-			final int y = this.id / 5;
-			this.xPos = 8 + x * 18;
-			this.yPos = 16 + y * 18 - offset;
-		} else if (this.id < 30) {
-			final int x = (this.id - 15) % 5 + 11;
-			final int y = (this.id - 15) / 5;
-			this.xPos = 8 + x * 18;
-			this.yPos = 16 + y * 18 - offset;
-		} else if (this.id < 45) {
-			final int x = (this.id - 30) % 5;
-			final int y = (this.id - 30) / 5 + 3;
-			this.xPos = 8 + x * 18;
-			this.yPos = 16 + y * 18 + offset;
+		if (id < 15) {
+			final int x = id % 5;
+			final int y = id / 5;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 - offset;
+		} else if (id < 30) {
+			final int x = (id - 15) % 5 + 11;
+			final int y = (id - 15) / 5;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 - offset;
+		} else if (id < 45) {
+			final int x = (id - 30) % 5;
+			final int y = (id - 30) / 5 + 3;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 + offset;
 		} else {
-			final int x = (this.id - 45) % 5 + 11;
-			final int y = (this.id - 45) / 5 + 3;
-			this.xPos = 8 + x * 18;
-			this.yPos = 16 + y * 18 + offset;
+			final int x = (id - 45) % 5 + 11;
+			final int y = (id - 45) / 5 + 3;
+			xPos = 8 + x * 18;
+			yPos = 16 + y * 18 + offset;
 		}
 	}
 }

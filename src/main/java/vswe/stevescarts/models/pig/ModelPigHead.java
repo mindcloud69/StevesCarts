@@ -26,7 +26,7 @@ public class ModelPigHead extends ModelCartbase {
 
 	public ModelPigHead() {
 		final ModelRenderer head = new ModelRenderer(this, 0, 0);
-		this.AddRenderer(head);
+		AddRenderer(head);
 		head.addBox(-4.0f, -4.0f, -8.0f, 8, 8, 8, 0.0f);
 		head.setRotationPoint(-9.0f, -5.0f, 0.0f);
 		head.rotateAngleY = 1.5707964f;

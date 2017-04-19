@@ -21,8 +21,8 @@ public class ModuleColorRandomizer extends ModuleAddon {
 
 	public ModuleColorRandomizer(final EntityMinecartModular cart) {
 		super(cart);
-		this.button = new int[] { 10, 26, 16, 16 };
-		this.random = new Random();
+		button = new int[] { 10, 26, 16, 16 };
+		random = new Random();
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ModuleColorRandomizer extends ModuleAddon {
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
+		drawString(gui, getModuleName(), 8, 6, 4210752);
 	}
 
 	@Override
@@ -53,55 +53,55 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/color_randomizer.png");
-		final float[] color = this.getColor();
+		final float[] color = getColor();
 		GL11.glColor4f(color[0], color[1], color[2], 1.0f);
-		this.drawImage(gui, 50, 20, 0, 16, 28, 28);
+		drawImage(gui, 50, 20, 0, 16, 28, 28);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		if (this.inRect(x, y, this.button)) {
-			this.drawImage(gui, 10, 26, 32, 0, 16, 16);
+		if (inRect(x, y, button)) {
+			drawImage(gui, 10, 26, 32, 0, 16, 16);
 		} else {
-			this.drawImage(gui, 10, 26, 16, 0, 16, 16);
+			drawImage(gui, 10, 26, 16, 0, 16, 16);
 		}
-		this.drawImage(gui, 10, 26, 0, 0, 16, 16);
+		drawImage(gui, 10, 26, 0, 0, 16, 16);
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		if (this.inRect(x, y, this.button)) {
+		if (inRect(x, y, button)) {
 			final String randomizeString = Localization.MODULES.ADDONS.BUTTON_RANDOMIZE.translate();
-			this.drawStringOnMouseOver(gui, randomizeString, x, y, this.button);
+			drawStringOnMouseOver(gui, randomizeString, x, y, button);
 		}
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (button == 0 && this.inRect(x, y, this.button)) {
-			this.sendPacket(0);
+		if (button == 0 && inRect(x, y, this.button)) {
+			sendPacket(0);
 		}
 	}
 
 	@Override
 	public void activatedByRail(final int x, final int y, final int z, final boolean active) {
-		if (active && this.cooldown == 0) {
-			this.randomizeColor();
-			this.cooldown = 5;
+		if (active && cooldown == 0) {
+			randomizeColor();
+			cooldown = 5;
 		}
 	}
 
 	@Override
 	public void update() {
-		if (this.cooldown > 0) {
-			--this.cooldown;
+		if (cooldown > 0) {
+			--cooldown;
 		}
 	}
 
 	private void randomizeColor() {
-		final int red = this.random.nextInt(256);
-		final int green = this.random.nextInt(256);
-		final int blue = this.random.nextInt(256);
-		this.setColorVal(0, (byte) red);
-		this.setColorVal(1, (byte) green);
-		this.setColorVal(2, (byte) blue);
+		final int red = random.nextInt(256);
+		final int green = random.nextInt(256);
+		final int blue = random.nextInt(256);
+		setColorVal(0, (byte) red);
+		setColorVal(1, (byte) green);
+		setColorVal(2, (byte) blue);
 	}
 
 	@Override
@@ -123,15 +123,15 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.randomizeColor();
+			randomizeColor();
 		}
 	}
 
 	public int getColorVal(final int i) {
-		if (this.isPlaceholder()) {
+		if (isPlaceholder()) {
 			return 255;
 		}
-		int tempVal = this.getDw(COLORS)[i];
+		int tempVal = getDw(COLORS)[i];
 		if (tempVal < 0) {
 			tempVal += 256;
 		}
@@ -145,25 +145,25 @@ public class ModuleColorRandomizer extends ModuleAddon {
 	}
 
 	private float getColorComponent(final int i) {
-		return this.getColorVal(i) / 255.0f;
+		return getColorVal(i) / 255.0f;
 	}
 
 	@Override
 	public float[] getColor() {
-		return new float[] { this.getColorComponent(0), this.getColorComponent(1), this.getColorComponent(2) };
+		return new float[] { getColorComponent(0), getColorComponent(1), getColorComponent(2) };
 	}
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setByte(this.generateNBTName("Red", id), (byte) this.getColorVal(0));
-		tagCompound.setByte(this.generateNBTName("Green", id), (byte) this.getColorVal(1));
-		tagCompound.setByte(this.generateNBTName("Blue", id), (byte) this.getColorVal(2));
+		tagCompound.setByte(generateNBTName("Red", id), (byte) getColorVal(0));
+		tagCompound.setByte(generateNBTName("Green", id), (byte) getColorVal(1));
+		tagCompound.setByte(generateNBTName("Blue", id), (byte) getColorVal(2));
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		this.setColorVal(0, tagCompound.getByte(this.generateNBTName("Red", id)));
-		this.setColorVal(1, tagCompound.getByte(this.generateNBTName("Green", id)));
-		this.setColorVal(2, tagCompound.getByte(this.generateNBTName("Blue", id)));
+		setColorVal(0, tagCompound.getByte(generateNBTName("Red", id)));
+		setColorVal(1, tagCompound.getByte(generateNBTName("Green", id)));
+		setColorVal(2, tagCompound.getByte(generateNBTName("Blue", id)));
 	}
 }

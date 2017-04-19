@@ -29,19 +29,19 @@ public class ModelSeat extends ModelCartbase {
 	}
 
 	public ModelSeat() {
-		this.AddRenderer(this.sit = new ModelRenderer(this, 0, 0));
-		this.sit.addBox(-4.0f, -2.0f, -2.0f, 8, 4, 4, 0.0f);
-		this.sit.setRotationPoint(0.0f, 1.0f, 0.0f);
+		AddRenderer(sit = new ModelRenderer(this, 0, 0));
+		sit.addBox(-4.0f, -2.0f, -2.0f, 8, 4, 4, 0.0f);
+		sit.setRotationPoint(0.0f, 1.0f, 0.0f);
 		final ModelRenderer back = new ModelRenderer(this, 0, 8);
-		this.sit.addChild(back);
-		this.fixSize(back);
+		sit.addChild(back);
+		fixSize(back);
 		back.addBox(-4.0f, -2.0f, -1.0f, 8, 12, 2, 0.0f);
 		back.setRotationPoint(0.0f, -8.0f, 3.0f);
 	}
 
 	@Override
 	public void applyEffects(final ModuleBase module, final float yaw, final float pitch, final float roll) {
-		this.sit.rotateAngleY = ((module == null) ? 1.5707964f : (((ModuleSeat) module).getChairAngle() + (((ModuleSeat) module).useRelativeRender() ? 0.0f : yaw)));
+		sit.rotateAngleY = ((module == null) ? 1.5707964f : (((ModuleSeat) module).getChairAngle() + (((ModuleSeat) module).useRelativeRender() ? 0.0f : yaw)));
 	}
 
 	static {

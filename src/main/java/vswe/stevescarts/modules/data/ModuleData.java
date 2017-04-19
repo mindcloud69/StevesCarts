@@ -531,18 +531,18 @@ public class ModuleData {
 	}
 
 	public ModuleData(final int id, final String name, final Class<? extends ModuleBase> moduleClass, final int modularCost) {
-		this.nemesis = null;
-		this.requirement = null;
-		this.parent = null;
-		this.modelMult = 0.75f;
+		nemesis = null;
+		requirement = null;
+		parent = null;
+		modelMult = 0.75f;
 		this.id = (byte) id;
 		this.moduleClass = moduleClass;
 		this.name = name;
 		this.modularCost = modularCost;
-		this.groupID = ModuleData.moduleGroups.length;
+		groupID = ModuleData.moduleGroups.length;
 		for (int i = 0; i < ModuleData.moduleGroups.length; ++i) {
 			if (ModuleData.moduleGroups[i].isAssignableFrom(moduleClass)) {
-				this.groupID = i;
+				groupID = i;
 				break;
 			}
 		}
@@ -554,72 +554,72 @@ public class ModuleData {
 	}
 
 	public Class<? extends ModuleBase> getModuleClass() {
-		return this.moduleClass;
+		return moduleClass;
 	}
 
 	public boolean getIsValid() {
-		return this.isValid;
+		return isValid;
 	}
 
 	public boolean getIsLocked() {
-		return this.isLocked;
+		return isLocked;
 	}
 
 	protected ModuleData lock() {
-		this.isLocked = true;
+		isLocked = true;
 		return this;
 	}
 
 	public boolean getEnabledByDefault() {
-		return !this.defaultLock;
+		return !defaultLock;
 	}
 
 	protected ModuleData lockByDefault() {
-		this.defaultLock = true;
+		defaultLock = true;
 		return this;
 	}
 
 	protected ModuleData setAllowDuplicate() {
-		this.allowDuplicate = true;
+		allowDuplicate = true;
 		return this;
 	}
 
 	protected boolean getAllowDuplicate() {
-		return this.allowDuplicate;
+		return allowDuplicate;
 	}
 
 	protected ModuleData addSide(final SIDE side) {
-		if (this.renderingSides == null) {
-			this.renderingSides = new ArrayList<>();
+		if (renderingSides == null) {
+			renderingSides = new ArrayList<>();
 		}
-		this.renderingSides.add(side);
+		renderingSides.add(side);
 		if (side == SIDE.TOP) {
-			this.removeModel("Rails");
+			removeModel("Rails");
 		}
 		return this;
 	}
 
 	public ModuleData useExtraData(final byte defaultValue) {
-		this.extraDataDefaultValue = defaultValue;
-		this.useExtraData = true;
+		extraDataDefaultValue = defaultValue;
+		useExtraData = true;
 		return this;
 	}
 
 	public boolean isUsingExtraData() {
-		return this.useExtraData;
+		return useExtraData;
 	}
 
 	public byte getDefaultExtraData() {
-		return this.extraDataDefaultValue;
+		return extraDataDefaultValue;
 	}
 
 	public ArrayList<SIDE> getRenderingSides() {
-		return this.renderingSides;
+		return renderingSides;
 	}
 
 	protected ModuleData addSides(final SIDE[] sides) {
 		for (int i = 0; i < sides.length; ++i) {
-			this.addSide(sides[i]);
+			addSide(sides[i]);
 		}
 		return this;
 	}
@@ -630,10 +630,10 @@ public class ModuleData {
 	}
 
 	protected ModuleData addMessage(final Localization.MODULE_INFO s) {
-		if (this.message == null) {
-			this.message = new ArrayList<>();
+		if (message == null) {
+			message = new ArrayList<>();
 		}
-		this.message.add(s);
+		message.add(s);
 		return this;
 	}
 
@@ -658,97 +658,97 @@ public class ModuleData {
 	}
 
 	public float getModelMult() {
-		return this.modelMult;
+		return modelMult;
 	}
 
 	protected ModuleData setModelMult(final float val) {
-		this.modelMult = val;
+		modelMult = val;
 		return this;
 	}
 
 	protected ModuleData addModel(final String tag, final ModelCartbase model) {
-		this.addModel(tag, model, false);
-		this.addModel(tag, model, true);
+		addModel(tag, model, false);
+		addModel(tag, model, true);
 		return this;
 	}
 
 	protected ModuleData addModel(final String tag, final ModelCartbase model, final boolean placeholder) {
 		if (placeholder) {
-			if (this.modelsPlaceholder == null) {
-				this.modelsPlaceholder = new HashMap<>();
+			if (modelsPlaceholder == null) {
+				modelsPlaceholder = new HashMap<>();
 			}
-			this.modelsPlaceholder.put(tag, model);
+			modelsPlaceholder.put(tag, model);
 		} else {
-			if (this.models == null) {
-				this.models = new HashMap<>();
+			if (models == null) {
+				models = new HashMap<>();
 			}
-			this.models.put(tag, model);
+			models.put(tag, model);
 		}
 		return this;
 	}
 
 	public HashMap<String, ModelCartbase> getModels(final boolean placeholder) {
 		if (placeholder) {
-			return this.modelsPlaceholder;
+			return modelsPlaceholder;
 		}
-		return this.models;
+		return models;
 	}
 
 	public boolean haveModels(final boolean placeholder) {
 		if (placeholder) {
-			return this.modelsPlaceholder != null;
+			return modelsPlaceholder != null;
 		}
-		return this.models != null;
+		return models != null;
 	}
 
 	protected ModuleData removeModel(final String tag) {
-		if (this.removedModels == null) {
-			this.removedModels = new ArrayList<>();
+		if (removedModels == null) {
+			removedModels = new ArrayList<>();
 		}
-		if (!this.removedModels.contains(tag)) {
-			this.removedModels.add(tag);
+		if (!removedModels.contains(tag)) {
+			removedModels.add(tag);
 		}
 		return this;
 	}
 
 	public ArrayList<String> getRemovedModels() {
-		return this.removedModels;
+		return removedModels;
 	}
 
 	public boolean haveRemovedModels() {
-		return this.removedModels != null;
+		return removedModels != null;
 	}
 
 	public String getName() {
-		return I18n.translateToLocal(this.getUnlocalizedName());
+		return I18n.translateToLocal(getUnlocalizedName());
 	}
 
 	public String getUnlocalizedName() {
-		return "item.SC2:" + this.getRawName() + ".name";
+		return "item.SC2:" + getRawName() + ".name";
 	}
 
 	public byte getID() {
-		return this.id;
+		return id;
 	}
 
 	public int getCost() {
-		return this.modularCost;
+		return modularCost;
 	}
 
 	protected ModuleData getParent() {
-		return this.parent;
+		return parent;
 	}
 
 	protected ArrayList<ModuleData> getNemesis() {
-		return this.nemesis;
+		return nemesis;
 	}
 
 	protected ArrayList<ModuleDataGroup> getRequirement() {
-		return this.requirement;
+		return requirement;
 	}
 
 	public boolean getHasRecipe() {
-		return this.hasRecipe;
+		return hasRecipe;
 	}
 
 	public String getModuleInfoText(final byte b) {
@@ -828,20 +828,20 @@ public class ModuleData {
 	}
 
 	protected ModuleData addRecipe(final Object[][] recipe) {
-		if (this.recipes == null) {
-			this.recipes = new ArrayList<>();
+		if (recipes == null) {
+			recipes = new ArrayList<>();
 		}
-		this.recipes.add(recipe);
+		recipes.add(recipe);
 		return this;
 	}
 
 	public void loadRecipe() {
-		if (!this.isLocked) {
-			this.isValid = true;
-			if (this.recipes != null) {
-				this.hasRecipe = true;
-				for (final Object[][] recipe : this.recipes) {
-					RecipeHelper.addRecipe(this.getItemStack(), recipe);
+		if (!isLocked) {
+			isValid = true;
+			if (recipes != null) {
+				hasRecipe = true;
+				for (final Object[][] recipe : recipes) {
+					RecipeHelper.addRecipe(getItemStack(), recipe);
 				}
 			}
 		}
@@ -850,10 +850,10 @@ public class ModuleData {
 	@Nonnull
 	public ItemStack getItemStack() {
 		@Nonnull
-		ItemStack module = new ItemStack(ModItems.modules, 1, this.id);
-		if (this.isUsingExtraData()) {
+		ItemStack module = new ItemStack(ModItems.modules, 1, id);
+		if (isUsingExtraData()) {
 			final NBTTagCompound save = new NBTTagCompound();
-			save.setByte("Data", this.getDefaultExtraData());
+			save.setByte("Data", getDefaultExtraData());
 			module.setTagCompound(save);
 		}
 		return module;
@@ -908,12 +908,12 @@ public class ModuleData {
 	}
 
 	public void addExtraMessage(final List list) {
-		if (this.message != null) {
+		if (message != null) {
 			list.add("");
-			for (final Localization.MODULE_INFO m : this.message) {
+			for (final Localization.MODULE_INFO m : message) {
 				final String str = m.translate();
 				if (str.length() <= 30) {
-					this.addExtraMessage(list, str);
+					addExtraMessage(list, str);
 				} else {
 					final String[] words = str.split(" ");
 					String row = "";
@@ -922,11 +922,11 @@ public class ModuleData {
 						if (next.length() <= 30) {
 							row = next;
 						} else {
-							this.addExtraMessage(list, row);
+							addExtraMessage(list, row);
 							row = word;
 						}
 					}
-					this.addExtraMessage(list, row);
+					addExtraMessage(list, row);
 				}
 			}
 		}
@@ -937,58 +937,58 @@ public class ModuleData {
 	}
 
 	public void addSpecificInformation(final List list) {
-		list.add(TextFormatting.GRAY + Localization.MODULE_INFO.MODULAR_COST.translate() + ": " + this.modularCost);
+		list.add(TextFormatting.GRAY + Localization.MODULE_INFO.MODULAR_COST.translate() + ": " + modularCost);
 	}
 
 	public final void addInformation(final List list, final NBTTagCompound compound) {
-		this.addSpecificInformation(list);
+		addSpecificInformation(list);
 		if (compound != null && compound.hasKey("Data")) {
-			final String extradatainfo = this.getModuleInfoText(compound.getByte("Data"));
+			final String extradatainfo = getModuleInfoText(compound.getByte("Data"));
 			if (extradatainfo != null) {
 				list.add(TextFormatting.WHITE + extradatainfo);
 			}
 		}
 		if (GuiScreen.isShiftKeyDown()) {
-			if (this.getRenderingSides() == null || this.getRenderingSides().size() == 0) {
+			if (getRenderingSides() == null || getRenderingSides().size() == 0) {
 				list.add(TextFormatting.DARK_AQUA + Localization.MODULE_INFO.NO_SIDES.translate());
 			} else {
 				String sides = "";
-				for (int i = 0; i < this.getRenderingSides().size(); ++i) {
-					final SIDE side = this.getRenderingSides().get(i);
+				for (int i = 0; i < getRenderingSides().size(); ++i) {
+					final SIDE side = getRenderingSides().get(i);
 					if (i == 0) {
 						sides += side.toString();
-					} else if (i == this.getRenderingSides().size() - 1) {
+					} else if (i == getRenderingSides().size() - 1) {
 						sides = sides + " " + Localization.MODULE_INFO.AND.translate() + " " + side.toString();
 					} else {
 						sides = sides + ", " + side.toString();
 					}
 				}
-				list.add(TextFormatting.DARK_AQUA + Localization.MODULE_INFO.OCCUPIED_SIDES.translate(sides, String.valueOf(this.getRenderingSides().size())));
+				list.add(TextFormatting.DARK_AQUA + Localization.MODULE_INFO.OCCUPIED_SIDES.translate(sides, String.valueOf(getRenderingSides().size())));
 			}
-			if (this.getNemesis() != null && this.getNemesis().size() != 0) {
-				if (this.getRenderingSides() == null || this.getRenderingSides().size() == 0) {
+			if (getNemesis() != null && getNemesis().size() != 0) {
+				if (getRenderingSides() == null || getRenderingSides().size() == 0) {
 					list.add(TextFormatting.RED + Localization.MODULE_INFO.CONFLICT_HOWEVER.translate() + ":");
 				} else {
 					list.add(TextFormatting.RED + Localization.MODULE_INFO.CONFLICT_ALSO.translate() + ":");
 				}
-				for (final ModuleData module : this.getNemesis()) {
+				for (final ModuleData module : getNemesis()) {
 					list.add(TextFormatting.RED + module.getName());
 				}
 			}
-			if (this.parent != null) {
-				list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.REQUIREMENT.translate() + " " + this.parent.getName());
+			if (parent != null) {
+				list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.REQUIREMENT.translate() + " " + parent.getName());
 			}
-			if (this.getRequirement() != null && this.getRequirement().size() != 0) {
-				for (final ModuleDataGroup group : this.getRequirement()) {
+			if (getRequirement() != null && getRequirement().size() != 0) {
+				for (final ModuleDataGroup group : getRequirement()) {
 					list.add(TextFormatting.YELLOW + Localization.MODULE_INFO.REQUIREMENT.translate() + " " + group.getCountName() + " " + group.getName());
 				}
 			}
-			if (this.getAllowDuplicate()) {
+			if (getAllowDuplicate()) {
 				list.add(TextFormatting.GREEN + Localization.MODULE_INFO.DUPLICATES.translate());
 			}
 		}
-		list.add(TextFormatting.BLUE + Localization.MODULE_INFO.TYPE.translate() + ": " + ModuleData.moduleGroupNames[this.groupID].translate());
-		this.addExtraMessage(list);
+		list.add(TextFormatting.BLUE + Localization.MODULE_INFO.TYPE.translate() + ": " + ModuleData.moduleGroupNames[groupID].translate());
+		addExtraMessage(list);
 	}
 
 	public static String checkForErrors(final ModuleDataHull hull, final ArrayList<ModuleData> modules) {
@@ -1103,7 +1103,7 @@ public class ModuleData {
 	}
 
 	public String getRawName() {
-		return this.name.replace(":", "").replace("'", "").replace(" ", "_").replace("-", "_").toLowerCase();
+		return name.replace(":", "").replace("'", "").replace(" ", "_").replace("-", "_").toLowerCase();
 	}
 
 	//	@SideOnly(Side.CLIENT)
@@ -1115,7 +1115,7 @@ public class ModuleData {
 
 	@SideOnly(Side.CLIENT)
 	public String getIcon() {
-		return this.icon;
+		return icon;
 	}
 
 	public void setIcon(String icon) {
@@ -1140,7 +1140,7 @@ public class ModuleData {
 
 		@Override
 		public String toString() {
-			return this.name.translate();
+			return name.translate();
 		}
 	}
 }

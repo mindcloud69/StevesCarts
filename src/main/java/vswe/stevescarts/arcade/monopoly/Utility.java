@@ -10,7 +10,7 @@ public class Utility extends Property {
 
 	@Override
 	protected int getTextureId() {
-		return 6 + this.utilId;
+		return 6 + utilId;
 	}
 
 	@Override
@@ -20,15 +20,15 @@ public class Utility extends Property {
 
 	@Override
 	public int getRentCost() {
-		return this.getRentCost(this.getOwnedInGroup());
+		return getRentCost(getOwnedInGroup());
 	}
 
 	public int getId() {
-		return this.utilId;
+		return utilId;
 	}
 
 	public int getRentCost(final int owned) {
-		return this.game.getTotalDieEyes() * getMultiplier(owned);
+		return game.getTotalDieEyes() * getMultiplier(owned);
 	}
 
 	public static int getMultiplier(final int i) {

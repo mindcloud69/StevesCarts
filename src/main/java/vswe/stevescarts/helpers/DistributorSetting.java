@@ -16,7 +16,7 @@ public class DistributorSetting {
 		this.id = id;
 		this.top = top;
 		this.name = name;
-		this.imageId = id / 2;
+		imageId = id / 2;
 	}
 
 	public boolean isValid(final TileEntityManager manager, final int chunkId, final boolean top) {
@@ -24,30 +24,30 @@ public class DistributorSetting {
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public int getImageId() {
-		return this.imageId;
+		return imageId;
 	}
 
 	public String getName(final TileEntityManager[] manager) {
 		if (manager != null && manager.length > 1) {
-			return this.name.translate() + " (" + (this.getIsTop() ? Localization.GUI.DISTRIBUTOR.MANAGER_TOP.translate()
-			                                                       : Localization.GUI.DISTRIBUTOR.MANAGER_BOT.translate()) + ")";
+			return name.translate() + " (" + (getIsTop() ? Localization.GUI.DISTRIBUTOR.MANAGER_TOP.translate()
+			                                             : Localization.GUI.DISTRIBUTOR.MANAGER_BOT.translate()) + ")";
 		}
-		return this.name.translate();
+		return name.translate();
 	}
 
 	public boolean getIsTop() {
-		return this.top;
+		return top;
 	}
 
 	public boolean isEnabled(final TileEntityDistributor distributor) {
 		if (distributor.getInventories().length == 0) {
 			return false;
 		}
-		if (this.top) {
+		if (top) {
 			return distributor.hasTop;
 		}
 		return distributor.hasBot;
@@ -91,7 +91,7 @@ public class DistributorSetting {
 			if (manager.layoutType == 0) {
 				return super.isValid(manager, chunkId, top);
 			}
-			return super.isValid(manager, chunkId, top) && manager.color[chunkId] == this.color;
+			return super.isValid(manager, chunkId, top) && manager.color[chunkId] == color;
 		}
 	}
 
@@ -108,7 +108,7 @@ public class DistributorSetting {
 			if (manager.layoutType == 0) {
 				return super.isValid(manager, chunkId, top);
 			}
-			return super.isValid(manager, chunkId, top) && this.chunk == chunkId;
+			return super.isValid(manager, chunkId, top) && chunk == chunkId;
 		}
 	}
 
@@ -125,7 +125,7 @@ public class DistributorSetting {
 			if (manager.layoutType == 0) {
 				return super.isValid(manager, chunkId, top);
 			}
-			return super.isValid(manager, chunkId, top) && manager.toCart[chunkId] == this.toCart;
+			return super.isValid(manager, chunkId, top) && manager.toCart[chunkId] == toCart;
 		}
 	}
 }

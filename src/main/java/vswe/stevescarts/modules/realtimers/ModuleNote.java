@@ -62,67 +62,67 @@ public class ModuleNote extends ModuleBase {
 
 	public ModuleNote(final EntityMinecartModular cart) {
 		super(cart);
-		this.veryLongTrackLimit = 1024;
-		this.notesInView = 13;
-		this.tracksInView = 5;
-		this.instrumentColors = new int[] { 4210752, 16711680, 65280, 255, 16776960, 65535 };
-		this.pitchNames = new String[] { "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#" };
-		this.instrumentNames = new Localization.MODULES.ATTACHMENTS[] { Localization.MODULES.ATTACHMENTS.PIANO, Localization.MODULES.ATTACHMENTS.BASS_DRUM, Localization.MODULES.ATTACHMENTS.SNARE_DRUM,
+		veryLongTrackLimit = 1024;
+		notesInView = 13;
+		tracksInView = 5;
+		instrumentColors = new int[] { 4210752, 16711680, 65280, 255, 16776960, 65535 };
+		pitchNames = new String[] { "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#" };
+		instrumentNames = new Localization.MODULES.ATTACHMENTS[] { Localization.MODULES.ATTACHMENTS.PIANO, Localization.MODULES.ATTACHMENTS.BASS_DRUM, Localization.MODULES.ATTACHMENTS.SNARE_DRUM,
 			Localization.MODULES.ATTACHMENTS.STICKS, Localization.MODULES.ATTACHMENTS.BASS_GUITAR };
-		this.notemapX = 70;
-		this.notemapY = 40;
-		this.trackHeight = 20;
-		this.currentInstrument = -1;
-		this.scrollXrect = new int[] { this.notemapX + 120, this.notemapY - 20, 100, 16 };
-		this.scrollYrect = new int[] { this.notemapX + 220, this.notemapY, 16, 100 };
-		this.currentTick = 0;
-		this.playProgress = 0;
-		this.tooLongTrack = false;
-		this.tooTallModule = false;
-		this.veryLongTrack = false;
-		this.speedSetting = 5;
-		this.maximumNotesPerTrack = (int) Math.pow(2.0, 12.0) - 1;
-		this.maximumTracksPerModule = (int) Math.pow(2.0, 4.0) - 1;
-		this.tracks = new ArrayList<>();
-		if (this.getCart().world.isRemote) {
-			this.buttons = new ArrayList<>();
-			this.createTrack = new Button(this.notemapX - 60, this.notemapY - 20);
-			this.createTrack.text = Localization.MODULES.ATTACHMENTS.CREATE_TRACK.translate();
-			this.createTrack.imageID = 0;
-			this.removeTrack = new Button(this.notemapX - 40, this.notemapY - 20);
-			this.removeTrack.text = Localization.MODULES.ATTACHMENTS.REMOVE_TRACK.translate();
-			this.removeTrack.imageID = 1;
-			this.speedButton = new Button(this.notemapX - 20, this.notemapY - 20);
-			this.updateSpeedButton();
-			this.instrumentbuttons = new ArrayList<>();
+		notemapX = 70;
+		notemapY = 40;
+		trackHeight = 20;
+		currentInstrument = -1;
+		scrollXrect = new int[] { notemapX + 120, notemapY - 20, 100, 16 };
+		scrollYrect = new int[] { notemapX + 220, notemapY, 16, 100 };
+		currentTick = 0;
+		playProgress = 0;
+		tooLongTrack = false;
+		tooTallModule = false;
+		veryLongTrack = false;
+		speedSetting = 5;
+		maximumNotesPerTrack = (int) Math.pow(2.0, 12.0) - 1;
+		maximumTracksPerModule = (int) Math.pow(2.0, 4.0) - 1;
+		tracks = new ArrayList<>();
+		if (getCart().world.isRemote) {
+			buttons = new ArrayList<>();
+			createTrack = new Button(notemapX - 60, notemapY - 20);
+			createTrack.text = Localization.MODULES.ATTACHMENTS.CREATE_TRACK.translate();
+			createTrack.imageID = 0;
+			removeTrack = new Button(notemapX - 40, notemapY - 20);
+			removeTrack.text = Localization.MODULES.ATTACHMENTS.REMOVE_TRACK.translate();
+			removeTrack.imageID = 1;
+			speedButton = new Button(notemapX - 20, notemapY - 20);
+			updateSpeedButton();
+			instrumentbuttons = new ArrayList<>();
 			for (int i = 0; i < 6; ++i) {
-				final Button tempButton = new Button(this.notemapX - 20 + (i + 1) * 20, this.notemapY - 20);
-				this.instrumentbuttons.add(tempButton);
+				final Button tempButton = new Button(notemapX - 20 + (i + 1) * 20, notemapY - 20);
+				instrumentbuttons.add(tempButton);
 				if (i > 0) {
-					tempButton.text = Localization.MODULES.ATTACHMENTS.ACTIVATE_INSTRUMENT.translate(this.instrumentNames[i - 1].translate(new String[0]));
+					tempButton.text = Localization.MODULES.ATTACHMENTS.ACTIVATE_INSTRUMENT.translate(instrumentNames[i - 1].translate(new String[0]));
 				} else {
 					tempButton.text = Localization.MODULES.ATTACHMENTS.DEACTIVATE_INSTRUMENT.translate();
 				}
-				tempButton.color = this.instrumentColors[i];
+				tempButton.color = instrumentColors[i];
 			}
 		}
 	}
 
 	private void updateSpeedButton() {
-		if (this.getCart().world.isRemote) {
-			this.speedButton.imageID = 14 - this.speedSetting;
-			this.speedButton.text = Localization.MODULES.ATTACHMENTS.NOTE_DELAY.translate(String.valueOf(this.getTickDelay()));
+		if (getCart().world.isRemote) {
+			speedButton.imageID = 14 - speedSetting;
+			speedButton.text = Localization.MODULES.ATTACHMENTS.NOTE_DELAY.translate(String.valueOf(getTickDelay()));
 		}
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.drawString(gui, this.getModuleName(), 8, 6, 4210752);
-		for (int i = this.getScrollY(); i < Math.min(this.tracks.size(), this.getScrollY() + this.tracksInView); ++i) {
-			final Track track = this.tracks.get(i);
-			for (int j = this.getScrollX(); j < Math.min(track.notes.size(), this.getScrollX() + this.notesInView); ++j) {
+		drawString(gui, getModuleName(), 8, 6, 4210752);
+		for (int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + tracksInView); ++i) {
+			final Track track = tracks.get(i);
+			for (int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + notesInView); ++j) {
 				final Note note = track.notes.get(j);
-				note.drawText(gui, i - this.getScrollY(), j - this.getScrollX());
+				note.drawText(gui, i - getScrollY(), j - getScrollX());
 			}
 		}
 	}
@@ -139,13 +139,13 @@ public class ModuleNote extends ModuleBase {
 
 	@Override
 	public void activatedByRail(final int x, final int y, final int z, final boolean active) {
-		if (active && !this.isPlaying()) {
-			this.setPlaying(true);
+		if (active && !isPlaying()) {
+			setPlaying(true);
 		}
 	}
 
 	private int getTickDelay() {
-		switch (this.speedSetting) {
+		switch (speedSetting) {
 			case 6: {
 				return 1;
 			}
@@ -176,15 +176,15 @@ public class ModuleNote extends ModuleBase {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().world.isRemote) {
-			this.tooLongTrack = false;
-			this.veryLongTrack = false;
-			for (int i = 0; i < this.tracks.size(); ++i) {
-				final Track track = this.tracks.get(i);
-				if (track.notes.size() > this.notesInView) {
-					this.tooLongTrack = true;
-					if (track.notes.size() > this.veryLongTrackLimit) {
-						this.veryLongTrack = true;
+		if (getCart().world.isRemote) {
+			tooLongTrack = false;
+			veryLongTrack = false;
+			for (int i = 0; i < tracks.size(); ++i) {
+				final Track track = tracks.get(i);
+				if (track.notes.size() > notesInView) {
+					tooLongTrack = true;
+					if (track.notes.size() > veryLongTrackLimit) {
+						veryLongTrack = true;
 					}
 				}
 				int trackPacketID = -1;
@@ -200,56 +200,56 @@ public class ModuleNote extends ModuleBase {
 				}
 				if (trackPacketID != -1) {
 					final byte info = (byte) (i | trackPacketID << 4);
-					this.sendPacket(1, info);
+					sendPacket(1, info);
 				}
 			}
-			if (!this.tooLongTrack) {
-				this.pixelScrollX = 0;
-				this.isScrollingX = false;
+			if (!tooLongTrack) {
+				pixelScrollX = 0;
+				isScrollingX = false;
 			}
-			if (!this.veryLongTrack) {
-				this.pixelScrollXTune = 0;
-				this.isScrollingXTune = false;
+			if (!veryLongTrack) {
+				pixelScrollXTune = 0;
+				isScrollingXTune = false;
 			}
-			if (!(this.tooTallModule = (this.tracks.size() > this.tracksInView))) {
-				this.pixelScrollY = 0;
-				this.isScrollingY = false;
+			if (!(tooTallModule = (tracks.size() > tracksInView))) {
+				pixelScrollY = 0;
+				isScrollingY = false;
 			}
-			this.generateScrollX();
-			this.generateScrollY();
-			if (this.createTrack.down) {
-				this.createTrack.down = false;
-				this.sendPacket(0, (byte) 0);
+			generateScrollX();
+			generateScrollY();
+			if (createTrack.down) {
+				createTrack.down = false;
+				sendPacket(0, (byte) 0);
 			}
-			if (this.removeTrack.down) {
-				this.removeTrack.down = false;
-				this.sendPacket(0, (byte) 1);
+			if (removeTrack.down) {
+				removeTrack.down = false;
+				sendPacket(0, (byte) 1);
 			}
-			if (this.speedButton.down) {
-				this.speedButton.down = false;
-				this.sendPacket(0, (byte) 2);
+			if (speedButton.down) {
+				speedButton.down = false;
+				sendPacket(0, (byte) 2);
 			}
-			for (int i = 0; i < this.instrumentbuttons.size(); ++i) {
-				if (this.instrumentbuttons.get(i).down && i != this.currentInstrument) {
-					this.currentInstrument = i;
+			for (int i = 0; i < instrumentbuttons.size(); ++i) {
+				if (instrumentbuttons.get(i).down && i != currentInstrument) {
+					currentInstrument = i;
 					break;
 				}
 			}
-			for (int i = 0; i < this.instrumentbuttons.size(); ++i) {
-				if (this.instrumentbuttons.get(i).down && i != this.currentInstrument) {
-					this.instrumentbuttons.get(i).down = false;
+			for (int i = 0; i < instrumentbuttons.size(); ++i) {
+				if (instrumentbuttons.get(i).down && i != currentInstrument) {
+					instrumentbuttons.get(i).down = false;
 				}
 			}
-			if (this.currentInstrument != -1 && !this.instrumentbuttons.get(this.currentInstrument).down) {
-				this.currentInstrument = -1;
+			if (currentInstrument != -1 && !instrumentbuttons.get(currentInstrument).down) {
+				currentInstrument = -1;
 			}
 		}
-		if (this.isPlaying()) {
-			if (this.currentTick <= 0) {
+		if (isPlaying()) {
+			if (currentTick <= 0) {
 				boolean found = false;
-				for (final Track track2 : this.tracks) {
-					if (track2.notes.size() > this.playProgress) {
-						final Note note = track2.notes.get(this.playProgress);
+				for (final Track track2 : tracks) {
+					if (track2.notes.size() > playProgress) {
+						final Note note = track2.notes.get(playProgress);
 						float volume = 0.0f;
 						switch (track2.volume) {
 							case 0: {
@@ -274,16 +274,16 @@ public class ModuleNote extends ModuleBase {
 					}
 				}
 				if (!found) {
-					if (!this.getCart().world.isRemote) {
-						this.setPlaying(false);
+					if (!getCart().world.isRemote) {
+						setPlaying(false);
 					}
-					this.playProgress = 0;
+					playProgress = 0;
 				} else {
-					++this.playProgress;
+					++playProgress;
 				}
-				this.currentTick = this.getTickDelay() - 1;
+				currentTick = getTickDelay() - 1;
 			} else {
-				--this.currentTick;
+				--currentTick;
 			}
 		}
 	}
@@ -301,126 +301,126 @@ public class ModuleNote extends ModuleBase {
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource("/gui/note.png");
-		for (int i = this.getScrollY(); i < Math.min(this.tracks.size(), this.getScrollY() + this.tracksInView); ++i) {
-			final Track track = this.tracks.get(i);
-			for (int j = this.getScrollX(); j < Math.min(track.notes.size(), this.getScrollX() + this.notesInView); ++j) {
+		for (int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + tracksInView); ++i) {
+			final Track track = tracks.get(i);
+			for (int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + notesInView); ++j) {
 				final Note note = track.notes.get(j);
-				note.draw(gui, x, y, i - this.getScrollY(), j - this.getScrollX());
+				note.draw(gui, x, y, i - getScrollY(), j - getScrollX());
 			}
 		}
-		for (final Button button : this.buttons) {
+		for (final Button button : buttons) {
 			button.draw(gui, x, y);
 		}
-		if (this.tooLongTrack) {
-			this.drawImage(gui, this.scrollXrect, 48, 0);
-			int[] marker = this.getMarkerX();
-			this.drawImage(gui, marker, 148, 1);
-			if (this.veryLongTrack) {
-				marker = this.getMarkerXTune();
-				this.drawImage(gui, marker, 153, 1);
+		if (tooLongTrack) {
+			drawImage(gui, scrollXrect, 48, 0);
+			int[] marker = getMarkerX();
+			drawImage(gui, marker, 148, 1);
+			if (veryLongTrack) {
+				marker = getMarkerXTune();
+				drawImage(gui, marker, 153, 1);
 			}
 		} else {
-			this.drawImage(gui, this.scrollXrect, 48, 16);
+			drawImage(gui, scrollXrect, 48, 16);
 		}
-		if (this.tooTallModule) {
-			this.drawImage(gui, this.scrollYrect, 0, 48);
-			final int[] marker = this.getMarkerY();
-			this.drawImage(gui, marker, 1, 148);
+		if (tooTallModule) {
+			drawImage(gui, scrollYrect, 0, 48);
+			final int[] marker = getMarkerY();
+			drawImage(gui, marker, 1, 148);
 		} else {
-			this.drawImage(gui, this.scrollYrect, 16, 48);
+			drawImage(gui, scrollYrect, 16, 48);
 		}
 	}
 
 	private int[] getMarkerX() {
-		return this.generateMarkerX(this.pixelScrollX);
+		return generateMarkerX(pixelScrollX);
 	}
 
 	private int[] getMarkerXTune() {
-		return this.generateMarkerX(this.pixelScrollXTune);
+		return generateMarkerX(pixelScrollXTune);
 	}
 
 	private int[] generateMarkerX(final int x) {
-		return new int[] { this.scrollXrect[0] + x, this.scrollXrect[1] + 1, 5, 14 };
+		return new int[] { scrollXrect[0] + x, scrollXrect[1] + 1, 5, 14 };
 	}
 
 	private void setMarkerX(final int x) {
-		this.pixelScrollX = this.generateNewMarkerX(x);
+		pixelScrollX = generateNewMarkerX(x);
 	}
 
 	private void setMarkerXTune(final int x) {
-		this.pixelScrollXTune = this.generateNewMarkerX(x);
+		pixelScrollXTune = generateNewMarkerX(x);
 	}
 
 	private int generateNewMarkerX(final int x) {
-		int temp = x - this.scrollXrect[0];
+		int temp = x - scrollXrect[0];
 		if (temp < 0) {
 			temp = 0;
-		} else if (temp > this.scrollXrect[2] - 5) {
-			temp = this.scrollXrect[2] - 5;
+		} else if (temp > scrollXrect[2] - 5) {
+			temp = scrollXrect[2] - 5;
 		}
 		return temp;
 	}
 
 	private int getScrollX() {
-		return this.generatedScrollX;
+		return generatedScrollX;
 	}
 
 	private void generateScrollX() {
-		if (this.tooLongTrack) {
+		if (tooLongTrack) {
 			int maxNotes = -1;
-			for (int i = 0; i < this.tracks.size(); ++i) {
-				maxNotes = Math.max(maxNotes, this.tracks.get(i).notes.size());
+			for (int i = 0; i < tracks.size(); ++i) {
+				maxNotes = Math.max(maxNotes, tracks.get(i).notes.size());
 			}
-			maxNotes -= this.notesInView;
-			final float widthOfBlockInScrollArea = (this.scrollXrect[2] - 5) / maxNotes;
-			this.generatedScrollX = Math.round(this.pixelScrollX / widthOfBlockInScrollArea);
-			if (this.veryLongTrack) {
-				this.generatedScrollX += (int) (this.pixelScrollXTune / (this.scrollXrect[2] - 5) * 50.0f);
+			maxNotes -= notesInView;
+			final float widthOfBlockInScrollArea = (scrollXrect[2] - 5) / maxNotes;
+			generatedScrollX = Math.round(pixelScrollX / widthOfBlockInScrollArea);
+			if (veryLongTrack) {
+				generatedScrollX += (int) (pixelScrollXTune / (scrollXrect[2] - 5) * 50.0f);
 			}
 		} else {
-			this.generatedScrollX = 0;
+			generatedScrollX = 0;
 		}
 	}
 
 	private int[] getMarkerY() {
-		return new int[] { this.scrollYrect[0] + 1, this.scrollYrect[1] + this.pixelScrollY, 14, 5 };
+		return new int[] { scrollYrect[0] + 1, scrollYrect[1] + pixelScrollY, 14, 5 };
 	}
 
 	private void setMarkerY(final int y) {
-		this.pixelScrollY = y - this.scrollYrect[1];
-		if (this.pixelScrollY < 0) {
-			this.pixelScrollY = 0;
-		} else if (this.pixelScrollY > this.scrollYrect[3] - 5) {
-			this.pixelScrollY = this.scrollYrect[3] - 5;
+		pixelScrollY = y - scrollYrect[1];
+		if (pixelScrollY < 0) {
+			pixelScrollY = 0;
+		} else if (pixelScrollY > scrollYrect[3] - 5) {
+			pixelScrollY = scrollYrect[3] - 5;
 		}
 	}
 
 	private int getScrollY() {
-		return this.generatedScrollY;
+		return generatedScrollY;
 	}
 
 	private void generateScrollY() {
-		if (this.tooTallModule) {
-			final int maxTracks = this.tracks.size() - this.tracksInView;
-			final float heightOfBlockInScrollArea = (this.scrollYrect[3] - 5) / maxTracks;
-			this.generatedScrollY = Math.round(this.pixelScrollY / heightOfBlockInScrollArea);
+		if (tooTallModule) {
+			final int maxTracks = tracks.size() - tracksInView;
+			final float heightOfBlockInScrollArea = (scrollYrect[3] - 5) / maxTracks;
+			generatedScrollY = Math.round(pixelScrollY / heightOfBlockInScrollArea);
 		} else {
-			this.generatedScrollY = 0;
+			generatedScrollY = 0;
 		}
 	}
 
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
-		for (int i = this.getScrollY(); i < Math.min(this.tracks.size(), this.getScrollY() + this.tracksInView); ++i) {
-			final Track track = this.tracks.get(i);
-			for (int j = this.getScrollX(); j < Math.min(track.notes.size(), this.getScrollX() + this.notesInView); ++j) {
+		for (int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + tracksInView); ++i) {
+			final Track track = tracks.get(i);
+			for (int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + notesInView); ++j) {
 				final Note note = track.notes.get(j);
 				if (note.instrumentId != 0) {
-					this.drawStringOnMouseOver(gui, note.toString(), x, y, note.getBounds(i - this.getScrollY(), j - this.getScrollX()));
+					drawStringOnMouseOver(gui, note.toString(), x, y, note.getBounds(i - getScrollY(), j - getScrollX()));
 				}
 			}
 		}
-		for (final Button button : this.buttons) {
+		for (final Button button : buttons) {
 			if (button.text != null && button.text.length() > 0) {
 				button.overlay(gui, x, y);
 			}
@@ -429,22 +429,22 @@ public class ModuleNote extends ModuleBase {
 
 	@Override
 	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.isScrollingX) {
-			this.setMarkerX(x);
+		if (isScrollingX) {
+			setMarkerX(x);
 			if (button != -1) {
-				this.isScrollingX = false;
+				isScrollingX = false;
 			}
 		}
-		if (this.isScrollingXTune) {
-			this.setMarkerXTune(x);
+		if (isScrollingXTune) {
+			setMarkerXTune(x);
 			if (button != -1) {
-				this.isScrollingXTune = false;
+				isScrollingXTune = false;
 			}
 		}
-		if (this.isScrollingY) {
-			this.setMarkerY(y + this.getCart().getRealScrollY());
+		if (isScrollingY) {
+			setMarkerY(y + getCart().getRealScrollY());
 			if (button != -1) {
-				this.isScrollingY = false;
+				isScrollingY = false;
 			}
 		}
 	}
@@ -452,24 +452,24 @@ public class ModuleNote extends ModuleBase {
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int buttonId) {
 		if (buttonId == 0) {
-			for (final Button button : this.buttons) {
+			for (final Button button : buttons) {
 				button.clicked(x, y);
 			}
-			if (!this.isScrollingX && this.inRect(x, y, this.scrollXrect)) {
-				this.isScrollingX = true;
-			} else if (!this.isScrollingY && this.inRect(x, y, this.scrollYrect)) {
-				this.isScrollingY = true;
+			if (!isScrollingX && inRect(x, y, scrollXrect)) {
+				isScrollingX = true;
+			} else if (!isScrollingY && inRect(x, y, scrollYrect)) {
+				isScrollingY = true;
 			}
-		} else if (buttonId == 1 && !this.isScrollingXTune && this.inRect(x, y, this.scrollXrect)) {
-			this.isScrollingXTune = true;
+		} else if (buttonId == 1 && !isScrollingXTune && inRect(x, y, scrollXrect)) {
+			isScrollingXTune = true;
 		}
 		if (buttonId == 0 || buttonId == 1) {
-			for (int i = this.getScrollY(); i < Math.min(this.tracks.size(), this.getScrollY() + this.tracksInView); ++i) {
-				final Track track = this.tracks.get(i);
-				for (int j = this.getScrollX(); j < Math.min(track.notes.size(), this.getScrollX() + this.notesInView); ++j) {
+			for (int i = getScrollY(); i < Math.min(tracks.size(), getScrollY() + tracksInView); ++i) {
+				final Track track = tracks.get(i);
+				for (int j = getScrollX(); j < Math.min(track.notes.size(), getScrollX() + notesInView); ++j) {
 					final Note note = track.notes.get(j);
-					if (this.inRect(x, y, note.getBounds(i - this.getScrollY(), j - this.getScrollX()))) {
-						int instrumentInfo = this.currentInstrument;
+					if (inRect(x, y, note.getBounds(i - getScrollY(), j - getScrollX()))) {
+						int instrumentInfo = currentInstrument;
 						if (instrumentInfo == -1) {
 							if (buttonId == 0) {
 								instrumentInfo = 6;
@@ -477,10 +477,10 @@ public class ModuleNote extends ModuleBase {
 								instrumentInfo = 7;
 							}
 						}
-						if (this.currentInstrument != -1 || note.instrumentId != 0) {
+						if (currentInstrument != -1 || note.instrumentId != 0) {
 							byte info = (byte) i;
 							info |= (byte) (instrumentInfo << 4);
-							this.sendPacket(2, new byte[] { info, (byte) j });
+							sendPacket(2, new byte[] { info, (byte) j });
 						}
 					}
 				}
@@ -490,20 +490,20 @@ public class ModuleNote extends ModuleBase {
 
 	@Override
 	public int numberOfGuiData() {
-		return 1 + (this.maximumNotesPerTrack + 1) * this.maximumTracksPerModule;
+		return 1 + (maximumNotesPerTrack + 1) * maximumTracksPerModule;
 	}
 
 	@Override
 	protected void checkGuiData(final Object[] info) {
-		short moduleHeader = (short) this.tracks.size();
-		moduleHeader |= (short) (this.speedSetting << 4);
-		this.updateGuiData(info, 0, moduleHeader);
-		for (int i = 0; i < this.tracks.size(); ++i) {
-			final Track track = this.tracks.get(i);
-			this.updateGuiData(info, 1 + (this.maximumNotesPerTrack + 1) * i, track.getInfo());
+		short moduleHeader = (short) tracks.size();
+		moduleHeader |= (short) (speedSetting << 4);
+		updateGuiData(info, 0, moduleHeader);
+		for (int i = 0; i < tracks.size(); ++i) {
+			final Track track = tracks.get(i);
+			updateGuiData(info, 1 + (maximumNotesPerTrack + 1) * i, track.getInfo());
 			for (int j = 0; j < track.notes.size(); ++j) {
 				final Note note = track.notes.get(j);
-				this.updateGuiData(info, 1 + (this.maximumNotesPerTrack + 1) * i + 1 + j, note.getInfo());
+				updateGuiData(info, 1 + (maximumNotesPerTrack + 1) * i + 1 + j, note.getInfo());
 			}
 		}
 	}
@@ -511,20 +511,20 @@ public class ModuleNote extends ModuleBase {
 	@Override
 	public void receiveGuiData(int id, final short data) {
 		if (id == 0) {
-			final int trackCount = data & this.maximumTracksPerModule;
-			this.speedSetting = (data & ~this.maximumTracksPerModule) >> 4;
-			this.updateSpeedButton();
-			while (this.tracks.size() < trackCount) {
+			final int trackCount = data & maximumTracksPerModule;
+			speedSetting = (data & ~maximumTracksPerModule) >> 4;
+			updateSpeedButton();
+			while (tracks.size() < trackCount) {
 				new Track();
 			}
-			while (this.tracks.size() > trackCount) {
-				this.tracks.get(this.tracks.size() - 1).unload();
-				this.tracks.remove(this.tracks.size() - 1);
+			while (tracks.size() > trackCount) {
+				tracks.get(tracks.size() - 1).unload();
+				tracks.remove(tracks.size() - 1);
 			}
 		} else {
-			final int trackId = --id / (this.maximumNotesPerTrack + 1);
-			int noteId = id % (this.maximumNotesPerTrack + 1);
-			final Track track = this.tracks.get(trackId);
+			final int trackId = --id / (maximumNotesPerTrack + 1);
+			int noteId = id % (maximumNotesPerTrack + 1);
+			final Track track = tracks.get(trackId);
 			if (noteId == 0) {
 				track.setInfo(data);
 			} else {
@@ -547,11 +547,11 @@ public class ModuleNote extends ModuleBase {
 	}
 
 	private boolean isPlaying() {
-		return !this.isPlaceholder() && (this.getDw(PLAYING) || this.playProgress > 0);
+		return !isPlaceholder() && (getDw(PLAYING) || playProgress > 0);
 	}
 
 	private void setPlaying(final boolean val) {
-		this.updateDw(PLAYING, val);
+		updateDw(PLAYING, val);
 	}
 
 	@Override
@@ -563,26 +563,26 @@ public class ModuleNote extends ModuleBase {
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
 			if (data[0] == 0) {
-				if (this.tracks.size() < this.maximumTracksPerModule) {
+				if (tracks.size() < maximumTracksPerModule) {
 					new Track();
 				}
 			} else if (data[0] == 1) {
-				if (this.tracks.size() > 0) {
-					this.tracks.remove(this.tracks.size() - 1);
+				if (tracks.size() > 0) {
+					tracks.remove(tracks.size() - 1);
 				}
 			} else if (data[0] == 2) {
-				++this.speedSetting;
-				if (this.speedSetting >= 7) {
-					this.speedSetting = 0;
+				++speedSetting;
+				if (speedSetting >= 7) {
+					speedSetting = 0;
 				}
 			}
 		} else if (id == 1) {
-			final int trackID = data[0] & this.maximumTracksPerModule;
-			final int trackPacketID = (data[0] & ~this.maximumTracksPerModule) >> 4;
-			if (trackID < this.tracks.size()) {
-				final Track track = this.tracks.get(trackID);
+			final int trackID = data[0] & maximumTracksPerModule;
+			final int trackPacketID = (data[0] & ~maximumTracksPerModule) >> 4;
+			if (trackID < tracks.size()) {
+				final Track track = tracks.get(trackID);
 				if (trackPacketID == 0) {
-					if (track.notes.size() < this.maximumNotesPerTrack) {
+					if (track.notes.size() < maximumNotesPerTrack) {
 						new Note(track);
 					}
 				} else if (trackPacketID == 1) {
@@ -596,10 +596,10 @@ public class ModuleNote extends ModuleBase {
 		} else if (id == 2) {
 			final byte info = data[0];
 			final byte noteID = data[1];
-			final byte trackID2 = (byte) (info & this.maximumTracksPerModule);
-			final byte instrumentInfo = (byte) ((byte) (info & ~(byte) this.maximumTracksPerModule) >> 4);
-			if (trackID2 < this.tracks.size()) {
-				final Track track2 = this.tracks.get(trackID2);
+			final byte trackID2 = (byte) (info & maximumTracksPerModule);
+			final byte instrumentInfo = (byte) ((byte) (info & ~(byte) maximumTracksPerModule) >> 4);
+			if (trackID2 < tracks.size()) {
+				final Track track2 = tracks.get(trackID2);
 				if (noteID < track2.notes.size()) {
 					final Note note = track2.notes.get(noteID);
 					if (instrumentInfo < 6) {
@@ -624,30 +624,30 @@ public class ModuleNote extends ModuleBase {
 
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
-		short headerInfo = (short) this.tracks.size();
-		headerInfo |= (short) (this.speedSetting << 4);
-		tagCompound.setShort(this.generateNBTName("Header", id), headerInfo);
-		for (int i = 0; i < this.tracks.size(); ++i) {
-			final Track track = this.tracks.get(i);
-			tagCompound.setShort(this.generateNBTName("Track" + i, id), track.getInfo());
+		short headerInfo = (short) tracks.size();
+		headerInfo |= (short) (speedSetting << 4);
+		tagCompound.setShort(generateNBTName("Header", id), headerInfo);
+		for (int i = 0; i < tracks.size(); ++i) {
+			final Track track = tracks.get(i);
+			tagCompound.setShort(generateNBTName("Track" + i, id), track.getInfo());
 			for (int j = 0; j < track.notes.size(); ++j) {
 				final Note note = track.notes.get(j);
-				tagCompound.setShort(this.generateNBTName("Note" + i + ":" + j, id), note.getInfo());
+				tagCompound.setShort(generateNBTName("Note" + i + ":" + j, id), note.getInfo());
 			}
 		}
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
-		final short headerInfo = tagCompound.getShort(this.generateNBTName("Header", id));
-		this.receiveGuiData(0, headerInfo);
-		for (int i = 0; i < this.tracks.size(); ++i) {
-			final short trackInfo = tagCompound.getShort(this.generateNBTName("Track" + i, id));
-			this.receiveGuiData(1 + (this.maximumNotesPerTrack + 1) * i, trackInfo);
-			final Track track = this.tracks.get(i);
+		final short headerInfo = tagCompound.getShort(generateNBTName("Header", id));
+		receiveGuiData(0, headerInfo);
+		for (int i = 0; i < tracks.size(); ++i) {
+			final short trackInfo = tagCompound.getShort(generateNBTName("Track" + i, id));
+			receiveGuiData(1 + (maximumNotesPerTrack + 1) * i, trackInfo);
+			final Track track = tracks.get(i);
 			for (int j = 0; j < track.notes.size(); ++j) {
-				final short noteInfo = tagCompound.getShort(this.generateNBTName("Note" + i + ":" + j, id));
-				this.receiveGuiData(1 + (this.maximumNotesPerTrack + 1) * i + 1 + j, noteInfo);
+				final short noteInfo = tagCompound.getShort(generateNBTName("Note" + i + ":" + j, id));
+				receiveGuiData(1 + (maximumNotesPerTrack + 1) * i + 1 + j, noteInfo);
 			}
 		}
 	}
@@ -664,30 +664,30 @@ public class ModuleNote extends ModuleBase {
 
 		@Override
 		public int[] getRect() {
-			return new int[] { this.x, ModuleNote.this.notemapY + (this.trackID - ModuleNote.this.getScrollY()) * ModuleNote.this.trackHeight, 16, 16 };
+			return new int[] { x, notemapY + (trackID - getScrollY()) * trackHeight, 16, 16 };
 		}
 
 		private boolean isValid() {
-			return ModuleNote.this.getScrollY() <= this.trackID && this.trackID < ModuleNote.this.getScrollY() + ModuleNote.this.tracksInView;
+			return getScrollY() <= trackID && trackID < getScrollY() + tracksInView;
 		}
 
 		@Override
 		public void draw(final GuiMinecart gui, final int x, final int y) {
-			if (this.isValid()) {
+			if (isValid()) {
 				super.draw(gui, x, y);
 			}
 		}
 
 		@Override
 		public void overlay(final GuiMinecart gui, final int x, final int y) {
-			if (this.isValid()) {
+			if (isValid()) {
 				super.overlay(gui, x, y);
 			}
 		}
 
 		@Override
 		public void clicked(final int x, final int y) {
-			if (this.isValid()) {
+			if (isValid()) {
 				super.clicked(x, y);
 			}
 		}
@@ -701,41 +701,41 @@ public class ModuleNote extends ModuleBase {
 		public int imageID;
 
 		public Button(final int x, final int y) {
-			this.down = false;
-			this.rect = new int[] { x, y, 16, 16 };
-			this.color = 0;
-			this.imageID = -1;
-			ModuleNote.this.buttons.add(this);
+			down = false;
+			rect = new int[] { x, y, 16, 16 };
+			color = 0;
+			imageID = -1;
+			buttons.add(this);
 		}
 
 		public int[] getRect() {
-			return this.rect;
+			return rect;
 		}
 
 		public void overlay(final GuiMinecart gui, final int x, final int y) {
-			ModuleNote.this.drawStringOnMouseOver(gui, this.text, x, y, this.getRect());
+			drawStringOnMouseOver(gui, text, x, y, getRect());
 		}
 
 		public void clicked(final int x, final int y) {
-			if (ModuleNote.this.inRect(x, y, this.getRect())) {
-				this.down = !this.down;
+			if (inRect(x, y, getRect())) {
+				down = !down;
 			}
 		}
 
 		public void draw(final GuiMinecart gui, final int x, final int y) {
-			if (!ModuleNote.this.inRect(x, y, this.getRect())) {
-				GL11.glColor4f((this.color >> 16) / 255.0f, (this.color >> 8 & 0xFF) / 255.0f, (this.color & 0xFF) / 255.0f, 1.0f);
+			if (!inRect(x, y, getRect())) {
+				GL11.glColor4f((color >> 16) / 255.0f, (color >> 8 & 0xFF) / 255.0f, (color & 0xFF) / 255.0f, 1.0f);
 			}
-			ModuleNote.this.drawImage(gui, this.getRect(), 32, 0);
+			drawImage(gui, getRect(), 32, 0);
 			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			int srcX = 0;
 			final int srcY = 16;
-			if (this.down) {
+			if (down) {
 				srcX += 16;
 			}
-			ModuleNote.this.drawImage(gui, this.getRect(), srcX, srcY);
-			if (this.imageID != -1) {
-				ModuleNote.this.drawImage(gui, this.getRect(), this.imageID * 16, 32);
+			drawImage(gui, getRect(), srcX, srcY);
+			if (imageID != -1) {
+				drawImage(gui, getRect(), imageID * 16, 32);
 			}
 		}
 	}
@@ -749,64 +749,64 @@ public class ModuleNote extends ModuleBase {
 		}
 
 		public void drawText(final GuiMinecart gui, final int trackID, final int noteID) {
-			if (this.instrumentId == 0) {
+			if (instrumentId == 0) {
 				return;
 			}
-			final int[] rect = this.getBounds(trackID, noteID);
-			String str = String.valueOf(this.pitch);
+			final int[] rect = getBounds(trackID, noteID);
+			String str = String.valueOf(pitch);
 			if (str.length() < 2) {
 				str = "0" + str;
 			}
-			ModuleNote.this.drawString(gui, str, rect[0] + 3, rect[1] + 6, ModuleNote.this.instrumentColors[this.instrumentId]);
+			drawString(gui, str, rect[0] + 3, rect[1] + 6, instrumentColors[instrumentId]);
 		}
 
 		public void draw(final GuiMinecart gui, final int x, final int y, final int trackID, final int noteID) {
 			int srcX = 0;
-			if (this.instrumentId == 0) {
+			if (instrumentId == 0) {
 				srcX += 16;
 			}
-			final int[] rect = this.getBounds(trackID, noteID);
-			if (this.instrumentId != 0 && ModuleNote.this.playProgress == noteID + ModuleNote.this.getScrollX() && ModuleNote.this.isPlaying()) {
+			final int[] rect = getBounds(trackID, noteID);
+			if (instrumentId != 0 && playProgress == noteID + getScrollX() && isPlaying()) {
 				GL11.glColor4f(0.3f, 0.3f, 0.3f, 1.0f);
 			}
-			ModuleNote.this.drawImage(gui, rect, srcX, 0);
+			drawImage(gui, rect, srcX, 0);
 			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-			if (ModuleNote.this.inRect(x, y, rect)) {
-				ModuleNote.this.drawImage(gui, rect, 32, 0);
+			if (inRect(x, y, rect)) {
+				drawImage(gui, rect, 32, 0);
 			}
 		}
 
 		public int[] getBounds(final int trackID, final int noteID) {
-			return new int[] { ModuleNote.this.notemapX + noteID * 16, ModuleNote.this.notemapY + trackID * ModuleNote.this.trackHeight, 16, 16 };
+			return new int[] { notemapX + noteID * 16, notemapY + trackID * trackHeight, 16, 16 };
 		}
 
 		public short getInfo() {
 			short info = 0;
-			info |= (short) this.instrumentId;
-			info |= (short) (this.pitch << 3);
+			info |= (short) instrumentId;
+			info |= (short) (pitch << 3);
 			return info;
 		}
 
 		public void setInfo(final short val) {
-			this.instrumentId = (val & 0x7);
-			this.pitch = (val & 0xF8) >> 3;
+			instrumentId = (val & 0x7);
+			pitch = (val & 0xF8) >> 3;
 		}
 
 		public void play(final float volume) {
-			if (this.instrumentId == 0) {
+			if (instrumentId == 0) {
 				return;
 			}
-			if (!ModuleNote.this.getCart().world.isRemote) {
+			if (!getCart().world.isRemote) {
 				if (volume > 0.0f) {
-					final float calculatedPitch = (float) Math.pow(2.0, (this.pitch - 12) / 12.0);
+					final float calculatedPitch = (float) Math.pow(2.0, (pitch - 12) / 12.0);
 					SoundEvent event = SoundEvents.BLOCK_NOTE_HARP;
-					if (this.instrumentId == 2) {
+					if (instrumentId == 2) {
 						event = SoundEvents.BLOCK_NOTE_BASEDRUM;
-					} else if (this.instrumentId == 3) {
+					} else if (instrumentId == 3) {
 						event = SoundEvents.BLOCK_NOTE_SNARE;
-					} else if (this.instrumentId == 4) {
+					} else if (instrumentId == 4) {
 						event = SoundEvents.BLOCK_NOTE_HAT;
-					} else if (this.instrumentId == 5) {
+					} else if (instrumentId == 5) {
 						event = SoundEvents.BLOCK_NOTE_BASS;
 					}
 					getCart().world.playSound(null, getCart().getPosition(), event, SoundCategory.RECORDS, volume, calculatedPitch);
@@ -814,23 +814,23 @@ public class ModuleNote extends ModuleBase {
 			} else {
 				double oX = 0.0;
 				double oZ = 0.0;
-				if (ModuleNote.this.getCart().motionX != 0.0) {
-					oX = ((ModuleNote.this.getCart().motionX > 0.0) ? -1 : 1);
+				if (getCart().motionX != 0.0) {
+					oX = ((getCart().motionX > 0.0) ? -1 : 1);
 				}
-				if (ModuleNote.this.getCart().motionZ != 0.0) {
-					oZ = ((ModuleNote.this.getCart().motionZ > 0.0) ? -1 : 1);
+				if (getCart().motionZ != 0.0) {
+					oZ = ((getCart().motionZ > 0.0) ? -1 : 1);
 				}
-				ModuleNote.this.getCart().world.spawnParticle(EnumParticleTypes.NOTE, ModuleNote.this.getCart().x() + oZ * 1.0 + 0.5, ModuleNote.this.getCart().y() + 1.2, ModuleNote.this.getCart().z() + oX * 1.0 + 0.5, this.pitch / 24.0, 0.0, 0.0);
-				ModuleNote.this.getCart().world.spawnParticle(EnumParticleTypes.NOTE, ModuleNote.this.getCart().x() + oZ * -1.0 + 0.5, ModuleNote.this.getCart().y() + 1.2, ModuleNote.this.getCart().z() + oX * -1.0 + 0.5, this.pitch / 24.0, 0.0, 0.0);
+				getCart().world.spawnParticle(EnumParticleTypes.NOTE, getCart().x() + oZ * 1.0 + 0.5, getCart().y() + 1.2, getCart().z() + oX * 1.0 + 0.5, pitch / 24.0, 0.0, 0.0);
+				getCart().world.spawnParticle(EnumParticleTypes.NOTE, getCart().x() + oZ * -1.0 + 0.5, getCart().y() + 1.2, getCart().z() + oX * -1.0 + 0.5, pitch / 24.0, 0.0, 0.0);
 			}
 		}
 
 		@Override
 		public String toString() {
-			if (this.instrumentId == 0) {
+			if (instrumentId == 0) {
 				return "Unknown instrument";
 			}
-			return ModuleNote.this.instrumentNames[this.instrumentId - 1].translate() + " " + ModuleNote.this.pitchNames[this.pitch];
+			return instrumentNames[instrumentId - 1].translate() + " " + pitchNames[pitch];
 		}
 	}
 
@@ -843,52 +843,52 @@ public class ModuleNote extends ModuleBase {
 		public int lastNoteCount;
 
 		public Track() {
-			this.notes = new ArrayList<>();
-			this.volume = 3;
-			if (ModuleNote.this.getCart().world.isRemote) {
-				final int ID = ModuleNote.this.tracks.size() + 1;
-				this.addButton = new TrackButton(ModuleNote.this.notemapX - 60, ID - 1);
-				this.addButton.text = Localization.MODULES.ATTACHMENTS.ADD_NOTE.translate(String.valueOf(ID));
-				this.addButton.imageID = 2;
-				this.removeButton = new TrackButton(ModuleNote.this.notemapX - 40, ID - 1);
-				this.removeButton.text = Localization.MODULES.ATTACHMENTS.REMOVE_NOTE.translate(String.valueOf(ID));
-				this.removeButton.imageID = 3;
-				this.volumeButton = new TrackButton(ModuleNote.this.notemapX - 20, ID - 1);
-				this.volumeButton.text = this.getVolumeText();
-				this.volumeButton.imageID = 4;
+			notes = new ArrayList<>();
+			volume = 3;
+			if (getCart().world.isRemote) {
+				final int ID = tracks.size() + 1;
+				addButton = new TrackButton(notemapX - 60, ID - 1);
+				addButton.text = Localization.MODULES.ATTACHMENTS.ADD_NOTE.translate(String.valueOf(ID));
+				addButton.imageID = 2;
+				removeButton = new TrackButton(notemapX - 40, ID - 1);
+				removeButton.text = Localization.MODULES.ATTACHMENTS.REMOVE_NOTE.translate(String.valueOf(ID));
+				removeButton.imageID = 3;
+				volumeButton = new TrackButton(notemapX - 20, ID - 1);
+				volumeButton.text = getVolumeText();
+				volumeButton.imageID = 4;
 			}
-			ModuleNote.this.tracks.add(this);
+			tracks.add(this);
 		}
 
 		private String getVolumeText() {
-			return Localization.MODULES.ATTACHMENTS.VOLUME.translate(String.valueOf(this.volume));
+			return Localization.MODULES.ATTACHMENTS.VOLUME.translate(String.valueOf(volume));
 		}
 
 		public void unload() {
-			ModuleNote.this.buttons.remove(this.addButton);
-			ModuleNote.this.buttons.remove(this.removeButton);
-			ModuleNote.this.buttons.remove(this.volumeButton);
+			buttons.remove(addButton);
+			buttons.remove(removeButton);
+			buttons.remove(volumeButton);
 		}
 
 		public short getInfo() {
 			short info = 0;
-			info |= (short) this.notes.size();
-			info |= (short) (this.volume << 12);
+			info |= (short) notes.size();
+			info |= (short) (volume << 12);
 			return info;
 		}
 
 		public void setInfo(final short val) {
-			final int numberofNotes = val & ModuleNote.this.maximumNotesPerTrack;
-			while (this.notes.size() < numberofNotes) {
+			final int numberofNotes = val & maximumNotesPerTrack;
+			while (notes.size() < numberofNotes) {
 				new Note(this);
 			}
-			while (this.notes.size() > numberofNotes) {
-				this.notes.remove(this.notes.size() - 1);
+			while (notes.size() > numberofNotes) {
+				notes.remove(notes.size() - 1);
 			}
-			this.volume = (val & ~ModuleNote.this.maximumNotesPerTrack) >> 12;
-			if (ModuleNote.this.getCart().world.isRemote) {
-				this.volumeButton.imageID = 4 + this.volume;
-				this.volumeButton.text = this.getVolumeText();
+			volume = (val & ~maximumNotesPerTrack) >> 12;
+			if (getCart().world.isRemote) {
+				volumeButton.imageID = 4 + volume;
+				volumeButton.text = getVolumeText();
 			}
 		}
 	}

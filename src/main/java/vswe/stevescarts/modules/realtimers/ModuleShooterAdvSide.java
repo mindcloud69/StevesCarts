@@ -29,106 +29,106 @@ public class ModuleShooterAdvSide extends ModuleShooterAdv {
 
 	public ModuleShooterAdvSide(final EntityMinecartModular cart) {
 		super(cart);
-		this.rig = new AnimationRig();
-		this.handlePos = new AnimationRigVal(this.rig, 8.55f, 9.4f, 0.0f);
-		this.basePos = new AnimationRigVal(this.rig, 1.05f, 4.0f, 0.05f);
-		this.handleRot = new AnimationRigVal(this.rig, 3.1415927f, 4.712389f, 0.075f);
-		this.gunRot = new AnimationRigVal(this.rig, 0.0f, -1.5707964f, 0.0f);
-		this.backPos = new AnimationRigVal(this.rig, 4.5f, -3.0f, 0.3f);
-		this.backRot = new AnimationRigVal(this.rig, 0.0f, -1.5707964f, 0.2f);
-		this.attacherRot = new AnimationRigVal(this.rig, 0.0f, -3.1415927f, 0.2f);
-		this.stabalizerOut = new AnimationRigVal(this.rig, 0.001f, 0.8f, 0.1f);
-		this.stabalizerDown = new AnimationRigVal(this.rig, 0.0f, -2.0f, 0.1f);
-		this.standOut = new AnimationRigVal(this.rig, 0.001f, 0.8f, 0.1f);
-		this.standUp = new AnimationRigVal(this.rig, 0.0f, 2.0f, 0.1f);
-		this.standSlide = new AnimationRigVal(this.rig, 0.0f, 0.25f, 0.01f);
-		this.armBasePos = new AnimationRigVal(this.rig, 0.5f, 10.0f, 0.3f);
-		this.armPos = new AnimationRigVal(this.rig, -2.25f, 2.5f, 0.0f);
-		this.armRot = new AnimationRigVal(this.rig, 0.0f, 1.5707964f, 0.2f);
-		this.missilePos = new AnimationRigVal(this.rig, 0.0f, 3.0f, 0.1f);
-		this.missileRot = new AnimationRigVal(this.rig, 0.0f, -0.2f, 0.0f);
-		this.armRot2 = new AnimationRigVal(this.rig, 0.0f, 1.5707964f, 0.2f);
-		this.armBasePos2 = new AnimationRigVal(this.rig, 0.0f, 9.5f, 0.3f);
-		this.armPos2 = new AnimationRigVal(this.rig, 0.0f, 5.0f, 0.0f);
-		this.handlePos.setUpAndDown(this.basePos);
-		this.handlePos.setSpeedToSync(this.basePos, false);
-		this.handleRot.setUpAndDown(this.gunRot);
-		this.gunRot.setSpeedToSync(this.handleRot, true);
-		this.armPos.setSpeedToSync(this.armBasePos, false);
-		this.armBasePos.setUpAndDown(this.armPos);
-		this.missilePos.setUpAndDown(this.missileRot);
-		this.missileRot.setSpeedToSync(this.missilePos, true);
-		this.armPos2.setSpeedToSync(this.armBasePos2, false);
-		this.armBasePos2.setUpAndDown(this.armPos2);
+		rig = new AnimationRig();
+		handlePos = new AnimationRigVal(rig, 8.55f, 9.4f, 0.0f);
+		basePos = new AnimationRigVal(rig, 1.05f, 4.0f, 0.05f);
+		handleRot = new AnimationRigVal(rig, 3.1415927f, 4.712389f, 0.075f);
+		gunRot = new AnimationRigVal(rig, 0.0f, -1.5707964f, 0.0f);
+		backPos = new AnimationRigVal(rig, 4.5f, -3.0f, 0.3f);
+		backRot = new AnimationRigVal(rig, 0.0f, -1.5707964f, 0.2f);
+		attacherRot = new AnimationRigVal(rig, 0.0f, -3.1415927f, 0.2f);
+		stabalizerOut = new AnimationRigVal(rig, 0.001f, 0.8f, 0.1f);
+		stabalizerDown = new AnimationRigVal(rig, 0.0f, -2.0f, 0.1f);
+		standOut = new AnimationRigVal(rig, 0.001f, 0.8f, 0.1f);
+		standUp = new AnimationRigVal(rig, 0.0f, 2.0f, 0.1f);
+		standSlide = new AnimationRigVal(rig, 0.0f, 0.25f, 0.01f);
+		armBasePos = new AnimationRigVal(rig, 0.5f, 10.0f, 0.3f);
+		armPos = new AnimationRigVal(rig, -2.25f, 2.5f, 0.0f);
+		armRot = new AnimationRigVal(rig, 0.0f, 1.5707964f, 0.2f);
+		missilePos = new AnimationRigVal(rig, 0.0f, 3.0f, 0.1f);
+		missileRot = new AnimationRigVal(rig, 0.0f, -0.2f, 0.0f);
+		armRot2 = new AnimationRigVal(rig, 0.0f, 1.5707964f, 0.2f);
+		armBasePos2 = new AnimationRigVal(rig, 0.0f, 9.5f, 0.3f);
+		armPos2 = new AnimationRigVal(rig, 0.0f, 5.0f, 0.0f);
+		handlePos.setUpAndDown(basePos);
+		handlePos.setSpeedToSync(basePos, false);
+		handleRot.setUpAndDown(gunRot);
+		gunRot.setSpeedToSync(handleRot, true);
+		armPos.setSpeedToSync(armBasePos, false);
+		armBasePos.setUpAndDown(armPos);
+		missilePos.setUpAndDown(missileRot);
+		missileRot.setSpeedToSync(missilePos, true);
+		armPos2.setSpeedToSync(armBasePos2, false);
+		armBasePos2.setUpAndDown(armPos2);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		this.rig.update(!this.isPipeActive(0));
+		rig.update(!isPipeActive(0));
 	}
 
 	public float getHandlePos(final int mult) {
-		return this.handlePos.getVal() * mult;
+		return handlePos.getVal() * mult;
 	}
 
 	public float getBasePos(final int mult) {
-		return this.basePos.getVal() * mult;
+		return basePos.getVal() * mult;
 	}
 
 	public float getHandleRot(final int mult) {
-		return this.handleRot.getVal();
+		return handleRot.getVal();
 	}
 
 	public float getGunRot(final int mult) {
-		return this.gunRot.getVal();
+		return gunRot.getVal();
 	}
 
 	public float getBackPos(final int mult) {
-		return this.backPos.getVal();
+		return backPos.getVal();
 	}
 
 	public float getBackRot(final int mult) {
-		return this.backRot.getVal() * mult;
+		return backRot.getVal() * mult;
 	}
 
 	public float getAttacherRot(final int mult) {
-		return this.attacherRot.getVal() * mult;
+		return attacherRot.getVal() * mult;
 	}
 
 	public float getStabalizerOut(final int mult) {
-		return this.stabalizerOut.getVal() * mult;
+		return stabalizerOut.getVal() * mult;
 	}
 
 	public float getStabalizerDown(final int mult) {
-		return this.stabalizerDown.getVal();
+		return stabalizerDown.getVal();
 	}
 
 	public float getStandOut(final int mult, final int i, final int j) {
-		return this.standOut.getVal() * j + mult * i * 0.5f + 0.003f;
+		return standOut.getVal() * j + mult * i * 0.5f + 0.003f;
 	}
 
 	public float getStandUp(final int mult, final int i, final int j) {
-		return this.standUp.getVal() - this.standSlide.getVal() * (i * 2 - 1) * j * mult;
+		return standUp.getVal() - standSlide.getVal() * (i * 2 - 1) * j * mult;
 	}
 
 	public float getArmBasePos(final int mult, final boolean fake) {
-		return this.armBasePos.getVal() - (fake ? 0.0f : this.armBasePos2.getVal());
+		return armBasePos.getVal() - (fake ? 0.0f : armBasePos2.getVal());
 	}
 
 	public float getArmRot(final int mult, final boolean fake) {
-		return (this.armRot.getVal() - (fake ? 0.0f : this.armRot2.getVal())) * mult;
+		return (armRot.getVal() - (fake ? 0.0f : armRot2.getVal())) * mult;
 	}
 
 	public float getArmPos(final int mult, final boolean fake) {
-		return this.armPos.getVal() - (fake ? 0.0f : this.armPos2.getVal());
+		return armPos.getVal() - (fake ? 0.0f : armPos2.getVal());
 	}
 
 	public float getMissilePos(final int mult) {
-		return this.missilePos.getVal();
+		return missilePos.getVal();
 	}
 
 	public float getMissileRot(final int mult) {
-		return this.missileRot.getVal() * mult;
+		return missileRot.getVal() * mult;
 	}
 }

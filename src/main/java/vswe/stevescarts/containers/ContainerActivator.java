@@ -18,14 +18,14 @@ public class ContainerActivator extends ContainerBase {
 
 	@Override
 	public TileEntityBase getTileEntity() {
-		return this.activator;
+		return activator;
 	}
 
 	public ContainerActivator(final IInventory invPlayer, final TileEntityActivator activator) {
 		this.activator = activator;
-		this.lastOptions = new ArrayList<>();
+		lastOptions = new ArrayList<>();
 		for (final ActivatorOption option : activator.getOptions()) {
-			this.lastOptions.add(option.getOption());
+			lastOptions.add(option.getOption());
 		}
 	}
 }

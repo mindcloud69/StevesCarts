@@ -13,41 +13,41 @@ public class InvaderGhast extends Unit {
 
 	public InvaderGhast(final ArcadeInvaders game, final int x, final int y) {
 		super(game, x, y);
-		this.tentacleTextureId = game.getModule().getCart().rand.nextInt(4);
-		this.shooting = -10;
+		tentacleTextureId = game.getModule().getCart().rand.nextInt(4);
+		shooting = -10;
 		if (game.canSpawnPahighast && !game.hasPahighast && game.getModule().getCart().rand.nextInt(1000) == 0) {
-			this.isPahighast = true;
+			isPahighast = true;
 			game.hasPahighast = true;
 		}
 	}
 
 	@Override
 	public void draw(final GuiMinecart gui) {
-		if (this.isPahighast) {
-			this.game.drawImageInArea(gui, this.x, this.y, 32, 32, 16, 16);
+		if (isPahighast) {
+			game.drawImageInArea(gui, x, y, 32, 32, 16, 16);
 		} else {
-			this.game.drawImageInArea(gui, this.x, this.y, (this.shooting > -10) ? 16 : 0, 0, 16, 16);
+			game.drawImageInArea(gui, x, y, (shooting > -10) ? 16 : 0, 0, 16, 16);
 		}
-		this.game.drawImageInArea(gui, this.x, this.y + 16, 0, 16 + 8 * this.tentacleTextureId, 16, 8);
+		game.drawImageInArea(gui, x, y + 16, 0, 16 + 8 * tentacleTextureId, 16, 8);
 	}
 
 	@Override
 	public UPDATE_RESULT update() {
-		if (this.hasTarget) {
+		if (hasTarget) {
 			boolean flag = false;
-			if (this.x != this.targetX) {
-				if (this.x > this.targetX) {
-					this.x = Math.max(this.targetX, this.x - 4);
+			if (x != targetX) {
+				if (x > targetX) {
+					x = Math.max(targetX, x - 4);
 				} else {
-					this.x = Math.min(this.targetX, this.x + 4);
+					x = Math.min(targetX, x + 4);
 				}
 				flag = true;
 			}
-			if (this.y != this.targetY) {
-				if (this.y > this.targetY) {
-					this.y = Math.max(this.targetY, this.y - 4);
+			if (y != targetY) {
+				if (y > targetY) {
+					y = Math.max(targetY, y - 4);
 				} else {
-					this.y = Math.min(this.targetY, this.y + 4);
+					y = Math.min(targetY, y + 4);
 				}
 				flag = true;
 			}
@@ -56,27 +56,27 @@ public class InvaderGhast extends Unit {
 		if (super.update() == UPDATE_RESULT.DEAD) {
 			return UPDATE_RESULT.DEAD;
 		}
-		if (this.shooting > -10) {
-			if (this.shooting == 0) {
+		if (shooting > -10) {
+			if (shooting == 0) {
 				final ArcadeInvaders game = this.game;
 				ArcadeGame.playDefaultSound("mob.ghast.fireball", 0.1f, 1.0f);
-				this.game.projectiles.add(new Projectile(this.game, this.x + 8 - 3, this.y + 8 - 3, false));
+				this.game.projectiles.add(new Projectile(this.game, x + 8 - 3, y + 8 - 3, false));
 			}
-			--this.shooting;
+			--shooting;
 		}
-		if (this.game.moveDown > 0) {
-			++this.y;
+		if (game.moveDown > 0) {
+			++y;
 		} else {
-			this.x += this.game.moveDirection * this.game.moveSpeed;
-			if (this.y > 130) {
+			x += game.moveDirection * game.moveSpeed;
+			if (y > 130) {
 				return UPDATE_RESULT.GAME_OVER;
 			}
-			if (this.x > 417 || this.x < 10) {
+			if (x > 417 || x < 10) {
 				return UPDATE_RESULT.TURN_BACK;
 			}
 		}
-		if (!this.isPahighast && this.shooting == -10 && this.game.getModule().getCart().rand.nextInt(300) == 0) {
-			this.shooting = 10;
+		if (!isPahighast && shooting == -10 && game.getModule().getCart().rand.nextInt(300) == 0) {
+			shooting = 10;
 		}
 		return UPDATE_RESULT.DONE;
 	}
@@ -92,8 +92,8 @@ public class InvaderGhast extends Unit {
 	}
 
 	public void setTarget(final int x, final int y) {
-		this.hasTarget = true;
-		this.targetX = x;
-		this.targetY = y;
+		hasTarget = true;
+		targetX = x;
+		targetY = y;
 	}
 }

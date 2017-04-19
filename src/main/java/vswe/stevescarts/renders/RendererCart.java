@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 	public RendererCart(RenderManager renderManager) {
 		super(renderManager);
-		this.shadowSize = 0.5f;
+		shadowSize = 0.5f;
 	}
 
 	@Override
@@ -87,9 +87,9 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 		yaw += (flip ? 0.0f : 180.0f);
 		GL11.glRotatef(flip ? 0.0f : 180.0f, 0.0f, 1.0f, 0.0f);
 		GL11.glScalef(-1.0f, -1.0f, 1.0f);
-		this.renderModels(cart, (float) (3.141592653589793 * yaw / 180.0), partialRotPitch, damageRot, 0.0625f, partialTickTime);
+		renderModels(cart, (float) (3.141592653589793 * yaw / 180.0), partialRotPitch, damageRot, 0.0625f, partialTickTime);
 		GL11.glPopMatrix();
-		this.renderLabel(cart, x, y, z);
+		renderLabel(cart, x, y, z);
 	}
 
 	public void renderModels(final EntityMinecartModular cart, final float yaw, final float pitch, final float roll, final float mult, final float partialtime) {
@@ -168,16 +168,16 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 	protected void renderLabel(final EntityMinecartModular cart, final double x, final double y, final double z) {
 		final ArrayList<String> labels = cart.getLabel();
 		if (labels != null && labels.size() > 0) {
-			final float distance = cart.getDistanceToEntity(this.renderManager.renderViewEntity);
+			final float distance = cart.getDistanceToEntity(renderManager.renderViewEntity);
 			if (distance <= 64.0f) {
-				final FontRenderer frend = this.getFontRendererFromRenderManager();
+				final FontRenderer frend = getFontRendererFromRenderManager();
 				final float var12 = 1.6f;
 				final float var13 = 0.016666668f * var12;
 				GL11.glPushMatrix();
 				GL11.glTranslatef((float) x + 0.0f, (float) y + 1.0f + (labels.size() - 1) * 0.12f, (float) z);
 				GL11.glNormal3f(0.0f, 1.0f, 0.0f);
-				GL11.glRotatef(-this.renderManager.playerViewY, 0.0f, 1.0f, 0.0f);
-				GL11.glRotatef(this.renderManager.playerViewX, 1.0f, 0.0f, 0.0f);
+				GL11.glRotatef(-renderManager.playerViewY, 0.0f, 1.0f, 0.0f);
+				GL11.glRotatef(renderManager.playerViewX, 1.0f, 0.0f, 0.0f);
 				GL11.glScalef(-var13, -var13, var13);
 				GL11.glDisable(2896);
 				GL11.glDepthMask(false);
@@ -224,6 +224,6 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 
 	@Override
 	public void doRender(final EntityMinecartModular par1Entity, final double x, final double y, final double z, final float yaw, final float partialTickTime) {
-		this.renderCart(par1Entity, x, y, z, yaw, partialTickTime);
+		renderCart(par1Entity, x, y, z, yaw, partialTickTime);
 	}
 }

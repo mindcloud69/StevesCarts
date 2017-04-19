@@ -21,20 +21,20 @@ public abstract class ContainerBase extends Container {
 	@Override
 	@Nonnull
 	public ItemStack transferStackInSlot(final EntityPlayer player, final int i) {
-		if (this.getMyInventory() == null) {
+		if (getMyInventory() == null) {
 			return ItemStack.EMPTY;
 		}
 		ItemStack itemstack = ItemStack.EMPTY;
-		final Slot slot = this.inventorySlots.get(i);
+		final Slot slot = inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
 			@Nonnull
 			ItemStack itemstack2 = slot.getStack();
 			itemstack = itemstack2.copy();
-			if (i < this.getMyInventory().getSizeInventory()) {
-				if (!this.mergeItemStack(itemstack2, this.getMyInventory().getSizeInventory() + 28, this.getMyInventory().getSizeInventory() + 36, false) && !this.mergeItemStack(itemstack2, this.getMyInventory().getSizeInventory(), this.getMyInventory().getSizeInventory() + 28, false)) {
+			if (i < getMyInventory().getSizeInventory()) {
+				if (!mergeItemStack(itemstack2, getMyInventory().getSizeInventory() + 28, getMyInventory().getSizeInventory() + 36, false) && !mergeItemStack(itemstack2, getMyInventory().getSizeInventory(), getMyInventory().getSizeInventory() + 28, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!this.mergeItemStack(itemstack2, 0, this.getMyInventory().getSizeInventory(), false)) {
+			} else if (!mergeItemStack(itemstack2, 0, getMyInventory().getSizeInventory(), false)) {
 				return ItemStack.EMPTY;
 			}
 			if (itemstack2.getCount() == 0) {
@@ -54,7 +54,7 @@ public abstract class ContainerBase extends Container {
 	protected boolean mergeItemStack(
 		@Nonnull
 			ItemStack par1ItemStack, final int par2, final int par3, final boolean par4) {
-		if (this.getMyInventory() == null) {
+		if (getMyInventory() == null) {
 			return false;
 		}
 		boolean var5 = false;
@@ -64,7 +64,7 @@ public abstract class ContainerBase extends Container {
 		}
 		if (par1ItemStack.isStackable()) {
 			while (par1ItemStack.getCount() > 0 && ((!par4 && var6 < par3) || (par4 && var6 >= par2))) {
-				final Slot var7 = this.inventorySlots.get(var6);
+				final Slot var7 = inventorySlots.get(var6);
 				@Nonnull
 				ItemStack var8 = var7.getStack();
 				if (!var8.isEmpty() && var8.getCount() > 0 && var8.getItem() == par1ItemStack.getItem() && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(par1ItemStack, var8)) {
@@ -96,7 +96,7 @@ public abstract class ContainerBase extends Container {
 				var6 = par2;
 			}
 			while ((!par4 && var6 < par3) || (par4 && var6 >= par2)) {
-				final Slot var7 = this.inventorySlots.get(var6);
+				final Slot var7 = inventorySlots.get(var6);
 				@Nonnull
 				ItemStack var8 = var7.getStack();
 				if (var8.isEmpty() && TransferHandler.isItemValidForTransfer(var7, par1ItemStack, TransferHandler.TRANSFER_TYPE.SHIFT)) {
@@ -122,14 +122,14 @@ public abstract class ContainerBase extends Container {
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer entityplayer) {
-		return this.getTileEntity() != null && this.getTileEntity().isUsableByPlayer(entityplayer);
+		return getTileEntity() != null && getTileEntity().isUsableByPlayer(entityplayer);
 	}
 
 	@Override
 	public void addListener(final IContainerListener par1ICrafting) {
 		super.addListener(par1ICrafting);
-		if (this.getTileEntity() != null) {
-			this.getTileEntity().initGuiData(this, par1ICrafting);
+		if (getTileEntity() != null) {
+			getTileEntity().initGuiData(this, par1ICrafting);
 		}
 	}
 
@@ -137,17 +137,17 @@ public abstract class ContainerBase extends Container {
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(final int par1, int par2) {
 		par2 &= 0xFFFF;
-		if (this.getTileEntity() != null) {
-			this.getTileEntity().receiveGuiData(par1, (short) par2);
+		if (getTileEntity() != null) {
+			getTileEntity().receiveGuiData(par1, (short) par2);
 		}
 	}
 
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		if (this.getTileEntity() != null) {
-			for (final IContainerListener var2 : this.listeners) {
-				this.getTileEntity().checkGuiData(this, var2);
+		if (getTileEntity() != null) {
+			for (final IContainerListener var2 : listeners) {
+				getTileEntity().checkGuiData(this, var2);
 			}
 		}
 	}

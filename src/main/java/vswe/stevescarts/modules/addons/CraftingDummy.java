@@ -13,7 +13,7 @@ public class CraftingDummy extends InventoryCrafting {
 
 	public CraftingDummy(final ModuleCrafter module) {
 		super(null, 3, 3);
-		this.inventoryWidth = 3;
+		inventoryWidth = 3;
 		this.module = module;
 	}
 
@@ -25,15 +25,15 @@ public class CraftingDummy extends InventoryCrafting {
 	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(final int par1) {
-		return (par1 >= this.getSizeInventory()) ? null : this.module.getStack(par1);
+		return (par1 >= getSizeInventory()) ? null : module.getStack(par1);
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack getStackInRowAndColumn(final int par1, final int par2) {
-		if (par1 >= 0 && par1 < this.inventoryWidth) {
-			final int k = par1 + par2 * this.inventoryWidth;
-			return this.getStackInSlot(k);
+		if (par1 >= 0 && par1 < inventoryWidth) {
+			final int k = par1 + par2 * inventoryWidth;
+			return getStackInSlot(k);
 		}
 		return null;
 	}
@@ -56,18 +56,18 @@ public class CraftingDummy extends InventoryCrafting {
 	}
 
 	public void update() {
-		this.module.setStack(9, this.getResult());
+		module.setStack(9, getResult());
 	}
 
 	@Nonnull
 	public ItemStack getResult() {
-		return CraftingManager.getInstance().findMatchingRecipe(this, this.module.getCart().world);
+		return CraftingManager.getInstance().findMatchingRecipe(this, module.getCart().world);
 	}
 
 	public IRecipe getRecipe() {
 		for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); ++i) {
 			final IRecipe irecipe = CraftingManager.getInstance().getRecipeList().get(i);
-			if (irecipe.matches(this, this.module.getCart().world)) {
+			if (irecipe.matches(this, module.getCart().world)) {
 				return irecipe;
 			}
 		}

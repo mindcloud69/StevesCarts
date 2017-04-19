@@ -19,13 +19,13 @@ public class ModuleCleaner extends ModuleBase {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
-		if (this.getCart().hasFuel()) {
-			this.suck();
+		if (getCart().hasFuel()) {
+			suck();
 		}
-		this.clean();
+		clean();
 	}
 
 	private double calculatemotion(final double dif) {
@@ -36,38 +36,38 @@ public class ModuleCleaner extends ModuleBase {
 	}
 
 	private void suck() {
-		final List<Entity> list = this.getCart().world.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
+		final List<Entity> list = getCart().world.getEntitiesWithinAABBExcludingEntity(getCart(), getCart().getEntityBoundingBox().expand(3.0, 1.0, 3.0));
 		for (Entity e : list) {
 			if (e instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) e;
-				final double difX = this.getCart().posX - eItem.posX;
-				final double difY = this.getCart().posY - eItem.posY;
-				final double difZ = this.getCart().posZ - eItem.posZ;
+				final double difX = getCart().posX - eItem.posX;
+				final double difY = getCart().posY - eItem.posY;
+				final double difZ = getCart().posZ - eItem.posZ;
 				final EntityItem entityItem = eItem;
-				entityItem.motionX += this.calculatemotion(difX);
+				entityItem.motionX += calculatemotion(difX);
 				final EntityItem entityItem2 = eItem;
-				entityItem2.motionY += this.calculatemotion(difY);
+				entityItem2.motionY += calculatemotion(difY);
 				final EntityItem entityItem3 = eItem;
-				entityItem3.motionZ += this.calculatemotion(difZ);
+				entityItem3.motionZ += calculatemotion(difZ);
 			}
 		}
 	}
 
 	private void clean() {
-		final List<Entity> list = this.getCart().world.getEntitiesWithinAABBExcludingEntity(this.getCart(), this.getCart().getEntityBoundingBox().expand(1.0, 0.5, 1.0));
+		final List<Entity> list = getCart().world.getEntitiesWithinAABBExcludingEntity(getCart(), getCart().getEntityBoundingBox().expand(1.0, 0.5, 1.0));
 		for (int e = 0; e < list.size(); ++e) {
 			if (list.get(e) instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) list.get(e);
 				if (!eItem.isDead) {
 					final int stackSize = eItem.getEntityItem().getCount();
-					this.getCart().addItemToChest(eItem.getEntityItem());
+					getCart().addItemToChest(eItem.getEntityItem());
 					if (stackSize != eItem.getEntityItem().getCount()) {
 						//TODO
 						//this.getCart().world.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
 						if (eItem.getEntityItem().getCount() <= 0) {
 							eItem.setDead();
 						}
-					} else if (this.failPickup(eItem.getEntityItem())) {
+					} else if (failPickup(eItem.getEntityItem())) {
 						eItem.setDead();
 					}
 				}
@@ -77,12 +77,12 @@ public class ModuleCleaner extends ModuleBase {
 					eItem2.arrowShake = 3;
 					@Nonnull
 					ItemStack iItem = new ItemStack(Items.ARROW, 1);
-					this.getCart().addItemToChest(iItem);
+					getCart().addItemToChest(iItem);
 					if (iItem.getCount() <= 0) {
 						//TODO
 						//this.getCart().world.playSound((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
 						eItem2.setDead();
-					} else if (this.failPickup(iItem)) {
+					} else if (failPickup(iItem)) {
 						eItem2.setDead();
 					}
 				}
@@ -93,18 +93,18 @@ public class ModuleCleaner extends ModuleBase {
 	private boolean failPickup(
 		@Nonnull
 			ItemStack item) {
-		final int x = this.normalize(this.getCart().pushZ);
-		final int z = this.normalize(this.getCart().pushX);
+		final int x = normalize(getCart().pushZ);
+		final int z = normalize(getCart().pushX);
 		if (x == 0 && z == 0) {
 			return false;
 		}
-		if (this.getCart().world.isRemote) {}
-		final EntityItem entityitem = new EntityItem(this.getCart().world, this.getCart().posX, this.getCart().posY, this.getCart().posZ, item.copy());
+		if (getCart().world.isRemote) {}
+		final EntityItem entityitem = new EntityItem(getCart().world, getCart().posX, getCart().posY, getCart().posZ, item.copy());
 		entityitem.setPickupDelay(35);
 		entityitem.motionX = x / 3.0f;
 		entityitem.motionY = 0.15000000596046448;
 		entityitem.motionZ = z / 3.0f;
-		this.getCart().world.spawnEntity(entityitem);
+		getCart().world.spawnEntity(entityitem);
 		return true;
 	}
 

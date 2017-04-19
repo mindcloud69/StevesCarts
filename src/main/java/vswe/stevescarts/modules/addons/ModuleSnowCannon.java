@@ -14,15 +14,15 @@ public class ModuleSnowCannon extends ModuleAddon {
 	@Override
 	public void update() {
 		super.update();
-		if (this.getCart().world.isRemote) {
+		if (getCart().world.isRemote) {
 			return;
 		}
-		if (this.getCart().hasFuel()) {
-			if (this.tick >= this.getInterval()) {
-				this.tick = 0;
-				this.generateSnow();
+		if (getCart().hasFuel()) {
+			if (tick >= getInterval()) {
+				tick = 0;
+				generateSnow();
 			} else {
-				++this.tick;
+				++tick;
 			}
 		}
 	}
@@ -41,12 +41,12 @@ public class ModuleSnowCannon extends ModuleAddon {
 
 	private void generateSnow() {
 		BlockPos cartPos = getCart().getPosition();
-		for (int x = -this.getBlocksOnSide(); x <= this.getBlocksOnSide(); ++x) {
-			for (int z = -this.getBlocksOnSide(); z <= this.getBlocksOnSide(); ++z) {
-				for (int y = -this.getBlocksFromLevel(); y <= this.getBlocksFromLevel(); ++y) {
+		for (int x = -getBlocksOnSide(); x <= getBlocksOnSide(); ++x) {
+			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); ++z) {
+				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); ++y) {
 					BlockPos pos = cartPos.add(x, y, z);
-					if (this.countsAsAir(pos) && this.getCart().world.getBiomeForCoordsBody(pos).getTemperature() <= 1.0f && Blocks.SNOW.canPlaceBlockAt(this.getCart().world, pos)) {
-						this.getCart().world.setBlockState(pos, Blocks.SNOW.getDefaultState());
+					if (countsAsAir(pos) && getCart().world.getBiomeForCoordsBody(pos).getTemperature() <= 1.0f && Blocks.SNOW.canPlaceBlockAt(getCart().world, pos)) {
+						getCart().world.setBlockState(pos, Blocks.SNOW.getDefaultState());
 					}
 				}
 			}

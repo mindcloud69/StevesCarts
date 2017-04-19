@@ -14,29 +14,29 @@ public class ButtonKeyboardSpecial extends ButtonKeyboard {
 
 	@Override
 	public String toString() {
-		return this.key.toString();
+		return key.toString();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		if (this.key == KEY.BACKSPACE || this.key == KEY.ENTER) {
-			return ((ModuleComputer) this.module).getWriting().getText().length() > 0;
+		if (key == KEY.BACKSPACE || key == KEY.ENTER) {
+			return ((ModuleComputer) module).getWriting().getText().length() > 0;
 		}
 		return super.isEnabled();
 	}
 
 	@Override
 	public int texture() {
-		if (this.key == KEY.CAPS) {
+		if (key == KEY.CAPS) {
 			return 26;
 		}
-		if (this.key == KEY.SHIFT) {
+		if (key == KEY.SHIFT) {
 			return 27;
 		}
-		if (this.key == KEY.BACKSPACE) {
+		if (key == KEY.BACKSPACE) {
 			return 28;
 		}
-		if (this.key == KEY.ENTER) {
+		if (key == KEY.ENTER) {
 			return 29;
 		}
 		return super.texture();
@@ -44,10 +44,10 @@ public class ButtonKeyboardSpecial extends ButtonKeyboard {
 
 	@Override
 	public int X() {
-		final int temp = this.y;
-		this.y = 0;
+		final int temp = y;
+		y = 0;
 		final int temp2 = super.X();
-		this.y = temp;
+		y = temp;
 		return temp2;
 	}
 
@@ -58,7 +58,7 @@ public class ButtonKeyboardSpecial extends ButtonKeyboard {
 
 	@Override
 	public int borderID() {
-		if ((this.key == KEY.SHIFT && ((ModuleComputer) this.module).getShift()) || (this.key == KEY.CAPS && ((ModuleComputer) this.module).getCaps())) {
+		if ((key == KEY.SHIFT && ((ModuleComputer) module).getShift()) || (key == KEY.CAPS && ((ModuleComputer) module).getCaps())) {
 			return 3;
 		}
 		return super.borderID();
@@ -66,16 +66,16 @@ public class ButtonKeyboardSpecial extends ButtonKeyboard {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		if (this.key == KEY.BACKSPACE) {
-			((ModuleComputer) this.module).getWriting().removeChar();
-		} else if (this.key == KEY.ENTER) {
-			if (((ModuleComputer) this.module).getWriting() instanceof ComputerVar) {
-				((ComputerVar) ((ModuleComputer) this.module).getWriting()).setEditing(false);
+		if (key == KEY.BACKSPACE) {
+			((ModuleComputer) module).getWriting().removeChar();
+		} else if (key == KEY.ENTER) {
+			if (((ModuleComputer) module).getWriting() instanceof ComputerVar) {
+				((ComputerVar) ((ModuleComputer) module).getWriting()).setEditing(false);
 			}
-		} else if (this.key == KEY.SHIFT) {
-			((ModuleComputer) this.module).flipShift();
-		} else if (this.key == KEY.CAPS) {
-			((ModuleComputer) this.module).flipCaps();
+		} else if (key == KEY.SHIFT) {
+			((ModuleComputer) module).flipShift();
+		} else if (key == KEY.CAPS) {
+			((ModuleComputer) module).flipCaps();
 		}
 	}
 

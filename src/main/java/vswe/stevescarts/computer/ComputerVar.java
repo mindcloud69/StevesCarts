@@ -10,13 +10,13 @@ public class ComputerVar implements IWriting {
 	private static final String validChars = "? ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 	public ComputerVar(final ModuleComputer module) {
-		this.name = "??????";
+		name = "??????";
 		this.module = module;
 	}
 
 	@Override
 	public String getText() {
-		return this.name.replace("?", "");
+		return name.replace("?", "");
 	}
 
 	@Override
@@ -26,19 +26,19 @@ public class ComputerVar implements IWriting {
 
 	@Override
 	public void addChar(final char c) {
-		this.name = this.name.replace("?", "");
-		this.name += c;
-		while (this.name.length() < this.getMaxLength()) {
-			this.name += "?";
+		name = name.replace("?", "");
+		name += c;
+		while (name.length() < getMaxLength()) {
+			name += "?";
 		}
 	}
 
 	@Override
 	public void removeChar() {
-		this.name = this.name.replace("?", "");
-		this.name = this.name.substring(0, this.name.length() - 1);
-		while (this.name.length() < this.getMaxLength()) {
-			this.name += "?";
+		name = name.replace("?", "");
+		name = name.substring(0, name.length() - 1);
+		while (name.length() < getMaxLength()) {
+			name += "?";
 		}
 	}
 
@@ -60,34 +60,34 @@ public class ComputerVar implements IWriting {
 	}
 
 	public String getFullInfo() {
-		return this.getText() + " = " + this.getByteValue();
+		return getText() + " = " + getByteValue();
 	}
 
 	public boolean isEditing() {
-		return (this.info & 0x1) != 0x0;
+		return (info & 0x1) != 0x0;
 	}
 
 	public void setEditing(final boolean val) {
-		this.info &= 0xFFFFFFFE;
-		this.info |= (short) (val ? 1 : 0);
+		info &= 0xFFFFFFFE;
+		info |= (short) (val ? 1 : 0);
 		if (val) {
-			this.module.setWriting(this);
-		} else if (this.module.getWriting() == this) {
-			this.module.setWriting(null);
+			module.setWriting(this);
+		} else if (module.getWriting() == this) {
+			module.setWriting(null);
 		}
 	}
 
 	public void setInfo(int id, final short val) {
 		if (id == 0) {
-			this.info = val;
-			this.setEditing(this.isEditing());
+			info = val;
+			setEditing(isEditing());
 		} else if (id == 1) {
 			this.val = val;
 		} else {
 			id -= 2;
 			final byte char1 = (byte) ((val & 0xFF00) >> 8);
 			final byte char2 = (byte) (val & 0xFF);
-			this.name = this.name.substring(0, id * 2) + this.getChar(char1) + this.getChar(char2) + this.name.substring(id * 2 + 2);
+			name = name.substring(0, id * 2) + getChar(char1) + getChar(char2) + name.substring(id * 2 + 2);
 		}
 	}
 
@@ -103,14 +103,14 @@ public class ComputerVar implements IWriting {
 
 	public short getInfo(int id) {
 		if (id == 0) {
-			return this.info;
+			return info;
 		}
 		if (id == 1) {
-			return this.val;
+			return val;
 		}
 		id -= 2;
-		final int char1 = this.getCode(this.name.charAt(id * 2));
-		final int char2 = this.getCode(this.name.charAt(id * 2 + 1));
+		final int char1 = getCode(name.charAt(id * 2));
+		final int char2 = getCode(name.charAt(id * 2 + 1));
 		return (short) (char1 << 8 | char2);
 	}
 

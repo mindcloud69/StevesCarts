@@ -12,28 +12,28 @@ public class Street extends Property {
 
 	public Street(final ArcadeMonopoly game, final StreetGroup group, final String name, final int cost, final int baseRent) {
 		super(game, group, name, cost);
-		this.color = group.getColor();
+		color = group.getColor();
 		this.baseRent = baseRent;
 	}
 
 	@Override
 	public void draw(final GuiMinecart gui, final EnumSet<PLACE_STATE> states) {
 		super.draw(gui, states);
-		GL11.glColor4f(this.color[0], this.color[1], this.color[2], 1.0f);
-		this.game.getModule().drawImage(gui, 0, 0, 76, 0, 76, 22);
+		GL11.glColor4f(color[0], color[1], color[2], 1.0f);
+		game.getModule().drawImage(gui, 0, 0, 76, 0, 76, 22);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		if (this.structures > 0 && this.structures < 5) {
-			for (int i = 0; i < this.structures; ++i) {
-				this.game.getModule().drawImage(gui, 3 + i * 18, 3, 76, 22, 16, 16);
+		if (structures > 0 && structures < 5) {
+			for (int i = 0; i < structures; ++i) {
+				game.getModule().drawImage(gui, 3 + i * 18, 3, 76, 22, 16, 16);
 			}
-		} else if (this.structures == 5) {
-			this.game.getModule().drawImage(gui, 3, 3, 92, 22, 16, 16);
+		} else if (structures == 5) {
+			game.getModule().drawImage(gui, 3, 3, 92, 22, 16, 16);
 		}
-		this.drawValue(gui);
+		drawValue(gui);
 	}
 
 	public void increaseStructure() {
-		++this.structures;
+		++structures;
 	}
 
 	@Override
@@ -44,51 +44,51 @@ public class Street extends Property {
 	public int getRentCost(final int structureCount) {
 		switch (structureCount) {
 			default: {
-				return this.baseRent;
+				return baseRent;
 			}
 			case 1: {
-				return this.baseRent * 5;
+				return baseRent * 5;
 			}
 			case 2: {
-				return this.baseRent * 15;
+				return baseRent * 15;
 			}
 			case 3: {
-				return this.baseRent * 40;
+				return baseRent * 40;
 			}
 			case 4: {
-				return this.baseRent * 70;
+				return baseRent * 70;
 			}
 			case 5: {
-				return this.baseRent * 100;
+				return baseRent * 100;
 			}
 		}
 	}
 
 	public int getRentCost(final boolean ownsAll) {
 		if (ownsAll) {
-			return this.baseRent * 2;
+			return baseRent * 2;
 		}
-		return this.baseRent;
+		return baseRent;
 	}
 
 	@Override
 	public int getRentCost() {
-		if (this.structures == 0) {
-			return this.getRentCost(this.ownsAllInGroup(this.getOwner()));
+		if (structures == 0) {
+			return getRentCost(ownsAllInGroup(getOwner()));
 		}
-		return this.getRentCost(this.structures);
+		return getRentCost(structures);
 	}
 
 	public int getStructureCount() {
-		return this.structures;
+		return structures;
 	}
 
 	public int getStructureCost() {
-		return ((StreetGroup) this.getGroup()).getStructureCost();
+		return ((StreetGroup) getGroup()).getStructureCost();
 	}
 
 	public boolean ownsAllInGroup(final Piece currentPiece) {
-		for (final Property property : this.getGroup().getProperties()) {
+		for (final Property property : getGroup().getProperties()) {
 			if (property.getOwner() != currentPiece || property.isMortgaged()) {
 				return false;
 			}
@@ -98,14 +98,14 @@ public class Street extends Property {
 
 	@Override
 	public boolean canMortgage() {
-		return super.canMortgage() && this.structures == 0;
+		return super.canMortgage() && structures == 0;
 	}
 
 	public int getStructureSellPrice() {
-		return this.getStructureCost() / 2;
+		return getStructureCost() / 2;
 	}
 
 	public void decreaseStructures() {
-		--this.structures;
+		--structures;
 	}
 }

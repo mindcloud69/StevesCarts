@@ -35,139 +35,139 @@ public class ArcadeInvaders extends ArcadeGame {
 
 	public ArcadeInvaders(final ModuleArcade module) {
 		super(module, Localization.ARCADE.GHAST);
-		this.invaders = new ArrayList<>();
-		this.buildings = new ArrayList<>();
-		this.lives = new ArrayList<>();
-		this.projectiles = new ArrayList<>();
-		this.start();
+		invaders = new ArrayList<>();
+		buildings = new ArrayList<>();
+		lives = new ArrayList<>();
+		projectiles = new ArrayList<>();
+		start();
 	}
 
 	private void start() {
-		this.buildings.clear();
-		this.lives.clear();
-		this.projectiles.clear();
-		this.player = new Player(this);
+		buildings.clear();
+		lives.clear();
+		projectiles.clear();
+		player = new Player(this);
 		for (int i = 0; i < 3; ++i) {
-			this.lives.add(new Player(this, 10 + i * 20, 190));
+			lives.add(new Player(this, 10 + i * 20, 190));
 		}
 		for (int i = 0; i < 4; ++i) {
 			for (int j = 0; j < 3; ++j) {
-				this.buildings.add(new Building(this, 48 + i * 96 + j * 16, 120));
+				buildings.add(new Building(this, 48 + i * 96 + j * 16, 120));
 			}
 		}
-		this.moveSpeed = 0;
-		this.fireDelay = 0;
-		this.score = 0;
-		this.canSpawnPahighast = false;
-		this.newHighscore = false;
-		this.spawnInvaders();
+		moveSpeed = 0;
+		fireDelay = 0;
+		score = 0;
+		canSpawnPahighast = false;
+		newHighscore = false;
+		spawnInvaders();
 	}
 
 	private void spawnInvaders() {
-		this.invaders.clear();
-		this.hasPahighast = false;
+		invaders.clear();
+		hasPahighast = false;
 		for (int j = 0; j < 3; ++j) {
 			for (int i = 0; i < 14; ++i) {
-				this.invaders.add(new InvaderGhast(this, 20 + i * 20, 10 + 25 * j));
+				invaders.add(new InvaderGhast(this, 20 + i * 20, 10 + 25 * j));
 			}
 		}
-		++this.moveSpeed;
-		this.moveDirection = 1;
-		this.moveDown = 0;
+		++moveSpeed;
+		moveDirection = 1;
+		moveDown = 0;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void update() {
 		super.update();
-		if (this.player != null) {
-			if (this.player.ready) {
+		if (player != null) {
+			if (player.ready) {
 				boolean flag = false;
 				boolean flag2 = false;
-				for (int i = this.invaders.size() - 1; i >= 0; --i) {
-					final Unit invader = this.invaders.get(i);
+				for (int i = invaders.size() - 1; i >= 0; --i) {
+					final Unit invader = invaders.get(i);
 					final Unit.UPDATE_RESULT result = invader.update();
 					if (result == Unit.UPDATE_RESULT.DEAD) {
 						if (((InvaderGhast) invader).isPahighast) {
-							this.hasPahighast = false;
+							hasPahighast = false;
 						}
 						ArcadeGame.playDefaultSound("mob.ghast.scream", 0.03f, 1.0f);
-						this.invaders.remove(i);
-						++this.score;
+						invaders.remove(i);
+						++score;
 					} else if (result == Unit.UPDATE_RESULT.TURN_BACK) {
 						flag = true;
 					} else if (result == Unit.UPDATE_RESULT.GAME_OVER) {
 						flag2 = true;
 					}
 				}
-				if (this.moveDown > 0) {
-					--this.moveDown;
+				if (moveDown > 0) {
+					--moveDown;
 				}
 				if (flag) {
-					this.moveDirection *= -1;
-					this.moveDown = 5;
+					moveDirection *= -1;
+					moveDown = 5;
 				}
-				if (this.invaders.size() == 0 || (this.hasPahighast && this.invaders.size() == 1)) {
-					this.score += (this.hasPahighast ? 200 : 50);
-					this.canSpawnPahighast = true;
-					this.spawnInvaders();
+				if (invaders.size() == 0 || (hasPahighast && invaders.size() == 1)) {
+					score += (hasPahighast ? 200 : 50);
+					canSpawnPahighast = true;
+					spawnInvaders();
 				}
 				if (flag2) {
-					this.lives.clear();
-					this.projectiles.clear();
-					this.player = null;
-					this.newHighScore();
+					lives.clear();
+					projectiles.clear();
+					player = null;
+					newHighScore();
 					return;
 				}
-				for (int i = this.buildings.size() - 1; i >= 0; --i) {
-					if (this.buildings.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
-						this.buildings.remove(i);
+				for (int i = buildings.size() - 1; i >= 0; --i) {
+					if (buildings.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
+						buildings.remove(i);
 					}
 				}
-				for (int i = this.projectiles.size() - 1; i >= 0; --i) {
-					if (this.projectiles.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
-						this.projectiles.remove(i);
+				for (int i = projectiles.size() - 1; i >= 0; --i) {
+					if (projectiles.get(i).update() == Unit.UPDATE_RESULT.DEAD) {
+						projectiles.remove(i);
 					}
 				}
 				if (Keyboard.isKeyDown(30)) {
-					this.player.move(-1);
+					player.move(-1);
 				} else if (Keyboard.isKeyDown(32)) {
-					this.player.move(1);
+					player.move(1);
 				}
-				if (this.fireDelay == 0 && Keyboard.isKeyDown(17)) {
-					this.projectiles.add(new Projectile(this, this.player.x + 8 - 2, this.player.y - 15, true));
-					ArcadeGame.playDefaultSound("random.bow", 0.8f, 1.0f / (this.getModule().getCart().rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-					this.fireDelay = 10;
-				} else if (this.fireDelay > 0) {
-					--this.fireDelay;
+				if (fireDelay == 0 && Keyboard.isKeyDown(17)) {
+					projectiles.add(new Projectile(this, player.x + 8 - 2, player.y - 15, true));
+					ArcadeGame.playDefaultSound("random.bow", 0.8f, 1.0f / (getModule().getCart().rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
+					fireDelay = 10;
+				} else if (fireDelay > 0) {
+					--fireDelay;
 				}
 			}
-			if (this.player.update() == Unit.UPDATE_RESULT.DEAD) {
-				this.projectiles.clear();
+			if (player.update() == Unit.UPDATE_RESULT.DEAD) {
+				projectiles.clear();
 				ArcadeGame.playSound("hit", 1.0f, 1.0f);
-				if (this.lives.size() != 0) {
-					this.lives.get(0).setTarget(this.player.x, this.player.y);
-					this.player = this.lives.get(0);
-					this.lives.remove(0);
+				if (lives.size() != 0) {
+					lives.get(0).setTarget(player.x, player.y);
+					player = lives.get(0);
+					lives.remove(0);
 				} else {
-					this.player = null;
-					this.newHighScore();
+					player = null;
+					newHighScore();
 				}
 			}
-		} else if (this.gameoverCounter == 0) {
+		} else if (gameoverCounter == 0) {
 			boolean flag = false;
-			for (int j = this.invaders.size() - 1; j >= 0; --j) {
-				final Unit invader2 = this.invaders.get(j);
+			for (int j = invaders.size() - 1; j >= 0; --j) {
+				final Unit invader2 = invaders.get(j);
 				if (invader2.update() == Unit.UPDATE_RESULT.TARGET) {
 					flag = true;
 				}
 			}
 			if (!flag) {
-				this.gameoverCounter = 1;
+				gameoverCounter = 1;
 			}
-		} else if (this.newHighscore && this.gameoverCounter < 5) {
-			++this.gameoverCounter;
-			if (this.gameoverCounter == 5) {
+		} else if (newHighscore && gameoverCounter < 5) {
+			++gameoverCounter;
+			if (gameoverCounter == 5) {
 				ArcadeGame.playSound("highscore", 1.0f, 1.0f);
 			}
 		}
@@ -178,24 +178,24 @@ public class ArcadeInvaders extends ArcadeGame {
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
 		ResourceHelper.bindResource(ArcadeInvaders.texture);
 		for (int i = 0; i < 27; ++i) {
-			this.getModule().drawImage(gui, 5 + i * 16, 150, 16, 32, 16, 16);
+			getModule().drawImage(gui, 5 + i * 16, 150, 16, 32, 16, 16);
 		}
 		for (int i = 0; i < 5; ++i) {
-			this.getModule().drawImage(gui, 3 + i * 16, 190, 16, 32, 16, 16);
+			getModule().drawImage(gui, 3 + i * 16, 190, 16, 32, 16, 16);
 		}
-		for (final Unit invader : this.invaders) {
+		for (final Unit invader : invaders) {
 			invader.draw(gui);
 		}
-		if (this.player != null) {
-			this.player.draw(gui);
-		}
-		for (final Unit player : this.lives) {
+		if (player != null) {
 			player.draw(gui);
 		}
-		for (final Unit projectile : this.projectiles) {
+		for (final Unit player : lives) {
+			player.draw(gui);
+		}
+		for (final Unit projectile : projectiles) {
 			projectile.draw(gui);
 		}
-		for (final Unit building : this.buildings) {
+		for (final Unit building : buildings) {
 			building.draw(gui);
 		}
 	}
@@ -203,35 +203,35 @@ public class ArcadeInvaders extends ArcadeGame {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		this.getModule().drawString(gui, Localization.ARCADE.EXTRA_LIVES.translate() + ":", 10, 180, 4210752);
-		this.getModule().drawString(gui, Localization.ARCADE.HIGH_SCORE.translate(String.valueOf(this.highscore)), 10, 210, 4210752);
-		this.getModule().drawString(gui, Localization.ARCADE.SCORE.translate(String.valueOf(this.score)), 10, 220, 4210752);
-		this.getModule().drawString(gui, "W - " + Localization.ARCADE.INSTRUCTION_SHOOT.translate(), 330, 180, 4210752);
-		this.getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_LEFT.translate(), 330, 190, 4210752);
-		this.getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_RIGHT.translate(), 330, 200, 4210752);
-		this.getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_RESTART.translate(), 330, 220, 4210752);
+		getModule().drawString(gui, Localization.ARCADE.EXTRA_LIVES.translate() + ":", 10, 180, 4210752);
+		getModule().drawString(gui, Localization.ARCADE.HIGH_SCORE.translate(String.valueOf(highscore)), 10, 210, 4210752);
+		getModule().drawString(gui, Localization.ARCADE.SCORE.translate(String.valueOf(score)), 10, 220, 4210752);
+		getModule().drawString(gui, "W - " + Localization.ARCADE.INSTRUCTION_SHOOT.translate(), 330, 180, 4210752);
+		getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_LEFT.translate(), 330, 190, 4210752);
+		getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_RIGHT.translate(), 330, 200, 4210752);
+		getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_RESTART.translate(), 330, 220, 4210752);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void keyPress(final GuiMinecart gui, final char character, final int extraInformation) {
 		if (Character.toLowerCase(character) == 'r') {
-			this.start();
+			start();
 		}
 	}
 
 	private void newHighScore() {
-		this.buildings.clear();
+		buildings.clear();
 		int digits;
-		if (this.score == 0) {
+		if (score == 0) {
 			digits = 1;
 		} else {
-			digits = (int) Math.floor(Math.log10(this.score)) + 1;
+			digits = (int) Math.floor(Math.log10(score)) + 1;
 		}
-		this.canSpawnPahighast = false;
+		canSpawnPahighast = false;
 		int currentGhast = 0;
 		for (int i = 0; i < digits; ++i) {
-			final int digit = this.score / (int) Math.pow(10.0, digits - i - 1) % 10;
+			final int digit = score / (int) Math.pow(10.0, digits - i - 1) % 10;
 			final String[] number = ArcadeInvaders.numbers[digit];
 			for (int j = 0; j < number.length; ++j) {
 				final String line = number[j];
@@ -240,28 +240,28 @@ public class ArcadeInvaders extends ArcadeGame {
 						final int x = (443 - (digits * 90 - 10)) / 2 + i * 90 + k * 20;
 						final int y = 5 + j * 20;
 						InvaderGhast ghast;
-						if (currentGhast >= this.invaders.size()) {
-							this.invaders.add(ghast = new InvaderGhast(this, x, -20));
+						if (currentGhast >= invaders.size()) {
+							invaders.add(ghast = new InvaderGhast(this, x, -20));
 							++currentGhast;
 						} else {
-							ghast = (InvaderGhast) this.invaders.get(currentGhast++);
+							ghast = (InvaderGhast) invaders.get(currentGhast++);
 						}
 						ghast.setTarget(x, y);
 					}
 				}
 			}
 		}
-		for (int i = currentGhast; i < this.invaders.size(); ++i) {
-			final InvaderGhast ghast2 = (InvaderGhast) this.invaders.get(i);
+		for (int i = currentGhast; i < invaders.size(); ++i) {
+			final InvaderGhast ghast2 = (InvaderGhast) invaders.get(i);
 			ghast2.setTarget(ghast2.x, -25);
 		}
-		this.gameoverCounter = 0;
-		if (this.score > this.highscore) {
-			this.newHighscore = true;
-			final int val = this.score;
+		gameoverCounter = 0;
+		if (score > highscore) {
+			newHighscore = true;
+			final int val = score;
 			final byte byte1 = (byte) (val & 0xFF);
 			final byte byte2 = (byte) ((val & 0xFF00) >> 8);
-			this.getModule().sendPacket(2, new byte[] { byte1, byte2 });
+			getModule().sendPacket(2, new byte[] { byte1, byte2 });
 		}
 	}
 
@@ -276,30 +276,30 @@ public class ArcadeInvaders extends ArcadeGame {
 			if (data3 < 0) {
 				data3 += 256;
 			}
-			this.highscore = (data2 | data3 << 8);
+			highscore = (data2 | data3 << 8);
 		}
 	}
 
 	@Override
 	public void checkGuiData(final Object[] info) {
-		this.getModule().updateGuiData(info, TrackStory.stories.size() + 1, (short) this.highscore);
+		getModule().updateGuiData(info, TrackStory.stories.size() + 1, (short) highscore);
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == TrackStory.stories.size() + 1) {
-			this.highscore = data;
+			highscore = data;
 		}
 	}
 
 	@Override
 	public void Save(final NBTTagCompound tagCompound, final int id) {
-		tagCompound.setShort(this.getModule().generateNBTName("HighscoreGhast", id), (short) this.highscore);
+		tagCompound.setShort(getModule().generateNBTName("HighscoreGhast", id), (short) highscore);
 	}
 
 	@Override
 	public void Load(final NBTTagCompound tagCompound, final int id) {
-		this.highscore = tagCompound.getShort(this.getModule().generateNBTName("HighscoreGhast", id));
+		highscore = tagCompound.getShort(getModule().generateNBTName("HighscoreGhast", id));
 	}
 
 	static {

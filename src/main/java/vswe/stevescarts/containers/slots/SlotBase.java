@@ -9,19 +9,19 @@ public class SlotBase extends Slot {
 
 	public SlotBase(final IInventory inventory, final int i, final int j, final int k) {
 		super(inventory, i, j, k);
-		this.x = j;
-		this.y = k;
+		x = j;
+		y = k;
 	}
 
 	public int getX() {
-		return this.x;
+		return x;
 	}
 
 	public int getY() {
-		return this.y;
+		return y;
 	}
 
 	public boolean containsValidItem() {
-		return this.getStack() != null && this.isItemValid(this.getStack());
+		return getStack() != null && isItemValid(getStack());
 	}
 }

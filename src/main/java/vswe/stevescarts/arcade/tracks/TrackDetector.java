@@ -10,27 +10,27 @@ public class TrackDetector extends Track {
 
 	public TrackDetector(final int x, final int y, final TrackOrientation orientation) {
 		super(x, y, orientation);
-		this.targets = new ArrayList<>();
+		targets = new ArrayList<>();
 	}
 
 	@Override
 	public Track copy() {
-		final TrackDetector newTrack = new TrackDetector(this.getX(), this.getY(), this.getOrientation());
-		newTrack.targets = this.targets;
+		final TrackDetector newTrack = new TrackDetector(getX(), getY(), getOrientation());
+		newTrack.targets = targets;
 		return newTrack;
 	}
 
 	public TrackDetector addTarget(final int x, final int y) {
-		if ((int) Math.ceil(this.targets.size() * 1.125f) == 63) {
+		if ((int) Math.ceil(targets.size() * 1.125f) == 63) {
 			return this;
 		}
-		for (int i = 0; i < this.targets.size(); ++i) {
-			if (this.targets.get(i).getX() == x && this.targets.get(i).getY() == y) {
-				this.targets.remove(i);
+		for (int i = 0; i < targets.size(); ++i) {
+			if (targets.get(i).getX() == x && targets.get(i).getY() == y) {
+				targets.remove(i);
 				return this;
 			}
 		}
-		this.targets.add(new TrackCoordinate(x, y));
+		targets.add(new TrackCoordinate(x, y));
 		return this;
 	}
 
@@ -47,7 +47,7 @@ public class TrackDetector extends Track {
 			if (startPosition == 0) {
 				startPosition = 8;
 			} else {
-				this.addTarget(content & 0x1F, (content & 0x1E0) >> 5);
+				addTarget(content & 0x1F, (content & 0x1E0) >> 5);
 				content = (short) ((val & (int) Math.pow(2.0, startPosition - 1) - 1 << 9 - startPosition) >> 9 - startPosition);
 				startPosition = (startPosition + 8) % 9;
 			}
@@ -56,12 +56,12 @@ public class TrackDetector extends Track {
 
 	@Override
 	public byte[] getExtraInfo() {
-		final byte[] ret = new byte[(int) Math.ceil(this.targets.size() * 1.125f)];
+		final byte[] ret = new byte[(int) Math.ceil(targets.size() * 1.125f)];
 		int currentByte = 0;
 		int startPosition = 0;
-		for (int i = 0; i < this.targets.size(); ++i) {
-			short data = (short) this.targets.get(i).getX();
-			data |= (short) (this.targets.get(i).getY() << 5);
+		for (int i = 0; i < targets.size(); ++i) {
+			short data = (short) targets.get(i).getX();
+			data |= (short) (targets.get(i).getY() << 5);
 			final byte[] array = ret;
 			final int n = currentByte;
 			array[n] |= (byte) ((data & (int) Math.pow(2.0, 8 - startPosition) - 1) << startPosition);
@@ -82,7 +82,7 @@ public class TrackDetector extends Track {
 
 	@Override
 	public void travel(final ArcadeTracks game, final Cart cart) {
-		for (final TrackCoordinate target : this.targets) {
+		for (final TrackCoordinate target : targets) {
 			final Track track = game.getTrackMap()[target.getX()][target.getY()];
 			if (track != null) {
 				track.flip();
@@ -92,8 +92,8 @@ public class TrackDetector extends Track {
 
 	@Override
 	public void drawOverlay(final ModuleArcade module, final GuiMinecart gui, final int x, final int y, final boolean isRunning) {
-		if (!isRunning && module.inRect(x, y, ArcadeTracks.getTrackArea(this.getX(), this.getY()))) {
-			for (final TrackCoordinate target : this.targets) {
+		if (!isRunning && module.inRect(x, y, ArcadeTracks.getTrackArea(getX(), getY()))) {
+			for (final TrackCoordinate target : targets) {
 				module.drawImage(gui, ArcadeTracks.getTrackArea(target.getX(), target.getY()), 0, 128);
 			}
 		}
@@ -114,11 +114,11 @@ public class TrackDetector extends Track {
 		}
 
 		public int getX() {
-			return this.x;
+			return x;
 		}
 
 		public int getY() {
-			return this.y;
+			return y;
 		}
 	}
 }

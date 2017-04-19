@@ -22,8 +22,8 @@ import vswe.stevescarts.helpers.DetectorType;
 public class BlockDetector extends BlockContainerBase {
 	public BlockDetector() {
 		super(Material.CIRCUITS);
-		this.setCreativeTab(StevesCarts.tabsSC2Blocks);
-		this.setDefaultState(this.getStateFromMeta(0));
+		setCreativeTab(StevesCarts.tabsSC2Blocks);
+		setDefaultState(getStateFromMeta(0));
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class BlockDetector extends BlockContainerBase {
 		if (meta > DetectorType.values().length) {
 			powered = true;
 		}
-		return this.getDefaultState().withProperty(DetectorType.SATE, DetectorType.getTypeFromint(meta - (powered ? DetectorType.values().length + 1 : 0))).withProperty(DetectorType.POWERED, powered);
+		return getDefaultState().withProperty(DetectorType.SATE, DetectorType.getTypeFromint(meta - (powered ? DetectorType.values().length + 1 : 0))).withProperty(DetectorType.POWERED, powered);
 	}
 
 	@Override

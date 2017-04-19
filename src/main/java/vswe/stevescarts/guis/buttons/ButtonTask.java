@@ -17,7 +17,7 @@ public class ButtonTask extends ButtonAssembly {
 
 	@Override
 	public String toString() {
-		final ComputerTask task = this.getTask();
+		final ComputerTask task = getTask();
 		if (task == null) {
 			return "Something went wrong";
 		}
@@ -26,7 +26,7 @@ public class ButtonTask extends ButtonAssembly {
 
 	@Override
 	public boolean isVisible() {
-		return super.isVisible() && this.getTask() != null;
+		return super.isVisible() && getTask() != null;
 	}
 
 	@Override
@@ -36,14 +36,14 @@ public class ButtonTask extends ButtonAssembly {
 
 	@Override
 	public int borderID() {
-		final ComputerTask task = this.getTask();
+		final ComputerTask task = getTask();
 		if (task != null) {
 			final boolean selected = task.getIsActivated();
 			boolean running = false;
-			if (this.module instanceof ModuleComputer) {
-				final ComputerProg program = ((ModuleComputer) this.module).getActiveProgram();
+			if (module instanceof ModuleComputer) {
+				final ComputerProg program = ((ModuleComputer) module).getActiveProgram();
 				if (program != null) {
-					running = (program.getActiveId() == this.id);
+					running = (program.getActiveId() == id);
 				}
 			}
 			if (running && selected) {
@@ -61,7 +61,7 @@ public class ButtonTask extends ButtonAssembly {
 
 	@Override
 	public int ColorCode() {
-		final ComputerTask task = this.getTask();
+		final ComputerTask task = getTask();
 		if (task != null) {
 			return task.getType();
 		}
@@ -70,7 +70,7 @@ public class ButtonTask extends ButtonAssembly {
 
 	@Override
 	public int texture() {
-		final ComputerTask task = this.getTask();
+		final ComputerTask task = getTask();
 		if (task != null) {
 			return task.getImage();
 		}
@@ -79,9 +79,9 @@ public class ButtonTask extends ButtonAssembly {
 
 	@Override
 	public void onServerClick(final EntityPlayer player, final int mousebutton, final boolean ctrlKey, final boolean shiftKey) {
-		final ComputerTask task = this.getTask();
-		if (!ctrlKey && this.module instanceof ModuleComputer) {
-			final ComputerProg program = ((ModuleComputer) this.module).getCurrentProg();
+		final ComputerTask task = getTask();
+		if (!ctrlKey && module instanceof ModuleComputer) {
+			final ComputerProg program = ((ModuleComputer) module).getCurrentProg();
 			if (program != null) {
 				for (final ComputerTask t : program.getTasks()) {
 					if (t != task) {
@@ -94,13 +94,13 @@ public class ButtonTask extends ButtonAssembly {
 	}
 
 	private ComputerTask getTask() {
-		final ComputerProg program = ((ModuleComputer) this.module).getCurrentProg();
+		final ComputerProg program = ((ModuleComputer) module).getCurrentProg();
 		if (program == null) {
 			return null;
 		}
 		final ArrayList<ComputerTask> tasks = program.getTasks();
-		if (this.id >= 0 && this.id < tasks.size()) {
-			return tasks.get(this.id);
+		if (id >= 0 && id < tasks.size()) {
+			return tasks.get(id);
 		}
 		return null;
 	}

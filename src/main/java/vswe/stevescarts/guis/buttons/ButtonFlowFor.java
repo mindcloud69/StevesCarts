@@ -13,8 +13,8 @@ public abstract class ButtonFlowFor extends ButtonAssembly {
 		if (!super.isVisible()) {
 			return false;
 		}
-		if (((ModuleComputer) this.module).getSelectedTasks() != null && ((ModuleComputer) this.module).getSelectedTasks().size() > 0) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+		if (((ModuleComputer) module).getSelectedTasks() != null && ((ModuleComputer) module).getSelectedTasks().size() > 0) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
 				if (!task.isFlowFor()) {
 					return false;
 				}

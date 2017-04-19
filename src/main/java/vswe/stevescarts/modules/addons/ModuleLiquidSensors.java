@@ -22,37 +22,37 @@ public class ModuleLiquidSensors extends ModuleAddon {
 
 	public ModuleLiquidSensors(final EntityMinecartModular cart) {
 		super(cart);
-		this.activetime = -1;
-		this.mult = 1;
+		activetime = -1;
+		mult = 1;
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (this.isDrillSpinning()) {
-			this.sensorRotation += 0.05f * this.mult;
-			if ((this.mult == 1 && this.sensorRotation > 0.7853981633974483) || (this.mult == -1 && this.sensorRotation < -0.7853981633974483)) {
-				this.mult *= -1;
+		if (isDrillSpinning()) {
+			sensorRotation += 0.05f * mult;
+			if ((mult == 1 && sensorRotation > 0.7853981633974483) || (mult == -1 && sensorRotation < -0.7853981633974483)) {
+				mult *= -1;
 			}
 		} else {
-			if (this.sensorRotation != 0.0f) {
-				if (this.sensorRotation > 0.0f) {
-					this.sensorRotation -= 0.05f;
-					if (this.sensorRotation < 0.0f) {
-						this.sensorRotation = 0.0f;
+			if (sensorRotation != 0.0f) {
+				if (sensorRotation > 0.0f) {
+					sensorRotation -= 0.05f;
+					if (sensorRotation < 0.0f) {
+						sensorRotation = 0.0f;
 					}
 				} else {
-					this.sensorRotation += 0.05f;
-					if (this.sensorRotation > 0.0f) {
-						this.sensorRotation = 0.0f;
+					sensorRotation += 0.05f;
+					if (sensorRotation > 0.0f) {
+						sensorRotation = 0.0f;
 					}
 				}
 			}
-			if (this.activetime >= 0) {
-				++this.activetime;
-				if (this.activetime >= 10) {
-					this.setLight(1);
-					this.activetime = -1;
+			if (activetime >= 0) {
+				++activetime;
+				if (activetime >= 10) {
+					setLight(1);
+					activetime = -1;
 				}
 			}
 		}
@@ -70,70 +70,70 @@ public class ModuleLiquidSensors extends ModuleAddon {
 	}
 
 	private void activateLight(final int light) {
-		if (this.getLight() == 3 && light == 2) {
+		if (getLight() == 3 && light == 2) {
 			return;
 		}
-		this.setLight(light);
-		this.activetime = 0;
+		setLight(light);
+		activetime = 0;
 	}
 
 	public void getInfoFromDrill(byte data) {
 		final byte light = (byte) (data & 0x3);
 		if (light != 1) {
-			this.activateLight(light);
+			activateLight(light);
 		}
 		data &= 0xFFFFFFFC;
-		data |= (byte) this.getLight();
-		this.setSensorInfo(data);
+		data |= (byte) getLight();
+		setSensorInfo(data);
 	}
 
 	private void setLight(final int val) {
-		if (this.isPlaceholder()) {
+		if (isPlaceholder()) {
 			return;
 		}
-		byte data = this.getDw(SENSOR_INFO);
+		byte data = getDw(SENSOR_INFO);
 		data &= 0xFFFFFFFC;
 		data |= (byte) val;
-		this.setSensorInfo(data);
+		setSensorInfo(data);
 	}
 
 	private void setSensorInfo(byte val) {
-		if (this.isPlaceholder()) {
+		if (isPlaceholder()) {
 			return;
 		}
 		registerDw(SENSOR_INFO, val);
 	}
 
 	public int getLight() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getLiquidLight();
+		if (isPlaceholder()) {
+			return getSimInfo().getLiquidLight();
 		}
-		return this.getDw(SENSOR_INFO) & 0x3;
+		return getDw(SENSOR_INFO) & 0x3;
 	}
 
 	protected boolean isDrillSpinning() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getDrillSpinning();
+		if (isPlaceholder()) {
+			return getSimInfo().getDrillSpinning();
 		}
-		return (this.getDw(SENSOR_INFO) & 0x4) != 0x0;
+		return (getDw(SENSOR_INFO) & 0x4) != 0x0;
 	}
 
 	public float getSensorRotation() {
-		return this.sensorRotation;
+		return sensorRotation;
 	}
 
 	public boolean isDangerous(final ModuleDrill drill, BlockPos pos, boolean isUp) {
-		final Block block = this.getCart().world.getBlockState(pos).getBlock();
+		final Block block = getCart().world.getBlockState(pos).getBlock();
 		if (block == Blocks.LAVA) {
-			this.handleLiquid(drill, pos);
+			handleLiquid(drill, pos);
 			return true;
 		}
 		if (block == Blocks.WATER) {
-			this.handleLiquid(drill, pos);
+			handleLiquid(drill, pos);
 			return true;
 		}
 		if (block != null && block instanceof IFluidBlock) {
-			this.handleLiquid(drill, pos);
+			handleLiquid(drill, pos);
 			return true;
 		}
 		final boolean isWater = block == Blocks.WATER || block == Blocks.FLOWING_WATER || block == Blocks.ICE;
@@ -144,20 +144,20 @@ public class ModuleLiquidSensors extends ModuleAddon {
 			if (isUp) {
 				final boolean isFalling = block instanceof BlockFalling;
 				if (isFalling) {
-					return this.isDangerous(drill, pos.add(0, 1, 0), true) || this.isDangerous(drill, pos.add(1, 0, 0), false) || this.isDangerous(drill, pos.add(-1, 0, 0), false) || this.isDangerous(drill, pos.add(0, 0, 1), false) || this.isDangerous(drill, pos.add(0, 0, -1), false);
+					return isDangerous(drill, pos.add(0, 1, 0), true) || isDangerous(drill, pos.add(1, 0, 0), false) || isDangerous(drill, pos.add(-1, 0, 0), false) || isDangerous(drill, pos.add(0, 0, 1), false) || isDangerous(drill, pos.add(0, 0, -1), false);
 				}
 			}
 			return false;
 		}
 		if (isUp) {
-			this.handleLiquid(drill, pos);
+			handleLiquid(drill, pos);
 			return true;
 		}
 		IBlockState state = getCart().world.getBlockState(pos);
 		int m = state.getBlock().getMetaFromState(state);
 		if ((m & 0x8) == 0x8) {
-			if (block.isBlockSolid(this.getCart().world, pos.down(), EnumFacing.UP)) {
-				this.handleLiquid(drill, pos);
+			if (block.isBlockSolid(getCart().world, pos.down(), EnumFacing.UP)) {
+				handleLiquid(drill, pos);
 				return true;
 			}
 			return false;
@@ -165,20 +165,20 @@ public class ModuleLiquidSensors extends ModuleAddon {
 			if (isWater && (m & 0x7) == 0x7) {
 				return false;
 			}
-			if (isLava && (m & 0x7) == 0x7 && !this.getCart().world.provider.isSkyColored()) {
+			if (isLava && (m & 0x7) == 0x7 && !getCart().world.provider.isSkyColored()) {
 				return false;
 			}
 			if (isLava && (m & 0x7) == 0x6) {
 				return false;
 			}
-			this.handleLiquid(drill, pos);
+			handleLiquid(drill, pos);
 			return true;
 		}
 	}
 
 	private void handleLiquid(final ModuleDrill drill, BlockPos pos) {
 		ModuleLiquidDrainer liquiddrainer = null;
-		for (final ModuleBase module : this.getCart().getModules()) {
+		for (final ModuleBase module : getCart().getModules()) {
 			if (module instanceof ModuleLiquidDrainer) {
 				liquiddrainer = (ModuleLiquidDrainer) module;
 				break;

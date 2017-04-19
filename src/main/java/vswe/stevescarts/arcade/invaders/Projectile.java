@@ -12,10 +12,10 @@ public class Projectile extends Unit {
 
 	@Override
 	public void draw(final GuiMinecart gui) {
-		if (this.playerProjectile) {
-			this.game.getModule().drawImage(gui, this.x, this.y, 38, 0, 5, 16);
+		if (playerProjectile) {
+			game.getModule().drawImage(gui, x, y, 38, 0, 5, 16);
 		} else {
-			this.game.getModule().drawImage(gui, this.x, this.y, 32, 0, 6, 6);
+			game.getModule().drawImage(gui, x, y, 32, 0, 6, 6);
 		}
 	}
 
@@ -28,9 +28,9 @@ public class Projectile extends Unit {
 		if (super.update() == UPDATE_RESULT.DEAD) {
 			return UPDATE_RESULT.DEAD;
 		}
-		this.y += (this.playerProjectile ? -5 : 5);
-		if (this.y < 0 || this.y > 168) {
-			this.dead = true;
+		y += (playerProjectile ? -5 : 5);
+		if (y < 0 || y > 168) {
+			dead = true;
 			return UPDATE_RESULT.DEAD;
 		}
 		return UPDATE_RESULT.DONE;
@@ -38,11 +38,11 @@ public class Projectile extends Unit {
 
 	@Override
 	protected int getHitboxWidth() {
-		return this.playerProjectile ? 5 : 6;
+		return playerProjectile ? 5 : 6;
 	}
 
 	@Override
 	protected int getHitboxHeight() {
-		return this.playerProjectile ? 16 : 6;
+		return playerProjectile ? 16 : 6;
 	}
 }

@@ -8,7 +8,6 @@ import vswe.stevescarts.helpers.Localization;
 
 public class ModuleCheatTank extends ModuleTank {
 	private static final TextFormatting[] colors = new TextFormatting[] { TextFormatting.YELLOW, TextFormatting.GREEN, TextFormatting.RED, TextFormatting.GOLD };
-	;
 	private int mode;
 
 	public ModuleCheatTank(final EntityMinecartModular cart) {
@@ -18,8 +17,8 @@ public class ModuleCheatTank extends ModuleTank {
 	@Override
 	protected String getTankInfo() {
 		String str = super.getTankInfo();
-		str = str + "\n\n" + Localization.MODULES.TANKS.CREATIVE_MODE.translate(ModuleCheatTank.colors[this.mode].toString(), String.valueOf(this.mode)) + "\n" + Localization.MODULES.TANKS.CHANGE_MODE.translate();
-		if (this.mode != 0) {
+		str = str + "\n\n" + Localization.MODULES.TANKS.CREATIVE_MODE.translate(ModuleCheatTank.colors[mode].toString(), String.valueOf(mode)) + "\n" + Localization.MODULES.TANKS.CHANGE_MODE.translate();
+		if (mode != 0) {
 			str = str + "\n" + Localization.MODULES.TANKS.RESET_MODE.translate();
 		}
 		return str;
@@ -38,13 +37,13 @@ public class ModuleCheatTank extends ModuleTank {
 	@Override
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0 && (data[0] & 0x1) != 0x0) {
-			if (this.mode != 0 && (data[0] & 0x2) != 0x0) {
-				this.mode = 0;
-			} else if (++this.mode == ModuleCheatTank.colors.length) {
-				this.mode = 1;
+			if (mode != 0 && (data[0] & 0x2) != 0x0) {
+				mode = 0;
+			} else if (++mode == ModuleCheatTank.colors.length) {
+				mode = 1;
 			}
-			this.updateAmount();
-			this.updateDw();
+			updateAmount();
+			updateDw();
 		} else {
 			super.receivePacket(id, data, player);
 		}
@@ -58,13 +57,13 @@ public class ModuleCheatTank extends ModuleTank {
 	@Override
 	protected void checkGuiData(final Object[] info) {
 		super.checkGuiData(info);
-		this.updateGuiData(info, super.numberOfGuiData(), (short) this.mode);
+		updateGuiData(info, super.numberOfGuiData(), (short) mode);
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
 		if (id == super.numberOfGuiData()) {
-			this.mode = data;
+			mode = data;
 		} else {
 			super.receiveGuiData(id, data);
 		}
@@ -73,33 +72,33 @@ public class ModuleCheatTank extends ModuleTank {
 	@Override
 	protected void Save(final NBTTagCompound tagCompound, final int id) {
 		super.Save(tagCompound, id);
-		tagCompound.setByte(this.generateNBTName("mode", id), (byte) this.mode);
+		tagCompound.setByte(generateNBTName("mode", id), (byte) mode);
 	}
 
 	@Override
 	protected void Load(final NBTTagCompound tagCompound, final int id) {
 		super.Load(tagCompound, id);
-		this.mode = tagCompound.getByte(this.generateNBTName("mode", id));
+		mode = tagCompound.getByte(generateNBTName("mode", id));
 	}
 
 	private void updateAmount() {
-		if (this.tank.getFluid() != null) {
-			if (this.mode == 1) {
-				this.tank.getFluid().amount = this.getTankSize();
-			} else if (this.mode == 2) {
-				this.tank.getFluid().amount = 0;
-				if (!this.tank.isLocked()) {
-					this.tank.setFluid(null);
+		if (tank.getFluid() != null) {
+			if (mode == 1) {
+				tank.getFluid().amount = getTankSize();
+			} else if (mode == 2) {
+				tank.getFluid().amount = 0;
+				if (!tank.isLocked()) {
+					tank.setFluid(null);
 				}
-			} else if (this.mode == 3) {
-				this.tank.getFluid().amount = this.getTankSize() / 2;
+			} else if (mode == 3) {
+				tank.getFluid().amount = getTankSize() / 2;
 			}
 		}
 	}
 
 	@Override
 	public void onFluidUpdated(final int tankid) {
-		this.updateAmount();
+		updateAmount();
 		super.onFluidUpdated(tankid);
 	}
 }

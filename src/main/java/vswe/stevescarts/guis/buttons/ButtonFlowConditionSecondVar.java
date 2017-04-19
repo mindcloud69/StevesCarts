@@ -10,8 +10,8 @@ public class ButtonFlowConditionSecondVar extends ButtonFlowConditionVar {
 
 	@Override
 	public boolean isVisible() {
-		if (((ModuleComputer) this.module).getSelectedTasks() != null) {
-			for (final ComputerTask task : ((ModuleComputer) this.module).getSelectedTasks()) {
+		if (((ModuleComputer) module).getSelectedTasks() != null) {
+			for (final ComputerTask task : ((ModuleComputer) module).getSelectedTasks()) {
 				if (!task.getFlowConditionUseSecondVar()) {
 					return false;
 				}

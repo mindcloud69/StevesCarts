@@ -57,78 +57,78 @@ public class ArcadeTracks extends ArcadeGame {
 
 	public ArcadeTracks(final ModuleArcade module) {
 		super(module, Localization.ARCADE.OPERATOR);
-		this.isMenuOpen = true;
-		this.isRunning = false;
-		this.currentStory = -1;
-		this.currentLevel = -1;
-		this.currentMenuTab = 0;
-		this.saveName = "";
-		this.lastSavedName = "";
-		this.validSaveNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789 ";
-		(this.carts = new ArrayList<>()).add(this.player = new Cart(0) {
+		isMenuOpen = true;
+		isRunning = false;
+		currentStory = -1;
+		currentLevel = -1;
+		currentMenuTab = 0;
+		saveName = "";
+		lastSavedName = "";
+		validSaveNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789 ";
+		(carts = new ArrayList<>()).add(player = new Cart(0) {
 			@Override
 			public void onItemPickUp() {
-				ArcadeTracks.this.completeLevel();
+				completeLevel();
 				ArcadeGame.playSound("win", 1.0f, 1.0f);
 			}
 
 			@Override
 			public void onCrash() {
-				if (ArcadeTracks.this.isPlayingFinalLevel() && ArcadeTracks.this.currentStory < ArcadeTracks.this.unlockedLevels.length - 1 && ArcadeTracks.this.unlockedLevels[ArcadeTracks.this.currentStory + 1] == -1) {
-					ArcadeTracks.this.getModule().sendPacket(0, new byte[] { (byte) (ArcadeTracks.this.currentStory + 1), 0 });
+				if (isPlayingFinalLevel() && currentStory < unlockedLevels.length - 1 && unlockedLevels[currentStory + 1] == -1) {
+					getModule().sendPacket(0, new byte[] { (byte) (currentStory + 1), 0 });
 				}
 			}
 		});
-		this.carts.add(this.enderman = new Cart(1));
-		(this.lists = new ArrayList<>()).add(this.storyList = new ScrollableList(this, 5, 40) {
+		carts.add(enderman = new Cart(1));
+		(lists = new ArrayList<>()).add(storyList = new ScrollableList(this, 5, 40) {
 			@Override
 			public boolean isVisible() {
-				return ArcadeTracks.this.currentMenuTab == 0 && !ArcadeTracks.this.storySelected;
+				return currentMenuTab == 0 && !storySelected;
 			}
 		});
-		this.lists.add(this.mapList = new ScrollableList(this, 5, 40) {
+		lists.add(mapList = new ScrollableList(this, 5, 40) {
 			@Override
 			public boolean isVisible() {
-				return ArcadeTracks.this.currentMenuTab == 0 && ArcadeTracks.this.storySelected;
+				return currentMenuTab == 0 && storySelected;
 			}
 		});
-		this.lists.add(this.userList = new ScrollableList(this, 5, 40) {
+		lists.add(userList = new ScrollableList(this, 5, 40) {
 			@Override
 			public boolean isVisible() {
-				return ArcadeTracks.this.currentMenuTab == 1;
+				return currentMenuTab == 1;
 			}
 		});
-		(this.unlockedLevels = new int[TrackStory.stories.size()])[0] = 0;
-		for (int i = 1; i < this.unlockedLevels.length; ++i) {
-			this.unlockedLevels[i] = -1;
+		(unlockedLevels = new int[TrackStory.stories.size()])[0] = 0;
+		for (int i = 1; i < unlockedLevels.length; ++i) {
+			unlockedLevels[i] = -1;
 		}
-		this.loadStories();
-		if (this.getModule().getCart().world.isRemote) {
-			this.loadUserMaps();
+		loadStories();
+		if (getModule().getCart().world.isRemote) {
+			loadUserMaps();
 		}
 	}
 
 	private void loadStories() {
-		this.storyList.clearList();
+		storyList.clearList();
 		for (int i = 0; i < TrackStory.stories.size(); ++i) {
-			if (this.unlockedLevels[i] > -1) {
-				this.storyList.add(TrackStory.stories.get(i).getName());
+			if (unlockedLevels[i] > -1) {
+				storyList.add(TrackStory.stories.get(i).getName());
 			} else {
-				this.storyList.add(null);
+				storyList.add(null);
 			}
 		}
 	}
 
 	private void loadMaps() {
-		final int story = this.storyList.getSelectedIndex();
+		final int story = storyList.getSelectedIndex();
 		if (story != -1) {
 			final ArrayList<TrackLevel> levels = TrackStory.stories.get(story).getLevels();
-			this.mapList.clearList();
+			mapList.clearList();
 			for (int i = 0; i < levels.size(); ++i) {
-				if (this.unlockedLevels[story] >= i) {
-					this.mapList.add(levels.get(i).getName());
+				if (unlockedLevels[story] >= i) {
+					mapList.add(levels.get(i).getName());
 				} else {
-					this.mapList.add(null);
+					mapList.add(null);
 				}
 			}
 		}
@@ -136,216 +136,216 @@ public class ArcadeTracks extends ArcadeGame {
 
 	@SideOnly(Side.CLIENT)
 	private void loadUserMaps() {
-		this.userList.clearList();
-		this.userMaps = TrackLevel.loadMapsFromFolder();
+		userList.clearList();
+		userMaps = TrackLevel.loadMapsFromFolder();
 		if (Constants.arcadeDevOperator) {
 			for (int i = 0; i < TrackStory.stories.size(); ++i) {
 				for (int j = 0; j < TrackStory.stories.get(i).getLevels().size(); ++j) {
-					this.userMaps.add(TrackStory.stories.get(i).getLevels().get(j));
+					userMaps.add(TrackStory.stories.get(i).getLevels().get(j));
 				}
 			}
 		}
-		for (int i = 0; i < this.userMaps.size(); ++i) {
-			this.userList.add(this.userMaps.get(i).getName());
+		for (int i = 0; i < userMaps.size(); ++i) {
+			userList.add(userMaps.get(i).getName());
 		}
 	}
 
 	private void loadMap(final int story, final int level) {
-		this.currentStory = story;
-		this.currentLevel = level;
-		this.loadMap(TrackStory.stories.get(story).getLevels().get(level));
+		currentStory = story;
+		currentLevel = level;
+		loadMap(TrackStory.stories.get(story).getLevels().get(level));
 	}
 
 	private void loadMap(final TrackLevel map) {
-		this.isUsingEditor = false;
-		this.trackMap = new Track[27][10];
-		this.tracks = new ArrayList<>();
+		isUsingEditor = false;
+		trackMap = new Track[27][10];
+		tracks = new ArrayList<>();
 		for (final Track track : map.getTracks()) {
 			final Track newtrack = track.copy();
-			this.tracks.add(newtrack);
-			if (newtrack.getX() >= 0 && newtrack.getX() < this.trackMap.length && newtrack.getY() >= 0 && newtrack.getY() < this.trackMap[0].length) {
-				this.trackMap[newtrack.getX()][newtrack.getY()] = newtrack;
+			tracks.add(newtrack);
+			if (newtrack.getX() >= 0 && newtrack.getX() < trackMap.length && newtrack.getY() >= 0 && newtrack.getY() < trackMap[0].length) {
+				trackMap[newtrack.getX()][newtrack.getY()] = newtrack;
 			}
 		}
-		this.hoveringTrack = null;
-		this.editorTrack = null;
-		this.editorDetectorTrack = null;
-		this.currentMap = map;
-		this.isRunning = false;
-		this.playerStartX = this.currentMap.getPlayerStartX();
-		this.playerStartY = this.currentMap.getPlayerStartY();
-		this.playerStartDirection = this.currentMap.getPlayerStartDirection();
-		this.itemX = this.currentMap.getItemX();
-		this.itemY = this.currentMap.getItemY();
-		this.resetPosition();
+		hoveringTrack = null;
+		editorTrack = null;
+		editorDetectorTrack = null;
+		currentMap = map;
+		isRunning = false;
+		playerStartX = currentMap.getPlayerStartX();
+		playerStartY = currentMap.getPlayerStartY();
+		playerStartDirection = currentMap.getPlayerStartDirection();
+		itemX = currentMap.getItemX();
+		itemY = currentMap.getItemY();
+		resetPosition();
 	}
 
 	private void resetPosition() {
-		this.tick = 0;
-		this.player.setX(this.playerStartX);
-		this.player.setY(this.playerStartY);
-		this.isItemTaken = false;
-		this.player.setDirection(TrackOrientation.DIRECTION.STILL);
-		this.enderman.setAlive(false);
+		tick = 0;
+		player.setX(playerStartX);
+		player.setY(playerStartY);
+		isItemTaken = false;
+		player.setDirection(TrackOrientation.DIRECTION.STILL);
+		enderman.setAlive(false);
 	}
 
 	public Track[][] getTrackMap() {
-		return this.trackMap;
+		return trackMap;
 	}
 
 	public Cart getEnderman() {
-		return this.enderman;
+		return enderman;
 	}
 
 	private boolean isPlayingFinalLevel() {
-		return this.isPlayingNormalLevel() && this.currentLevel == TrackStory.stories.get(this.currentStory).getLevels().size() - 1;
+		return isPlayingNormalLevel() && currentLevel == TrackStory.stories.get(currentStory).getLevels().size() - 1;
 	}
 
 	private boolean isUsingEditor() {
-		return this.isUsingEditor;
+		return isUsingEditor;
 	}
 
 	private boolean isPlayingUserLevel() {
-		return this.currentStory == -1;
+		return currentStory == -1;
 	}
 
 	private boolean isPlayingNormalLevel() {
-		return !this.isUsingEditor() && !this.isPlayingUserLevel();
+		return !isUsingEditor() && !isPlayingUserLevel();
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (this.isRunning) {
-			if (this.tick == 3) {
-				for (final Cart cart : this.carts) {
+		if (isRunning) {
+			if (tick == 3) {
+				for (final Cart cart : carts) {
 					cart.move(this);
 				}
-				this.tick = 0;
+				tick = 0;
 			} else {
-				++this.tick;
+				++tick;
 			}
 		}
 	}
 
 	@Override
 	public void drawForeground(final GuiMinecart gui) {
-		if (this.isSaveMenuOpen) {
-			final int[] menu = this.getSaveMenuArea();
-			if (this.failedToSave) {
-				this.getModule().drawString(gui, Localization.ARCADE.SAVE_ERROR.translate(), menu[0] + 3, menu[1] + 3, 16711680);
+		if (isSaveMenuOpen) {
+			final int[] menu = getSaveMenuArea();
+			if (failedToSave) {
+				getModule().drawString(gui, Localization.ARCADE.SAVE_ERROR.translate(), menu[0] + 3, menu[1] + 3, 16711680);
 			} else {
-				this.getModule().drawString(gui, Localization.ARCADE.SAVE.translate(), menu[0] + 3, menu[1] + 3, 4210752);
+				getModule().drawString(gui, Localization.ARCADE.SAVE.translate(), menu[0] + 3, menu[1] + 3, 4210752);
 			}
-			this.getModule().drawString(gui, this.saveName + ((this.saveName.length() < 15 && this.getModule().getCart().world.getWorldTime() % 20L < 10L) ? "|"
-			                                                                                                                                               : ""), menu[0] + 5, menu[1] + 16, 16777215);
-		} else if (this.isMenuOpen) {
-			for (final ScrollableList list : this.lists) {
+			getModule().drawString(gui, saveName + ((saveName.length() < 15 && getModule().getCart().world.getWorldTime() % 20L < 10L) ? "|"
+			                                                                                                                           : ""), menu[0] + 5, menu[1] + 16, 16777215);
+		} else if (isMenuOpen) {
+			for (final ScrollableList list : lists) {
 				list.drawForeground(gui);
 			}
-			if (this.currentMenuTab == 0 || this.currentMenuTab == 1) {
-				final int[] menu = this.getMenuArea();
+			if (currentMenuTab == 0 || currentMenuTab == 1) {
+				final int[] menu = getMenuArea();
 				String str;
-				if (this.currentMenuTab == 1) {
+				if (currentMenuTab == 1) {
 					str = Localization.ARCADE.USER_MAPS.translate();
-				} else if (this.storySelected) {
-					str = TrackStory.stories.get(this.storyList.getSelectedIndex()).getName();
+				} else if (storySelected) {
+					str = TrackStory.stories.get(storyList.getSelectedIndex()).getName();
 				} else {
 					str = Localization.ARCADE.STORIES.translate();
 				}
-				this.getModule().drawString(gui, str, menu[0] + 5, menu[1] + 32, 4210752);
+				getModule().drawString(gui, str, menu[0] + 5, menu[1] + 32, 4210752);
 			} else {
-				final int[] menu = this.getMenuArea();
-				this.getModule().drawSplitString(gui, Localization.ARCADE.HELP.translate(), menu[0] + 10, menu[1] + 20, menu[2] - 20, 4210752);
+				final int[] menu = getMenuArea();
+				getModule().drawSplitString(gui, Localization.ARCADE.HELP.translate(), menu[0] + 10, menu[1] + 20, menu[2] - 20, 4210752);
 			}
 		} else {
-			for (final LevelMessage message : this.currentMap.getMessages()) {
-				if (message.isVisible(this.isRunning, this.isRunning && this.player.getDireciotn() == TrackOrientation.DIRECTION.STILL, this.isRunning && this.isItemTaken)) {
-					this.getModule().drawSplitString(gui, message.getMessage(), 9 + message.getX() * 16, 9 + message.getY() * 16, message.getW() * 16, 4210752);
+			for (final LevelMessage message : currentMap.getMessages()) {
+				if (message.isVisible(isRunning, isRunning && player.getDireciotn() == TrackOrientation.DIRECTION.STILL, isRunning && isItemTaken)) {
+					getModule().drawSplitString(gui, message.getMessage(), 9 + message.getX() * 16, 9 + message.getY() * 16, message.getW() * 16, 4210752);
 				}
 			}
-			if (this.isUsingEditor()) {
-				this.getModule().drawString(gui, "1-5 - " + Localization.ARCADE.INSTRUCTION_SHAPE.translate(), 10, 180, 4210752);
-				this.getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_ROTATE_TRACK.translate(), 10, 190, 4210752);
-				this.getModule().drawString(gui, "F - " + Localization.ARCADE.INSTRUCTION_FLIP_TRACK.translate(), 10, 200, 4210752);
-				this.getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_DEFAULT_DIRECTION.translate(), 10, 210, 4210752);
-				this.getModule().drawString(gui, "T - " + Localization.ARCADE.INSTRUCTION_TRACK_TYPE.translate(), 10, 220, 4210752);
-				this.getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_DELETE_TRACK.translate(), 10, 230, 4210752);
-				this.getModule().drawString(gui, "C - " + Localization.ARCADE.INSTRUCTION_COPY_TRACK.translate(), 10, 240, 4210752);
-				this.getModule().drawString(gui, "S - " + Localization.ARCADE.INSTRUCTION_STEVE.translate(), 330, 180, 4210752);
-				this.getModule().drawString(gui, "X - " + Localization.ARCADE.INSTRUCTION_MAP.translate(), 330, 190, 4210752);
-				this.getModule().drawString(gui, Localization.ARCADE.LEFT_MOUSE.translate() + " - " + Localization.ARCADE.INSTRUCTION_PLACE_TRACK.translate(), 330, 200, 4210752);
-				this.getModule().drawString(gui, Localization.ARCADE.RIGHT_MOUSE.translate() + " - " + Localization.ARCADE.INSTRUCTION_DESELECT_TRACK.translate(), 330, 210, 4210752);
+			if (isUsingEditor()) {
+				getModule().drawString(gui, "1-5 - " + Localization.ARCADE.INSTRUCTION_SHAPE.translate(), 10, 180, 4210752);
+				getModule().drawString(gui, "R - " + Localization.ARCADE.INSTRUCTION_ROTATE_TRACK.translate(), 10, 190, 4210752);
+				getModule().drawString(gui, "F - " + Localization.ARCADE.INSTRUCTION_FLIP_TRACK.translate(), 10, 200, 4210752);
+				getModule().drawString(gui, "A - " + Localization.ARCADE.INSTRUCTION_DEFAULT_DIRECTION.translate(), 10, 210, 4210752);
+				getModule().drawString(gui, "T - " + Localization.ARCADE.INSTRUCTION_TRACK_TYPE.translate(), 10, 220, 4210752);
+				getModule().drawString(gui, "D - " + Localization.ARCADE.INSTRUCTION_DELETE_TRACK.translate(), 10, 230, 4210752);
+				getModule().drawString(gui, "C - " + Localization.ARCADE.INSTRUCTION_COPY_TRACK.translate(), 10, 240, 4210752);
+				getModule().drawString(gui, "S - " + Localization.ARCADE.INSTRUCTION_STEVE.translate(), 330, 180, 4210752);
+				getModule().drawString(gui, "X - " + Localization.ARCADE.INSTRUCTION_MAP.translate(), 330, 190, 4210752);
+				getModule().drawString(gui, Localization.ARCADE.LEFT_MOUSE.translate() + " - " + Localization.ARCADE.INSTRUCTION_PLACE_TRACK.translate(), 330, 200, 4210752);
+				getModule().drawString(gui, Localization.ARCADE.RIGHT_MOUSE.translate() + " - " + Localization.ARCADE.INSTRUCTION_DESELECT_TRACK.translate(), 330, 210, 4210752);
 			}
 		}
 	}
 
 	@Override
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
-		if (!this.isSaveMenuOpen && this.isMenuOpen) {
+		if (!isSaveMenuOpen && isMenuOpen) {
 			ResourceHelper.bindResource(ArcadeTracks.textureMenu);
-			this.getModule().drawImage(gui, this.getMenuArea(), 0, 0);
+			getModule().drawImage(gui, getMenuArea(), 0, 0);
 			for (int i = 0; i < 3; ++i) {
-				final int[] rect = this.getMenuTabArea(i);
-				final boolean active = this.getModule().inRect(x, y, rect);
-				final boolean hidden = !active && i == this.currentMenuTab;
+				final int[] rect = getMenuTabArea(i);
+				final boolean active = getModule().inRect(x, y, rect);
+				final boolean hidden = !active && i == currentMenuTab;
 				if (!hidden) {
-					this.getModule().drawImage(gui, rect[0], rect[1] + rect[3], 0, active ? 114 : 113, rect[2], 1);
+					getModule().drawImage(gui, rect[0], rect[1] + rect[3], 0, active ? 114 : 113, rect[2], 1);
 				}
 			}
-			for (final ScrollableList list : this.lists) {
+			for (final ScrollableList list : lists) {
 				list.drawBackground(gui, x, y);
 			}
-		} else if (this.currentMap != null) {
+		} else if (currentMap != null) {
 			ResourceHelper.bindResource(ArcadeTracks.textureGame);
-			if (this.isUsingEditor() && !this.isRunning) {
-				for (int i = 0; i < this.trackMap.length; ++i) {
-					for (int j = 0; j < this.trackMap[0].length; ++j) {
-						this.getModule().drawImage(gui, 5 + i * 16, 5 + j * 16, 16, 128, 16, 16);
+			if (isUsingEditor() && !isRunning) {
+				for (int i = 0; i < trackMap.length; ++i) {
+					for (int j = 0; j < trackMap[0].length; ++j) {
+						getModule().drawImage(gui, 5 + i * 16, 5 + j * 16, 16, 128, 16, 16);
 					}
 				}
 			}
-			for (final Track track : this.tracks) {
-				this.getModule().drawImage(gui, getTrackArea(track.getX(), track.getY()), 16 * track.getU(), 16 * track.getV(), track.getRotation());
+			for (final Track track : tracks) {
+				getModule().drawImage(gui, getTrackArea(track.getX(), track.getY()), 16 * track.getU(), 16 * track.getV(), track.getRotation());
 			}
-			if (this.isUsingEditor()) {
-				if (this.editorDetectorTrack != null && !this.isRunning) {
-					this.editorDetectorTrack.drawOverlay(this.getModule(), gui, this.editorDetectorTrack.getX() * 16 + 8, this.editorDetectorTrack.getY() * 16 + 8, this.isRunning);
-					this.getModule().drawImage(gui, 5 + this.editorDetectorTrack.getX() * 16, 5 + this.editorDetectorTrack.getY() * 16, 32, 128, 16, 16);
+			if (isUsingEditor()) {
+				if (editorDetectorTrack != null && !isRunning) {
+					editorDetectorTrack.drawOverlay(getModule(), gui, editorDetectorTrack.getX() * 16 + 8, editorDetectorTrack.getY() * 16 + 8, isRunning);
+					getModule().drawImage(gui, 5 + editorDetectorTrack.getX() * 16, 5 + editorDetectorTrack.getY() * 16, 32, 128, 16, 16);
 				}
 			} else {
-				for (final Track track : this.tracks) {
-					track.drawOverlay(this.getModule(), gui, x, y, this.isRunning);
+				for (final Track track : tracks) {
+					track.drawOverlay(getModule(), gui, x, y, isRunning);
 				}
 			}
-			if (!this.isItemTaken) {
+			if (!isItemTaken) {
 				int itemIndex = 0;
-				if (this.isPlayingFinalLevel()) {
+				if (isPlayingFinalLevel()) {
 					itemIndex = 1;
 				}
-				this.getModule().drawImage(gui, 5 + this.itemX * 16, 5 + this.itemY * 16, 16 * itemIndex, 240, 16, 16);
+				getModule().drawImage(gui, 5 + itemX * 16, 5 + itemY * 16, 16 * itemIndex, 240, 16, 16);
 			}
-			for (final Cart cart : this.carts) {
-				cart.render(this, gui, this.tick);
+			for (final Cart cart : carts) {
+				cart.render(this, gui, tick);
 			}
-			if (this.isUsingEditor() && !this.isRunning) {
-				this.getModule().drawImage(gui, 5 + this.playerStartX * 16, 5 + this.playerStartY * 16, 162, 212, 8, 8, this.playerStartDirection.getRenderRotation());
+			if (isUsingEditor() && !isRunning) {
+				getModule().drawImage(gui, 5 + playerStartX * 16, 5 + playerStartY * 16, 162, 212, 8, 8, playerStartDirection.getRenderRotation());
 			}
-			if (!this.isMenuOpen && this.editorTrack != null) {
-				this.getModule().drawImage(gui, x - 8, y - 8, 16 * this.editorTrack.getU(), 16 * this.editorTrack.getV(), 16, 16, this.editorTrack.getRotation());
+			if (!isMenuOpen && editorTrack != null) {
+				getModule().drawImage(gui, x - 8, y - 8, 16 * editorTrack.getU(), 16 * editorTrack.getV(), 16, 16, editorTrack.getRotation());
 			}
-			if (this.isSaveMenuOpen) {
-				final int[] rect2 = this.getSaveMenuArea();
-				this.getModule().drawImage(gui, rect2, 0, 144);
+			if (isSaveMenuOpen) {
+				final int[] rect2 = getSaveMenuArea();
+				getModule().drawImage(gui, rect2, 0, 144);
 			}
 		}
 		ResourceHelper.bindResource(ArcadeTracks.textureGame);
 		for (int i = 0; i < 14; ++i) {
-			if (this.isButtonVisible(i)) {
-				final int[] rect = this.getButtonArea(i);
-				final int srcX = this.isButtonDisabled(i) ? 208 : (this.getModule().inRect(x, y, rect) ? 224 : 240);
+			if (isButtonVisible(i)) {
+				final int[] rect = getButtonArea(i);
+				final int srcX = isButtonDisabled(i) ? 208 : (getModule().inRect(x, y, rect) ? 224 : 240);
 				final int srcY = i * 16;
-				this.getModule().drawImage(gui, rect, srcX, srcY);
+				getModule().drawImage(gui, rect, srcX, srcY);
 			}
 		}
 	}
@@ -353,61 +353,61 @@ public class ArcadeTracks extends ArcadeGame {
 	@Override
 	public void drawMouseOver(final GuiMinecart gui, final int x, final int y) {
 		for (int i = 0; i < 14; ++i) {
-			if (!this.isButtonDisabled(i) && this.isButtonVisible(i)) {
-				this.getModule().drawStringOnMouseOver(gui, this.getButtonText(i), x, y, this.getButtonArea(i));
+			if (!isButtonDisabled(i) && isButtonVisible(i)) {
+				getModule().drawStringOnMouseOver(gui, getButtonText(i), x, y, getButtonArea(i));
 			}
 		}
 	}
 
 	@Override
 	public void mouseMovedOrUp(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (this.isSaveMenuOpen) {
+		if (isSaveMenuOpen) {
 			return;
 		}
-		if (this.isMenuOpen) {
-			for (final ScrollableList list : this.lists) {
+		if (isMenuOpen) {
+			for (final ScrollableList list : lists) {
 				list.mouseMovedOrUp(gui, x, y, button);
 			}
 		}
-		if (this.currentMap != null && this.isUsingEditor()) {
+		if (currentMap != null && isUsingEditor()) {
 			final int x2 = x - 5;
 			final int y2 = y - 5;
 			final int gridX = x2 / 16;
 			final int gridY = y2 / 16;
-			if (gridX >= 0 && gridX < this.trackMap.length && gridY >= 0 && gridY < this.trackMap[0].length) {
-				this.hoveringTrack = this.trackMap[gridX][gridY];
+			if (gridX >= 0 && gridX < trackMap.length && gridY >= 0 && gridY < trackMap[0].length) {
+				hoveringTrack = trackMap[gridX][gridY];
 			} else {
-				this.hoveringTrack = null;
+				hoveringTrack = null;
 			}
 		}
-		this.handleEditorTrack(x, y, button, false);
+		handleEditorTrack(x, y, button, false);
 	}
 
 	@Override
 	public void mouseClicked(final GuiMinecart gui, final int x, final int y, final int button) {
-		if (!this.isSaveMenuOpen) {
-			if (this.isMenuOpen) {
-				if (!this.getModule().inRect(x, y, this.getMenuArea())) {
-					if (this.currentMap != null) {
-						this.isMenuOpen = false;
+		if (!isSaveMenuOpen) {
+			if (isMenuOpen) {
+				if (!getModule().inRect(x, y, getMenuArea())) {
+					if (currentMap != null) {
+						isMenuOpen = false;
 					}
 				} else {
 					for (int i = 0; i < 3; ++i) {
-						if (i != this.currentMenuTab && this.getModule().inRect(x, y, this.getMenuTabArea(i))) {
-							this.currentMenuTab = i;
+						if (i != currentMenuTab && getModule().inRect(x, y, getMenuTabArea(i))) {
+							currentMenuTab = i;
 							break;
 						}
 					}
-					for (final ScrollableList list : this.lists) {
+					for (final ScrollableList list : lists) {
 						list.mouseClicked(gui, x, y, button);
 					}
 				}
 			} else {
-				if (!this.isRunning) {
-					for (final Track track : this.tracks) {
-						if (this.getModule().inRect(x, y, getTrackArea(track.getX(), track.getY()))) {
-							if (this.isUsingEditor()) {
-								if (this.editorTrack != null) {
+				if (!isRunning) {
+					for (final Track track : tracks) {
+						if (getModule().inRect(x, y, getTrackArea(track.getX(), track.getY()))) {
+							if (isUsingEditor()) {
+								if (editorTrack != null) {
 									continue;
 								}
 								track.onEditorClick(this);
@@ -417,23 +417,23 @@ public class ArcadeTracks extends ArcadeGame {
 						}
 					}
 				}
-				this.handleEditorTrack(x, y, button, true);
+				handleEditorTrack(x, y, button, true);
 			}
 		}
 		for (int i = 0; i < 14; ++i) {
-			final int[] rect = this.getButtonArea(i);
-			if (this.getModule().inRect(x, y, rect) && this.isButtonVisible(i) && !this.isButtonDisabled(i)) {
-				this.buttonClicked(i);
+			final int[] rect = getButtonArea(i);
+			if (getModule().inRect(x, y, rect) && isButtonVisible(i) && !isButtonDisabled(i)) {
+				buttonClicked(i);
 				break;
 			}
 		}
 	}
 
 	public void completeLevel() {
-		if (this.isPlayingNormalLevel()) {
-			final int nextLevel = this.currentLevel + 1;
-			if (nextLevel > this.unlockedLevels[this.currentStory]) {
-				this.getModule().sendPacket(0, new byte[] { (byte) this.currentStory, (byte) nextLevel });
+		if (isPlayingNormalLevel()) {
+			final int nextLevel = currentLevel + 1;
+			if (nextLevel > unlockedLevels[currentStory]) {
+				getModule().sendPacket(0, new byte[] { (byte) currentStory, (byte) nextLevel });
 			}
 		}
 	}
@@ -443,7 +443,7 @@ public class ArcadeTracks extends ArcadeGame {
 	}
 
 	private int[] getMenuTabArea(final int id) {
-		final int[] menu = this.getMenuArea();
+		final int[] menu = getMenuArea();
 		return new int[] { menu[0] + 1 + id * 85, menu[1] + 1, 84, 12 };
 	}
 
@@ -453,15 +453,15 @@ public class ArcadeTracks extends ArcadeGame {
 
 	private int[] getButtonArea(int id) {
 		if (id == 4 || id == 5) {
-			final int[] menu = this.getMenuArea();
+			final int[] menu = getMenuArea();
 			return new int[] { menu[0] + 235 - 18 * (id - 4), menu[1] + 20, 16, 16 };
 		}
 		if (id > 5 && id < 10) {
-			final int[] menu = this.getMenuArea();
+			final int[] menu = getMenuArea();
 			return new int[] { menu[0] + 235, menu[1] + 20 + (id - 6) * 18, 16, 16 };
 		}
 		if (id >= 12 && id < 14) {
-			final int[] menu = this.getSaveMenuArea();
+			final int[] menu = getSaveMenuArea();
 			return new int[] { menu[0] + menu[2] - 18 * (id - 11) - 2, menu[1] + menu[3] - 18, 16, 16 };
 		}
 		if (id >= 10 && id < 12) {
@@ -472,40 +472,40 @@ public class ArcadeTracks extends ArcadeGame {
 
 	private boolean isButtonVisible(final int id) {
 		if (id == 4 || id == 5) {
-			return this.isMenuOpen && this.currentMenuTab == 0;
+			return isMenuOpen && currentMenuTab == 0;
 		}
 		if (id > 5 && id < 10) {
-			return this.isMenuOpen && this.currentMenuTab == 1;
+			return isMenuOpen && currentMenuTab == 1;
 		}
 		if (id >= 10 && id < 12) {
-			return this.isUsingEditor();
+			return isUsingEditor();
 		}
-		return id < 12 || id >= 14 || this.isSaveMenuOpen;
+		return id < 12 || id >= 14 || isSaveMenuOpen;
 	}
 
 	private boolean isButtonDisabled(final int id) {
 		switch (id) {
 			case 0: {
-				return this.isRunning || this.isMenuOpen || this.isSaveMenuOpen;
+				return isRunning || isMenuOpen || isSaveMenuOpen;
 			}
 			case 1: {
-				return this.isRunning || this.isMenuOpen || this.isSaveMenuOpen;
+				return isRunning || isMenuOpen || isSaveMenuOpen;
 			}
 			case 2: {
-				return !this.isRunning || this.isSaveMenuOpen;
+				return !isRunning || isSaveMenuOpen;
 			}
 			case 3: {
-				return this.isMenuOpen || this.isSaveMenuOpen || !this.isPlayingNormalLevel() || this.currentLevel + 1 > this.unlockedLevels[this.currentStory];
+				return isMenuOpen || isSaveMenuOpen || !isPlayingNormalLevel() || currentLevel + 1 > unlockedLevels[currentStory];
 			}
 			case 4: {
-				return (this.storySelected ? this.mapList : this.storyList).getSelectedIndex() == -1;
+				return (storySelected ? mapList : storyList).getSelectedIndex() == -1;
 			}
 			case 5: {
-				return !this.storySelected;
+				return !storySelected;
 			}
 			case 6:
 			case 8: {
-				return this.userList.getSelectedIndex() == -1;
+				return userList.getSelectedIndex() == -1;
 			}
 			case 7:
 			case 9:
@@ -514,10 +514,10 @@ public class ArcadeTracks extends ArcadeGame {
 			}
 			case 10:
 			case 11: {
-				return this.isMenuOpen || this.isSaveMenuOpen || this.isRunning;
+				return isMenuOpen || isSaveMenuOpen || isRunning;
 			}
 			case 13: {
-				return this.saveName.length() == 0;
+				return saveName.length() == 0;
 			}
 			default: {
 				return true;
@@ -528,98 +528,98 @@ public class ArcadeTracks extends ArcadeGame {
 	private void buttonClicked(final int id) {
 		switch (id) {
 			case 0: {
-				for (final Track track : this.tracks) {
+				for (final Track track : tracks) {
 					track.saveBackup();
 				}
-				this.player.setDirection(this.playerStartDirection);
-				this.isRunning = true;
+				player.setDirection(playerStartDirection);
+				isRunning = true;
 				break;
 			}
 			case 1: {
-				this.isMenuOpen = true;
-				this.editorTrack = null;
+				isMenuOpen = true;
+				editorTrack = null;
 				break;
 			}
 			case 2: {
-				for (final Track track : this.tracks) {
+				for (final Track track : tracks) {
 					track.loadBackup();
 				}
-				this.resetPosition();
-				this.isRunning = false;
+				resetPosition();
+				isRunning = false;
 				break;
 			}
 			case 3: {
-				this.loadMap(this.currentStory, this.currentLevel + 1);
+				loadMap(currentStory, currentLevel + 1);
 				break;
 			}
 			case 4: {
-				if (this.storySelected) {
-					this.loadMap(this.storyList.getSelectedIndex(), this.mapList.getSelectedIndex());
-					this.isMenuOpen = false;
+				if (storySelected) {
+					loadMap(storyList.getSelectedIndex(), mapList.getSelectedIndex());
+					isMenuOpen = false;
 					break;
 				}
-				this.storySelected = true;
-				this.mapList.clear();
-				this.loadMaps();
+				storySelected = true;
+				mapList.clear();
+				loadMaps();
 				break;
 			}
 			case 5: {
-				this.storySelected = false;
+				storySelected = false;
 				break;
 			}
 			case 6: {
-				this.currentStory = -1;
-				this.loadMap(this.userMaps.get(this.userList.getSelectedIndex()));
-				this.isMenuOpen = false;
+				currentStory = -1;
+				loadMap(userMaps.get(userList.getSelectedIndex()));
+				isMenuOpen = false;
 				break;
 			}
 			case 7: {
-				this.loadMap(TrackLevel.editor);
-				this.isMenuOpen = false;
-				this.lastSavedName = "";
-				this.isUsingEditor = true;
+				loadMap(TrackLevel.editor);
+				isMenuOpen = false;
+				lastSavedName = "";
+				isUsingEditor = true;
 				break;
 			}
 			case 8: {
-				final TrackLevel mapToEdit = this.userMaps.get(this.userList.getSelectedIndex());
-				this.loadMap(mapToEdit);
-				this.lastSavedName = mapToEdit.getName();
-				this.isMenuOpen = false;
-				this.isUsingEditor = true;
+				final TrackLevel mapToEdit = userMaps.get(userList.getSelectedIndex());
+				loadMap(mapToEdit);
+				lastSavedName = mapToEdit.getName();
+				isMenuOpen = false;
+				isUsingEditor = true;
 				break;
 			}
 			case 9: {
-				this.userList.clear();
-				if (this.getModule().getCart().world.isRemote) {
-					this.loadUserMaps();
+				userList.clear();
+				if (getModule().getCart().world.isRemote) {
+					loadUserMaps();
 					break;
 				}
 				break;
 			}
 			case 10: {
-				if (this.lastSavedName.length() == 0) {
-					this.isSaveMenuOpen = true;
-					this.failedToSave = false;
+				if (lastSavedName.length() == 0) {
+					isSaveMenuOpen = true;
+					failedToSave = false;
 					break;
 				}
-				this.save(this.lastSavedName);
+				save(lastSavedName);
 				break;
 			}
 			case 11: {
-				this.isSaveMenuOpen = true;
-				this.failedToSave = false;
+				isSaveMenuOpen = true;
+				failedToSave = false;
 				break;
 			}
 			case 13: {
-				if (this.save(this.saveName)) {
-					this.saveName = "";
-					this.isSaveMenuOpen = false;
+				if (save(saveName)) {
+					saveName = "";
+					isSaveMenuOpen = false;
 					break;
 				}
 				break;
 			}
 			case 12: {
-				this.isSaveMenuOpen = false;
+				isSaveMenuOpen = false;
 				break;
 			}
 		}
@@ -640,7 +640,7 @@ public class ArcadeTracks extends ArcadeGame {
 				return Localization.ARCADE.BUTTON_NEXT.translate();
 			}
 			case 4: {
-				return this.storySelected ? Localization.ARCADE.BUTTON_START_LEVEL.translate() : Localization.ARCADE.BUTTON_SELECT_STORY.translate();
+				return storySelected ? Localization.ARCADE.BUTTON_START_LEVEL.translate() : Localization.ARCADE.BUTTON_SELECT_STORY.translate();
 			}
 			case 5: {
 				return Localization.ARCADE.BUTTON_SELECT_OTHER_STORY.translate();
@@ -680,100 +680,100 @@ public class ArcadeTracks extends ArcadeGame {
 	}
 
 	public boolean isItemOnGround() {
-		return !this.isItemTaken;
+		return !isItemTaken;
 	}
 
 	public void pickItemUp() {
-		this.isItemTaken = true;
+		isItemTaken = true;
 	}
 
 	public int getItemX() {
-		return this.itemX;
+		return itemX;
 	}
 
 	public int getItemY() {
-		return this.itemY;
+		return itemY;
 	}
 
 	@Override
 	public void Save(final NBTTagCompound tagCompound, final int id) {
-		for (int i = 0; i < this.unlockedLevels.length; ++i) {
-			tagCompound.setByte(this.getModule().generateNBTName("Unlocked" + i, id), (byte) this.unlockedLevels[i]);
+		for (int i = 0; i < unlockedLevels.length; ++i) {
+			tagCompound.setByte(getModule().generateNBTName("Unlocked" + i, id), (byte) unlockedLevels[i]);
 		}
 	}
 
 	@Override
 	public void Load(final NBTTagCompound tagCompound, final int id) {
-		for (int i = 0; i < this.unlockedLevels.length; ++i) {
-			this.unlockedLevels[i] = tagCompound.getByte(this.getModule().generateNBTName("Unlocked" + i, id));
+		for (int i = 0; i < unlockedLevels.length; ++i) {
+			unlockedLevels[i] = tagCompound.getByte(getModule().generateNBTName("Unlocked" + i, id));
 		}
-		this.loadStories();
+		loadStories();
 	}
 
 	@Override
 	public void receivePacket(final int id, final byte[] data, final EntityPlayer player) {
 		if (id == 0) {
-			this.unlockedLevels[data[0]] = data[1];
-			if (this.unlockedLevels[data[0]] > TrackStory.stories.get(data[0]).getLevels().size() - 1) {
-				this.unlockedLevels[data[0]] = TrackStory.stories.get(data[0]).getLevels().size() - 1;
+			unlockedLevels[data[0]] = data[1];
+			if (unlockedLevels[data[0]] > TrackStory.stories.get(data[0]).getLevels().size() - 1) {
+				unlockedLevels[data[0]] = TrackStory.stories.get(data[0]).getLevels().size() - 1;
 			}
 		}
 	}
 
 	@Override
 	public void checkGuiData(final Object[] info) {
-		for (int i = 0; i < this.unlockedLevels.length; ++i) {
-			this.getModule().updateGuiData(info, i, (short) this.unlockedLevels[i]);
+		for (int i = 0; i < unlockedLevels.length; ++i) {
+			getModule().updateGuiData(info, i, (short) unlockedLevels[i]);
 		}
 	}
 
 	@Override
 	public void receiveGuiData(final int id, final short data) {
-		if (id >= 0 && id < this.unlockedLevels.length) {
-			if ((this.unlockedLevels[id] = data) != 0) {
-				this.loadMaps();
+		if (id >= 0 && id < unlockedLevels.length) {
+			if ((unlockedLevels[id] = data) != 0) {
+				loadMaps();
 			} else {
-				this.loadStories();
+				loadStories();
 			}
 		}
 	}
 
 	public void setEditorTrack(final TrackEditor track) {
-		if (this.editorTrack != null) {
-			track.setType(this.editorTrack.getType());
+		if (editorTrack != null) {
+			track.setType(editorTrack.getType());
 		}
-		this.editorTrack = track;
+		editorTrack = track;
 	}
 
 	public void setEditorDetectorTrack(final TrackDetector track) {
-		if (track.equals(this.editorDetectorTrack)) {
-			this.editorDetectorTrack = null;
+		if (track.equals(editorDetectorTrack)) {
+			editorDetectorTrack = null;
 		} else {
-			this.editorDetectorTrack = track;
+			editorDetectorTrack = track;
 		}
 	}
 
 	public TrackDetector getEditorDetectorTrack() {
-		return this.editorDetectorTrack;
+		return editorDetectorTrack;
 	}
 
 	@Override
 	public void keyPress(final GuiMinecart gui, final char character, final int extraInformation) {
-		if (this.isSaveMenuOpen) {
-			if (this.saveName.length() < 15 && this.validSaveNameCharacters.indexOf(Character.toLowerCase(character)) != -1) {
-				this.saveName += character;
-			} else if (extraInformation == 14 && this.saveName.length() > 0) {
-				this.saveName = this.saveName.substring(0, this.saveName.length() - 1);
+		if (isSaveMenuOpen) {
+			if (saveName.length() < 15 && validSaveNameCharacters.indexOf(Character.toLowerCase(character)) != -1) {
+				saveName += character;
+			} else if (extraInformation == 14 && saveName.length() > 0) {
+				saveName = saveName.substring(0, saveName.length() - 1);
 			}
 		} else {
-			if (!this.isUsingEditor() || this.isRunning) {
+			if (!isUsingEditor() || isRunning) {
 				return;
 			}
 			Track track;
-			if (this.editorTrack != null) {
-				track = this.editorTrack;
+			if (editorTrack != null) {
+				track = editorTrack;
 			} else {
-				track = this.hoveringTrack;
+				track = hoveringTrack;
 			}
 			switch (Character.toLowerCase(character)) {
 				case 'a': {
@@ -808,68 +808,68 @@ public class ArcadeTracks extends ArcadeGame {
 					break;
 				}
 				case 't': {
-					if (this.editorTrack != null) {
-						this.editorTrack.nextType();
+					if (editorTrack != null) {
+						editorTrack.nextType();
 						break;
 					}
 					break;
 				}
 				case '1': {
-					this.setEditorTrack(new TrackEditor(TrackOrientation.CORNER_DOWN_RIGHT));
+					setEditorTrack(new TrackEditor(TrackOrientation.CORNER_DOWN_RIGHT));
 					break;
 				}
 				case '2': {
-					this.setEditorTrack(new TrackEditor(TrackOrientation.STRAIGHT_VERTICAL));
+					setEditorTrack(new TrackEditor(TrackOrientation.STRAIGHT_VERTICAL));
 					break;
 				}
 				case '3': {
-					this.setEditorTrack(new TrackEditor(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_RIGHT));
+					setEditorTrack(new TrackEditor(TrackOrientation.JUNCTION_3WAY_STRAIGHT_FORWARD_VERTICAL_CORNER_DOWN_RIGHT));
 					break;
 				}
 				case '4': {
-					this.setEditorTrack(new TrackEditor(TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_DOWN));
+					setEditorTrack(new TrackEditor(TrackOrientation.JUNCTION_3WAY_CORNER_RIGHT_ENTRANCE_DOWN));
 					break;
 				}
 				case '5': {
-					this.setEditorTrack(new TrackEditor(TrackOrientation.JUNCTION_4WAY));
+					setEditorTrack(new TrackEditor(TrackOrientation.JUNCTION_4WAY));
 					break;
 				}
 				case 'd': {
-					if (this.hoveringTrack != null) {
-						this.tracks.remove(this.hoveringTrack);
-						if (this.hoveringTrack.getX() >= 0 && this.hoveringTrack.getX() < this.trackMap.length && this.hoveringTrack.getY() >= 0 && this.hoveringTrack.getY() < this.trackMap[0].length) {
-							this.trackMap[this.hoveringTrack.getX()][this.hoveringTrack.getY()] = null;
+					if (hoveringTrack != null) {
+						tracks.remove(hoveringTrack);
+						if (hoveringTrack.getX() >= 0 && hoveringTrack.getX() < trackMap.length && hoveringTrack.getY() >= 0 && hoveringTrack.getY() < trackMap[0].length) {
+							trackMap[hoveringTrack.getX()][hoveringTrack.getY()] = null;
 						}
-						this.hoveringTrack = null;
+						hoveringTrack = null;
 						break;
 					}
 					break;
 				}
 				case 'c': {
-					if (this.editorTrack == null && this.hoveringTrack != null) {
-						this.setEditorTrack(new TrackEditor(this.hoveringTrack.getOrientation()));
-						this.editorTrack.setType(this.hoveringTrack.getU());
+					if (editorTrack == null && hoveringTrack != null) {
+						setEditorTrack(new TrackEditor(hoveringTrack.getOrientation()));
+						editorTrack.setType(hoveringTrack.getU());
 						break;
 					}
 					break;
 				}
 				case 's': {
-					if (this.hoveringTrack != null) {
-						if (this.playerStartX == this.hoveringTrack.getX() && this.playerStartY == this.hoveringTrack.getY()) {
-							this.playerStartDirection = this.playerStartDirection.getLeft();
+					if (hoveringTrack != null) {
+						if (playerStartX == hoveringTrack.getX() && playerStartY == hoveringTrack.getY()) {
+							playerStartDirection = playerStartDirection.getLeft();
 						} else {
-							this.playerStartX = this.hoveringTrack.getX();
-							this.playerStartY = this.hoveringTrack.getY();
+							playerStartX = hoveringTrack.getX();
+							playerStartY = hoveringTrack.getY();
 						}
-						this.resetPosition();
+						resetPosition();
 						break;
 					}
 					break;
 				}
 				case 'x': {
-					if (this.hoveringTrack != null) {
-						this.itemX = this.hoveringTrack.getX();
-						this.itemY = this.hoveringTrack.getY();
+					if (hoveringTrack != null) {
+						itemX = hoveringTrack.getX();
+						itemY = hoveringTrack.getY();
 						break;
 					}
 					break;
@@ -879,56 +879,56 @@ public class ArcadeTracks extends ArcadeGame {
 	}
 
 	private void handleEditorTrack(final int x, final int y, final int button, final boolean clicked) {
-		if (this.isRunning) {
-			this.isEditorTrackDraging = false;
+		if (isRunning) {
+			isEditorTrackDraging = false;
 			return;
 		}
-		if (this.editorTrack != null) {
-			if ((clicked && button == 0) || (!clicked && button == -1 && this.isEditorTrackDraging)) {
+		if (editorTrack != null) {
+			if ((clicked && button == 0) || (!clicked && button == -1 && isEditorTrackDraging)) {
 				final int x2 = x - 5;
 				final int y2 = y - 5;
 				final int gridX = x2 / 16;
 				final int gridY = y2 / 16;
-				if (gridX >= 0 && gridX < this.trackMap.length && gridY >= 0 && gridY < this.trackMap[0].length) {
-					if (this.trackMap[gridX][gridY] == null) {
-						final Track newtrack = this.editorTrack.getRealTrack(gridX, gridY);
-						this.trackMap[gridX][gridY] = newtrack;
-						this.tracks.add(newtrack);
+				if (gridX >= 0 && gridX < trackMap.length && gridY >= 0 && gridY < trackMap[0].length) {
+					if (trackMap[gridX][gridY] == null) {
+						final Track newtrack = editorTrack.getRealTrack(gridX, gridY);
+						trackMap[gridX][gridY] = newtrack;
+						tracks.add(newtrack);
 					}
-					this.isEditorTrackDraging = true;
+					isEditorTrackDraging = true;
 				}
-			} else if (button == 1 || (!clicked && this.isEditorTrackDraging)) {
+			} else if (button == 1 || (!clicked && isEditorTrackDraging)) {
 				if (clicked) {
-					this.editorTrack = null;
+					editorTrack = null;
 				}
-				this.isEditorTrackDraging = false;
+				isEditorTrackDraging = false;
 			}
 		}
 	}
 
 	@Override
 	public boolean disableStandardKeyFunctionality() {
-		return this.isSaveMenuOpen;
+		return isSaveMenuOpen;
 	}
 
 	@SideOnly(Side.CLIENT)
 	private boolean save(String name) {
 		if (Constants.arcadeDevOperator) {
 			if (!name.startsWith(" ")) {
-				final String result = TrackLevel.saveMapToString(name, this.playerStartX, this.playerStartY, this.playerStartDirection, this.itemX, this.itemY, this.tracks);
+				final String result = TrackLevel.saveMapToString(name, playerStartX, playerStartY, playerStartDirection, itemX, itemY, tracks);
 				System.out.println(result);
 				return true;
 			}
 			name = name.substring(1);
 		}
-		if (TrackLevel.saveMap(name, this.playerStartX, this.playerStartY, this.playerStartDirection, this.itemX, this.itemY, this.tracks)) {
-			this.lastSavedName = name;
-			this.loadUserMaps();
+		if (TrackLevel.saveMap(name, playerStartX, playerStartY, playerStartDirection, itemX, itemY, tracks)) {
+			lastSavedName = name;
+			loadUserMaps();
 			return true;
 		}
-		this.saveName = name;
-		this.failedToSave = true;
-		this.isSaveMenuOpen = true;
+		saveName = name;
+		failedToSave = true;
+		isSaveMenuOpen = true;
 		return false;
 	}
 

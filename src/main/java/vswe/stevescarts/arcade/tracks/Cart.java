@@ -11,54 +11,54 @@ public class Cart {
 
 	public Cart(final int imageIndex) {
 		this.imageIndex = imageIndex;
-		this.enabled = true;
+		enabled = true;
 	}
 
 	public int getX() {
-		return this.x;
+		return x;
 	}
 
 	public int getY() {
-		return this.y;
+		return y;
 	}
 
 	public TrackOrientation.DIRECTION getDireciotn() {
-		return this.dir;
+		return dir;
 	}
 
 	public void setX(final int val) {
-		this.x = val;
+		x = val;
 	}
 
 	public void setY(final int val) {
-		this.y = val;
+		y = val;
 	}
 
 	public void setDirection(final TrackOrientation.DIRECTION val) {
-		this.dir = val;
+		dir = val;
 	}
 
 	public void setAlive(final boolean val) {
-		this.enabled = val;
+		enabled = val;
 	}
 
 	public void move(final ArcadeTracks game) {
-		if (!this.enabled) {
+		if (!enabled) {
 			return;
 		}
-		this.x += this.dir.getX();
-		this.y += this.dir.getY();
-		if (this.x < 0 || this.y < 0 || this.x >= game.getTrackMap().length || this.y >= game.getTrackMap()[0].length || game.getTrackMap()[this.x][this.y] == null) {
-			if (this.dir != TrackOrientation.DIRECTION.STILL) {
-				this.onCrash();
+		x += dir.getX();
+		y += dir.getY();
+		if (x < 0 || y < 0 || x >= game.getTrackMap().length || y >= game.getTrackMap()[0].length || game.getTrackMap()[x][y] == null) {
+			if (dir != TrackOrientation.DIRECTION.STILL) {
+				onCrash();
 			}
-			this.dir = TrackOrientation.DIRECTION.STILL;
+			dir = TrackOrientation.DIRECTION.STILL;
 		} else {
-			game.getTrackMap()[this.x][this.y].travel(game, this);
-			this.dir = game.getTrackMap()[this.x][this.y].getOrientation().travel(this.dir.getOpposite());
+			game.getTrackMap()[x][y].travel(game, this);
+			dir = game.getTrackMap()[x][y].getOrientation().travel(dir.getOpposite());
 		}
-		if (game.isItemOnGround() && this.x == game.getItemX() && this.y == game.getItemY()) {
-			this.onItemPickUp();
+		if (game.isItemOnGround() && x == game.getItemX() && y == game.getItemY()) {
+			onItemPickUp();
 			game.pickItemUp();
 		}
 	}
@@ -70,12 +70,12 @@ public class Cart {
 	}
 
 	public void render(final ArcadeTracks game, final GuiMinecart gui, final int tick) {
-		if (!this.enabled) {
+		if (!enabled) {
 			return;
 		}
-		final int x = 7 + (int) (16.0f * (this.x + this.dir.getX() * (tick / 4.0f)));
-		final int y = 7 + (int) (16.0f * (this.y + this.dir.getY() * (tick / 4.0f)));
-		final int u = 256 - 12 * (this.imageIndex + 1);
+		final int x = 7 + (int) (16.0f * (this.x + dir.getX() * (tick / 4.0f)));
+		final int y = 7 + (int) (16.0f * (this.y + dir.getY() * (tick / 4.0f)));
+		final int u = 256 - 12 * (imageIndex + 1);
 		final int v = 244;
 		final int w = 12;
 		final int h = 12;
@@ -83,6 +83,6 @@ public class Cart {
 	}
 
 	public boolean isAlive() {
-		return this.enabled;
+		return enabled;
 	}
 }
