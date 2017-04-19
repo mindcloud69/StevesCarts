@@ -821,11 +821,6 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	@Override
 	public boolean isEmpty() {
-		if (this.modules != null) {
-			for (final ModuleBase module : this.modules) {
-				//TODO 1.11
-			}
-		}
 		return false;
 	}
 

@@ -45,7 +45,7 @@ public class ModelGenerator {
 		TextureMap textureMap = event.getMap();
 		for (TexturedItem item : ItemModelManager.items) {
 			for (int i = 0; i < item.getMaxMeta(); i++) {
-				String name = item.getTextureName(i);
+				String name = item.getTextureName(i).toLowerCase();
 				TextureAtlasSprite texture = textureMap.getTextureExtry(name);
 				if (texture == null) {
 					texture = new CustomTexture(name);
