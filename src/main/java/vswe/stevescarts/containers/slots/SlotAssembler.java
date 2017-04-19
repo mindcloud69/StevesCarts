@@ -38,7 +38,7 @@ public class SlotAssembler extends Slot {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return itemstack != null && isValid && ModuleData.isValidModuleItem(groupID, itemstack) && (!getHasStack() || (getStack().getCount() > 0 && itemstack.getCount() > 0));
+		return !itemstack.isEmpty() && isValid && ModuleData.isValidModuleItem(groupID, itemstack) && (!getHasStack() || (getStack().getCount() > 0 && itemstack.getCount() > 0));
 	}
 
 	public void invalidate() {
@@ -66,7 +66,7 @@ public class SlotAssembler extends Slot {
 		if (!assembler.getWorld().isRemote) {
 			if (!isValid() && getHasStack()) {
 				assembler.puke(getStack());
-				putStack(null);
+				putStack(ItemStack.EMPTY);
 			}
 		} else if (isValid()) {
 			if (openingAnimation == 8) {

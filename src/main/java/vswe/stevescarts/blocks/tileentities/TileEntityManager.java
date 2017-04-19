@@ -420,7 +420,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 			cargoItemStacks.set(par1, ItemStack.EMPTY);
 			return var2;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	protected void updateLayout() {

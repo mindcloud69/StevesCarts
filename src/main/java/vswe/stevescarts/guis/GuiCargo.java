@@ -106,7 +106,7 @@ public class GuiCargo extends GuiManager {
 				getCargo();
 				if (n < TileEntityCargo.itemSelections.size()) {
 					getCargo();
-					if (TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon() != null) {
+					if (!TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon().isEmpty()) {
 						cartIcon = TileEntityCargo.itemSelections.get(getCargo().target[id]).getIcon();
 						break Label_0103;
 					}

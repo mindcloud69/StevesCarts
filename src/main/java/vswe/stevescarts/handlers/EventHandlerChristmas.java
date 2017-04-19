@@ -62,7 +62,7 @@ public class EventHandlerChristmas {
 						}
 					}
 					if (item.getCount() <= 0 && !player.capabilities.isCreativeMode) {
-						player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
+						player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 					}
 					event.setCanceled(true);
 				}
@@ -78,7 +78,7 @@ public class EventHandlerChristmas {
 				for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
 					@Nonnull
 					ItemStack item = player.inventory.getStackInSlot(i);
-					if (item != null && item.getItem() == ModItems.component && item.getItemDamage() == 56) {
+					if (!item.isEmpty() && item.getItem() == ModItems.component && item.getItemDamage() == 56) {
 						item.setItemDamage(item.getItemDamage() + 1);
 					}
 				}

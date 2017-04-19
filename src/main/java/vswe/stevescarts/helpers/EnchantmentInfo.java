@@ -114,7 +114,7 @@ public class EnchantmentInfo {
 	private static int getEnchantmentLevel(final int par0,
 	                                       @Nonnull
 		                                       ItemStack par1ItemStack) {
-		if (par1ItemStack == null) {
+		if (par1ItemStack.isEmpty()) {
 			return 0;
 		}
 		final NBTTagList nbttaglist = Items.ENCHANTED_BOOK.getEnchantments(par1ItemStack);

@@ -87,7 +87,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	public String getUnlocalizedName(
 		@Nonnull
 			ItemStack item) {
-		if (item == null || item.getItemDamage() < 0 || item.getItemDamage() >= size() || getName(item.getItemDamage()) == null) {
+		if (item.isEmpty() || item.getItemDamage() < 0 || item.getItemDamage() >= size() || getName(item.getItemDamage()) == null) {
 			return getUnlocalizedName();
 		}
 		return "item.SC2:" + getRawName(item.getItemDamage());

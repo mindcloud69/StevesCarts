@@ -108,7 +108,7 @@ public class ModuleEnchants extends ModuleAddon {
 							}
 						}
 						if (valid && getStack(i).getCount() <= 0) {
-							setStack(i, null);
+							setStack(i, ItemStack.EMPTY);
 						}
 					}
 				}

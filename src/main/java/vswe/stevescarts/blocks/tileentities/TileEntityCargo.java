@@ -246,7 +246,7 @@ public class TileEntityCargo extends TileEntityManager {
 		}
 		latestTransferToBeUsed = transfer;
 		for (int i = 0; i < fromInv.getSizeInventory(); ++i) {
-			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && fromInv.getStackInSlot(i) != null) {
+			if (TransferHandler.isSlotOfType(fromCont.getSlot(i), fromValid) && !fromInv.getStackInSlot(i).isEmpty()) {
 				@Nonnull
 				ItemStack iStack = fromInv.getStackInSlot(i);
 				final int stacksize = iStack.getCount();
@@ -266,7 +266,7 @@ public class TileEntityCargo extends TileEntityManager {
 					markDirty();
 					transfer.getCart().markDirty();
 					if (iStack.getCount() == 0) {
-						fromInv.setInventorySlotContents(i, null);
+						fromInv.setInventorySlotContents(i, ItemStack.EMPTY);
 					}
 					if (transfer.getWorkload() >= getAmount(transfer.getSetting()) && getAmountType(transfer.getSetting()) != 0) {
 						transfer.setLowestSetting(transfer.getSetting() + 1);

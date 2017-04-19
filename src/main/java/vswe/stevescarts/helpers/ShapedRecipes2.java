@@ -39,7 +39,8 @@ public class ShapedRecipes2 extends ShapedRecipes {
 			for (int var6 = 0; var6 < 3; ++var6) {
 				final int var7 = var5 - par2;
 				final int var8 = var6 - par3;
-				ItemStack var9 = null;
+				@Nonnull
+				ItemStack var9 = ItemStack.EMPTY;
 				if (var7 >= 0 && var8 >= 0 && var7 < recipeWidth && var8 < recipeHeight) {
 					if (par4) {
 						var9 = recipeItems[recipeWidth - var7 - 1 + var8 * recipeWidth];

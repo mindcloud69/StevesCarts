@@ -15,6 +15,6 @@ public class SlotFurnaceInput extends SlotFake {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return FurnaceRecipes.instance().getSmeltingResult(itemstack) != null;
+		return !FurnaceRecipes.instance().getSmeltingResult(itemstack).isEmpty();
 	}
 }

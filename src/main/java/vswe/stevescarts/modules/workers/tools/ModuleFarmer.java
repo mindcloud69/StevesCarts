@@ -126,7 +126,7 @@ public abstract class ModuleFarmer extends ModuleTool implements ISuppliesModule
 		Block soilblock = soilState.getBlock();
 		if (soilblock != null) {
 			for (int i = 0; i < getInventorySize(); ++i) {
-				if (getStack(i) != null && isSeedValidHandler(getStack(i))) {
+				if (!getStack(i).isEmpty() && isSeedValidHandler(getStack(i))) {
 					IBlockState cropblock = getCropFromSeedHandler(getStack(i), world, pos);
 					if (cropblock != null && cropblock.getBlock() instanceof IPlantable && world.isAirBlock(pos.up()) && soilblock.canSustainPlant(soilState, world, pos, EnumFacing.UP, (IPlantable) cropblock.getBlock())) {
 						hasSeeds = i;

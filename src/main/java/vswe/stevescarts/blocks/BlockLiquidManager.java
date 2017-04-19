@@ -29,7 +29,7 @@ public class BlockLiquidManager extends BlockContainerBase {
 			for (int var8 = 0; var8 < var7.getSizeInventory(); ++var8) {
 				@Nonnull
 				ItemStack var9 = var7.getStackInSlot(var8);
-				if (var9 != null) {
+				if (!var9.isEmpty()) {
 					final float var10 = par1World.rand.nextFloat() * 0.8f + 0.1f;
 					final float var11 = par1World.rand.nextFloat() * 0.8f + 0.1f;
 					final float var12 = par1World.rand.nextFloat() * 0.8f + 0.1f;

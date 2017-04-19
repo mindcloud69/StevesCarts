@@ -25,7 +25,7 @@ public class CraftingDummy extends InventoryCrafting {
 	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(final int par1) {
-		return (par1 >= getSizeInventory()) ? null : module.getStack(par1);
+		return (par1 >= getSizeInventory()) ? ItemStack.EMPTY : module.getStack(par1);
 	}
 
 	@Override
@@ -35,18 +35,18 @@ public class CraftingDummy extends InventoryCrafting {
 			final int k = par1 + par2 * inventoryWidth;
 			return getStackInSlot(k);
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Nonnull
 	public ItemStack getStackInSlotOnClosing(final int par1) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack decrStackSize(final int par1, final int par2) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

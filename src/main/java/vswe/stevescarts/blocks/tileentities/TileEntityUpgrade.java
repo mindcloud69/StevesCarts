@@ -354,17 +354,17 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 	public ItemStack getStackInSlotOnClosing(final int i) {
 		if (inventoryStacks == null) {
 			if (master == null) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 			return master.getStackInSlot(i);
 		} else {
 			@Nonnull
 			ItemStack item = getStackInSlot(i);
-			if (item != null) {
-				setInventorySlotContents(i, null);
+			if (item != ItemStack.EMPTY) {
+				setInventorySlotContents(i, ItemStack.EMPTY);
 				return item;
 			}
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
@@ -445,7 +445,7 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	@Override
 	public void clearInputContainer(final int tankid) {
-		setInventorySlotContents(0, null);
+		setInventorySlotContents(0, ItemStack.EMPTY);
 	}
 
 	@Override

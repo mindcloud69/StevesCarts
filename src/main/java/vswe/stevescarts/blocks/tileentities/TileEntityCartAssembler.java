@@ -266,7 +266,7 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 						if (effect instanceof Disassemble) {
 							@Nonnull
 							ItemStack oldcart = tile.getStackInSlot(0);
-							if (oldcart != null && oldcart.getItem() instanceof ItemCarts && oldcart.hasDisplayName()) {
+							if (!oldcart.isEmpty() && oldcart.getItem() instanceof ItemCarts && oldcart.hasDisplayName()) {
 								outputItem.setStackDisplayName(oldcart.getDisplayName());
 							}
 							tile.setInventorySlotContents(0, ItemStack.EMPTY);
@@ -1118,14 +1118,14 @@ public class TileEntityCartAssembler extends TileEntityBase implements IInventor
 		for (int j = 0; j < spareModules.size(); ++j) {
 			@Nonnull
 			ItemStack iStack2 = spareModules.get(j);
-			if (iStack2 != null) {
+			if (!iStack2.isEmpty()) {
 				final NBTTagCompound item2 = new NBTTagCompound();
 				iStack2.writeToNBT(item2);
 				spares.appendTag(item2);
 			}
 		}
 		tagCompound.setTag("Spares", spares);
-		if (outputItem != null) {
+		if (!outputItem.isEmpty()) {
 			final NBTTagCompound outputTag = new NBTTagCompound();
 			outputItem.writeToNBT(outputTag);
 			tagCompound.setTag("Output", outputTag);

@@ -56,7 +56,7 @@ public class InputChest extends SimpleInventoryEffect {
 									final int stackSize = itemstack.getCount();
 									TransferHandler.TransferItem(itemstack, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), Slot.class, SlotAssemblerFuel.class, 1);
 									if (itemstack.getCount() == 0) {
-										upgrade.setInventorySlotContents(slotId, null);
+										upgrade.setInventorySlotContents(slotId, ItemStack.EMPTY);
 									}
 									if (stackSize != itemstack.getCount()) {
 										break;

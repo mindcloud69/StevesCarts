@@ -109,7 +109,7 @@ public class StevesCarts {
 		public int getBurnTime(
 			@Nonnull
 				ItemStack fuel) {
-			if (fuel != null && fuel.getItem() != null && fuel.getItem() == ModItems.component) {
+			if (!fuel.isEmpty() && fuel.getItem() != null && fuel.getItem() == ModItems.component) {
 				if (ItemCartComponent.isWoodLog(fuel)) {
 					return 150;
 				}

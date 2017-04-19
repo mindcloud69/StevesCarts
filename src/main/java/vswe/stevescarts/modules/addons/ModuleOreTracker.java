@@ -57,7 +57,7 @@ public class ModuleOreTracker extends ModuleAddon {
 			return true;
 		}
 		ItemStack stack = new ItemStack(b);
-		if (stack == null || stack.getItem() == null) {
+		if (stack.isEmpty() || stack.getItem() == null) {
 			return false;
 		}
 		final int[] oreIds = OreDictionary.getOreIDs(stack);

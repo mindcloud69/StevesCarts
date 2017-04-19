@@ -222,7 +222,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (manager != null) {
 			return manager.getStackInSlot(translateSlotId(slot));
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -232,7 +232,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (manager != null) {
 			return manager.decrStackSize(translateSlotId(slot), count);
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -275,7 +275,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (manager != null) {
 			return manager.getStackInSlotOnClosing(translateSlotId(slot));
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	private boolean isChunkValid(final DistributorSide side, final TileEntityManager manager, final int chunkId, final boolean top) {

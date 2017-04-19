@@ -15,6 +15,6 @@ public class SlotMilker extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return itemstack != null && itemstack.getItem() == Items.BUCKET;
+		return !itemstack.isEmpty() && itemstack.getItem() == Items.BUCKET;
 	}
 }

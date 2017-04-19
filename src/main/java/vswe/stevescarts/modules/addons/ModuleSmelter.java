@@ -136,10 +136,10 @@ public class ModuleSmelter extends ModuleRecipe {
 	@Override
 	public void onInventoryChanged() {
 		if (getCart().world.isRemote) {
-			if (getStack(0) != null) {
+			if (!getStack(0).isEmpty()) {
 				setStack(1, FurnaceRecipes.instance().getSmeltingResult(getStack(0)));
 			} else {
-				setStack(1, null);
+				setStack(1, ItemStack.EMPTY);
 			}
 		}
 	}

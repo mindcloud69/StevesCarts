@@ -1,6 +1,7 @@
 package vswe.stevescarts.modules.addons;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import vswe.stevescarts.containers.slots.SlotCartCrafter;
 import vswe.stevescarts.containers.slots.SlotCartCrafterResult;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -31,11 +32,11 @@ public class ModuleCrafter extends ModuleRecipe {
 					}
 					prepareLists();
 					if (canCraftMoreOfResult(result)) {
-						final ArrayList<ItemStack> originals = new ArrayList<>();
+						final NonNullList<ItemStack> originals = NonNullList.create();
 						for (int i = 0; i < allTheSlots.size(); ++i) {
 							@Nonnull
 							ItemStack item = allTheSlots.get(i).getStack();
-							originals.add((item == null) ? null : item.copy());
+							originals.add((item.isEmpty()) ? ItemStack.EMPTY : item.copy());
 						}
 						final ArrayList<ItemStack> containers = new ArrayList<>();
 						boolean valid = true;

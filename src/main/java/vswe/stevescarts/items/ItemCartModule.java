@@ -72,7 +72,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 		final ModuleData module = getModuleData(par1ItemStack, true);
 		if (module != null) {
 			module.addInformation(par3List, par1ItemStack.getTagCompound());
-		} else if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartModule) {
+		} else if (!par1ItemStack.isEmpty() && par1ItemStack.getItem() instanceof ItemCartModule) {
 			par3List.add("Module id " + par1ItemStack.getItemDamage());
 		} else {
 			par3List.add("Unknown module id");

@@ -112,7 +112,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 							ItemStack stack = getStack(l);
 							stack.shrink(1);
 							if (getStack(l).getCount() == 0) {
-								setStack(l, null);
+								setStack(l, ItemStack.EMPTY);
 							}
 							getCart().markDirty();
 						}
@@ -184,7 +184,7 @@ public class ModuleRailer extends ModuleWorker implements ISuppliesModule {
 		for (int i = 0; i < getInventorySize(); ++i) {
 			@Nonnull
 			ItemStack item = getStack(i);
-			if (item != null && validRail(item.getItem())) {
+			if (!item.isEmpty() && validRail(item.getItem())) {
 				return true;
 			}
 		}

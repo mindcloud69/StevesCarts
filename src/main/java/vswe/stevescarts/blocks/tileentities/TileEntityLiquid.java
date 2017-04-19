@@ -91,7 +91,7 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 
 	@Override
 	public void clearInputContainer(final int tankid) {
-		setInventorySlotContents(tankid * 3, null);
+		setInventorySlotContents(tankid * 3, ItemStack.EMPTY);
 	}
 
 	@Override

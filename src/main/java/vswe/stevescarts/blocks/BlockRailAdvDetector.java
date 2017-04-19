@@ -124,13 +124,13 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 											for (final BaseEffect effect2 : tile.getUpgrade().getEffects()) {
 												if (effect2 instanceof Disassemble) {
 													final Disassemble disassembler = (Disassemble) effect2;
-													if (tile.getStackInSlot(0) == null) {
+													if (tile.getStackInSlot(0).isEmpty()) {
 														tile.setInventorySlotContents(0, ModuleData.createModularCart(cart));
 														upgrade.getMaster().managerInteract(cart, false);
 														for (int p = 0; p < cart.getSizeInventory(); ++p) {
 															@Nonnull
 															ItemStack item = cart.removeStackFromSlot(p);
-															if (item != null) {
+															if (!item.isEmpty()) {
 																upgrade.getMaster().puke(item);
 															}
 														}

@@ -283,7 +283,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 					ItemStack stack = getStack(i);
 					stack.shrink(1);
 					if (getStack(i).getCount() == 0) {
-						setStack(i, null);
+						setStack(i, ItemStack.EMPTY);
 					}
 				}
 				return projectile;

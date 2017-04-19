@@ -15,6 +15,6 @@ public class SlotCake extends SlotBase {
 	public boolean isItemValid(
 		@Nonnull
 			ItemStack itemstack) {
-		return itemstack != null && itemstack.getItem() == Items.CAKE;
+		return !itemstack.isEmpty() && itemstack.getItem() == Items.CAKE;
 	}
 }
