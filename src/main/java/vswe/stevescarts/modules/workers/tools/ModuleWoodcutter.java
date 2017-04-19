@@ -169,7 +169,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			return false;
 		}
 		int saplingSlotId = -1;
-		ItemStack sapling = null;
+		@Nonnull ItemStack sapling = ItemStack.EMPTY;
 		for (int i = 0; i < this.getInventorySize(); ++i) {
 			final SlotBase slot = this.getSlots().get(i);
 			if (slot.containsValidItem()) {
@@ -178,13 +178,13 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				break;
 			}
 		}
-		if (sapling != null) {
+		if (!sapling.isEmpty()) {
 			if (this.doPreWork()) {
 				for (ITreeModule module : treeModules) {
 					if (module.isSapling(sapling)) {
 						if (module.plantSapling(getCart().world, pos, sapling, getFakePlayer())) {
 							if (sapling.getCount() == 0) {
-								this.setStack(saplingSlotId, null);
+								this.setStack(saplingSlotId, ItemStack.EMPTY);
 							}
 							this.startWorking(25);
 							return this.isPlanting = true;
@@ -269,7 +269,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(world, here, blockState, fortune, 1, dropList, getFakePlayer(), false);
 			MinecraftForge.EVENT_BUS.post(event);
 			for (ItemStack drop : dropList) { //Here to filter out any bad itemstacks, the mod I was testing with returned stacks with a size of 0
-				if (drop.getItem() != null && drop.getCount() > 0) {
+				if (!drop.isEmpty() && drop.getCount() > 0) {
 					stuff.add(drop);
 				}
 			}

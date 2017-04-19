@@ -24,7 +24,7 @@ public abstract class ContainerBase extends Container {
 		if (this.getMyInventory() == null) {
 			return ItemStack.EMPTY;
 		}
-		ItemStack itemstack = null;
+		ItemStack itemstack = ItemStack.EMPTY;
 		final Slot slot = this.inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
 			@Nonnull
