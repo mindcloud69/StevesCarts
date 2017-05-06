@@ -11,6 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.oredict.OreDictionary;
 import vswe.stevescarts.api.farms.ITreeModule;
@@ -47,7 +48,18 @@ public class DefaultTreeModule implements ITreeModule {
 
 	@Override
 	public boolean plantSapling(World world, BlockPos pos, ItemStack stack, FakePlayer fakePlayer) {
-		return stack.getItem().onItemUse(fakePlayer, world, pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.0f, 0.0f, 0.0f) == EnumActionResult.SUCCESS;
+		if(stack.isEmpty()) {
+			return false;
+		}
+		Block block = Block.getBlockFromItem(stack.getItem());
+		if(block instanceof BlockSapling){
+			BlockSapling blockSapling = (BlockSapling) block;
+			if(blockSapling.canPlaceBlockAt(world, pos.up())){
+				world.setBlockState(pos.up(), blockSapling.getStateFromMeta(stack.getItemDamage()));
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isStackSapling(
