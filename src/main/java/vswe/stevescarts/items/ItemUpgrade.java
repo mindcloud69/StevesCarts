@@ -95,7 +95,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 		AssemblerUpgrade data = AssemblerUpgrade.getUpgrade(damage);
 		if (data != null) {
 			if (data.getIcon() == null) {
-				data.setIcon("stevescarts:blocks/" + data.getRawName() + "_icon");
+				data.setIcon("stevescarts:blocks/" + data.getRawName().toLowerCase() + "_icon");
 			}
 			return data.getIcon();
 		}

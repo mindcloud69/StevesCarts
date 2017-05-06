@@ -51,37 +51,13 @@ public class ItemCartComponent extends Item implements TexturedItem {
 		return getName(par1ItemStack.getItemDamage());
 	}
 
-	//	@SideOnly(Side.CLIENT)
-	//	public IIcon getIconFromDamage(final int dmg) {
-	//		if (dmg < 0 || dmg >= this.icons.length || this.icons[dmg] == null) {
-	//			return this.unknownIcon;
-	//		}
-	//		return this.icons[dmg];
-	//	}
-	//
 	private String getRawName(final int i) {
 		if (getName(i) == null) {
 			return null;
 		}
 		return getName(i).replace(":", "").replace(" ", "_").toLowerCase();
 	}
-	//
-	//	@SideOnly(Side.CLIENT)
-	//	public void registerIcons(final IIconRegister register) {
-	//		this.icons = new IIcon[size()];
-	//		for (int i = 0; i < this.icons.length; ++i) {
-	//			if (this.getName(i) != null) {
-	//				final IIcon[] icons = this.icons;
-	//				final int n = i;
-	//				final StringBuilder sb = new StringBuilder();
-	//				StevesCarts.instance.getClass();
-	//				icons[n] = register.registerIcon(sb.append("stevescarts").append(":").append(this.getRawName(i)).append("_icon").toString());
-	//			}
-	//		}
-	//		final StringBuilder sb2 = new StringBuilder();
-	//		StevesCarts.instance.getClass();
-	//		this.unknownIcon = register.registerIcon(sb2.append("stevescarts").append(":").append("unknown_icon").toString());
-	//	}
+
 
 	@Override
 	public String getUnlocalizedName(
@@ -244,7 +220,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 		if (getRawName(damage) == null) {
 			return "stevescarts:items/unknown_icon";
 		}
-		return "stevescarts:items/" + getRawName(damage) + "_icon";
+		return "stevescarts:items/" + getRawName(damage).toLowerCase() + "_icon";
 	}
 
 	@Override
