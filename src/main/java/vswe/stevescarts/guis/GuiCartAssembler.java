@@ -95,10 +95,13 @@ public class GuiCartAssembler extends GuiBase {
 			addText(lines, Localization.GUI.ASSEMBLER.ASSEMBLE_INSTRUCTION.translate());
 			hasErrors = true;
 		} else {
-			final ModuleData hulldata = ModItems.modules.getModuleData(assembler.getStackInSlot(0));
+			ItemStack stack = assembler.getStackInSlot(0);
+			final ModuleData hulldata = ModItems.modules.getModuleData(stack);
 			if (hulldata == null || !(hulldata instanceof ModuleDataHull)) {
-				addText(lines, Localization.GUI.ASSEMBLER.INVALID_HULL.translate(), 10357518);
-				hasErrors = true;
+				if(!stack.isEmpty()){
+					addText(lines, Localization.GUI.ASSEMBLER.INVALID_HULL.translate(), 10357518);
+					hasErrors = true;
+				}
 			} else {
 				final ModuleDataHull hull = (ModuleDataHull) hulldata;
 				addText(lines, Localization.GUI.ASSEMBLER.HULL_CAPACITY.translate() + ": " + hull.getCapacity());
