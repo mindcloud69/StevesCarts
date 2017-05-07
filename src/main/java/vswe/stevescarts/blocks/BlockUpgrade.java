@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
@@ -253,4 +254,13 @@ public class BlockUpgrade extends BlockContainerBase {
 		return new TileEntityUpgrade();
 	}
 
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileEntityUpgrade) {
+			TileEntityUpgrade upgrade = (TileEntityUpgrade) tile;
+			return new ItemStack(this, 1, upgrade.getType());
+		}
+		return super.getPickBlock(state, target, world, pos, player);
+	}
 }
