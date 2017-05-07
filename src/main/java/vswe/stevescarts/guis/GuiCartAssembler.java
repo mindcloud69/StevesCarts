@@ -91,36 +91,33 @@ public class GuiCartAssembler extends GuiBase {
 
 	private void updateErrorList() {
 		final ArrayList<TextWithColor> lines = new ArrayList<>();
-		if (!assembler.getStackInSlot(0).isEmpty()) {
-			addText(lines, Localization.GUI.ASSEMBLER.ASSEMBLE_INSTRUCTION.translate());
-			hasErrors = true;
+		if (this.assembler.getStackInSlot(0).isEmpty()) {
+			this.addText(lines, Localization.GUI.ASSEMBLER.ASSEMBLE_INSTRUCTION.translate());
+			this.hasErrors = true;
 		} else {
-			ItemStack stack = assembler.getStackInSlot(0);
-			final ModuleData hulldata = ModItems.modules.getModuleData(stack);
+			final ModuleData hulldata = ModItems.modules.getModuleData(this.assembler.getStackInSlot(0));
 			if (hulldata == null || !(hulldata instanceof ModuleDataHull)) {
-				if(!stack.isEmpty()){
-					addText(lines, Localization.GUI.ASSEMBLER.INVALID_HULL.translate(), 10357518);
-					hasErrors = true;
-				}
+				this.addText(lines, Localization.GUI.ASSEMBLER.INVALID_HULL.translate(), 10357518);
+				this.hasErrors = true;
 			} else {
 				final ModuleDataHull hull = (ModuleDataHull) hulldata;
-				addText(lines, Localization.GUI.ASSEMBLER.HULL_CAPACITY.translate() + ": " + hull.getCapacity());
-				addText(lines, Localization.GUI.ASSEMBLER.COMPLEXITY_CAP.translate() + ": " + hull.getComplexityMax());
-				addText(lines, Localization.GUI.ASSEMBLER.TOTAL_COST.translate() + ": " + assembler.getTotalCost());
-				addText(lines, Localization.GUI.ASSEMBLER.TOTAl_TIME.translate() + ": " + formatTime((int) (assembler.generateAssemblingTime() / assembler.getEfficiency())));
-				addNewLine(lines);
-				final ArrayList<String> errors = assembler.getErrors();
-				hasErrors = (errors.size() > 0);
+				this.addText(lines, Localization.GUI.ASSEMBLER.HULL_CAPACITY.translate() + ": " + hull.getCapacity());
+				this.addText(lines, Localization.GUI.ASSEMBLER.COMPLEXITY_CAP.translate() + ": " + hull.getComplexityMax());
+				this.addText(lines, Localization.GUI.ASSEMBLER.TOTAL_COST.translate() + ": " + this.assembler.getTotalCost());
+				this.addText(lines, Localization.GUI.ASSEMBLER.TOTAl_TIME.translate() + ": " + this.formatTime((int) (this.assembler.generateAssemblingTime() / this.assembler.getEfficiency())));
+				this.addNewLine(lines);
+				final ArrayList<String> errors = this.assembler.getErrors();
+				this.hasErrors = (errors.size() > 0);
 				if (errors.size() == 0) {
-					addText(lines, Localization.GUI.ASSEMBLER.NO_ERROR.translate(), 22566);
+					this.addText(lines, Localization.GUI.ASSEMBLER.NO_ERROR.translate(), 22566);
 				} else {
 					for (final String error : errors) {
-						addText(lines, error, 10357518);
+						this.addText(lines, error, 10357518);
 					}
 				}
 			}
 		}
-		statusLog = lines;
+		this.statusLog = lines;
 	}
 
 	private void addText(final ArrayList<TextWithColor> lines, final String text) {
