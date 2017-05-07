@@ -59,12 +59,13 @@ public class TileEntityUpgrade extends TileEntityBase implements IInventory, ISi
 
 	public void setMaster(final TileEntityCartAssembler master, EnumFacing side) {
 		this.master = master;
-		if (side != null) {
-			world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
-		} else {
-			world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
+		if(world.getBlockState(pos).getBlock() instanceof BlockUpgrade){
+			if (side != null) {
+				world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.FACING, side).withProperty(BlockUpgrade.TYPE, getType()));
+			} else {
+				world.setBlockState(pos, blockUpgrade.getDefaultState().withProperty(BlockUpgrade.TYPE, getType()));
+			}
 		}
-
 	}
 
 	public EnumFacing getSide() {
