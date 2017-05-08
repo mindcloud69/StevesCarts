@@ -1,5 +1,7 @@
 package vswe.stevescarts.compat.ic2;
 
+import ic2.core.IC2;
+import ic2.core.audio.PositionSpec;
 import ic2.core.block.BlockRubWood;
 import ic2.core.item.type.MiscResourceType;
 import ic2.core.ref.ItemName;
@@ -76,6 +78,7 @@ public class IC2RubberTreeModule implements ITreeProduceModule {
 					drops.add(ItemName.misc_resource.getItemStack(MiscResourceType.resin).copy());
 					if(!simulate){
 						cart.world.setBlockState(workPos, workSate.withProperty(BlockRubWood.stateProperty, rubberWoodState.getDry()));
+						IC2.audioManager.playOnce(cart, PositionSpec.Center, "Tools/Treetap.ogg", true, IC2.audioManager.getDefaultVolume());
 						woodcutter.damageTool(1);
 						woodcutter.startWorking(20);
 					}
