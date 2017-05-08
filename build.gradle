@@ -44,6 +44,10 @@ repositories {
 		name = "ic2"
 		url = "http://maven.ic2.player.to/"
 	}
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
 }
 
 
@@ -51,6 +55,7 @@ dependencies {
 	compile ('net.sengir.forestry:forestry_1.10.2:5.2.16.326:api'){
 		transitive = false;
 	}
+	deobfCompile  'net.industrial-craft:industrialcraft-2:2.7.30-ex111'
 }
 
 processResources{
@@ -115,3 +120,20 @@ task curseTools << {
 	}
 }
 
+task signJar(type: SignJar, dependsOn: reobfJar) {
+	onlyIf {
+		project.hasProperty('keyStore')
+	}
+
+	if (project.hasProperty('keyStore')) {
+		keyStore = project.keyStore
+		alias = project.keyStoreAlias
+		storePass = project.keyStorePass
+		keyPass = project.keyStoreKeyPass
+		inputFile = jar.archivePath
+		outputFile = jar.archivePath
+	}
+
+}
+
+build.dependsOn signJar

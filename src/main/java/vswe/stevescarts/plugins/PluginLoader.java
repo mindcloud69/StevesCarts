@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.api.ISCPlugin;
 import vswe.stevescarts.api.SCLoadingPlugin;
+import vswe.stevescarts.compat.minecraft.CompatMinecraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class PluginLoader {
 			bar.step("Loading " + plugin.getClass().getCanonicalName());
 			plugin.loadAddons(apiHelper);
 		}
+		new CompatMinecraft().loadAddons(apiHelper);
 		ProgressManager.pop(bar);
 	}
 }

@@ -583,6 +583,7 @@ public class ModuleData {
 		if (!Constants.isHalloween) {
 			trickOrTreat.lock();
 		}
+		new ModuleData(102, "TreeTap", ModuleTreeTap.class, 15);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -664,7 +665,7 @@ public class ModuleData {
 			}
 		}
 		if (ModuleData.moduleList.containsKey(this.id)) {
-			System.out.println("WARNING! " + name + " can't be added with ID " + id + " since that ID is already occupied by " + ModuleData.moduleList.get(this.id).getName());
+			throw new Error("WARNING! " + name + " can't be added with ID " + id + " since that ID is already occupied by " + ModuleData.moduleList.get(this.id).getName());
 		} else {
 			ModuleData.moduleList.put(this.id, this);
 		}

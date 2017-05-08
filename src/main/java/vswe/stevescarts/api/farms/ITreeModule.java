@@ -1,11 +1,11 @@
 package vswe.stevescarts.api.farms;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 public interface ITreeModule {
 
@@ -16,7 +16,7 @@ public interface ITreeModule {
 	 * @param cart
 	 * @return true if the block is a valid leaf
 	 */
-	boolean isLeaves(IBlockState blockState, BlockPos pos, EntityMinecart cart);
+	EnumHarvestResult isLeaves(IBlockState blockState, BlockPos pos, EntityMinecartModular cart);
 
 	/**
 	 *
@@ -25,7 +25,7 @@ public interface ITreeModule {
 	 * @param cart
 	 * @return if the block is a valid piece of wood
 	 */
-	boolean isWood(IBlockState blockState, BlockPos pos, EntityMinecart cart);
+	EnumHarvestResult isWood(IBlockState blockState, BlockPos pos, EntityMinecartModular cart);
 
 	/**
 	 * Only return true if the sapling can be planted with this module
