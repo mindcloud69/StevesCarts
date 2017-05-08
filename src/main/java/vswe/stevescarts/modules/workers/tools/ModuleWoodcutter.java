@@ -16,7 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+import vswe.stevescarts.api.farms.EnumHarvestResult;
 import vswe.stevescarts.api.farms.ITreeModule;
+import vswe.stevescarts.api.farms.ITreeProduceModule;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.containers.slots.SlotFuel;
 import vswe.stevescarts.containers.slots.SlotSapling;
@@ -30,6 +32,7 @@ import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
 import vswe.stevescarts.plugins.APIHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,6 +187,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 				for (ITreeModule module : treeModules) {
 					if (module.isSapling(sapling)) {
 						if (module.plantSapling(getCart().world, pos, sapling, getFakePlayer())) {
+							sapling.shrink(1);
 							if (sapling.getCount() == 0) {
 								setStack(saplingSlotId, ItemStack.EMPTY);
 							}
@@ -207,9 +211,18 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			pos = pos.up();
 			IBlockState state = world.getBlockState(pos);
 			if (state != null && isWoodHandler(state, pos)) {
-				final ArrayList<BlockPos> checked = new ArrayList<>();
-				if (removeAt(world, pos, checked)) {
+				NonNullList<ItemStack> drops = NonNullList.create();
+				ITreeProduceModule produceModule = getProduceHandler(state, pos, drops, false);
+				if(produceModule != null){
+					for(ItemStack stack : drops){
+						getCart().addItemToChest(stack);
+					}
 					return true;
+				} else {
+					final ArrayList<BlockPos> checked = new ArrayList<>();
+					if (removeAt(world, pos, checked)) {
+						return true;
+					}
 				}
 				stopWorking();
 			}
@@ -371,8 +384,11 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public boolean isLeavesHandler(IBlockState blockState, BlockPos pos) {
 		for (final ITreeModule module : treeModules) {
-			if (module.isLeaves(blockState, pos, getCart())) {
+			EnumHarvestResult result = module.isLeaves(blockState, pos, getCart());
+			if (result == EnumHarvestResult.ALLOW) {
 				return true;
+			} else if (result == EnumHarvestResult.DISALLOW) {
+				return false;
 			}
 		}
 		return false;
@@ -380,11 +396,26 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 
 	public boolean isWoodHandler(IBlockState blockState, BlockPos pos) {
 		for (final ITreeModule module : treeModules) {
-			if (module.isWood(blockState, pos, getCart())) {
+			EnumHarvestResult result = module.isWood(blockState, pos, getCart());
+			if (result == EnumHarvestResult.ALLOW) {
 				return true;
+			} else if (result == EnumHarvestResult.DISALLOW) {
+				return false;
 			}
 		}
 		return false;
+	}
+
+	@Nullable
+	public ITreeProduceModule getProduceHandler(IBlockState blockState, BlockPos pos, NonNullList<ItemStack> drops, boolean simulate) {
+		for (final ITreeModule module : treeModules) {
+			if(module instanceof ITreeProduceModule){
+				if(((ITreeProduceModule) module).harvest(blockState, pos, getCart(), drops, simulate, this)){
+					return (ITreeProduceModule) module;
+				}
+			}
+		}
+		return null;
 	}
 
 	public boolean isSaplingHandler(

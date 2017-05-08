@@ -66,7 +66,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 public class EntityMinecartModular extends EntityMinecart implements IInventory, IEntityAdditionalSpawnData, IFluidHandler {
@@ -122,6 +121,16 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 	public ArrayList<ModuleBase> getModules() {
 		return modules;
 	}
+
+	public boolean hasModule(Class<? extends ModuleBase> module){
+		for(ModuleBase moduleBase : getModules()){
+			if(moduleBase.getClass().equals(module)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	public ArrayList<ModuleWorker> getWorkers() {
 		return workModules;

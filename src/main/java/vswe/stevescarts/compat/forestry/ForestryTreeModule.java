@@ -5,14 +5,15 @@ import forestry.api.arboriculture.ITreeRoot;
 import forestry.api.genetics.AlleleManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import vswe.stevescarts.api.farms.EnumHarvestResult;
 import vswe.stevescarts.api.farms.ITreeModule;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 import javax.annotation.Nonnull;
 
@@ -32,13 +33,13 @@ public class ForestryTreeModule implements ITreeModule {
 	}
 
 	@Override
-	public boolean isLeaves(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
-		return blockState.getBlock() == leaves;
+	public EnumHarvestResult isLeaves(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
+		return blockState.getBlock() == leaves  ? EnumHarvestResult.ALLOW : EnumHarvestResult.SKIP;
 	}
 
 	@Override
-	public boolean isWood(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
-		return blockState.getBlock().getRegistryName().getResourceDomain().equals("forestry") && blockState.getBlock().getRegistryName().getResourcePath().startsWith("logs");
+	public EnumHarvestResult isWood(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
+		return blockState.getBlock().getRegistryName().getResourceDomain().equals("forestry") && blockState.getBlock().getRegistryName().getResourcePath().startsWith("logs")  ? EnumHarvestResult.ALLOW : EnumHarvestResult.SKIP;
 	}
 
 	@Override

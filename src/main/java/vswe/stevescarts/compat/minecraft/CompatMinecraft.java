@@ -2,9 +2,8 @@ package vswe.stevescarts.compat.minecraft;
 
 import vswe.stevescarts.api.ISCHelpers;
 import vswe.stevescarts.api.ISCPlugin;
-import vswe.stevescarts.api.SCLoadingPlugin;
 
-@SCLoadingPlugin
+//This is registered last to allow other mods to take control
 public class CompatMinecraft implements ISCPlugin {
 
 	@Override

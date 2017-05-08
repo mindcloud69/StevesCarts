@@ -3,31 +3,28 @@ package vswe.stevescarts.compat.minecraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.oredict.OreDictionary;
+import vswe.stevescarts.api.farms.EnumHarvestResult;
 import vswe.stevescarts.api.farms.ITreeModule;
+import vswe.stevescarts.entitys.EntityMinecartModular;
 
 import javax.annotation.Nonnull;
 
 public class DefaultTreeModule implements ITreeModule {
 
 	@Override
-	public boolean isLeaves(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
-		return blockState.getBlock().isLeaves(blockState, cart.world, pos);
+	public EnumHarvestResult isLeaves(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
+		return blockState.getBlock().isLeaves(blockState, cart.world, pos) ? EnumHarvestResult.ALLOW : EnumHarvestResult.SKIP;
 	}
 
 	@Override
-	public boolean isWood(IBlockState blockState, BlockPos pos, EntityMinecart cart) {
-		return blockState.getBlock().isWood(cart.world, pos);
+	public EnumHarvestResult isWood(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
+		return blockState.getBlock().isWood(cart.world, pos) ? EnumHarvestResult.ALLOW : EnumHarvestResult.SKIP;
 	}
 
 	@Override
