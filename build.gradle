@@ -55,7 +55,7 @@ dependencies {
 	compile ('net.sengir.forestry:forestry_1.10.2:5.2.16.326:api'){
 		transitive = false;
 	}
-	deobfCompile  'net.industrial-craft:industrialcraft-2:2.7.30-ex111'
+	deobfCompile  'net.industrial-craft:industrialcraft-2:2.6.219-ex110'
 }
 
 processResources{

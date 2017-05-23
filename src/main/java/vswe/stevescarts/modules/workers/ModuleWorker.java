@@ -24,7 +24,7 @@ public abstract class ModuleWorker extends ModuleBase {
 
 	public abstract boolean work();
 
-	protected void startWorking(final int time) {
+	public void startWorking(final int time) {
 		this.getCart().setWorkingTime(time);
 		this.preWork = false;
 		this.getCart().setWorker(this);

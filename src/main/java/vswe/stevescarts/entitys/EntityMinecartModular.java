@@ -1,12 +1,5 @@
 package vswe.stevescarts.entitys;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -34,11 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,11 +47,7 @@ import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.containers.ContainerMinecart;
 import vswe.stevescarts.guis.GuiMinecart;
-import vswe.stevescarts.helpers.ActivatorOption;
-import vswe.stevescarts.helpers.CartVersion;
-import vswe.stevescarts.helpers.DetectorType;
-import vswe.stevescarts.helpers.GuiAllocationHelper;
-import vswe.stevescarts.helpers.ModuleCountPair;
+import vswe.stevescarts.helpers.*;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.models.ModelCartbase;
@@ -76,6 +61,12 @@ import vswe.stevescarts.modules.storages.tanks.ModuleTank;
 import vswe.stevescarts.modules.workers.CompWorkModule;
 import vswe.stevescarts.modules.workers.ModuleWorker;
 import vswe.stevescarts.modules.workers.tools.ModuleTool;
+
+import javax.annotation.Nullable;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class EntityMinecartModular extends EntityMinecart implements IInventory, IEntityAdditionalSpawnData, IFluidHandler {
 
@@ -177,6 +168,15 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 
 	private void overrideDatawatcher() {
 		this.dataManager = new EntityDataManagerLockable(this);
+	}
+
+	public boolean hasModule(Class<? extends ModuleBase> module){
+		for(ModuleBase moduleBase : getModules()){
+			if(moduleBase.getClass().equals(module)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void loadPlaceholderModules(final byte[] data) {

@@ -6,7 +6,6 @@ import ic2.core.ref.ItemName;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +15,8 @@ import vswe.stevescarts.api.farms.ITreeProduceModule;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.modules.workers.tools.ModuleTreeTap;
 import vswe.stevescarts.modules.workers.tools.ModuleWoodcutter;
+
+import java.util.List;
 
 /**
  * Created by modmuss50 on 08/05/2017.
@@ -61,7 +62,7 @@ public class IC2RubberTreeModule implements ITreeProduceModule {
 	}
 
 	@Override
-	public boolean harvest(IBlockState blockState, BlockPos pos, EntityMinecartModular cart, NonNullList<ItemStack> drops, boolean simulate, ModuleWoodcutter woodcutter) {
+	public boolean harvest(IBlockState blockState, BlockPos pos, EntityMinecartModular cart, List<ItemStack> drops, boolean simulate, ModuleWoodcutter woodcutter) {
 		if(!cart.hasModule(ModuleTreeTap.class)){
 			return false;
 		}

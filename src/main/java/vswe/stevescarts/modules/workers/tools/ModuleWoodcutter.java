@@ -1,8 +1,5 @@
 package vswe.stevescarts.modules.workers.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -14,9 +11,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,10 +26,12 @@ import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.BlockPosHelpers;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.modules.ISuppliesModule;
-import vswe.stevescarts.api.farms.ITreeModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.plants.ModulePlantSize;
 import vswe.stevescarts.plugins.APIHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesModule {
 	private ArrayList<ITreeModule> treeModules;
@@ -206,7 +202,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			pos = pos.up();
 			IBlockState state = world.getBlockState(pos);
 			if (state != null && isWoodHandler(state, pos)) {
-				NonNullList<ItemStack> drops = NonNullList.create();
+				List<ItemStack> drops = new ArrayList<>();
 				ITreeProduceModule produceModule = getProduceHandler(state, pos, drops, false);
 				if(produceModule != null){
 					for(ItemStack stack : drops){
@@ -398,8 +394,7 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 		return false;
 	}
 
-	@Nullable
-	public ITreeProduceModule getProduceHandler(IBlockState blockState, BlockPos pos, NonNullList<ItemStack> drops, boolean simulate) {
+	public ITreeProduceModule getProduceHandler(IBlockState blockState, BlockPos pos, List<ItemStack> drops, boolean simulate) {
 		for (final ITreeModule module : treeModules) {
 			if(module instanceof ITreeProduceModule){
 				if(((ITreeProduceModule) module).harvest(blockState, pos, getCart(), drops, simulate, this)){
