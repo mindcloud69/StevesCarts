@@ -37,7 +37,7 @@ public class SCTank extends FluidTank {
 		@Nonnull
 		ItemStack item = owner.getInputContainer(tankid);
 		if (!item.isEmpty()) {
-			FluidUtil.tryFillContainer(item, this, 1000, null, true);
+			//FluidUtil.tryFillContainer(item, this, 1000, null, true);
 			FluidUtil.tryEmptyContainer(item, this, 1000, null, true);
 		}
 	}
