@@ -56,7 +56,7 @@ repositories {
 
 
 dependencies {
-	deobfCompile ('net.sengir.forestry:forestry_1.12:+'){
+	deobfCompile ('net.sengir.forestry:forestry_1.11.2:+'){
 		transitive = false
 	}
 	deobfCompile ('RebornCore:RebornCore-1.11.2:+:universal'){
