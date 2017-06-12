@@ -31,10 +31,12 @@ if (ENV.BUILD_NUMBER) {
 group= "vswe.stevescarts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 
 minecraft {
-    version = mcversion + "-" + forgeversion
-    mappings = mcp_mappings
-    runDir = "run"
-    replace '${version}', project.version
+	version = "1.12-14.21.0.2321"
+	mappings = "snapshot_20161220"
+	replace "@MODVERSION@", project.version
+	//  makeObfSourceJar = false
+	useDepAts = true
+	runDir = "run"
 }
 
 repositories {
