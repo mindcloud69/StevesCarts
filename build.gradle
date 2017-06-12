@@ -11,13 +11,11 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
 	}
 }
 
-plugins {
-	id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 sourceCompatibility = 1.8
@@ -56,7 +54,7 @@ repositories {
 
 
 dependencies {
-	deobfCompile ('net.sengir.forestry:forestry_1.11.2:5.3.3.97'){
+	deobfCompile ('net.sengir.forestry:forestry_1.12:+'){
 		transitive = false
 	}
 	deobfCompile ('RebornCore:RebornCore-1.11.2:+:universal'){

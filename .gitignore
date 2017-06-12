@@ -13,3 +13,5 @@
 !/gradlew
 !/gradlew.bat
 !/build.conf
+!Jenkinsfile
+!settings.gradle
