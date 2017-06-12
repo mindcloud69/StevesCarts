@@ -92,6 +92,9 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
+		if(!func_194125_a(par2CreativeTabs)){
+			return;
+		}
 		for (int i = 0; i < size(); ++i) {
 			@Nonnull
 			ItemStack iStack = new ItemStack(this, 1, i);

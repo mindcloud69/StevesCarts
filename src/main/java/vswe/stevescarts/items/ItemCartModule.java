@@ -58,6 +58,9 @@ public class ItemCartModule extends Item implements TexturedItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
+		if(!func_194125_a(par2CreativeTabs)){
+			return;
+		}
 		for (final ModuleData module : ModuleData.getList().values()) {
 			if (module.getIsValid()) {
 				par3List.add(module.getItemStack());

@@ -57,6 +57,9 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
+		if(!func_194125_a(par2CreativeTabs)){
+			return;
+		}
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
 			@Nonnull
 			ItemStack iStack = new ItemStack(this, 1, upgrade.getId());
