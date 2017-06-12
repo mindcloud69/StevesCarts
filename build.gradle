@@ -21,7 +21,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = version_major + '.' + version_minor + '.' + version_patch
+version = "2.4.0"
 
 def ENV = System.getenv()
 if (ENV.BUILD_NUMBER) {
