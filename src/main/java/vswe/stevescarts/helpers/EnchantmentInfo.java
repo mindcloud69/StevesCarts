@@ -3,6 +3,7 @@ package vswe.stevescarts.helpers;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 
@@ -117,7 +118,7 @@ public class EnchantmentInfo {
 		if (par1ItemStack.isEmpty()) {
 			return 0;
 		}
-		final NBTTagList nbttaglist = Items.ENCHANTED_BOOK.getEnchantments(par1ItemStack);
+		final NBTTagList nbttaglist = ItemEnchantedBook.getEnchantments(par1ItemStack);
 		if (nbttaglist == null) {
 			return 0;
 		}

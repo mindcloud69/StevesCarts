@@ -5,9 +5,9 @@ import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +43,6 @@ import vswe.stevescarts.modules.data.ModuleData;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -734,7 +733,7 @@ public abstract class ModuleBase {
 		final float var7 = 0.00390625f;
 		final float var8 = 0.00390625f;
 		final Tessellator tess = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tess.getBuffer();
+		BufferBuilder vertexbuffer = tess.getBuffer();
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		vertexbuffer.pos(targetX + 0, targetY + height, -90.0).tex((sourceX + 0) * var7, (sourceY + height) * var8).endVertex();
 		vertexbuffer.pos(targetX + width, targetY + height, -90.0).tex((sourceX + width) * var7, (sourceY + height) * var8).endVertex();

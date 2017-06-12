@@ -26,5 +26,10 @@ public class CartDataSerializers {
 		public DataParameter<int[]> createKey(int id) {
 			return new DataParameter(id, this);
 		}
+
+		@Override
+		public int[] func_192717_a(int[] p_192717_1_) {
+			return p_192717_1_;
+		}
 	};
 }

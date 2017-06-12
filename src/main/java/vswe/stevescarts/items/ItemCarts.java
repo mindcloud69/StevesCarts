@@ -1,6 +1,7 @@
 package vswe.stevescarts.items;
 
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -94,7 +95,7 @@ public class ItemCarts extends ItemMinecart {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(
 		@Nonnull
-			ItemStack item, final EntityPlayer player, final List list, final boolean useExtraInfo) {
+			ItemStack item, final World world, final List list, final ITooltipFlag useExtraInfo) {
 		CartVersion.updateItemStack(item);
 		final NBTTagCompound info = item.getTagCompound();
 		if (info != null) {

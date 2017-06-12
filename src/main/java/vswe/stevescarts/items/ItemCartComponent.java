@@ -1,5 +1,6 @@
 package vswe.stevescarts.items;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,7 +79,7 @@ public class ItemCartComponent extends Item implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(
 		@Nonnull
-			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List<String> par3List, final boolean par4) {
+			ItemStack par1ItemStack, final World world, final List<String> par3List, final ITooltipFlag par4) {
 		if (par1ItemStack.isEmpty() || par1ItemStack.getItemDamage() < 0 || par1ItemStack.getItemDamage() >= size() || getName(par1ItemStack.getItemDamage()) == null) {
 			if (!par1ItemStack.isEmpty() && par1ItemStack.getItem() instanceof ItemCartComponent) {
 				par3List.add("Component id " + par1ItemStack.getItemDamage());
@@ -90,10 +91,10 @@ public class ItemCartComponent extends Item implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
+	public void getSubItems(final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
 		for (int i = 0; i < size(); ++i) {
 			@Nonnull
-			ItemStack iStack = new ItemStack(par1, 1, i);
+			ItemStack iStack = new ItemStack(this, 1, i);
 			if (isValid(iStack)) {
 				par3List.add(iStack);
 			}

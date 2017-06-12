@@ -4,6 +4,7 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -60,7 +61,9 @@ public class AssemblerUpgrade {
 		@Nonnull
 		NonNullList<ItemStack> books = NonNullList.withSize(6, ItemStack.EMPTY);
 		for (int i = 0; i < 5; ++i) {
-			books.set(i, Items.ENCHANTED_BOOK.getEnchantedItemStack(new EnchantmentData(Enchantments.EFFICIENCY, i + 1)));
+			ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
+			ItemEnchantedBook.addEnchantment(stack, new EnchantmentData(Enchantments.EFFICIENCY, i + 1));
+			books.set(i, stack);
 		}
 		final AssemblerUpgrade experienced = new AssemblerUpgrade(4, "Experienced assembler").addEffect(new WorkEfficiency(0.1f)).addEffect(new FuelCost(0.3f)).addRecipe(new Object[][] {
 			{ ComponentTypes.SIMPLE_PCB.getItemStack(), books.get(0), ComponentTypes.SIMPLE_PCB.getItemStack() },

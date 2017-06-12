@@ -1,8 +1,8 @@
 package vswe.stevescarts.renders;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -193,7 +193,7 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 				final int halfW = boxwidth / 2;
 				final int halfH = boxheight / 2;
 				final Tessellator tes = Tessellator.getInstance();
-				VertexBuffer buffer = tes.getBuffer();
+				BufferBuilder buffer = tes.getBuffer();
 				GL11.glDisable(3553);
 				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 				buffer.pos(-halfW - 1, -halfH - 1, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();

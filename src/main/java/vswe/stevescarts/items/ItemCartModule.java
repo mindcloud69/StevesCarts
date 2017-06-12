@@ -1,11 +1,12 @@
 package vswe.stevescarts.items;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vswe.stevescarts.StevesCarts;
@@ -56,7 +57,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item item, final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
+	public void getSubItems(final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
 		for (final ModuleData module : ModuleData.getList().values()) {
 			if (module.getIsValid()) {
 				par3List.add(module.getItemStack());
@@ -68,7 +69,7 @@ public class ItemCartModule extends Item implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(
 		@Nonnull
-			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+			ItemStack par1ItemStack, final World world, final List par3List, ITooltipFlag par4) {
 		final ModuleData module = getModuleData(par1ItemStack, true);
 		if (module != null) {
 			module.addInformation(par3List, par1ItemStack.getTagCompound());

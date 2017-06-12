@@ -2,7 +2,6 @@ package vswe.stevescarts.items;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -80,9 +79,9 @@ public class ItemBlockStorage extends ItemBlock {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item item, final CreativeTabs tab, final NonNullList items) {
+	public void getSubItems(final CreativeTabs tab, final NonNullList items) {
 		for (int i = 0; i < ItemBlockStorage.blocks.length; ++i) {
-			items.add(new ItemStack(item, 1, i));
+			items.add(new ItemStack(this, 1, i));
 		}
 	}
 

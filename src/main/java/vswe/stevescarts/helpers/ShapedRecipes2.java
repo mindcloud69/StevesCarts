@@ -1,22 +1,37 @@
 package vswe.stevescarts.helpers;
 
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import reborncore.common.util.CraftingHelper;
 
 import javax.annotation.Nonnull;
 
 public class ShapedRecipes2 extends ShapedRecipes {
+
 	public ShapedRecipes2(final int par1,
 	                      final int par2,
-	                      @Nonnull
-		                      ItemStack[] par3ArrayOfItemStack,
+		                      NonNullList<Ingredient> ingredientList,
 	                      @Nonnull
 		                      ItemStack par4ItemStack) {
-		super(par1, par2, par3ArrayOfItemStack, par4ItemStack);
+
+		super("", par1, par2, ingredientList, par4ItemStack);
+	}
+
+	public static ShapedRecipes2 create(final int par1,
+	                                    final int par2,
+	                                    ItemStack[] stackList,
+	                                    @Nonnull
+		                                    ItemStack par4ItemStack){
+		NonNullList<Ingredient> ingredientList = NonNullList.create();
+		for(ItemStack stack : stackList){
+			ingredientList.add(CraftingHelper.toIngredient(stack));
+		}
+		return new ShapedRecipes2(par1, par2, ingredientList, par4ItemStack);
 	}
 
 	@Override
@@ -40,27 +55,30 @@ public class ShapedRecipes2 extends ShapedRecipes {
 				final int var7 = var5 - par2;
 				final int var8 = var6 - par3;
 				@Nonnull
-				ItemStack var9 = ItemStack.EMPTY;
+				Ingredient var9 = Ingredient.field_193370_a;
 				if (var7 >= 0 && var8 >= 0 && var7 < recipeWidth && var8 < recipeHeight) {
 					if (par4) {
-						var9 = recipeItems[recipeWidth - var7 - 1 + var8 * recipeWidth];
+						var9 = recipeItems.get(recipeWidth - var7 - 1 + var8 * recipeWidth);
 					} else {
-						var9 = recipeItems[var7 + var8 * recipeWidth];
+						var9 = recipeItems.get(var7 + var8 * recipeWidth);
 					}
 				}
 				@Nonnull
 				ItemStack var10 = par1InventoryCrafting.getStackInRowAndColumn(var5, var6);
-				if (!var10.isEmpty() || !var9.isEmpty()) {
-					if ((var10.isEmpty() && !var9.isEmpty()) || (!var10.isEmpty() && var9 == null)) {
+				if(var9.func_193365_a().length <= 0){
+					return false;
+				}
+				if (!var10.isEmpty() && !var9.func_193365_a()[0].isEmpty()) {
+					if ((var10.isEmpty() && !var9.func_193365_a()[0].isEmpty()) || (!var10.isEmpty() && var9 == null)) {
 						return false;
 					}
-					if (var9.getItem() != var10.getItem()) {
+					if (var9.func_193365_a()[0].getItem() != var10.getItem()) {
 						return false;
 					}
-					if (var9.getItemDamage() != -1 && var9.getItemDamage() != var10.getItemDamage()) {
+					if (var9.func_193365_a()[0].getItemDamage() != -1 && var9.func_193365_a()[0].getItemDamage() != var10.getItemDamage()) {
 						return false;
 					}
-					if (var9.getItem() instanceof ItemEnchantedBook && var10.getItem() instanceof ItemEnchantedBook && !Items.ENCHANTED_BOOK.getEnchantments(var9).equals(Items.ENCHANTED_BOOK.getEnchantments(var10))) {
+					if (var9.func_193365_a()[0].getItem() instanceof ItemEnchantedBook && var10.getItem() instanceof ItemEnchantedBook && !ItemEnchantedBook.getEnchantments(var9.func_193365_a()[0]).equals(ItemEnchantedBook.getEnchantments(var10))) {
 						return false;
 					}
 				}

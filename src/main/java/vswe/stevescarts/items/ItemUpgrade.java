@@ -2,9 +2,9 @@ package vswe.stevescarts.items;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -56,10 +56,10 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
+	public void getSubItems(final CreativeTabs par2CreativeTabs, final NonNullList<ItemStack> par3List) {
 		for (final AssemblerUpgrade upgrade : AssemblerUpgrade.getUpgradesList()) {
 			@Nonnull
-			ItemStack iStack = new ItemStack(par1, 1, upgrade.getId());
+			ItemStack iStack = new ItemStack(this, 1, upgrade.getId());
 			par3List.add(iStack);
 		}
 	}
@@ -81,7 +81,7 @@ public class ItemUpgrade extends ItemBlock implements TexturedItem {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(
 		@Nonnull
-			ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+			ItemStack par1ItemStack, final World world, final List par3List, final ITooltipFlag par4) {
 		final AssemblerUpgrade upgrade = AssemblerUpgrade.getUpgrade(par1ItemStack.getItemDamage());
 		if (upgrade != null) {
 			for (final BaseEffect effect : upgrade.getEffects()) {

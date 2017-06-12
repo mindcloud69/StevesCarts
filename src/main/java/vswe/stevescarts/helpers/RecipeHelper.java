@@ -4,8 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraft.item.crafting.CraftingManager;
+import reborncore.common.util.CraftingHelper;
 import vswe.stevescarts.items.ModItems;
 
 import javax.annotation.Nonnull;
@@ -79,11 +79,14 @@ public final class RecipeHelper {
 				finalRecipe[parts.length + l * 2 + 1] = usedItems.get(l);
 			}
 			if (isSpecial) {
-				GameRegistry.addRecipe(new ShapedRecipes2(recipe[0].length, recipe.length, items, item));
+				ShapedRecipes2 shapedRecipes2 = ShapedRecipes2.create(recipe[0].length, recipe.length, items, item);
+				CraftingManager.func_193372_a(CraftingHelper.getNameForRecipe(item), shapedRecipes2);
 			} else if (isOreDict) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(item, finalRecipe));
+				//TODO 1.12
+				//GameRegistry.addRecipe(new ShapedOreRecipe(item, finalRecipe));
 			} else {
-				GameRegistry.addRecipe(item, finalRecipe);
+				//TODO 1.12
+				//GameRegistry.addRecipe(item, finalRecipe);
 			}
 		}
 	}

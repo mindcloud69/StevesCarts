@@ -2,6 +2,7 @@ package vswe.stevescarts.modules.addons;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.datasync.DataParameter;
@@ -156,7 +157,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		IBlockState state = getCart().world.getBlockState(pos);
 		int m = state.getBlock().getMetaFromState(state);
 		if ((m & 0x8) == 0x8) {
-			if (block.isBlockSolid(getCart().world, pos.down(), EnumFacing.UP)) {
+			if (block.func_193383_a(getCart().world, state, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID) {
 				handleLiquid(drill, pos);
 				return true;
 			}
