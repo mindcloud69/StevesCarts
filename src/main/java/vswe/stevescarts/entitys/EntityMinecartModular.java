@@ -992,7 +992,7 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 			setCurrentCartSpeedCapOnRail(getMaxCartSpeedOnRail());
 		}
 		if (isPlaceholder && keepAlive++ > 20) {
-			kill();
+			setDead();
 			placeholderAsssembler.resetPlaceholder();
 		}
 	}

@@ -55,7 +55,7 @@ public class ShapedRecipes2 extends ShapedRecipes {
 				final int var7 = var5 - par2;
 				final int var8 = var6 - par3;
 				@Nonnull
-				Ingredient var9 = Ingredient.field_193370_a;
+				Ingredient var9 = Ingredient.EMPTY;
 				if (var7 >= 0 && var8 >= 0 && var7 < recipeWidth && var8 < recipeHeight) {
 					if (par4) {
 						var9 = recipeItems.get(recipeWidth - var7 - 1 + var8 * recipeWidth);
@@ -65,20 +65,20 @@ public class ShapedRecipes2 extends ShapedRecipes {
 				}
 				@Nonnull
 				ItemStack var10 = par1InventoryCrafting.getStackInRowAndColumn(var5, var6);
-				if(var9.func_193365_a().length <= 0){
+				if(var9.getMatchingStacks().length <= 0){
 					return false;
 				}
-				if (!var10.isEmpty() && !var9.func_193365_a()[0].isEmpty()) {
-					if ((var10.isEmpty() && !var9.func_193365_a()[0].isEmpty()) || (!var10.isEmpty() && var9 == null)) {
+				if (!var10.isEmpty() && !var9.getMatchingStacks()[0].isEmpty()) {
+					if ((var10.isEmpty() && !var9.getMatchingStacks()[0].isEmpty()) || (!var10.isEmpty() && var9 == null)) {
 						return false;
 					}
-					if (var9.func_193365_a()[0].getItem() != var10.getItem()) {
+					if (var9.getMatchingStacks()[0].getItem() != var10.getItem()) {
 						return false;
 					}
-					if (var9.func_193365_a()[0].getItemDamage() != -1 && var9.func_193365_a()[0].getItemDamage() != var10.getItemDamage()) {
+					if (var9.getMatchingStacks()[0].getItemDamage() != -1 && var9.getMatchingStacks()[0].getItemDamage() != var10.getItemDamage()) {
 						return false;
 					}
-					if (var9.func_193365_a()[0].getItem() instanceof ItemEnchantedBook && var10.getItem() instanceof ItemEnchantedBook && !ItemEnchantedBook.getEnchantments(var9.func_193365_a()[0]).equals(ItemEnchantedBook.getEnchantments(var10))) {
+					if (var9.getMatchingStacks()[0].getItem() instanceof ItemEnchantedBook && var10.getItem() instanceof ItemEnchantedBook && !ItemEnchantedBook.getEnchantments(var9.getMatchingStacks()[0]).equals(ItemEnchantedBook.getEnchantments(var10))) {
 						return false;
 					}
 				}

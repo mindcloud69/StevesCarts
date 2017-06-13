@@ -61,11 +61,11 @@ public class CraftingDummy extends InventoryCrafting {
 
 	@Nonnull
 	public ItemStack getResult() {
-		return CraftingManager.findMatchingRecipe(this, module.getCart().world);
+		return CraftingManager.findMatchingResult(this, module.getCart().world);
 	}
 
 	public IRecipe getRecipe() {
-		for(IRecipe irecipe : CraftingManager.field_193380_a){
+		for(IRecipe irecipe : CraftingManager.REGISTRY){
 			if (irecipe.matches(this, module.getCart().world)) {
 				return irecipe;
 			}

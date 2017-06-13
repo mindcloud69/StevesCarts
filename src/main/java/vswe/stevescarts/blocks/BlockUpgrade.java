@@ -156,7 +156,7 @@ public class BlockUpgrade extends BlockContainerBase {
 							var14.motionY = (float) world.rand.nextGaussian() * var15 + 0.2f;
 							var14.motionZ = (float) world.rand.nextGaussian() * var15;
 							if (var9.hasTagCompound()) {
-								var14.getEntityItem().setTagCompound(var9.getTagCompound().copy());
+								var14.getItem().setTagCompound(var9.getTagCompound().copy());
 							}
 							world.spawnEntity(var14);
 						}

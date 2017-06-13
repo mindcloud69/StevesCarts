@@ -73,7 +73,7 @@ public class PacketHandler {
 
 	@SubscribeEvent
 	public void onServerPacket(final FMLNetworkEvent.ServerCustomPacketEvent event) {
-		final EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).playerEntity;
+		final EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).player;
 		int idForCrash = -1;
 		try {
 			final byte[] bytes = event.getPacket().payload().array();

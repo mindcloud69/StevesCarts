@@ -47,7 +47,7 @@ public class BlockLiquidManager extends BlockContainerBase {
 						var14.motionY = (float) par1World.rand.nextGaussian() * var15 + 0.2f;
 						var14.motionZ = (float) par1World.rand.nextGaussian() * var15;
 						if (var9.hasTagCompound()) {
-							var14.getEntityItem().setTagCompound(var9.getTagCompound().copy());
+							var14.getItem().setTagCompound(var9.getTagCompound().copy());
 						}
 						par1World.spawnEntity(var14);
 					}

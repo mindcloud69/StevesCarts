@@ -96,7 +96,7 @@ public abstract class GuiBase extends GuiContainer {
 	}
 
 	public FontRenderer getFontRenderer() {
-		return fontRendererObj;
+		return fontRenderer;
 	}
 
 	public void setXSize(final int val) {

@@ -80,7 +80,7 @@ public final class RecipeHelper {
 			}
 			if (isSpecial) {
 				ShapedRecipes2 shapedRecipes2 = ShapedRecipes2.create(recipe[0].length, recipe.length, items, item);
-				CraftingManager.func_193372_a(CraftingHelper.getNameForRecipe(item), shapedRecipes2);
+				CraftingManager.register(CraftingHelper.getNameForRecipe(item), shapedRecipes2);
 			} else if (isOreDict) {
 				//TODO 1.12
 				//GameRegistry.addRecipe(new ShapedOreRecipe(item, finalRecipe));

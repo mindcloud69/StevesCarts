@@ -645,7 +645,7 @@ public abstract class ModuleBase {
 
 	private final void updateGuiData(Container con, List<IContainerListener> players, final int id, final short data) {
 		for (final IContainerListener player : players) {
-			player.sendProgressBarUpdate(con, id, data);
+			player.sendWindowProperty(con, id, data);
 		}
 	}
 

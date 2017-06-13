@@ -97,10 +97,10 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 		drawImage(5, enginesEndAt + 32, 0, 47, 32, 20);
 		drawImage(5, enginesEndAt + 52, 0, 47, 32, 20);
 		drawImage(5, enginesEndAt + 72, 0, 47, 32, 20);
-		minecraft.fontRendererObj.drawString(Localization.MODULES.ATTACHMENTS.ODO.translate(), 7, enginesEndAt + 52 + 2, 4210752);
-		minecraft.fontRendererObj.drawString(distToString(odo), 7, enginesEndAt + 52 + 11, 4210752);
-		minecraft.fontRendererObj.drawString(Localization.MODULES.ATTACHMENTS.TRIP.translate(), 7, enginesEndAt + 52 + 22, 4210752);
-		minecraft.fontRendererObj.drawString(distToString(trip), 7, enginesEndAt + 52 + 31, 4210752);
+		minecraft.fontRenderer.drawString(Localization.MODULES.ATTACHMENTS.ODO.translate(), 7, enginesEndAt + 52 + 2, 4210752);
+		minecraft.fontRenderer.drawString(distToString(odo), 7, enginesEndAt + 52 + 11, 4210752);
+		minecraft.fontRenderer.drawString(Localization.MODULES.ATTACHMENTS.TRIP.translate(), 7, enginesEndAt + 52 + 22, 4210752);
+		minecraft.fontRenderer.drawString(distToString(trip), 7, enginesEndAt + 52 + 31, 4210752);
 		drawItem(new ItemStack(Items.CLOCK, 1), 5, enginesEndAt + 32 + 3);
 		drawItem(new ItemStack(Items.COMPASS, 1), 21, enginesEndAt + 32 + 3);
 	}

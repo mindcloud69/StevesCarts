@@ -59,15 +59,15 @@ public class ModuleCleaner extends ModuleBase {
 			if (list.get(e) instanceof EntityItem) {
 				final EntityItem eItem = (EntityItem) list.get(e);
 				if (!eItem.isDead) {
-					final int stackSize = eItem.getEntityItem().getCount();
-					getCart().addItemToChest(eItem.getEntityItem());
-					if (stackSize != eItem.getEntityItem().getCount()) {
+					final int stackSize = eItem.getItem().getCount();
+					getCart().addItemToChest(eItem.getItem());
+					if (stackSize != eItem.getItem().getCount()) {
 						//TODO
 						//this.getCart().world.playSoundAtEntity((Entity) this.getCart(), "random.pop", 0.2f, ((this.getCart().rand.nextFloat() - this.getCart().rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);
-						if (eItem.getEntityItem().getCount() <= 0) {
+						if (eItem.getItem().getCount() <= 0) {
 							eItem.setDead();
 						}
-					} else if (failPickup(eItem.getEntityItem())) {
+					} else if (failPickup(eItem.getItem())) {
 						eItem.setDead();
 					}
 				}
