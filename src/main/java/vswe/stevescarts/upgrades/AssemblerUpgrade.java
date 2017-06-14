@@ -6,12 +6,18 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
+import reborncore.common.util.RebornCraftingHelper;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.helpers.ComponentTypes;
@@ -176,8 +182,19 @@ public class AssemblerUpgrade {
 	public static void initRecipes() {
 		for (AssemblerUpgrade update : getUpgrades().values()) {
 			for (Pair<Object[][], Integer> recipePair : update.recipes) {
-				//TODO 1.12 recipes
-				//RebornCraftingHelper.addShapedOreRecipe(update.getItemStack(recipePair.getRight()), recipePair.getLeft());
+				Object[] recipes = recipePair.getLeft()[0];
+				NonNullList<Ingredient> ingredients = NonNullList.create();
+				for(Object obj : recipes){
+					Ingredient ingredient = CraftingHelper.getIngredient(obj);
+					if(ingredient == null){
+						ingredient = Ingredient.EMPTY;
+					}
+					ingredients.add(ingredient);
+				}
+				ResourceLocation location = RebornCraftingHelper.getNameForRecipe(update.getItemStack(recipePair.getRight()));
+				ShapedRecipes recipe = new ShapedRecipes(location.toString(), 3, 3, ingredients, update.getItemStack(recipePair.getRight()));
+				recipe.setRegistryName(location);
+				ForgeRegistries.RECIPES.register(recipe);
 			}
 		}
 	}

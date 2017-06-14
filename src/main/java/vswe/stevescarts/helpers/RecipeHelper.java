@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import reborncore.common.util.RebornCraftingHelper;
 import vswe.stevescarts.items.ModItems;
 
 import javax.annotation.Nonnull;
@@ -77,15 +78,12 @@ public final class RecipeHelper {
 				finalRecipe[parts.length + l * 2 + 1] = usedItems.get(l);
 			}
 			if (isSpecial) {
-				//ShapedRecipes2 shapedRecipes2 = ShapedRecipes2.create(recipe[0].length, recipe.length, items, item);
-
-				//CraftingManager.register(RebornCraftingHelper.getNameForRecipe(item), shapedRecipes2);
+				//TODO 1.12 needs enchantment stuff
+				RebornCraftingHelper.addShapedRecipe(item, finalRecipe);
 			} else if (isOreDict) {
-				//TODO 1.12
-				//GameRegistry.addRecipe(new ShapedOreRecipe(item, finalRecipe));
+				RebornCraftingHelper.addShapedOreRecipe(item, finalRecipe);
 			} else {
-				//TODO 1.12
-				//GameRegistry.addRecipe(item, finalRecipe);
+				RebornCraftingHelper.addShapedRecipe(item, finalRecipe);
 			}
 		}
 	}
