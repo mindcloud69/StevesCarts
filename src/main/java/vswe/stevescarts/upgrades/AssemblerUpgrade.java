@@ -15,7 +15,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
 import vswe.stevescarts.helpers.ComponentTypes;
-import vswe.stevescarts.helpers.RecipeHelper;
 import vswe.stevescarts.items.ModItems;
 
 import javax.annotation.Nonnull;
@@ -177,7 +176,8 @@ public class AssemblerUpgrade {
 	public static void initRecipes() {
 		for (AssemblerUpgrade update : getUpgrades().values()) {
 			for (Pair<Object[][], Integer> recipePair : update.recipes) {
-				RecipeHelper.addRecipe(update.getItemStack(recipePair.getRight()), recipePair.getLeft());
+				//TODO 1.12 recipes
+				//RebornCraftingHelper.addShapedOreRecipe(update.getItemStack(recipePair.getRight()), recipePair.getLeft());
 			}
 		}
 	}
