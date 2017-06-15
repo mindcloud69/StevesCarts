@@ -157,7 +157,7 @@ public class ModuleLiquidSensors extends ModuleAddon {
 		IBlockState state = getCart().world.getBlockState(pos);
 		int m = state.getBlock().getMetaFromState(state);
 		if ((m & 0x8) == 0x8) {
-			if (block.func_193383_a(getCart().world, state, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID) {
+			if (block.getBlockFaceShape(getCart().world, state, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID) {
 				handleLiquid(drill, pos);
 				return true;
 			}
