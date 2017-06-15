@@ -45,13 +45,13 @@ public class DefaultTreeModule implements ITreeModule {
 
 	@Override
 	public boolean plantSapling(World world, BlockPos pos, ItemStack stack, FakePlayer fakePlayer) {
-		if(stack.isEmpty()) {
+		if (stack.isEmpty()) {
 			return false;
 		}
 		Block block = Block.getBlockFromItem(stack.getItem());
-		if(block instanceof BlockSapling){
+		if (block instanceof BlockSapling) {
 			BlockSapling blockSapling = (BlockSapling) block;
-			if(blockSapling.canPlaceBlockAt(world, pos.up())){
+			if (blockSapling.canPlaceBlockAt(world, pos.up())) {
 				world.setBlockState(pos.up(), blockSapling.getStateFromMeta(stack.getItemDamage()));
 				return true;
 			}

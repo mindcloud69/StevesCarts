@@ -37,8 +37,6 @@ public class BlockDetector extends BlockContainerBase {
 		return true;
 	}
 
-
-
 	@Override
 	public boolean isBlockNormalCube(IBlockState state) {
 		return true;

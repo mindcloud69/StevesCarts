@@ -213,8 +213,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 			if (state != null && isWoodHandler(state, pos)) {
 				NonNullList<ItemStack> drops = NonNullList.create();
 				ITreeProduceModule produceModule = getProduceHandler(state, pos, drops, false);
-				if(produceModule != null){
-					for(ItemStack stack : drops){
+				if (produceModule != null) {
+					for (ItemStack stack : drops) {
 						getCart().addItemToChest(stack);
 					}
 					return true;
@@ -409,8 +409,8 @@ public abstract class ModuleWoodcutter extends ModuleTool implements ISuppliesMo
 	@Nullable
 	public ITreeProduceModule getProduceHandler(IBlockState blockState, BlockPos pos, NonNullList<ItemStack> drops, boolean simulate) {
 		for (final ITreeModule module : treeModules) {
-			if(module instanceof ITreeProduceModule){
-				if(((ITreeProduceModule) module).harvest(blockState, pos, getCart(), drops, simulate, this)){
+			if (module instanceof ITreeProduceModule) {
+				if (((ITreeProduceModule) module).harvest(blockState, pos, getCart(), drops, simulate, this)) {
 					return (ITreeProduceModule) module;
 				}
 			}

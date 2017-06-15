@@ -19,7 +19,6 @@ import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.IActivatorModule;
 import vswe.stevescarts.modules.ModuleBase;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

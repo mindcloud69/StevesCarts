@@ -80,7 +80,7 @@ public class ItemBlockStorage extends ItemBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final CreativeTabs tab, final NonNullList items) {
-		if(!isInCreativeTab(tab)){
+		if (!isInCreativeTab(tab)) {
 			return;
 		}
 		for (int i = 0; i < ItemBlockStorage.blocks.length; ++i) {

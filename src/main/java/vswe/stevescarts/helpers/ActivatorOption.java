@@ -70,10 +70,10 @@ public class ActivatorOption {
 		}
 		return "�6" + Localization.GUI.TOGGLER.SETTING_ORANGE.translate() + ": " + (shouldActivate(true) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
 		                                                                                                 : (shouldDeactivate(true)
-		                                                                                                         ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
-		                                                                                                         : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate()))) + "\n" + "�1" + Localization.GUI.TOGGLER.SETTING_BLUE.translate() + ": " + (
+		                                                                                                    ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
+		                                                                                                    : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate()))) + "\n" + "�1" + Localization.GUI.TOGGLER.SETTING_BLUE.translate() + ": " + (
 			shouldActivate(false) ? ("�2" + Localization.GUI.TOGGLER.STATE_ACTIVATE.translate())
 			                      : (shouldDeactivate(false) ? ("�4" + Localization.GUI.TOGGLER.STATE_DEACTIVATE.translate())
-			                                                      : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate())));
+			                                                 : ("�E" + Localization.GUI.TOGGLER.STATE_TOGGLE.translate())));
 	}
 }

@@ -34,12 +34,13 @@ public class ForestryTreeModule implements ITreeModule {
 
 	@Override
 	public EnumHarvestResult isLeaves(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
-		return blockState.getBlock() == leaves  ? EnumHarvestResult.ALLOW : EnumHarvestResult.SKIP;
+		return blockState.getBlock() == leaves ? EnumHarvestResult.ALLOW : EnumHarvestResult.SKIP;
 	}
 
 	@Override
 	public EnumHarvestResult isWood(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
-		return blockState.getBlock().getRegistryName().getResourceDomain().equals("forestry") && blockState.getBlock().getRegistryName().getResourcePath().startsWith("logs")  ? EnumHarvestResult.ALLOW : EnumHarvestResult.SKIP;
+		return blockState.getBlock().getRegistryName().getResourceDomain().equals("forestry") && blockState.getBlock().getRegistryName().getResourcePath().startsWith("logs") ? EnumHarvestResult.ALLOW
+		                                                                                                                                                                      : EnumHarvestResult.SKIP;
 	}
 
 	@Override

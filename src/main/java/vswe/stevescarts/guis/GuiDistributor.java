@@ -75,8 +75,8 @@ public class GuiDistributor extends GuiBase {
 				drawTexturedModalRect(j + box[0], k + box[1], srcX, ySize, box[2], box[3]);
 				drawTexturedModalRect(j + box[0] + 2, k + box[1] + 2, box[2] * 2 + (box[2] - 4) * side.getId(), ySize, box[2] - 4, box[3] - 4);
 				drawMouseMover(Localization.GUI.DISTRIBUTOR.SIDE.translate(side.getName()) + ((activeId != -1)
-				                                                                                   ? ("\n[" + Localization.GUI.DISTRIBUTOR.DROP_INSTRUCTION.translate() + "]")
-				                                                                                   : ""), x, y, box);
+				                                                                              ? ("\n[" + Localization.GUI.DISTRIBUTOR.DROP_INSTRUCTION.translate() + "]")
+				                                                                              : ""), x, y, box);
 				int settingCount = 0;
 				for (final DistributorSetting setting : DistributorSetting.settings) {
 					if (setting.isEnabled(distributor) && side.isSet(setting.getId())) {

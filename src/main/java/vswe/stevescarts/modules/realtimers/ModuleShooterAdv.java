@@ -18,7 +18,6 @@ import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.addons.mobdetectors.ModuleMobdetector;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

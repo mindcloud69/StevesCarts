@@ -22,7 +22,7 @@ public abstract class SlotFake extends SlotBase implements ISpecialItemTransferV
 	                        @Nonnull
 		                        ItemStack par2ItemStack) {
 		super.onTake(par1EntityPlayer, par2ItemStack);
-		if (!par2ItemStack .isEmpty() && par1EntityPlayer != null && par1EntityPlayer.inventory != null) {
+		if (!par2ItemStack.isEmpty() && par1EntityPlayer != null && par1EntityPlayer.inventory != null) {
 			par1EntityPlayer.inventory.setItemStack(ItemStack.EMPTY);
 		}
 		return ItemStack.EMPTY;

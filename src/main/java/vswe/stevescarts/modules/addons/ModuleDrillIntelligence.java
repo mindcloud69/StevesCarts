@@ -158,7 +158,7 @@ public class ModuleDrillIntelligence extends ModuleAddon {
 				final int[] rect = getSettingRect(i, j);
 				final String str = isLocked(j * w + i) ? Localization.MODULES.ADDONS.LOCKED.translate()
 				                                       : (Localization.MODULES.ADDONS.CHANGE_INTELLIGENCE.translate() + "\n" + Localization.MODULES.ADDONS.CURRENT_INTELLIGENCE.translate(
-					                                            isActive(j * w + i) ? "0" : "1"));
+					                                       isActive(j * w + i) ? "0" : "1"));
 				drawStringOnMouseOver(gui, str, x, y, rect);
 			}
 		}

@@ -122,15 +122,14 @@ public class EntityMinecartModular extends EntityMinecart implements IInventory,
 		return modules;
 	}
 
-	public boolean hasModule(Class<? extends ModuleBase> module){
-		for(ModuleBase moduleBase : getModules()){
-			if(moduleBase.getClass().equals(module)){
+	public boolean hasModule(Class<? extends ModuleBase> module) {
+		for (ModuleBase moduleBase : getModules()) {
+			if (moduleBase.getClass().equals(module)) {
 				return true;
 			}
 		}
 		return false;
 	}
-
 
 	public ArrayList<ModuleWorker> getWorkers() {
 		return workModules;

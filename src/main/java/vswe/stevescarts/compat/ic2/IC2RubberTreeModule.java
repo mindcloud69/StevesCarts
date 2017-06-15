@@ -30,8 +30,8 @@ public class IC2RubberTreeModule implements ITreeProduceModule {
 
 	@Override
 	public EnumHarvestResult isLeaves(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
-		if(blockState.getBlock().getRegistryName().equals(IC2_LEAF_NAME)){
-			if(cart.hasModule(ModuleTreeTap.class)){
+		if (blockState.getBlock().getRegistryName().equals(IC2_LEAF_NAME)) {
+			if (cart.hasModule(ModuleTreeTap.class)) {
 				return EnumHarvestResult.DISALLOW;
 			}
 			return EnumHarvestResult.ALLOW;
@@ -41,7 +41,7 @@ public class IC2RubberTreeModule implements ITreeProduceModule {
 
 	@Override
 	public EnumHarvestResult isWood(IBlockState blockState, BlockPos pos, EntityMinecartModular cart) {
-		if(blockState.getBlock().getRegistryName().equals(IC2_LOG_NAME)){
+		if (blockState.getBlock().getRegistryName().equals(IC2_LOG_NAME)) {
 			return EnumHarvestResult.ALLOW;
 		}
 		return EnumHarvestResult.SKIP;
@@ -55,7 +55,7 @@ public class IC2RubberTreeModule implements ITreeProduceModule {
 	@Override
 	public boolean plantSapling(World world, BlockPos pos, ItemStack stack, FakePlayer fakePlayer) {
 		Block block = Block.getBlockFromItem(stack.getItem());
-		if(block.canPlaceBlockAt(world, pos.up())){
+		if (block.canPlaceBlockAt(world, pos.up())) {
 			world.setBlockState(pos.up(), block.getDefaultState());
 			return true;
 		}
@@ -64,19 +64,19 @@ public class IC2RubberTreeModule implements ITreeProduceModule {
 
 	@Override
 	public boolean harvest(IBlockState blockState, BlockPos pos, EntityMinecartModular cart, NonNullList<ItemStack> drops, boolean simulate, ModuleWoodcutter woodcutter) {
-		if(!cart.hasModule(ModuleTreeTap.class)){
+		if (!cart.hasModule(ModuleTreeTap.class)) {
 			return false;
 		}
 		BlockPos workPos = pos;
 		IBlockState workSate = cart.world.getBlockState(workPos);
 		boolean foundBlock = false;
-		while (isWood(workSate, workPos, cart) == EnumHarvestResult.ALLOW){
-			if(workSate.getBlock() instanceof BlockRubWood){
+		while (isWood(workSate, workPos, cart) == EnumHarvestResult.ALLOW) {
+			if (workSate.getBlock() instanceof BlockRubWood) {
 				foundBlock = true;
 				BlockRubWood.RubberWoodState rubberWoodState = workSate.getValue(BlockRubWood.stateProperty);
-				if(!rubberWoodState.isPlain() && rubberWoodState.wet){
+				if (!rubberWoodState.isPlain() && rubberWoodState.wet) {
 					drops.add(ItemName.misc_resource.getItemStack(MiscResourceType.resin).copy());
-					if(!simulate){
+					if (!simulate) {
 						cart.world.setBlockState(workPos, workSate.withProperty(BlockRubWood.stateProperty, rubberWoodState.getDry()));
 						IC2.audioManager.playOnce(cart, PositionSpec.Center, "Tools/Treetap.ogg", true, IC2.audioManager.getDefaultVolume());
 						woodcutter.damageTool(1);

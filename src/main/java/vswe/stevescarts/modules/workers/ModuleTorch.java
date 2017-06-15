@@ -247,7 +247,7 @@ public class ModuleTorch extends ModuleWorker implements ISuppliesModule {
 		}
 		int val = 0;
 		for (int i = 0; i < 3; ++i) {
-			val |= (!(getStack(i) .isEmpty()) ? 1 : 0) << i;
+			val |= (!(getStack(i).isEmpty()) ? 1 : 0) << i;
 		}
 		updateDw(TORCHES, val);
 	}

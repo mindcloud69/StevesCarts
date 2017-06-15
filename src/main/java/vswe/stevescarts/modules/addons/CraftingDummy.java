@@ -65,7 +65,7 @@ public class CraftingDummy extends InventoryCrafting {
 	}
 
 	public IRecipe getRecipe() {
-		for(IRecipe irecipe : CraftingManager.REGISTRY){
+		for (IRecipe irecipe : CraftingManager.REGISTRY) {
 			if (irecipe.matches(this, module.getCart().world)) {
 				return irecipe;
 			}

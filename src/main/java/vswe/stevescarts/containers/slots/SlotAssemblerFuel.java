@@ -1,9 +1,7 @@
 package vswe.stevescarts.containers.slots;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 
 import javax.annotation.Nonnull;
