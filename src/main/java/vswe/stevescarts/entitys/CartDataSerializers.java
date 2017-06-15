@@ -28,7 +28,7 @@ public class CartDataSerializers {
 		}
 
 		@Override
-		public int[] func_192717_a(int[] p_192717_1_) {
+		public int[] copyValue(int[] p_192717_1_) {
 			return p_192717_1_;
 		}
 	};
