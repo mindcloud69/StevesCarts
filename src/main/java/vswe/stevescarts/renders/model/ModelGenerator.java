@@ -1,7 +1,6 @@
 package vswe.stevescarts.renders.model;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
@@ -14,10 +13,11 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.ItemLayerModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -31,6 +31,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 public class ModelGenerator {
 
@@ -106,10 +108,11 @@ public class ModelGenerator {
 						e.printStackTrace();
 					}
 
-					ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> map = IPerspectiveAwareModel.MapWrapper.getTransforms(transforms);
-					IPerspectiveAwareModel iPerspectiveAwareModel = new IPerspectiveAwareModel.MapWrapper(model, map);
+					ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(transforms);
+					//TRSRTransformation transform = state.apply(Optional.empty()).orElse(TRSRTransformation.identity());
+
 					itemModelMesher.register(item, i, inventory);
-					event.getModelRegistry().putObject(inventory, iPerspectiveAwareModel);
+					event.getModelRegistry().putObject(inventory, model);
 				}
 			}
 		}

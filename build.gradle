@@ -31,7 +31,7 @@ if (ENV.BUILD_NUMBER) {
 group= "vswe.stevescarts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 
 minecraft {
-	version = "1.12-14.21.0.2359"
+	version = "1.12-14.21.0.2363"
 	mappings = "snapshot_20170624"
 	replace "@MODVERSION@", project.version
 	//  makeObfSourceJar = false
@@ -99,6 +99,7 @@ build.dependsOn deobfJar, apiJar
 
 import groovy.util.XmlSlurper
 import org.apache.commons.io.FileUtils
+import scala.tools.nsc.io.Jar
 
 task curseTools << {
 	def cacheFiles = new File(".gradle/curseTools")

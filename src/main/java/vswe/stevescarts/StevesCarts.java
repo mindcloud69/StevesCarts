@@ -34,7 +34,7 @@ import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
 import javax.annotation.Nonnull;
 
-@Mod(modid = Constants.MOD_ID, name = Constants.NAME, version = Constants.VERSION, dependencies = "required-after:reborncore;required-after:forge@[14.21.0.2359,);")
+@Mod(modid = Constants.MOD_ID, name = Constants.NAME, version = Constants.VERSION, dependencies = "required-after:reborncore;required-after:forge@[14.21.0.2363,);")
 public class StevesCarts {
 	@SidedProxy(clientSide = "vswe.stevescarts.ClientProxy", serverSide = "vswe.stevescarts.CommonProxy")
 	public static CommonProxy proxy;
