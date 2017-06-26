@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -98,6 +99,11 @@ public class StevesCarts {
 		CartDataSerializers.init();
 		PluginLoader.init(evt);
 	}
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event){
+		proxy.postInit();
+	}
+
 
 	@Mod.EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {

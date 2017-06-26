@@ -13,7 +13,6 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ItemLayerModel;
@@ -31,7 +30,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
 public class ModelGenerator {
@@ -39,6 +37,8 @@ public class ModelGenerator {
 	private FaceBakery faceBakery = new FaceBakery();
 
 	public List<ItemIconInfo> itemIcons = new ArrayList<>();
+
+	private static List<ItemModelMesh> meshList = new ArrayList<>();
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -62,10 +62,7 @@ public class ModelGenerator {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void bakeModels(ModelBakeEvent event) {
-		if (Minecraft.getMinecraft().getRenderItem() == null || Minecraft.getMinecraft().getRenderItem().getItemModelMesher() == null) {
-			return;
-		}
-		ItemModelMesher itemModelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		meshList.clear();
 		for (Object object : ItemModelManager.items) {
 			if (object instanceof Item && object instanceof TexturedItem) {
 				TexturedItem iTexturedItem = (TexturedItem) object;
@@ -111,10 +108,30 @@ public class ModelGenerator {
 					ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(transforms);
 					//TRSRTransformation transform = state.apply(Optional.empty()).orElse(TRSRTransformation.identity());
 
-					itemModelMesher.register(item, i, inventory);
+					meshList.add(new ItemModelMesh(item, i, inventory));
 					event.getModelRegistry().putObject(inventory, model);
 				}
 			}
+		}
+	}
+
+	private class ItemModelMesh {
+		Item item;
+		int meta;
+		ModelResourceLocation location;
+
+		public ItemModelMesh(Item item, int meta, ModelResourceLocation location) {
+			this.item = item;
+			this.meta = meta;
+			this.location = location;
+		}
+	}
+
+	//Needs to be done later now
+	public static void postInit(){
+		ItemModelMesher itemModelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		for(ItemModelMesh mesh : meshList){
+			itemModelMesher.register(mesh.item, mesh.meta, mesh.location);
 		}
 	}
 

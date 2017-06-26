@@ -24,6 +24,7 @@ import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.renders.ItemStackRenderer;
 import vswe.stevescarts.renders.RendererCart;
 import vswe.stevescarts.renders.model.ItemModelManager;
+import vswe.stevescarts.renders.model.ModelGenerator;
 
 public class ClientProxy extends CommonProxy {
 
@@ -63,6 +64,12 @@ public class ClientProxy extends CommonProxy {
 		super.loadComplete();
 		//Done here to try and load after all other mods, as some mods override this
 		TileEntityItemStackRenderer.instance = new ItemStackRenderer(TileEntityItemStackRenderer.instance);
+	}
+
+	@Override
+	public void postInit() {
+		super.postInit();
+		ModelGenerator.postInit();
 	}
 
 	@Override

@@ -21,7 +21,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = "2.4.1"
+version = "2.4.2"
 
 def ENV = System.getenv()
 if (ENV.BUILD_NUMBER) {
@@ -99,7 +99,6 @@ build.dependsOn deobfJar, apiJar
 
 import groovy.util.XmlSlurper
 import org.apache.commons.io.FileUtils
-import scala.tools.nsc.io.Jar
 
 task curseTools << {
 	def cacheFiles = new File(".gradle/curseTools")
