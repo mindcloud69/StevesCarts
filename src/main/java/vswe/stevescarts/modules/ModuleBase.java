@@ -28,7 +28,6 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerMinecart;
 import vswe.stevescarts.containers.slots.SlotBase;
 import vswe.stevescarts.entitys.EntityMinecartModular;
@@ -40,6 +39,7 @@ import vswe.stevescarts.helpers.NBTHelper;
 import vswe.stevescarts.helpers.SimulationInfo;
 import vswe.stevescarts.models.ModelCartbase;
 import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -557,7 +557,7 @@ public abstract class ModuleBase {
 	}
 
 	public void sendPacket(final int id, final byte[] data) {
-		PacketHandler.sendPacket(getPacketStart() + id, data);
+		PacketStevesCarts.sendPacket(getPacketStart() + id, data);
 	}
 
 	protected void sendPacket(final int id, final EntityPlayer player) {
@@ -569,7 +569,7 @@ public abstract class ModuleBase {
 	}
 
 	protected void sendPacket(final int id, final byte[] data, final EntityPlayer player) {
-		PacketHandler.sendPacketToPlayer(getPacketStart() + id, data, player, getCart());
+		PacketStevesCarts.sendPacketToPlayer(getPacketStart() + id, data, player, getCart());
 	}
 
 	protected void receivePacket(final int id, final byte[] data, final EntityPlayer player) {

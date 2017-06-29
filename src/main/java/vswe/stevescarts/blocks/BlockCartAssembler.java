@@ -10,10 +10,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.blocks.tileentities.TileEntityUpgrade;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class BlockCartAssembler extends BlockContainerBase {
 		}
 		checkForUpgrades(world, pos);
 		if (!world.isRemote) {
-			PacketHandler.sendBlockInfoToClients(world, new byte[0], pos);
+			PacketStevesCarts.sendBlockInfoToClients(world, new byte[0], pos);
 		}
 		if (master != null) {
 			master.onUpgradeUpdate();

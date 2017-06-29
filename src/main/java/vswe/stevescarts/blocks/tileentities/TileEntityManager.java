@@ -13,11 +13,11 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerManager;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.helpers.NBTHelper;
 import vswe.stevescarts.helpers.storages.TransferManager;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -252,7 +252,7 @@ public abstract class TileEntityManager extends TileEntityBase implements IInven
 	}
 
 	public void sendPacket(final int id, final byte[] data) {
-		PacketHandler.sendPacket(id, data);
+		PacketStevesCarts.sendPacket(id, data);
 	}
 
 	@Override

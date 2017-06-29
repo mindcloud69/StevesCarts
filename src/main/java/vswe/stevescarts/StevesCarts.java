@@ -11,11 +11,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
+import reborncore.common.network.RegisterPacketEvent;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityCargo;
 import vswe.stevescarts.entitys.CartDataSerializers;
@@ -30,6 +32,7 @@ import vswe.stevescarts.helpers.GiftItem;
 import vswe.stevescarts.items.ItemBlockStorage;
 import vswe.stevescarts.items.ItemCartComponent;
 import vswe.stevescarts.items.ModItems;
+import vswe.stevescarts.packet.PacketStevesCarts;
 import vswe.stevescarts.plugins.PluginLoader;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
 
@@ -47,7 +50,6 @@ public class StevesCarts {
 	public int maxDynamites;
 	public boolean useArcadeSounds;
 	public boolean useArcadeMobSounds;
-	public static FMLEventChannel packetHandler;
 	public static Logger logger;
 	public TradeHandler tradeHandler;
 
@@ -58,7 +60,6 @@ public class StevesCarts {
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		StevesCarts.logger = event.getModLog();
-		StevesCarts.packetHandler = NetworkRegistry.INSTANCE.newEventDrivenChannel("SC2");
 		final Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		SCConfig.load(config);
@@ -77,11 +78,11 @@ public class StevesCarts {
 		StevesCarts.proxy.initItemModels();
 		config.save();
 		PluginLoader.preInit(event);
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Mod.EventHandler
 	public void load(final FMLInitializationEvent evt) {
-		StevesCarts.packetHandler.register(new PacketHandler());
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 		GameRegistry.registerFuelHandler(new WoodFuelHandler());
 		if (Constants.isChristmas) {
@@ -129,6 +130,12 @@ public class StevesCarts {
 
 	private void initCart(final int ID, final Class<? extends EntityMinecartModular> cart) {
 		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "cart." + ID), cart, "Minecart.Vswe." + ID, ID, StevesCarts.instance, 80, 3, true);
+	}
+
+	@SubscribeEvent
+	public void registerPackets(RegisterPacketEvent event){
+		event.registerPacket(PacketStevesCarts.class, Side.CLIENT);
+		event.registerPacket(PacketStevesCarts.class, Side.SERVER);
 	}
 
 	static {

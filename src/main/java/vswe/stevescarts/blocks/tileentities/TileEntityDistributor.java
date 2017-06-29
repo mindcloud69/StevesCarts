@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDistributor;
 import vswe.stevescarts.guis.GuiBase;
@@ -27,6 +26,7 @@ import vswe.stevescarts.helpers.DistributorSetting;
 import vswe.stevescarts.helpers.DistributorSide;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.storages.SCTank;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	public void sendPacket(final int id, final byte[] data) {
-		PacketHandler.sendPacket(id, data);
+		PacketStevesCarts.sendPacket(id, data);
 	}
 
 	@Override

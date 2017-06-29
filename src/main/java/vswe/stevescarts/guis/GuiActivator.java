@@ -5,12 +5,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.blocks.tileentities.TileEntityActivator;
 import vswe.stevescarts.containers.ContainerActivator;
 import vswe.stevescarts.helpers.ActivatorOption;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.ResourceHelper;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 @SideOnly(Side.CLIENT)
 public class GuiActivator extends GuiBase {
@@ -84,7 +84,7 @@ public class GuiActivator extends GuiBase {
 			if (inRect(x, y, box)) {
 				byte data = (byte) ((button != 0) ? 1 : 0);
 				data |= (byte) (i << 1);
-				PacketHandler.sendPacket(0, new byte[] { data });
+				PacketStevesCarts.sendPacket(0, new byte[] { data });
 			}
 		}
 	}
