@@ -158,7 +158,6 @@ public abstract class GuiBase extends GuiContainer {
 	@Override
 	public void drawScreen(final int x, final int y, final float f) {
 		super.drawScreen(scaleX(x), scaleY(y), f);
-		stopScaling();
 	}
 
 	protected float getScale() {
@@ -180,10 +179,6 @@ public abstract class GuiBase extends GuiContainer {
 		GL11.glScalef(scale, scale, 1.0f);
 		GL11.glTranslatef((-guiLeft), (-guiTop), 0.0f);
 		GL11.glTranslatef((width - xSize * scale) / (2.0f * scale), (height - ySize * scale) / (2.0f * scale), 0.0f);
-	}
-
-	private void stopScaling() {
-		GL11.glPopMatrix();
 	}
 
 	@Override
