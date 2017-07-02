@@ -64,6 +64,7 @@ public class PacketStevesCarts implements INetworkPacket<PacketStevesCarts> {
 		} else { //Server
 			EntityPlayer player = context.getServerHandler().player;
 			final ByteArrayDataInput reader = ByteStreams.newDataInput(message.bytes);
+			int id = reader.readByte();
 			if (player.openContainer instanceof ContainerPlayer) {
 				final int entityid = reader.readInt();
 				final int len = bytes.length - 5;
@@ -101,6 +102,7 @@ public class PacketStevesCarts implements INetworkPacket<PacketStevesCarts> {
 	public void processDataClient(PacketStevesCarts message, MessageContext context) {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		final ByteArrayDataInput reader = ByteStreams.newDataInput(message.bytes);
+		int id = reader.readByte();
 		if (id == -1) {
 			final int x = reader.readInt();
 			final int y = reader.readInt();
