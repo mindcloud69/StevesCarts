@@ -90,9 +90,10 @@ public class BlockDetector extends BlockContainerBase {
 	public TileEntity createNewTileEntity(final World world, final int var2) {
 		return new TileEntityDetector();
 	}
-
-	public int damageDropped(final int meta) {
-		return meta;
+	
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
 	}
 
 	@Override
