@@ -41,6 +41,9 @@ public class BlockCartAssembler extends BlockContainerBase {
 	}
 
 	public void updateMultiBlock(final World world, final BlockPos pos) {
+		if(!(world.getTileEntity(pos) instanceof TileEntityCartAssembler)){
+			return;
+		}
 		final TileEntityCartAssembler master = (TileEntityCartAssembler) world.getTileEntity(pos);
 		if (master != null) {
 			master.clearUpgrades();
