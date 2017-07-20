@@ -59,7 +59,6 @@ public class ForestryTreeModule implements ITreeModule {
 		if (stack.getItem() == sapling && world.isAirBlock(pos.up())) {
 			ITree tree = treeRoot.getMember(stack);
 			if (tree != null && tree.canStay(world, pos)) {
-				stack.shrink(1);
 				treeRoot.plantSapling(world, tree, fakePlayer.getGameProfile(), pos.up());
 				return true;
 			}
