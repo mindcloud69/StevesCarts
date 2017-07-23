@@ -1,6 +1,5 @@
 package vswe.stevescarts.packet;
 
-import codechicken.lib.fluid.FluidUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -42,7 +41,7 @@ public class PacketFluidSync implements INetworkPacket<PacketFluidSync> {
 
 	@Override
 	public void readData(ExtendedPacketBuffer buffer) throws IOException {
-		fluidStack = FluidUtils.read(buffer.readCompoundTag());
+		fluidStack = FluidStack.loadFluidStackFromNBT(buffer.readCompoundTag());
 		pos = buffer.readBlockPos();
 		worldID = buffer.readInt();
 		tankID = buffer.readInt();
