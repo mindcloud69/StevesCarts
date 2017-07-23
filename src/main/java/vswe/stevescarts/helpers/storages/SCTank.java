@@ -2,15 +2,20 @@ package vswe.stevescarts.helpers.storages;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import reborncore.client.RenderUtil;
 import vswe.stevescarts.guis.GuiBase;
+import vswe.stevescarts.helpers.IconData;
 import vswe.stevescarts.helpers.Localization;
+import vswe.stevescarts.helpers.ResourceHelper;
 
 import javax.annotation.Nonnull;
 
 @Deprecated
-public class SCTank extends FluidTank {
+public class SCTank extends FluidTank implements IFluidHandler {
 	private ITankHolder owner;
 	private int tankid;
 	private boolean isLocked;
@@ -78,28 +83,8 @@ public class SCTank extends FluidTank {
 
 	@Deprecated
 	@SideOnly(Side.CLIENT)
-	public void drawFluid(final GuiBase gui, final int startX, final int startY) {
-		//		if (this.fluid != null) {
-		//			final int fluidLevel = (int) (48.0f * (this.fluid.amount / this.tanksize));
-		//			final IconData data = getIconAndTexture(this.fluid);
-		//			if (data.getIcon() == null) {
-		//				return;
-		//			}
-		//			ResourceHelper.bindResource(data.getResource());
-		//			applyColorFilter(this.fluid);
-		//			for (int y = 0; y < 3; ++y) {
-		//				int pixels = fluidLevel - (2 - y) * 16;
-		//				if (pixels > 0) {
-		//					if (pixels > 16) {
-		//						pixels = 16;
-		//					}
-		//					for (int x = 0; x < 2; ++x) {
-		//						this.owner.drawImage(this.tankid, gui, data.getIcon(), startX + 2 + 16 * x, startY + 1 + 16 * y + (16 - pixels), 0, 16 - pixels, 16, pixels);
-		//					}
-		//				}
-		//			}
-		//			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		//		}
+	public void drawFluid(final GuiBase gui, final int startX, final int startY, int width, int height) {
+		RenderUtil.renderGuiTank(this, gui.getGuiLeft() + startX, + gui.getGuiTop() + startY, 0, width, height);
 	}
 
 	@Override

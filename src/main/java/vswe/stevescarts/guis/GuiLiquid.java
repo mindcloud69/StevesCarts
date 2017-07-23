@@ -52,7 +52,7 @@ public class GuiLiquid extends GuiManager {
 		if (getLiquid().getTanks() != null) {
 			for (int i = 0; i < 4; ++i) {
 				final int[] coords = getTankCoords(i);
-				getLiquid().getTanks()[i].drawFluid(this, coords[0], coords[1]);
+				getLiquid().getTanks()[i].drawFluid(this, coords[0] + 2, coords[1], 32, 50);
 			}
 		}
 		ResourceHelper.bindResource(GuiLiquid.textureExtra);

@@ -136,7 +136,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawBackground(final GuiMinecart gui, final int x, final int y) {
-		tank.drawFluid(gui, tankBounds[0], tankBounds[1]);
+		tank.drawFluid(gui, tankBounds[0], tankBounds[1], 34, 50);
 		ResourceHelper.bindResource("/gui/tank.png");
 		drawImage(gui, tankBounds, 0, 0);
 	}
@@ -261,6 +261,7 @@ public abstract class ModuleTank extends ModuleStorage implements IFluidTank, IT
 	@Override
 	protected void checkGuiData(final Object[] info) {
 		updateGuiData(info, 0, (short) (tank.isLocked() ? 1 : 0));
+		updateDw();
 	}
 
 	@Override

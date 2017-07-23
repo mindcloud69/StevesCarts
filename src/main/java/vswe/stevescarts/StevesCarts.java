@@ -32,6 +32,7 @@ import vswe.stevescarts.helpers.GiftItem;
 import vswe.stevescarts.items.ItemBlockStorage;
 import vswe.stevescarts.items.ItemCartComponent;
 import vswe.stevescarts.items.ModItems;
+import vswe.stevescarts.packet.PacketFluidSync;
 import vswe.stevescarts.packet.PacketStevesCarts;
 import vswe.stevescarts.plugins.PluginLoader;
 import vswe.stevescarts.upgrades.AssemblerUpgrade;
@@ -136,6 +137,7 @@ public class StevesCarts {
 	public void registerPackets(RegisterPacketEvent event){
 		event.registerPacket(PacketStevesCarts.class, Side.CLIENT);
 		event.registerPacket(PacketStevesCarts.class, Side.SERVER);
+		event.registerPacket(PacketFluidSync.class, Side.CLIENT);
 	}
 
 	static {

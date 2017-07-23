@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import reborncore.common.network.NetworkManager;
 import reborncore.common.util.FluidUtils;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerLiquid;
@@ -27,12 +28,14 @@ import vswe.stevescarts.helpers.storages.SCTank;
 import vswe.stevescarts.helpers.storages.TransferHandler;
 import vswe.stevescarts.helpers.storages.TransferManager;
 import vswe.stevescarts.modules.storages.tanks.ModuleTank;
+import vswe.stevescarts.packet.PacketFluidSync;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
-	SCTank[] tanks;
+	public SCTank[] tanks;
 	private int tick;
 	private static final int[] topSlots;
 	private static final int[] botSlots;
@@ -203,7 +206,8 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 		return 0;
 	}
 
-	private boolean isTankValid(final int tankId, final int sideId) {
+	private boolean isTankValid(final int tankId, int sideId) {
+		sideId -= 1;
 		return (layoutType != 1 || tankId == sideId) && (layoutType != 2 || color[sideId] == color[tankId]);
 	}
 
@@ -303,15 +307,15 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 				changed = true;
 			} else if (tanks[i].getFluid() != null) {
 				if (isNew || con.oldLiquids[i] == null) {
-					//					this.updateGuiData(con, crafting, id, (short) this.tanks[i].getFluid());
+					this.updateGuiData(con, crafting, id, (short) this.tanks[i].getFluid().amount);
 					updateGuiData(con, crafting, amount1, getShortFromInt(true, tanks[i].getFluid().amount));
 					updateGuiData(con, crafting, amount2, getShortFromInt(false, tanks[i].getFluid().amount));
 					changed = true;
 				} else {
-					//					if (con.oldLiquids[i].fluidID != this.tanks[i].getFluid().fluidID) {
-					//						this.updateGuiData(con, crafting, id, (short) this.tanks[i].getFluid().fluidID);
-					//						changed = true;
-					//					}
+					//if (con.oldLiquids[i].getFluid() != this.tanks[i].getFluid().getFluid()) {
+						NetworkManager.sendToWorld(new PacketFluidSync(this.tanks[i].getFluid(), getPos(), world.provider.getDimension(), i), getWorld());
+						//changed = true;
+					//}
 					if (con.oldLiquids[i].amount != tanks[i].getFluid().amount) {
 						updateGuiData(con, crafting, amount1, getShortFromInt(true, tanks[i].getFluid().amount));
 						updateGuiData(con, crafting, amount2, getShortFromInt(false, tanks[i].getFluid().amount));
@@ -338,8 +342,6 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 			if (contentid == 0) {
 				if (data == -1) {
 					tanks[tankid].setFluid(null);
-				} else if (tanks[tankid].getFluid() == null) {
-					//					this.tanks[tankid].setFluid(new FluidStack((int) data, 0));
 				}
 			} else if (tanks[tankid].getFluid() != null) {
 				tanks[tankid].getFluid().amount = getIntFromShort(contentid == 1, tanks[tankid].getFluid().amount, data);
@@ -395,7 +397,7 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return true;
+			return getValidTank(facing) != null;
 		}
 		return super.hasCapability(capability, facing);
 	}
@@ -403,9 +405,18 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return (T) getTanks();
+			return (T) getValidTank(facing);
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	public SCTank getValidTank(EnumFacing facing){
+		for (int i = 0; i < getTanks().length; i++) {
+			if(isTankValid(i, facing.getIndex())){
+				return getTanks()[i];
+			}
+		}
+		return null;
 	}
 
 	static {
