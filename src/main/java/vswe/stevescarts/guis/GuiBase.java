@@ -158,6 +158,7 @@ public abstract class GuiBase extends GuiContainer {
 	@Override
 	public void drawScreen(final int x, final int y, final float f) {
 		super.drawScreen(scaleX(x), scaleY(y), f);
+		this.renderHoveredToolTip(x, y);
 	}
 
 	protected float getScale() {
