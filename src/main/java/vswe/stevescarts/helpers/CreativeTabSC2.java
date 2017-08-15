@@ -34,4 +34,10 @@ public class CreativeTabSC2 extends CreativeTabs {
 	public ItemStack getTabIconItem() {
 		return ItemStack.EMPTY;
 	}
+
+	@Override
+	public boolean hasSearchBar() {
+		return true;
+	}
+	
 }
