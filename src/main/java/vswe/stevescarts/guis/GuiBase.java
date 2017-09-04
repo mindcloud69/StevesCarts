@@ -160,6 +160,7 @@ public abstract class GuiBase extends GuiContainer {
 		this.drawDefaultBackground();
 		super.drawScreen(scaleX(x), scaleY(y), f);
 		this.renderHoveredToolTip(x, y);
+		GL11.glPopMatrix();
 	}
 
 	protected float getScale() {
