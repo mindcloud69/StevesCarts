@@ -85,7 +85,7 @@ public class ModulePig extends ModuleHull {
 		if (hasHelment()) {
 			@Nonnull
 			ItemStack item = getHelmet();
-			return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(item, isOverlay ? 1 : 0);
+			return Minecraft.getMinecraft().getItemColors().colorMultiplier(item, isOverlay ? 1 : 0);
 		}
 		return -1;
 	}
