@@ -68,7 +68,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 					if (isFlower(pos)) {
 						IBlockState state = getCart().world.getBlockState(pos);
 						if (state != null) {
-							addStuff((NonNullList<ItemStack>) state.getBlock().getDrops(getCart().world, pos, state, 0));
+							addStuff(state.getBlock().getDrops(getCart().world, pos, state, 0));
 							getCart().world.setBlockToAir(pos);
 						}
 					}
@@ -86,7 +86,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 				if (!shearable.isShearable(ItemStack.EMPTY, getCart().world, pos)) {
 					continue;
 				}
-				addStuff((NonNullList<ItemStack>) shearable.onSheared(ItemStack.EMPTY, getCart().world, pos, 0));
+				addStuff(shearable.onSheared(ItemStack.EMPTY, getCart().world, pos, 0));
 			}
 		}
 	}
@@ -96,7 +96,7 @@ public class ModuleFlowerRemover extends ModuleBase {
 		return state != null && state.getBlock() instanceof IPlantable;
 	}
 
-	private void addStuff(final NonNullList<ItemStack> stuff) {
+	private void addStuff(final List<ItemStack> stuff) {
 		for (
 			@Nonnull
 				ItemStack iStack : stuff) {
