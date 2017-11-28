@@ -32,7 +32,7 @@ group= "vswe.stevescarts" // http://maven.apache.org/guides/mini/guide-naming-co
 
 minecraft {
 	version = "1.12.2-14.23.0.2500"
-	mappings = "snapshot_20170624"
+	mappings = "snapshot_20171003"
 	replace "@MODVERSION@", project.version
 	//  makeObfSourceJar = false
 	useDepAts = true
