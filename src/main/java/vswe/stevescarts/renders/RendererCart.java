@@ -168,7 +168,7 @@ public class RendererCart<T extends EntityMinecartModular> extends Render<T> {
 	protected void renderLabel(final EntityMinecartModular cart, final double x, final double y, final double z) {
 		final ArrayList<String> labels = cart.getLabel();
 		if (labels != null && labels.size() > 0) {
-			final float distance = cart.getDistanceToEntity(renderManager.renderViewEntity);
+			final float distance = cart.getDistance(renderManager.renderViewEntity);
 			if (distance <= 64.0f) {
 				final FontRenderer frend = getFontRendererFromRenderManager();
 				final float var12 = 1.6f;

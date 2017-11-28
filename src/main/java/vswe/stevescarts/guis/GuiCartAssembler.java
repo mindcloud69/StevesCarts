@@ -300,11 +300,11 @@ public class GuiCartAssembler extends GuiBase {
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));
 			final float temp = player.rotationPitch;
 			player.rotationPitch = 0.7853982f;
-			Minecraft.getMinecraft().getRenderManager().doRenderEntity(player, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(player, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
 			player.rotationPitch = temp;
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
 		} else {
-			Minecraft.getMinecraft().getRenderManager().doRenderEntity(assembler.getPlaceholder(), 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(assembler.getPlaceholder(), 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
 		}
 		GL11.glPopMatrix();
 		RenderHelper.disableStandardItemLighting();

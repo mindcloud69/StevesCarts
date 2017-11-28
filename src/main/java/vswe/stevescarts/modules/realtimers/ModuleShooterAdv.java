@@ -288,8 +288,8 @@ public class ModuleShooterAdv extends ModuleShooter {
 		}
 
 		public int compareDistanceSq(final Entity entity1, final Entity entity2) {
-			final double distance1 = entity.getDistanceSqToEntity(entity1);
-			final double distance2 = entity.getDistanceSqToEntity(entity2);
+			final double distance1 = entity.getDistanceSq(entity1);
+			final double distance2 = entity.getDistanceSq(entity2);
 			return (distance1 < distance2) ? -1 : ((distance1 > distance2) ? 1 : 0);
 		}
 

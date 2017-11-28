@@ -41,7 +41,7 @@ public class ModuleLabel extends ModuleAddon {
 		labels.add(new LabelInformation(Localization.MODULES.ADDONS.DISTANCE) {
 			@Override
 			public String getLabel() {
-				return Localization.MODULES.ADDONS.DISTANCE_LONG.translate(String.valueOf((int) getCart().getDistanceToEntity(getClientPlayer())));
+				return Localization.MODULES.ADDONS.DISTANCE_LONG.translate(String.valueOf((int) getCart().getDistance(getClientPlayer())));
 			}
 		});
 		labels.add(new LabelInformation(Localization.MODULES.ADDONS.POSITION) {
