@@ -24,7 +24,7 @@ public class PluginLoader {
 	public static APIHelper apiHelper;
 
 	public static void preInit(FMLPreInitializationEvent event) {
-		StevesCarts.logger.info("Loading plguins");
+		StevesCarts.logger.info("Loading plugins");
 		pluginList = new ArrayList<>();
 		ASMDataTable asmDataTable = event.getAsmData();
 		Set<ASMDataTable.ASMData> asmDataSet = asmDataTable.getAll(SCLoadingPlugin.class.getCanonicalName());
@@ -52,11 +52,11 @@ public class PluginLoader {
 			}
 		}
 		apiHelper = new APIHelper();
-		StevesCarts.logger.info("Loaded " + pluginList.size() + " plguins");
+		StevesCarts.logger.info("Loaded " + pluginList.size() + " plugins");
 	}
 
 	public static void init(FMLInitializationEvent event) {
-		ProgressManager.ProgressBar bar = ProgressManager.push("SC2 Plguins", pluginList.size());
+		ProgressManager.ProgressBar bar = ProgressManager.push("SC2 Plugins", pluginList.size());
 		for (ISCPlugin plugin : pluginList) {
 			bar.step("Loading " + plugin.getClass().getCanonicalName());
 			plugin.loadAddons(apiHelper);
