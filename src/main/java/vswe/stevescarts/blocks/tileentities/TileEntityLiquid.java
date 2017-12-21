@@ -212,6 +212,9 @@ public class TileEntityLiquid extends TileEntityManager implements ITankHolder {
 	}
 
 	private boolean isTankValid(final int tankId, EnumFacing facing) {
+		if(facing == null){
+			return false;
+		}
 		switch (layoutType) {
 			case 0: return true;
 			case 1: return tankId == facingToTankId(facing);
