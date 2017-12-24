@@ -12,7 +12,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiMinecart;
 import vswe.stevescarts.helpers.Localization;
@@ -20,6 +19,7 @@ import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.modules.ILeverModule;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.engines.ModuleEngine;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 	private byte[] engineInformation;
@@ -290,7 +290,7 @@ public class ModuleAdvControl extends ModuleBase implements ILeverModule {
 			keyinformation |= (byte) ((minecraft.gameSettings.keyBindJump.isKeyDown() ? 1 : 0) << 4);
 			keyinformation |= (byte) ((minecraft.gameSettings.keyBindBack.isKeyDown() ? 1 : 0) << 5);
 			if (oldVal != keyinformation) {
-				PacketHandler.sendPacket(getCart(), 1 + getPacketStart(), new byte[] { keyinformation });
+				PacketStevesCarts.sendPacket(getCart(), 1 + getPacketStart(), new byte[] { keyinformation });
 			}
 		}
 	}

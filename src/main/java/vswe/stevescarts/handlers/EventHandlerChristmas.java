@@ -56,7 +56,7 @@ public class EventHandlerChristmas {
 					if (!player.world.isRemote) {
 						villager.setProfession(TradeHandler.santaProfession);
 						try {
-							ReflectionHelper.findMethod(EntityVillager.class, villager, new String[] { "populateBuyingList" }).invoke(null);
+							ReflectionHelper.findMethod(EntityVillager.class, "populateBuyingList", "func_175554_cu").invoke(null);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

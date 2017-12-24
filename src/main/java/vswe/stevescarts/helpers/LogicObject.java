@@ -4,12 +4,12 @@ import net.minecraft.client.gui.Gui;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.blocks.tileentities.TileEntityDetector;
 import vswe.stevescarts.entitys.EntityMinecartModular;
 import vswe.stevescarts.guis.GuiDetector;
 import vswe.stevescarts.modules.ModuleBase;
 import vswe.stevescarts.modules.data.ModuleData;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import java.util.ArrayList;
 
@@ -36,12 +36,12 @@ public class LogicObject {
 
 	public void setParent(final TileEntityDetector detector, final LogicObject parent) {
 		if (parent != null) {
-			PacketHandler.sendPacket(0, new byte[] { parent.id, getExtra(), data });
+			PacketStevesCarts.sendPacket(0, new byte[] { parent.id, getExtra(), data });
 			for (final LogicObject child : childs) {
 				child.setParent(detector, this);
 			}
 		} else {
-			PacketHandler.sendPacket(1, new byte[] { id });
+			PacketStevesCarts.sendPacket(1, new byte[] { id });
 		}
 	}
 

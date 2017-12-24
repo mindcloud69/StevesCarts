@@ -11,7 +11,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import vswe.stevescarts.Constants;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.blocks.tileentities.TileEntityCartAssembler;
 import vswe.stevescarts.containers.ContainerCartAssembler;
@@ -23,6 +22,7 @@ import vswe.stevescarts.helpers.TitleBox;
 import vswe.stevescarts.items.ModItems;
 import vswe.stevescarts.modules.data.ModuleData;
 import vswe.stevescarts.modules.data.ModuleDataHull;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -300,11 +300,11 @@ public class GuiCartAssembler extends GuiBase {
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, assembler.getCartFromModules(true));
 			final float temp = player.rotationPitch;
 			player.rotationPitch = 0.7853982f;
-			Minecraft.getMinecraft().getRenderManager().doRenderEntity(player, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(player, 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
 			player.rotationPitch = temp;
 			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
 		} else {
-			Minecraft.getMinecraft().getRenderManager().doRenderEntity(assembler.getPlaceholder(), 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(assembler.getPlaceholder(), 0.0, 0.0, 0.0, 0.0f, 1.0f, false);
 		}
 		GL11.glPopMatrix();
 		RenderHelper.disableStandardItemLighting();
@@ -468,7 +468,7 @@ public class GuiCartAssembler extends GuiBase {
 		final int x = x0 - getGuiLeft();
 		final int y = y0 - getGuiTop();
 		if (inRect(x, y, assembleRect)) {
-			PacketHandler.sendPacket(0, new byte[0]);
+			PacketStevesCarts.sendPacket(0, new byte[0]);
 		} else if (inRect(x, y, blackBackground)) {
 			if (button == 0) {
 				if (!isScrolling) {
@@ -492,7 +492,7 @@ public class GuiCartAssembler extends GuiBase {
 				final int targetY = slot.getY() - 1;
 				final int size = 18;
 				if (inRect(x, y, new int[] { targetX, targetY, size, size }) && !slot.getStack().isEmpty() && slot.getStack().getCount() <= 0) {
-					PacketHandler.sendPacket(1, new byte[] { (byte) i });
+					PacketStevesCarts.sendPacket(1, new byte[] { (byte) i });
 				}
 			}
 		}

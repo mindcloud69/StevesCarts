@@ -63,4 +63,6 @@ public class CommonProxy implements IGuiHandler {
 	public void initItemModels() {}
 
 	public void loadComplete() {}
+
+	public void postInit() {}
 }

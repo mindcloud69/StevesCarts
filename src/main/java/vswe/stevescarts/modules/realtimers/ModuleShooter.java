@@ -370,7 +370,7 @@ public class ModuleShooter extends ModuleBase implements ISuppliesModule {
 
 	protected void setHeading(final Entity projectile, final double motionX, final double motionY, final double motionZ, final float motionMult, final float motionNoise) {
 		if (projectile instanceof IProjectile) {
-			((IProjectile) projectile).setThrowableHeading(motionX, motionY, motionZ, motionMult, motionNoise);
+			((IProjectile) projectile).shoot(motionX, motionY, motionZ, motionMult, motionNoise);
 		} else if (projectile instanceof EntityFireball) {
 			final EntityFireball fireball = (EntityFireball) projectile;
 			final double totalMotion = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);

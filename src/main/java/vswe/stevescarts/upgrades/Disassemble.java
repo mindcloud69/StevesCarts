@@ -1,5 +1,7 @@
 package vswe.stevescarts.upgrades;
 
+import java.util.ArrayList;
+
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,7 +53,7 @@ public class Disassemble extends InventoryEffect {
 
 	@Override
 	public void load(final TileEntityUpgrade upgrade, final NBTTagCompound compound) {
-		setLastCart(upgrade, upgrade.getStackInSlot(0));
+		this.setLastCart(upgrade, upgrade.getStackInSlot(0));
 	}
 
 	@Override
@@ -61,14 +63,12 @@ public class Disassemble extends InventoryEffect {
 
 	@Override
 	public void onInventoryChanged(final TileEntityUpgrade upgrade) {
-		@Nonnull
-		ItemStack cart = upgrade.getStackInSlot(0);
-		if (!updateCart(upgrade, cart)) {
+		final ItemStack cart = upgrade.getStackInSlot(0);
+		if (!this.updateCart(upgrade, cart)) {
 			boolean needsToPuke = true;
-			for (int i = 1; i < getInventorySize(); ++i) {
+			for (int i = 1; i < this.getInventorySize(); ++i) {
 				if (upgrade.getStackInSlot(i).isEmpty()) {
-					@Nonnull
-					ItemStack item = upgrade.getStackInSlot(0);
+					final ItemStack item = upgrade.getStackInSlot(0);
 					upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 					upgrade.setInventorySlotContents(i, item);
 					needsToPuke = false;
@@ -86,7 +86,7 @@ public class Disassemble extends InventoryEffect {
 
 	@Override
 	public void removed(final TileEntityUpgrade upgrade) {
-		updateCart(upgrade, ItemStack.EMPTY);
+		this.updateCart(upgrade, ItemStack.EMPTY);
 	}
 
 	private void resetMaster(final TileEntityCartAssembler master, final boolean full) {
@@ -104,9 +104,7 @@ public class Disassemble extends InventoryEffect {
 		}
 	}
 
-	private void setLastCart(final TileEntityUpgrade upgrade,
-	                         @Nonnull
-		                         ItemStack cart) {
+	private void setLastCart(final TileEntityUpgrade upgrade, final ItemStack cart) {
 		if (cart.isEmpty()) {
 			upgrade.getCompound().setShort("id", (short) 0);
 		} else {
@@ -114,27 +112,24 @@ public class Disassemble extends InventoryEffect {
 		}
 	}
 
-	@Nonnull
 	private ItemStack getLastCart(final TileEntityUpgrade upgrade) {
 		return new ItemStack(upgrade.getCompound());
 	}
 
-	private boolean updateCart(final TileEntityUpgrade upgrade,
-	                           @Nonnull
-		                           ItemStack cart) {
+	private boolean updateCart(final TileEntityUpgrade upgrade, final ItemStack cart) {
 		if (upgrade.getMaster() != null) {
 			if (cart.isEmpty() || cart.getItem() != ModItems.carts || cart.getTagCompound() == null || cart.getTagCompound().hasKey("maxTime")) {
-				resetMaster(upgrade.getMaster(), false);
-				setLastCart(upgrade, ItemStack.EMPTY);
+				this.resetMaster(upgrade.getMaster(), false);
+				this.setLastCart(upgrade, ItemStack.EMPTY);
 				if (!cart.isEmpty()) {
 					upgrade.getMaster().puke(cart);
 					upgrade.setInventorySlotContents(0, ItemStack.EMPTY);
 				}
 			} else {
 				@Nonnull
-				ItemStack last = getLastCart(upgrade);
-				setLastCart(upgrade, cart);
-				int result = canDisassemble(upgrade);
+				final ItemStack last = this.getLastCart(upgrade);
+				this.setLastCart(upgrade, cart);
+				int result = this.canDisassemble(upgrade);
 				boolean reset = false;
 				if (result > 0 && !last.isEmpty() && !ItemStack.areItemStacksEqual(cart, last)) {
 					result = 2;
@@ -144,14 +139,15 @@ public class Disassemble extends InventoryEffect {
 					return result == 1 && !upgrade.getMaster().getStackInSlot(0).isEmpty();
 				}
 				if (reset) {
-					resetMaster(upgrade.getMaster(), true);
+					this.resetMaster(upgrade.getMaster(), true);
 				}
 				boolean addedHull = false;
 				final NonNullList<ItemStack> modules = ModuleData.getModularItems(cart);
-				for (
-					@Nonnull
-						ItemStack item : modules) {
-					item.setCount(0);
+				for (ItemStack item : modules) {
+					//TODO ?
+					//item.setCount(0);
+					//item = ItemStack.EMPTY;
+
 					TransferHandler.TransferItem(item, upgrade.getMaster(), new ContainerCartAssembler(null, upgrade.getMaster()), 1);
 					if (!addedHull) {
 						addedHull = true;
@@ -174,7 +170,7 @@ public class Disassemble extends InventoryEffect {
 			return 0;
 		}
 		for (int i = 0; i < upgrade.getMaster().getSizeInventory() - upgrade.getMaster().nonModularSlots(); ++i) {
-			if (!upgrade.getMaster().getStackInSlot(i).isEmpty() && upgrade.getMaster().getStackInSlot(i).getCount() <= 0) {
+			if (!upgrade.getMaster().getStackInSlot(i).isEmpty()&& upgrade.getMaster().getStackInSlot(i).getCount() <= 0) {
 				return 1;
 			}
 		}

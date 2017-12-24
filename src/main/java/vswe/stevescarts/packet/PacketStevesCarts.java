@@ -1,25 +1,22 @@
-package vswe.stevescarts;
+package vswe.stevescarts.packet;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import reborncore.common.network.ExtendedPacketBuffer;
+import reborncore.common.network.INetworkPacket;
+import reborncore.common.network.NetworkManager;
 import vswe.stevescarts.blocks.BlockCartAssembler;
 import vswe.stevescarts.blocks.ModBlocks;
 import vswe.stevescarts.blocks.tileentities.TileEntityBase;
@@ -32,54 +29,42 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PacketHandler {
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onClientPacket(final FMLNetworkEvent.ClientCustomPacketEvent event) {
-		final EntityPlayer player = FMLClientHandler.instance().getClient().player;
-		int idForCrash = -1;
-		try {
-			final byte[] bytes = event.getPacket().payload().array();
-			final ByteArrayDataInput reader = ByteStreams.newDataInput(bytes);
-			final int id = idForCrash = reader.readByte();
-			if (id == -1) {
-				final int x = reader.readInt();
-				final int y = reader.readInt();
-				final int z = reader.readInt();
-				final int len = bytes.length - 13;
-				final byte[] data = new byte[len];
-				for (int i = 0; i < len; ++i) {
-					data[i] = reader.readByte();
-				}
-				final World world = player.world;
-				((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, new BlockPos(x, y, z));
-			} else {
-				final int entityid = reader.readInt();
-				final int len2 = bytes.length - 5;
-				final byte[] data2 = new byte[len2];
-				for (int j = 0; j < len2; ++j) {
-					data2[j] = reader.readByte();
-				}
-				final World world2 = player.world;
-				final EntityMinecartModular cart = getCart(entityid, world2);
-				if (cart != null) {
-					receivePacketAtCart(cart, id, data2, player);
-				}
-			}
-		} catch (Exception ex) {
-			System.out.println("The client failed to process a packet with " + ((idForCrash == -1) ? "unknown id" : ("id " + idForCrash)));
-		}
+/**
+ * A hack around the old packet system
+ */
+public class PacketStevesCarts implements INetworkPacket<PacketStevesCarts> {
+
+	int id;
+	byte[] bytes;
+
+	public PacketStevesCarts(int id, byte[] bytes) {
+		this.id = id;
+		this.bytes = bytes;
 	}
 
-	@SubscribeEvent
-	public void onServerPacket(final FMLNetworkEvent.ServerCustomPacketEvent event) {
-		final EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).player;
-		int idForCrash = -1;
-		try {
-			final byte[] bytes = event.getPacket().payload().array();
-			final ByteArrayDataInput reader = ByteStreams.newDataInput(bytes);
-			final int id = idForCrash = reader.readByte();
-			final World world = player.world;
+	public PacketStevesCarts() {
+	}
+
+	@Override
+	public void writeData(ExtendedPacketBuffer buffer) throws IOException {
+		buffer.writeInt(id);
+		buffer.writeByteArray(bytes);
+	}
+
+	@Override
+	public void readData(ExtendedPacketBuffer buffer) throws IOException {
+		id = buffer.readInt();
+		bytes = buffer.readByteArray();
+	}
+
+	@Override
+	public void processData(PacketStevesCarts message, MessageContext context) {
+		if (context.side == Side.CLIENT) {
+			processDataClient(message, context);
+		} else { //Server
+			EntityPlayer player = context.getServerHandler().player;
+			final ByteArrayDataInput reader = ByteStreams.newDataInput(message.bytes);
+			int id = reader.readByte();
 			if (player.openContainer instanceof ContainerPlayer) {
 				final int entityid = reader.readInt();
 				final int len = bytes.length - 5;
@@ -87,7 +72,7 @@ public class PacketHandler {
 				for (int i = 0; i < len; ++i) {
 					data[i] = reader.readByte();
 				}
-				final EntityMinecartModular cart = getCart(entityid, world);
+				final EntityMinecartModular cart = getCart(entityid, context.getServerHandler().player.world);
 				if (cart != null) {
 					receivePacketAtCart(cart, id, data, player);
 				}
@@ -110,8 +95,37 @@ public class PacketHandler {
 					}
 				}
 			}
-		} catch (Exception ex) {
-			System.out.println("The server failed to process a packet with " + ((idForCrash == -1) ? "unknown id" : ("id " + idForCrash)));
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void processDataClient(PacketStevesCarts message, MessageContext context) {
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		final ByteArrayDataInput reader = ByteStreams.newDataInput(message.bytes);
+		int id = reader.readByte();
+		if (id == -1) {
+			final int x = reader.readInt();
+			final int y = reader.readInt();
+			final int z = reader.readInt();
+			final int len = bytes.length - 13;
+			final byte[] data = new byte[len];
+			for (int i = 0; i < len; ++i) {
+				data[i] = reader.readByte();
+			}
+			final World world = player.world;
+			((BlockCartAssembler) ModBlocks.CART_ASSEMBLER.getBlock()).updateMultiBlock(world, new BlockPos(x, y, z));
+		} else {
+			final int entityid = reader.readInt();
+			final int len2 = bytes.length - 5;
+			final byte[] data2 = new byte[len2];
+			for (int j = 0; j < len2; ++j) {
+				data2[j] = reader.readByte();
+			}
+			final World world2 = player.world;
+			final EntityMinecartModular cart = getCart(entityid, world2);
+			if (cart != null) {
+				receivePacketAtCart(cart, id, data2, player);
+			}
 		}
 	}
 
@@ -142,12 +156,7 @@ public class PacketHandler {
 				ds.writeByte(b);
 			}
 		} catch (IOException ex) {}
-		StevesCarts.packetHandler.sendToServer(createPacket(bs.toByteArray()));
-	}
-
-	private static FMLProxyPacket createPacket(final byte[] bytes) {
-		final ByteBuf buf = Unpooled.copiedBuffer(bytes);
-		return new FMLProxyPacket(new PacketBuffer(buf), "SC2");
+		NetworkManager.sendToServer(new PacketStevesCarts(id, bs.toByteArray()));
 	}
 
 	public static void sendPacket(final EntityMinecartModular cart, final int id, final byte[] extraData) {
@@ -160,7 +169,7 @@ public class PacketHandler {
 				ds.writeByte(b);
 			}
 		} catch (IOException ex) {}
-		StevesCarts.packetHandler.sendToServer(createPacket(bs.toByteArray()));
+		NetworkManager.sendToServer(new PacketStevesCarts(id, bs.toByteArray()));
 	}
 
 	public static void sendPacketToPlayer(final int id, final byte[] data, final EntityPlayer player, final EntityMinecartModular cart) {
@@ -173,7 +182,7 @@ public class PacketHandler {
 				ds.writeByte(b);
 			}
 		} catch (IOException ex) {}
-		StevesCarts.packetHandler.sendTo(createPacket(bs.toByteArray()), (EntityPlayerMP) player);
+		NetworkManager.sendToPlayer(new PacketStevesCarts(id, bs.toByteArray()), (EntityPlayerMP) player);
 	}
 
 	public static void sendBlockInfoToClients(final World world, final byte[] data, final BlockPos pos) {
@@ -188,6 +197,6 @@ public class PacketHandler {
 				ds.writeByte(b);
 			}
 		} catch (IOException ex) {}
-		StevesCarts.packetHandler.sendToAllAround(createPacket(bs.toByteArray()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64.0));
+		NetworkManager.sendToAllAround(new PacketStevesCarts(-1, bs.toByteArray()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64.0));
 	}
 }

@@ -45,7 +45,7 @@ public class ModuleSnowCannon extends ModuleAddon {
 			for (int z = -getBlocksOnSide(); z <= getBlocksOnSide(); ++z) {
 				for (int y = -getBlocksFromLevel(); y <= getBlocksFromLevel(); ++y) {
 					BlockPos pos = cartPos.add(x, y, z);
-					if (countsAsAir(pos) && getCart().world.getBiomeForCoordsBody(pos).getTemperature() <= 1.0f && Blocks.SNOW.canPlaceBlockAt(getCart().world, pos)) {
+					if (countsAsAir(pos) && getCart().world.getBiomeForCoordsBody(pos).getDefaultTemperature() <= 1.0f && Blocks.SNOW.canPlaceBlockAt(getCart().world, pos)) {
 						getCart().world.setBlockState(pos, Blocks.SNOW.getDefaultState());
 					}
 				}

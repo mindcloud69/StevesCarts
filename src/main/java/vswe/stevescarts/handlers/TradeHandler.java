@@ -3,11 +3,13 @@ package vswe.stevescarts.handlers;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
+import net.minecraftforge.registries.GameData;
 import vswe.stevescarts.helpers.ComponentTypes;
 import vswe.stevescarts.helpers.ResourceHelper;
 import vswe.stevescarts.items.ModItems;
@@ -21,7 +23,8 @@ public class TradeHandler implements ITradeList {
 	public TradeHandler() {
 		santaProfession = new VillagerProfession("stevecarts:santa", ResourceHelper.getResource("/models/santa.png").toString(), ResourceHelper.getResource("/models/santa_zombie.png").toString());
 		VillagerCareer career = new VillagerCareer(santaProfession, "santa");
-		VillagerRegistry.instance().register(santaProfession);
+		santaProfession.setRegistryName(new ResourceLocation("stevecarts:santa"));
+		GameData.register_impl(santaProfession);
 		career.addTrade(1, this);
 	}
 

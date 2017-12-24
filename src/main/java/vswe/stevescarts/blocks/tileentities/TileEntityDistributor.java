@@ -14,11 +14,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import vswe.stevescarts.PacketHandler;
 import vswe.stevescarts.containers.ContainerBase;
 import vswe.stevescarts.containers.ContainerDistributor;
 import vswe.stevescarts.guis.GuiBase;
@@ -27,6 +27,7 @@ import vswe.stevescarts.helpers.DistributorSetting;
 import vswe.stevescarts.helpers.DistributorSide;
 import vswe.stevescarts.helpers.Localization;
 import vswe.stevescarts.helpers.storages.SCTank;
+import vswe.stevescarts.packet.PacketStevesCarts;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 	}
 
 	public void sendPacket(final int id, final byte[] data) {
-		PacketHandler.sendPacket(id, data);
+		PacketStevesCarts.sendPacket(id, data);
 	}
 
 	@Override
@@ -337,6 +338,30 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		return ret;
 	}
 
+	private SCTank getTankForSide(final EnumFacing direction) {
+		final TileEntityManager[] invs = getInventories();
+		if (invs.length > 0) {
+			for (final DistributorSide side : getSides()) {
+				if (side.getSide() == direction) {
+					final ArrayList<IFluidTank> tanks = new ArrayList<>();
+					if (hasTop && hasBot) {
+						populateTanks(tanks, side, invs[0], false);
+						populateTanks(tanks, side, invs[1], true);
+					} else if (hasTop) {
+						populateTanks(tanks, side, invs[0], true);
+					} else if (hasBot) {
+						populateTanks(tanks, side, invs[0], false);
+					}
+					if(!tanks.isEmpty()){
+						return (SCTank) tanks.get(0);
+					}
+					return null;
+				}
+			}
+		}
+		return null;
+	}
+
 	private SCTank[] getTanks(final EnumFacing direction) {
 		final TileEntityManager[] invs = getInventories();
 		if (invs.length > 0) {
@@ -479,7 +504,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
 		}
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getTankForSide(facing) != null) {
 			return true;
 		}
 		return super.hasCapability(capability, facing);
@@ -491,7 +516,7 @@ public class TileEntityDistributor extends TileEntityBase implements IInventory,
 			return (T) new SidedInvWrapper(this, facing);
 		}
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return (T) getTanks(facing);
+			return (T) getTankForSide(facing);
 		}
 		return super.getCapability(capability, facing);
 	}

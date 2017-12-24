@@ -150,7 +150,7 @@ public class BlockRailAdvDetector extends BlockRailDetector {
 				}
 			}
 		}
-		int power = world.getStrongPower(pos);
+		int power = world.isBlockIndirectlyGettingPowered(pos);
 		if (power > 0) {
 			cart.releaseCart();
 		}

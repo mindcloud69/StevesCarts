@@ -57,7 +57,7 @@ public abstract class TankEffect extends InventoryEffect {
 		if (TankEffect.texture == null) {
 			TankEffect.texture = ResourceHelper.getResource("/gui/tank.png");
 		}
-		upgrade.tank.drawFluid(gui, 35, 20);
+		upgrade.tank.drawFluid(gui, 35, 20, 16, 16);
 		ResourceHelper.bindResource(TankEffect.texture);
 		gui.drawTexturedModalRect(gui.getGuiLeft() + 35, gui.getGuiTop() + 20, 0, 0, 36, 51);
 	}

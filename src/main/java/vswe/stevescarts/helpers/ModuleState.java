@@ -3,6 +3,7 @@ package vswe.stevescarts.helpers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -160,7 +161,7 @@ public class ModuleState {
 		new ModuleState(12, ModuleCage.class, Localization.GUI.DETECTOR.CAGE, STATETYPE.ACTIVATION);
 		new ModuleStateInv(10, Localization.GUI.DETECTOR.STORAGE_FULL, true);
 		new ModuleStateInv(11, Localization.GUI.DETECTOR.STORAGE_EMPTY, false);
-		new ModuleStatePassenger(13, Localization.GUI.DETECTOR.PASSENGER, EntityLiving.class);
+		new ModuleStatePassenger(13, Localization.GUI.DETECTOR.PASSENGER, EntityLivingBase.class);
 		new ModuleStatePassenger(14, Localization.GUI.DETECTOR.ANIMAL, IAnimals.class);
 		new ModuleStatePassenger(15, Localization.GUI.DETECTOR.TAMEABLE, EntityTameable.class);
 		new ModuleStatePassenger(16, Localization.GUI.DETECTOR.BREEDABLE, EntityAgeable.class);
